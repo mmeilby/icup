@@ -10,19 +10,12 @@ use ICup\Bundle\PublicSiteBundle\Entity\Doctrine\Host;
 use ICup\Bundle\PublicSiteBundle\Entity\Doctrine\Match;
 use ICup\Bundle\PublicSiteBundle\Entity\Doctrine\MatchRelation;
 use ICup\Bundle\PublicSiteBundle\Entity\Doctrine\Playground;
-use ICup\Bundle\PublicSiteBundle\Entity\Doctrine\QPersons;
-use ICup\Bundle\PublicSiteBundle\Entity\Doctrine\QSurveys;
 use ICup\Bundle\PublicSiteBundle\Entity\Doctrine\Site;
 use ICup\Bundle\PublicSiteBundle\Entity\Doctrine\Team;
 use ICup\Bundle\PublicSiteBundle\Entity\Doctrine\Tournament;
-use ICup\Bundle\PublicSiteBundle\Entity\FormData;
-use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
-use Swift_Message;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
-use Symfony\Component\HttpFoundation\Request;
-use Symfony\Component\HttpFoundation\Session\Session;
 use Symfony\Component\Yaml\Exception\ParseException;
 
 class DefaultController extends Controller
@@ -40,8 +33,12 @@ class DefaultController extends Controller
             echo 'Could not parse the query form config file: ' . $e->getMessage();
             throw new ParseException('Could not parse the query form config file: ' . $e->getMessage());
         }
-        $xml = simplexml_load_string($dbConfig, null, LIBXML_NOWARNING);
-        $this->drillDownXml($xml->host);
+        try {
+            $xml = simplexml_load_string($dbConfig, null, LIBXML_NOWARNING);
+            $this->drillDownXml($xml->host);
+        } catch (Exception $e) {
+            echo $e->getMessage();
+        }
         return array('name' => 'JohnDoe');
     }
 

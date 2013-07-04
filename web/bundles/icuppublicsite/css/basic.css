@@ -2,63 +2,84 @@
 	Default setup
 */
 BODY {
-	padding: 0px;
-	margin: 10px 0px;
-	background: white;
-	font: 12pt Arial, sans-serif;
-	color: #454545;
-	text-align: center;
+    padding: 0px;
+    margin: 10px 0px;
+    background: white;
+    font: 12pt Arial, sans-serif;
+    color: #454545;
+    text-align: center;
 }
 TABLE {
-	border-collapse: collapse
+    border-collapse: collapse
+}
+TD {
+    padding-right: 5px;
 }
 A {
-	color: #454545;
-	text-decoration: none;
+    color: #454545;
+    text-decoration: none;
 }
 A:hover {
-	text-decoration: underline;
+    text-decoration: underline;
 }
 FIELDSET {
-	padding: 10px;
+    padding: 10px;
 }
 LEGEND {
 }
 LABEL {
 }
 SELECT {
-	font: 12pt Arial, sans-serif;
+    font: 12pt Arial, sans-serif;
 }
 INPUT {
-	font: 12pt Arial, sans-serif;
+    font: 12pt Arial, sans-serif;
 }
 
 /*
 	Class setup
 */
-.centerpage {
-	width: 700px;
-	margin: 0px auto;
-	text-align: left;
+DIV.centerpage {
+    width: 700px;
+    margin: 0px auto;
+    text-align: left;
 }
 
 H1.category {
-    
 }
-
+P.subcategory {
+    position: relative;
+    top: -20px;
+    font-weight: bold;    
+}
 H2.group {
-    
+}
+P.subgroup {
+    position: relative;
+    top: -18px;
+    font-weight: bold;    
 }
 
-TD {
-    padding-right: 5px;
+THEAD TR TD {
+    font-weight: bold;
+}
+THEAD TR {
+    border-bottom: 1px solid black;
+}
+TFOOT TR {
+    border-top: 1px solid black;
+}
+
+TR.odd {
+    background: whiteSmoke;
+}
+TR.even {
 }
 TD.flag {
     width: 20px;
 }
 TD.team {
-    width: 200px;
-    text-align: left;
+    width: 300px;
 }
 TD.matches {
     width: 20px;
@@ -72,11 +93,49 @@ TD.goals {
     width: 20px;
     text-align: center;
 }
+TD.diff {
+    width: 20px;
+    text-align: center;
+}
 TD.points {
     width: 20px;
     text-align: center;
 }
-
+TD.no {
+    width: 20px;
+    text-align: center;
+}
+TD.date {
+    font-weight: bold;
+}
+TD.time {
+    width: 20px;
+    text-align: center;
+    font-weight: bold;
+}
+TD.playground {
+    font-weight: bold;
+}
+TD.match {
+    width: 50px;
+    text-align: center;
+}
+TD.category {
+    width: 300px;
+}
+TD.date_solo {
+    font-weight: bold;
+    font-size: 18px;
+    padding-top: 5px;
+    padding-left: 5px;
+    text-decoration: underline;
+}
+TD.playgrounds {
+    width: 400px;
+}
+TD.categories {
+    width: 200px;
+}
 
 
 
@@ -136,11 +195,6 @@ TABLE.title {
 	width: 100%;
 	margin-top: 10px;
 	clear: both;
-}
-TR.odd {
-	background: whiteSmoke;
-}
-TR.even {
 }
 .oddcell {
 	padding-right: 10px;

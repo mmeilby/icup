@@ -2,7 +2,7 @@
 <!DOCTYPE demo_data>
 <demo_data>
 	<host>
-		<name>L'associazione sportiva-culturale - Interamnia World Cup</name>
+		<name>L'associazione sportiva-culturale - IWC</name>
 		<tournament>
 			<name>41a Interamnia World Cup</name>
 			<user>
@@ -23,7 +23,7 @@
                                     <playground>
                                             <!-- Hallen ved via Gasbarrini -->
                                             <no>2</no>
-                                            <name>Campo 2, Palestra Molinari (Via Gasbarrini)</name>
+                                            <name>Campo 2, Palestra Molinari</name>
                                     </playground>
                                     <playground>
                                             <!-- Boldbanen under broen -->
@@ -33,34 +33,34 @@
                                     <playground>
                                             <!-- Boldbanen ved svømmebadet -->
                                             <no>4</no>
-                                            <name>Campo 4, Scuola Media D'Alessandro [5]</name>
+                                            <name>Campo 4, Scuola Media D'Alessandro</name>
                                     </playground>
                                     <playground>
                                             <!-- Marmorbanen -->
                                             <no>5</no>
-                                            <name>Campo 5, Pista Pattinaggio Acquaviva [7]</name>
+                                            <name>Campo 5, Pista Pattinaggio Acquaviva</name>
                                     </playground>
                                     <playground>
                                             <!-- Boldbanen ved atletik stadion -->
                                             <no>6</no>
-                                            <name>Campo 6, Via Tripoti [8]</name>
+                                            <name>Campo 6, Via Tripoti</name>
                                     </playground>
                                     <playground>
                                             <!-- Boldbanen ved via Gasbarrini -->
                                             <no>7</no>
-                                            <name>Campo 7, Scuola Media Molinari (Via Gasbarrini) [9]</name>
+                                            <name>Campo 7, Scuola Media Molinari</name>
                                     </playground>
                                     <playground>
                                             <!-- Hallen ved svømmebadet -->
                                             <no>8</no>
-                                            <name>Campo 8, Palacquaviva [10]</name>
+                                            <name>Campo 8, Palacquaviva</name>
                                     </playground>
                             </site>
                             <site>
                                     <name>San Nicolò</name>
                                     <playground>
                                             <no>9</no>
-                                            <name>Campo 9, Palazzetto dello Sport [12]</name>
+                                            <name>Campo 9, Palazzetto dello Sport</name>
                                     </playground>
                             </site>
                         </sites>
@@ -68,7 +68,7 @@
                         <categories>
                             <category>
                                     <name>G</name>
-                                    <gender>MALE</gender>
+                                    <gender>M</gender>
                                     <classification>U30</classification>
                                     <playing_time>50</playing_time>
                                     <group>
@@ -92,7 +92,7 @@
                             </category>
                             <category>
                                     <name>C</name>
-                                    <gender>MALE</gender>
+                                    <gender>M</gender>
                                     <classification>U18</classification>
                                     <playing_time>35</playing_time>
                                     <group>
@@ -109,7 +109,7 @@
                             </category>
                             <category>
                                     <name>D</name>
-                                    <gender>MALE</gender>
+                                    <gender>M</gender>
                                     <classification>U16</classification>
                                     <playing_time>35</playing_time>
                                     <group>
@@ -143,7 +143,7 @@
                             <category>
                                     <name>E</name>
                                     <playing_time>35</playing_time>
-                                    <gender>MALE</gender>
+                                    <gender>M</gender>
                                     <classification>U14</classification>
                                     <group>
                                             <name>A</name>
@@ -176,7 +176,7 @@
                             </category>
                             <category>
                                     <name>F</name>
-                                    <gender>MALE</gender>
+                                    <gender>M</gender>
                                     <classification>U12</classification>
                                     <playing_time>35</playing_time>
                                     <group>
@@ -191,7 +191,7 @@
                             </category>
                             <category>
                                     <name>P/I</name>
-                                    <gender>FEMALE</gender>
+                                    <gender>F</gender>
                                     <classification>U30/U21</classification>
                                     <playing_time>50</playing_time>
                                     <group>
@@ -204,7 +204,7 @@
                             </category>
                             <category>
                                     <name>L</name>
-                                    <gender>FEMALE</gender>
+                                    <gender>F</gender>
                                     <classification>U18</classification>
                                     <playing_time>35</playing_time>
                                     <group>
@@ -222,7 +222,7 @@
                             <category>
                                     <name>M</name>
                                     <playing_time>35</playing_time>
-                                    <gender>FEMALE</gender>
+                                    <gender>F</gender>
                                     <classification>U16</classification>
                                     <group>
                                             <name>A</name>
@@ -256,7 +256,7 @@
                             </category>
                             <category>
                                     <name>N</name>
-                                    <gender>FEMALE</gender>
+                                    <gender>F</gender>
                                     <classification>U14</classification>
                                     <playing_time>35</playing_time>
                                     <group>
@@ -272,7 +272,7 @@
                             <category>
                                     <name>O</name>
                                     <playing_time>35</playing_time>
-                                    <gender>FEMALE</gender>
+                                    <gender>F</gender>
                                     <classification>U12</classification>
                                     <group>
                                             <name>A</name>

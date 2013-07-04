@@ -1,0 +1,333 @@
+/*
+	Default setup
+*/
+BODY {
+    padding: 0px;
+    margin: 10px 0px;
+    background: white;
+    font: 12pt Arial, sans-serif;
+    color: #454545;
+    text-align: center;
+}
+TABLE {
+    border-collapse: collapse
+}
+TD {
+    padding-right: 5px;
+}
+A {
+    color: #454545;
+    text-decoration: none;
+}
+A:hover {
+    text-decoration: underline;
+}
+FIELDSET {
+    padding: 10px;
+}
+LEGEND {
+}
+LABEL {
+}
+SELECT {
+    font: 12pt Arial, sans-serif;
+}
+INPUT {
+    font: 12pt Arial, sans-serif;
+}
+
+/*
+	Class setup
+*/
+DIV.centerpage {
+    width: 700px;
+    margin: 0px auto;
+    text-align: left;
+}
+
+H1.category {
+}
+P.subcategory {
+    position: relative;
+    top: -20px;
+    font-weight: bold;    
+}
+H2.group {
+}
+P.subgroup {
+    position: relative;
+    top: -18px;
+    font-weight: bold;    
+}
+
+THEAD TR TD {
+    font-weight: bold;
+}
+THEAD TR {
+    border-bottom: 1px solid black;
+}
+TFOOT TR {
+    border-top: 1px solid black;
+}
+
+TR.odd {
+    background: whiteSmoke;
+}
+TR.even {
+}
+TD.flag {
+    width: 20px;
+}
+TD.team {
+    width: 300px;
+}
+TD.matches {
+    width: 20px;
+    text-align: center;
+}
+TD.score {
+    width: 20px;
+    text-align: center;
+}
+TD.goals {
+    width: 20px;
+    text-align: center;
+}
+TD.diff {
+    width: 20px;
+    text-align: center;
+}
+TD.points {
+    width: 20px;
+    text-align: center;
+}
+TD.no {
+    width: 20px;
+    text-align: center;
+}
+TD.date {
+    font-weight: bold;
+}
+TD.time {
+    width: 20px;
+    text-align: center;
+    font-weight: bold;
+}
+TD.playground {
+    font-weight: bold;
+}
+TD.match {
+    width: 50px;
+    text-align: center;
+}
+TD.category {
+    width: 300px;
+}
+
+
+
+
+
+
+
+DIV.title {
+	height: 80px;
+	color: white;
+	background-color: #2080f0;
+	padding: 5px;	
+}
+TABLE.title {
+	width: 100%;
+	height: 100%;
+}
+.logo {
+	font-size: 60px;
+	vertical-align: bottom;
+}
+.punchline {
+	text-align: right;
+}
+.title_block {
+	text-align: right;
+	vertical-align: bottom;
+}
+.host_title {
+}
+.tournament_title {
+	font-size: 20px;
+	margin-top: 2px;
+	padding-top: 3px;
+	border-top: 1px dotted white;
+}
+.menu {
+	width: 100%;
+	height: 17px;
+	margin-top: 5px;
+	padding-bottom: 5px;
+	border-bottom: 1px solid #ddd;
+}
+.menuitem {
+	float: left;
+}
+.menuitem a {
+	text-decoration: none;
+}
+.menuitem a:hover {
+	background-color: #ddd;
+}
+.menuitem a.item {
+	padding-right: 10px;
+	padding-left: 10px;
+}
+.content {
+	width: 100%;
+	margin-top: 10px;
+	clear: both;
+}
+.oddcell {
+	padding-right: 10px;
+}
+.evencell {
+	padding-right: 10px;
+}
+.error {
+	color: #ef6782;
+}
+P.error {
+	font-weight: bold;
+}
+INPUT.error {
+	color: white;
+	background: #ef6782;
+}
+IMG.flag {
+	padding-right: 10px;
+}
+/* Main Navigation */
+#nav {
+    position:relative;
+    width: 699px;
+    margin:0 auto;
+    padding-bottom: 36px;
+	background: whiteSmoke;
+	border-bottom: 2px solid #C4DBE7;
+    border-right:1px solid #c4dbe7;
+}
+ 
+ul#navigation {
+    margin:0px auto;
+    position:relative;
+    float:left;
+    border-left:1px solid #c4dbe7;
+    border-right:1px solid #c4dbe7;
+    -webkit-padding-start: 0px;
+}
+ 
+ul#navigation li {
+    display:inline;
+    font-size:12px;
+    font-weight:bold;
+    margin:0;
+    padding:0;
+    float:left;
+    position:relative;
+    border-top:1px solid #c4dbe7;
+    border-bottom:2px solid #c4dbe7;
+}
+ 
+ul#navigation li a {
+    padding:10px 25px;
+    color:#616161;
+    text-shadow:1px 1px 0px #fff;
+    text-decoration:none;
+    display:inline-block;
+    border-right:1px solid #fff;
+    border-left:1px solid #C2C2C2;
+    border-top:1px solid #fff;
+    background: #f5f5f5;
+ 
+    -webkit-transition:color 0.2s linear, background 0.2s linear;
+    -moz-transition:color 0.2s linear, background 0.2s linear;
+    -o-transition:color 0.2s linear, background 0.2s linear;
+    transition:color 0.2s linear, background 0.2s linear;
+}
+ 
+ul#navigation li a:hover {
+    background:#f8f8f8;
+    color:#282828;
+}
+ 
+ul#navigation li a.first {
+    border-left: 0 none;
+}
+ 
+ul#navigation li a.last {
+    border-right: 0 none;
+}
+ 
+ul#navigation li a.right {
+    float: right;
+}
+ 
+ul#navigation li:hover > a {
+    background:#fff;
+}
+
+/* Drop-Down Navigation */
+ul#navigation li:hover > ul
+{
+/*these 2 styles are very important,
+being the ones which make the drop-down to appear on hover */
+    visibility:visible;
+    opacity:1;
+}
+ 
+ul#navigation ul, ul#navigation ul li ul {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+/*the next 2 styles are very important,
+being the ones which make the drop-down to stay hidden */
+    visibility:hidden;
+    opacity:0;
+    position: absolute;
+    z-index: 99999;
+    width:180px;
+    background:#f8f8f8;
+    box-shadow:1px 1px 3px #ccc;
+/* css3 transitions for smooth hover effect */
+    -webkit-transition:opacity 0.2s linear, visibility 0.2s linear;
+    -moz-transition:opacity 0.2s linear, visibility 0.2s linear;
+    -o-transition:opacity 0.2s linear, visibility 0.2s linear;
+    transition:opacity 0.2s linear, visibility 0.2s linear;
+}
+ 
+ul#navigation ul {
+    top: 43px;
+    left: 1px;
+}
+ 
+ul#navigation ul li ul {
+    top: 0;
+    left: 181px; /* strong related to width:180px; from above */
+}
+ 
+ul#navigation ul li {
+    clear:both;
+    width:100%;
+    border:0 none;
+    border-bottom:1px solid #c9c9c9;
+}
+ 
+ul#navigation ul li a {
+    background:none;
+    padding:7px 15px;
+    color:#616161;
+    text-shadow:1px 1px 0px #fff;
+    text-decoration:none;
+    display:inline-block;
+    border:0 none;
+    float:left;
+    clear:both;
+    width:150px;
+}

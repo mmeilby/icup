@@ -1,0 +1,125 @@
+<?php
+
+namespace ICup\Bundle\PublicSiteBundle\Entity\Doctrine;
+
+use Doctrine\ORM\Mapping as ORM;
+
+/**
+ * ICup\Bundle\PublicSiteBundle\Entity\Doctrine\Playground
+ *
+ * @ORM\Table(name="playgrounds")
+ * @ORM\Entity
+ */
+class Playground
+{
+    /**
+     * @var integer $id
+     *
+     * @ORM\Column(name="id", type="integer", nullable=false)
+     * @ORM\Id
+     * @ORM\GeneratedValue(strategy="IDENTITY")
+     */
+    private $id;
+
+    /**
+     * @var integer $pid
+     * Relation to Site - pid=site.id 
+     * @ORM\Column(name="pid", type="integer", nullable=false)
+     */
+    private $pid;
+
+    /**
+     * @var integer $no
+     * Playground number for ordering in lists
+     * @ORM\Column(name="no", type="integer", nullable=false)
+     */
+    private $no;
+
+    /**
+     * @var string $name
+     * Playground name used in lists
+     * @ORM\Column(name="name", type="string", length=50, nullable=false)
+     */
+    private $name;
+
+
+
+    /**
+     * Get id
+     *
+     * @return integer 
+     */
+    public function getId()
+    {
+        return $this->id;
+    }
+
+    /**
+     * Set parent id - related site
+     *
+     * @param integer $pid
+     * @return Playground
+     */
+    public function setPid($pid)
+    {
+        $this->pid = $pid;
+    
+        return $this;
+    }
+
+    /**
+     * Get parent id - related site
+     *
+     * @return integer 
+     */
+    public function getPid()
+    {
+        return $this->pid;
+    }
+
+    /**
+     * Set playground no
+     *
+     * @param integer $no
+     * @return Playground
+     */
+    public function setNo($no)
+    {
+        $this->no = $no;
+    
+        return $this;
+    }
+
+    /**
+     * Get playground no
+     *
+     * @return integer 
+     */
+    public function getNo()
+    {
+        return $this->no;
+    }
+
+    /**
+     * Set name
+     *
+     * @param string $name
+     * @return Playground
+     */
+    public function setName($name)
+    {
+        $this->name = $name;
+    
+        return $this;
+    }
+
+    /**
+     * Get name
+     *
+     * @return string 
+     */
+    public function getName()
+    {
+        return $this->name;
+    }
+}

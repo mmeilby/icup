@@ -1,0 +1,59 @@
+{% extends "base.html.twig" %}
+
+{% block body %}
+<a href="{{ path('_showtournament') }}">
+    <h1 class="category">{{ tournament.name }}</h1>
+</a>
+<p class="subcategory">
+    {{ playground.name }}
+</p>
+<p>
+    <table>
+        <thead>
+            <tr>
+                <td class="flag"></td>
+                <td class="no">{% trans %}LEGEND.NO{% endtrans %}</td>
+                <td class="time">{% trans %}LEGEND.TIME{% endtrans %}</td>
+                <td class="no">{% trans %}CATEGORY{% endtrans %}</td>
+                <td class="no">{% trans %}GROUP{% endtrans %}</td>
+                <td class="flag"></td>
+                <td class="team">{% trans %}TEAM{% endtrans %} A</td>
+                <td class="flag"></td>
+                <td class="team">{% trans %}TEAM{% endtrans %} B</td>
+                <td class="match">{% trans %}LEGEND.RESULT{% endtrans %}</td>
+            </tr>
+        </thead>
+        <tboby>
+{% set catdate = '' %}
+{% for match in matchlist %}
+    {% if match.schedule|date('d-M-Y') != catdate %}
+            <tr class="{{ cycle(['even','odd'],loop.index) }}">
+                <td class="date_solo" colspan="10">
+                    {{ ['WEEK.',match.schedule|date('D')|upper]|join|trans|capitalize }}{{ match.schedule|date(' j. ') }}{{ ['MONTH.',match.schedule|date('M')|upper]|join|trans }}
+                </td>
+            </tr>
+        {% set catdate = match.schedule|date('d-M-Y') %}
+    {% endif %}
+            <tr class="{{ cycle(['even','odd'],loop.index) }}">
+                <td class="flag"></td>
+                <td class="no">{{ match.matchno }}</td>
+                <td class="time">{{ match.schedule|date('H.i') }}</td>
+                <td class="no">{{ match.category }}</td>
+                <td class="no">{{ match.group }}</td>
+                <td class="flag"><img src="{{ imagepath }}/flags/{{ match.flagA }}" alt="{{ match.countryA|trans }}" title="{{ match.countryA|trans }}"></td>
+                <td class="team"><a href="{{ path('_showteam', { 'teamid': match.idA, 'groupid': match.gid }) }}">{{ match.teamA }}</a></td>
+                <td class="flag"><img src="{{ imagepath }}/flags/{{ match.flagB }}" alt="{{ match.countryB|trans }}" title="{{ match.countryB|trans }}"></td>
+                <td class="team"><a href="{{ path('_showteam', { 'teamid': match.idB, 'groupid': match.gid }) }}">{{ match.teamB }}</a></td>
+                <td class="match">{{ match.scoreA }}-{{ match.scoreB }}</td>
+            </tr>
+{% endfor %}
+        </tboby>
+        <tfoot>
+            <tr>
+                <td colspan="10"></td>
+            </tr>
+        </tfoot>
+    </table>
+    </form>
+</p>
+{% endblock %}

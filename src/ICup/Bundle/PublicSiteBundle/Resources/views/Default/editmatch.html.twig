@@ -1,0 +1,52 @@
+{% extends "base.html.twig" %}
+
+{% block body %}
+<p class="subgroup">{{ playground.name }}</p>
+<p>
+    <form action="{{ path('_editmatchpost') }}" method="post">
+    <input type="submit" value="Save">
+    <table>
+        <thead>
+            <tr>
+                <td class="no">{% trans %}LEGEND.NO{% endtrans %}</td>
+                <td class="time">{% trans %}LEGEND.TIME{% endtrans %}</td>
+                <td class="flag"></td>
+                <td class="team">{% trans %}TEAM{% endtrans %} A</td>
+                <td class="flag"></td>
+                <td class="team">{% trans %}TEAM{% endtrans %} B</td>
+                <td colspan="2">{% trans %}LEGEND.RESULT{% endtrans %}</td>
+            </tr>
+        </thead>
+        <tboby>
+{% for match in matchlist %}
+            <tr class="{{ cycle(['even','odd'],loop.index) }}">
+                <td class="date" colspan="8">
+                    {{ match.schedule|date('d-M-Y') }}
+                    {% trans %}CATEGORY{% endtrans %} {{ match.category }} {% trans %}GROUP{% endtrans %} {{ match.group }}    
+                </td>
+            </tr>
+            <tr class="{{ cycle(['even','odd'],loop.index) }}">
+                <td class="no">{{ match.matchno }}</td>
+                <td class="time">{{ match.schedule|date('H.i') }}</td>
+                <td class="flag"><img src="{{ imagepath }}/flags/{{ match.flagA }}" alt="{{ match.countryA|trans }}" title="{{ match.countryA|trans }}"></td>
+                <td class="team"><a href="{{ path('_showteam', { 'teamid': match.idA, 'groupid': match.gid }) }}">{{ match.teamA }}</a></td>
+                <td class="flag"><img src="{{ imagepath }}/flags/{{ match.flagB }}" alt="{{ match.countryB|trans }}" title="{{ match.countryB|trans }}"></td>
+                <td class="team"><a href="{{ path('_showteam', { 'teamid': match.idB, 'groupid': match.gid }) }}">{{ match.teamB }}</a></td>
+                <td class="match">
+                    <input type="text" name="score_{{ match.ridA }}" size="1" value="{{ match.scoreA }}" />
+                </td>
+                <td class="match">
+                    <input type="text" name="score_{{ match.ridB }}" size="1" value="{{ match.scoreB }}" />
+                </td>
+            </tr>
+{% endfor %}
+        </tboby>
+        <tfoot>
+            <tr>
+                <td colspan="8"></td>
+            </tr>
+        </tfoot>
+    </table>
+    </form>
+</p>
+{% endblock %}

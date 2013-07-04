@@ -1,0 +1,47 @@
+{% extends "base.html.twig" %}
+
+{% block body %}
+<a href="{{ path('_showtournament') }}">
+    <h1 class="category">{% trans %}CATEGORY{% endtrans %} {{ category.name }}</h1>
+</a>
+<p class="subcategory">
+    {{ [category.gender,category.classification]|join|trans }}
+    {{ category.classification|trans }}
+</p>
+{% for group in grouplist %}
+    <h2 class="group">{% trans %}GROUP{% endtrans %} {{ group.group.name }}</h2>
+    <p>
+        <table>
+            <thead>
+                <tr>
+                    <td class="flag"></td>
+                    <td class="team">{% trans %}TEAM{% endtrans %}</td>
+                    <td class="matches">{% trans %}LEGEND.MATCHES{% endtrans %}</td>
+                    <td class="score">{% trans %}LEGEND.GOALS.WON{% endtrans %}</td>
+                    <td class="goals">{% trans %}LEGEND.GOALS.LOST{% endtrans %}</td>
+                    <td class="diff">{% trans %}LEGEND.GOALS.DIFF{% endtrans %}</td>
+                    <td class="points">{% trans %}LEGEND.POINTS{% endtrans %}</td>
+                </tr>
+            </thead>
+            <tboby>
+    {% for team in group.teams %}
+                <tr class="{{ cycle(['even','odd'],loop.index) }}">
+                    <td class="flag"><img src="{{ imagepath }}/flags/{{ team.flag }}" alt="{{ team.country|trans }}" title="{{ team.country|trans }}"></td>
+                    <td class="team"><a href="{{ path('_showteam', { 'teamid': team.id, 'groupid': group.group.id }) }}">{{ team.name }}</a></td>
+                    <td class="matches">{{ team.matches }}</td>
+                    <td class="score">{{ team.score }}</td>
+                    <td class="goals">{{ team.goals }}</td>
+                    <td class="diff">{{ team.diff }}</td>
+                    <td class="points">{{ team.points }}</td>
+                </tr>
+    {% endfor %}
+            </tboby>
+            <tfoot>
+                <tr>
+                    <td colspan="7"></td>
+                </tr>
+            </tfoot>
+        </table>
+    </p>
+{% endfor %}
+{% endblock %}

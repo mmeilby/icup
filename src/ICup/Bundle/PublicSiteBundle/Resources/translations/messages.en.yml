@@ -1,0 +1,448 @@
+icup.language: EN
+icup.charset: UTF-8
+
+CATEGORY: Category
+GROUP: Group
+TEAM: Team
+FIELD: Playground
+CATEGORIES: Categories
+PLAYGROUNDS: Playgrounds
+
+RESULTS: Results for 2013
+
+LEGEND:
+  NO: No.
+  TIME: Time
+  MATCHES: MP
+  WON: W
+  TIE: T
+  LOST: L
+  GOALS:
+    WON: GF
+    LOST: GA
+    DIFF: GD
+  POINTS: Pts
+  RESULT: Result
+
+MU12: Male
+MU14: Male
+MU16: Male
+MU18: Male
+MU21: Male
+MU30: Male
+MU30/U21: Male
+FU12: Female
+FU14: Female
+FU16: Female
+FU18: Female
+FU21: Female
+FU30: Female
+FU30/U21: Female
+
+U12: under 12
+U14: under 14
+U16: under 16
+U18: under 18
+U21: under 21
+U30: under 30
+U30/U21: under 30/21
+
+WEEK:
+  MON: Monday
+  TUE: Tuesday
+  WED: Wednesday
+  THU: Thursday
+  FRI: Friday
+  SAT: Saturday
+  SUN: Sunday
+
+MONTH:
+  JAN: January
+  FEB: February
+  MAR: March
+  APR: April
+  MAY: May
+  JUN: June
+  JUL: July
+  AUG: August
+  SEP: September
+  OCT: October
+  NOV: November
+  DEC: December
+
+# Country codes
+ABW: Aruba
+AFG: Afghanistan
+AGO: Angola
+AIA: Anguilla
+ALA: \u00c5land Islands
+ALB: Albania
+AND: Andorra
+ARE: United Arab Emirates
+ARG: Argentina
+ARM: Armenia
+ASM: American Samoa
+ATA: Antarctica
+ATF: French Southern Territories
+ATG: Antigua and Barbuda
+AUS: Australia
+AUT: Austria
+AZE: Azerbaijan
+BDI: Burundi
+BEL: Belgium
+BEN: Benin
+BES: Bonaire, Sint Eustatius and Saba
+BFA: Burkina Faso
+BGD: Bangladesh
+BGR: Bulgaria
+BHR: Bahrain
+BHS: Bahamas
+BIH: Bosnia and Herzegovina
+BLM: Saint Bartholemy
+BLR: Belarus
+BLZ: Belize
+BMU: Bermuda
+BOL: Bolivia, Plurinational State of
+BRA: Brazil
+BRB: Barbados
+BRN: Brunei Darussalam
+BTN: Bhutan
+BVT: Bouvet Island
+BWA: Botswana
+CAF: Central African Republic
+CAN: Canada
+CCK: Cocos (Keeling) Islands
+CHE: Switzerland
+CHL: Chile
+CHN: China
+CIV: Cote d'Ivoire
+CMR: Cameroon
+COD: Congo, the Democratic Republic of the
+COG: Congo
+COK: Cook Islands
+COL: Colombia
+COM: Comoros
+CPV: Cape Verde
+CRI: Costa Rica
+CUB: Cuba
+CUW: Cura\u00e7ao
+CXR: Christmas Island
+CYM: Cayman Islands
+CYP: Cyprus
+CZE: Czech Republic
+DEU: Germany
+DJI: Djibouti
+DMA: Dominica
+DNK: Denmark
+DOM: Dominican Republic
+DZA: Algeria
+ECU: Ecuador
+EGY: Egypt
+ERI: Eritrea
+ESH: Western Sahara
+ESP: Spain
+EST: Estonia
+ETH: Ethiopia
+FIN: Finland
+FJI: Fiji
+FLK: Falkland Islands (Malvinas)
+FRA: France
+FRO: Faroe Islands
+FSM: Micronesia, Federated States of
+GAB: Gabon
+GBR: United Kingdom
+GEO: Georgia
+GGY: Guernsey
+GHA: Ghana
+GIB: Gibraltar
+GIN: Guinea
+GLP: Guadeloupe
+GMB: Gambia
+GNB: Guinea-Bissau
+GNQ: Equatorial Guinea
+GRC: Greece
+GRD: Grenada
+GRL: Greenland
+GTM: Guatemala
+GUF: French Guiana
+GUM: Guam
+GUY: Guyana
+HKG: Hong Kong
+HMD: Heard Island and McDonald Islands
+HND: Honduras
+HRV: Croatia
+HTI: Haiti
+HUN: Hungary
+IDN: Indonesia
+IMN: Isle of Man
+IND: India
+IOT: British Indian Ocean Territory
+IRL: Ireland
+IRN: Iran, Islamic Republic of
+IRQ: Iraq
+ISL: Iceland
+ISR: Israel
+ITA: Italy
+JAM: Jamaica
+JEY: Jersey
+JOR: Jordan
+JPN: Japan
+KAZ: Kazakhstan
+KEN: Kenya
+KGZ: Kyrgyzstan
+KHM: Cambodia
+KIR: Kiribati
+KNA: Saint Kitts and Nevis
+KOR: Korea, Republic of
+KWT: Kuwait
+LAO: Lao People's Democratic Republic
+LBN: Lebanon
+LBR: Liberia
+LBY: Libyan Arab Jamahiriya
+LCA: Saint Lucia
+LIE: Liechtenstein
+LKA: Sri Lanka
+LSO: Lesotho
+LTU: Lithuania
+LUX: Luxembourg
+LVA: Latvia
+MAC: Macao
+MAF: Saint Martin (French part)
+MAR: Morocco
+MCO: Monaco
+MDA: Moldova, Republic of
+MDG: Madagascar
+MDV: Maldives
+MEX: Mexico
+MHL: Marshall Islands
+MKD: Macedonia, the former Yugoslav Republic of
+MLI: Mali
+MLT: Malta
+MMR: Myanmar
+MNE: Montenegro
+MNG: Mongolia
+MNP: Northern Mariana Islands
+MOZ: Mozambique
+MRT: Mauritania
+MSR: Montserrat
+MTQ: Martinique
+MUS: Mauritius
+MWI: Malawi
+MYS: Malaysia
+MYT: Mayotte
+NAM: Namibia
+NCL: New Caledonia
+NER: Niger
+NFK: Norfolk Island
+NGA: Nigeria
+NIC: Nicaragua
+NIU: Niue
+NLD: Netherlands
+NOR: Norway
+NPL: Nepal
+NRU: Nauru
+NZL: New Zealand
+OMN: Oman
+PAK: Pakistan
+PAN: Panama
+PCN: Pitcairn
+PER: Peru
+PHL: Philippines
+PLW: Palau
+PNG: Papua New Guinea
+POL: Poland
+PRI: Puerto Rico
+PRK: Korea, Democratic People's Republic of
+PRT: Portugal
+PRY: Paraguay
+PSE: Palestinian Territory, Occupied
+PYF: French Polynesia
+QAT: Qatar
+REU: R\u00e9union
+ROU: Romania
+RUS: Russian Federation
+RWA: Rwanda
+SAU: Saudi Arabia
+SDN: Sudan
+SEN: Senegal
+SGP: Singapore
+SGS: South Georgia and the South Sandwich Islands
+SHN: Saint Helena, Ascension and Tristan da Cunha
+SJM: Svalbard and Jan Mayen
+SLB: Solomon Islands
+SLE: Sierra Leone
+SLV: El Salvador
+SMR: San Marino
+SOM: Somalia
+SPM: Saint Pierre and Miquelon
+SRB: Serbia
+SSD: South Sudan
+STP: Sao Tome and Principe
+SUR: Suriname
+SVK: Slovakia
+SVN: Slovenia
+SWE: Sweden
+SWZ: Swaziland
+SXM: Sint Maarten (Dutch part)
+SYC: Seychelles
+SYR: Syrian Arab Republic
+TCA: Turks and Caicos Islands
+TCD: Chad
+TGO: Togo
+THA: Thailand
+TJK: Tajikistan
+TKL: Tokelau
+TKM: Turkmenistan
+TLS: Timor-Leste
+TON: Tonga
+TTO: Trinidad and Tobago
+TUN: Tunisia
+TUR: Turkey
+TUV: Tuvalu
+TWN: Taiwan, Province of China
+TZA: Tanzania, United Republic of
+UGA: Uganda
+UKR: Ukraine
+UMI: United States Minor Outlying Islands
+URY: Uruguay
+USA: United States
+UZB: Uzbekistan
+VAT: Holy See (Vatican City State)
+VCT: Saint Vincent and the Grenadines
+VEN: Venezuela, Bolivarian Republic of
+VGB: Virgin Islands, British
+VIR: Virgin Islands, U.S.
+VNM: Viet Nam
+VUT: Vanuatu
+WLF: Wallis and Futuna
+WSM: Samoa
+YEM: Yemen
+ZAF: South Africa
+ZMB: Zambia
+ZWE: Zimbabwe
+
+icup.logo: iCup
+icup.punchline: Match planning tool on the web
+
+icup.subtitle: Ups....
+icup.instruction: This page can not show its content. We apologize for the inconvenience this may cause. Please try to go back to last page using the browser back button.
+  
+lobby.frontdesk.home: iCup home
+lobby.frontdesk.language: Language
+lobby.frontdesk.myhome: Tournament
+lobby.frontdesk.register: Register
+lobby.frontdesk.enroll: Enroll
+lobby.frontdesk.invitation: Program
+lobby.frontdesk.search: Search
+lobby.frontdesk.results: Results
+lobby.frontdesk.logout: Logout
+lobby.frontdesk.login: Login
+
+lobby.frontdesk.guest.title: iCup - Match planning tool on the web
+lobby.frontdesk.guest.description: Match planning tool on the web
+lobby.frontdesk.guest.keywords: Tournament,Match,Planning,Results,Tool
+
+lobby.search.title: Search for tournaments
+lobby.search.description: Search for available tournaments
+lobby.search.keywords: Tournament,Enroll,Results
+
+lobby.search.subtitle: Select a tournament
+lobby.search.instruction: Pick a tournament to attend or view the results for.
+
+lobby.frontdesk.title: Front desk
+lobby.frontdesk.description: Start page for the tournament site
+lobby.frontdesk.keywords: Tournament,Enroll,Results
+
+lobby.register.club.title: Register club
+lobby.register.club.description: Register a club for attending tournaments
+lobby.register.club.keywords: Register,Club,Tournaments
+lobby.register.club.instruction: You are about to register your club and a login for you as the administrator of the club. After you have registered the club and your login you can add other logins to attach to the club.
+lobby.register.club.legend: Club details
+lobby.register.club.name.label: Club name
+lobby.register.club.country.label: Country
+lobby.register.user.legend: Login details
+lobby.register.user.name.label: Full name
+lobby.register.user.email.label: E-mail
+lobby.register.user.username.label: User name
+lobby.register.user.password.label: Password
+lobby.register.user.password_verify.label: Verify password
+lobby.register.club.submit: Register
+lobby.register.club.country.option0: Please select from the list...
+
+lobby.register.club.name.empty: Club name can not be blank - please choose a proper name.
+lobby.register.club.name.inuse: Club name is in use - please use a different.
+lobby.register.club.country.empty: Country can not be blank - please choose a proper country.
+lobby.register.club.invalid.access: Can not register a new club at this stage - please log off and try again.
+lobby.register.user.name.empty: User name can not be blank - please choose a proper name.
+lobby.register.user.name.inuse: User name is in use - please use a different.
+lobby.register.user.name.invalid: User name is not valid.
+lobby.register.user.email.invalid: Email is not valid.
+lobby.register.user.password.empty: Password can not be blank - please choose a proper one.
+lobby.register.user.password.invalid: Password is not valid.
+lobby.register.user.password.different: Password is not verified - please enter the same password in the verify entry field.
+
+lobby.register.welcome.title: Registration completed
+lobby.register.welcome.description: Registration completed
+lobby.register.welcome.keywords: Register,
+lobby.register.welcome.instruction: <b>Welcome!</b><p>You have successfully registered a profile that allows you to sign up for tournaments listed at this site.<p><p>Follow the link below to login with your user name and begin to browse for tournaments to enroll.</p> 
+lobby.register.loginlink: Login your new profile...
+
+lobby.login.title: Login
+lobby.login.instruction: <p>To enroll the tournament please identify the participating club using the login below.</p>If this is the first time the club enrolls for a tournament use the following link
+lobby.login.legend: Login
+lobby.frontdesk.enroll.club.enrolllink: Enroll club for the first time...
+lobby.login.username.label: User name
+lobby.login.password.label: Password
+lobby.login.submit: Login
+lobby.login.invalid: E-mail or password was not correct. Please retry to login.
+
+lobby.frontdesk.enroll.title: Enroll the tournament
+lobby.frontdesk.enroll.instruction: To enroll the tournament a short list of information is required. During the next two steps you will be asked to identify the club and then each team participating in the tournament. Should you previously have entered information about the club and want to add more teams to your enrollment please login rather than register the club once more.
+lobby.frontdesk.enroll.club.legend: The club
+lobby.frontdesk.enroll.club.name.label: Name of the club
+lobby.frontdesk.enroll.club.country.label: Nationality
+lobby.frontdesk.enroll.club.email.inuse: E-mail is in use - are you duplicating the club registration?
+lobby.frontdesk.enroll.club.username.inuse: User name is in use - please choose a different.
+
+lobby.frontdesk.enroll.team.legend: Team enrollment
+lobby.frontdesk.enroll.team.category.label: Choose a category to enroll
+lobby.frontdesk.enroll.team.no_of_teams.label: No of teams to enroll
+lobby.frontdesk.enroll.team.no.invalid: Invalid number of teams used for enrollment.
+lobby.frontdesk.enroll.team.submit: OK
+lobby.frontdesk.enroll.club.submit: Done
+
+# viewGroupResults
+results:
+  group:
+    title: Results by category
+    description: Shows the group results in a category
+    keywords: Results,Category,Team
+    headline: Category
+    category.label: Choose a category
+    submit: Show results
+    legend:
+      title: Results for category
+      team: Team
+      matches: MP
+      won: W
+      tie: T
+      lost: L
+      goals:
+        won: GF
+        lost: GA
+        diff: GD
+      points: Pts
+# viewTeamResults
+  team:
+    title: Results by team
+    description: Shows the results by team
+    keywords: Results,Category,Team
+    legend:
+      matchno: Match
+      date: Date
+      time: Time
+      name: Teams
+      playground: Field
+      goals: Score
+      playgrounds: List of playgrounds
+

@@ -1,0 +1,4912 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE demo_data>
+<demo_data>
+	<host>
+		<name>L'associazione sportiva-culturale - Interamnia World Cup</name>
+		<tournament>
+			<name>39a Interamnia World Cup</name>
+			<user>
+				<club>ALBERTSLUND IF</club>
+				<name>NAME</name>
+				<email>info@icup.dk</email>
+				<username>AIF</username>
+				<password>1234</password>
+			</user>
+			<!-- SITES -->
+			<site>
+				<name>Teramo</name>
+				<playground>
+					<no>1</no>
+					<name>Campo 1, Piazza Martiri della Libertà</name>
+				</playground>
+				<playground>
+					<!-- Hallen ved via Gasbarrini -->
+					<no>2</no>
+					<name>Campo 2, Palestra Molinari (Via Gasbarrini)</name>
+				</playground>
+				<playground>
+					<!-- Boldbanen under broen -->
+					<no>3</no>
+					<name>Campo 3, Via G. Campano</name>
+				</playground>
+				<playground>
+					<!-- Tennisbanen -->
+					<no>4</no>
+					<name>Campo 4, C.R.A.L. Telecom (Via Taraschi)</name>
+				</playground>
+				<playground>
+					<!-- Boldbanen ved svømmebadet -->
+					<no>5</no>
+					<name>Campo 5, Scuola Media D'Alessandro</name>
+				</playground>
+				<playground>
+					<!-- Hallen ved hospitalet -->
+					<no>6</no>
+					<name>Campo 6, Palestra I.T.I.</name>
+				</playground>
+				<playground>
+					<!-- Marmorbanen -->
+					<no>7</no>
+					<name>Campo 7, Pista Pattinaggio Acquaviva</name>
+				</playground>
+				<playground>
+					<!-- Boldbanen ved atletik stadion -->
+					<no>8</no>
+					<name>Campo 8, Via Tripoti</name>
+				</playground>
+				<playground>
+					<!-- Boldbanen ved via Gasbarrini -->
+					<no>9</no>
+					<name>Campo 9, Scuola Media Molinari (Via Gasbarrini)</name>
+				</playground>
+				<playground>
+					<!-- Hallen ved svømmebadet -->
+					<no>10</no>
+					<name>Campo 10, Palacquaviva</name>
+				</playground>
+				<playground>
+					<no>11</no>
+					<name>Campo 11, Palestra Istituto Profess. le Commercio</name>
+				</playground>
+			</site>
+			<site>
+				<name>San Nicolò</name>
+				<playground>
+					<no>12</no>
+					<name>Campo 12, Palazzetto dello Sport</name>
+				</playground>
+			</site>
+			<site>
+				<name>Giulianova</name>
+				<playground>
+					<no>13</no>
+					<name>Campo 13, Giulianova ex Golf Bar</name>
+				</playground>
+			</site>
+			<site>
+				<name>Pineto</name>
+				<playground>
+					<no>14</no>
+					<name>Campo 14, Pineto</name>
+				</playground>
+			</site>
+			<site>
+				<name>Rocca Santa Maria</name>
+				<playground>
+					<no>15</no>
+					<name>Campo 15, Rocca Santa Maria</name>
+				</playground>
+			</site>
+			<site>
+				<name>Campli - S. Onofrio</name>
+				<playground>
+					<no>16</no>
+					<name>Campo 16, Campli</name>
+				</playground>
+			</site>
+			<!-- CATEGORIES -->
+			<category>
+				<name>B/G</name>
+				<gender>MALE</gender>
+				<classification>U30</classification>
+				<playing_time>50</playing_time>
+				<group>
+					<name>A</name>
+					<team><name>SPE STROVOLOS (CYP)</name></team>	
+					<team><name>VIRUM SORGENFRI (DNK)</name></team>
+					<team><name>TVIS KFUM (DNK)</name></team>	
+					<team><name>PALL. CAPUA (ITA)</name></team>	
+					<team><name>TEKNOELETTRONICA TERAMO (ITA)</name></team>	
+					<team><name>SOUTH OIL SPORT CLUB (IRQ)</name></team>	
+					<team><name>HC TALLAS (EST)</name></team>	
+					<team><name>ATHENS 2011 (GRC)</name></team>
+				</group>
+			</category>
+			<category>
+				<name>C</name>
+				<gender>MALE</gender>
+				<classification>U18</classification>
+				<playing_time>35</playing_time>
+				<group>
+					<name>A</name>
+					<team><name>ASPTT TUNIS (TUN)</name></team>	
+					<team><name>AETNA MASCALUCIA (ITA)</name></team>	
+					<team><name>LA SALLE HC (MLT)</name></team>	
+					<team><name>HC INTER BLAGOEVGRAD (BGR)</name></team>	
+					<team><name>ZAGLEBIE LUBIN (POL)</name></team>	
+					<team><name>TVIS KFUM "A" (DNK)</name></team>	
+					<team><name>AL MOHET (SAU)</name></team>					
+				</group>
+				<group>
+					<name>B</name>
+					<team><name>GL UKS SWIDNICA (POL)</name></team>	
+					<team><name>CLUB LEVIS (CAN)</name></team>	
+					<team><name>TVIS KFUM "B" (DNK)</name></team>	
+					<team><name>JERSIE HK "B" (DNK)</name></team>	
+					<team><name>TEKNOELETTRONICA TERAMO (ITA)</name></team>	
+					<team><name>SK ELBASANI (ALB)</name></team>					
+				</group>
+				<group>
+					<name>C</name>
+					<team><name>CD CALASANZ (ESP)</name></team>	
+					<team><name>WROCLAW (POL)</name></team>	
+					<team><name>AO KOZANIS (GRC)</name></team>	
+					<team><name>PALL. L'AQUILA (ITA)</name></team>	
+					<team><name>HC OLIMPUS CHISINAU (MDA)</name></team>	
+					<team><name>VIRUM SORGENFRI (DNK)</name></team>	
+					<team><name>JERSIE HK "A" (DNK)</name></team>					
+				</group>
+			</category>
+			<category>
+				<name>D</name>
+				<gender>MALE</gender>
+				<classification>U16</classification>
+				<playing_time>35</playing_time>
+				<group>
+					<name>A</name>
+					<team><name>PALL. SAN MARTINO (ITA)</name></team>	
+					<team><name>SPE STROVOLOS (CYP)</name></team>	
+					<team><name>SELECTION LYONNAIS (FRA)</name></team>	
+					<team><name>COURSEULLES HB "B" (FRA)</name></team>	
+					<team><name>IOANNINON (GRC)</name></team>	
+					<team><name>TVIS KFUM "B" (DNK)</name></team>	
+					<team><name>JERSIE HK "A" (DNK)</name></team>	
+					<team><name>MSS TERMO (UKR)</name></team>					
+				</group>
+				<group>
+					<name>B</name>
+					<team><name>HC ULA VARENA (LTU)</name></team>	
+					<team><name>UKS SPARTAKUS BUK (POL)</name></team>	
+					<team><name>CLUB LEVIS (CAN)</name></team>	
+					<team><name>CD CALASANZ (ESP)</name></team>	
+					<team><name>VENISSIEUX HB (FRA)</name></team>	
+					<team><name>VIRUM SORGENFRI "B" (DNK)</name></team>	
+					<team><name>TVIS KFUM "C" (DNK)</name></team>	
+					<team><name>GAZA SC (PSE)</name></team>					
+				</group>
+				<group>
+					<name>C</name>
+					<team><name>HC VIGIS KAUNAS (LTU)</name></team>	
+					<team><name>SKS KUSY KRAKOW (POL)</name></team>	
+					<team><name>C.A. MONTEVIDEO (URY)</name></team>	
+					<team><name>TUS NIEDER ESCHBACH (DEU)</name></team>	
+					<team><name>HC OLIMPUS CHISINAU (MDA)</name></team>	
+					<team><name>ALBERTSLUND IF (DNK)</name></team>	
+					<team><name>TVIS KFUM "A" (DNK)</name></team>	
+					<team><name>SOUTH KOREA (KOR)</name></team>					
+				</group>
+				<group>
+					<name>D</name>
+					<team><name>SOKOL UVALY (CZE)</name></team>	
+					<team><name>HC CONCORDIA (AND)</name></team>	
+					<team><name>HG TORELLI (ITA)</name></team>	
+					<team><name>LYCEE A. MAYRISCH (LUX)</name></team>	
+					<team><name>ETIEC MENDOZA (ARG)</name></team>	
+					<team><name>COURSEULLES HB "A" (FRA)</name></team>	
+					<team><name>VIRUM SORGENFRI "A" (DNK)</name></team>	
+					<team><name>JERSIE HK "B" (DNK)</name></team>					
+				</group>
+			</category>
+			<category>
+				<name>E</name>
+				<playing_time>35</playing_time>
+				<gender>MALE</gender>
+				<classification>U14</classification>
+				<group>
+					<name>A</name>
+					<team><name>GARLIAVA KAUNO RAJ (LTU)</name></team>	
+					<team><name>PALL. L'AQUILA (ITA)</name></team>	
+					<team><name>CD CALASANZ (ESP)</name></team>	
+					<team><name>SOKOL UVALY (CZE)</name></team>	
+					<team><name>SPE STROVOLOS "B" (CYP)</name></team>	
+					<team><name>ESTUDIANTES "A" (BEL)</name></team>	
+					<team><name>ALBERTSLUND IF (DNK)</name></team>	
+					<team><name>JERSIE HK (DNK)</name></team>					
+				</group>
+				<group>
+					<name>B</name>
+					<team><name>ZAGLEBIE LUBIN (POL)</name></team>	
+					<team><name>SPE STROVOLOS "A" (CYP)</name></team>	
+					<team><name>HANDBALIS (LTU)</name></team>	
+					<team><name>ESTUDIANTES "B" (BEL)</name></team>	
+					<team><name>VIRUM SORGENFRI (DNK)</name></team>	
+					<team><name>TVIS KFUM (DNK)</name></team>	
+					<team><name>OBUDAI KEZILABDA (HUN)</name></team>	
+					<team><name>C.C. FAISALABAD (PAK)</name></team>					
+				</group>
+			</category>
+			<category>
+				<name>F</name>
+				<gender>MALE</gender>
+				<classification>U12</classification>
+				<playing_time>35</playing_time>
+				<group>
+					<name>A</name>
+					<team><name>FIORENTINA H. (ITA)</name></team>	
+					<team><name>UKS DABIE SZECSZIN "B" (POL)</name></team>	
+					<team><name>YUCI SHOUANLI (CHN)</name></team>	
+					<team><name>HC OLIMPUS CHISINAU (MDA)</name></team>	
+					<team><name>ESTUDIANTES (BEL)</name></team>	
+					<team><name>JERSIE HK (DNK)</name></team>	
+					<team><name>LIONS H. TERAMO (ITA)</name></team>					
+				</group>
+				<group>
+					<name>B</name>
+					<team><name>SOKOL UVALY (CZE)</name></team>	
+					<team><name>UKS DABIE SZECSZIN "A" (POL)</name></team>	
+					<team><name>HG TORELLI (ITA)</name></team>	
+					<team><name>UKS DABIE SZECSZIN "C" (POL)</name></team>	
+					<team><name>MOSIR BOCHNIA (POL)</name></team>	
+					<team><name>OBUDAI KEZILABDA (HUN)</name></team>	
+					<team><name>AO KOZANIS (GRC)</name></team>					
+				</group>
+			</category>
+			<category>
+				<name>I</name>
+				<gender>FEMALE</gender>
+				<classification>U21</classification>
+				<playing_time>50</playing_time>
+				<group>
+					<name>A</name>
+					<team><name>PORTUGUES RECIFE (BRA)</name></team>	
+					<team><name>VIRUM SORGENFRI "A" (DNK)</name></team>	
+					<team><name>VIRUM SORGENFRI "B" (DNK)</name></team>	
+					<team><name>HC DRITA GIJAN (SRB)</name></team>	
+					<team><name>MDST JASZBERENY (HUN)</name></team>	
+					<team><name>SOUTH KOREA (KOR)</name></team>					
+				</group>
+			</category>
+			<category>
+				<name>L</name>
+				<gender>FEMALE</gender>
+				<classification>U18</classification>
+				<playing_time>35</playing_time>
+				<group>
+					<name>A</name>
+					<team><name>HC OLIMPUS CHISINAU (MDA)</name></team>	
+					<team><name>SPE STROVOLOS (CYP)</name></team>	
+					<team><name>CHARLOTTENLUND (NOR)</name></team>	
+					<team><name>ZAGLEBIE LUBIN (POL)</name></team>	
+					<team><name>VIRUM SORGENFRI "A" (DNK)</name></team>	
+					<team><name>KOZANIS 2011 (GRC)</name></team>					
+				</group>
+				<group>
+					<name>B</name>
+					<team><name>IOANNINON (GRC)</name></team>	
+					<team><name>KS SOSNICA GLIWICE (POL)</name></team>	
+					<team><name>KERICHO SCHOOL (KEN)</name></team>	
+					<team><name>VIRUM SORGENFRI "B" (DNK)</name></team>	
+					<team><name>TVIS KFUM (DNK)</name></team>	
+					<team><name>ENGLAND HANDBALL (GBR)</name></team>					
+				</group>
+				<group>
+					<name>C</name>
+					<team><name>CLUB LEVIS (CAN)</name></team>	
+					<team><name>HC PANAGURISHTE (BGR)</name></team>	
+					<team><name>ARADIPPOU H.C. (CYP)</name></team>	
+					<team><name>CLUB ILINDEN SKOPJE (MKD)</name></team>	
+					<team><name>HC TERAMO 2002 (ITA)</name></team>	
+					<team><name>MSS TERMO (UKR)</name></team>					
+				</group>
+			</category>
+			<category>
+				<name>M</name>
+				<playing_time>35</playing_time>
+				<gender>FEMALE</gender>
+				<classification>U16</classification>
+				<group>
+					<name>A</name>
+					<team><name>VALLENTUNA HK (SWE)</name></team>	
+					<team><name>HRK KOSACA MOSTAR (BIH)</name></team>	
+					<team><name>COURSEULLES HB "B" (FRA)</name></team>	
+					<team><name>VALUR IF (ISL)</name></team>	
+					<team><name>ALBERTSLUND IF "A" (DNK)</name></team>	
+					<team><name>JERSIE HK "A" (DNK)</name></team>					
+				</group>
+				<group>
+					<name>B</name>
+					<team><name>GL UKS SWIDNICA (POL)</name></team>	
+					<team><name>THAILAND S.S. (THA)</name></team>	
+					<team><name>STABAEK HANDBALL (NOR)</name></team>	
+					<team><name>FS ETNIKOS KOZANIS (GRC)</name></team>	
+					<team><name>DYBBOL IU "A" (DNK)</name></team>	
+					<team><name>ALBERTSLUND IF "B" (DNK)</name></team>					
+				</group>
+				<group>
+					<name>C</name>
+					<team><name>HC OLIMPUS CHISINAU (MDA)</name></team>	
+					<team><name>RK PIRAN (SVN)</name></team>	
+					<team><name>WHC NIKSIC (MNE)</name></team>	
+					<team><name>COURSEULLES HB "A" (FRA)</name></team>	
+					<team><name>JERSIE HK "B" (DNK)</name></team>	
+					<team><name>ROMANIA (ROU)</name></team>					
+				</group>
+				<group>
+					<name>D</name>
+					<team><name>FIORENTINA H. (ITA)</name></team>	
+					<team><name>C.A. MONTEVIDEO (URY)</name></team>	
+					<team><name>ZRK BUDUCNOST (MNE)</name></team>	
+					<team><name>CLUB LEVIS (CAN)</name></team>	
+					<team><name>DYBBOL IU "B" (DNK)</name></team>	
+					<team><name>VIRUM SORGENFRI (DNK)</name></team>					
+				</group>
+			</category>
+			<category>
+				<name>N</name>
+				<gender>FEMALE</gender>
+				<classification>U14</classification>
+				<playing_time>35</playing_time>
+				<group>
+					<name>A</name>
+					<team><name>UKS DWOIJA BESKID "B" (POL)</name></team>	
+					<team><name>GSH FLAVIONI (ITA)</name></team>	
+					<team><name>MKS OLAVIA (POL)</name></team>	
+					<team><name>VIRUM SORGENFRI "A" (DNK)</name></team>	
+					<team><name>TVIS KFUM (DNK)</name></team>	
+					<team><name>C.C. IMACULADA (PRT)</name></team>					
+				</group>
+				<group>
+					<name>B</name>
+					<team><name>UKS PANTERY DOPIEWO "B" (POL)</name></team>	
+					<team><name>HC CSKA 90 SOU (BGR)</name></team>	
+					<team><name>LYSTRUP IF (DNK)</name></team>	
+					<team><name>UKS ALFA SZAROW (POL)</name></team>	
+					<team><name>JERSIE HK (DNK)</name></team>	
+					<team><name>OBUDAI KEZILABDA (HUN)</name></team>					
+				</group>
+				<group>
+					<name>C</name>
+					<team><name>UKS DWOIJA BESKID "A" (POL)</name></team>	
+					<team><name>UKS PANTERY DOPIEWO "A" (POL)</name></team>	
+					<team><name>HRK KOSACA MOSTAR (BIH)</name></team>	
+					<team><name>DYBBOL IU (DNK)</name></team>	
+					<team><name>ALBERTSLUND IF (DNK)</name></team>	
+					<team><name>VIRUM SORGENFRI "B" (DNK)</name></team>					
+				</group>
+			</category>
+			<category>
+				<name>O</name>
+				<playing_time>35</playing_time>
+				<gender>FEMALE</gender>
+				<classification>U12</classification>
+				<group>
+					<name>A</name>
+					<team><name>HRK KOSACA MOSTAR (BIH)</name></team>	
+					<team><name>SPE STROVOLOS (CYP)</name></team>	
+					<team><name>VIRUM SORGENFRI (DNK)</name></team>	
+					<team><name>JERSIE HK "A" (DNK)</name></team>	
+					<team><name>JERSIE HK "B" (DNK)</name></team>					
+				</group>
+			</category>
+			<category>
+				<name>P</name>
+				<gender>FEMALE</gender>
+				<classification>U30</classification>
+				<playing_time>50</playing_time>
+				<group>
+					<name>A</name>
+					<team><name>TVIS KFUM (DNK)</name></team>	
+					<team><name>PALL. TERAMO (ITA)</name></team>	
+					<team><name>HC TERAMO 2002 (ITA)</name></team>	
+					<team><name>MESZTEGNYO KSE (HUN)</name></team>	
+					<team><name>MDST JASZBERENY (HUN)</name></team>					
+				</group>
+			</category>
+			<!-- RESULTS -->
+			<results>
+				<date>04/07/2011</date>
+				<playground>
+					<name>Campo 1,</name>
+					<result>
+1
+08:30
+D
+C
+SKS KUSY KRAKOW (POL)
+ALBERTSLUND IF (DNK)
+16	5
+					</result>
+					<result>
+2
+09:15
+E
+A
+CD CALASANZ (ESP)
+SPE STROVOLOS "B" (CYP)
+14	21
+					</result>
+					<result>
+3
+10:00
+L
+A
+SPE STROVOLOS (CYP)
+ZAGLEBIE LUBIN (POL)
+6	0
+					</result>
+					<result>
+4
+10:45
+E
+B
+HANDBALIS (LTU)
+VIRUM SORGENFRI (DNK)
+7	15
+					</result>
+					<result>
+5
+11:30
+M
+C
+WHC NIKSIC (MNE)
+ROMANIA (ROU)
+13	28
+					</result>
+					<result>
+	6
+12:15
+M
+C
+RK PIRAN (SVN)
+COURSEULLES HB "A" (FRA)
+12	17
+					</result>
+				</playground>
+				<playground>
+					<name>Campo 2</name>
+					<result>
+7
+09:15
+C
+A
+AETNA MASCALUCIA (ITA)
+TVIS KFUM "A" (DNK)
+11	13
+					</result>
+					<result>
+8
+10:00
+M
+B
+GL UKS SWIDNICA (POL)
+DYBBOL IU "A" (DNK)
+10	20
+					</result>
+					<result>
+9
+10:45
+D
+D
+HG TORELLI (ITA)
+ETIEC MENDOZA (ARG)
+14	22
+					</result>
+					<result>
+10
+11:30
+D
+B
+CLUB LEVIS (CAN)
+VENISSIEUX HB (FRA)
+17	24
+					</result>
+					<result>
+11
+12:15
+C
+B
+CLUB LEVIS (CAN)
+JERSIE HK "B" (DNK)
+17	17
+					</result>
+					<result>
+65
+15:00
+C
+C
+PALL. L'AQUILA (ITA)
+VIRUM SORGENFRI (DNK)
+16	14
+					</result>
+					<result>
+66
+15:45
+M
+A
+ALBERTSLUND IF "A" (DNK)
+HRK KOSACA MOSTAR (BIH)
+14	8
+					</result>
+					<result>
+67
+16:30
+D
+D
+HC CONCORDIA (AND)
+COURSEULLES HB "A" (FRA)
+13	21
+					</result>
+				</playground>
+				<playground>
+					<name>Campo 3</name>
+					<result>
+12
+09:15
+C
+C
+CD CALASANZ (ESP)
+JERSIE HK "A" (DNK)
+6	20
+					</result>
+					<result>
+13
+10:00
+C
+C
+WROCLAW (POL)
+VIRUM SORGENFRI (DNK)
+0	6
+					</result>
+					<result>
+14
+10:45
+D
+D
+SOKOL UVALY (CZE)
+VIRUM SORGENFRI "A" (DNK)
+7	11
+					</result>
+					<result>
+15
+11:30
+C
+B
+TVIS KFUM "B" (DNK)
+SK ELBASANI (ALB)
+19	6
+					</result>
+					<result>
+16
+12:15
+D
+A
+COURSEULLES HB "B" (FRA)
+MSS TERMO (UKR)
+11	20
+					</result>
+					<result>
+68
+15:00
+C
+A
+LA SALLE HC (MLT)
+ZAGLEBIE LUBIN (POL)
+6	0
+					</result>
+					<result>
+69
+15:45
+D
+A
+IOANNINON (GRC)
+MSS TERMO (UKR)
+9	22
+					</result>
+					<result>
+70
+16:15
+M
+B
+FS ETNIKOS KOZANIS (GRC)
+ALBERTSLUND IF "B" (DNK)
+8	10
+					</result>
+				</playground>
+				<playground>
+					<name>Campo 4</name>
+					<result>
+17
+08:30
+N
+A
+UKS DWOIJA BESKID "B" (POL)
+TVIS KFUM (DNK)
+9	15
+					</result>
+					<result>
+18
+09:15
+N
+A
+GSH FLAVIONI (ITA)
+VIRUM SORGENFRI "A" (DNK)
+3	23
+					</result>
+					<result>
+19
+10:00
+N
+A
+MKS OLAVIA (POL)
+C.C. IMACULADA (PRT)
+18	9
+					</result>
+					<result>
+20
+10:45
+N
+B
+UKS PANTERY DOPIEWO "B" (POL)
+JERSIE HK (DNK)
+10	11
+					</result>
+					<result>
+21
+11:30
+N
+B
+HC CSKA 90 SOU (BGR)
+UKS ALFA SZAROW (POL)
+17	13
+					</result>
+					<result>
+22
+12:15
+O
+A
+HRK KOSACA MOSTAR (BIH)
+JERSIE HK "B" (DNK)
+7	6
+					</result>
+					<result>
+71
+15:00
+N
+B
+HC CSKA 90 SOU (BGR)
+UKS PANTERY DOPIEWO "B" (POL)
+20	9
+					</result>
+					<result>
+72
+15:45
+N
+B
+UKS ALFA SZAROW (POL)
+OBUDAI KEZILABDA (HUN)
+19	13
+					</result>
+					<result>
+73
+16:15
+N
+C
+ALBERTSLUND IF (DNK)
+UKS PANTERY DOPIEWO "A" (POL)
+14	15
+					</result>
+				</playground>
+				<playground>
+					<name>Campo 5</name>
+					<result>
+23
+09:15
+D
+C
+HC VIGIS KAUNAS (LTU)
+TVIS KFUM "A" (DNK)
+13	24
+					</result>
+					<result>
+24
+10:00
+D
+D
+LYCEE A. MAYRISCH (LUX)
+JERSIE HK "B" (DNK)
+10	12
+					</result>
+					<result>
+25
+10:45
+D
+C
+C.A. MONTEVIDEO (URY)
+HC OLIMPUS CHISINAU (MDA)
+27	9
+					</result>
+					<result>
+26
+11:30
+D
+B
+HC ULA VARENA (LTU)
+TVIS KFUM "C" (DNK)
+14	8
+					</result>
+					<result>
+27
+12:15
+N
+B
+LYSTRUP IF (DNK)
+OBUDAI KEZILABDA (HUN)
+18	6
+					</result>
+					<result>
+74
+15:30
+D
+C
+TUS NIEDER ESCHBACH (DEU)
+ALBERTSLUND IF (DNK)
+9	10
+					</result>
+					<result>
+75
+16:15
+N
+A
+VIRUM SORGENFRI "A" (DNK)
+C.C. IMACULADA (PRT)
+22	3
+					</result>
+				</playground>
+				<playground>
+					<name>Campo 6</name>
+					<result>
+28
+09:15
+D
+B
+UKS SPARTAKUS BUK (POL)
+VIRUM SORGENFRI "B" (DNK)
+14	14
+					</result>
+					<result>
+29
+10:00
+D
+B
+CD CALASANZ (ESP)
+GAZA SC (PSE)
+14	16
+					</result>
+					<result>
+30
+10:45
+D
+A
+PALL. SAN MARTINO (ITA)
+JERSIE HK "A" (DNK)
+10	22
+					</result>
+					<result>
+31
+11:30
+D
+A
+SPE STROVOLOS (CYP)
+TVIS KFUM "B" (DNK)
+6	0
+					</result>
+					<result>
+32
+12:15
+C
+C
+AO KOZANIS (GRC)
+HC OLIMPUS CHISINAU (MDA)
+6	0
+					</result>
+					<result>
+76
+15:00
+I
+A
+VIRUM SORGENFRI "B" (DNK)
+MDST JASZBERENY (HUN)
+6	0
+					</result>
+					<result>
+77
+15:45
+F
+B
+UKS DABIE SZECSZIN "A" (POL)
+SOKOL UVALY (CZE)
+10	10
+					</result>
+					<result>
+78
+16:30
+F
+B
+HG TORELLI (ITA)
+AO KOZANIS (GRC)
+12	14
+					</result>
+				</playground>
+				<playground>
+					<name>Campo 7</name>
+					<result>
+33
+08:30
+F
+B
+SOKOL UVALY (CZE)
+AO KOZANIS (GRC)
+6	0
+					</result>
+					<result>
+34
+09:15
+E
+A
+GARLIAVA KAUNO RAJ (LTU)
+ALBERTSLUND IF (DNK)
+12	11
+					</result>
+					<result>
+35
+10:00
+E
+A
+PALL. L'AQUILA (ITA)
+ESTUDIANTES "A" (BEL)
+7	19
+					</result>
+					<result>
+36
+10:45
+E
+A
+SOKOL UVALY (CZE)
+JERSIE HK (DNK)
+10	7
+					</result>
+					<result>
+37
+11:30
+E
+B
+ZAGLEBIE LUBIN (POL)
+OBUDAI KEZILABDA (HUN)
+23	7
+					</result>
+					<result>
+79
+15:00
+C
+C
+AO KOZANIS (GRC)
+JERSIE HK "A" (DNK)
+9	20
+					</result>
+					<result>
+80
+15:45
+M
+B
+GL UKS SWIDNICA (POL)
+STABAEK HANDBALL (NOR)
+6	20
+					</result>
+					<result>
+81
+16:30
+N
+C
+HRK KOSACA MOSTAR (BIH)
+VIRUM SORGENFRI "B" (DNK)
+11	8
+					</result>
+				</playground>
+				<playground>
+					<name>Campo 8</name>
+					<result>
+38
+09:15
+F
+A
+LIONS H. TERAMO (ITA)
+UKS DABIE SZECSZIN "B" (POL)
+4	33
+					</result>
+					<result>
+39
+10:00
+E
+B
+ESTUDIANTES "B" (BEL)
+C.C. FAISALABAD (PAK)
+3	33
+					</result>
+					<result>
+40
+10:45
+F
+A
+YUCI SHOUANLI (CHN)
+ESTUDIANTES (BEL)
+12	13
+					</result>
+					<result>
+41
+11:30
+D
+A
+SELECTION LYONNAIS (FRA)
+IOANNINON (GRC)
+28	5
+					</result>
+					<result>
+42
+12:15
+E
+B
+SPE STROVOLOS "A" (CYP)
+TVIS KFUM (DNK)
+19	31
+					</result>
+					<result>
+82
+15:00
+O
+A
+VIRUM SORGENFRI (DNK)
+SPE STROVOLOS (CYP)
+6	0
+					</result>
+					<result>
+83
+15:45
+F
+A
+YUCI SHOUANLI (CHN)
+LIONS H. TERAMO (ITA)
+27	4
+					</result>
+					<result>
+84
+16:30
+C
+B
+GL UKS SWIDNICA (POL)
+TEKNOELETTRONICA TERAMO (ITA)
+0	6
+					</result>
+				</playground>
+				<playground>
+					<name>Campo 9</name>
+					<result>
+43
+09:15
+F
+B
+UKS DABIE SZECSZIN "A" (POL)
+OBUDAI KEZILABDA (HUN)
+9	24
+					</result>
+					<result>
+44
+10:00
+F
+B
+HG TORELLI (ITA)
+MOSIR BOCHNIA (POL)
+8	13
+					</result>
+					<result>
+45
+10:45
+M
+A
+COURSEULLES HB "B" (FRA)
+JERSIE HK "A" (DNK)
+3	20
+					</result>
+					<result>
+46
+11:30
+L
+C
+CLUB LEVIS (CAN)
+MSS TERMO (UKR)
+11	19
+					</result>
+					<result>
+47
+12:15
+N
+C
+DYBBOL IU (DNK)
+VIRUM SORGENFRI "B" (DNK)
+14	8
+					</result>
+					<result>
+85
+15:30
+N
+A
+GSH FLAVIONI (ITA)
+UKS DWOIJA BESKID "B" (POL)
+10	12
+					</result>
+					<result>
+86
+16:15
+M
+C
+RK PIRAN (SVN)
+HC OLIMPUS CHISINAU (MDA)
+18	9
+					</result>
+				</playground>
+				<playground>
+					<name>Campo 10</name>
+					<result>
+48
+08:30
+P
+A
+PALL. TERAMO (ITA)
+MESZTEGNYO KSE (HUN)
+12	18
+					</result>
+					<result>
+49
+09:15
+P
+A
+TVIS KFUM (DNK)
+MDST JASZBERENY (HUN)
+6	0
+					</result>
+					<result>
+50
+10:00
+B/G
+A
+SPE STROVOLOS (CYP)
+HC TALLAS (EST)
+19	18
+					</result>
+					<result>
+51
+10:45
+C
+A
+ASPTT TUNIS (TUN)
+AL MOHET (SAU)
+6	0
+					</result>
+					<result>
+52
+11:30
+B/G
+A
+PALL. CAPUA (ITA)
+ATHENS 2011 (GRC)
+22	28
+					</result>
+					<result>
+87
+15:30
+M
+D
+ZRK BUDUCNOST (MNE)
+VIRUM SORGENFRI (DNK)
+11	10
+					</result>
+					<result>
+88
+16:15
+B/G
+A
+HC TALLAS (EST)
+SOUTH OIL SPORT CLUB (IRQ)
+22	22
+					</result>
+					<result>
+89
+17:00
+O
+A
+JERSIE HK "A" (DNK)
+HRK KOSACA MOSTAR (BIH)
+9	6
+					</result>
+				</playground>
+				<playground>
+					<name>Campo 11</name>
+					<result>
+54
+09:15
+L
+B
+KS SOSNICA GLIWICE (POL)
+VIRUM SORGENFRI "B" (DNK)
+16	19
+					</result>
+					<result>
+55
+10:00
+L
+A
+HC OLIMPUS CHISINAU (MDA)
+VIRUM SORGENFRI "A" (DNK)
+6	0
+					</result>
+					<result>
+56
+10:45
+L
+A
+CHARLOTTENLUND (NOR)
+KOZANIS 2011 (GRC)
+6	0
+					</result>
+					<result>
+57
+11:30
+L
+B
+IOANNINON (GRC)
+TVIS KFUM (DNK)
+0	6
+					</result>
+					<result>
+58
+12:15
+N
+C
+HRK KOSACA MOSTAR (BIH)
+UKS PANTERY DOPIEWO "A" (POL)
+15	13
+					</result>
+					<result>
+90
+15:30
+I
+A
+VIRUM SORGENFRI "A" (DNK)
+HC DRITA GIJAN (SRB)
+20	10
+					</result>
+					<result>
+91
+16:15
+D
+B
+UKS SPARTAKUS BUK (POL)
+HC ULA VARENA (LTU)
+19	18
+					</result>
+				</playground>
+				<playground>
+					<name>Campo 12</name>
+					<result>
+59
+08:30
+B/G
+A
+VIRUM SORGENFRI (DNK)
+SOUTH OIL SPORT CLUB (IRQ)
+18	17
+					</result>
+					<result>
+60
+09:15
+L
+C
+ARADIPPOU H.C. (CYP)
+HC TERAMO 2002 (ITA)
+18	11
+					</result>
+					<result>
+61
+10:00
+I
+A
+PORTUGUES RECIFE (BRA)
+MDST JASZBERENY (HUN)
+6	0
+					</result>
+					<result>
+62
+10:45
+M
+A
+VALLENTUNA HK (SWE)
+ALBERTSLUND IF "A" (DNK)
+10	18
+					</result>
+					<result>
+63
+11:30
+M
+D
+C.A. MONTEVIDEO (URY)
+CLUB LEVIS (CAN)
+12	3
+					</result>
+					<result>
+64
+12:15
+B/G
+A
+TVIS KFUM (DNK)
+TEKNOELETTRONICA TERAMO (ITA)
+20	16
+					</result>
+					<result>
+92
+15:30
+M
+C
+JERSIE HK "B" (DNK)
+ROMANIA (ROU)
+11	17
+					</result>
+					<result>
+93
+16:15
+B/G
+A
+VIRUM SORGENFRI (DNK)
+SPE STROVOLOS (CYP)
+16	19
+					</result>
+					<result>
+94
+17:00
+L
+B
+KERICHO SCHOOL (KEN)
+ENGLAND HANDBALL (GBR)
+10 15
+					</result>
+				</playground>
+			</results>
+			<results>
+				<date>05/07/2011</date>
+				<playground>
+					<name>Campo 1,</name>
+					<result>
+95
+09:15
+D
+B
+CD CALASANZ (ESP)
+VIRUM SORGENFRI "B" (DNK)
+9	17
+					</result>
+					<result>
+96
+10:00
+C
+C
+WROCLAW (POL)
+CD CALASANZ (ESP)
+0	6
+					</result>
+					<result>
+97
+10:45
+D
+A
+SELECTION LYONNAIS (FRA)
+JERSIE HK "A" (DNK)
+25	7
+					</result>
+					<result>
+98
+11:30
+I
+A
+HC DRITA GIJAN (SRB)
+SOUTH KOREA (KOR)
+13	35
+					</result>
+					<result>
+99
+12:15
+D
+A
+COURSEULLES HB "B" (FRA)
+TVIS KFUM "B" (DNK)
+8	26
+					</result>
+					<result>
+156
+15:00
+N
+C
+HRK KOSACA MOSTAR (BIH)
+ALBERTSLUND IF (DNK)
+10	6
+					</result>
+					<result>
+157
+15:45
+B/G
+A
+HC TALLAS (EST)
+PALL. CAPUA (ITA)
+19	14
+					</result>
+					<result>
+158
+16:30
+M
+C
+ROMANIA (ROU)
+HC OLIMPUS CHISINAU (MDA)
+29	8
+					</result>
+					<result>
+159
+17:15
+M
+C
+JERSIE HK "B" (DNK)
+RK PIRAN (SVN)
+18	9
+					</result>
+					<result>
+160
+18:00
+B/G
+A
+ATHENS 2011 (GRC)
+VIRUM SORGENFRI (DNK)
+13	14
+					</result>
+					<result>
+161
+19:00
+D
+B
+VIRUM SORGENFRI "B" (DNK)
+VENISSIEUX HB (FRA)
+15	12
+					</result>
+					<result>
+162
+20:00
+M
+A
+ALBERTSLUND IF "A" (DNK)
+VALUR IF (ISL)
+6	5
+					</result>
+					<result>
+163
+20:45
+I
+A
+SOUTH KOREA (KOR)
+VIRUM SORGENFRI "A" (DNK)
+23	15
+					</result>
+					<result>
+164
+21:30
+B/G
+A
+SPE STROVOLOS (CYP)
+TVIS KFUM (DNK)
+19	14
+					</result>
+				</playground>
+				<playground>
+					<name>Campo 2</name>
+					<result>
+100
+09:15
+C
+A
+AETNA MASCALUCIA (ITA)
+ASPTT TUNIS (TUN)
+14	16
+					</result>
+					<result>
+101
+10:00
+C
+A
+HC INTER BLAGOEVGRAD (BGR)
+TVIS KFUM "A" (DNK)
+16	12
+					</result>
+					<result>
+102
+10:45
+M
+D
+ZRK BUDUCNOST (MNE)
+DYBBOL IU "B" (DNK)
+25	3
+					</result>
+					<result>
+103
+11:30
+C
+B
+TVIS KFUM "B" (DNK)
+TEKNOELETTRONICA TERAMO (ITA)
+13	12
+					</result>
+					<result>
+104
+12:15
+D
+D
+LYCEE A. MAYRISCH (LUX)
+COURSEULLES HB "A" (FRA)
+13	27
+					</result>
+					<result>
+165
+15:30
+F
+A
+FIORENTINA H. (ITA)
+LIONS H. TERAMO (ITA)
+7	2
+					</result>
+					<result>
+166
+16:15
+C
+A
+AL MOHET (SAU)
+HC INTER BLAGOEVGRAD (BGR)
+0	6
+					</result>
+					<result>
+167
+17:00
+C
+A
+ASPTT TUNIS (TUN)
+LA SALLE HC (MLT)
+31	6
+					</result>
+					<result>
+168
+17:45
+C
+B
+TEKNOELETTRONICA TERAMO (ITA)
+JERSIE HK "B" (DNK)
+16	19
+					</result>
+					<result>
+169
+18:30
+C
+B
+SK ELBASANI (ALB)
+CLUB LEVIS (CAN)
+11	17
+					</result>
+				</playground>
+				<playground>
+					<name>Campo 3</name>
+					<result>
+105
+09:15
+C
+B
+CLUB LEVIS (CAN)
+GL UKS SWIDNICA (POL)
+6	0
+					</result>
+					<result>
+106
+10:00
+D
+A
+SPE STROVOLOS (CYP)
+PALL. SAN MARTINO (ITA)
+14	3
+					</result>
+					<result>
+107
+10:45
+D
+D
+HG TORELLI (ITA)
+VIRUM SORGENFRI "A" (DNK)
+4	21
+					</result>
+					<result>
+108
+11:30
+C
+B
+JERSIE HK "B" (DNK)
+SK ELBASANI (ALB)
+17	10
+					</result>
+					<result>
+109
+12:15
+N
+C
+UKS DWOIJA BESKID "A" (POL)
+ALBERTSLUND IF (DNK)
+7	11
+					</result>
+					<result>
+170
+15:00
+C
+C
+VIRUM SORGENFRI (DNK)
+HC OLIMPUS CHISINAU (MDA)
+15	13
+					</result>
+					<result>
+171
+15:45
+C
+C
+JERSIE HK "A" (DNK)
+PALL. L'AQUILA (ITA)
+25	10
+					</result>
+					<result>
+172
+16:30
+C
+C
+CD CALASANZ (ESP)
+AO KOZANIS (GRC)
+13	11
+					</result>
+					<result>
+173
+17:15
+D
+D
+COURSEULLES HB "A" (FRA)
+ETIEC MENDOZA (ARG)
+11	20
+					</result>
+					<result>
+174
+18:00
+D
+D
+SOKOL UVALY (CZE)
+HG TORELLI (ITA)
+20	5
+					</result>
+					<result>
+175
+18:45
+N
+C
+VIRUM SORGENFRI "B" (DNK)
+UKS PANTERY DOPIEWO "A" (POL)
+9	17
+					</result>
+				</playground>
+				<playground>
+					<name>Campo 4</name>
+					<result>
+110
+09:15
+N
+A
+MKS OLAVIA (POL)
+TVIS KFUM (DNK)
+9	11
+					</result>
+					<result>
+111
+10:00
+N
+B
+LYSTRUP IF (DNK)
+JERSIE HK (DNK)
+23	7
+					</result>
+					<result>
+112
+10:45
+F
+A
+HC OLIMPUS CHISINAU (MDA)
+JERSIE HK (DNK)
+7	22
+					</result>
+					<result>
+113
+11:30
+O
+A
+SPE STROVOLOS (CYP)
+JERSIE HK "A" (DNK)
+0	6
+					</result>
+					<result>
+114
+12:15
+O
+A
+VIRUM SORGENFRI (DNK)
+JERSIE HK "B" (DNK)
+10	2
+					</result>
+					<result>
+176
+15:30
+N
+A
+TVIS KFUM (DNK)
+VIRUM SORGENFRI "A" (DNK)
+7	18
+					</result>
+					<result>
+177
+16:15
+N
+A
+UKS DWOIJA BESKID "B" (POL)
+MKS OLAVIA (POL)
+10	13
+					</result>
+					<result>
+178
+17:00
+N
+A
+C.C. IMACULADA (PRT)
+GSH FLAVIONI (ITA)
+9	6
+					</result>
+					<result>
+179
+17:45
+N
+B
+JERSIE HK (DNK)
+UKS ALFA SZAROW (POL)
+8	8
+					</result>
+					<result>
+180
+18:30
+N
+B
+UKS PANTERY DOPIEWO "B" (POL)
+LYSTRUP IF (DNK)
+2	28
+					</result>
+				</playground>
+				<playground>
+					<name>Campo 5</name>
+					<result>
+115
+08:30
+F
+B
+UKS DABIE SZECSZIN "C" (POL)
+OBUDAI KEZILABDA (HUN)
+8	22
+					</result>
+					<result>
+116
+09:15
+D
+C
+SKS KUSY KRAKOW (POL)
+HC VIGIS KAUNAS (LTU)
+20	12
+					</result>
+					<result>
+117
+10:00
+D
+C
+C.A. MONTEVIDEO (URY)
+TVIS KFUM "A" (DNK)
+5	17
+					</result>
+					<result>
+118
+10:45
+D
+C
+HC OLIMPUS CHISINAU (MDA)
+SOUTH KOREA (KOR)
+13	40
+					</result>
+					<result>
+119
+11:30
+M
+B
+STABAEK HANDBALL (NOR)
+DYBBOL IU "A" (DNK)
+15	12
+					</result>
+					<result>
+181
+15:30
+D
+D
+JERSIE HK "B" (DNK)
+HC CONCORDIA (AND)
+13	12
+					</result>
+					<result>
+182
+16:15
+D
+C
+ALBERTSLUND IF (DNK)
+HC OLIMPUS CHISINAU (MDA)
+8	8
+					</result>
+					<result>
+183
+17:00
+D
+C
+TVIS KFUM "A" (DNK)
+TUS NIEDER ESCHBACH (DEU)
+24	10
+					</result>
+					<result>
+184
+17:45
+D
+C
+HC VIGIS KAUNAS (LTU)
+C.A. MONTEVIDEO (URY)
+12	15
+					</result>
+					<result>
+185
+18:30
+N
+B
+OBUDAI KEZILABDA (HUN)
+HC CSKA 90 SOU (BGR)
+11	12
+					</result>
+				</playground>
+				<playground>
+					<name>Campo 6</name>
+					<result>
+120
+09:15
+D
+B
+VENISSIEUX HB (FRA)
+GAZA SC (PSE)
+24	18
+					</result>
+					<result>
+121
+10:00
+P
+A
+HC TERAMO 2002 (ITA)
+MDST JASZBERENY (HUN)
+6	0
+					</result>
+					<result>
+122
+10:45
+D
+B
+CLUB LEVIS (CAN)
+TVIS KFUM "C" (DNK)
+15	14
+					</result>
+					<result>
+123
+11:30
+B/G
+A
+TEKNOELETTRONICA TERAMO (ITA)
+ATHENS 2011 (GRC)
+9	19
+					</result>
+					<result>
+124
+12:15
+M
+C
+JERSIE HK "B" (DNK)
+COURSEULLES HB "A" (FRA)
+16	8
+					</result>
+					<result>
+186
+15:00
+D
+B
+TVIS KFUM "C" (DNK)
+CD CALASANZ (ESP)
+13	19
+					</result>
+					<result>
+187
+15:45
+L
+C
+MSS TERMO (UKR)
+CLUB ILINDEN SKOPJE (MKD)
+15	8
+					</result>
+					<result>
+188
+16:30
+D
+B
+HC ULA VARENA (LTU)
+CLUB LEVIS (CAN)
+23	13
+					</result>
+					<result>
+189
+17:15
+D
+B
+GAZA SC (PSE)
+UKS SPARTAKUS BUK (POL)
+17	14
+					</result>
+					<result>
+190
+18:00
+D
+A
+PALL. SAN MARTINO (ITA)
+SELECTION LYONNAIS (FRA)
+10	31
+					</result>
+					<result>
+191
+18:45
+N
+C
+DYBBOL IU (DNK)
+UKS DWOIJA BESKID "A" (POL)
+12	6
+					</result>
+				</playground>
+				<playground>
+					<name>Campo 7</name>
+					<result>
+125
+09:15
+E
+A
+PALL. L'AQUILA (ITA)
+GARLIAVA KAUNO RAJ (LTU)
+12	25
+					</result>
+					<result>
+126
+10:00
+E
+A
+CD CALASANZ (ESP)
+ALBERTSLUND IF (DNK)
+5	9
+					</result>
+					<result>
+127
+10:45
+E
+A
+SOKOL UVALY (CZE)
+ESTUDIANTES "A" (BEL)
+14	12
+					</result>
+					<result>
+128
+11:30
+E
+A
+SPE STROVOLOS "B" (CYP)
+JERSIE HK (DNK)
+26	17
+					</result>
+					<result>
+129
+12:15
+M
+D
+CLUB LEVIS (CAN)
+VIRUM SORGENFRI (DNK)
+3	19
+					</result>
+					<result>
+192
+15:00
+D
+A
+MSS TERMO (UKR)
+SPE STROVOLOS (CYP)
+16	13
+					</result>
+					<result>
+193
+15:45
+E
+A
+ESTUDIANTES "A" (BEL)
+SPE STROVOLOS "B" (CYP)
+17	23
+					</result>
+					<result>
+194
+16:30
+F
+A
+JERSIE HK (DNK)
+ESTUDIANTES (BEL)
+13	4
+					</result>
+					<result>
+195
+17:15
+E
+A
+JERSIE HK (DNK)
+PALL. L'AQUILA (ITA)
+6	0
+					</result>
+					<result>
+196
+18:00
+E
+B
+TVIS KFUM (DNK)
+VIRUM SORGENFRI (DNK)
+10	6
+					</result>
+					<result>
+197
+18:45
+F
+A
+FIORENTINA H. (ITA)
+YUCI SHOUANLI (CHN)
+5	18
+					</result>
+				</playground>
+				<playground>
+					<name>Campo 8</name>
+					<result>
+130
+09:15
+F
+A
+UKS DABIE SZECSZIN "B" (POL)
+FIORENTINA H. (ITA)
+16	3
+					</result>
+					<result>
+131
+10:00
+E
+B
+ESTUDIANTES "B" (BEL)
+TVIS KFUM (DNK)
+1	16
+					</result>
+					<result>
+132
+10:45
+E
+B
+HANDBALIS (LTU)
+OBUDAI KEZILABDA (HUN)
+0	6
+					</result>
+					<result>
+133
+11:30
+E
+B
+VIRUM SORGENFRI (DNK)
+C.C. FAISALABAD (PAK)
+19	12
+					</result>
+					<result>
+134
+12:15
+N
+C
+UKS PANTERY DOPIEWO "A" (POL)
+DYBBOL IU (DNK)
+16	21
+					</result>
+					<result>
+198
+15:00
+E
+B
+OBUDAI KEZILABDA (HUN)
+ESTUDIANTES "B" (BEL)
+18	7
+					</result>
+					<result>
+199
+15:45
+E
+A
+ALBERTSLUND IF (DNK)
+SOKOL UVALY (CZE)
+10	13
+					</result>
+					<result>
+200
+16:30
+L
+C
+CLUB LEVIS (CAN)
+ARADIPPOU H.C. (CYP)
+11	19
+					</result>
+					<result>
+201
+17:15
+E
+B
+C.C. FAISALABAD (PAK)
+SPE STROVOLOS "A" (CYP)
+19	14
+					</result>
+					<result>
+202
+18:00
+E
+A
+GARLIAVA KAUNO RAJ (LTU)
+CD CALASANZ (ESP)
+20	20
+					</result>
+					<result>
+203
+18:45
+F
+A
+LIONS H. TERAMO (ITA)
+HC OLIMPUS CHISINAU (MDA)
+6	16
+					</result>
+				</playground>
+				<playground>
+					<name>Campo 9</name>
+					<result>
+135
+09:15
+M
+D
+C.A. MONTEVIDEO (URY)
+FIORENTINA H. (ITA)
+21	1
+					</result>
+					<result>
+136
+10:00
+D
+D
+HC CONCORDIA (AND)
+SOKOL UVALY (CZE)
+6	10
+					</result>
+					<result>
+137
+10:45
+M
+A
+COURSEULLES HB "B" (FRA)
+ALBERTSLUND IF "A" (DNK)
+0	15
+					</result>
+					<result>
+138
+11:30
+M
+B
+THAILAND S.S. (THA)
+GL UKS SWIDNICA (POL)
+6	0
+					</result>
+					<result>
+204
+15:00
+F
+B
+OBUDAI KEZILABDA (HUN)
+MOSIR BOCHNIA (POL)
+19	10
+					</result>
+					<result>
+205
+15:45
+F
+B
+AO KOZANIS (GRC)
+UKS DABIE SZECSZIN "C" (POL)
+17	12
+					</result>
+					<result>
+206
+16:30
+F
+B
+SOKOL UVALY (CZE)
+HG TORELLI (ITA)
+10	6
+					</result>
+					<result>
+207
+17:15
+M
+A
+VALLENTUNA HK (SWE)
+COURSEULLES HB "B" (FRA)
+18	6
+					</result>
+					<result>
+208
+18:00
+M
+A
+JERSIE HK "A" (DNK)
+HRK KOSACA MOSTAR (BIH)
+13	8
+					</result>
+					<result>
+209
+18:45
+M
+B
+DYBBOL IU "A" (DNK)
+FS ETNIKOS KOZANIS (GRC)
+16	13
+					</result>
+				</playground>
+				<playground>
+					<name>Campo 10</name>
+					<result>
+139
+09:15
+B/G
+A
+TVIS KFUM (DNK)
+HC TALLAS (EST)
+16	21
+					</result>
+					<result>
+140
+10:00
+I
+A
+VIRUM SORGENFRI "A" (DNK)
+PORTUGUES RECIFE (BRA)
+9	12
+					</result>
+					<result>
+141
+10:45
+P
+A
+PALL. TERAMO (ITA)
+TVIS KFUM (DNK)
+10	10
+					</result>
+					<result>
+142
+11:30
+L
+C
+HC PANAGURISHTE (BGR)
+CLUB LEVIS (CAN)
+19	14
+					</result>
+					<result>
+143
+12:15
+E
+B
+SPE STROVOLOS "A" (CYP)
+ZAGLEBIE LUBIN (POL)
+20	20
+					</result>
+					<result>
+210
+15:00
+P
+A
+MDST JASZBERENY (HUN)
+MESZTEGNYO KSE (HUN)
+0	6
+					</result>
+					<result>
+211
+15:45
+P
+A
+TVIS KFUM (DNK)
+HC TERAMO 2002 (ITA)
+5	21
+					</result>
+					<result>
+212
+16:30
+M
+D
+DYBBOL IU "B" (DNK)
+CLUB LEVIS (CAN)
+3	7
+					</result>
+					<result>
+213
+17:15
+I
+A
+MDST JASZBERENY (HUN)
+HC DRITA GIJAN (SRB)
+0	6
+					</result>
+					<result>
+214
+18:00
+I
+A
+PORTUGUES RECIFE (BRA)
+VIRUM SORGENFRI "B" (DNK)
+6	0
+					</result>
+					<result>
+216
+18:45
+D
+C
+TUS NIEDER ESCHBACH (DEU)
+SOUTH KOREA (KOR)
+11	35
+					</result>
+				</playground>
+				<playground>
+					<name>Campo 11</name>
+					<result>
+145
+09:15
+L
+C
+ARADIPPOU H.C. (CYP)
+MSS TERMO (UKR)
+13	18
+					</result>
+					<result>
+146
+10:00
+L
+A
+SPE STROVOLOS (CYP)
+HC OLIMPUS CHISINAU (MDA)
+17	9
+					</result>
+					<result>
+147
+10:45
+L
+A
+CHARLOTTENLUND (NOR)
+VIRUM SORGENFRI "A" (DNK)
+6	0
+					</result>
+					<result>
+148
+11:30
+L
+A
+ZAGLEBIE LUBIN (POL)
+KOZANIS 2011 (GRC)
+6	0
+					</result>
+					<result>
+149
+12:15
+L
+B
+KS SOSNICA GLIWICE (POL)
+IOANNINON (GRC)
+6	0
+					</result>
+					<result>
+217
+15:00
+L
+A
+VIRUM SORGENFRI "A" (DNK)
+ZAGLEBIE LUBIN (POL)
+0	6
+					</result>
+					<result>
+218
+15:45
+D
+A
+TVIS KFUM "B" (DNK)
+IOANNINON (GRC)
+24	7
+					</result>
+					<result>
+219
+16:30
+L
+A
+HC OLIMPUS CHISINAU (MDA)
+CHARLOTTENLUND (NOR)
+1	35
+					</result>
+					<result>
+220
+17:15
+L
+A
+KOZANIS 2011 (GRC)
+SPE STROVOLOS (CYP)
+0	6
+					</result>
+					<result>
+221
+18:00
+D
+A
+JERSIE HK "A" (DNK)
+COURSEULLES HB "B" (FRA)
+26	10
+					</result>
+					<result>
+222
+18:45
+L
+B
+TVIS KFUM (DNK)
+VIRUM SORGENFRI "B" (DNK)
+12	26
+					</result>
+				</playground>
+				<playground>
+					<name>Campo 12</name>
+					<result>
+150
+09:15
+C
+A
+LA SALLE HC (MLT)
+AL MOHET (SAU)
+6	0
+					</result>
+					<result>
+151
+10:00
+L
+B
+VIRUM SORGENFRI "B" (DNK)
+ENGLAND HANDBALL (GBR)
+23	12
+					</result>
+					<result>
+152
+10:45
+B/G
+A
+VIRUM SORGENFRI (DNK)
+PALL. CAPUA (ITA)
+22	11
+					</result>
+					<result>
+153
+11:30
+M
+A
+HRK KOSACA MOSTAR (BIH)
+VALLENTUNA HK (SWE)
+8	9
+					</result>
+					<result>
+223
+15:00
+B/G
+A
+SOUTH OIL SPORT CLUB (IRQ)
+TEKNOELETTRONICA TERAMO (ITA)
+30	23
+					</result>
+					<result>
+224
+15:45
+L
+B
+IOANNINON (GRC)
+KERICHO SCHOOL (KEN)
+0	6
+					</result>
+					<result>
+225
+16:30
+M
+D
+FIORENTINA H. (ITA)
+ZRK BUDUCNOST (MNE)
+5	26
+					</result>
+					<result>
+226
+17:15
+D
+C
+SOUTH KOREA (KOR)
+SKS KUSY KRAKOW (POL)
+0	6
+					</result>
+					<result>
+227
+18:00
+C
+B
+GL UKS SWIDNICA (POL)
+TVIS KFUM "B" (DNK)
+0	6
+					</result>
+					<result>
+228
+18:45
+M
+D
+VIRUM SORGENFRI (DNK)
+C.A. MONTEVIDEO (URY)
+13	10
+					</result>
+				</playground>
+				<playground>
+					<name>Campo 13</name>
+					<result>
+229
+17:30
+C
+A
+TVIS KFUM "A" (DNK)
+ZAGLEBIE LUBIN (POL)
+21	12
+					</result>
+					<result>
+230
+18:15
+E
+B
+ZAGLEBIE LUBIN (POL)
+HANDBALIS (LTU)
+30	14
+					</result>
+				</playground>
+				<playground>
+					<name>Campo 14</name>
+					<result>
+154
+10:45
+L
+B
+KERICHO SCHOOL (KEN)
+TVIS KFUM (DNK)
+13	8
+					</result>
+					<result>
+155
+11:30
+D
+D
+ETIEC MENDOZA (ARG)
+JERSIE HK "B" (DNK)
+17	6
+					</result>
+					<result>
+231
+17:00
+D
+D
+VIRUM SORGENFRI "A" (DNK)
+LYCEE A. MAYRISCH (LUX)
+22	3
+					</result>
+					<result>
+232
+17:45
+M
+B
+STABAEK HANDBALL (NOR)
+THAILAND S.S. (THA)
+15	15
+					</result>
+				</playground>
+			</results>
+			<results>
+				<date>06/07/2011</date>
+				<playground>
+					<name>Campo 1,</name>
+					<result>
+233
+08:30
+C
+A
+HC INTER BLAGOEVGRAD (BGR)
+ASPTT TUNIS (TUN)
+9	12
+					</result>
+					<result>
+234
+09:15
+L
+A
+CHARLOTTENLUND (NOR)
+SPE STROVOLOS (CYP)
+17	17
+					</result>
+					<result>
+235
+10:00
+C
+B
+JERSIE HK "B" (DNK)
+GL UKS SWIDNICA (POL)
+6	0
+					</result>
+					<result>
+236
+10:45
+F
+A
+UKS DABIE SZECSZIN "B" (POL)
+JERSIE HK (DNK)
+12	12
+					</result>
+					<result>
+237
+11:30
+D
+C
+ALBERTSLUND IF (DNK)
+SOUTH KOREA (KOR)
+15	24
+					</result>
+					<result>
+238
+12:15
+I
+A
+HC DRITA GIJAN (SRB)
+PORTUGUES RECIFE (BRA)
+7	30
+					</result>
+					<result>
+307
+15:45
+C
+A
+ASPTT TUNIS (TUN)
+ZAGLEBIE LUBIN (POL)
+16	7
+					</result>
+					<result>
+308
+16:30
+D
+A
+SPE STROVOLOS (CYP)
+COURSEULLES HB "B" (FRA)
+18	9
+					</result>
+					<result>
+309
+17:15
+E
+A
+JERSIE HK (DNK)
+CD CALASANZ (ESP)
+11	15
+					</result>
+					<result>
+310
+18:00
+N
+C
+DYBBOL IU (DNK)
+HRK KOSACA MOSTAR (BIH)
+15	8
+					</result>
+					<result>
+311
+18:45
+C
+C
+JERSIE HK "A" (DNK)
+VIRUM SORGENFRI (DNK)
+15	10
+					</result>
+					<result>
+312
+20:00
+M
+C
+ROMANIA (ROU)
+RK PIRAN (SVN)
+24	11
+					</result>
+					<result>
+313
+20:45
+I
+A
+SOUTH KOREA (KOR)
+PORTUGUES RECIFE (BRA)
+24	17
+					</result>
+					<result>
+314
+21:30
+B/G
+A
+HC TALLAS (EST)
+VIRUM SORGENFRI (DNK)
+11	17
+					</result>
+				</playground>
+				<playground>
+					<name>Campo 2</name>
+					<result>
+239
+08:30
+C
+A
+LA SALLE HC (MLT)
+AETNA MASCALUCIA (ITA)
+7	21
+					</result>
+					<result>
+240
+09:15
+C
+B
+TEKNOELETTRONICA TERAMO (ITA)
+SK ELBASANI (ALB)
+21	15
+					</result>
+					<result>
+241
+10:00
+C
+B
+TVIS KFUM "B" (DNK)
+CLUB LEVIS (CAN)
+21	17
+					</result>
+					<result>
+242
+10:45
+M
+B
+STABAEK HANDBALL (NOR)
+ALBERTSLUND IF "B" (DNK)
+21	6
+					</result>
+					<result>
+243
+11:30
+C
+A
+ZAGLEBIE LUBIN (POL)
+AL MOHET (SAU)
+6	0
+					</result>
+					<result>
+244
+12:15
+M
+C
+COURSEULLES HB "A" (FRA)
+HC OLIMPUS CHISINAU (MDA)
+26	14
+					</result>
+					<result>
+315
+15:30
+M
+D
+FIORENTINA H. (ITA)
+DYBBOL IU "B" (DNK)
+11	14
+					</result>
+					<result>
+316
+16:15
+C
+A
+AETNA MASCALUCIA (ITA)
+HC INTER BLAGOEVGRAD (BGR)
+17	15
+					</result>
+					<result>
+317
+17:00
+C
+C
+CD CALASANZ (ESP)
+HC OLIMPUS CHISINAU (MDA)
+0	6
+					</result>
+					<result>
+318
+17:45
+C
+C
+WROCLAW (POL)
+PALL. L'AQUILA (ITA)
+0	6
+					</result>
+					<result>
+319
+18:00
+D
+C
+HC VIGIS KAUNAS (LTU)
+HC OLIMPUS CHISINAU (MDA)
+29	19
+					</result>
+				</playground>
+				<playground>
+					<name>Campo 3</name>
+					<result>
+245
+08:30
+C
+C
+AO KOZANIS (GRC)
+WROCLAW (POL)
+6	0
+					</result>
+					<result>
+246
+09:15
+C
+C
+PALL. L'AQUILA (ITA)
+CD CALASANZ (ESP)
+10	16
+					</result>
+					<result>
+247
+10:00
+M
+D
+DYBBOL IU "B" (DNK)
+VIRUM SORGENFRI (DNK)
+8	13
+					</result>
+					<result>
+248
+10:45
+D
+D
+HG TORELLI (ITA)
+HC CONCORDIA (AND)
+9	11
+					</result>
+					<result>
+249
+11:30
+D
+D
+LYCEE A. MAYRISCH (LUX)
+SOKOL UVALY (CZE)
+12	16
+					</result>
+					<result>
+250
+12:15
+D
+D
+ETIEC MENDOZA (ARG)
+VIRUM SORGENFRI "A" (DNK)
+15	19
+					</result>
+					<result>
+320
+15:30
+C
+A
+AL MOHET (SAU)
+TVIS KFUM "A" (DNK)
+0	6
+					</result>
+					<result>
+321
+16:15
+D
+D
+VIRUM SORGENFRI "A" (DNK)
+COURSEULLES HB "A" (FRA)
+14	8
+					</result>
+					<result>
+322
+17:00
+D
+D
+HC CONCORDIA (AND)
+LYCEE A. MAYRISCH (LUX)
+18	11
+					</result>
+					<result>
+323
+17:45
+D
+D
+JERSIE HK "B" (DNK)
+HG TORELLI (ITA)
+12	12
+					</result>
+					<result>
+324
+18:30
+D
+C
+TVIS KFUM "A" (DNK)
+ALBERTSLUND IF (DNK)
+20	2
+					</result>
+				</playground>
+				<playground>
+					<name>Campo 4</name>
+					<result>
+251
+08:30
+N
+A
+MKS OLAVIA (POL)
+GSH FLAVIONI (ITA)
+22	8
+					</result>
+					<result>
+252
+09:15
+N
+A
+VIRUM SORGENFRI "A" (DNK)
+UKS DWOIJA BESKID "B" (POL)
+38	1
+					</result>
+					<result>
+253
+10:00
+N
+A
+TVIS KFUM (DNK)
+C.C. IMACULADA (PRT)
+18	1
+					</result>
+					<result>
+254
+10:45
+N
+B
+LYSTRUP IF (DNK)
+HC CSKA 90 SOU (BGR)
+22	13
+					</result>
+					<result>
+255
+11:30
+N
+B
+UKS ALFA SZAROW (POL)
+UKS PANTERY DOPIEWO "B" (POL)
+17	12
+					</result>
+					<result>
+256
+12:15
+N
+B
+JERSIE HK (DNK)
+OBUDAI KEZILABDA (HUN)
+18	23
+					</result>
+					<result>
+325
+15:30
+E
+A
+ALBERTSLUND IF (DNK)
+ESTUDIANTES "A" (BEL)
+17	17
+					</result>
+					<result>
+326
+16:15
+F
+B
+SOKOL UVALY (CZE)
+MOSIR BOCHNIA (POL)
+21	9
+					</result>
+					<result>
+327
+17:00
+M
+C
+HC OLIMPUS CHISINAU (MDA)
+JERSIE HK "B" (DNK)
+6	19
+					</result>
+				</playground>
+				<playground>
+					<name>Campo 5</name>
+					<result>
+257
+08:30
+D
+D
+COURSEULLES HB "A" (FRA)
+JERSIE HK "B" (DNK)
+21	19
+					</result>
+					<result>
+258
+09:15
+D
+C
+C.A. MONTEVIDEO (URY)
+SKS KUSY KRAKOW (POL)
+7	12
+					</result>
+					<result>
+259
+10:00
+D
+C
+TUS NIEDER ESCHBACH (DEU)
+HC VIGIS KAUNAS (LTU)
+10	19
+					</result>
+					<result>
+260
+10:45
+D
+C
+HC OLIMPUS CHISINAU (MDA)
+TVIS KFUM "A" (DNK)
+6	27
+					</result>
+					<result>
+261
+11:30
+E
+A
+CD CALASANZ (ESP)
+PALL. L'AQUILA (ITA)
+15	6
+					</result>
+					<result>
+262
+12:15
+D
+B
+CLUB LEVIS (CAN)
+UKS SPARTAKUS BUK (POL)
+13	19
+					</result>
+					<result>
+328
+15:30
+D
+C
+SKS KUSY KRAKOW (POL)
+TUS NIEDER ESCHBACH (DEU)
+22	5
+					</result>
+					<result>
+329
+16:15
+D
+B
+HC ULA VARENA (LTU)
+VENISSIEUX HB (FRA)
+20	20
+					</result>
+					<result>
+330
+17:00
+D
+B
+UKS SPARTAKUS BUK (POL)
+CD CALASANZ (ESP)
+16	15
+					</result>
+					<result>
+331
+17:45
+D
+B
+GAZA SC (PSE)
+CLUB LEVIS (CAN)
+16	17
+					</result>
+				</playground>
+				<playground>
+					<name>Campo 6</name>
+					<result>
+263
+08:30
+D
+A
+COURSEULLES HB "B" (FRA)
+PALL. SAN MARTINO (ITA)
+15	9
+					</result>
+					<result>
+264
+09:15
+D
+B
+VENISSIEUX HB (FRA)
+TVIS KFUM "C" (DNK)
+25	12
+					</result>
+					<result>
+265
+10:00
+D
+B
+VIRUM SORGENFRI "B" (DNK)
+GAZA SC (PSE)
+14	13
+					</result>
+					<result>
+266
+10:45
+D
+A
+SELECTION LYONNAIS (FRA)
+SPE STROVOLOS (CYP)
+22	9
+					</result>
+					<result>
+267
+11:30
+B/G
+A
+SOUTH OIL SPORT CLUB (IRQ)
+ATHENS 2011 (GRC)
+19	19
+					</result>
+					<result>
+268
+12:15
+D
+A
+IOANNINON (GRC)
+JERSIE HK "A" (DNK)
+6	14
+					</result>
+					<result>
+332
+15:30
+B/G
+A
+PALL. CAPUA (ITA)
+SOUTH OIL SPORT CLUB (IRQ)
+17	31
+					</result>
+					<result>
+333
+16:15
+D
+A
+PALL. SAN MARTINO (ITA)
+IOANNINON (GRC)
+15	12
+					</result>
+					<result>
+334
+17:00
+D
+A
+MSS TERMO (UKR)
+SELECTION LYONNAIS (FRA)
+13	26
+					</result>
+					<result>
+335
+17:45
+E
+A
+GARLIAVA KAUNO RAJ (LTU)
+SPE STROVOLOS "B" (CYP)
+22	27
+					</result>
+				</playground>
+				<playground>
+					<name>Campo 7</name>
+					<result>
+269
+08:30
+E
+A
+SOKOL UVALY (CZE)
+GARLIAVA KAUNO RAJ (LTU)
+10	10
+					</result>
+					<result>
+270
+09:15
+D
+A
+TVIS KFUM "B" (DNK)
+MSS TERMO (UKR)
+16	15
+					</result>
+					<result>
+271
+10:00
+C
+C
+HC OLIMPUS CHISINAU (MDA)
+JERSIE HK "A" (DNK)
+8	14
+					</result>
+					<result>
+272
+10:45
+E
+A
+SPE STROVOLOS "B" (CYP)
+ALBERTSLUND IF (DNK)
+25	12
+					</result>
+					<result>
+273
+11:30
+E
+A
+ESTUDIANTES "A" (BEL)
+JERSIE HK (DNK)
+15	10
+					</result>
+					<result>
+274
+12:15
+E
+B
+HANDBALIS (LTU)
+SPE STROVOLOS "A" (CYP)
+21	21
+					</result>
+					<result>
+336
+15:30
+E
+A
+PALL. L'AQUILA (ITA)
+SOKOL UVALY (CZE)
+10	19
+					</result>
+					<result>
+337
+16:15
+E
+B
+OBUDAI KEZILABDA (HUN)
+TVIS KFUM (DNK)
+10	15
+					</result>
+					<result>
+338
+17:00
+E
+B
+ZAGLEBIE LUBIN (POL)
+VIRUM SORGENFRI (DNK)
+20	19
+					</result>
+					<result>
+339
+17:45
+E
+B
+SPE STROVOLOS "A" (CYP)
+ESTUDIANTES "B" (BEL)
+24	9
+					</result>
+				</playground>
+				<playground>
+					<name>Campo 8</name>
+					<result>
+275
+08:30
+E
+B
+ESTUDIANTES "B" (BEL)
+ZAGLEBIE LUBIN (POL)
+8	26
+					</result>
+					<result>
+276
+09:15
+L
+B
+TVIS KFUM (DNK)
+ENGLAND HANDBALL (GBR)
+9	10
+					</result>
+					<result>
+277
+10:00
+E
+B
+VIRUM SORGENFRI (DNK)
+OBUDAI KEZILABDA (HUN)
+19	11
+					</result>
+					<result>
+278
+10:45
+L
+A
+ZAGLEBIE LUBIN (POL)
+HC OLIMPUS CHISINAU (MDA)
+0	6
+					</result>
+					<result>
+279
+11:30
+F
+A
+YUCI SHOUANLI (CHN)
+UKS DABIE SZECSZIN "B" (POL)
+10	17
+					</result>
+					<result>
+280
+12:15
+F
+A
+HC OLIMPUS CHISINAU (MDA)
+FIORENTINA H. (ITA)
+6	6
+					</result>
+					<result>
+340
+15:30
+F
+A
+LIONS H. TERAMO (ITA)
+JERSIE HK (DNK)
+1	32
+					</result>
+					<result>
+341
+16:15
+F
+A
+FIORENTINA H. (ITA)
+ESTUDIANTES (BEL)
+2	15
+					</result>
+					<result>
+342
+17:00
+F
+B
+AO KOZANIS (GRC)
+OBUDAI KEZILABDA (HUN)
+10	14
+					</result>
+				</playground>
+				<playground>
+					<name>Campo 9</name>
+					<result>
+281
+08:30
+F
+B
+HG TORELLI (ITA)
+UKS DABIE SZECSZIN "A" (POL)
+8	8
+					</result>
+					<result>
+282
+09:15
+F
+B
+UKS DABIE SZECSZIN "C" (POL)
+SOKOL UVALY (CZE)
+7	13
+					</result>
+					<result>
+283
+10:00
+F
+B
+MOSIR BOCHNIA (POL)
+AO KOZANIS (GRC)
+7	16
+					</result>
+					<result>
+284
+10:45
+M
+A
+ALBERTSLUND IF "A" (DNK)
+JERSIE HK "A" (DNK)
+6	8
+					</result>
+					<result>
+285
+11:30
+M
+B
+THAILAND S.S. (THA)
+FS ETNIKOS KOZANIS (GRC)
+29	18
+					</result>
+					<result>
+286
+12:15
+M
+C
+WHC NIKSIC (MNE)
+JERSIE HK "B" (DNK)
+12	16
+					</result>
+					<result>
+344
+15:30
+L
+C
+CLUB LEVIS (CAN)
+HC TERAMO 2002 (ITA)
+10	15
+					</result>
+					<result>
+345
+16:15
+L
+C
+HC PANAGURISHTE (BGR)
+CLUB ILINDEN SKOPJE (MKD)
+20	5
+					</result>
+					<result>
+346
+17:00
+F
+A
+UKS DABIE SZECSZIN "B" (POL)
+HC OLIMPUS CHISINAU (MDA)
+10	9
+					</result>
+				</playground>
+				<playground>
+					<name>Campo 10</name>
+					<result>
+287
+08:30
+P
+A
+HC TERAMO 2002 (ITA)
+PALL. TERAMO (ITA)
+30	11
+					</result>
+					<result>
+288
+09:15
+P
+A
+MESZTEGNYO KSE (HUN)
+TVIS KFUM (DNK)
+14	7
+					</result>
+					<result>
+289
+10:00
+I
+A
+VIRUM SORGENFRI "B" (DNK)
+VIRUM SORGENFRI "A" (DNK)
+0	0
+					</result>
+					<result>
+290
+10:45
+B/G
+A
+TEKNOELETTRONICA TERAMO (ITA)
+HC TALLAS (EST)
+15	23
+					</result>
+					<result>
+291
+11:30
+I
+A
+MDST JASZBERENY (HUN)
+SOUTH KOREA (KOR)
+0	6
+					</result>
+					<result>
+292
+12:15
+L
+C
+ARADIPPOU H.C. (CYP)
+HC PANAGURISHTE (BGR)
+13	13
+					</result>
+					<result>
+347
+15:30
+D
+D
+SOKOL UVALY (CZE)
+ETIEC MENDOZA (ARG)
+12	14
+					</result>
+					<result>
+348
+16:15
+D
+C
+SOUTH KOREA (KOR)
+C.A. MONTEVIDEO (URY)
+23	14
+					</result>
+					<result>
+349
+17:00
+D
+B
+TVIS KFUM "C" (DNK)
+VIRUM SORGENFRI "B" (DNK)
+8	11
+					</result>
+					<result>
+350
+17:15
+B/G
+A
+SPE STROVOLOS (CYP)
+TEKNOELETTRONICA TERAMO (ITA)
+20	6
+					</result>
+					<result>
+351
+18:00
+B/G
+A
+ATHENS 2011 (GRC)
+TVIS KFUM (DNK)
+16	15
+					</result>
+				</playground>
+				<playground>
+					<name>Campo 11</name>
+					<result>
+293
+08:30
+L
+C
+HC TERAMO 2002 (ITA)
+MSS TERMO (UKR)
+14	9
+					</result>
+					<result>
+294
+09:15
+L
+C
+CLUB ILINDEN SKOPJE (MKD)
+CLUB LEVIS (CAN)
+16	16
+					</result>
+					<result>
+295
+10:00
+L
+A
+VIRUM SORGENFRI "A" (DNK)
+KOZANIS 2011 (GRC)
+0	0
+					</result>
+					<result>
+296
+10:45
+F
+A
+ESTUDIANTES (BEL)
+LIONS H. TERAMO (ITA)
+14	3
+					</result>
+					<result>
+297
+11:30
+L
+B
+KERICHO SCHOOL (KEN)
+KS SOSNICA GLIWICE (POL)
+7	37
+					</result>
+					<result>
+298
+12:15
+B/G
+A
+PALL. CAPUA (ITA)
+SPE STROVOLOS (CYP)
+19	27
+					</result>
+					<result>
+352
+15:45
+M
+B
+DYBBOL IU "A" (DNK)
+THAILAND S.S. (THA)
+19	19
+					</result>
+					<result>
+353
+16:30
+M
+B
+ALBERTSLUND IF "B" (DNK)
+GL UKS SWIDNICA (POL)
+15	6
+					</result>
+					<result>
+354
+17:15
+M
+C
+COURSEULLES HB "A" (FRA)
+WHC NIKSIC (MNE)
+20	17
+					</result>
+					<result>
+355
+18:00
+F
+B
+UKS DABIE SZECSZIN "A" (POL)
+UKS DABIE SZECSZIN "C" (POL)
+14	14
+					</result>
+				</playground>
+				<playground>
+					<name>Campo 12</name>
+					<result>
+299
+08:30
+L
+B
+VIRUM SORGENFRI "B" (DNK)
+IOANNINON (GRC)
+6	0
+					</result>
+					<result>
+300
+09:15
+D
+B
+CD CALASANZ (ESP)
+HC ULA VARENA (LTU)
+15	19
+					</result>
+					<result>
+301
+10:00
+M
+D
+ZRK BUDUCNOST (MNE)
+C.A. MONTEVIDEO (URY)
+9	8
+					</result>
+					<result>
+302
+10:45
+M
+D
+CLUB LEVIS (CAN)
+FIORENTINA H. (ITA)
+8	6
+					</result>
+					<result>
+303
+11:30
+M
+A
+COURSEULLES HB "B" (FRA)
+HRK KOSACA MOSTAR (BIH)
+10	17
+					</result>
+					<result>
+304
+12:15
+B/G
+A
+TVIS KFUM (DNK)
+VIRUM SORGENFRI (DNK)
+13	18
+					</result>
+					<result>
+356
+17:15
+N
+C
+VIRUM SORGENFRI "B" (DNK)
+UKS DWOIJA BESKID "A" (POL)
+17	6
+					</result>
+					<result>
+357
+18:00
+O
+A
+JERSIE HK "A" (DNK)
+VIRUM SORGENFRI (DNK)
+13	10
+					</result>
+					<result>
+358
+18:45
+O
+A
+JERSIE HK "B" (DNK)
+SPE STROVOLOS (CYP)
+6	0
+					</result>
+				</playground>
+				<playground>
+					<name>Campo 13</name>
+					<result>
+305
+10:30
+E
+B
+TVIS KFUM (DNK)
+C.C. FAISALABAD (PAK)
+22	12
+					</result>
+					<result>
+306
+11:15
+M
+A
+VALUR IF (ISL)
+VALLENTUNA HK (SWE)
+13	6
+					</result>
+					<result>
+359
+17:00
+D
+A
+JERSIE HK "A" (DNK)
+TVIS KFUM "B" (DNK)
+12	14
+					</result>
+					<result>
+360
+17:45
+M
+A
+VALUR IF (ISL)
+JERSIE HK "A" (DNK)
+6	13
+					</result>
+					<result>
+361
+18:30
+E
+B
+C.C. FAISALABAD (PAK)
+HANDBALIS (LTU)
+19	15					
+					</result>
+				</playground>
+			</results>
+			<results>
+				<date>07/07/2011</date>
+				<playground>
+					<name>Campo 1,</name>
+					<result>
+362
+08:30
+O
+A
+HRK KOSACA MOSTAR (BIH)
+VIRUM SORGENFRI (DNK)
+11	11
+					</result>
+					<result>
+363
+09:15
+C
+C
+VIRUM SORGENFRI (DNK)
+CD CALASANZ (ESP)
+16	6
+					</result>
+					<result>
+364
+10:00
+D
+C
+HC OLIMPUS CHISINAU (MDA)
+SKS KUSY KRAKOW (POL)
+13	26
+					</result>
+					<result>
+365
+10:45
+E
+A
+ESTUDIANTES "A" (BEL)
+GARLIAVA KAUNO RAJ (LTU)
+14	22
+					</result>
+					<result>
+366
+11:30
+M
+A
+VALUR IF (ISL)
+COURSEULLES HB "B" (FRA)
+15	6
+					</result>
+					<result>
+367
+12:15
+N
+C
+ALBERTSLUND IF (DNK)
+DYBBOL IU (DNK)
+3	21
+					</result>
+					<result>
+416
+15:00
+L
+B
+TVIS KFUM (DNK)
+KS SOSNICA GLIWICE (POL)
+10	15
+					</result>
+					<result>
+417
+15:45
+C
+A
+ZAGLEBIE LUBIN (POL)
+HC INTER BLAGOEVGRAD (BGR)
+0	6
+					</result>
+					<result>
+418
+16:30
+B/G
+A
+ATHENS 2011 (GRC)
+SPE STROVOLOS (CYP)
+17	23
+					</result>
+					<result>
+419
+17:15
+N
+B
+JERSIE HK (DNK)
+HC CSKA 90 SOU (BGR)
+3	20
+					</result>
+					<result>
+420
+18:00
+D
+C
+SOUTH KOREA (KOR)
+HC VIGIS KAUNAS (LTU)
+35	16
+					</result>
+				</playground>
+				<playground>
+					<name>Campo 2</name>
+					<result>
+368
+08:30
+C
+A
+HC INTER BLAGOEVGRAD (BGR)
+LA SALLE HC (MLT)
+17	6
+					</result>
+					<result>
+369
+09:15
+C
+A
+ZAGLEBIE LUBIN (POL)
+AETNA MASCALUCIA (ITA)
+12	19
+					</result>
+					<result>
+370
+10:00
+C
+A
+TVIS KFUM "A" (DNK)
+ASPTT TUNIS (TUN)
+16	14
+					</result>
+					<result>
+371
+10:45
+C
+C
+PALL. L'AQUILA (ITA)
+AO KOZANIS (GRC)
+0	6
+					</result>
+					<result>
+372
+11:30
+C
+C
+HC OLIMPUS CHISINAU (MDA)
+WROCLAW (POL)
+6	0
+					</result>
+					<result>
+421
+15:00
+C
+A
+TVIS KFUM "A" (DNK)
+LA SALLE HC (MLT)
+24	3
+					</result>
+					<result>
+422
+15:45
+C
+A
+AL MOHET (SAU)
+AETNA MASCALUCIA (ITA)
+0	6
+					</result>
+					<result>
+423
+16:30
+M
+B
+ALBERTSLUND IF "B" (DNK)
+THAILAND S.S. (THA)
+9	20
+					</result>
+					<result>
+424
+17:15
+M
+C
+WHC NIKSIC (MNE)
+RK PIRAN (SVN)
+12	12
+					</result>
+					<result>
+425
+18:00
+C
+B
+TEKNOELETTRONICA TERAMO (ITA)
+CLUB LEVIS (CAN)
+12	10
+					</result>
+					<result>
+426
+18:45
+C
+B
+SK ELBASANI (ALB)
+GL UKS SWIDNICA (POL)
+6	0
+					</result>
+				</playground>
+				<playground>
+					<name>Campo 3</name>
+					<result>
+373
+08:30
+D
+B
+VENISSIEUX HB (FRA)
+UKS SPARTAKUS BUK (POL)
+20	21
+					</result>
+					<result>
+374
+09:15
+D
+B
+VIRUM SORGENFRI "B" (DNK)
+HC ULA VARENA (LTU)
+8	8
+					</result>
+					<result>
+375
+10:00
+E
+A
+SOKOL UVALY (CZE)
+CD CALASANZ (ESP)
+13	12
+					</result>
+					<result>
+376
+10:45
+D
+C
+TUS NIEDER ESCHBACH (DEU)
+C.A. MONTEVIDEO (URY)
+11	19
+					</result>
+					<result>
+427
+15:45
+D
+B
+VIRUM SORGENFRI "B" (DNK)
+CLUB LEVIS (CAN)
+10	11
+					</result>
+					<result>
+428
+16:30
+C
+C
+VIRUM SORGENFRI (DNK)
+AO KOZANIS (GRC)
+12	9
+					</result>
+					<result>
+429
+17:15
+C
+C
+JERSIE HK "A" (DNK)
+WROCLAW (POL)
+6	0
+					</result>
+					<result>
+430
+18:00
+D
+D
+COURSEULLES HB "A" (FRA)
+HG TORELLI (ITA)
+21	7
+					</result>
+					<result>
+431
+18:45
+D
+D
+VIRUM SORGENFRI "A" (DNK)
+HC CONCORDIA (AND)
+14	10
+					</result>
+				</playground>
+				<playground>
+					<name>Campo 4</name>
+					<result>
+377
+10:00
+E
+B
+OBUDAI KEZILABDA (HUN)
+C.C. FAISALABAD (PAK)
+0	6
+					</result>
+					<result>
+378
+10:45
+E
+A
+SPE STROVOLOS "B" (CYP)
+PALL. L'AQUILA (ITA)
+34	17
+					</result>
+					<result>
+432
+15:00
+N
+A
+VIRUM SORGENFRI "A" (DNK)
+MKS OLAVIA (POL)
+16	13
+					</result>
+					<result>
+433
+15:45
+N
+A
+TVIS KFUM (DNK)
+GSH FLAVIONI (ITA)
+27	5
+					</result>
+					<result>
+434
+16:30
+N
+A
+C.C. IMACULADA (PRT)
+UKS DWOIJA BESKID "B" (POL)
+6	12
+					</result>
+					<result>
+435
+17:15
+N
+B
+UKS ALFA SZAROW (POL)
+LYSTRUP IF (DNK)
+8	20
+					</result>
+					<result>
+436
+18:00
+N
+B
+OBUDAI KEZILABDA (HUN)
+UKS PANTERY DOPIEWO "B" (POL)
+19	8
+					</result>
+				</playground>
+				<playground>
+					<name>Campo 5</name>
+					<result>
+379
+08:30
+D
+C
+ALBERTSLUND IF (DNK)
+HC VIGIS KAUNAS (LTU)
+11	15
+					</result>
+					<result>
+380
+09:15
+N
+C
+UKS PANTERY DOPIEWO "A" (POL)
+UKS DWOIJA BESKID "A" (POL)
+15	4
+					</result>
+					<result>
+381
+10:00
+D
+B
+CD CALASANZ (ESP)
+CLUB LEVIS (CAN)
+16	9
+					</result>
+					<result>
+382
+10:45
+E
+B
+TVIS KFUM (DNK)
+ZAGLEBIE LUBIN (POL)
+10	11
+					</result>
+					<result>
+383
+11:30
+D
+B
+TVIS KFUM "C" (DNK)
+GAZA SC (PSE)
+16	17
+					</result>
+					<result>
+437
+15:45
+D
+D
+JERSIE HK "B" (DNK)
+SOKOL UVALY (CZE)
+15	18
+					</result>
+					<result>
+438
+16:30
+D
+C
+ALBERTSLUND IF (DNK)
+C.A. MONTEVIDEO (URY)
+8	13
+					</result>
+					<result>
+439
+17:15
+D
+C
+TVIS KFUM "A" (DNK)
+SKS KUSY KRAKOW (POL)
+10	13
+					</result>
+					<result>
+440
+18:00
+D
+B
+VENISSIEUX HB (FRA)
+CD CALASANZ (ESP)
+17	13
+					</result>
+				</playground>
+				<playground>
+					<name>Campo 6</name>
+					<result>
+384
+08:30
+D
+A
+COURSEULLES HB "B" (FRA)
+SELECTION LYONNAIS (FRA)
+5	30
+					</result>
+					<result>
+385
+09:15
+D
+A
+IOANNINON (GRC)
+SPE STROVOLOS (CYP)
+5	17
+					</result>
+					<result>
+386
+10:00
+D
+A
+TVIS KFUM "B" (DNK)
+PALL. SAN MARTINO (ITA)
+26	12
+					</result>
+					<result>
+387
+10:45
+D
+A
+JERSIE HK "A" (DNK)
+MSS TERMO (UKR)
+13	17
+					</result>
+					<result>
+441
+15:00
+B/G
+A
+SOUTH OIL SPORT CLUB (IRQ)
+TVIS KFUM (DNK)
+21	23
+					</result>
+					<result>
+442
+15:45
+D
+B
+TVIS KFUM "C" (DNK)
+UKS SPARTAKUS BUK (POL)
+13	22
+					</result>
+					<result>
+443
+16:30
+D
+A
+IOANNINON (GRC)
+COURSEULLES HB "B" (FRA)
+10	10
+					</result>
+					<result>
+444
+17:15
+M
+D
+VIRUM SORGENFRI (DNK)
+FIORENTINA H. (ITA)
+25	6
+					</result>
+					<result>
+445
+18:00
+D
+A
+TVIS KFUM "B" (DNK)
+SELECTION LYONNAIS (FRA)
+13	20
+					</result>
+					<result>
+446
+18:45
+D
+A
+JERSIE HK "A" (DNK)
+SPE STROVOLOS (CYP)
+7	9
+					</result>
+				</playground>
+				<playground>
+					<name>Campo 7</name>
+					<result>
+388
+08:30
+F
+A
+ESTUDIANTES (BEL)
+UKS DABIE SZECSZIN "B" (POL)
+11	25
+					</result>
+					<result>
+389
+09:15
+E
+A
+ALBERTSLUND IF (DNK)
+JERSIE HK (DNK)
+10	7
+					</result>
+					<result>
+390
+10:00
+E
+B
+ESTUDIANTES "B" (BEL)
+HANDBALIS (LTU)
+5	23
+					</result>
+					<result>
+391
+10:45
+E
+B
+VIRUM SORGENFRI (DNK)
+SPE STROVOLOS "A" (CYP)
+23	11
+					</result>
+					<result>
+447
+15:00
+D
+A
+MSS TERMO (UKR)
+PALL. SAN MARTINO (ITA)
+29	11
+					</result>
+					<result>
+448
+15:45
+E
+A
+SPE STROVOLOS "B" (CYP)
+SOKOL UVALY (CZE)
+15	8
+					</result>
+					<result>
+449
+16:30
+E
+A
+ESTUDIANTES "A" (BEL)
+CD CALASANZ (ESP)
+14	13
+					</result>
+					<result>
+450
+17:15
+E
+A
+ALBERTSLUND IF (DNK)
+PALL. L'AQUILA (ITA)
+14	8
+					</result>
+					<result>
+451
+18:00
+E
+A
+JERSIE HK (DNK)
+GARLIAVA KAUNO RAJ (LTU)
+10	11
+					</result>
+					<result>
+452
+18:45
+E
+B
+VIRUM SORGENFRI (DNK)
+ESTUDIANTES "B" (BEL)
+20	1
+					</result>
+				</playground>
+				<playground>
+					<name>Campo 8</name>
+					<result>
+392
+08:30
+F
+B
+UKS DABIE SZECSZIN "C" (POL)
+HG TORELLI (ITA)
+6	6
+					</result>
+					<result>
+393
+09:15
+F
+A
+HC OLIMPUS CHISINAU (MDA)
+YUCI SHOUANLI (CHN)
+9	16
+					</result>
+					<result>
+394
+10:00
+F
+B
+MOSIR BOCHNIA (POL)
+UKS DABIE SZECSZIN "A" (POL)
+13	16
+					</result>
+					<result>
+395
+10:45
+F
+B
+OBUDAI KEZILABDA (HUN)
+SOKOL UVALY (CZE)
+13	8
+					</result>
+					<result>
+453
+15:45
+E
+B
+TVIS KFUM (DNK)
+HANDBALIS (LTU)
+27	18
+					</result>
+					<result>
+454
+16:30
+F
+A
+JERSIE HK (DNK)
+YUCI SHOUANLI (CHN)
+24	11
+					</result>
+					<result>
+455
+17:15
+E
+B
+C.C. FAISALABAD (PAK)
+ZAGLEBIE LUBIN (POL)
+10	19
+					</result>
+					<result>
+456
+18:00
+E
+B
+OBUDAI KEZILABDA (HUN)
+SPE STROVOLOS "A" (CYP)
+19	29
+					</result>
+					<result>
+457
+18:45
+O
+A
+SPE STROVOLOS (CYP)
+HRK KOSACA MOSTAR (BIH)
+0	6
+					</result>
+				</playground>
+				<playground>
+					<name>Campo 9</name>
+					<result>
+396
+08:30
+L
+C
+HC TERAMO 2002 (ITA)
+HC PANAGURISHTE (BGR)
+12	13
+					</result>
+					<result>
+397
+09:15
+L
+C
+CLUB ILINDEN SKOPJE (MKD)
+ARADIPPOU H.C. (CYP)
+11	28
+					</result>
+					<result>
+398
+10:00
+D
+D
+VIRUM SORGENFRI "A" (DNK)
+JERSIE HK "B" (DNK)
+18	5
+					</result>
+					<result>
+400
+10:45
+M
+C
+COURSEULLES HB "A" (FRA)
+ROMANIA (ROU)
+8	13
+					</result>
+					<result>
+401
+11:30
+D
+D
+LYCEE A. MAYRISCH (LUX)
+HG TORELLI (ITA)
+8	15
+					</result>
+					<result>
+458
+15:00
+F
+B
+MOSIR BOCHNIA (POL)
+UKS DABIE SZECSZIN "C" (POL)
+17	11
+					</result>
+					<result>
+459
+15:45
+F
+B
+OBUDAI KEZILABDA (HUN)
+HG TORELLI (ITA)
+15	10
+					</result>
+					<result>
+460
+16:30
+F
+B
+AO KOZANIS (GRC)
+UKS DABIE SZECSZIN "A" (POL)
+17	5
+					</result>
+					<result>
+461
+17:15
+D
+B
+GAZA SC (PSE)
+HC ULA VARENA (LTU)
+10	15
+					</result>
+					<result>
+462
+18:00
+M
+B
+FS ETNIKOS KOZANIS (GRC)
+STABAEK HANDBALL (NOR)
+3	25
+					</result>
+				</playground>
+				<playground>
+					<name>Campo 10</name>
+					<result>
+402
+10:00
+B/G
+A
+PALL. CAPUA (ITA)
+TVIS KFUM (DNK)
+22	26
+					</result>
+					<result>
+403
+10:45
+B/G
+A
+SOUTH OIL SPORT CLUB (IRQ)
+SPE STROVOLOS (CYP)
+22	25
+					</result>
+					<result>
+404
+11:30
+B/G
+A
+TEKNOELETTRONICA TERAMO (ITA)
+VIRUM SORGENFRI (DNK)
+17	20
+					</result>
+					<result>
+405
+12:15
+B/G
+A
+HC TALLAS (EST)
+ATHENS 2011 (GRC)
+13	13
+					</result>
+					<result>
+463
+15:00
+P
+A
+MESZTEGNYO KSE (HUN)
+HC TERAMO 2002 (ITA)
+10	25
+					</result>
+					<result>
+464
+15:45
+P
+A
+MDST JASZBERENY (HUN)
+PALL. TERAMO (ITA)
+0	6
+					</result>
+					<result>
+465
+16:30
+M
+A
+HRK KOSACA MOSTAR (BIH)
+VALUR IF (ISL)
+5	12
+					</result>
+					<result>
+466
+17:15
+I
+A
+HC DRITA GIJAN (SRB)
+VIRUM SORGENFRI "B" (DNK)
+6	0
+					</result>
+					<result>
+467
+18:00
+I
+A
+MDST JASZBERENY (HUN)
+VIRUM SORGENFRI "A" (DNK)
+0	6
+					</result>
+					<result>
+468
+18:45
+L
+C
+HC TERAMO 2002 (ITA)
+CLUB ILINDEN SKOPJE (MKD)
+10	3
+					</result>
+				</playground>
+				<playground>
+					<name>Campo 11</name>
+					<result>
+406
+09:15
+M
+B
+DYBBOL IU "A" (DNK)
+ALBERTSLUND IF "B" (DNK)
+7	11
+					</result>
+					<result>
+407
+10:00
+M
+C
+HC OLIMPUS CHISINAU (MDA)
+WHC NIKSIC (MNE)
+5	28
+					</result>
+					<result>
+408
+10:45
+M
+B
+FS ETNIKOS KOZANIS (GRC)
+GL UKS SWIDNICA (POL)
+6	0
+					</result>
+					<result>
+409
+11:30
+D
+D
+ETIEC MENDOZA (ARG)
+HC CONCORDIA (AND)
+19	14
+					</result>
+					<result>
+470
+15:45
+L
+C
+MSS TERMO (UKR)
+HC PANAGURISHTE (BGR)
+15	17
+					</result>
+					<result>
+471
+16:30
+L
+A
+ZAGLEBIE LUBIN (POL)
+CHARLOTTENLUND (NOR)
+0	6
+					</result>
+					<result>
+472
+17:15
+L
+A
+VIRUM SORGENFRI "A" (DNK)
+SPE STROVOLOS (CYP)
+0	6
+					</result>
+					<result>
+473
+18:00
+L
+A
+KOZANIS 2011 (GRC)
+HC OLIMPUS CHISINAU (MDA)
+0	6
+					</result>
+					<result>
+474
+18:45
+L
+B
+VIRUM SORGENFRI "B" (DNK)
+KERICHO SCHOOL (KEN)
+22	14
+					</result>
+				</playground>
+				<playground>
+					<name>Campo 12</name>
+					<result>
+410
+08:30
+L
+B
+ENGLAND HANDBALL (GBR)
+KS SOSNICA GLIWICE (POL)
+9	20
+					</result>
+					<result>
+411
+09:15
+D
+D
+COURSEULLES HB "A" (FRA)
+SOKOL UVALY (CZE)
+13	18
+					</result>
+					<result>
+412
+10:00
+D
+C
+TVIS KFUM "A" (DNK)
+SOUTH KOREA (KOR)
+16	16
+					</result>
+					<result>
+413
+10:45
+I
+A
+VIRUM SORGENFRI "B" (DNK)
+SOUTH KOREA (KOR)
+6	0
+					</result>
+					<result>
+475
+15:00
+N
+C
+UKS DWOIJA BESKID "A" (POL)
+HRK KOSACA MOSTAR (BIH)
+5	17
+					</result>
+					<result>
+476
+15:45
+L
+B
+ENGLAND HANDBALL (GBR)
+IOANNINON (GRC)
+6	0
+					</result>
+					<result>
+477
+16:30
+M
+D
+CLUB LEVIS (CAN)
+ZRK BUDUCNOST (MNE)
+5	22
+					</result>
+					<result>
+478
+17:15
+M
+D
+DYBBOL IU "B" (DNK)
+C.A. MONTEVIDEO (URY)
+3	17
+					</result>
+					<result>
+479
+18:00
+N
+C
+ALBERTSLUND IF (DNK)
+VIRUM SORGENFRI "B" (DNK)
+12	11
+					</result>
+				</playground>
+				<playground>
+					<name>Campo 13</name>
+					<result>
+414
+10:30
+F
+A
+JERSIE HK (DNK)
+FIORENTINA H. (ITA)
+21	4
+					</result>
+					<result>
+415
+11:15
+O
+A
+JERSIE HK "B" (DNK)
+JERSIE HK "A" (DNK)
+2	16
+					</result>
+					<result>
+480
+16:30
+C
+B
+JERSIE HK "B" (DNK)
+TVIS KFUM "B" (DNK)
+15	14
+					</result>
+					<result>
+481
+17:15
+D
+D
+ETIEC MENDOZA (ARG)
+LYCEE A. MAYRISCH (LUX)
+24	18
+					</result>
+					<result>
+482
+18:00
+M
+A
+JERSIE HK "A" (DNK)
+VALLENTUNA HK (SWE)
+19	7
+					</result>
+				</playground>
+				<playground>
+					<name>Campo 15</name>
+					<result>
+483
+15:45
+C
+C
+HC OLIMPUS CHISINAU (MDA)
+PALL. L'AQUILA (ITA)
+6	0
+					</result>
+					<result>
+484
+16:30
+D
+C
+HC OLIMPUS CHISINAU (MDA)
+TUS NIEDER ESCHBACH (DEU)
+10	14
+					</result>
+					<result>
+485
+17:15
+F
+A
+ESTUDIANTES (BEL)
+HC OLIMPUS CHISINAU (MDA)
+8	3
+					</result>
+				</playground>
+				<playground>
+					<name>Campo 16</name>
+					<result>
+486
+18:00
+B/G
+A
+TEKNOELETTRONICA TERAMO (ITA)
+PALL. CAPUA (ITA)
+10	22					
+					</result>
+				</playground>
+			</results>
+		</tournament>
+	</host>
+</demo_data>

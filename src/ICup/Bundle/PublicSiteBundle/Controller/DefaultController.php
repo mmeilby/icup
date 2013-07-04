@@ -36,6 +36,8 @@ class DefaultController extends Controller
         try {
             $dbConfig = file_get_contents(dirname(__DIR__) . '/Tests/Data/InteramniaWorldCup2013.xml');
         } catch (ParseException $e) {
+            echo dirname(__DIR__) . '/Tests/Data/InteramniaWorldCup2013.xml<br />';
+            echo 'Could not parse the query form config file: ' . $e->getMessage();
             throw new ParseException('Could not parse the query form config file: ' . $e->getMessage());
         }
         $xml = simplexml_load_string($dbConfig, null, LIBXML_NOWARNING);

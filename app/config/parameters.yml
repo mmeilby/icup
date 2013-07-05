@@ -12,7 +12,7 @@ parameters:
     mailer_user:       mmeilby@gmail.com
     mailer_password:   bingoboy
 
-    security_password: bingoboy
+    security_password: sVP283bojn023
     
     locale:            da
     secret:            95e910aceacd17510f316697a05adbaf3e

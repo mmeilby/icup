@@ -61,6 +61,39 @@ class DefaultController extends Controller
     private function drillDownXml($host) {
         $em = $this->getDoctrine()->getManager();
 
+        $qb = $em->createQuery("delete from ICup\Bundle\PublicSiteBundle\Entity\Doctrine\Host");
+        $qb->getResult();
+        
+        $qb = $em->createQuery("delete from ICup\Bundle\PublicSiteBundle\Entity\Doctrine\Tournament");
+        $qb->getResult();
+        
+        $qb = $em->createQuery("delete from ICup\Bundle\PublicSiteBundle\Entity\Doctrine\Site");
+        $qb->getResult();
+        
+        $qb = $em->createQuery("delete from ICup\Bundle\PublicSiteBundle\Entity\Doctrine\Playground");
+        $qb->getResult();
+        
+        $qb = $em->createQuery("delete from ICup\Bundle\PublicSiteBundle\Entity\Doctrine\Category");
+        $qb->getResult();
+        
+        $qb = $em->createQuery("delete from ICup\Bundle\PublicSiteBundle\Entity\Doctrine\Group");
+        $qb->getResult();
+        
+        $qb = $em->createQuery("delete from ICup\Bundle\PublicSiteBundle\Entity\Doctrine\Club");
+        $qb->getResult();
+        
+        $qb = $em->createQuery("delete from ICup\Bundle\PublicSiteBundle\Entity\Doctrine\Team");
+        $qb->getResult();
+        
+        $qb = $em->createQuery("delete from ICup\Bundle\PublicSiteBundle\Entity\Doctrine\GroupOrder");
+        $qb->getResult();
+        
+        $qb = $em->createQuery("delete from ICup\Bundle\PublicSiteBundle\Entity\Doctrine\Match");
+        $qb->getResult();
+        
+        $qb = $em->createQuery("delete from ICup\Bundle\PublicSiteBundle\Entity\Doctrine\MatchRelation");
+        $qb->getResult();
+
         $hostrec = new Host();
         $hostrec->setName((String)$host->name);
         $em->persist($hostrec);
@@ -357,7 +390,11 @@ class DefaultController extends Controller
     }
     
     public static function getTournament($controller) {
-        return 1;
+        $em = $controller->getDoctrine()->getManager();
+        $query = $em->createQuery('SELECT t.id FROM ICup\Bundle\PublicSiteBundle\Entity\Doctrine\Tournament t');
+        $ids = $query->getResult();
+        $id = array_pop(&$ids);
+        return $id['id'];
     }
     
     public static function getImagePath($controller) {

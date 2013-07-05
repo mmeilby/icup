@@ -393,8 +393,8 @@ class DefaultController extends Controller
         $em = $controller->getDoctrine()->getManager();
         $query = $em->createQuery('SELECT t.id FROM ICup\Bundle\PublicSiteBundle\Entity\Doctrine\Tournament t');
         $ids = $query->getResult();
-        $id = array_pop(&$ids);
-        return $id['id'];
+        $size = count($ids);
+        return $ids[$size-1]['id'];
     }
     
     public static function getImagePath($controller) {

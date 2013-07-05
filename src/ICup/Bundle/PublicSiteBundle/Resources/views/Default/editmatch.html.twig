@@ -1,10 +1,11 @@
 {% extends "base.html.twig" %}
 
 {% block body %}
+<h1 class="category">{{ tournament.name }}</h1>
+<p class="subcategory">{% trans %}EDITRESULTS{% endtrans %}</p>
 <p class="subgroup">{{ playground.name }}</p>
 <p>
     <form action="{{ path('_editmatchpost') }}" method="post">
-    <input type="submit" value="Save">
     <table>
         <thead>
             <tr>
@@ -47,6 +48,9 @@
             </tr>
         </tfoot>
     </table>
+    <div style="text-align: right;">
+        <input type="submit" value="Save">
+    </div>
     </form>
 </p>
 {% endblock %}

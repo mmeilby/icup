@@ -1,0 +1,37 @@
+{% extends "base.html.twig" %}
+
+{% block body %}
+<a href="{{ path('_showtournament') }}">
+    <h1 class="category">{% trans %}LOGIN{% endtrans %}</h1>
+</a>
+<p class="subcategory">
+    {{ tournament.name }}
+</p>
+<div class="form_content">
+    {% if error %}
+        <div class="form_error">{{ error.message }}</div>
+    {% endif %}
+
+    <form action="{{ path("_security_check") }}" method="post" id="login">
+        <div class="query_row">
+            <div class="query_label">
+                <label for="username">{% trans %}USERNAME{% endtrans %}:</label>
+            </div>
+            <div class="query_widget">
+                <input type="text" id="username" name="_username" value="{{ last_username }}" />
+            </div>
+            <div style="clear:both"></div>
+        </div>
+        <div class="query_row">
+            <div class="query_label">
+                <label for="password">{% trans %}PASSWORD{% endtrans %}:</label>
+            </div>
+            <div class="query_widget">
+                <input type="password" id="password" name="_password" />
+            </div>
+            <div style="clear:both"></div>
+        </div>
+        <input type="submit" class="symfony-button-grey" value="{% trans %}LOGIN{% endtrans %}" />
+    </form>
+</div>
+{% endblock %}

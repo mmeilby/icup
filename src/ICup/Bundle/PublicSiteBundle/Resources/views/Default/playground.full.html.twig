@@ -29,7 +29,9 @@
     {% if match.schedule|date('d-M-Y') != catdate %}
             <tr class="{{ cycle(['even','odd'],loop.index) }}">
                 <td class="date_solo" colspan="10">
+                    <a href="{{ path('_editmatch', { 'playgroundid': playground.id, 'date': match.schedule|date('d-m-Y')}) }}">
                     {{ ['WEEK.',match.schedule|date('D')|upper]|join|trans|capitalize }}{{ match.schedule|date(' j. ') }}{{ ['MONTH.',match.schedule|date('M')|upper]|join|trans }}
+                    </a>    
                 </td>
             </tr>
         {% set catdate = match.schedule|date('d-M-Y') %}

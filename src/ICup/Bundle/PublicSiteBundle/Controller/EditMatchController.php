@@ -2,10 +2,12 @@
 namespace ICup\Bundle\PublicSiteBundle\Controller;
 
 use DateTime;
+use JMS\SecurityExtraBundle\Annotation\Secure;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
+use Symfony\Component\Security\Core\SecurityContext;
 
 class EditMatchController extends Controller
 {
@@ -19,12 +21,17 @@ class EditMatchController extends Controller
 
     /**
      * @Route("/edit/{playgroundid}/{date}", name="_editmatch")
+     * @Secure(roles="ROLE_ADMIN")
      * @Template("ICupPublicSiteBundle:Default:editmatch.html.twig")
      */
     public function listAction($playgroundid, $date)
     {
         $countries = DefaultController::getCountries();
         $em = $this->getDoctrine()->getManager();
+
+        $tournamentId = DefaultController::getTournament($this);
+        $tournament = $em->getRepository('ICup\Bundle\PublicSiteBundle\Entity\Doctrine\Tournament')
+                            ->find($tournamentId);
 
         $playground = $em->getRepository('ICup\Bundle\PublicSiteBundle\Entity\Doctrine\Playground')
                             ->find($playgroundid);
@@ -130,7 +137,7 @@ class EditMatchController extends Controller
                 }
             }
         }
-        return array('playground' => $playground, 'matchlist' => $matchList, 'imagepath' => DefaultController::getImagePath($this));
+        return array('tournament' => $tournament, 'playground' => $playground, 'matchlist' => $matchList, 'imagepath' => DefaultController::getImagePath($this));
     }
 
     /**
@@ -194,11 +201,54 @@ class EditMatchController extends Controller
                 $match = $em->getRepository('ICup\Bundle\PublicSiteBundle\Entity\Doctrine\Match')
                                     ->find($m);
                 if ($match != null) {
-                    $playgroundid = $match->getPid();
+                    $playgroundid = $match->getPlayground();
                 }
             }
         }
         $em->flush();
         return $this->redirect($this->generateUrl('_showplayground_full', array('playgroundid' => $playgroundid)));
     }    
+    
+    /**
+     * @Route("/edit/login", name="_admin_login")
+     * @Template("ICupPublicSiteBundle:Default:login.html.twig")
+     */
+    public function loginAction()
+    {
+        $request = $this->getRequest();
+        if ($request->attributes->has(SecurityContext::AUTHENTICATION_ERROR)) {
+            $error = $request->attributes->get(SecurityContext::AUTHENTICATION_ERROR);
+        } else {
+            $error = $request->getSession()->get(SecurityContext::AUTHENTICATION_ERROR);
+        }
+
+        $tournamentId = DefaultController::getTournament($this);
+        $em = $this->getDoctrine()->getManager();
+
+        $tournament = $em->getRepository('ICup\Bundle\PublicSiteBundle\Entity\Doctrine\Tournament')
+                            ->find($tournamentId);
+        
+        return array(
+            'last_username' => $request->getSession()->get(SecurityContext::LAST_USERNAME),
+            'tournament'    => $tournament,
+            'error'         => $error,
+        );
+    }
+
+    /**
+     * @Route("/edit/login_check", name="_security_check")
+     */
+    public function securityCheckAction()
+    {
+        // The security layer will intercept this request
+    }
+
+    /**
+     * @Route("/edit/logout", name="_admin_logout")
+     */
+    public function logoutAction()
+    {
+        // The security layer will intercept this request
+    }
+
 }

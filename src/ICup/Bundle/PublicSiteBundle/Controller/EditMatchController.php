@@ -30,12 +30,22 @@ class EditMatchController extends Controller
         $em = $this->getDoctrine()->getManager();
 
         $tournamentId = DefaultController::getTournament($this);
+        if ($tournamentId == 0) {
+            return $this->redirect($this->generateUrl('_showtournament'));
+        }
         $tournament = $em->getRepository('ICup\Bundle\PublicSiteBundle\Entity\Doctrine\Tournament')
                             ->find($tournamentId);
 
         $playground = $em->getRepository('ICup\Bundle\PublicSiteBundle\Entity\Doctrine\Playground')
                             ->find($playgroundid);
-
+        if ($playground == null) {
+            return $this->redirect($this->generateUrl('_showtournament'));
+        }
+        $reqDate = DateTime::createFromFormat('d-m-Y', $date);
+        if ($reqDate == null) {
+            return $this->redirect($this->generateUrl('_showtournament'));
+        }
+            
         $qb = $em->createQuery("select m.id,m.matchno,m.date,m.time,g.id as gid,g.name as grp,cat.name as category,r.id as rid,r.awayteam,r.scorevalid,r.score,r.points,t.id as tid,t.name as team,t.division,c.country ".
                                "from ICup\Bundle\PublicSiteBundle\Entity\Doctrine\MatchRelation r, ".
                                     "ICup\Bundle\PublicSiteBundle\Entity\Doctrine\Match m, ".
@@ -52,7 +62,7 @@ class EditMatchController extends Controller
                                      "c.id=t.pid ".
                                "order by m.id");
         $qb->setParameter('playground', $playgroundid);
-        $qb->setParameter('date', str_replace('-', '/', $date));
+        $qb->setParameter('date', $reqDate->format('d/m/Y'));
         $matches = $qb->getResult();
 
         $matchList = array();
@@ -142,6 +152,7 @@ class EditMatchController extends Controller
 
     /**
      * @Route("/edit", name="_editmatchpost")
+     * @Secure(roles="ROLE_ADMIN")
      * @Method("POST")
      * @Template("ICupPublicSiteBundle:Default:index.html.twig")
      */
@@ -172,6 +183,7 @@ class EditMatchController extends Controller
             }
         }
         $playgroundid = 0;
+        $reqDate = '';
         foreach ($updatedRelations as $m => $relationslist) {
             $relA = $relationslist[0];
             $relB = $relationslist[1];
@@ -202,11 +214,21 @@ class EditMatchController extends Controller
                                     ->find($m);
                 if ($match != null) {
                     $playgroundid = $match->getPlayground();
+                    $reqDate = DateTime::createFromFormat('d/m/Y', $match->getDate());
                 }
             }
         }
         $em->flush();
-        return $this->redirect($this->generateUrl('_showplayground_full', array('playgroundid' => $playgroundid)));
+        
+        $nextid = $playgroundid + 1;
+        $playground = $em->getRepository('ICup\Bundle\PublicSiteBundle\Entity\Doctrine\Playground')
+                            ->find($nextid);
+        if ($playground != null) {
+            return $this->redirect($this->generateUrl('_editmatch', array('playgroundid' => $nextid, 'date' => $reqDate->format('d-m-Y'))));
+        }
+        else {
+            return $this->redirect($this->generateUrl('_showtournament'));
+        }
     }    
     
     /**

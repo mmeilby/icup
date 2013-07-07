@@ -391,10 +391,9 @@ class DefaultController extends Controller
     
     public static function getTournament($controller) {
         $em = $controller->getDoctrine()->getManager();
-        $query = $em->createQuery('SELECT t.id FROM ICup\Bundle\PublicSiteBundle\Entity\Doctrine\Tournament t');
-        $ids = $query->getResult();
-        $size = count($ids);
-        return $ids[$size-1]['id'];
+        $query = $em->createQuery('SELECT max(t.id) FROM ICup\Bundle\PublicSiteBundle\Entity\Doctrine\Tournament t');
+        $idmax = $query->getResult();
+        return $idmax[0][1];
     }
     
     public static function getImagePath($controller) {

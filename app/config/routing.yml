@@ -2,9 +2,3 @@ i_cup_public_site:
     resource: "@ICupPublicSiteBundle/Controller/"
     type:     annotation
     prefix:   /
-
-contact:
-    path:      /{_locale}/switch
-    defaults:  { _controller: ICupPublicSiteBundle:Default:switch, _locale: en }
-    requirements:
-        _locale: en|da|it

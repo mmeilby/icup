@@ -1,15 +1,15 @@
-icup.language: IT
+icup.language: ITs
 icup.charset: UTF-8
 
 CATEGORY: Categoria
 GROUP: Girone
 TEAM: Squadra
 FIELD: Campo
-CATEGORIES: Categori
+CATEGORIES: Categorie
 PLAYGROUNDS: Campi
 
-RESULTS: Risultati di 2013
-EDITRESULTS: Coretta di resultati
+RESULTS: Risultati 2013
+EDITRESULTS: Aggiornamento dei risultati
 LOGIN: Login
 USERNAME: Username
 PASSWORD: Password
@@ -29,8 +29,8 @@ LEGEND:
   GOALS:
     WON: R.F.
     LOST: R.S.
-    DIFF: R.D.
-  POINTS: T
+    DIFF: D.R.
+  POINTS: P
   RESULT: Risultato
 
 MU12: Maschile

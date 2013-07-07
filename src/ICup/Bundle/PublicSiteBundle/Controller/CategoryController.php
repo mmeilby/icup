@@ -24,6 +24,7 @@ class CategoryController extends Controller
      */
     public function listAction($categoryid)
     {
+        DefaultController::switchLanguage($this);
         $countries = DefaultController::getCountries();
         $em = $this->getDoctrine()->getManager();
 

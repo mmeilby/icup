@@ -14,6 +14,11 @@ LOGIN: Log på
 USERNAME: Brugernavn
 PASSWORD: Kodeord
 
+LANG:
+    EN: Engelsk
+    DA: Dansk
+    IT: Italiensk
+    
 LEGEND:
   NO: Nr.
   TIME: Tid

@@ -3,6 +3,17 @@
 {% block body %}
 <h1 class="category">{{ tournament.name }}</h1>
 <p class="subcategory">{% trans %}RESULTS{% endtrans %}</p>
+<div style="text-align: right; width: 100%;">
+    <a href="{{ path('_switch', { 'locale': 'en' }) }}">
+        <img src="{{ imagepath }}/flags/gb.png" alt="{{ 'LANG.EN'|trans }}" title="{{ 'LANG.EN'|trans }}">
+    </a>
+    <a href="{{ path('_switch', { 'locale': 'it' }) }}">
+        <img src="{{ imagepath }}/flags/it.png" alt="{{ 'LANG.IT'|trans }}" title="{{ 'LANG.IT'|trans }}">
+    </a>
+    <a href="{{ path('_switch', { 'locale': 'da' }) }}">
+        <img src="{{ imagepath }}/flags/dk.png" alt="{{ 'LANG.DA'|trans }}" title="{{ 'LANG.DA'|trans }}">
+    </a>
+</div>
 <div style="float: left; padding-right: 20px;">
     <table>
         <thead>

@@ -21,6 +21,18 @@ use Symfony\Component\Yaml\Exception\ParseException;
 class DefaultController extends Controller
 {
     /**
+     * @Route("/switch/{locale}", name="_switch")
+     * @Template()
+     */
+    public function switchAction($locale)
+    {
+        $request = $this->getRequest();
+        $session = $request->getSession();
+        $session->set('locale', $locale);
+        return $this->redirect($this->generateUrl('_showtournament'));
+    }
+
+    /**
      * @Route("/init")
      * @Template()
      */
@@ -366,14 +378,17 @@ class DefaultController extends Controller
         return $playgroundrec->getId();
     }
 
-    public function switchAction()
+    public static function switchLanguage($container)
     {
-        $request = $this->getRequest();
+        /* @var $request \Symfony\Component\HttpFoundation\Request */
+        /* @var $session \Symfony\Component\HttpFoundation\Session */
+        $request = $container->getRequest();
         $session = $request->getSession();
-        $session->set('_locale', 'en_US');
-        return $this->render('ICupPublicSiteBundle:Default:index.html.twig');
+        $language = $session->get('locale', $request->getPreferredLanguage());
+        if (!array_key_exists($language, array('en', 'da', 'it'))) $language = 'en';
+        $request->setLocale($session->get('locale', $request->getPreferredLanguage()));
     }
-    
+
     public static function getCountries()
     {
         try {

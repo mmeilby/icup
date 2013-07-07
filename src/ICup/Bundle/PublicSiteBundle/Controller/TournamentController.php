@@ -13,6 +13,7 @@ class TournamentController extends Controller
      */
     public function listAction()
     {
+        DefaultController::switchLanguage($this);
         $tournamentId = DefaultController::getTournament($this);
         $em = $this->getDoctrine()->getManager();
 

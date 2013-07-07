@@ -26,6 +26,7 @@ class EditMatchController extends Controller
      */
     public function listAction($playgroundid, $date)
     {
+        DefaultController::switchLanguage($this);
         $countries = DefaultController::getCountries();
         $em = $this->getDoctrine()->getManager();
 
@@ -237,6 +238,7 @@ class EditMatchController extends Controller
      */
     public function loginAction()
     {
+        DefaultController::switchLanguage($this);
         $request = $this->getRequest();
         if ($request->attributes->has(SecurityContext::AUTHENTICATION_ERROR)) {
             $error = $request->attributes->get(SecurityContext::AUTHENTICATION_ERROR);

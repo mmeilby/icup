@@ -22,6 +22,7 @@ class PlaygroundController extends Controller
      */
     public function listAction($playgroundid, $groupid)
     {
+        DefaultController::switchLanguage($this);
         $countries = DefaultController::getCountries();
         $em = $this->getDoctrine()->getManager();
 
@@ -128,6 +129,7 @@ class PlaygroundController extends Controller
      */
     public function listAllAction($playgroundid)
     {
+        DefaultController::switchLanguage($this);
         $countries = DefaultController::getCountries();
         $em = $this->getDoctrine()->getManager();
 

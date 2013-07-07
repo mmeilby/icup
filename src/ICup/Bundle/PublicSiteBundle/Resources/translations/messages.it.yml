@@ -14,6 +14,11 @@ LOGIN: Login
 USERNAME: Username
 PASSWORD: Password
 
+LANG:
+    EN: Inglese
+    DA: Danese
+    IT: Italiano
+
 LEGEND:
   NO: Gara
   TIME: Orario

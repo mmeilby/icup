@@ -1,7 +1,9 @@
 {% extends "base.html.twig" %}
 
 {% block body %}
-<h1 class="category">{{ tournament.name }}</h1>
+<a href="{{ path('_showtournament') }}">
+    <h1 class="category">{{ tournament.name }}</h1>
+</a>
 <p class="subcategory">{% trans %}EDITRESULTS{% endtrans %}</p>
 <p class="subgroup">{{ playground.name }}</p>
 <p>
@@ -56,7 +58,7 @@
         </tfoot>
     </table>
     <div style="text-align: right;">
-        <input type="submit" value="Save">
+        <input type="submit" value="{% trans %}SAVE{% endtrans %}">
     </div>
     </form>
 </p>

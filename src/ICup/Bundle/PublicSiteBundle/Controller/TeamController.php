@@ -22,6 +22,7 @@ class TeamController extends Controller
      */
     public function listAction($teamid, $groupid)
     {
+        DefaultController::switchLanguage($this);
         $countries = DefaultController::getCountries();
         $em = $this->getDoctrine()->getManager();
 

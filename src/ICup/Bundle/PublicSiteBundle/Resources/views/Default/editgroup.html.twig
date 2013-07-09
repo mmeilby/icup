@@ -6,18 +6,18 @@
 <a href="{{ path('_editmenu', {'categoryId': category.id }) }}">
     <h1 class="category">{{ tournament.name }}</h1>
 </a>
-<p class="subcategory">{% trans %}EDITMATCH{% endtrans %}</p>
+<p class="subcategory">{% trans %}EDITGROUP{% endtrans %}</p>
 <p class="subgroup">
     {{ [category.gender,category.classification]|join|trans }}
     {{ category.classification|trans }}
 </p>
 <p>
-    <form action="{{ path('_newmatchpost', {'categoryId': category.id }) }}" method="POST">
-        <p>Indtast navn og e-mail adresse på respondenten.</p>
+    <form action="{{ path('_newgrouppost', {'categoryId': category.id }) }}" method="POST">
+        <p>Indtast oplysninger på puljen.</p>
         {{ form_rest(form) }}
         
         <div style="float: right;">
-            <input type="submit" name="invite" value="Inviter" class="form_button" />
+            <input type="submit" name="save" value="Save" class="form_button" />
         </div>
     </form>
 </p>

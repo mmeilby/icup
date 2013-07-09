@@ -9,7 +9,11 @@
     {{ category.classification|trans }}
 </p>
 {% for group in grouplist %}
+    {% if group.group.classification == 0 %}
     <h2 class="group">{% trans %}GROUP{% endtrans %} {{ group.group.name }}</h2>
+    {% else %}
+    <h2 class="group">{{ ['GROUPCLASS.',group.group.classification]|join|trans }}</h2>
+    {% endif %}
     <p>
         <table>
             <thead>

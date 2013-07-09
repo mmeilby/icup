@@ -1,23 +1,21 @@
 <?php
 namespace ICup\Bundle\PublicSiteBundle\Controller;
 
-use ICup\Bundle\PublicSiteBundle\Entity\Doctrine\Match;
-use ICup\Bundle\PublicSiteBundle\Entity\Doctrine\MatchRelation;
-use ICup\Bundle\PublicSiteBundle\Entity\Match as MatchForm;
+use ICup\Bundle\PublicSiteBundle\Entity\Doctrine\GroupOrder;
 use JMS\SecurityExtraBundle\Annotation\Secure;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 
-class EditMatchController extends Controller
+class EditGroupOrderController extends Controller
 {
     /**
-     * Add or update the match information
-     * @Route("/edit/new/match/{categoryId}", name="_newmatch")
+     * Add or update the group information
+     * @Route("/edit/new/grouporder/{categoryId}", name="_newgrouporder")
      * @Secure(roles="ROLE_ADMIN")
      * @Method("GET")
-     * @Template("ICupPublicSiteBundle:Default:editmatch.html.twig")
+     * @Template("ICupPublicSiteBundle:Default:editgrouporder.html.twig")
      */
     public function newAction($categoryId) {
         DefaultController::switchLanguage($this);
@@ -30,16 +28,16 @@ class EditMatchController extends Controller
         $category = $em->getRepository('ICup\Bundle\PublicSiteBundle\Entity\Doctrine\Category')
                             ->find($categoryId);
 
-        $form = $this->makeform($tournamentId, $category);
+        $form = $this->makeform($category);
         return array('form' => $form->createView(), 'tournament' => $tournament, 'category' => $category);
     }
 
     /**
-     * Add or update the match information
-     * @Route("/edit/new/match/{categoryId}", name="_newmatchpost")
+     * Add or update the group information
+     * @Route("/edit/new/grouporder/{categoryId}", name="_newgrouporderpost")
      * @Secure(roles="ROLE_ADMIN")
      * @Method("POST")
-     * @Template("ICupPublicSiteBundle:Default:editmatch.html.twig")
+     * @Template("ICupPublicSiteBundle:Default:editgrouporder.html.twig")
      */
     public function newPostAction($categoryId) {
         DefaultController::switchLanguage($this);
@@ -52,45 +50,18 @@ class EditMatchController extends Controller
         $category = $em->getRepository('ICup\Bundle\PublicSiteBundle\Entity\Doctrine\Category')
                             ->find($categoryId);
 
-        $form = $this->makeform($tournamentId, $category);
+        $form = $this->makeform($category);
         $request = $this->getRequest();
         $form->bind($request);
         if ($form->isValid()) {
             $formData = $form->getData();
-
-            $matchrec = new Match();
-            $matchrec->setDate($formData->getDate());
-            $matchrec->setMatchno($formData->getMatchno());
-            $matchrec->setPid($formData->getPid());
-            $matchrec->setPlayground($formData->getPlayground());
-            $matchrec->setTime($formData->getTime());
-            $em->persist($matchrec);
-            $em->flush();
-
-            $resultreq = new MatchRelation();
-            $resultreq->setPid($matchrec->getId());
-            $resultreq->setCid($formData->getTeamA());
-            $resultreq->setAwayteam(false);
-            $resultreq->setScorevalid(false);
-            $resultreq->setScore(0);
-            $resultreq->setPoints(0);
-            $em->persist($resultreq);
-
-            $resultreq = new MatchRelation();
-            $resultreq->setPid($matchrec->getId());
-            $resultreq->setCid($formData->getTeamB());
-            $resultreq->setAwayteam(true);
-            $resultreq->setScorevalid(false);
-            $resultreq->setScore(0);
-            $resultreq->setPoints(0);
-            $em->persist($resultreq);
-
+            $em->persist($formData);
             $em->flush();
         }
         return array('form' => $form->createView(), 'tournament' => $tournament, 'category' => $category);
     }
     
-    private function makeform($tournamentId, $category) {
+    private function makeform($category) {
         $em = $this->getDoctrine()->getManager();
         $groups = $em->getRepository('ICup\Bundle\PublicSiteBundle\Entity\Doctrine\Group')
                             ->findBy(array('pid' => $category->getId()));
@@ -98,20 +69,7 @@ class EditMatchController extends Controller
         foreach ($groups as $group) {
             $groupnames[$group->getId()] = $group->getName();
         }
-        
-        $qb = $em->createQuery("select p ".
-                               "from ICup\Bundle\PublicSiteBundle\Entity\Doctrine\Site s, ".
-                                    "ICup\Bundle\PublicSiteBundle\Entity\Doctrine\Playground p ".
-                               "where s.pid=:tournament and ".
-                                     "p.pid=s.id ".
-                               "order by p.no");
-        $qb->setParameter('tournament', $tournamentId);
-        $playgrounds = $qb->getResult();
-        $playgroundnames = array();
-        foreach ($playgrounds as $playground) {
-            $playgroundnames[$playground->getId()] = $playground->getName();
-        }
-        
+
         $qb = $em->createQuery("select t ".
                                "from ICup\Bundle\PublicSiteBundle\Entity\Doctrine\Team t, ".
                                     "ICup\Bundle\PublicSiteBundle\Entity\Doctrine\GroupOrder o, ".
@@ -131,15 +89,10 @@ class EditMatchController extends Controller
             $teamnames[$team->getId()] = $name;
         }
 
-        $formData = new MatchForm();
+        $formData = new GroupOrder();
         $formDef = $this->createFormBuilder($formData);
         $formDef->add('pid', 'choice', array('label' => 'Gruppe', 'required' => false, 'choices' => $groupnames, 'empty_value' => 'Vælg...'));
-        $formDef->add('matchno', 'text', array('label' => 'Match', 'required' => false));
-        $formDef->add('date', 'text', array('label' => 'Dato', 'required' => false));
-        $formDef->add('time', 'text', array('label' => 'Tid', 'required' => false));
-        $formDef->add('playground', 'choice', array('label' => 'Bane', 'required' => false, 'choices' => $playgroundnames, 'empty_value' => 'Vælg...'));
-        $formDef->add('teamA', 'choice', array('label' => 'Hjemmehold', 'required' => false, 'choices' => $teamnames, 'empty_value' => 'Vælg...'));
-        $formDef->add('teamB', 'choice', array('label' => 'Udehold', 'required' => false, 'choices' => $teamnames, 'empty_value' => 'Vælg...'));
+        $formDef->add('cid', 'choice', array('label' => 'Hold', 'required' => false, 'choices' => $teamnames, 'empty_value' => 'Vælg...'));
         return $formDef->getForm();
     }
 }

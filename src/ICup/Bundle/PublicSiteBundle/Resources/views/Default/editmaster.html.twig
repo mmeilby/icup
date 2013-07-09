@@ -1,9 +1,12 @@
 {% extends "base.html.twig" %}
 
 {% block body %}
-<h1 class="category">{{ tournament.name }}</h1>
+<div class="admin">
+<a href="{{ path('_showtournament') }}">
+    <h1 class="category">{{ tournament.name }}</h1>
+</a>
 <p class="subcategory">
-    {% trans %}RESULTS{% endtrans %}<br />
+    {% trans %}ADMIN{% endtrans %}<br />
 </p>
 <p class="language">
     <a href="{{ path('_switch', { 'locale': 'en' }) }}">
@@ -27,7 +30,7 @@
 {% for category in categories %}
             <tr class="{{ cycle(['even','odd'],loop.index) }}">
                 <td class="categories">
-                    <a href="{{ path('_showcategory', { 'categoryid': category.id }) }}">
+                    <a href="{{ path('_editmenu', { 'categoryId': category.id }) }}">
                         <b>{% trans %}CATEGORY{% endtrans %} {{ category.name }}</b>
                     </a><br />
                         {{ [category.gender,category.classification]|join|trans }}
@@ -42,30 +45,9 @@
             </tr>
         </tfoot>
     </table>
+    <a href="{{ path('_editcategory') }}">
+        <b>{% trans %}NEWCATEGORY{% endtrans %}</b>
+    </a>
 </div>
-<div style="float: left;">
-    <table>
-        <thead>
-            <tr>
-                <td>{% trans %}PLAYGROUNDS{% endtrans %}</td>
-            </tr>
-        </thead>
-        <tboby>
-{% for playground in playgrounds %}
-            <tr class="{{ cycle(['even','odd'],loop.index) }}">
-                <td class="playgrounds">
-                    <a href="{{ path('_showplayground_full', { 'playgroundid': playground.id }) }}">
-                        {{ playground.name }}
-                    </a>
-                </td>
-            </tr>
-{% endfor %}
-        </tboby>
-        <tfoot>
-            <tr>
-                <td colspan="1"></td>
-            </tr>
-        </tfoot>
-    </table>
 </div>
 {% endblock %}

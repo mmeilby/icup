@@ -13,11 +13,28 @@ EDITRESULTS: Rediger resultater
 LOGIN: Log på
 USERNAME: Brugernavn
 PASSWORD: Kodeord
+CHOOSELANG: Vælg sprog
 
+ADMIN: Administration
+NEWCATEGORY: Opret ny gruppe
+NEWGROUP: Opret ny pulje
+ADDTEAM: Tilknyt hold til pulje
+NEWMATCH: Opret kamp
+
+EDITCATEGORY: Administrer gruppe
+EDITGROUP: Administrer pulje
+EDITGROUPORDER: Administrer hold i pulje
+EDITMATCH: Administrer kamp
+
+GROUPCLASS:
+  1: Playoff
+  9: Semifinale
+  10: Finale
+    
 LANG:
-    EN: Engelsk
-    DA: Dansk
-    IT: Italiensk
+  EN: Engelsk
+  DA: Dansk
+  IT: Italiensk
     
 LEGEND:
   NO: Nr.

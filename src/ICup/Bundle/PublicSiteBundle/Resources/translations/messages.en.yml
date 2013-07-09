@@ -13,7 +13,24 @@ EDITRESULTS: Edit results
 LOGIN: Login
 USERNAME: Username
 PASSWORD: Password
+CHOOSELANG: Choose language
 
+ADMIN: Administration
+NEWCATEGORY: Add new category
+NEWGROUP: Add new group
+ADDTEAM: Add team to group
+NEWMATCH: Add match
+
+EDITCATEGORY: Update category
+EDITGROUP: Update group
+EDITGROUPORDER: Add team to group
+EDITMATCH: Add match
+
+GROUPCLASS:
+  1: Playoff
+  9: Semifinale
+  10: Finale
+    
 LANG:
     EN: English
     DA: Danish

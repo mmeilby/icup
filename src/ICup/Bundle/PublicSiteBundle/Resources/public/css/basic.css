@@ -59,7 +59,13 @@ P.subgroup {
     top: -18px;
     font-weight: bold;    
 }
-
+P.language {
+    position: relative;
+    top: -18px;
+    font-size: 12px;
+    margin-top: 0px;
+    margin-bottom: 10px;
+}
 THEAD TR TD {
     font-weight: bold;
 }
@@ -137,6 +143,9 @@ TD.categories {
     width: 200px;
 }
 
+DIV.admin {
+    background-color: lightpink;
+}
 
 
 

@@ -1,0 +1,32 @@
+{% extends "base.html.twig" %}
+
+{% block choice_widget_expanded %}
+{% spaceless %}
+    <div>
+    {% for child in form %}
+    	<div {{ block('widget_container_attributes') }}>
+	        {{ form_label(child) }}<br/>
+	        {{ form_widget(child) }}
+        </div>
+    {% endfor %}
+    </div>
+{% endspaceless %}
+{% endblock choice_widget_expanded %}
+
+
+{% block field_row %}
+{% spaceless %}
+    <div class="query_row">
+        <div class="query_label">
+		    {{ form_label(form) }}
+        </div>
+        <div class="query_widget">
+            {{ form_widget(form) }}
+            <div class="form_error">
+                {{ form_errors(form) }}
+            </div>
+        </div>
+        <div style="clear:both"></div>
+    </div>
+{% endspaceless %}
+{% endblock field_row %}

@@ -33,8 +33,13 @@ class CategoryController extends Controller
         $category = $em->getRepository('ICup\Bundle\PublicSiteBundle\Entity\Doctrine\Category')
                             ->find($categoryid);
 
-        $groups = $em->getRepository('ICup\Bundle\PublicSiteBundle\Entity\Doctrine\Group')
-                            ->findBy(array('pid' => $category->getId()));
+        $qb = $em->createQuery("select g ".
+                               "from ICup\Bundle\PublicSiteBundle\Entity\Doctrine\Group g ".
+                               "where g.pid=:category ".
+                               "order by g.classification desc, g.name asc");
+        $qb->setParameter('category', $category->getId());
+        $groups = $qb->getResult();
+        
         foreach ($groups as $group) {
             $qb = $em->createQuery("select t.id,t.name,t.division,c.country ".
                                    "from ICup\Bundle\PublicSiteBundle\Entity\Doctrine\GroupOrder o, ".

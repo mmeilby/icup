@@ -1,0 +1,20 @@
+{% extends "ICupPublicSiteBundle:Default:layout.script.html.twig" %}
+
+{% form_theme form _self %}
+
+{% block body %}
+<a href="{{ path('_editmaster') }}">
+    <h1 class="category">{{ tournament.name }}</h1>
+</a>
+<p class="subcategory">{% trans %}EDITCATEGORY{% endtrans %}</p>
+<p>
+    <form action="{{ path('_newcategorypost') }}" method="POST">
+        <p>Indtast oplysninger på gruppen.</p>
+        {{ form_rest(form) }}
+        
+        <div style="float: right;">
+            <input type="submit" name="save" value="Save" class="form_button" />
+        </div>
+    </form>
+</p>
+{% endblock %}

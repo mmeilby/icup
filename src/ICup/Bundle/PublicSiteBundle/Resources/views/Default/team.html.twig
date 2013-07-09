@@ -9,7 +9,11 @@
     {{ category.classification|trans }}
 </p>
 <a href="{{ path('_showcategory', { 'categoryid': category.id }) }}">
+    {% if group.classification == 0 %}
     <h2 class="group">{% trans %}GROUP{% endtrans %} {{ group.name }}</h2>
+    {% else %}
+    <h2 class="group">{{ ['GROUPCLASS.',group.classification]|join|trans }}</h2>
+    {% endif %}
 </a>
 <p class="subgroup">{{ team.name }}</p>
 <p>

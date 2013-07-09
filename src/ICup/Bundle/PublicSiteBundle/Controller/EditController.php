@@ -33,7 +33,7 @@ class EditController extends Controller
 
     /**
      * Main menu for edit the category structure
-     * @Route("/edit/{categoryId}", name="_editmenu")
+     * @Route("/edit/menu/{categoryId}", name="_editmenu")
      * @Secure(roles="ROLE_ADMIN")
      * @Method("GET")
      * @Template("ICupPublicSiteBundle:Default:editmenu.html.twig")

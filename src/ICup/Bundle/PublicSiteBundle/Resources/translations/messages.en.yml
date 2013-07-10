@@ -26,6 +26,12 @@ EDITGROUP: Update group
 EDITGROUPORDER: Add team to group
 EDITMATCH: Add match
 
+STANDING: Final standing
+FIRST: Winner
+SECOND: 2nd
+THIRD: 3rd
+FORTH: 4th
+
 GROUPCLASS:
   1: Playoff
   8: Semi final

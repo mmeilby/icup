@@ -142,6 +142,12 @@ TD.playgrounds {
 TD.categories {
     width: 200px;
 }
+TD.placement {
+    font-weight: bold;
+    font-size: 18px;
+    padding-top: 5px;
+    text-decoration: underline;
+}
 
 DIV.admin {
     background-color: lightpink;

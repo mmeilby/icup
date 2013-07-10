@@ -8,6 +8,62 @@
     {{ [category.gender,category.classification]|join|trans }}
     {{ category.classification|trans }}
 </p>
+{% if not championlist is empty %}
+    <h2 class="group">{% trans %}STANDING{% endtrans %}</h2>
+    <table>
+{% for group in championlist %}
+    {% for team in group.teams %}
+        {% if group.group.classification == 10 %}
+            {% if team.matches > 0 %}
+            <tr>
+                <td class="placement" colspan="3">{{ cycle(['SECOND','FIRST'],loop.index)|trans }}</td>
+            </tr>
+            <tr>
+                <td class="flag"><img src="{{ imagepath }}/flags/{{ team.flag }}" alt="{{ team.country|trans }}" title="{{ team.country|trans }}"></td>
+                <td class="team"><a href="{{ path('_showteam', { 'teamid': team.id, 'groupid': group.group.id }) }}">{{ team.name }}</a></td>
+                <td class="score"></td>
+            </tr>
+            {% else %}
+                {% if loop.index == 1 %}
+            <tr>
+                <td class="placement" colspan="3">{{ ['GROUPCLASS.',group.group.classification]|join|trans }}</td>
+            </tr>
+                {% endif %}
+            <tr>
+                <td class="flag"><img src="{{ imagepath }}/flags/{{ team.flag }}" alt="{{ team.country|trans }}" title="{{ team.country|trans }}"></td>
+                <td class="team"><a href="{{ path('_showteam', { 'teamid': team.id, 'groupid': group.group.id }) }}">{{ team.name }}</a></td>
+                <td class="score"></td>
+            </tr>
+            {% endif %}
+        {% endif %}
+        {% if group.group.classification == 9 %}
+            {% if team.matches > 0 %}
+            <tr>
+                <td class="placement" colspan="3">{{ cycle(['FORTH','THIRD'],loop.index)|trans }}</td>
+            </tr>
+            <tr>
+                <td class="flag"><img src="{{ imagepath }}/flags/{{ team.flag }}" alt="{{ team.country|trans }}" title="{{ team.country|trans }}"></td>
+                <td class="team"><a href="{{ path('_showteam', { 'teamid': team.id, 'groupid': group.group.id }) }}">{{ team.name }}</a></td>
+                <td class="score"></td>
+            </tr>
+            {% else %}
+                {% if loop.index == 1 %}
+            <tr>
+                <td class="placement" colspan="3">{{ ['GROUPCLASS.',group.group.classification]|join|trans }}</td>
+            </tr>
+                {% endif %}
+            <tr>
+                <td class="flag"><img src="{{ imagepath }}/flags/{{ team.flag }}" alt="{{ team.country|trans }}" title="{{ team.country|trans }}"></td>
+                <td class="team"><a href="{{ path('_showteam', { 'teamid': team.id, 'groupid': group.group.id }) }}">{{ team.name }}</a></td>
+                <td class="score"></td>
+            </tr>
+            {% endif %}
+        {% endif %}
+    {% endfor %}
+{% endfor %}
+    </table>
+{% endif %}
+
 {% for group in grouplist %}
     {% if group.group.classification == 0 %}
     <h2 class="group">{% trans %}GROUP{% endtrans %} {{ group.group.name }}</h2>

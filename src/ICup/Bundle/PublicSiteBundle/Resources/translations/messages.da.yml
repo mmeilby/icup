@@ -26,6 +26,12 @@ EDITGROUP: Administrer pulje
 EDITGROUPORDER: Administrer hold i pulje
 EDITMATCH: Administrer kamp
 
+STANDING: Gruppe resultat
+FIRST: Vinder
+SECOND: 2. plads
+THIRD: 3. plads
+FORTH: 4. plads
+
 GROUPCLASS:
   1: Playoff
   8: Semifinale

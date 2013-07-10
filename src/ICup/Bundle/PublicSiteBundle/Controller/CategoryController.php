@@ -29,6 +29,7 @@ class CategoryController extends Controller
         $em = $this->getDoctrine()->getManager();
 
         $groupList = array();
+        $championList = array();
 
         $category = $em->getRepository('ICup\Bundle\PublicSiteBundle\Entity\Doctrine\Category')
                             ->find($categoryid);
@@ -126,8 +127,13 @@ class CategoryController extends Controller
                 }
             }
 
-            $groupList[$group->getName()] = array('group' => $group, 'teams' => $teamsList);
+            if ($group->getClassification() < 9) {
+                $groupList[$group->getName()] = array('group' => $group, 'teams' => $teamsList);
+            }
+            else {
+                $championList[$group->getClassification()] = array('group' => $group, 'teams' => $teamsList);
+            }
         }
-        return array('category' => $category, 'grouplist' => $groupList, 'imagepath' => DefaultController::getImagePath($this));
+        return array('category' => $category, 'grouplist' => $groupList, 'championlist' => $championList, 'imagepath' => DefaultController::getImagePath($this));
     }
 }

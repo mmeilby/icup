@@ -63,7 +63,7 @@ class EditGroupController extends Controller
     }
     
     private function makeform() {
-        $classifications = array( 0 => 'Kvalifikation', 1 => 'Playoff', 7 => '1/8 finale', 8 => '1/4 finale', 9 => 'Semifinale', 10 => 'Finale');
+        $classifications = array( 0 => 'Kvalifikation', 1 => 'Playoff', 6 => '1/8 finale', 7 => '1/4 finale', 8 => 'Semifinale', 9 => '3/4 placering', 10 => 'Finale');
         $formData = new Group();
         $formDef = $this->createFormBuilder($formData);
         $formDef->add('name', 'text', array('label' => 'Navn', 'required' => false));

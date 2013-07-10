@@ -28,8 +28,9 @@ EDITMATCH: Add match
 
 GROUPCLASS:
   1: Playoff
-  9: Semifinale
-  10: Finale
+  8: Semi final
+  9: 3/4 final
+  10: Final
     
 LANG:
     EN: English

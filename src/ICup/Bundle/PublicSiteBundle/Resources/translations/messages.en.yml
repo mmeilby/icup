@@ -7,6 +7,10 @@ TEAM: Team
 FIELD: Playground
 CATEGORIES: Categories
 PLAYGROUNDS: Playgrounds
+CLUBS: Clubs
+TOWNANDNO: Town and place
+CLUBSBYCOUNTRY: Ordered by country
+TEAMSBYCLUB: Teams enrolled by the club
 
 RESULTS: Results for 2013
 EDITRESULTS: Edit results
@@ -26,6 +30,33 @@ EDITGROUP: Update group
 EDITGROUPORDER: Add team to group
 EDITMATCH: Add match
 
+MENU:
+  LANGCHOICE:
+    TITLE: Language
+  TOURNAMENT:
+    TITLE: Tournament
+    OVERVIEW: Overview
+    GROUPS: Categories
+    PLAYGROUNDS: Playgrounds
+    TEAMS: Clubs
+  ENROLLMENT:
+    TITLE: Enrollment
+    CLUBS: Clubs
+    TEAMS: Teams
+    REFEREES: Referees
+  ADMIN:
+    TITLE: Administration
+    RESULTS: Results
+    TOURNAMENT: Tournament
+    TEAMS: Teams
+    PLAYERS: Players
+    REFEREES: Referees
+  INFO:
+    TITLE: Information
+    ABOUT: About
+    PRICES: Prices
+    FAQ: FAQ
+
 STANDING: Final standing
 FIRST: Winner
 SECOND: 2nd
@@ -39,9 +70,13 @@ GROUPCLASS:
   10: Final
     
 LANG:
-    EN: English
-    DA: Danish
-    IT: Italian
+  EN: English
+  PO: Polski
+  ES: Español
+  DA: Dansk
+  IT: Italiano
+  FR: Fraçais
+  DE: Deutsch
 
 LEGEND:
   NO: No.
@@ -56,6 +91,10 @@ LEGEND:
     DIFF: GD
   POINTS: Pts
   RESULT: Result
+
+CLASS: Class
+FEMALE: Female
+MALE: Male
 
 MU12: Male
 MU14: Male

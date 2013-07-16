@@ -1,7 +1,8 @@
 <?php
-namespace ICup\Bundle\PublicSiteBundle\Controller;
+namespace ICup\Bundle\PublicSiteBundle\Controller\Tournament;
 
 use DateTime;
+use ICup\Bundle\PublicSiteBundle\Controller\Util\Util;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
@@ -17,15 +18,18 @@ class PlaygroundController extends Controller
     }
 
     /**
-     * @Route("/playground/{playgroundid}/{groupid}", name="_showplayground")
-     * @Template("ICupPublicSiteBundle:Default:playground.html.twig")
+     * @Route("/tmnt/{tournament}/pgrnd/{playgroundid}/{groupid}", name="_showplayground")
+     * @Template("ICupPublicSiteBundle:Tournament:playground.html.twig")
      */
-    public function listAction($playgroundid, $groupid)
+    public function listAction($tournament, $playgroundid, $groupid)
     {
-        DefaultController::switchLanguage($this);
-        $countries = DefaultController::getCountries();
+        Util::setupController($this, $tournament);
+        $tournamentId = Util::getTournament($this);
         $em = $this->getDoctrine()->getManager();
 
+        $tournament = $em->getRepository('ICup\Bundle\PublicSiteBundle\Entity\Doctrine\Tournament')
+                            ->find($tournamentId);
+        
         $playground = $em->getRepository('ICup\Bundle\PublicSiteBundle\Entity\Doctrine\Playground')
                             ->find($playgroundid);
 
@@ -73,11 +77,9 @@ class PlaygroundController extends Controller
                                          'idA' => $relB['id'],
                                          'teamA' => $nameB,
                                          'countryA' => $relB['country'],
-                                         'flagA' => $countries[$relB['country']],
                                          'idB' => $relA['id'],
                                          'teamB' => $nameA,
                                          'countryB' => $relA['country'],
-                                         'flagB' => $countries[$relA['country']],
                                          'scoreA' => $valid ? $relB['score'] : '',
                                          'scoreB' => $valid ? $relA['score'] : '',
                                          'pointsA' => $valid ? $relB['points'] : '',
@@ -90,11 +92,9 @@ class PlaygroundController extends Controller
                                          'idA' => $relA['id'],
                                          'teamA' => $nameA,
                                          'countryA' => $relA['country'],
-                                         'flagA' => $countries[$relA['country']],
                                          'idB' => $relB['id'],
                                          'teamB' => $nameB,
                                          'countryB' => $relB['country'],
-                                         'flagB' => $countries[$relB['country']],
                                          'scoreA' => $valid ? $relA['score'] : '',
                                          'scoreB' => $valid ? $relB['score'] : '',
                                          'pointsA' => $valid ? $relA['points'] : '',
@@ -120,20 +120,19 @@ class PlaygroundController extends Controller
                 }
             }
         }
-        return array('category' => $category, 'group' => $group, 'playground' => $playground, 'matchlist' => $matchList, 'imagepath' => DefaultController::getImagePath($this));
+        return array('tournament' => $tournament, 'category' => $category, 'group' => $group, 'playground' => $playground, 'matchlist' => $matchList, 'flags' => Util::getCountries());
     }
     
     /**
-     * @Route("/playground/{playgroundid}", name="_showplayground_full")
-     * @Template("ICupPublicSiteBundle:Default:playground.full.html.twig")
+     * @Route("/tmnt/{tournament}/pgrnd/{playgroundid}", name="_showplayground_full")
+     * @Template("ICupPublicSiteBundle:Tournament:playground.full.html.twig")
      */
-    public function listAllAction($playgroundid)
+    public function listAllAction($tournament, $playgroundid)
     {
-        DefaultController::switchLanguage($this);
-        $countries = DefaultController::getCountries();
+        Util::setupController($this, $tournament);
+        $tournamentId = Util::getTournament($this);
         $em = $this->getDoctrine()->getManager();
 
-        $tournamentId = DefaultController::getTournament($this);
         $tournament = $em->getRepository('ICup\Bundle\PublicSiteBundle\Entity\Doctrine\Tournament')
                             ->find($tournamentId);
         
@@ -183,11 +182,9 @@ class PlaygroundController extends Controller
                                          'idA' => $relB['id'],
                                          'teamA' => $nameB,
                                          'countryA' => $relB['country'],
-                                         'flagA' => $countries[$relB['country']],
                                          'idB' => $relA['id'],
                                          'teamB' => $nameA,
                                          'countryB' => $relA['country'],
-                                         'flagB' => $countries[$relA['country']],
                                          'scoreA' => $valid ? $relB['score'] : '',
                                          'scoreB' => $valid ? $relA['score'] : '',
                                          'pointsA' => $valid ? $relB['points'] : '',
@@ -203,11 +200,9 @@ class PlaygroundController extends Controller
                                          'idA' => $relA['id'],
                                          'teamA' => $nameA,
                                          'countryA' => $relA['country'],
-                                         'flagA' => $countries[$relA['country']],
                                          'idB' => $relB['id'],
                                          'teamB' => $nameB,
                                          'countryB' => $relB['country'],
-                                         'flagB' => $countries[$relB['country']],
                                          'scoreA' => $valid ? $relA['score'] : '',
                                          'scoreB' => $valid ? $relB['score'] : '',
                                          'pointsA' => $valid ? $relA['points'] : '',
@@ -233,6 +228,6 @@ class PlaygroundController extends Controller
                 }
             }
         }
-        return array('tournament' => $tournament, 'playground' => $playground, 'matchlist' => $matchList, 'imagepath' => DefaultController::getImagePath($this));
+        return array('tournament' => $tournament, 'playground' => $playground, 'matchlist' => $matchList, 'flags' => Util::getCountries());
     }
 }

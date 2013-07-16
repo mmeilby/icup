@@ -1,0 +1,42 @@
+{% extends "base.html.twig" %}
+
+{% block body %}
+<h1 class="category">{{ tournament.name }}</h1>
+<p class="subcategory">
+    {% trans %}RESULTS{% endtrans %}<br />
+</p>
+<div>
+    <table>
+        <caption>{% trans %}PLAYGROUNDS{% endtrans %}</caption>
+        <thead>
+            <tr>
+                <td colspan="2">{% trans %}TOWNANDNO{% endtrans %}</td>
+            </tr>
+        </thead>
+        <tboby>
+{% for site in playgrounds|keys %}
+            <tr class="{{ cycle(['even','odd'],loop.index) }}">
+                <td class="sites" colspan="2">
+                    {{ site }}
+                </td>
+            </tr>
+    {% for id,name in playgrounds[site] %}
+            <tr class="{{ cycle(['even','odd'],loop.index) }}">
+                <td class="sites"></td>
+                <td class="playgrounds">
+                    <a href="{{ path('_showplayground_full', { 'tournament': tournamentkey, 'playgroundid': id }) }}">
+                        {{ name }}
+                    </a>
+                </td>
+            </tr>
+    {% endfor %}
+{% endfor %}
+        </tboby>
+        <tfoot>
+            <tr>
+                <td colspan="2"></td>
+            </tr>
+        </tfoot>
+    </table>
+</div>
+{% endblock %}

@@ -7,6 +7,10 @@ TEAM: Hold
 FIELD: Bane
 CATEGORIES: Grupper
 PLAYGROUNDS: Baner
+CLUBS: Klubber
+TOWNANDNO: By og bane
+CLUBSBYCOUNTRY: Sorteret efter land
+TEAMSBYCLUB: Hold tilknyttet klubben
 
 RESULTS: Resultater for 2013
 EDITRESULTS: Rediger resultater
@@ -26,6 +30,33 @@ EDITGROUP: Administrer pulje
 EDITGROUPORDER: Administrer hold i pulje
 EDITMATCH: Administrer kamp
 
+MENU:
+  LANGCHOICE:
+    TITLE: Sprogvalg
+  TOURNAMENT:
+    TITLE: Turnering
+    OVERVIEW: Oversigt
+    GROUPS: Grupper
+    PLAYGROUNDS: Baner
+    TEAMS: Klubber
+  ENROLLMENT:
+    TITLE: Tilmelding
+    CLUBS: Klubber
+    TEAMS: Hold
+    REFEREES: Dommere
+  ADMIN:
+    TITLE: Administration
+    RESULTS: Resultater
+    TOURNAMENT: Turnering
+    TEAMS: Hold
+    PLAYERS: Spiller
+    REFEREES: Dommer
+  INFO:
+    TITLE: Information
+    ABOUT: Om turneringen
+    PRICES: Priser
+    FAQ: FAQ
+
 STANDING: Gruppe resultat
 FIRST: Vinder
 SECOND: 2. plads
@@ -39,9 +70,13 @@ GROUPCLASS:
   10: Finale
     
 LANG:
-  EN: Engelsk
+  EN: English
+  PO: Polski
+  ES: Español
   DA: Dansk
-  IT: Italiensk
+  IT: Italiano
+  FR: Fraçais
+  DE: Deutsch
     
 LEGEND:
   NO: Nr.
@@ -56,6 +91,10 @@ LEGEND:
     DIFF: MD
   POINTS: P
   RESULT: Resultat
+
+CLASS: Klasse
+FEMALE: Kvinder
+MALE: Mænd
 
 MU12: Drenge
 MU14: Drenge

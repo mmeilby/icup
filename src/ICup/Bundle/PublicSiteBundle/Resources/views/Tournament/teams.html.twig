@@ -1,0 +1,47 @@
+{% extends "base.html.twig" %}
+
+{% block body %}
+<h1 class="category">{{ tournament.name }}</h1>
+<p class="subcategory">
+    {% trans %}RESULTS{% endtrans %}<br />
+</p>
+<div>
+    <table>
+        <caption>{% trans %}TEAMSBYCLUB{% endtrans %}</caption>
+        <thead>
+            <tr>
+                <td colspan="2">
+                    <a href="{{ path('_tournament_clubs', { 'tournament': tournamentkey }) }}">
+                        <img src="{{ imagepath }}/flags/{{ flags[club.country] }}" alt="{{ club.country|trans }}" title="{{ club.country|trans }}">
+                        {{ club.name }} - {{ club.country|trans }}
+                    </a>
+                </td>
+            </tr>
+        </thead>
+        <tboby>
+{% for catid,category in teams %}
+            <tr class="{{ cycle(['even','odd'],loop.index) }}">
+                <td class="categories">
+                    <a href="{{ path('_showcategory', { 'tournament': tournamentkey, 'categoryid': categories[catid].id }) }}">
+                        <b>{% trans %}CATEGORY{% endtrans %} {{ categories[catid].name }}</b>
+                    </a><br />
+                        {{ [categories[catid].gender,categories[catid].classification]|join|trans }}
+                        {{ categories[catid].classification|trans }}
+                </td>
+                <td class="teams">
+    {% for team in category %}
+                        <a href="{{ path('_showteam', { 'tournament': tournamentkey, 'teamid': team.id, 'groupid': team.groupid }) }}"><b>{{ team.name }}</b></a><br />
+                        {% trans %}GROUP{% endtrans %} {{ team.grp }}<br />
+    {% endfor %}
+                </td>
+{% endfor %}
+            </tr>
+        </tboby>
+        <tfoot>
+            <tr>
+                <td colspan="2"></td>
+            </tr>
+        </tfoot>
+    </table>
+</div>
+{% endblock %}

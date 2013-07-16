@@ -7,6 +7,10 @@ TEAM: Squadra
 FIELD: Campo
 CATEGORIES: Categorie
 PLAYGROUNDS: Campi
+CLUBS: Clubs
+TOWNANDNO: Town and place
+CLUBSBYCOUNTRY: Ordered by country
+TEAMSBYCLUB: Teams enrolled by the club
 
 RESULTS: Risultati 2013
 EDITRESULTS: Aggiornamento dei risultati
@@ -26,6 +30,33 @@ EDITGROUP: Update group
 EDITGROUPORDER: Add team to group
 EDITMATCH: Add match
 
+MENU:
+  LANGCHOICE:
+    TITLE: Language
+  TOURNAMENT:
+    TITLE: Tournament
+    OVERVIEW: Overview
+    GROUPS: Categories
+    PLAYGROUNDS: Playgrounds
+    TEAMS: Clubs
+  ENROLLMENT:
+    TITLE: Enrollment
+    CLUBS: Clubs
+    TEAMS: Teams
+    REFEREES: Referees
+  ADMIN:
+    TITLE: Administration
+    RESULTS: Results
+    TOURNAMENT: Tournament
+    TEAMS: Teams
+    PLAYERS: Players
+    REFEREES: Referees
+  INFO:
+    TITLE: Information
+    ABOUT: About
+    PRICES: Prices
+    FAQ: FAQ
+
 STANDING: Classifica finale
 FIRST: 1˚ posto
 SECOND: 2˚ posto
@@ -39,9 +70,13 @@ GROUPCLASS:
   10: Finale
     
 LANG:
-    EN: Inglese
-    DA: Danese
-    IT: Italiano
+  EN: English
+  PO: Polski
+  ES: Español
+  DA: Dansk
+  IT: Italiano
+  FR: Fraçais
+  DE: Deutsch
 
 LEGEND:
   NO: Gara
@@ -56,6 +91,10 @@ LEGEND:
     DIFF: D.R.
   POINTS: P
   RESULT: Risultato
+
+CLASS: Classificazione
+FEMALE: Femminile
+MALE: Maschile
 
 MU12: Maschile
 MU14: Maschile

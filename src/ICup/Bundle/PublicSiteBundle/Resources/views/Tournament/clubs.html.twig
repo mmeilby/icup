@@ -1,0 +1,42 @@
+{% extends "base.html.twig" %}
+
+{% block body %}
+<h1 class="category">{{ tournament.name }}</h1>
+<p class="subcategory">
+    {% trans %}RESULTS{% endtrans %}<br />
+</p>
+<div>
+    <table>
+        <caption>{% trans %}CLUBS{% endtrans %}</caption>
+        <thead>
+            <tr>
+                <td colspan="3">{% trans %}CLUBSBYCOUNTRY{% endtrans %}</td>
+            </tr>
+        </thead>
+        <tboby>
+            <tr>
+{% for column in teams %}
+                <td class="clubs">
+    {% for countries in column %}
+    {% for country,teamlist in countries %}
+                    <p>
+                        <img src="{{ imagepath }}/flags/{{ flags[country] }}" alt="{{ country|trans }}" title="{{ country|trans }}">
+                        <b>{{ country|trans }}</b><br />
+        {% for id,team in teamlist %}
+                    <a href="{{ path('_tournament_teams', { 'tournament': tournamentkey, 'clubId': id }) }}">{{ team }}</a><br />
+        {% endfor %}
+                    </p>
+    {% endfor %}
+    {% endfor %}
+                </td>
+{% endfor %}
+            </tr>
+        </tboby>
+        <tfoot>
+            <tr>
+                <td colspan="3"></td>
+            </tr>
+        </tfoot>
+    </table>
+</div>
+{% endblock %}

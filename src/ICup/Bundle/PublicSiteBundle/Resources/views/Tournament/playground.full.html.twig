@@ -1,29 +1,20 @@
 {% extends "base.html.twig" %}
 
 {% block body %}
-<a href="{{ path('_showcategory', { 'categoryid': category.id }) }}">
-    <h1 class="category">{% trans %}CATEGORY{% endtrans %} {{ category.name }}</h1>
-</a>
+<h1 class="category">{{ tournament.name }}</h1>
 <p class="subcategory">
-    {{ [category.gender,category.classification]|join|trans }}
-    {{ category.classification|trans }}
+    {% trans %}RESULTS{% endtrans %}<br />
 </p>
-<a href="{{ path('_showcategory', { 'categoryid': category.id }) }}">
-    {% if group.classification == 0 %}
-    <h2 class="group">{% trans %}GROUP{% endtrans %} {{ group.name }}</h2>
-    {% else %}
-    <h2 class="group">{{ ['GROUPCLASS.',group.classification]|join|trans }}</h2>
-    {% endif %}
-</a>
-<p class="subgroup">{{ team.name }}</p>
 <p>
     <table>
+        <caption>{{ playground.name }}</caption>
         <thead>
             <tr>
                 <td class="flag"></td>
                 <td class="no">{% trans %}LEGEND.NO{% endtrans %}</td>
                 <td class="time">{% trans %}LEGEND.TIME{% endtrans %}</td>
-                <td class="no">{% trans %}FIELD{% endtrans %}</td>
+                <td class="no">{% trans %}CATEGORY{% endtrans %}</td>
+                <td class="no">{% trans %}GROUP{% endtrans %}</td>
                 <td class="flag"></td>
                 <td class="team">{% trans %}TEAM{% endtrans %} A</td>
                 <td class="flag"></td>
@@ -36,8 +27,10 @@
 {% for match in matchlist %}
     {% if match.schedule|date('d-M-Y') != catdate %}
             <tr class="{{ cycle(['even','odd'],loop.index) }}">
-                <td class="date_solo" colspan="9">
+                <td class="date_solo" colspan="10">
+                    <a href="{{ path('_editscore', { 'playgroundid': playground.id, 'date': match.schedule|date('d-m-Y')}) }}">
                     {{ ['WEEK.',match.schedule|date('D')|upper]|join|trans|capitalize }}{{ match.schedule|date(' j. ') }}{{ ['MONTH.',match.schedule|date('M')|upper]|join|trans }}
+                    </a>    
                 </td>
             </tr>
         {% set catdate = match.schedule|date('d-M-Y') %}
@@ -46,20 +39,22 @@
                 <td class="flag"></td>
                 <td class="no">{{ match.matchno }}</td>
                 <td class="time">{{ match.schedule|date('H.i') }}</td>
-                <td class="no"><a href="{{ path('_showplayground', { 'playgroundid': match.playgroundid, 'groupid': group.id }) }}" title="{{ match.playground }}">{{ match.playgroundno }}</a></td>
-                <td class="flag"><img src="{{ imagepath }}/flags/{{ match.flagA }}" alt="{{ match.countryA|trans }}" title="{{ match.countryA|trans }}"></td>
-                <td class="team"><a href="{{ path('_showteam', { 'teamid': match.idA, 'groupid': group.id }) }}">{{ match.teamA }}</a></td>
-                <td class="flag"><img src="{{ imagepath }}/flags/{{ match.flagB }}" alt="{{ match.countryB|trans }}" title="{{ match.countryB|trans }}"></td>
-                <td class="team"><a href="{{ path('_showteam', { 'teamid': match.idB, 'groupid': group.id }) }}">{{ match.teamB }}</a></td>
+                <td class="no">{{ match.category }}</td>
+                <td class="no">{{ match.group }}</td>
+                <td class="flag"><img src="{{ imagepath }}/flags/{{ flags[match.countryA] }}" alt="{{ match.countryA|trans }}" title="{{ match.countryA|trans }}"></td>
+                <td class="team"><a href="{{ path('_showteam', { 'tournament': tournamentkey, 'teamid': match.idA, 'groupid': match.gid }) }}">{{ match.teamA }}</a></td>
+                <td class="flag"><img src="{{ imagepath }}/flags/{{ flags[match.countryB] }}" alt="{{ match.countryB|trans }}" title="{{ match.countryB|trans }}"></td>
+                <td class="team"><a href="{{ path('_showteam', { 'tournament': tournamentkey, 'teamid': match.idB, 'groupid': match.gid }) }}">{{ match.teamB }}</a></td>
                 <td class="match">{{ match.scoreA }}-{{ match.scoreB }}</td>
             </tr>
 {% endfor %}
         </tboby>
         <tfoot>
             <tr>
-                <td colspan="9"></td>
+                <td colspan="10"></td>
             </tr>
         </tfoot>
     </table>
+    </form>
 </p>
 {% endblock %}

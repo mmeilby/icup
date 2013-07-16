@@ -1,6 +1,7 @@
 <?php
-namespace ICup\Bundle\PublicSiteBundle\Controller;
+namespace ICup\Bundle\PublicSiteBundle\Controller\Tournament;
 
+use ICup\Bundle\PublicSiteBundle\Controller\Util\Util;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
@@ -19,14 +20,17 @@ class CategoryController extends Controller
     }
 
     /**
-     * @Route("/category/{categoryid}", name="_showcategory")
-     * @Template("ICupPublicSiteBundle:Default:category.html.twig")
+     * @Route("/tmnt/{tournament}/ctgr/{categoryid}", name="_showcategory")
+     * @Template("ICupPublicSiteBundle:Tournament:category.html.twig")
      */
-    public function listAction($categoryid)
+    public function listAction($tournament, $categoryid)
     {
-        DefaultController::switchLanguage($this);
-        $countries = DefaultController::getCountries();
+        Util::setupController($this, $tournament);
+        $tournamentId = Util::getTournament($this);
         $em = $this->getDoctrine()->getManager();
+
+        $tournament = $em->getRepository('ICup\Bundle\PublicSiteBundle\Entity\Doctrine\Tournament')
+                            ->find($tournamentId);
 
         $groupList = array();
         $championList = array();
@@ -105,7 +109,6 @@ class CategoryController extends Controller
                 $td = array('id' => $id,
                             'name' => $name,
                             'country' => $country,
-                            'flag' => $countries[$country],
                             'matches' => $matches,
                             'score' => $score,
                             'goals' => $goals,
@@ -134,6 +137,6 @@ class CategoryController extends Controller
                 $championList[$group->getClassification()] = array('group' => $group, 'teams' => $teamsList);
             }
         }
-        return array('category' => $category, 'grouplist' => $groupList, 'championlist' => $championList, 'imagepath' => DefaultController::getImagePath($this));
+        return array('tournament' => $tournament, 'category' => $category, 'grouplist' => $groupList, 'championlist' => $championList, 'flags' => Util::getCountries());
     }
 }

@@ -1,0 +1,64 @@
+{% extends "base.html.twig" %}
+
+{% block body %}
+<h1 class="category">{{ tournament.name }}</h1>
+<p class="subcategory">
+    {% trans %}RESULTS{% endtrans %}<br />
+</p>
+<div>
+    <table>
+        <caption>{% trans %}CATEGORIES{% endtrans %}</caption>
+        <thead>
+            <tr>
+                <td>{% trans %}CLASS{% endtrans %}</td>
+                <td>{% trans %}FEMALE{% endtrans %}</td>
+                <td>{% trans %}MALE{% endtrans %}</td>
+            </tr>
+        </thead>
+        <tboby>
+{% for categorykey in classifications %}
+    {% set colorclass = cycle(['even','odd'],loop.index) %}
+    {% set femalekey = ['F',categorykey]|join %}
+    {% set malekey = ['M',categorykey]|join %}
+    {% set femalecategorylist = femalekey in categories|keys ? categories[femalekey] : {} %}
+    {% set malecategorylist = malekey in categories|keys ? categories[malekey] : {} %}
+    {% set size = femalecategorylist|length > malecategorylist|length ? femalecategorylist|length : malecategorylist|length %}
+    {% for i in 0..size-1 %}
+            <tr class="{{ colorclass }}">
+        {% if i == 0 %}
+                <td class="classification" rowspan="{{ size }}">{{ categorykey }}</td>
+        {% endif %}
+        {% if femalecategorylist[i] is defined %}
+                <td class="categories">
+                    <a href="{{ path('_showcategory', { 'tournament': tournamentkey, 'categoryid': femalecategorylist[i].id }) }}">
+                        <b>{% trans %}CATEGORY{% endtrans %} {{ femalecategorylist[i].name }}</b>
+                    </a><br />
+                        {{ [femalecategorylist[i].gender,femalecategorylist[i].classification]|join|trans }}
+                        {{ femalecategorylist[i].classification|trans }}
+                </td>
+        {% else %}
+                <td class="categories"></td>
+        {% endif %}
+        {% if malecategorylist[i] is defined %}
+                <td class="categories">
+                    <a href="{{ path('_showcategory', { 'tournament': tournamentkey, 'categoryid': malecategorylist[i].id }) }}">
+                        <b>{% trans %}CATEGORY{% endtrans %} {{ malecategorylist[i].name }}</b>
+                    </a><br />
+                        {{ [malecategorylist[i].gender,malecategorylist[i].classification]|join|trans }}
+                        {{ malecategorylist[i].classification|trans }}
+                </td>
+            </tr>
+        {% else %}
+                <td class="categories"></td>
+        {% endif %}
+    {% endfor %}
+{% endfor %}
+        </tboby>
+        <tfoot>
+            <tr>
+                <td colspan="3"></td>
+            </tr>
+        </tfoot>
+    </table>
+</div>
+{% endblock %}

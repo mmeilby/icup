@@ -1,7 +1,8 @@
 <?php
-namespace ICup\Bundle\PublicSiteBundle\Controller;
+namespace ICup\Bundle\PublicSiteBundle\Controller\Tournament;
 
 use DateTime;
+use ICup\Bundle\PublicSiteBundle\Controller\Util\Util;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
@@ -17,17 +18,25 @@ class TeamController extends Controller
     }
 
     /**
-     * @Route("/team/{teamid}/{groupid}", name="_showteam")
-     * @Template("ICupPublicSiteBundle:Default:team.html.twig")
+     * @Route("/tmnt/{tournament}/tm/{teamid}/{groupid}", name="_showteam")
+     * @Template("ICupPublicSiteBundle:Tournament:team.html.twig")
      */
-    public function listAction($teamid, $groupid)
+    public function listAction($tournament, $teamid, $groupid)
     {
-        DefaultController::switchLanguage($this);
-        $countries = DefaultController::getCountries();
+        Util::setupController($this, $tournament);
+        $tournamentId = Util::getTournament($this);
         $em = $this->getDoctrine()->getManager();
+
+        $tournament = $em->getRepository('ICup\Bundle\PublicSiteBundle\Entity\Doctrine\Tournament')
+                            ->find($tournamentId);
 
         $team = $em->getRepository('ICup\Bundle\PublicSiteBundle\Entity\Doctrine\Team')
                             ->find($teamid);
+        $name = $team->getName();
+        if ($team->getDivision() != '') {
+            $name.= ' "'.$team->getDivision().'"';
+            $team->setName($name);
+        }
 
         $group = $em->getRepository('ICup\Bundle\PublicSiteBundle\Entity\Doctrine\Group')
                             ->find($groupid);
@@ -78,11 +87,9 @@ class TeamController extends Controller
                                          'idA' => $relB['id'],
                                          'teamA' => $nameB,
                                          'countryA' => $relB['country'],
-                                         'flagA' => $countries[$relB['country']],
                                          'idB' => $relA['id'],
                                          'teamB' => $nameA,
                                          'countryB' => $relA['country'],
-                                         'flagB' => $countries[$relA['country']],
                                          'scoreA' => $valid ? $relB['score'] : '',
                                          'scoreB' => $valid ? $relA['score'] : '',
                                          'pointsA' => $valid ? $relB['points'] : '',
@@ -98,11 +105,9 @@ class TeamController extends Controller
                                          'idA' => $relA['id'],
                                          'teamA' => $nameA,
                                          'countryA' => $relA['country'],
-                                         'flagA' => $countries[$relA['country']],
                                          'idB' => $relB['id'],
                                          'teamB' => $nameB,
                                          'countryB' => $relB['country'],
-                                         'flagB' => $countries[$relB['country']],
                                          'scoreA' => $valid ? $relA['score'] : '',
                                          'scoreB' => $valid ? $relB['score'] : '',
                                          'pointsA' => $valid ? $relA['points'] : '',
@@ -128,6 +133,6 @@ class TeamController extends Controller
                 }
             }
         }
-        return array('category' => $category, 'group' => $group, 'team' => $team, 'matchlist' => $matchList, 'imagepath' => DefaultController::getImagePath($this));
+        return array('tournament' => $tournament, 'category' => $category, 'group' => $group, 'team' => $team, 'matchlist' => $matchList, 'flags' => Util::getCountries());
     }
 }

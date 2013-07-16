@@ -7,7 +7,7 @@ use Doctrine\ORM\Mapping as ORM;
 /**
  * ICup\Bundle\PublicSiteBundle\Entity\Doctrine\Match
  *
- * @ORM\Table(name="matches")
+ * @ORM\Table(name="matches",uniqueConstraints={@ORM\UniqueConstraint(name="IdxByGroup", columns={"pid", "id"})})
  * @ORM\Entity
  */
 class Match

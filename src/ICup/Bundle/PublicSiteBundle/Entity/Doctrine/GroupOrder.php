@@ -7,7 +7,7 @@ use Doctrine\ORM\Mapping as ORM;
 /**
  * ICup\Bundle\PublicSiteBundle\Entity\Doctrine\GroupOrder
  *
- * @ORM\Table(name="grouporders")
+ * @ORM\Table(name="grouporders",uniqueConstraints={@ORM\UniqueConstraint(name="IdxByGroup", columns={"pid", "id"})})
  * @ORM\Entity
  */
 class GroupOrder

@@ -7,7 +7,7 @@ use Doctrine\ORM\Mapping as ORM;
 /**
  * ICup\Bundle\PublicSiteBundle\Entity\Doctrine\Category
  *
- * @ORM\Table(name="categories")
+ * @ORM\Table(name="categories",uniqueConstraints={@ORM\UniqueConstraint(name="IdxByName", columns={"name", "pid"})})
  * @ORM\Entity
  */
 class Category

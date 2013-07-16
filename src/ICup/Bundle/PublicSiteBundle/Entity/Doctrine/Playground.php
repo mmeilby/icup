@@ -7,7 +7,7 @@ use Doctrine\ORM\Mapping as ORM;
 /**
  * ICup\Bundle\PublicSiteBundle\Entity\Doctrine\Playground
  *
- * @ORM\Table(name="playgrounds")
+ * @ORM\Table(name="playgrounds",uniqueConstraints={@ORM\UniqueConstraint(name="IdxByNo", columns={"no", "pid"})})
  * @ORM\Entity
  */
 class Playground

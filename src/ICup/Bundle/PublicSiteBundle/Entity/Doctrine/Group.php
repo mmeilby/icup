@@ -7,7 +7,7 @@ use Doctrine\ORM\Mapping as ORM;
 /**
  * ICup\Bundle\PublicSiteBundle\Entity\Doctrine\Group
  *
- * @ORM\Table(name="groups")
+ * @ORM\Table(name="groups",uniqueConstraints={@ORM\UniqueConstraint(name="IdxByCatAndName", columns={"pid", "name"})})
  * @ORM\Entity
  */
 class Group

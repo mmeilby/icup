@@ -3,7 +3,7 @@
     <head>
         <meta charset="UTF-8" />
         <title>{% block title %}Interamnia World Cup 2013 - RESULTS - icup.dk{% endblock %}</title>
-        {% stylesheets "bundles/icuppublicsite/css/*.css" filter="cssrewrite" %}
+        {% stylesheets 'bundles/icuppublicsite/css/*' output="bundles/icuppublicsite/css/basic.css" filter="cssrewrite" %}
             <link rel="stylesheet" href="{{ asset_url }}" />
         {% endstylesheets %}
         {% block stylesheets %}{% endblock %}

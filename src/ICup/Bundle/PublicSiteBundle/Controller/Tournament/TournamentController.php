@@ -84,6 +84,7 @@ class TournamentController extends Controller
                                     "ICup\Bundle\PublicSiteBundle\Entity\Doctrine\Club c ".
                                "where cat.pid=:tournament and ".
                                      "g.pid=cat.id and ".
+                                     "g.classification=0 and ".
                                      "o.pid=g.id and ".
                                      "o.cid=t.id and ".
                                      "t.pid=c.id ".

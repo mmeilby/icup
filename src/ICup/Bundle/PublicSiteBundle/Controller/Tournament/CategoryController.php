@@ -130,7 +130,7 @@ class CategoryController extends Controller
                 }
             }
 
-            if ($group->getClassification() < 9) {
+            if ($group->getClassification() == 0) {
                 $groupList[$group->getName()] = array('group' => $group, 'teams' => $teamsList);
             }
             else {

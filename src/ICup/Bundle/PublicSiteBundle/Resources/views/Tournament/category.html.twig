@@ -34,7 +34,7 @@
             <tboby>
     {% for team in group.teams %}
                 <tr class="{{ cycle(['even','odd'],loop.index) }}">
-                    <td class="flag"><img src="{{ imagepath }}/flags/{{ flags[team.country] }}" alt="{{ team.country|trans }}" title="{{ team.country|trans }}"></td>
+                    <td class="flag"><img src="{{ imagepath }}/flags/{{ flags[team.country] }}" alt="{{ team.country|trans({},'lang') }}" title="{{ team.country|trans({},'lang') }}"></td>
                     <td class="team"><a href="{{ path('_showteam', { 'tournament': tournamentkey, 'teamid': team.id, 'groupid': group.group.id }) }}">{{ team.name }}</a></td>
                     <td class="matches">{{ team.matches }}</td>
                     <td class="score">{{ team.score }}</td>

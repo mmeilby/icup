@@ -12,8 +12,8 @@
             <tr>
                 <td colspan="2">
                     <a href="{{ path('_tournament_clubs', { 'tournament': tournamentkey }) }}">
-                        <img src="{{ imagepath }}/flags/{{ flags[club.country] }}" alt="{{ club.country|trans }}" title="{{ club.country|trans }}">
-                        {{ club.name }} - {{ club.country|trans }}
+                        <img src="{{ imagepath }}/flags/{{ flags[club.country] }}" alt="{{ club.country|trans({},'lang') }}" title="{{ club.country|trans({},'lang') }}">
+                        {{ club.name }} - {{ club.country|trans({},'lang') }}
                     </a>
                 </td>
             </tr>

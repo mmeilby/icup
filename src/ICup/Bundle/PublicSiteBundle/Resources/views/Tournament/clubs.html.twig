@@ -20,8 +20,8 @@
     {% for countries in column %}
     {% for country,teamlist in countries %}
                     <p>
-                        <img src="{{ imagepath }}/flags/{{ flags[country] }}" alt="{{ country|trans }}" title="{{ country|trans }}">
-                        <b>{{ country|trans }}</b><br />
+                        <img src="{{ imagepath }}/flags/{{ flags[country] }}" alt="{{ country|trans({},'lang') }}" title="{{ country|trans({},'lang') }}">
+                        <b>{{ country|trans({},'lang') }}</b><br />
         {% for id,team in teamlist %}
                     <a href="{{ path('_tournament_teams', { 'tournament': tournamentkey, 'clubId': id }) }}">{{ team }}</a><br />
         {% endfor %}

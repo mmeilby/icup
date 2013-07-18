@@ -41,9 +41,9 @@
                 <td class="time">{{ match.schedule|date('H.i') }}</td>
                 <td class="no">{{ match.category }}</td>
                 <td class="no">{{ match.group }}</td>
-                <td class="flag"><img src="{{ imagepath }}/flags/{{ flags[match.countryA] }}" alt="{{ match.countryA|trans }}" title="{{ match.countryA|trans }}"></td>
+                <td class="flag"><img src="{{ imagepath }}/flags/{{ flags[match.countryA] }}" alt="{{ match.countryA|trans({},'lang') }}" title="{{ match.countryA|trans({},'lang') }}"></td>
                 <td class="team"><a href="{{ path('_showteam', { 'tournament': tournamentkey, 'teamid': match.idA, 'groupid': match.gid }) }}">{{ match.teamA }}</a></td>
-                <td class="flag"><img src="{{ imagepath }}/flags/{{ flags[match.countryB] }}" alt="{{ match.countryB|trans }}" title="{{ match.countryB|trans }}"></td>
+                <td class="flag"><img src="{{ imagepath }}/flags/{{ flags[match.countryB] }}" alt="{{ match.countryB|trans({},'lang') }}" title="{{ match.countryB|trans({},'lang') }}"></td>
                 <td class="team"><a href="{{ path('_showteam', { 'tournament': tournamentkey, 'teamid': match.idB, 'groupid': match.gid }) }}">{{ match.teamB }}</a></td>
                 <td class="match">{{ match.scoreA }}-{{ match.scoreB }}</td>
             </tr>

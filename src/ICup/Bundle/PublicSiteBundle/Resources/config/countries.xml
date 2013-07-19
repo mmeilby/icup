@@ -18,7 +18,6 @@
 <country><ccode>AUS</ccode><cname>Australien</cname><cflag>au.png</cflag></country>
 <country><ccode>AUT</ccode><cname>Østrig</cname><cflag>at.png</cflag></country>
 <country><ccode>AZE</ccode><cname>Aserbajdsjan</cname><cflag>az.png</cflag></country>
-
 <country><ccode>BDI</ccode><cname>Burundi</cname><cflag>bi.png</cflag></country>
 <country><ccode>BEL</ccode><cname>Belgien</cname><cflag>be.png</cflag></country>
 <country><ccode>BEN</ccode><cname>Benin</cname><cflag>bj.png</cflag></country>
@@ -29,6 +28,7 @@
 <country><ccode>BHR</ccode><cname>Bahrain</cname><cflag>bh.png</cflag></country>
 <country><ccode>BHS</ccode><cname>Bahamas</cname><cflag>bs.png</cflag></country>
 <country><ccode>BIH</ccode><cname>Bosnien-Hercegovina</cname><cflag>ba.png</cflag></country>
+<!-- NF --><country><ccode>BLM</ccode><cname>San Bartolomé</cname><cflag>bx.png</cflag></country>
 <country><ccode>BLR</ccode><cname>Hviderusland</cname><cflag>by.png</cflag></country>
 <country><ccode>BLZ</ccode><cname>Belize</cname><cflag>bz.png</cflag></country>
 <country><ccode>BMU</ccode><cname>Bermuda</cname><cflag>bm.png</cflag></country>
@@ -39,7 +39,6 @@
 <country><ccode>BTN</ccode><cname>Bhutan</cname><cflag>bt.png</cflag></country>
 <country><ccode>BVT</ccode><cname>Bouvetøen</cname><cflag>bv.png</cflag></country>
 <country><ccode>BWA</ccode><cname>Botswana</cname><cflag>bw.png</cflag></country>
-
 <country><ccode>CAF</ccode><cname>Centralafrikanske Republik</cname><cflag>cf.png</cflag></country>
 <country><ccode>CAN</ccode><cname>Canada</cname><cflag>ca.png</cflag></country>
 <country><ccode>CCK</ccode><cname>Cocosøerne</cname><cflag>cc.png</cflag></country>
@@ -61,14 +60,12 @@
 <country><ccode>CYM</ccode><cname>Caymanøerne</cname><cflag>ky.png</cflag></country>
 <country><ccode>CYP</ccode><cname>Cypern</cname><cflag>cy.png</cflag></country>
 <country><ccode>CZE</ccode><cname>Tjekkiet</cname><cflag>cz.png</cflag></country>
-
 <country><ccode>DEU</ccode><cname>Tyskland</cname><cflag>de.png</cflag></country>
 <country><ccode>DJI</ccode><cname>Djibouti</cname><cflag>dj.png</cflag></country>
 <country><ccode>DMA</ccode><cname>Dominica</cname><cflag>dm.png</cflag></country>
 <country><ccode>DNK</ccode><cname>Danmark</cname><cflag>dk.png</cflag></country>
 <country><ccode>DOM</ccode><cname>Dominikanske Republik</cname><cflag>do.png</cflag></country>
 <country><ccode>DZA</ccode><cname>Algeriet</cname><cflag>dz.png</cflag></country>
-
 <country><ccode>ECU</ccode><cname>Ecuador</cname><cflag>ec.png</cflag></country>
 <country><ccode>EGY</ccode><cname>Egypten</cname><cflag>eg.png</cflag></country>
 <country><ccode>ERI</ccode><cname>Eritrea</cname><cflag>er.png</cflag></country>
@@ -76,17 +73,16 @@
 <country><ccode>ESP</ccode><cname>Spanien</cname><cflag>es.png</cflag></country>
 <country><ccode>EST</ccode><cname>Estland</cname><cflag>ee.png</cflag></country>
 <country><ccode>ETH</ccode><cname>Etiopien</cname><cflag>et.png</cflag></country>
-
 <country><ccode>FIN</ccode><cname>Finland</cname><cflag>fi.png</cflag></country>
 <country><ccode>FJI</ccode><cname>Fiji</cname><cflag>fj.png</cflag></country>
 <country><ccode>FLK</ccode><cname>Falklandsøerne</cname><cflag>fk.png</cflag></country>
 <country><ccode>FRA</ccode><cname>Frankrig</cname><cflag>fr.png</cflag></country>
 <country><ccode>FRO</ccode><cname>Færøerne</cname><cflag>fo.png</cflag></country>
 <country><ccode>FSM</ccode><cname>Mikronesien</cname><cflag>fm.png</cflag></country>
-
 <country><ccode>GAB</ccode><cname>Gabon</cname><cflag>ga.png</cflag></country>
 <country><ccode>GBR</ccode><cname>Storbritannien</cname><cflag>gb.png</cflag></country>
 <country><ccode>GEO</ccode><cname>Georgien</cname><cflag>ge.png</cflag></country>
+<!-- NF --><country><ccode>GGY</ccode><cname>Guernsey</cname><cflag>gx.png</cflag></country>
 <country><ccode>GHA</ccode><cname>Ghana</cname><cflag>gh.png</cflag></country>
 <country><ccode>GIB</ccode><cname>Gibraltar</cname><cflag>gi.png</cflag></country>
 <country><ccode>GIN</ccode><cname>Guinea</cname><cflag>gn.png</cflag></country>
@@ -101,15 +97,14 @@
 <country><ccode>GUF</ccode><cname>Fransk Guiana</cname><cflag>gf.png</cflag></country>
 <country><ccode>GUM</ccode><cname>Guam</cname><cflag>gu.png</cflag></country>
 <country><ccode>GUY</ccode><cname>Guyana</cname><cflag>gy.png</cflag></country>
-
 <country><ccode>HKG</ccode><cname>Hongkong</cname><cflag>hk.png</cflag></country>
 <country><ccode>HMD</ccode><cname>Heard-øen og McDonald-øerne</cname><cflag>hm.png</cflag></country>
 <country><ccode>HND</ccode><cname>Honduras</cname><cflag>hn.png</cflag></country>
 <country><ccode>HRV</ccode><cname>Kroatien</cname><cflag>hr.png</cflag></country>
 <country><ccode>HTI</ccode><cname>Haiti</cname><cflag>ht.png</cflag></country>
 <country><ccode>HUN</ccode><cname>Ungarn</cname><cflag>hu.png</cflag></country>
-
 <country><ccode>IDN</ccode><cname>Indonesien</cname><cflag>id.png</cflag></country>
+<!-- NF --><country><ccode>IMN</ccode><cname>Øen Man</cname><cflag>gx.png</cflag></country>
 <country><ccode>IND</ccode><cname>Indien</cname><cflag>in.png</cflag></country>
 <country><ccode>IOT</ccode><cname>British Indian Ocean Territory</cname><cflag>io.png</cflag></country>
 <country><ccode>IRL</ccode><cname>Irland</cname><cflag>ie.png</cflag></country>
@@ -118,11 +113,10 @@
 <country><ccode>ISL</ccode><cname>Island</cname><cflag>is.png</cflag></country>
 <country><ccode>ISR</ccode><cname>Israel</cname><cflag>il.png</cflag></country>
 <country><ccode>ITA</ccode><cname>Italien</cname><cflag>it.png</cflag></country>
-
 <country><ccode>JAM</ccode><cname>Jamaica</cname><cflag>jm.png</cflag></country>
+<!-- NF --><country><ccode>JEY</ccode><cname>Jersey</cname><cflag>gx.png</cflag></country>
 <country><ccode>JOR</ccode><cname>Jordan</cname><cflag>jo.png</cflag></country>
 <country><ccode>JPN</ccode><cname>Japan</cname><cflag>jp.png</cflag></country>
-
 <country><ccode>KAZ</ccode><cname>Kasakhstan</cname><cflag>kz.png</cflag></country>
 <country><ccode>KEN</ccode><cname>Kenya</cname><cflag>ke.png</cflag></country>
 <country><ccode>KGZ</ccode><cname>Kirgisistan</cname><cflag>kg.png</cflag></country>
@@ -131,7 +125,6 @@
 <country><ccode>KNA</ccode><cname>Saint Kitts og Nevis</cname><cflag>kn.png</cflag></country>
 <country><ccode>KOR</ccode><cname>Sydkorea</cname><cflag>kr.png</cflag></country>
 <country><ccode>KWT</ccode><cname>Kuwait</cname><cflag>kw.png</cflag></country>
-
 <country><ccode>LAO</ccode><cname>Laos</cname><cflag>la.png</cflag></country>
 <country><ccode>LBN</ccode><cname>Libanon</cname><cflag>lb.png</cflag></country>
 <country><ccode>LBR</ccode><cname>Liberia</cname><cflag>lr.png</cflag></country>
@@ -143,8 +136,8 @@
 <country><ccode>LTU</ccode><cname>Litauen</cname><cflag>lt.png</cflag></country>
 <country><ccode>LUX</ccode><cname>Luxembourg</cname><cflag>lu.png</cflag></country>
 <country><ccode>LVA</ccode><cname>Letland</cname><cflag>lv.png</cflag></country>
-
 <country><ccode>MAC</ccode><cname>Macao</cname><cflag>mo.png</cflag></country>
+<!-- NF --><country><ccode>MAF</ccode><cname>San Martin</cname><cflag>gx.png</cflag></country>
 <country><ccode>MAR</ccode><cname>Marokko</cname><cflag>ma.png</cflag></country>
 <country><ccode>MCO</ccode><cname>Monaco</cname><cflag>mc.png</cflag></country>
 <country><ccode>MDA</ccode><cname>Moldova</cname><cflag>md.png</cflag></country>
@@ -167,7 +160,6 @@
 <country><ccode>MWI</ccode><cname>Malawi</cname><cflag>mw.png</cflag></country>
 <country><ccode>MYS</ccode><cname>Malaysia</cname><cflag>my.png</cflag></country>
 <country><ccode>MYT</ccode><cname>Mayotte</cname><cflag>yt.png</cflag></country>
-
 <country><ccode>NAM</ccode><cname>Namibia</cname><cflag>na.png</cflag></country>
 <country><ccode>NCL</ccode><cname>Ny Kaledonien</cname><cflag>nc.png</cflag></country>
 <country><ccode>NER</ccode><cname>Niger</cname><cflag>ne.png</cflag></country>
@@ -180,9 +172,7 @@
 <country><ccode>NPL</ccode><cname>Nepal</cname><cflag>np.png</cflag></country>
 <country><ccode>NRU</ccode><cname>Nauru</cname><cflag>nr.png</cflag></country>
 <country><ccode>NZL</ccode><cname>New Zealand</cname><cflag>nz.png</cflag></country>
-
 <country><ccode>OMN</ccode><cname>Oman</cname><cflag>om.png</cflag></country>
-
 <country><ccode>PAK</ccode><cname>Pakistan</cname><cflag>pk.png</cflag></country>
 <country><ccode>PAN</ccode><cname>Panama</cname><cflag>pa.png</cflag></country>
 <country><ccode>PCN</ccode><cname>Pitcairn</cname><cflag>pn.png</cflag></country>
@@ -197,14 +187,11 @@
 <country><ccode>PRY</ccode><cname>Paraguay</cname><cflag>py.png</cflag></country>
 <country><ccode>PSE</ccode><cname>Palæstina</cname><cflag>ps.png</cflag></country>
 <country><ccode>PYF</ccode><cname>Fransk Polynesien</cname><cflag>pf.png</cflag></country>
-
 <country><ccode>QAT</ccode><cname>Qatar</cname><cflag>qa.png</cflag></country>
-
 <country><ccode>REU</ccode><cname>Réunion</cname><cflag>re.png</cflag></country>
 <country><ccode>ROU</ccode><cname>Rumænien</cname><cflag>ro.png</cflag></country>
 <country><ccode>RUS</ccode><cname>Rusland</cname><cflag>ru.png</cflag></country>
 <country><ccode>RWA</ccode><cname>Rwanda</cname><cflag>rw.png</cflag></country>
-
 <country><ccode>SAU</ccode><cname>Saudi-Arabien</cname><cflag>sa.png</cflag></country>
 <country><ccode>SDN</ccode><cname>Sudan</cname><cflag>sd.png</cflag></country>
 <country><ccode>SEN</ccode><cname>Senegal</cname><cflag>sn.png</cflag></country>
@@ -219,6 +206,7 @@
 <country><ccode>SOM</ccode><cname>Somalia</cname><cflag>so.png</cflag></country>
 <country><ccode>SPM</ccode><cname>Saint-Pierre og Miquelon</cname><cflag>pm.png</cflag></country>
 <country><ccode>SRB</ccode><cname>Serbien</cname><cflag>rs.png</cflag></country>
+<!-- NF --><country><ccode>SSD</ccode><cname>Sydsudan</cname><cflag>gx.png</cflag></country>
 <country><ccode>STP</ccode><cname>Sao Tome og Principe</cname><cflag>st.png</cflag></country>
 <country><ccode>SUR</ccode><cname>Surinam</cname><cflag>sr.png</cflag></country>
 <country><ccode>SVK</ccode><cname>Slovakiet</cname><cflag>sk.png</cflag></country>
@@ -228,7 +216,6 @@
 <!-- NF --><country><ccode>SXM</ccode><cname>Sint Maarten</cname><cflag>sx.png</cflag></country>
 <country><ccode>SYC</ccode><cname>Seychellerne</cname><cflag>sc.png</cflag></country>
 <country><ccode>SYR</ccode><cname>Syrien</cname><cflag>sy.png</cflag></country>
-
 <country><ccode>TCA</ccode><cname>Turks- og Caicosøerne</cname><cflag>tc.png</cflag></country>
 <country><ccode>TCD</ccode><cname>Tchad</cname><cflag>td.png</cflag></country>
 <country><ccode>TGO</ccode><cname>Togo</cname><cflag>tg.png</cflag></country>
@@ -244,14 +231,12 @@
 <country><ccode>TUV</ccode><cname>Tuvalu</cname><cflag>tv.png</cflag></country>
 <country><ccode>TWN</ccode><cname>Republikken Kina Taiwan</cname><cflag>tw.png</cflag></country>
 <country><ccode>TZA</ccode><cname>Tanzania</cname><cflag>tz.png</cflag></country>
-
 <country><ccode>UGA</ccode><cname>Uganda</cname><cflag>ug.png</cflag></country>
 <country><ccode>UKR</ccode><cname>Ukraine</cname><cflag>ua.png</cflag></country>
 <country><ccode>UMI</ccode><cname>United States Minor Outlying Islands</cname><cflag>um.png</cflag></country>
 <country><ccode>URY</ccode><cname>Uruguay</cname><cflag>uy.png</cflag></country>
 <country><ccode>USA</ccode><cname>USA</cname><cflag>us.png</cflag></country>
 <country><ccode>UZB</ccode><cname>Usbekistan</cname><cflag>uz.png</cflag></country>
-
 <country><ccode>VAT</ccode><cname>Vatikanstaten</cname><cflag>va.png</cflag></country>
 <country><ccode>VCT</ccode><cname>Saint Vincent og Grenadinerne</cname><cflag>vc.png</cflag></country>
 <country><ccode>VEN</ccode><cname>Venezuela</cname><cflag>ve.png</cflag></country>
@@ -259,12 +244,9 @@
 <country><ccode>VIR</ccode><cname>Amerikanske Jomfruøer</cname><cflag>vi.png</cflag></country>
 <country><ccode>VNM</ccode><cname>Vietnam</cname><cflag>vn.png</cflag></country>
 <country><ccode>VUT</ccode><cname>Vanuatu</cname><cflag>vu.png</cflag></country>
-
 <country><ccode>WLF</ccode><cname>Wallis og Futuna</cname><cflag>wf.png</cflag></country>
 <country><ccode>WSM</ccode><cname>Samoa</cname><cflag>ws.png</cflag></country>
-
 <country><ccode>YEM</ccode><cname>Yemen</cname><cflag>ye.png</cflag></country>
-
 <country><ccode>ZAF</ccode><cname>Sydafrika</cname><cflag>za.png</cflag></country>
 <country><ccode>ZMB</ccode><cname>Zambia</cname><cflag>zm.png</cflag></country>
 <country><ccode>ZWE</ccode><cname>Zimbabwe</cname><cflag>zw.png</cflag></country>

@@ -3,7 +3,7 @@
 */
 BODY {
     padding: 0px;
-    margin: 10px 0px;
+    margin: 0px 0px;
     background: white;
     font: 12pt Arial, sans-serif;
     color: #454545;
@@ -39,6 +39,11 @@ INPUT {
 /*
 	Class setup
 */
+DIV.header {
+    width: 100%;
+    text-align: left;
+    background: #313131;
+}
 DIV.centerpage {
     width: 700px;
     margin: 0px auto;
@@ -75,7 +80,7 @@ DIV.menu_footer UL LI A:hover {
     color: #D1D1D1;
 }
 DIV.menu_footer H3 {
-    color: #EEEEEE;
+    color: white;
 }
 H1.category {
 }

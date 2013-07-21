@@ -6,7 +6,7 @@ use Symfony\Component\Yaml\Exception\ParseException;
 
 class Util
 {
-    public function setupController($container, $tournament)
+    public function setupController($container, $tournament = '_')
     {
         if ($tournament == '_') {
             $tournament = 'IWC2013';

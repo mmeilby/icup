@@ -9,7 +9,7 @@ class OverviewController extends Controller
 {
     /**
      * @Route("/tmnt/{tournament}/vw", name="_tournament_overview")
-     * @Template("ICupPublicSiteBundle:Tournament:categories.html.twig")
+     * @Template("ICupPublicSiteBundle:Tournament:overview.html.twig")
      */
     public function overviewAction($tournament)
     {

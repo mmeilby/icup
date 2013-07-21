@@ -13,6 +13,9 @@
         {% set tournamentkey = app.session.get('Tournament') is empty ? '_' : app.session.get('Tournament') %}
         {% set imagepath = app.session.get('ImagePath') %}
         {% set flags = app.session.get('Countries') %}
+        <div class="header">
+            {% block header %}{% endblock %}
+        </div>
         <div class="centerpage">
             {% block body %}{% endblock %}
         </div>

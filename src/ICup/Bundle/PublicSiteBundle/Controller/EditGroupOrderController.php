@@ -18,8 +18,8 @@ class EditGroupOrderController extends Controller
      * @Template("ICupPublicSiteBundle:Default:editgrouporder.html.twig")
      */
     public function newAction($categoryId) {
-        DefaultController::switchLanguage($this);
-        $tournamentId = DefaultController::getTournament($this);
+        $this->get('util')->setupController($this, $tournament);
+        $tournamentId = $this->get('util')->getTournament($this);
         $em = $this->getDoctrine()->getManager();
 
         $tournament = $em->getRepository('ICup\Bundle\PublicSiteBundle\Entity\Doctrine\Tournament')
@@ -40,8 +40,8 @@ class EditGroupOrderController extends Controller
      * @Template("ICupPublicSiteBundle:Default:editgrouporder.html.twig")
      */
     public function newPostAction($categoryId) {
-        DefaultController::switchLanguage($this);
-        $tournamentId = DefaultController::getTournament($this);
+        $this->get('util')->setupController($this, $tournament);
+        $tournamentId = $this->get('util')->getTournament($this);
         $em = $this->getDoctrine()->getManager();
 
         $tournament = $em->getRepository('ICup\Bundle\PublicSiteBundle\Entity\Doctrine\Tournament')

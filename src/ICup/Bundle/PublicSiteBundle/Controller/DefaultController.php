@@ -28,7 +28,15 @@ class DefaultController extends Controller
      */
     public function listAction()
     {
-        return $this->redirect($this->generateUrl('_tournament_categories', array('tournament' => '_')));
+        return $this->redirect($this->generateUrl('_tournament_overview', array('tournament' => '_')));
     }
 
+    /**
+     * @Route("/", name="_icup")
+     * @Template()
+     */
+    public function rootAction()
+    {
+        return $this->redirect($this->generateUrl('_tournament_overview', array('tournament' => '_')));
+    }
 }

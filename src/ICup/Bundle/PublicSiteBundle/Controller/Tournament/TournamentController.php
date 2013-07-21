@@ -1,7 +1,6 @@
 <?php
 namespace ICup\Bundle\PublicSiteBundle\Controller\Tournament;
 
-use ICup\Bundle\PublicSiteBundle\Controller\Util\Util;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
@@ -14,8 +13,8 @@ class TournamentController extends Controller
      */
     public function listCategoriesAction($tournament)
     {
-        Util::setupController($this, $tournament);
-        $tournamentId = Util::getTournament($this);
+        $this->get('util')->setupController($this, $tournament);
+        $tournamentId = $this->get('util')->getTournament($this);
         $em = $this->getDoctrine()->getManager();
 
         $tournament = $em->getRepository('ICup\Bundle\PublicSiteBundle\Entity\Doctrine\Tournament')
@@ -39,8 +38,8 @@ class TournamentController extends Controller
      */
     public function listPlaygroundsAction($tournament)
     {
-        Util::setupController($this, $tournament);
-        $tournamentId = Util::getTournament($this);
+        $this->get('util')->setupController($this, $tournament);
+        $tournamentId = $this->get('util')->getTournament($this);
         $em = $this->getDoctrine()->getManager();
 
         $tournament = $em->getRepository('ICup\Bundle\PublicSiteBundle\Entity\Doctrine\Tournament')
@@ -69,8 +68,8 @@ class TournamentController extends Controller
      */
     public function listClubsAction($tournament)
     {
-        Util::setupController($this, $tournament);
-        $tournamentId = Util::getTournament($this);
+        $this->get('util')->setupController($this, $tournament);
+        $tournamentId = $this->get('util')->getTournament($this);
         $em = $this->getDoctrine()->getManager();
 
         $tournament = $em->getRepository('ICup\Bundle\PublicSiteBundle\Entity\Doctrine\Tournament')
@@ -111,7 +110,7 @@ class TournamentController extends Controller
                 $ccount = 0;
             }
         }
-        return array('tournament' => $tournament, 'teams' => $teamColumns, 'flags' => Util::getCountries());
+        return array('tournament' => $tournament, 'teams' => $teamColumns);
     }
     
     /**
@@ -120,8 +119,8 @@ class TournamentController extends Controller
      */
     public function listTeamsAction($tournament, $clubId)
     {
-        Util::setupController($this, $tournament);
-        $tournamentId = Util::getTournament($this);
+        $this->get('util')->setupController($this, $tournament);
+        $tournamentId = $this->get('util')->getTournament($this);
         $em = $this->getDoctrine()->getManager();
 
         $tournament = $em->getRepository('ICup\Bundle\PublicSiteBundle\Entity\Doctrine\Tournament')
@@ -161,6 +160,6 @@ class TournamentController extends Controller
             $teamList[$team['catid']][$team['id']] = $team;
         }
 
-        return array('tournament' => $tournament, 'club' => $club, 'teams' => $teamList, 'categories' => $categoryList, 'flags' => Util::getCountries());
+        return array('tournament' => $tournament, 'club' => $club, 'teams' => $teamList, 'categories' => $categoryList);
     }
 }

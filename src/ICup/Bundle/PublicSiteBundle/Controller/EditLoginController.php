@@ -14,7 +14,8 @@ class EditLoginController extends Controller
      */
     public function loginAction()
     {
-        DefaultController::switchLanguage($this);
+        $this->get('util')->setupController($this, $tournament);
+        $tournamentId = $this->get('util')->getTournament($this);
         $request = $this->getRequest();
         if ($request->attributes->has(SecurityContext::AUTHENTICATION_ERROR)) {
             $error = $request->attributes->get(SecurityContext::AUTHENTICATION_ERROR);
@@ -22,7 +23,6 @@ class EditLoginController extends Controller
             $error = $request->getSession()->get(SecurityContext::AUTHENTICATION_ERROR);
         }
 
-        $tournamentId = DefaultController::getTournament($this);
         $em = $this->getDoctrine()->getManager();
 
         $tournament = $em->getRepository('ICup\Bundle\PublicSiteBundle\Entity\Doctrine\Tournament')

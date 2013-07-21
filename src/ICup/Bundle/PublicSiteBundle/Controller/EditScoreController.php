@@ -25,11 +25,10 @@ class EditScoreController extends Controller
      */
     public function listAction($playgroundid, $date)
     {
-        DefaultController::switchLanguage($this);
-        $countries = DefaultController::getCountries();
+        $this->get('util')->setupController($this, $tournament);
+        $tournamentId = $this->get('util')->getTournament($this);
         $em = $this->getDoctrine()->getManager();
 
-        $tournamentId = DefaultController::getTournament($this);
         if ($tournamentId == 0) {
             return $this->redirect($this->generateUrl('_showtournament'));
         }
@@ -147,7 +146,7 @@ class EditScoreController extends Controller
                 }
             }
         }
-        return array('tournament' => $tournament, 'playground' => $playground, 'matchlist' => $matchList, 'imagepath' => DefaultController::getImagePath($this));
+        return array('tournament' => $tournament, 'playground' => $playground, 'matchlist' => $matchList);
     }
 
     /**

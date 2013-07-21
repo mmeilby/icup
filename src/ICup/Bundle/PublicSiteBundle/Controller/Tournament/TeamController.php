@@ -2,7 +2,6 @@
 namespace ICup\Bundle\PublicSiteBundle\Controller\Tournament;
 
 use DateTime;
-use ICup\Bundle\PublicSiteBundle\Controller\Util\Util;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
@@ -23,8 +22,8 @@ class TeamController extends Controller
      */
     public function listAction($tournament, $teamid, $groupid)
     {
-        Util::setupController($this, $tournament);
-        $tournamentId = Util::getTournament($this);
+        $this->get('util')->setupController($this, $tournament);
+        $tournamentId = $this->get('util')->getTournament($this);
         $em = $this->getDoctrine()->getManager();
 
         $tournament = $em->getRepository('ICup\Bundle\PublicSiteBundle\Entity\Doctrine\Tournament')
@@ -133,6 +132,6 @@ class TeamController extends Controller
                 }
             }
         }
-        return array('tournament' => $tournament, 'category' => $category, 'group' => $group, 'team' => $team, 'matchlist' => $matchList, 'flags' => Util::getCountries());
+        return array('tournament' => $tournament, 'category' => $category, 'group' => $group, 'team' => $team, 'matchlist' => $matchList);
     }
 }

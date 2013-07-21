@@ -18,8 +18,8 @@ class EditController extends Controller
      * @Template("ICupPublicSiteBundle:Default:editmaster.html.twig")
      */
     public function editAction() {
-        DefaultController::switchLanguage($this);
-        $tournamentId = DefaultController::getTournament($this);
+        $this->get('util')->setupController($this, $tournament);
+        $tournamentId = $this->get('util')->getTournament($this);
         $em = $this->getDoctrine()->getManager();
 
         $tournament = $em->getRepository('ICup\Bundle\PublicSiteBundle\Entity\Doctrine\Tournament')
@@ -28,7 +28,7 @@ class EditController extends Controller
         $categories = $em->getRepository('ICup\Bundle\PublicSiteBundle\Entity\Doctrine\Category')
                             ->findBy(array('pid' => $tournament->getId()));
 
-        return array('tournament' => $tournament, 'categories' => $categories, 'imagepath' => DefaultController::getImagePath($this));
+        return array('tournament' => $tournament, 'categories' => $categories);
     }
 
     /**
@@ -39,8 +39,8 @@ class EditController extends Controller
      * @Template("ICupPublicSiteBundle:Default:editmenu.html.twig")
      */
     public function menuAction($categoryId) {
-        DefaultController::switchLanguage($this);
-        $tournamentId = DefaultController::getTournament($this);
+        $this->get('util')->setupController($this, $tournament);
+        $tournamentId = $this->get('util')->getTournament($this);
         $em = $this->getDoctrine()->getManager();
 
         $tournament = $em->getRepository('ICup\Bundle\PublicSiteBundle\Entity\Doctrine\Tournament')
@@ -63,8 +63,8 @@ class EditController extends Controller
      * @Template("ICupPublicSiteBundle:Default:editcategory.html.twig")
      */
     public function newAction() {
-        DefaultController::switchLanguage($this);
-        $tournamentId = DefaultController::getTournament($this);
+        $this->get('util')->setupController($this, $tournament);
+        $tournamentId = $this->get('util')->getTournament($this);
         $em = $this->getDoctrine()->getManager();
 
         $tournament = $em->getRepository('ICup\Bundle\PublicSiteBundle\Entity\Doctrine\Tournament')
@@ -82,8 +82,8 @@ class EditController extends Controller
      * @Template("ICupPublicSiteBundle:Default:editcategory.html.twig")
      */
     public function newPostAction() {
-        DefaultController::switchLanguage($this);
-        $tournamentId = DefaultController::getTournament($this);
+        $this->get('util')->setupController($this, $tournament);
+        $tournamentId = $this->get('util')->getTournament($this);
         $em = $this->getDoctrine()->getManager();
 
         $tournament = $em->getRepository('ICup\Bundle\PublicSiteBundle\Entity\Doctrine\Tournament')

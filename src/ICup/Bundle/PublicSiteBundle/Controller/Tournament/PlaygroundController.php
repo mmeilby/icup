@@ -2,7 +2,6 @@
 namespace ICup\Bundle\PublicSiteBundle\Controller\Tournament;
 
 use DateTime;
-use ICup\Bundle\PublicSiteBundle\Controller\Util\Util;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
@@ -23,8 +22,8 @@ class PlaygroundController extends Controller
      */
     public function listAction($tournament, $playgroundid, $groupid)
     {
-        Util::setupController($this, $tournament);
-        $tournamentId = Util::getTournament($this);
+        $this->get('util')->setupController($this, $tournament);
+        $tournamentId = $this->get('util')->getTournament($this);
         $em = $this->getDoctrine()->getManager();
 
         $tournament = $em->getRepository('ICup\Bundle\PublicSiteBundle\Entity\Doctrine\Tournament')
@@ -120,7 +119,7 @@ class PlaygroundController extends Controller
                 }
             }
         }
-        return array('tournament' => $tournament, 'category' => $category, 'group' => $group, 'playground' => $playground, 'matchlist' => $matchList, 'flags' => Util::getCountries());
+        return array('tournament' => $tournament, 'category' => $category, 'group' => $group, 'playground' => $playground, 'matchlist' => $matchList);
     }
     
     /**
@@ -129,8 +128,8 @@ class PlaygroundController extends Controller
      */
     public function listAllAction($tournament, $playgroundid)
     {
-        Util::setupController($this, $tournament);
-        $tournamentId = Util::getTournament($this);
+        $this->get('util')->setupController($this, $tournament);
+        $tournamentId = $this->get('util')->getTournament($this);
         $em = $this->getDoctrine()->getManager();
 
         $tournament = $em->getRepository('ICup\Bundle\PublicSiteBundle\Entity\Doctrine\Tournament')
@@ -228,6 +227,6 @@ class PlaygroundController extends Controller
                 }
             }
         }
-        return array('tournament' => $tournament, 'playground' => $playground, 'matchlist' => $matchList, 'flags' => Util::getCountries());
+        return array('tournament' => $tournament, 'playground' => $playground, 'matchlist' => $matchList);
     }
 }

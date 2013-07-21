@@ -5,15 +5,13 @@ parameters:
     database_name:     icup
     database_user:     root
     database_password: ~
-    database_path:     icup
 
     mailer_transport:  smtp
     mailer_host:       localhost
     mailer_user:       mmeilby@gmail.com
-    mailer_password:   bingoboy
+    mailer_password:   ~
 
-    security_password: bingoboy
+    security_password: ~
     
     locale:            da
-    secret:            95e910aceacd17510f316697a05adbaf3e
-
+    secret:            ~

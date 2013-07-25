@@ -6,6 +6,7 @@
 
     <parameters>
         <parameter key="util.class">ICup\Bundle\PublicSiteBundle\Services\Util</parameter>
+        <parameter key="orderTeams.class">ICup\Bundle\PublicSiteBundle\Services\OrderTeams</parameter>
     </parameters>
 
     <services>
@@ -15,6 +16,8 @@
             <argument>plain_value</argument>
             <argument>%parameter_name%</argument>
 -->            
+        </service>
+        <service id="orderTeams" class="%orderTeams.class%">
         </service>
     </services>
 </container>

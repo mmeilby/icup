@@ -7,7 +7,7 @@ use Doctrine\ORM\Mapping as ORM;
 /**
  * ICup\Bundle\PublicSiteBundle\Entity\Doctrine\Tournament
  *
- * @ORM\Table(name="tournaments")
+ * @ORM\Table(name="tournaments",uniqueConstraints={@ORM\UniqueConstraint(name="IdxByKeyName", columns={"keyname"})})
  * @ORM\Entity
  */
 class Tournament
@@ -29,12 +29,25 @@ class Tournament
     private $pid;
 
     /**
+     * @var string $key
+     * Tournament key used in references
+     * @ORM\Column(name="keyname", type="string", length=50, nullable=false)
+     */
+    private $key;
+
+    /**
      * @var string $name
-     * Tournament name used in lists
+     * Tournament name for identifitcation in lists
      * @ORM\Column(name="name", type="string", length=50, nullable=false)
      */
     private $name;
 
+    /**
+     * @var string $edition
+     * Tournament edition like '2013' or '41th aniversary'
+     * @ORM\Column(name="edition", type="string", length=50, nullable=false)
+     */
+    private $edition;
 
 
     /**
@@ -71,6 +84,29 @@ class Tournament
     }
 
     /**
+     * Set key
+     *
+     * @param string $key
+     * @return Tournament
+     */
+    public function setKey($key)
+    {
+        $this->key = $key;
+    
+        return $this;
+    }
+
+    /**
+     * Get key
+     *
+     * @return string 
+     */
+    public function getKey()
+    {
+        return $this->key;
+    }
+
+    /**
      * Set name
      *
      * @param string $name
@@ -91,5 +127,28 @@ class Tournament
     public function getName()
     {
         return $this->name;
+    }
+
+    /**
+     * Set edition
+     *
+     * @param string $edition
+     * @return Tournament
+     */
+    public function setEdition($edition)
+    {
+        $this->edition = $edition;
+    
+        return $this;
+    }
+
+    /**
+     * Get edition
+     *
+     * @return string 
+     */
+    public function getEdition()
+    {
+        return $this->edition;
     }
 }

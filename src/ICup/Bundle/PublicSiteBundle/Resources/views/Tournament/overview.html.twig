@@ -1,22 +1,54 @@
 {% extends "base.html.twig" %}
 
-{% block header %}
-    <div style="padding: 20px;">
-        <div style="border: 2px solid #ffcc00; border-radius: 12px; width: 300px; height: 100px;">
-            <div style="opacity: 0.75; border-radius: 10px; background-color: #ffcc00; width: 100%; height: 100%;">
-                <div style="padding: 10px;">
-                    <b>Gruppe resultater</b><br />
-                    Se sammensætningen af puljerne i en gruppe eller følg et hold fra gruppen.
+{% block body %}
+<div class="overviewBlock">
+    <img src="{{ imagepath }}/IWC/bg.jpg" class="overviewImageBackground" />
+    <div class="overview">
+        <div>
+            <img src="{{ imagepath }}/IWC/logo.png" alt="{{ tournament.name }} logo" />
+            <div class="overviewHeader">
+                <h1>{{ tournament.edition }}</h1>
+                <b>{{ tournament.name }}</b>
+                <div class="overviewNews">
+                    <table>
+                        <caption>{% trans %}NEWS{% endtrans %}</caption>
+                        <thead>
+                            <tr>
+                                <td>{% trans %}DATE{% endtrans %}</td>
+                                <td></td>
+                            </tr>
+                        </thead>
+                        <tboby>
+                    {% for news in newsstream %}
+                            <tr class="{{ cycle(['even','odd'],loop.index) }}">
+                                <td class="dates">{{ news.date|date(' j. ') }}{{ ['MONTH.',news.date|date('M')|upper]|join|trans }}</td>
+                                <td class="news">
+                                    <a href="{{ news.path }}">{{ news.text }}</a>
+                                </td>
+                            </tr>
+                    {% endfor %}
+                        </tboby>
+                        <tfoot>
+                            <tr>
+                                <td colspan="2"></td>
+                            </tr>
+                        </tfoot>
+                    </table>
+                </div>
+            </div>
+            <div class="overviewMenu">
+                <div class="overviewMenuBackground">
+                    <div class="overviewMenuContent">
+                {% for teaser in teaserlist %}
+                        <div class="teaserBlock" onclick="location.href='{{ teaser.path }}'">
+                            <div class="teaserTitle">{{ teaser.titletext }}</div>
+                            <div class="teaser">{{ teaser.text }}</div>
+                        </div>
+                {% endfor %}
+                    </div>
                 </div>
             </div>
         </div>
-    </div>
-{% endblock %}
-
-{% block body %}
-<div style="background: url('{{ imagepath }}/IWC/bg.jpg'); width: 100%; height: 300px;">
-    <div style="padding: 20px;">
-        <div style="background: url('{{ imagepath }}/IWC/logo.png'); width: 590px; height: 113px;"></div>
     </div>
 </div>
 {% endblock %}

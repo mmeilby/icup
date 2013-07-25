@@ -51,12 +51,12 @@ class OverviewController extends Controller
             array(
                 'titletext' => 'Vindere',
                 'text' => 'Se alle vinderne fra denne turnering.',
-                'path' => $this->generateUrl('_tournament_clubs', array('tournament' => $tournament->getKey()))
+                'path' => $this->generateUrl('_tournament_winners', array('tournament' => $tournament->getKey()))
             ),
             array(
                 'titletext' => 'Hold statistik',
                 'text' => 'Hvilket hold klarede sig bedst? Se hvem og mange andre spændende informationer om turneringen.',
-                'path' => $this->generateUrl('_tournament_clubs', array('tournament' => $tournament->getKey()))
+                'path' => $this->generateUrl('_tournament_statistics', array('tournament' => $tournament->getKey()))
             )
         );
         return array('tournament' => $tournament, 'newsstream' => $newsStream, 'teaserlist' => $teaserList);

@@ -265,7 +265,7 @@ DIV.overview {
 DIV.overviewHeader {
     float: left;
     height: 200px;
-    width: 300px;
+    width: 320px;
 }
 DIV.overviewNews {
     margin-top: 30px;
@@ -273,7 +273,7 @@ DIV.overviewNews {
 DIV.overviewMenu {
     border: 2px solid #cccccc;
     border-radius: 12px;
-    width: 300px;
+    width: 320px;
     height: 350px;
     float: right;
 }

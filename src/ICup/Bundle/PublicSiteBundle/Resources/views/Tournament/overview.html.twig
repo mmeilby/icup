@@ -10,6 +10,7 @@
                 <h1>{{ tournament.edition }}</h1>
                 <b>{{ tournament.name }}</b>
                 <div class="overviewNews">
+            {% if newsstream|length > 0 %}
                     <table>
                         <caption>{% trans %}NEWS{% endtrans %}</caption>
                         <thead>
@@ -34,6 +35,7 @@
                             </tr>
                         </tfoot>
                     </table>
+            {% endif %}
                 </div>
             </div>
             <div class="overviewMenu">

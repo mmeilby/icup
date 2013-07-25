@@ -36,6 +36,8 @@ MENU:
     GROUPS: Categories
     PLAYGROUNDS: Playgrounds
     TEAMS: Clubs
+    WINNERS: Winners
+    STATISTICS: Statistics
   ENROLLMENT:
     TITLE: Enrollment
     CLUBS: Clubs

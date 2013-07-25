@@ -115,13 +115,27 @@ DIV.menu_footer H3 {
     color: white;
 }
 H1.category {
+    -webkit-margin-after: 0px;
+}
+DIV.champions {
+    width: 33%;
+    float: left;
+}
+DIV.header1 {
+    font-size: 30px;
+    font-weight: bold; 
+    padding-top: 20px;
+}
+DIV.header3 {
+    font-weight: bold;
+    padding-bottom: 10px;
 }
 P.subcategory {
-    position: relative;
-    top: -20px;
+    -webkit-margin-before: 0px;
     font-weight: bold;    
 }
 H2.group {
+    -webkit-margin-after: 0px;
 }
 P.subgroup {
     position: relative;

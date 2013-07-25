@@ -8,7 +8,7 @@
     <head>
         {% set tournamentname = app.session.get('TournamentName') is empty ? 'Interamnia World Cup 2013' : app.session.get('TournamentName') %}
         <meta charset="UTF-8" />
-        <title>{% block title %} - RESULTS - icup.dk{% endblock %}</title>
+        <title>{% block title %}{{ tournamentname }}{% endblock %} - icup.dk</title>
         {% stylesheets '@ICupPublicSiteBundle/Resources/public/css/*' output="bundles/icuppublicsite/css/basic.css" %}
             <link rel="stylesheet" href="{{ asset_url }}" />
         {% endstylesheets %}

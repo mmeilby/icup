@@ -3,7 +3,7 @@
 {% block body %}
 <h1 class="category">{{ tournament.name }}</h1>
 <p class="subcategory">
-    {% trans %}RESULTS{% endtrans %}<br />
+    {% trans %}RESULTS{% endtrans %} {{ tournament.edition }}<br />
 </p>
 <a href="{{ path('_showcategory', { 'tournament': tournamentkey, 'categoryid': category.id }) }}">
     <h1 class="category">{% trans %}CATEGORY{% endtrans %} {{ category.name }}</h1>

@@ -5,7 +5,7 @@
 {% block body %}
 <h1 class="category">{{ tournament.name }}</h1>
 <p class="subcategory">
-    {% trans %}RESULTS{% endtrans %}<br />
+    {% trans %}RESULTS{% endtrans %} {{ tournament.edition }}<br />
 </p>
 <h2 class="group">{% trans %}WINNERS{% endtrans %}</h2>
 {% for category in championlist %}

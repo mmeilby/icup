@@ -9,7 +9,7 @@ class StatisticsController extends Controller
 {
     /**
      * @Route("/tmnt/{tournament}/stt", name="_tournament_statistics")
-     * @Template("ICupPublicSiteBundle:Tournament:category.html.twig")
+     * @Template("ICupPublicSiteBundle:Tournament:statistics.html.twig")
      */
     public function listAction($tournament)
     {
@@ -21,7 +21,6 @@ class StatisticsController extends Controller
                             ->find($tournamentId);
 
         $groupList = array();
-        $championList = array();
 
         $qb = $em->createQuery("select c ".
                                "from ICup\Bundle\PublicSiteBundle\Entity\Doctrine\Category c ".
@@ -31,7 +30,7 @@ class StatisticsController extends Controller
         $categories = $qb->getResult();
         
         foreach ($categories as $category) {
-            $qb = $em->createQuery("select t.id,t.name,t.division,c.country ".
+            $qb = $em->createQuery("select t.id,t.name,t.division,c.country,g.id as grp ".
                                    "from ICup\Bundle\PublicSiteBundle\Entity\Doctrine\Group g, ".
                                         "ICup\Bundle\PublicSiteBundle\Entity\Doctrine\GroupOrder o, ".
                                         "ICup\Bundle\PublicSiteBundle\Entity\Doctrine\Team t, ".
@@ -43,10 +42,6 @@ class StatisticsController extends Controller
                                    "order by g.id asc, o.id asc");
             $qb->setParameter('category', $category->getId());
             $teams = $qb->getResult();
-            $uniqueTeams = array();
-            foreach ($teams as $team) {
-                $uniqueTeams[$team['id']] = $team;
-            }
             
             $qbr = $em->createQuery("select r ".
                                     "from ICup\Bundle\PublicSiteBundle\Entity\Doctrine\Group g, ".
@@ -57,9 +52,10 @@ class StatisticsController extends Controller
             $qbr->setParameter('category', $category->getId());
             $teamResults = $qbr->getResult();
             
-            $teamsList = $this->get('orderTeams')->sortTeams($uniqueTeams, $teamResults);
-            $groupList[$category->getName()] = array('group' => $category, 'teams' => $teamsList);
+            $teamsList = $this->get('orderTeams')->generateStat($teams, $teamResults);
+            $teamsList = $this->get('orderTeams')->sortTeamsByMostGoals($teamsList);
+            $groupList[$category->getName()] = array('category' => $category, 'teams' => $teamsList);
         }
-        return array('tournament' => $tournament, 'category' => $category, 'grouplist' => $groupList, 'championlist' => $championList);
+        return array('tournament' => $tournament, 'grouplist' => $groupList);
     }
 }

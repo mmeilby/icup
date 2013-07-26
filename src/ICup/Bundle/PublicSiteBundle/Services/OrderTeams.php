@@ -1,6 +1,8 @@
 <?php
 namespace ICup\Bundle\PublicSiteBundle\Services;
 
+use ICup\Bundle\PublicSiteBundle\Entity\Doctrine\MatchRelation;
+use ICup\Bundle\PublicSiteBundle\Entity\TeamStat;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 
 class OrderTeams
@@ -26,63 +28,84 @@ class OrderTeams
         $qbr->setParameter('group', $group);
         $teamResults = $qbr->getResult();
 
-        return $this->sortTeams($teams, $teamResults);
+        $teamsList = $this->generateStat($teams, $teamResults, $group);
+        return $this->sortTeams($teamsList);
     }
 
-    public function sortTeams($teams, $teamResults) {
-        $teamsList = array();
+    public function generateStat($teams, $teamResults, $groupId = 0) {
 
+        $teamMap = array();
         foreach ($teams as $team) {
-            $id = $team['id'];
-            $name = $team['name'];
-            if ($team['division'] != '') {
-                $name.= ' "'.$team['division'].'"';
+            $stat = new TeamStat();
+            $stat->id = $team['id'];
+            $stat->name = $this->teamName($team['name'], $team['division']);
+            $stat->country = $team['country'];
+            if (key_exists('grp', $team)) {
+                $stat->group = $team['grp'];
             }
-            $country = $team['country'];
-
-            $matches = 0;
-            $points = 0;
-            $score = 0;
-            $goals = 0;
-
-            $rel = 0;
-            $relA = null;
-            foreach ($teamResults as $matchRelation) {
-                if ($matchRelation->getPid() == $rel) {
-                    $relB = $matchRelation;
-                    $valid = $this->isScoreValid($relA, $relB);
-                    if ($valid) {
-                        if ($relA->getCid() == $id) {
-                            $matches++;
-                            $points += $relA->getPoints();
-                            $score += $relA->getScore();
-                            $goals += $relB->getScore();
-                        }
-                        else if ($relB->getCid() == $id) {
-                            $matches++;
-                            $points += $relB->getPoints();
-                            $score += $relB->getScore();
-                            $goals += $relA->getScore();
-                        }
-                    }
-                }
-                else {
-                    $relA = $matchRelation;
-                    $rel = $matchRelation->getPid();
-                }
+            else {
+                $stat->group = $groupId;
             }
-
-            $td = array('id' => $id,
-                        'name' => $name,
-                        'country' => $country,
-                        'matches' => $matches,
-                        'score' => $score,
-                        'goals' => $goals,
-                        'diff' => $score - $goals,
-                        'points' => $points);
-            $teamsList[] = $td;
+            $teamMap[$team['id']] = $stat;
         }
 
+        $rel = 0;
+        $relA = null;
+        foreach ($teamResults as $matchRelation) {
+            if ($matchRelation->getPid() == $rel) {
+                $relB = $matchRelation;
+                $valid = $this->isScoreValid($relA, $relB);
+                if ($valid) {
+                    $stat = $teamMap[$relA->getCid()];
+                    $stat->matches++;
+                    $stat->points += $relA->getPoints();
+                    $stat->score += $relA->getScore();
+                    $stat->goals += $relB->getScore();
+                    $diff = $relA->getScore() - $relB->getScore();
+                    $stat->diff += $diff;
+                    if ($relA->getPoints() > 1) {
+                        $stat->won++;
+                    }
+                    if ($stat->maxscore < $relA->getScore()) {
+                        $stat->maxscore = $relA->getScore();
+                    }
+                    if ($stat->maxdiff < $diff) {
+                        $stat->maxdiff = $diff;
+                    }
+
+                    $stat = $teamMap[$relB->getCid()];
+                    $stat->matches++;
+                    $stat->points += $relB->getPoints();
+                    $stat->score += $relB->getScore();
+                    $stat->goals += $relA->getScore();
+                    $diff = $relB->getScore() - $relA->getScore();
+                    $stat->diff += $diff;
+                    if ($relB->getPoints() > 1) {
+                        $stat->won++;
+                    }
+                    if ($stat->maxscore < $relB->getScore()) {
+                        $stat->maxscore = $relB->getScore();
+                    }
+                    if ($stat->maxdiff < $diff) {
+                        $stat->maxdiff = $diff;
+                    }
+                }
+            }
+            else {
+                $relA = $matchRelation;
+                $rel = $matchRelation->getPid();
+            }
+        }
+
+        $teamsList = array();
+        foreach ($teamMap as $stat) {
+            $teamsList[] = $stat;
+        }
+
+        return $teamsList;
+    }
+
+    public function sortTeams($teamsList) {
         $reorder = true;
         while ($reorder) {
             $reorder = false;
@@ -95,19 +118,47 @@ class OrderTeams
                 }
             }
         }
-
         return $teamsList;
     }
     
-    private function isScoreValid($relA, $relB) {
+    public function sortTeamsByMostGoals($teamsList) {
+        $reorder = true;
+        while ($reorder) {
+            $reorder = false;
+            for ($index = 0; $index < count($teamsList)-1; $index++) {
+                if ($this->reorderByMostGoals($teamsList[$index], $teamsList[$index+1])) {
+                    $tmp = $teamsList[$index+1];
+                    $teamsList[$index+1] = $teamsList[$index];
+                    $teamsList[$index] = $tmp;
+                    $reorder = true;
+                }
+            }
+        }
+        return $teamsList;
+    }
+    
+    public function teamName($name, $division) {
+        $teamName = $name;
+        if ($division != '') {
+            $teamName.= ' "'.$division.'"';
+        }
+        return $teamName;
+    }
+    
+    public function isScoreValid(MatchRelation $relA, MatchRelation $relB) {
 //        return $relA->getScorevalid() && $relB->getScorevalid();
         return true;
     }
     
-    private function reorder($team1, $team2) {
-        $p = $team1['points'] - $team2['points'];
-        $d = $team1['diff'] - $team2['diff'];
-        $s = $team1['score'] - $team2['score'];
+    private function reorder(TeamStat $team1, TeamStat $team2) {
+        $p = $team1->points - $team2->points;
+        $d = $team1->diff - $team2->diff;
+        $s = $team1->score - $team2->score;
         return $p < 0 || ($p==0 && $d < 0) || ($p==0 && $d==0 && $s < 0);
+    }
+    
+    private function reorderByMostGoals(TeamStat $team1, TeamStat $team2) {
+        $p = $team1->maxscore - $team2->maxscore;
+        return $p < 0;
     }
 }

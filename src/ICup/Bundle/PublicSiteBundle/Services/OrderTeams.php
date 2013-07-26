@@ -26,7 +26,12 @@ class OrderTeams
         $qbr->setParameter('group', $group);
         $teamResults = $qbr->getResult();
 
+        return $this->sortTeams($teams, $teamResults);
+    }
+
+    public function sortTeams($teams, $teamResults) {
         $teamsList = array();
+
         foreach ($teams as $team) {
             $id = $team['id'];
             $name = $team['name'];
@@ -90,12 +95,13 @@ class OrderTeams
                 }
             }
         }
-        
+
         return $teamsList;
     }
-
+    
     private function isScoreValid($relA, $relB) {
-        return $relA->getScorevalid() && $relB->getScorevalid();
+//        return $relA->getScorevalid() && $relB->getScorevalid();
+        return true;
     }
     
     private function reorder($team1, $team2) {

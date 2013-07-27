@@ -37,7 +37,7 @@ INPUT {
 }
 
 /*
-	Class setup
+    Class setup
 */
 DIV.header {
     width: 100%;
@@ -138,8 +138,6 @@ H2.group {
     -webkit-margin-after: 0px;
 }
 P.subgroup {
-    position: relative;
-    top: -18px;
     font-weight: bold;    
 }
 P.language {
@@ -147,6 +145,24 @@ P.language {
     padding-top: 10px;
     margin-bottom: 10px;
 }
+DIV.tab {
+    background-color: whitesmoke;
+    color: #313131;
+    width: 30%;
+    border-radius: 10px;
+    padding: 10px;
+    margin-bottom: 30px;
+    cursor: pointer;
+    float: left;
+}
+DIV.active {
+    background-color: #2080f0;
+    color: whitesmoke;
+}
+
+/*
+    TABLE STYLES
+*/
 CAPTION {
     font-weight: bold;
     text-transform: uppercase;
@@ -265,6 +281,9 @@ DIV.admin {
     background-color: lightpink;
 }
 
+/*
+    OVERVIEW STYLES
+*/
 DIV.overviewBlock {
     position: relative;
 }

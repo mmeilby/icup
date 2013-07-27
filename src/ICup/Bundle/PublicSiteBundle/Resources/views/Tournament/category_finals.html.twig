@@ -12,6 +12,9 @@
     {{ [category.gender,category.classification]|join|trans }}
     {{ category.classification|trans }}
 </p>
+<div class="tab" onclick="location.href='{{ path('_showcategory', {'tournament': tournamentkey, 'categoryid': category.id }) }}'">PRELIMENARY</div>
+<div class="tab" onclick="location.href='{{ path('_showcategory_classification', {'tournament': tournamentkey, 'categoryid': category.id }) }}'">CLASSIFICATION</div>
+<div class="tab active" onclick="location.href='{{ path('_showcategory_finals', {'tournament': tournamentkey, 'categoryid': category.id }) }}'">FINALSTANDING</div>
     <h2 class="group">{% trans %}STANDING{% endtrans %}</h2>
     <table>
 {% for group in championlist %}

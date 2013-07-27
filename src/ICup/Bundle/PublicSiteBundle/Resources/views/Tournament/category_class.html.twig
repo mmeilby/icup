@@ -12,13 +12,13 @@
     {{ [category.gender,category.classification]|join|trans }}
     {{ category.classification|trans }}
 </p>
-<div class="tab active" onclick="location.href='{{ path('_showcategory', {'tournament': tournamentkey, 'categoryid': category.id }) }}'">PRELIMENARY</div>
-<div class="tab" onclick="location.href='{{ path('_showcategory_classification', {'tournament': tournamentkey, 'categoryid': category.id }) }}'">CLASSIFICATION</div>
+<div class="tab" onclick="location.href='{{ path('_showcategory', {'tournament': tournamentkey, 'categoryid': category.id }) }}'">PRELIMENARY</div>
+<div class="tab active" onclick="location.href='{{ path('_showcategory_classification', {'tournament': tournamentkey, 'categoryid': category.id }) }}'">CLASSIFICATION</div>
 <div class="tab" onclick="location.href='{{ path('_showcategory_finals', {'tournament': tournamentkey, 'categoryid': category.id }) }}'">FINALSTANDING</div>
 {% for group in grouplist %}
     <p>
         <table>
-            <caption>{% trans %}GROUP{% endtrans %} {{ group.group.name }}</caption>
+            <caption>{{ ['GROUPCLASS.',group.group.classification]|join|trans }}</caption>
             <thead>
                 <tr>
                     <td class="flag"></td>

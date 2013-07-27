@@ -146,8 +146,7 @@ class OrderTeams
     }
     
     public function isScoreValid(MatchRelation $relA, MatchRelation $relB) {
-//        return $relA->getScorevalid() && $relB->getScorevalid();
-        return true;
+        return $relA->getScorevalid() && $relB->getScorevalid();
     }
     
     private function reorder(TeamStat $team1, TeamStat $team2) {

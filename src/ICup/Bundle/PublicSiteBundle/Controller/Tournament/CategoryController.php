@@ -20,9 +20,6 @@ class CategoryController extends Controller
         $tournament = $em->getRepository('ICup\Bundle\PublicSiteBundle\Entity\Doctrine\Tournament')
                             ->find($tournamentId);
 
-        $groupList = array();
-        $championList = array();
-
         $category = $em->getRepository('ICup\Bundle\PublicSiteBundle\Entity\Doctrine\Category')
                             ->find($categoryid);
 
@@ -33,6 +30,7 @@ class CategoryController extends Controller
         $qb->setParameter('category', $category->getId());
         $groups = $qb->getResult();
         
+        $groupList = array();
         foreach ($groups as $group) {
             $teamsList = $this->get('orderTeams')->sortGroup($this, $group->getId());
             $groupList[$group->getName()] = array('group' => $group, 'teams' => $teamsList);
@@ -53,22 +51,20 @@ class CategoryController extends Controller
         $tournament = $em->getRepository('ICup\Bundle\PublicSiteBundle\Entity\Doctrine\Tournament')
                             ->find($tournamentId);
 
-        $groupList = array();
-        $championList = array();
-
         $category = $em->getRepository('ICup\Bundle\PublicSiteBundle\Entity\Doctrine\Category')
                             ->find($categoryid);
 
         $qb = $em->createQuery("select g ".
                                "from ICup\Bundle\PublicSiteBundle\Entity\Doctrine\Group g ".
-                               "where g.pid=:category and g.classification = 1 ".
-                               "order by g.name asc");
+                               "where g.pid=:category and g.classification > 0 and g.classification < 8 ".
+                               "order by g.classification asc, g.name asc");
         $qb->setParameter('category', $category->getId());
         $groups = $qb->getResult();
         
+        $groupList = array();
         foreach ($groups as $group) {
             $teamsList = $this->get('orderTeams')->sortGroup($this, $group->getId());
-            $groupList[$group->getName()] = array('group' => $group, 'teams' => $teamsList);
+            $groupList[$group->getId()] = array('group' => $group, 'teams' => $teamsList);
         }
         return array('tournament' => $tournament, 'category' => $category, 'grouplist' => $groupList);
     }
@@ -86,23 +82,43 @@ class CategoryController extends Controller
         $tournament = $em->getRepository('ICup\Bundle\PublicSiteBundle\Entity\Doctrine\Tournament')
                             ->find($tournamentId);
 
-        $groupList = array();
-        $championList = array();
-
         $category = $em->getRepository('ICup\Bundle\PublicSiteBundle\Entity\Doctrine\Category')
                             ->find($categoryid);
 
         $qb = $em->createQuery("select g ".
                                "from ICup\Bundle\PublicSiteBundle\Entity\Doctrine\Group g ".
-                               "where g.pid=:category and g.classification > 1 ".
+                               "where g.pid=:category and g.classification > 7 ".
                                "order by g.classification desc, g.name asc");
         $qb->setParameter('category', $category->getId());
         $groups = $qb->getResult();
         
+        $champions = array('SA'=>null,'SB'=>null,'SC'=>null,'SD'=>null,'FA'=>null,'FB'=>null,'FC'=>null,'FD'=>null);
         foreach ($groups as $group) {
             $teamsList = $this->get('orderTeams')->sortGroup($this, $group->getId());
-            $championList[$group->getClassification()] = array('group' => $group, 'teams' => $teamsList);
+            foreach ($teamsList as $team) {
+                $keys = array();
+                switch ($group->getClassification()) {
+                    case 10:
+                        /* finals */
+                        $keys = array('FA', 'FB');
+                        break;
+                    case 9:
+                        /* 3/4 position */
+                        $keys = array('FC', 'FD');
+                        break;
+                    case 8:
+                        /* semifinals */
+                        $keys = array('SA', 'SB', 'SC', 'SD');
+                        break;
+                }
+                foreach ($keys as $key) {
+                    if ($champions[$key] == null) {
+                        $champions[$key] = $team;
+                        break;
+                    }
+                }
+            }
         }
-        return array('tournament' => $tournament, 'category' => $category, 'championlist' => $championList);
+        return array('tournament' => $tournament, 'category' => $category, 'champions' => $champions);
     }
 }

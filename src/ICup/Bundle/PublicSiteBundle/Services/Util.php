@@ -23,9 +23,8 @@ class Util
         $session->set('Countries', $this->getCountries());
         $headerMenu = array(
                 'MENU.TOURNAMENT.OVERVIEW' => $container->generateUrl('_tournament_overview', array('tournament' => $tournament)),
-                'MENU.TOURNAMENT.GROUPS' => $container->generateUrl('_tournament_categories', array('tournament' => $tournament)),
-                'MENU.TOURNAMENT.PLAYGROUNDS' => $container->generateUrl('_tournament_playgrounds', array('tournament' => $tournament)),
-                'MENU.TOURNAMENT.TEAMS' => $container->generateUrl('_tournament_clubs', array('tournament' => $tournament))
+                'MENU.INFO.ABOUT' => $container->generateUrl('_showtournament', array('tournament' => $tournament)),
+                'MENU.INFO.FAQ' => $container->generateUrl('_showtournament', array('tournament' => $tournament))
         );
         $footerMenu = array(
             'MENU.TOURNAMENT.TITLE' => array(
@@ -46,12 +45,6 @@ class Util
                 'MENU.ADMIN.PLAYERS' => $container->generateUrl('_tournament_overview', array('tournament' => $tournament)),
                 'MENU.ADMIN.REFEREES' => $container->generateUrl('_tournament_overview', array('tournament' => $tournament)))
         );
-/*        
-                        <h3>{% trans %}MENU.INFO.TITLE{% endtrans %}</h3>
-                                <a href="{{ path('_showtournament', { 'tournament': tournamentkey }) }}">{% trans %}MENU.INFO.ABOUT{% endtrans %}</a>
-                                <a href="{{ path('_showtournament', { 'tournament': tournamentkey }) }}">{% trans %}MENU.INFO.PRICES{% endtrans %}</a>
-                                <a href="{{ path('_showtournament') }}">{% trans %}MENU.INFO.FAQ{% endtrans %}</a>
-*/
         $session->set('HeaderMenu', $headerMenu);
         $session->set('FooterMenu', $footerMenu);
     }

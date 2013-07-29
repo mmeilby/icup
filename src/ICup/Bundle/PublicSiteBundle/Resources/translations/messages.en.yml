@@ -61,20 +61,20 @@ MENU:
 TEASER:
   TOURNAMENT:
     GROUPS:
-      TITLE: Gruppe resultater
-      DESC: Se sammensætningen af puljerne i en gruppe eller følg et hold fra gruppen.
+      TITLE: Category results
+      DESC: Watch the composition of categories or search the results for a team by the category.
     PLAYGROUNDS:
-      TITLE: Bane oversigt
-      DESC: Se resultater fra banerne eller få overblik over kampplanen.
+      TITLE: Playground overview
+      DESC: Follow the matches on specific playgrounds.
     TEAMS:
-      TITLE: Deltagende hold
-      DESC: Se alle vinderne fra denne turnering.
+      TITLE: Enrolled teams
+      DESC: Find teams participating the tournament and see the results.
     WINNERS:
-      TITLE: Vindere
-      DESC: Se sammensætningen af puljerne i en gruppe eller følg et hold fra gruppen.
+      TITLE: The winners
+      DESC: Discover the winners from all categories of this tournament.
     STATISTICS:
-      TITLE: Hold statistik
-      DESC: Hvilket hold klarede sig bedst? Se hvem og mange andre spændende informationer om turneringen.
+      TITLE: Team statistics
+      DESC: See the hall of fame and other interesting figures from the tournament.
 
 PRELIMINARY: Preliminary round
 CLASSIFICATION: Playoff rounds

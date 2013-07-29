@@ -58,6 +58,24 @@ MENU:
     FAQ: FAQ
   LOGIN: Customer Login
 
+TEASER:
+  TOURNAMENT:
+    GROUPS:
+      TITLE: Category results
+      DESC: Watch the composition of categories or search the results for a team by the category.
+    PLAYGROUNDS:
+      TITLE: Playground overview
+      DESC: Follow the matches on specific playgrounds.
+    TEAMS:
+      TITLE: Enrolled teams
+      DESC: Find teams participating the tournament and see the results.
+    WINNERS:
+      TITLE: The winners
+      DESC: Discover the winners from all categories of this tournament.
+    STATISTICS:
+      TITLE: Team statistics
+      DESC: See the hall of fame and other interesting figures from the tournament.
+
 PRELIMINARY: Preliminary round
 CLASSIFICATION: Playoff rounds
 FINALS: Finale

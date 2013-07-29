@@ -21,6 +21,7 @@ class OverviewController extends Controller
                             ->find($tournamentId);
         
         $newsStream = array(
+/*            
             array(
                 'date' => time(),
                 'text' => 'TEKNOELETTRONICA TERAMO disqualified due to use of players without license.',
@@ -31,31 +32,32 @@ class OverviewController extends Controller
                 'text' => 'Dimitri Populos, SPE STROVOLOU, male U18 received red card for improper act to game officials.',
                 'path' => $this->generateUrl('_tournament_overview', array('tournament' => $tournament->getKey()))
             )
+*/
         );
         $teaserList = array(
             array(
-                'titletext' => 'Gruppe resultater',
-                'text' => 'Se sammensætningen af puljerne i en gruppe eller følg et hold fra gruppen.',
+                'titletext' => 'TEASER.TOURNAMENT.GROUPS.TITLE',
+                'text' => 'TEASER.TOURNAMENT.GROUPS.DESC',
                 'path' => $this->generateUrl('_tournament_categories', array('tournament' => $tournament->getKey()))
             ),
             array(
-                'titletext' => 'Bane oversigt',
-                'text' => 'Se resultater fra banerne eller få overblik over kampplanen.',
+                'titletext' => 'TEASER.TOURNAMENT.PLAYGROUNDS.TITLE',
+                'text' => 'TEASER.TOURNAMENT.PLAYGROUNDS.DESC',
                 'path' => $this->generateUrl('_tournament_playgrounds', array('tournament' => $tournament->getKey()))
             ),
             array(
-                'titletext' => 'Deltagende hold',
-                'text' => 'Find hold der deltager i turneringen og se deres resultater.',
+                'titletext' => 'TEASER.TOURNAMENT.TEAMS.TITLE',
+                'text' => 'TEASER.TOURNAMENT.TEAMS.DESC',
                 'path' => $this->generateUrl('_tournament_clubs', array('tournament' => $tournament->getKey()))
             ),
             array(
-                'titletext' => 'Vindere',
-                'text' => 'Se alle vinderne fra denne turnering.',
+                'titletext' => 'TEASER.TOURNAMENT.WINNERS.TITLE',
+                'text' => 'TEASER.TOURNAMENT.WINNERS.DESC',
                 'path' => $this->generateUrl('_tournament_winners', array('tournament' => $tournament->getKey()))
             ),
             array(
-                'titletext' => 'Hold statistik',
-                'text' => 'Hvilket hold klarede sig bedst? Se hvem og mange andre spændende informationer om turneringen.',
+                'titletext' => 'TEASER.TOURNAMENT.STATISTICS.TITLE',
+                'text' => 'TEASER.TOURNAMENT.STATISTICS.DESC',
                 'path' => $this->generateUrl('_tournament_statistics', array('tournament' => $tournament->getKey()))
             )
         );

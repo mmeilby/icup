@@ -43,8 +43,8 @@
                     <div class="overviewMenuContent">
                 {% for teaser in teaserlist %}
                         <div class="teaserBlock" onclick="location.href='{{ teaser.path }}'">
-                            <div class="teaserTitle">{{ teaser.titletext }}</div>
-                            <div class="teaser">{{ teaser.text }}</div>
+                            <div class="teaserTitle">{{ teaser.titletext|trans }}</div>
+                            <div class="teaser">{{ teaser.text|trans }}</div>
                         </div>
                 {% endfor %}
                     </div>

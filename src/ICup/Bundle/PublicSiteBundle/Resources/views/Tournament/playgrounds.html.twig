@@ -24,7 +24,7 @@
             <tr class="{{ cycle(['even','odd'],loop.index) }}">
                 <td class="sites"></td>
                 <td class="playgrounds">
-                    <a href="{{ path('_showplayground_full', { 'tournament': tournamentkey, 'playgroundid': id }) }}">
+                    <a href="{{ path('_showplayground_full', { 'tournament': tournament.key, 'playgroundid': id }) }}">
                         {{ name }}
                     </a>
                 </td>

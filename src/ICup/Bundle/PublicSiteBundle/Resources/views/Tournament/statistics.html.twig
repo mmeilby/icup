@@ -7,7 +7,7 @@
 </p>
 {% for group in grouplist %}
     <p>
-        <a href="{{ path('_tournament_categories', {'tournament': tournamentkey }) }}">
+        <a href="{{ path('_tournament_categories', {'tournament': tournament.key }) }}">
             <h1 class="category">{% trans %}CATEGORY{% endtrans %} {{ group.category.name }}</h1>
         </a>
         <p class="subcategory">
@@ -32,7 +32,7 @@
     {% for team in group.teams %}
                 <tr class="{{ cycle(['even','odd'],loop.index) }}">
                     <td class="flag"><img src="{{ imagepath }}/flags/{{ flags[team.country] }}" alt="{{ team.country|trans({},'lang') }}" title="{{ team.country|trans({},'lang') }}"></td>
-                    <td class="team"><a href="{{ path('_showteam', { 'tournament': tournamentkey, 'teamid': team.id, 'groupid': team.group }) }}">{{ team.name }}</a></td>
+                    <td class="team"><a href="{{ path('_showteam', { 'tournament': tournament.key, 'teamid': team.id, 'groupid': team.group }) }}">{{ team.name }}</a></td>
                     <td class="matches">{{ team.matches }}</td>
                     <td class="score">{{ team.score }}</td>
                     <td class="goals">{{ team.goals }}</td>

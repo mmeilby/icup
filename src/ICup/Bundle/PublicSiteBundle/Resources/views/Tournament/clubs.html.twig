@@ -23,7 +23,7 @@
                         <img src="{{ imagepath }}/flags/{{ flags[country] }}" alt="{{ country|trans({},'lang') }}" title="{{ country|trans({},'lang') }}">
                         <b>{{ country|trans({},'lang') }}</b><br />
         {% for id,team in teamlist %}
-                    <a href="{{ path('_tournament_teams', { 'tournament': tournamentkey, 'clubId': id }) }}">{{ team }}</a><br />
+                    <a href="{{ path('_tournament_teams', { 'tournament': tournament.key, 'clubId': id }) }}">{{ team }}</a><br />
         {% endfor %}
                     </p>
     {% endfor %}

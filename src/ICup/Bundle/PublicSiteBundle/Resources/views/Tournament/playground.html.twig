@@ -5,14 +5,14 @@
 <p class="subcategory">
     {% trans %}RESULTS{% endtrans %} {{ tournament.edition }}<br />
 </p>
-<a href="{{ path('_showcategory', { 'tournament': tournamentkey, 'categoryid': category.id }) }}">
+<a href="{{ path('_showcategory', { 'tournament': tournament.key, 'categoryid': category.id }) }}">
     <h1 class="category">{% trans %}CATEGORY{% endtrans %} {{ category.name }}</h1>
 </a>
 <p class="subcategory">
     {{ [category.gender,category.classification]|join|trans }}
     {{ category.classification|trans }}
 </p>
-<a href="{{ path('_showcategory', { 'tournament': tournamentkey, 'categoryid': category.id }) }}">
+<a href="{{ path('_showcategory', { 'tournament': tournament.key, 'categoryid': category.id }) }}">
     <h2 class="group">{% trans %}GROUP{% endtrans %} {{ group.name }}</h2>
 </a>
 <p>
@@ -46,9 +46,9 @@
                 <td class="no">{{ match.matchno }}</td>
                 <td class="time">{{ match.schedule|date('H.i') }}</td>
                 <td class="flag"><img src="{{ imagepath }}/flags/{{ flags[match.countryA] }}" alt="{{ match.countryA|trans({},'lang') }}" title="{{ match.countryA|trans({},'lang') }}"></td>
-                <td class="team"><a href="{{ path('_showteam', { 'tournament': tournamentkey, 'teamid': match.idA, 'groupid': group.id }) }}">{{ match.teamA }}</a></td>
+                <td class="team"><a href="{{ path('_showteam', { 'tournament': tournament.key, 'teamid': match.idA, 'groupid': group.id }) }}">{{ match.teamA }}</a></td>
                 <td class="flag"><img src="{{ imagepath }}/flags/{{ flags[match.countryB] }}" alt="{{ match.countryB|trans({},'lang') }}" title="{{ match.countryB|trans({},'lang') }}"></td>
-                <td class="team"><a href="{{ path('_showteam', { 'tournament': tournamentkey, 'teamid': match.idB, 'groupid': group.id }) }}">{{ match.teamB }}</a></td>
+                <td class="team"><a href="{{ path('_showteam', { 'tournament': tournament.key, 'teamid': match.idB, 'groupid': group.id }) }}">{{ match.teamB }}</a></td>
                 <td class="match">{{ match.scoreA }}-{{ match.scoreB }}</td>
             </tr>
 {% endfor %}

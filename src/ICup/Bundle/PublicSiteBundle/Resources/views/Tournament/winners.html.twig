@@ -14,7 +14,7 @@
         {% set group = champion.group %}
         {% if loop.index == 1 %}
         <div class="header1">
-            <a href="{{ path('_showcategory', {'tournament': tournamentkey, 'categoryid': group.catid }) }}">
+            <a href="{{ path('_showcategory', {'tournament': tournament.key, 'categoryid': group.catid }) }}">
                 {% trans %}CATEGORY{% endtrans %} {{ group.category }}
             </a>
         </div>
@@ -32,7 +32,7 @@
                 </tr>
                 <tr>
                     <td class="flag"><img src="{{ imagepath }}/flags/{{ flags[team.country] }}" alt="{{ team.country|trans({},'lang') }}" title="{{ team.country|trans({},'lang') }}"></td>
-                    <td class="team"><a href="{{ path('_showteam', { 'tournament': tournamentkey, 'teamid': team.id, 'groupid': group.id }) }}">{{ team.name }}</a></td>
+                    <td class="team"><a href="{{ path('_showteam', { 'tournament': tournament.key, 'teamid': team.id, 'groupid': group.id }) }}">{{ team.name }}</a></td>
                     <td class="score"></td>
                 </tr>
                 {% else %}
@@ -43,7 +43,7 @@
                     {% endif %}
                 <tr>
                     <td class="flag"><img src="{{ imagepath }}/flags/{{ flags[team.country] }}" alt="{{ team.country|trans({},'lang') }}" title="{{ team.country|trans({},'lang') }}"></td>
-                    <td class="team"><a href="{{ path('_showteam', { 'tournament': tournamentkey, 'teamid': team.id, 'groupid': group.id }) }}">{{ team.name }}</a></td>
+                    <td class="team"><a href="{{ path('_showteam', { 'tournament': tournament.key, 'teamid': team.id, 'groupid': group.id }) }}">{{ team.name }}</a></td>
                     <td class="score"></td>
                 </tr>
                 {% endif %}
@@ -55,7 +55,7 @@
                 </tr>
                 <tr>
                     <td class="flag"><img src="{{ imagepath }}/flags/{{ flags[team.country] }}" alt="{{ team.country|trans({},'lang') }}" title="{{ team.country|trans({},'lang') }}"></td>
-                    <td class="team"><a href="{{ path('_showteam', { 'tournament': tournamentkey, 'teamid': team.id, 'groupid': group.id }) }}">{{ team.name }}</a></td>
+                    <td class="team"><a href="{{ path('_showteam', { 'tournament': tournament.key, 'teamid': team.id, 'groupid': group.id }) }}">{{ team.name }}</a></td>
                     <td class="score"></td>
                 </tr>
                 {% else %}
@@ -66,7 +66,7 @@
                     {% endif %}
                 <tr>
                     <td class="flag"><img src="{{ imagepath }}/flags/{{ flags[team.country] }}" alt="{{ team.country|trans({},'lang') }}" title="{{ team.country|trans({},'lang') }}"></td>
-                    <td class="team"><a href="{{ path('_showteam', { 'tournament': tournamentkey, 'teamid': team.id, 'groupid': group.id }) }}">{{ team.name }}</a></td>
+                    <td class="team"><a href="{{ path('_showteam', { 'tournament': tournament.key, 'teamid': team.id, 'groupid': group.id }) }}">{{ team.name }}</a></td>
                     <td class="score"></td>
                 </tr>
                 {% endif %}

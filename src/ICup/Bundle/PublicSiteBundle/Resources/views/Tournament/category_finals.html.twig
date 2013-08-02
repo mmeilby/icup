@@ -1,22 +1,34 @@
 {% extends "ICupPublicSiteBundle:Masters:standard.html.twig" %}
 
-{% import "ICupPublicSiteBundle:Tournament:club_formatter.html.twig" as formatter %}
+{% import _self as formatter %}
+
+{% macro club(team, context) %}
+    {% if team is not null %}
+        <table>
+            <tr>
+                <td class="flag"><img src="{{ context.imagepath }}/flags/{{ context.flags[team.country] }}" alt="{{ team.country|trans({},'lang') }}" title="{{ team.country|trans({},'lang') }}"></td>
+                <td class="team"><a href="{{ path('_showteam', { 'tournament': context.tournament.key, 'teamid': team.id, 'groupid': team.group }) }}">{{ team.name }}</a></td>
+                <td class="score">{{ team.score }}</td>
+            </tr>
+        </table>
+    {% endif %}
+{% endmacro %}
         
 {% block body %}
 <h1 class="category">{{ tournament.name }}</h1>
 <p class="subcategory">
     {% trans %}RESULTS{% endtrans %} {{ tournament.edition }}<br />
 </p>
-<a href="{{ path('_tournament_categories', {'tournament': tournamentkey }) }}">
+<a href="{{ path('_tournament_categories', {'tournament': tournament.key }) }}">
     <h1 class="category">{% trans %}CATEGORY{% endtrans %} {{ category.name }}</h1>
 </a>
 <p class="subcategory">
     {{ [category.gender,category.classification]|join|trans }}
     {{ category.classification|trans }}
 </p>
-<div class="tab" onclick="location.href='{{ path('_showcategory', {'tournament': tournamentkey, 'categoryid': category.id }) }}'">{{ 'PRELIMINARY'|trans|upper }}</div>
-<div class="tab" onclick="location.href='{{ path('_showcategory_classification', {'tournament': tournamentkey, 'categoryid': category.id }) }}'">{{ 'CLASSIFICATION'|trans|upper }}</div>
-<div class="tab active" onclick="location.href='{{ path('_showcategory_finals', {'tournament': tournamentkey, 'categoryid': category.id }) }}'">{{ 'FINALS'|trans|upper }}</div>
+<div class="tab" onclick="location.href='{{ path('_showcategory', {'tournament': tournament.key, 'categoryid': category.id }) }}'">{{ 'PRELIMINARY'|trans|upper }}</div>
+<div class="tab" onclick="location.href='{{ path('_showcategory_classification', {'tournament': tournament.key, 'categoryid': category.id }) }}'">{{ 'CLASSIFICATION'|trans|upper }}</div>
+<div class="tab active" onclick="location.href='{{ path('_showcategory_finals', {'tournament': tournament.key, 'categoryid': category.id }) }}'">{{ 'FINALS'|trans|upper }}</div>
 <table>
     <caption>{% trans %}STANDING{% endtrans %}</caption>
     {% if champions.SA is null and champions.SC is null %}
@@ -26,13 +38,13 @@
     <tbody>
         <tr><td class="spacer"></td></tr>
     {% if champions.FA is not null %}
-        <tr><td class="finalsA{{ champions.FA.score > champions.FB.score ? ' winner' : '' }}">{{ formatter.club(champions.FA) }}</td></tr>
-        <tr><td class="finalsB{{ champions.FB.score > champions.FA.score ? ' winner' : '' }}">{{ formatter.club(champions.FB) }}</td></tr>
+        <tr><td class="finalsA{{ champions.FA.score > champions.FB.score ? ' winner' : '' }}">{{ formatter.club(champions.FA, _context) }}</td></tr>
+        <tr><td class="finalsB{{ champions.FB.score > champions.FA.score ? ' winner' : '' }}">{{ formatter.club(champions.FB, _context) }}</td></tr>
     {% endif %}
     {% if champions.FC is not null %}
         <tr><td class="spacer">{% trans %}BRONZEMATCH{% endtrans %}</td></tr>
-        <tr><td class="finalsA{{ champions.FC.score > champions.FD.score ? ' winner' : '' }}">{{ formatter.club(champions.FC) }}</td></tr>
-        <tr><td class="finalsB{{ champions.FD.score > champions.FC.score ? ' winner' : '' }}">{{ formatter.club(champions.FD) }}</td></tr>
+        <tr><td class="finalsA{{ champions.FC.score > champions.FD.score ? ' winner' : '' }}">{{ formatter.club(champions.FC, _context) }}</td></tr>
+        <tr><td class="finalsB{{ champions.FD.score > champions.FC.score ? ' winner' : '' }}">{{ formatter.club(champions.FD, _context) }}</td></tr>
     {% endif %}
     </tbody>
     {% else %}
@@ -42,21 +54,21 @@
     <tbody>
         <tr><td></td><td></td><td></td><td class="spacer"></td></tr>
     {% if champions.SA is not null %}
-        <tr><td class="finalsA{{ champions.SA.score > champions.SB.score ? ' winner' : '' }}">{{ formatter.club(champions.SA) }}</td><td></td><td></td><td></td></tr>
-        <tr><td class="finalsB{{ champions.SB.score > champions.SA.score ? ' winner' : '' }}">{{ formatter.club(champions.SB) }}</td><td class="lineED"></td><td></td><td></td></tr>
+        <tr><td class="finalsA{{ champions.SA.score > champions.SB.score ? ' winner' : '' }}">{{ formatter.club(champions.SA, _context) }}</td><td></td><td></td><td></td></tr>
+        <tr><td class="finalsB{{ champions.SB.score > champions.SA.score ? ' winner' : '' }}">{{ formatter.club(champions.SB, _context) }}</td><td class="lineED"></td><td></td><td></td></tr>
     {% endif %}
     {% if champions.FA is not null %}
-        <tr><td></td><td></td><td class="lineSD"></td><td class="finalsA{{ champions.FA.score > champions.FB.score ? ' winner' : '' }}">{{ formatter.club(champions.FA) }}</td></tr>
-        <tr><td></td><td></td><td class="lineSU"></td><td class="finalsB{{ champions.FB.score > champions.FA.score ? ' winner' : '' }}">{{ formatter.club(champions.FB) }}</td></tr>
+        <tr><td></td><td></td><td class="lineSD"></td><td class="finalsA{{ champions.FA.score > champions.FB.score ? ' winner' : '' }}">{{ formatter.club(champions.FA, _context) }}</td></tr>
+        <tr><td></td><td></td><td class="lineSU"></td><td class="finalsB{{ champions.FB.score > champions.FA.score ? ' winner' : '' }}">{{ formatter.club(champions.FB, _context) }}</td></tr>
     {% endif %}
     {% if champions.SC is not null %}
-        <tr><td class="finalsA{{ champions.SC.score > champions.SD.score ? ' winner' : '' }}">{{ formatter.club(champions.SC) }}</td><td class="lineEU"></td><td></td><td></td></tr>
-        <tr><td class="finalsB{{ champions.SD.score > champions.SC.score ? ' winner' : '' }}">{{ formatter.club(champions.SD) }}</td><td></td><td></td><td></td></tr>
+        <tr><td class="finalsA{{ champions.SC.score > champions.SD.score ? ' winner' : '' }}">{{ formatter.club(champions.SC, _context) }}</td><td class="lineEU"></td><td></td><td></td></tr>
+        <tr><td class="finalsB{{ champions.SD.score > champions.SC.score ? ' winner' : '' }}">{{ formatter.club(champions.SD, _context) }}</td><td></td><td></td><td></td></tr>
     {% endif %}
     {% if champions.FC is not null %}
         <tr><td></td><td></td><td></td><td class="spacer">{% trans %}BRONZEMATCH{% endtrans %}</td></tr>
-        <tr><td></td><td></td><td></td><td class="finalsA{{ champions.FC.score > champions.FD.score ? ' winner' : '' }}">{{ formatter.club(champions.FC) }}</td></tr>
-        <tr><td></td><td></td><td></td><td class="finalsB{{ champions.FD.score > champions.FC.score ? ' winner' : '' }}">{{ formatter.club(champions.FD) }}</td></tr>
+        <tr><td></td><td></td><td></td><td class="finalsA{{ champions.FC.score > champions.FD.score ? ' winner' : '' }}">{{ formatter.club(champions.FC, _context) }}</td></tr>
+        <tr><td></td><td></td><td></td><td class="finalsB{{ champions.FD.score > champions.FC.score ? ' winner' : '' }}">{{ formatter.club(champions.FD, _context) }}</td></tr>
     {% endif %}
     </tbody>
     {% endif %}

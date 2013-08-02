@@ -59,7 +59,8 @@ MENU:
     FAQ: FAQ
   LOGIN: Customer Login
   LOGOUT: logout
-
+  EXIT: Exit impersonation
+  
 TEASER:
   TOURNAMENT:
     GROUPS:

@@ -79,17 +79,14 @@ DIV.centerpage {
     width: 700px;
     margin: 0px auto;
     text-align: left;
-    min-height: 500px;
-}
-DIV.spacer {
-    padding: 2px;
-    clear: both;
+    min-height: 475px;
 }
 DIV.footer {
     width: 100%;
     text-align: left;
     background: #313131;
     min-height: 100px;
+    margin-top: 10px;
 }
 DIV.menu_footer {
     width: 170px;

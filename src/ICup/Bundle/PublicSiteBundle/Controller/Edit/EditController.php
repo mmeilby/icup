@@ -1,5 +1,5 @@
 <?php
-namespace ICup\Bundle\PublicSiteBundle\Controller;
+namespace ICup\Bundle\PublicSiteBundle\Controller\Edit;
 
 use ICup\Bundle\PublicSiteBundle\Entity\Doctrine\Category;
 use JMS\SecurityExtraBundle\Annotation\Secure;
@@ -12,12 +12,12 @@ class EditController extends Controller
 {
      /**
      * Add or update the category information
-     * @Route("/edit", name="_editmaster")
+     * @Route("/edit/tmnt/{tournament}", name="_editmaster")
      * @Secure(roles="ROLE_ADMIN")
      * @Method("GET")
-     * @Template("ICupPublicSiteBundle:Default:editmaster.html.twig")
+     * @Template("ICupPublicSiteBundle:Edit:editmaster.html.twig")
      */
-    public function editAction() {
+    public function editAction($tournament) {
         $this->get('util')->setupController($this, $tournament);
         $tournamentId = $this->get('util')->getTournament($this);
         $em = $this->getDoctrine()->getManager();
@@ -33,12 +33,12 @@ class EditController extends Controller
 
     /**
      * Main menu for edit the category structure
-     * @Route("/edit/menu/{categoryId}", name="_editmenu")
+     * @Route("/edit/tmnt/{tournament}/menu/{categoryId}", name="_editmenu")
      * @Secure(roles="ROLE_ADMIN")
      * @Method("GET")
-     * @Template("ICupPublicSiteBundle:Default:editmenu.html.twig")
+     * @Template("ICupPublicSiteBundle:Edit:editmenu.html.twig")
      */
-    public function menuAction($categoryId) {
+    public function menuAction($tournament, $categoryId) {
         $this->get('util')->setupController($this, $tournament);
         $tournamentId = $this->get('util')->getTournament($this);
         $em = $this->getDoctrine()->getManager();
@@ -57,12 +57,12 @@ class EditController extends Controller
 
     /**
      * Add or update the category information
-     * @Route("/edit/new/category", name="_editcategory")
+     * @Route("/edit/tmnt/{tournament}/new/category", name="_editcategory")
      * @Secure(roles="ROLE_ADMIN")
      * @Method("GET")
-     * @Template("ICupPublicSiteBundle:Default:editcategory.html.twig")
+     * @Template("ICupPublicSiteBundle:Edit:editcategory.html.twig")
      */
-    public function newAction() {
+    public function newAction($tournament) {
         $this->get('util')->setupController($this, $tournament);
         $tournamentId = $this->get('util')->getTournament($this);
         $em = $this->getDoctrine()->getManager();
@@ -76,12 +76,12 @@ class EditController extends Controller
 
     /**
      * Add or update the category information
-     * @Route("/edit/new/category", name="_newcategorypost")
+     * @Route("/edit/tmnt/{tournament}/new/category", name="_newcategorypost")
      * @Secure(roles="ROLE_ADMIN")
      * @Method("POST")
-     * @Template("ICupPublicSiteBundle:Default:editcategory.html.twig")
+     * @Template("ICupPublicSiteBundle:Edit:editcategory.html.twig")
      */
-    public function newPostAction() {
+    public function newPostAction($tournament) {
         $this->get('util')->setupController($this, $tournament);
         $tournamentId = $this->get('util')->getTournament($this);
         $em = $this->getDoctrine()->getManager();

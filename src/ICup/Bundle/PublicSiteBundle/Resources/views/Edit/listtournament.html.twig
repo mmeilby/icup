@@ -1,0 +1,88 @@
+{% extends "ICupPublicSiteBundle:Masters:edit.html.twig" %}
+
+{% block body %}
+<h1 class="category">iCup Tournament Administration</h1>
+<p class="subcategory">{% trans %}EDITTOURNAMENT{% endtrans %}</p>
+<p>
+    <table>
+        <caption>{% trans %}EDITTOURNAMENT{% endtrans %}</caption>
+        <thead>
+            <tr>
+                <td class="no"></td>
+                <td class="team">{% trans %}TEAM{% endtrans %} B</td>
+                <td class="no"></td>
+                <td class="no"></td>
+                <td class="no"></td>
+            </tr>
+        </thead>
+        <tboby>
+{% for host in hosts %}
+            <tr class="{{ cycle(['even','odd'],loop.index) }}">
+                <td class="date_solo" colspan="2">
+                    <a href="{{ path('_edit_host_chg', { 'hostid': host.id }) }}">
+                    {{ host.name|upper }}
+                    </a>    
+                </td>
+                <td>
+                    <a href="{{ path('_edit_host_add') }}">
+                    +
+                    </a>    
+                </td>
+                <td>
+                    <a href="{{ path('_edit_host_chg', { 'hostid': host.id }) }}">
+                    E
+                    </a>    
+                </td>
+                <td>
+                    <a href="{{ path('_edit_host_del', { 'hostid': host.id }) }}">
+                    -
+                    </a>    
+                </td>
+            </tr>
+            {% if host.id in tournaments|keys %}
+{% for tournament in tournaments[host.id] %}
+            <tr class="{{ cycle(['even','odd'],loop.index) }}">
+                <td class="no"></td>
+                <td class="team"><a href="{{ path('_edit_tournament_chg', { 'tournamentid': tournament.id }) }}">{{ tournament.name }}</a></td>
+                <td>
+                    <a href="{{ path('_edit_tournament_add', { 'hostid': host.id }) }}">
+                    +
+                    </a>    
+                </td>
+                <td>
+                    <a href="{{ path('_edit_tournament_chg', { 'tournamentid': tournament.id }) }}">
+                    E
+                    </a>    
+                </td>
+                <td>
+                    <a href="{{ path('_edit_tournament_del', { 'tournamentid': tournament.id }) }}">
+                    -
+                    </a>    
+                </td>
+            </tr>
+{% endfor %}
+            {% else %}
+            <tr class="{{ cycle(['even','odd'],loop.index) }}">
+                <td class="no"></td>
+                <td class="team"><a href="{{ path('_edit_tournament_add', { 'hostid': host.id }) }}">ADD NEW TOURNAMENT</a></td>
+                <td>
+                    <a href="{{ path('_edit_tournament_add', { 'hostid': host.id }) }}">
+                    +
+                    </a>    
+                </td>
+                <td>
+                </td>
+                <td>
+                </td>
+            </tr>
+            {% endif %}
+{% endfor %}
+        </tboby>
+        <tfoot>
+            <tr>
+                <td colspan="5"></td>
+            </tr>
+        </tfoot>
+    </table>
+</p>
+{% endblock %}

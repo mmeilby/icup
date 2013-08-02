@@ -1,4 +1,4 @@
-{% extends "base.html.twig" %}
+{% extends "ICupPublicSiteBundle:Masters:standard.html.twig" %}
 
 {% block body %}
 <h1 class="category">{{ tournament.name }}</h1>
@@ -28,7 +28,7 @@
     {% if match.schedule|date('d-M-Y') != catdate %}
             <tr class="{{ cycle(['even','odd'],loop.index) }}">
                 <td class="date_solo" colspan="10">
-                    <a href="{{ path('_editscore', { 'playgroundid': playground.id, 'date': match.schedule|date('d-m-Y')}) }}">
+                    <a href="{{ path('_editscore', { 'tournamentkey': tournament.key, 'playgroundid': playground.id, 'date': match.schedule|date('d-m-Y')}) }}">
                     {{ ['WEEK.',match.schedule|date('D')|upper]|join|trans|capitalize }}{{ match.schedule|date(' j. ') }}{{ ['MONTH.',match.schedule|date('M')|upper]|join|trans }}
                     </a>    
                 </td>
@@ -42,9 +42,9 @@
                 <td class="no">{{ match.category }}</td>
                 <td class="no">{{ match.group }}</td>
                 <td class="flag"><img src="{{ imagepath }}/flags/{{ flags[match.countryA] }}" alt="{{ match.countryA|trans({},'lang') }}" title="{{ match.countryA|trans({},'lang') }}"></td>
-                <td class="team"><a href="{{ path('_showteam', { 'tournament': tournamentkey, 'teamid': match.idA, 'groupid': match.gid }) }}">{{ match.teamA }}</a></td>
+                <td class="team"><a href="{{ path('_showteam', { 'tournament': tournament.key, 'teamid': match.idA, 'groupid': match.gid }) }}">{{ match.teamA }}</a></td>
                 <td class="flag"><img src="{{ imagepath }}/flags/{{ flags[match.countryB] }}" alt="{{ match.countryB|trans({},'lang') }}" title="{{ match.countryB|trans({},'lang') }}"></td>
-                <td class="team"><a href="{{ path('_showteam', { 'tournament': tournamentkey, 'teamid': match.idB, 'groupid': match.gid }) }}">{{ match.teamB }}</a></td>
+                <td class="team"><a href="{{ path('_showteam', { 'tournament': tournament.key, 'teamid': match.idB, 'groupid': match.gid }) }}">{{ match.teamB }}</a></td>
                 <td class="match">{{ match.scoreA }}-{{ match.scoreB }}</td>
             </tr>
 {% endfor %}

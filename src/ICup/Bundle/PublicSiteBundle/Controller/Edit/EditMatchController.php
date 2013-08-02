@@ -1,5 +1,5 @@
 <?php
-namespace ICup\Bundle\PublicSiteBundle\Controller;
+namespace ICup\Bundle\PublicSiteBundle\Controller\Edit;
 
 use ICup\Bundle\PublicSiteBundle\Entity\Doctrine\Match;
 use ICup\Bundle\PublicSiteBundle\Entity\Doctrine\MatchRelation;
@@ -14,12 +14,12 @@ class EditMatchController extends Controller
 {
     /**
      * Add or update the match information
-     * @Route("/edit/new/match/{categoryId}", name="_newmatch")
+     * @Route("/edit/tmnt/{tournament}/new/match/{categoryId}", name="_newmatch")
      * @Secure(roles="ROLE_ADMIN")
      * @Method("GET")
-     * @Template("ICupPublicSiteBundle:Default:editmatch.html.twig")
+     * @Template("ICupPublicSiteBundle:Edit:editmatch.html.twig")
      */
-    public function newAction($categoryId) {
+    public function newAction($tournament, $categoryId) {
         $this->get('util')->setupController($this, $tournament);
         $tournamentId = $this->get('util')->getTournament($this);
         $em = $this->getDoctrine()->getManager();
@@ -36,12 +36,12 @@ class EditMatchController extends Controller
 
     /**
      * Add or update the match information
-     * @Route("/edit/new/match/{categoryId}", name="_newmatchpost")
+     * @Route("/edit/tmnt/{tournament}/new/match/{categoryId}", name="_newmatchpost")
      * @Secure(roles="ROLE_ADMIN")
      * @Method("POST")
-     * @Template("ICupPublicSiteBundle:Default:editmatch.html.twig")
+     * @Template("ICupPublicSiteBundle:Edit:editmatch.html.twig")
      */
-    public function newPostAction($categoryId) {
+    public function newPostAction($tournament, $categoryId) {
         $this->get('util')->setupController($this, $tournament);
         $tournamentId = $this->get('util')->getTournament($this);
         $em = $this->getDoctrine()->getManager();

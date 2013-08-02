@@ -1,75 +1,24 @@
 <!DOCTYPE html>
 <html>
-{% set tournamentkey = app.session.get('Tournament') is empty ? '_' : app.session.get('Tournament') %}
-{% set imagepath = app.session.get('ImagePath') %}
-{% set flags = app.session.get('Countries') %}
-{% set footermenu = app.session.get('FooterMenu') %}
-{% set headermenu = app.session.get('HeaderMenu') %}
     <head>
-        {% set tournamentname = app.session.get('TournamentName') is empty ? 'Interamnia World Cup 2013' : app.session.get('TournamentName') %}
         <meta charset="UTF-8" />
-        <title>{% block title %}{{ tournamentname }}{% endblock %} - icup.dk</title>
+        {% block meta %}{% endblock %}
+        <title>{% block title %}{% endblock %}</title>
         {% stylesheets '@ICupPublicSiteBundle/Resources/public/css/*' output="bundles/icuppublicsite/css/basic.css" %}
             <link rel="stylesheet" href="{{ asset_url }}" />
         {% endstylesheets %}
-        {% block stylesheets %}{% endblock %}
         <link rel="icon" type="image/x-icon" href="{{ asset('favicon.ico') }}" />
     </head>
     <body>
         <div class="header">
-            <div class="menu">
-            {% for menuitem,path in headermenu %}
-                <div class="menu_header">
-                    <ul>
-                        <li><a href="{{ path }}">{{ menuitem|trans }}</a></li>
-                    </ul>
-                </div>
-            {% endfor %}
-                {% block header %}
-                {% endblock %}
-                <div class="menu_header last">
-                    <ul>
-                        <li>
-                            <a href="{{ path('_admin_login') }}">{% trans %}MENU.LOGIN{% endtrans %}</a>
-                        </li>
-                    </ul>
-                </div>
-            </div>
+            {% block header %}{% endblock %}
         </div>
         <div class="centerpage">
             {% block body %}{% endblock %}
         </div>
         <div class="spacer">&nbsp;</div>
         <div class="footer">
-            <div class="menu">
-                    <div class="menu_footer">
-                        <h3>{% trans %}MENU.LANGCHOICE.TITLE{% endtrans %}</h3>
-                        <ul>
-                            {% for local in ['en','it','fr','de','es','po','da'] %}
-                                {% set flag = flags[cycle(['GBR','ITA','FRA','DEU','ESP','POL','DNK'], loop.index0)] %}
-                                {% set lang = ['LANG.',local|upper]|join|trans %}
-                            <li>
-                                <a href="{{ path('_switch', { 'locale': local }) }}">
-                                    <img src="{{ imagepath }}/flags/{{ flag }}"
-                                         alt="{{ lang }}"
-                                         title="{% trans %}CHOOSELANG{% endtrans %}: {{ lang }}" />
-                                    &nbsp;{{ lang }}
-                                </a>
-                            </li>
-                            {% endfor %}
-                        </ul>
-                    </div>
-                {% for title,menu in footermenu %}
-                    <div class="menu_footer">
-                        <h3>{{ title|trans }}</h3>
-                        <ul>
-                    {% for menuitem,path in menu %}
-                            <li><a href="{{ path }}">{{ menuitem|trans }}</a></li>
-                    {% endfor %}
-                        </ul>
-                    </div>
-                {% endfor %}
-            </div>
+            {% block footer %}{% endblock %}
         </div>
         {% block javascripts %}{% endblock %}
     </body>

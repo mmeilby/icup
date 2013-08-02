@@ -1,5 +1,5 @@
 <?php
-namespace ICup\Bundle\PublicSiteBundle\Controller;
+namespace ICup\Bundle\PublicSiteBundle\Controller\Edit;
 
 use ICup\Bundle\PublicSiteBundle\Entity\Doctrine\Group;
 use JMS\SecurityExtraBundle\Annotation\Secure;
@@ -12,12 +12,12 @@ class EditGroupController extends Controller
 {
     /**
      * Add or update the group information
-     * @Route("/edit/new/group/{categoryId}", name="_newgroup")
+     * @Route("/edit/tmnt/{tournament}/new/group/{categoryId}", name="_newgroup")
      * @Secure(roles="ROLE_ADMIN")
      * @Method("GET")
-     * @Template("ICupPublicSiteBundle:Default:editgroup.html.twig")
+     * @Template("ICupPublicSiteBundle:Edit:editgroup.html.twig")
      */
-    public function newAction($categoryId) {
+    public function newAction($tournament, $categoryId) {
         $this->get('util')->setupController($this, $tournament);
         $tournamentId = $this->get('util')->getTournament($this);
         $em = $this->getDoctrine()->getManager();
@@ -34,12 +34,12 @@ class EditGroupController extends Controller
 
     /**
      * Add or update the group information
-     * @Route("/edit/new/group/{categoryId}", name="_newgrouppost")
+     * @Route("/edit/tmnt/{tournament}/new/group/{categoryId}", name="_newgrouppost")
      * @Secure(roles="ROLE_ADMIN")
      * @Method("POST")
-     * @Template("ICupPublicSiteBundle:Default:editgroup.html.twig")
+     * @Template("ICupPublicSiteBundle:Edit:editgroup.html.twig")
      */
-    public function newPostAction($categoryId) {
+    public function newPostAction($tournament, $categoryId) {
         $this->get('util')->setupController($this, $tournament);
         $tournamentId = $this->get('util')->getTournament($this);
         $em = $this->getDoctrine()->getManager();

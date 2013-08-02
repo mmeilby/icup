@@ -27,6 +27,7 @@ EDITCATEGORY: Update category
 EDITGROUP: Update group
 EDITGROUPORDER: Add team to group
 EDITMATCH: Add match
+SAVE: Save information
 
 MENU:
   LANGCHOICE:
@@ -57,6 +58,8 @@ MENU:
     PRICES: Prices
     FAQ: FAQ
   LOGIN: Customer Login
+  LOGOUT: logout
+
 
 TEASER:
   TOURNAMENT:

@@ -1,5 +1,5 @@
 <?php
-namespace ICup\Bundle\PublicSiteBundle\Controller;
+namespace ICup\Bundle\PublicSiteBundle\Controller\Edit;
 
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
@@ -9,8 +9,8 @@ use Symfony\Component\Security\Core\SecurityContext;
 class EditLoginController extends Controller
 {
     /**
-     * @Route("/edit/login", name="_admin_login")
-     * @Template("ICupPublicSiteBundle:Default:login.html.twig")
+     * @Route("/login", name="_admin_login")
+     * @Template("ICupPublicSiteBundle:Edit:login.html.twig")
      */
     public function loginAction()
     {
@@ -36,7 +36,7 @@ class EditLoginController extends Controller
     }
 
     /**
-     * @Route("/edit/login_check", name="_security_check")
+     * @Route("/login_check", name="_security_check")
      */
     public function securityCheckAction()
     {
@@ -44,7 +44,7 @@ class EditLoginController extends Controller
     }
 
     /**
-     * @Route("/edit/logout", name="_admin_logout")
+     * @Route("/logout", name="_admin_logout")
      */
     public function logoutAction()
     {

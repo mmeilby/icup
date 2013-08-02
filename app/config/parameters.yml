@@ -10,6 +10,7 @@ parameters:
     mailer_host: localhost
     mailer_user: mmeilby@gmail.com
     mailer_password: bingoboy
-    security_password: bingoboy
+    security_editor_password: bd27cea8570aee7a91e854ee565316d386b75bb5
+    security_password: bd27cea8570aee7a91e854ee565316d386b75bb5
     locale: da
-    secret: 95e910aceacd17510f316697a05adbaf3e
+    secret: 8f90feca5e144ceb913171f36a7b13b2

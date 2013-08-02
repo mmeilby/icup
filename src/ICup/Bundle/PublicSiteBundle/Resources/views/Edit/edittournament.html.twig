@@ -1,0 +1,26 @@
+{% extends "ICupPublicSiteBundle:Default:layout.script.html.twig" %}
+
+{% form_theme form _self %}
+
+{% block body %}
+<a href="{{ path('_edit_host_list') }}">
+    <h1 class="category">iCup Tournament Administration</h1>
+</a>
+<p class="subcategory">{{ ['FORM.TOURNAMENT.TITLE.',action]|join|upper|trans }}</p>
+<p>
+    <form action="{{ path('_edit_tournament_post', {'action': action }) }}" method="POST">
+{% if action != 'del' %}
+        <p>Indtast oplysninger på turneringen.</p>
+        {{ form_rest(form) }}
+{% else %}
+        <p>Følgende turnering vil bliver slettet.
+           Alle kampresultater samt oplysninger knyttet til turneringen vil også blive fjernet.
+           Det er ikke muligt at fortryde når turneringen er fjernet.</p>
+        {{ form_rest(form) }}
+{% endif %}
+        <div class="form_button">
+            <input type="submit" name="save" value="{{ ['FORM.TOURNAMENT.SUBMIT.',action]|join|upper|trans }}" class="form_button" />
+        </div>
+    </form>
+</p>
+{% endblock %}

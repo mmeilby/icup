@@ -1,5 +1,5 @@
 <?php
-namespace ICup\Bundle\PublicSiteBundle\Controller;
+namespace ICup\Bundle\PublicSiteBundle\Controller\Edit;
 
 use ICup\Bundle\PublicSiteBundle\Entity\Doctrine\GroupOrder;
 use JMS\SecurityExtraBundle\Annotation\Secure;
@@ -12,12 +12,12 @@ class EditGroupOrderController extends Controller
 {
     /**
      * Add or update the group information
-     * @Route("/edit/new/grouporder/{categoryId}", name="_newgrouporder")
+     * @Route("/edit/tmnt/{tournament}/new/grouporder/{categoryId}", name="_newgrouporder")
      * @Secure(roles="ROLE_ADMIN")
      * @Method("GET")
-     * @Template("ICupPublicSiteBundle:Default:editgrouporder.html.twig")
+     * @Template("ICupPublicSiteBundle:Edit:editgrouporder.html.twig")
      */
-    public function newAction($categoryId) {
+    public function newAction($tournament, $categoryId) {
         $this->get('util')->setupController($this, $tournament);
         $tournamentId = $this->get('util')->getTournament($this);
         $em = $this->getDoctrine()->getManager();
@@ -34,12 +34,12 @@ class EditGroupOrderController extends Controller
 
     /**
      * Add or update the group information
-     * @Route("/edit/new/grouporder/{categoryId}", name="_newgrouporderpost")
+     * @Route("/edit/tmnt/{tournament}/new/grouporder/{categoryId}", name="_newgrouporderpost")
      * @Secure(roles="ROLE_ADMIN")
      * @Method("POST")
-     * @Template("ICupPublicSiteBundle:Default:editgrouporder.html.twig")
+     * @Template("ICupPublicSiteBundle:Edit:editgrouporder.html.twig")
      */
-    public function newPostAction($categoryId) {
+    public function newPostAction($tournament, $categoryId) {
         $this->get('util')->setupController($this, $tournament);
         $tournamentId = $this->get('util')->getTournament($this);
         $em = $this->getDoctrine()->getManager();

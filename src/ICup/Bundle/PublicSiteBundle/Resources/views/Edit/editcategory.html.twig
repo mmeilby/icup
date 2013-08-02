@@ -3,12 +3,12 @@
 {% form_theme form _self %}
 
 {% block body %}
-<a href="{{ path('_editmaster') }}">
+<a href="{{ path('_editmaster', { 'tournament': tournament.key }) }}">
     <h1 class="category">{{ tournament.name }}</h1>
 </a>
 <p class="subcategory">{% trans %}EDITCATEGORY{% endtrans %}</p>
 <p>
-    <form action="{{ path('_newcategorypost') }}" method="POST">
+    <form action="{{ path('_newcategorypost', { 'tournament': tournament.key }) }}" method="POST">
         <p>Indtast oplysninger på gruppen.</p>
         {{ form_rest(form) }}
         

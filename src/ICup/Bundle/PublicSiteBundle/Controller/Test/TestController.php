@@ -21,6 +21,24 @@ use Symfony\Component\Yaml\Exception\ParseException;
 class TestController extends Controller
 {
     /**
+     * @Route("/salt")
+     * @Template()
+     */
+    public function saltAction()
+    {
+        var_dump(hash('sha1',''));
+        /*
+        $factory = $this->get('security.encoder_factory');
+        $user = new Club();
+
+        $encoder = $factory->getEncoder($user);
+        $password = $encoder->encodePassword($pass, $user->getSalt());
+        $user->setPassword($password);
+         * 
+         */
+    }
+    
+    /**
      * @Route("/init")
      * @Template()
      */

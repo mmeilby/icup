@@ -1,12 +1,12 @@
-{% extends "base.html.twig" %}
+{% extends "ICupPublicSiteBundle:Masters:edit.html.twig" %}
 
 {% block choice_widget_expanded %}
 {% spaceless %}
     <div>
     {% for child in form %}
     	<div {{ block('widget_container_attributes') }}>
-	        {{ form_label(child) }}<br/>
-	        {{ form_widget(child) }}
+            {{ form_label(child)|trans }}<br/>
+            {{ form_widget(child) }}
         </div>
     {% endfor %}
     </div>
@@ -18,12 +18,12 @@
 {% spaceless %}
     <div class="query_row">
         <div class="query_label">
-		    {{ form_label(form) }}
+            {{ form_label(form)|trans }}
         </div>
         <div class="query_widget">
             {{ form_widget(form) }}
             <div class="form_error">
-                {{ form_errors(form) }}
+                {{ form_errors(form)|trans }}
             </div>
         </div>
         <div style="clear:both"></div>

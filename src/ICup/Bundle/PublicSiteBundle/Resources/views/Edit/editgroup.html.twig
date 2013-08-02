@@ -3,7 +3,7 @@
 {% form_theme form _self %}
 
 {% block body %}
-<a href="{{ path('_editmenu', {'categoryId': category.id }) }}">
+<a href="{{ path('_editmenu', {'categoryId': category.id, 'tournament': tournamentkey }) }}">
     <h1 class="category">{{ tournament.name }}</h1>
 </a>
 <p class="subcategory">{% trans %}EDITGROUP{% endtrans %}</p>
@@ -12,7 +12,7 @@
     {{ category.classification|trans }}
 </p>
 <p>
-    <form action="{{ path('_newgrouppost', {'categoryId': category.id }) }}" method="POST">
+    <form action="{{ path('_newgrouppost', {'categoryId': category.id, 'tournament': tournamentkey }) }}" method="POST">
         <p>Indtast oplysninger på puljen.</p>
         {{ form_rest(form) }}
         

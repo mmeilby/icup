@@ -2,30 +2,40 @@
 
 namespace ICup\Bundle\PublicSiteBundle\Services;
 
-use Symfony\Component\Yaml\Exception\ParseException;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
+use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\Session;
+use Symfony\Component\Security\Core\User\User;
+use Symfony\Component\Yaml\Exception\ParseException;
 
 class Util
 {
     public function setupController(Controller $container, $tournament = '_')
     {
-        /* @var $request \Symfony\Component\HttpFoundation\Request */
-        /* @var $session \Symfony\Component\HttpFoundation\Session */
+        /* @var $request Request */
+        /* @var $session Session */
         $request = $container->getRequest();
         $session = $request->getSession();
         if ($tournament == '_') {
             $tournament = $session->get('Tournament', 'IWC2013');
         }
+        $session->set('Tournament', $tournament);
 
         $this->switchLanguage($container);
-        $session->set('ImagePath', $this->getImagePath($container));
-        $session->set('Tournament', $tournament);
-        $session->set('Countries', $this->getCountries());
+        if ($session->get('ImagePath') == null) {
+            $session->set('ImagePath', $this->getImagePath($container));
+        }
+        if ($session->get('Countries') == null) {
+            $session->set('Countries', $this->getCountries());
+        }
+
         $headerMenu = array(
                 'MENU.TOURNAMENT.OVERVIEW' => $container->generateUrl('_tournament_overview', array('tournament' => $tournament)),
-                'MENU.INFO.ABOUT' => $container->generateUrl('_showtournament', array('tournament' => $tournament)),
-                'MENU.INFO.FAQ' => $container->generateUrl('_showtournament', array('tournament' => $tournament))
+                'MENU.INFO.ABOUT' => $container->generateUrl('_tournament_overview', array('tournament' => $tournament)),
+                'MENU.INFO.FAQ' => $container->generateUrl('_tournament_overview', array('tournament' => $tournament))
         );
+        $session->set('HeaderMenu', $headerMenu);
+
         $footerMenu = array(
             'MENU.TOURNAMENT.TITLE' => array(
                 'MENU.TOURNAMENT.OVERVIEW' => $container->generateUrl('_tournament_overview', array('tournament' => $tournament)),
@@ -39,20 +49,28 @@ class Util
                 'MENU.ENROLLMENT.TEAMS' => $container->generateUrl('_tournament_overview', array('tournament' => $tournament)),
                 'MENU.ENROLLMENT.REFEREES' => $container->generateUrl('_tournament_overview', array('tournament' => $tournament))),
             'MENU.ADMIN.TITLE' => array(
-                'MENU.ADMIN.RESULTS' => $container->generateUrl('_tournament_overview', array('tournament' => $tournament)),
-                'MENU.ADMIN.TOURNAMENT' => $container->generateUrl('_tournament_overview', array('tournament' => $tournament)),
-                'MENU.ADMIN.TEAMS' => $container->generateUrl('_tournament_overview', array('tournament' => $tournament)),
-                'MENU.ADMIN.PLAYERS' => $container->generateUrl('_tournament_overview', array('tournament' => $tournament)),
-                'MENU.ADMIN.REFEREES' => $container->generateUrl('_tournament_overview', array('tournament' => $tournament)))
+                'MENU.ADMIN.RESULTS' => $container->generateUrl('_tournament_playgrounds', array('tournament' => $tournament)),
+                'MENU.ADMIN.TOURNAMENT' => $container->generateUrl('_edit_host_list'),
+                'MENU.ADMIN.TEAMS' => $container->generateUrl('_editmaster', array('tournament' => $tournament)),
+                'MENU.ADMIN.PLAYERS' => $container->generateUrl('_editmaster', array('tournament' => $tournament)),
+                'MENU.ADMIN.REFEREES' => $container->generateUrl('_editmaster', array('tournament' => $tournament)))
         );
-        $session->set('HeaderMenu', $headerMenu);
         $session->set('FooterMenu', $footerMenu);
+
+        /* @var $user User */
+        $user = $container->getUser();
+        if ($user == null) {
+            $session->set('User', '-');
+        }
+        else {
+            $session->set('User', $user->getUsername());
+        }
     }
     
     public function switchLanguage(Controller $container)
     {
-        /* @var $request \Symfony\Component\HttpFoundation\Request */
-        /* @var $session \Symfony\Component\HttpFoundation\Session */
+        /* @var $request Request */
+        /* @var $session Session */
         $request = $container->getRequest();
         $session = $request->getSession();
         $language = $session->get('locale', $request->getPreferredLanguage());
@@ -76,8 +94,8 @@ class Util
     }
     
     public function getTournament(Controller $container) {
-        /* @var $request \Symfony\Component\HttpFoundation\Request */
-        /* @var $session \Symfony\Component\HttpFoundation\Session */
+        /* @var $request Request */
+        /* @var $session Session */
         $request = $container->getRequest();
         $session = $request->getSession();
         $em = $container->getDoctrine()->getManager();

@@ -27,7 +27,32 @@ EDITCATEGORY: Administrer gruppe
 EDITGROUP: Administrer pulje
 EDITGROUPORDER: Administrer hold i pulje
 EDITMATCH: Administrer kamp
+SAVE: Gem oplysninger
 
+FORM:
+  HOST:
+    TITLE:
+      ADD: Tilføj ny turneringsvært
+      CHG: Rediger turneringsvært
+      DEL: SLET TURNERINGSVÆRT
+    NAME: Navn
+    SUBMIT:
+      ADD: Tilføj ny turneringsvært
+      CHG: Gem turneringsvært
+      DEL: SLET TURNERINGSVÆRT
+  TOURNAMENT:
+    TITLE:
+      ADD: Tilføj ny turnering
+      CHG: Rediger turnering
+      DEL: SLET TURNERING
+    NAME: Navn
+    KEY: Identifikation
+    EDITION: Udgave
+    SUBMIT:
+      ADD: Tilføj ny turnering
+      CHG: Gem turnering
+      DEL: SLET TURNERING
+      
 MENU:
   LANGCHOICE:
     TITLE: Sprogvalg
@@ -57,6 +82,7 @@ MENU:
     PRICES: Priser
     FAQ: FAQ
   LOGIN: Bruger Login
+  LOGOUT: log af
 
 TEASER:
   TOURNAMENT:

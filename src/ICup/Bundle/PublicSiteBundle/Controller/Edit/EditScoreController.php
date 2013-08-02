@@ -1,5 +1,5 @@
 <?php
-namespace ICup\Bundle\PublicSiteBundle\Controller;
+namespace ICup\Bundle\PublicSiteBundle\Controller\Edit;
 
 use DateTime;
 use JMS\SecurityExtraBundle\Annotation\Secure;
@@ -19,18 +19,19 @@ class EditScoreController extends Controller
     }
 
     /**
-     * @Route("/edit/{playgroundid}/{date}", name="_editscore")
-     * @Secure(roles="ROLE_ADMIN")
-     * @Template("ICupPublicSiteBundle:Default:editscore.html.twig")
+     * @Route("/edit/tmnt/{tournamentkey}/scr/{playgroundid}/{date}", name="_editscore")
+     * @Secure(roles="ROLE_EDITOR")
+     * @Template("ICupPublicSiteBundle:Edit:editscore.html.twig")
      */
-    public function listAction($playgroundid, $date)
+    public function listAction($tournamentkey, $playgroundid, $date)
     {
-        $this->get('util')->setupController($this, $tournament);
+        $this->get('util')->setupController($this, $tournamentkey);
         $tournamentId = $this->get('util')->getTournament($this);
         $em = $this->getDoctrine()->getManager();
 
         if ($tournamentId == 0) {
-            return $this->redirect($this->generateUrl('_showtournament'));
+            // Redirect to .... what?
+            return $this->redirect($this->generateUrl('_tournament_overview', array('tournament' => $tournamentkey)));
         }
         $tournament = $em->getRepository('ICup\Bundle\PublicSiteBundle\Entity\Doctrine\Tournament')
                             ->find($tournamentId);
@@ -38,11 +39,11 @@ class EditScoreController extends Controller
         $playground = $em->getRepository('ICup\Bundle\PublicSiteBundle\Entity\Doctrine\Playground')
                             ->find($playgroundid);
         if ($playground == null) {
-            return $this->redirect($this->generateUrl('_showtournament'));
+            return $this->redirect($this->generateUrl('_tournament_overview', array('tournament' => $tournament->getKey())));
         }
         $reqDate = DateTime::createFromFormat('d-m-Y', $date);
         if ($reqDate == null) {
-            return $this->redirect($this->generateUrl('_showtournament'));
+            return $this->redirect($this->generateUrl('_tournament_overview', array('tournament' => $tournament->getKey())));
         }
             
         $qb = $em->createQuery("select m.id,m.matchno,m.date,m.time,g.id as gid,g.name as grp,cat.name as category,r.id as rid,r.awayteam,r.scorevalid,r.score,r.points,t.id as tid,t.name as team,t.division,c.country ".
@@ -91,11 +92,9 @@ class EditScoreController extends Controller
                                          'idA' => $relB['tid'],
                                          'teamA' => $nameB,
                                          'countryA' => $relB['country'],
-                                         'flagA' => $countries[$relB['country']],
                                          'idB' => $relA['tid'],
                                          'teamB' => $nameA,
                                          'countryB' => $relA['country'],
-                                         'flagB' => $countries[$relA['country']],
                                          'ridA' => $relB['rid'],
                                          'ridB' => $relA['rid'],
                                          'scoreA' => $valid ? $relB['score'] : '',
@@ -114,11 +113,9 @@ class EditScoreController extends Controller
                                          'idA' => $relA['tid'],
                                          'teamA' => $nameA,
                                          'countryA' => $relA['country'],
-                                         'flagA' => $countries[$relA['country']],
                                          'idB' => $relB['tid'],
                                          'teamB' => $nameB,
                                          'countryB' => $relB['country'],
-                                         'flagB' => $countries[$relB['country']],
                                          'ridA' => $relA['rid'],
                                          'ridB' => $relB['rid'],
                                          'scoreA' => $valid ? $relA['score'] : '',
@@ -150,11 +147,11 @@ class EditScoreController extends Controller
     }
 
     /**
-     * @Route("/edit", name="_editscorepost")
-     * @Secure(roles="ROLE_ADMIN")
+     * @Route("/edit/tmnt/{tournamentkey}/scr", name="_editscorepost")
+     * @Secure(roles="ROLE_EDITOR")
      * @Method("POST")
      */
-    public function postAction()
+    public function postAction($tournamentkey)
     {
         $em = $this->getDoctrine()->getManager();
 
@@ -222,10 +219,10 @@ class EditScoreController extends Controller
         $playground = $em->getRepository('ICup\Bundle\PublicSiteBundle\Entity\Doctrine\Playground')
                             ->find($nextid);
         if ($playground != null) {
-            return $this->redirect($this->generateUrl('_editscore', array('playgroundid' => $nextid, 'date' => $reqDate->format('d-m-Y'))));
+            return $this->redirect($this->generateUrl('_editscore', array('tournament' => $tournamentkey, 'playgroundid' => $nextid, 'date' => $reqDate->format('d-m-Y'))));
         }
         else {
-            return $this->redirect($this->generateUrl('_showtournament'));
+            return $this->redirect($this->generateUrl('_tournament_overview', array('tournament' => $tournamentkey)));
         }
     }    
 }

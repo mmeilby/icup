@@ -1,0 +1,63 @@
+{% extends "base.html.twig" %}
+
+{% set imagepath = app.session.get('ImagePath') %}
+{% set flags = app.session.get('Countries') %}
+
+{% block header %}
+    <div class="menu">
+    {% for menuitem,path in app.session.get('HeaderMenu') %}
+        <div class="menu_header">
+            <ul>
+                <li><a href="{{ path }}">{{ menuitem|trans }}</a></li>
+            </ul>
+        </div>
+    {% endfor %}
+        <div class="menu_header last">
+            <ul>
+                <li>
+                    {% if is_granted('ROLE_PREVIOUS_ADMIN') %}
+                        <a href="{{ path('_icup', {'_switch_user': '_exit'}) }}">Exit impersonation</a>
+                        &nbsp;
+                    {% endif %}
+                    {% if app.user != null %}
+                        <a href="{{ path('_admin_logout') }}">{{ app.user.username|capitalize }} {% trans %}MENU.LOGOUT{% endtrans %}</a>
+                    {% else %}
+                        <a href="{{ path('_admin_login') }}">{% trans %}MENU.LOGIN{% endtrans %}</a>
+                    {% endif %}
+                </li>
+            </ul>
+        </div>
+    </div>
+{% endblock %}
+
+{% block footer %}
+    <div class="menu">
+            <div class="menu_footer">
+                <h3>{% trans %}MENU.LANGCHOICE.TITLE{% endtrans %}</h3>
+                <ul>
+                    {% for local in ['en','it','fr','de','es','po','da'] %}
+                        {% set flag = flags[cycle(['GBR','ITA','FRA','DEU','ESP','POL','DNK'], loop.index0)] %}
+                        {% set lang = ['LANG.',local|upper]|join|trans %}
+                    <li>
+                        <a href="{{ path('_switch', { 'locale': local }) }}">
+                            <img src="{{ imagepath }}/flags/{{ flag }}"
+                                 alt="{{ lang }}"
+                                 title="{% trans %}CHOOSELANG{% endtrans %}: {{ lang }}" />
+                            &nbsp;{{ lang }}
+                        </a>
+                    </li>
+                    {% endfor %}
+                </ul>
+            </div>
+        {% for title,menu in app.session.get('FooterMenu') %}
+            <div class="menu_footer">
+                <h3>{{ title|trans }}</h3>
+                <ul>
+            {% for menuitem,path in menu %}
+                    <li><a href="{{ path }}">{{ menuitem|trans }}</a></li>
+            {% endfor %}
+                </ul>
+            </div>
+        {% endfor %}
+    </div>
+{% endblock %}

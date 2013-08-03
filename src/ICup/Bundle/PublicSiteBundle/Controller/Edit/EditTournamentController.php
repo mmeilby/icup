@@ -3,7 +3,6 @@ namespace ICup\Bundle\PublicSiteBundle\Controller\Edit;
 
 use ICup\Bundle\PublicSiteBundle\Entity\Doctrine\Host;
 use ICup\Bundle\PublicSiteBundle\Entity\Doctrine\Tournament;
-use JMS\SecurityExtraBundle\Annotation\Secure;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
@@ -18,7 +17,6 @@ class EditTournamentController extends Controller
      * List the tournaments available
      * @Route("/edit/host/list", name="_edit_host_list")
      * @Method("GET")
-     * @Secure(roles="ROLE_ADMIN")
      * @Template("ICupPublicSiteBundle:Edit:listtournament.html.twig")
      */
     public function listAction() {
@@ -42,104 +40,87 @@ class EditTournamentController extends Controller
     /**
      * Add new host
      * @Route("/edit/host/add", name="_edit_host_add")
-     * @Method("GET")
-     * @Secure(roles="ROLE_ADMIN")
      * @Template("ICupPublicSiteBundle:Edit:edithost.html.twig")
      */
     public function addAction() {
         $this->get('util')->setupController($this);
         
         $host = new Host();
-        $form = $this->makeHostForm($host);
+        $form = $this->makeHostForm($host, 'add');
+        $request = $this->getRequest();
+        $form->handleRequest($request);
+        if ($form->get('cancel')->isClicked()) {
+            return $this->redirect($this->generateUrl('_edit_host_list'));
+        }
+        if ($form->isValid()) {
+            $em->persist($host);
+            $em->flush();
+            return $this->redirect($this->generateUrl('_edit_host_list'));
+        }
         return array('form' => $form->createView(), 'action' => 'add', 'host' => $host);
     }
     
     /**
      * Change information of an existing host
      * @Route("/edit/host/chg/{hostid}", name="_edit_host_chg")
-     * @Method("GET")
-     * @Secure(roles="ROLE_ADMIN")
      * @Template("ICupPublicSiteBundle:Edit:edithost.html.twig")
      */
     public function chgAction($hostid) {
         $this->get('util')->setupController($this);
         $em = $this->getDoctrine()->getManager();
         
-        $host = $em->getRepository('ICup\Bundle\PublicSiteBundle\Entity\Doctrine\Host')
-                            ->find($hostid);
-        $form = $this->makeHostForm($host);
+        $host = $em->getRepository('ICup\Bundle\PublicSiteBundle\Entity\Doctrine\Host')->find($hostid);
+        if ($host == null) {
+            return $this->redirect($this->generateUrl('_edit_host_list'));
+        }
+                
+        $form = $this->makeHostForm($host, 'chg');
+        $request = $this->getRequest();
+        $form->handleRequest($request);
+        if ($form->get('cancel')->isClicked()) {
+            return $this->redirect($this->generateUrl('_edit_host_list'));
+        }
+        if ($form->isValid()) {
+            $em->persist($host);
+            $em->flush();
+            return $this->redirect($this->generateUrl('_edit_host_list'));
+        }
         return array('form' => $form->createView(), 'action' => 'chg', 'host' => $host);
     }
     
     /**
      * Remove host from the register - including all related tournaments and match results
      * @Route("/edit/host/del/{hostid}", name="_edit_host_del")
-     * @Method("GET")
-     * @Secure(roles="ROLE_ADMIN")
      * @Template("ICupPublicSiteBundle:Edit:edithost.html.twig")
      */
     public function delAction($hostid) {
         $this->get('util')->setupController($this);
         $em = $this->getDoctrine()->getManager();
         
-        $host = $em->getRepository('ICup\Bundle\PublicSiteBundle\Entity\Doctrine\Host')
-                            ->find($hostid);
-        $form = $this->makeHostForm($host);
+        $host = $em->getRepository('ICup\Bundle\PublicSiteBundle\Entity\Doctrine\Host')->find($hostid);
+        if ($host == null) {
+            return $this->redirect($this->generateUrl('_edit_host_list'));
+        }
+                
+        $form = $this->makeHostForm($host, 'del');
+        $request = $this->getRequest();
+        $form->handleRequest($request);
+        if ($form->get('cancel')->isClicked()) {
+            return $this->redirect($this->generateUrl('_edit_host_list'));
+        }
+        if ($form->isValid()) {
+            $em->remove($host);
+            $em->flush();
+            return $this->redirect($this->generateUrl('_edit_host_list'));
+        }
         return array('form' => $form->createView(), 'action' => 'del', 'host' => $host);
     }
     
-    /**
-     * Add, update or remove the host information
-     * @Route("/edit/host/{action}", name="_edit_host_post")
-     * @Method("POST")
-     * @Secure(roles="ROLE_ADMIN")
-     * @Template("ICupPublicSiteBundle:Edit:edithost.html.twig")
-     */
-    public function hostPostAction($action) {
-        $this->get('util')->setupController($this);
-        $em = $this->getDoctrine()->getManager();
-
-        $form = $this->makeHostForm(array());
-        $request = $this->getRequest();
-        $form->bind($request);
-        if ($form->isValid()) {
-            $formData = $form->getData();
-            switch ($action) {
-                case 'add':
-                    $host = new Host();
-                    $host->setName($formData['name']);
-                    $em->persist($host);
-                    break;
-                case 'chg':
-                    $hostid = $formData['id'];
-                    $host = $em->getRepository('ICup\Bundle\PublicSiteBundle\Entity\Doctrine\Host')
-                                    ->find($hostid);
-                    if ($host != null) {
-                        $host->setName($formData['name']);
-                        $em->persist($host);
-                    }
-                    break;
-                case 'del':
-                    $hostid = $formData['id'];
-                    $host = $em->getRepository('ICup\Bundle\PublicSiteBundle\Entity\Doctrine\Host')
-                                    ->find($hostid);
-                    if ($host != null) {
-                        $em->remove($host);
-                    }
-                    break;
-                default:
-                    break;
-            }
-            $em->flush();
-        }
-        return array('form' => $form->createView(), 'action' => $action, 'host' => $host);
-    }
-    
-    private function makeHostForm($host) {
+    private function makeHostForm($host, $action) {
         $formDef = $this->createFormBuilder($host);
-        $formDef->add('id', 'hidden');
         $formDef->add('name', 'text', array('label' => 'FORM.HOST.NAME', 'required' => false));
-        $formDef->add('save', 'submit');
+        $formDef->add('cancel', 'submit', array('label' => 'FORM.HOST.CANCEL.'.strtoupper($action)));
+        $formDef->add('save', 'submit', array('label' => 'FORM.HOST.SUBMIT.'.strtoupper($action)));
         return $formDef->getForm();
     }
     
@@ -233,7 +214,6 @@ class EditTournamentController extends Controller
         $formDef = $this->createFormBuilder($tournament);
 //        $formDef->setAction($this->generateUrl('_edit_tournament_post', array('action' => $action)));
 //        $formDef->add('id', 'hidden', array('mapped' => false));
-//        $formDef->add('pid', 'hidden', array('mapped' => false));
         $formDef->add('name', 'text', array('label' => 'FORM.TOURNAMENT.NAME', 'required' => false));
         $formDef->add('key', 'text', array('label' => 'FORM.TOURNAMENT.KEY', 'required' => false));
         $formDef->add('edition', 'text', array('label' => 'FORM.TOURNAMENT.EDITION', 'required' => false));

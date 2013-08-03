@@ -139,124 +139,106 @@ class EditTournamentController extends Controller
         $formDef = $this->createFormBuilder($host);
         $formDef->add('id', 'hidden');
         $formDef->add('name', 'text', array('label' => 'FORM.HOST.NAME', 'required' => false));
+        $formDef->add('save', 'submit');
         return $formDef->getForm();
     }
     
     /**
      * Add new tournament to a host
      * @Route("/edit/tournament/add/{hostid}", name="_edit_tournament_add")
-     * @Method("GET")
-     * @Secure(roles="ROLE_ADMIN")
      * @Template("ICupPublicSiteBundle:Edit:edittournament.html.twig")
      */
     public function addTournamentAction($hostid) {
         $this->get('util')->setupController($this);
         $em = $this->getDoctrine()->getManager();
         
-        $host = $em->getRepository('ICup\Bundle\PublicSiteBundle\Entity\Doctrine\Host')
-                            ->find($hostid);
-        
+        $host = $em->getRepository('ICup\Bundle\PublicSiteBundle\Entity\Doctrine\Host')->find($hostid);
+        if ($host == null) {
+            return $this->redirect($this->generateUrl('_edit_host_list'));
+        }
+                
         $tournament = new Tournament();
         $tournament->setPid($host->getId());
-        $form = $this->makeTournamentForm($tournament);
+        $form = $this->makeTournamentForm($tournament, 'add');
+        $request = $this->getRequest();
+        $form->handleRequest($request);
+        if ($form->get('cancel')->isClicked()) {
+            return $this->redirect($this->generateUrl('_edit_host_list'));
+        }
+        if ($form->isValid()) {
+            $em->persist($tournament);
+            $em->flush();
+            return $this->redirect($this->generateUrl('_edit_host_list'));
+        }
         return array('form' => $form->createView(), 'action' => 'add', 'tournament' => $tournament);
     }
     
     /**
      * Change information of an existing tournament
      * @Route("/edit/tournament/chg/{tournamentid}", name="_edit_tournament_chg")
-     * @Method("GET")
-     * @Secure(roles="ROLE_ADMIN")
      * @Template("ICupPublicSiteBundle:Edit:edittournament.html.twig")
      */
     public function chgTournamentAction($tournamentid) {
         $this->get('util')->setupController($this);
         $em = $this->getDoctrine()->getManager();
         
-        $tournament = $em->getRepository('ICup\Bundle\PublicSiteBundle\Entity\Doctrine\Tournament')
-                            ->find($tournamentid);
-        $form = $this->makeTournamentForm($tournament);
+        $tournament = $em->getRepository('ICup\Bundle\PublicSiteBundle\Entity\Doctrine\Tournament')->find($tournamentid);
+        if ($tournament == null) {
+            return $this->redirect($this->generateUrl('_edit_host_list'));
+        }
+        
+        $form = $this->makeTournamentForm($tournament, 'chg');
+        $request = $this->getRequest();
+        $form->handleRequest($request);
+        if ($form->get('cancel')->isClicked()) {
+            return $this->redirect($this->generateUrl('_edit_host_list'));
+        }
+        if ($form->isValid()) {
+            $em->persist($tournament);
+            $em->flush();
+            return $this->redirect($this->generateUrl('_edit_host_list'));
+        }
         return array('form' => $form->createView(), 'action' => 'chg', 'tournament' => $tournament);
     }
     
     /**
      * Remove tournament from the register - all match results and tournament information is lost
      * @Route("/edit/tournament/del/{tournamentid}", name="_edit_tournament_del")
-     * @Method("GET")
-     * @Secure(roles="ROLE_ADMIN")
      * @Template("ICupPublicSiteBundle:Edit:edittournament.html.twig")
      */
     public function delTournamentAction($tournamentid) {
         $this->get('util')->setupController($this);
         $em = $this->getDoctrine()->getManager();
         
-        $tournament = $em->getRepository('ICup\Bundle\PublicSiteBundle\Entity\Doctrine\Tournament')
-                            ->find($tournamentid);
-        $form = $this->makeTournamentForm($tournament);
+        $tournament = $em->getRepository('ICup\Bundle\PublicSiteBundle\Entity\Doctrine\Tournament')->find($tournamentid);
+        if ($tournament == null) {
+            return $this->redirect($this->generateUrl('_edit_host_list'));
+        }
+        
+        $form = $this->makeTournamentForm($tournament, 'del');
+        $request = $this->getRequest();
+        $form->handleRequest($request);
+        if ($form->get('cancel')->isClicked()) {
+            return $this->redirect($this->generateUrl('_edit_host_list'));
+        }
+        if ($form->isValid()) {
+            $em->remove($tournament);
+            $em->flush();
+            return $this->redirect($this->generateUrl('_edit_host_list'));
+        }
         return array('form' => $form->createView(), 'action' => 'del', 'tournament' => $tournament);
     }
-
     
-    /**
-     * Add, update or remove the tournament information
-     * @Route("/edit/tournament/{action}", name="_edit_tournament_post")
-     * @Method("POST")
-     * @Secure(roles="ROLE_ADMIN")
-     * @Template("ICupPublicSiteBundle:Edit:edittournament.html.twig")
-     */
-    public function tournamentPostAction($action) {
-        $this->get('util')->setupController($this);
-        $em = $this->getDoctrine()->getManager();
-
-        $form = $this->makeTournamentForm(array());
-        $request = $this->getRequest();
-        $form->bind($request);
-        if ($form->isValid()) {
-            $formData = $form->getData();
-            switch ($action) {
-                case 'add':
-                    $tournament = new Tournament();
-                    $tournament->setPid($formData['pid']);
-                    $tournament->setName($formData['name']);
-                    $tournament->setKey($formData['key']);
-                    $tournament->setEdition($formData['edition']);
-                    $em->persist($tournament);
-                    break;
-                case 'chg':
-                    $tournamentid = $formData['id'];
-                    $tournament = $em->getRepository('ICup\Bundle\PublicSiteBundle\Entity\Doctrine\Tournament')
-                                    ->find($tournamentid);
-                    if ($tournament != null) {
-                        $tournament->setPid($formData['pid']);
-                        $tournament->setName($formData['name']);
-                        $tournament->setKey($formData['key']);
-                        $tournament->setEdition($formData['edition']);
-                        $em->persist($tournament);
-                    }
-                    break;
-                case 'del':
-                    $tournamentid = $formData['id'];
-                    $tournament = $em->getRepository('ICup\Bundle\PublicSiteBundle\Entity\Doctrine\Tournament')
-                                    ->find($tournamentid);
-                    if ($tournament != null) {
-                        $em->remove($tournament);
-                    }
-                    break;
-                default:
-                    break;
-            }
-            $em->flush();
-        }
-        return array('form' => $form->createView(), 'action' => $action, 'tournament' => $tournament);
-    }
-    
-    private function makeTournamentForm($tournament) {
+    private function makeTournamentForm($tournament, $action) {
         $formDef = $this->createFormBuilder($tournament);
-        $formDef->add('id', 'hidden');
-        $formDef->add('pid', 'hidden');
+//        $formDef->setAction($this->generateUrl('_edit_tournament_post', array('action' => $action)));
+//        $formDef->add('id', 'hidden', array('mapped' => false));
+//        $formDef->add('pid', 'hidden', array('mapped' => false));
         $formDef->add('name', 'text', array('label' => 'FORM.TOURNAMENT.NAME', 'required' => false));
         $formDef->add('key', 'text', array('label' => 'FORM.TOURNAMENT.KEY', 'required' => false));
         $formDef->add('edition', 'text', array('label' => 'FORM.TOURNAMENT.EDITION', 'required' => false));
+        $formDef->add('cancel', 'submit', array('label' => 'FORM.TOURNAMENT.CANCEL.'.strtoupper($action)));
+        $formDef->add('save', 'submit', array('label' => 'FORM.TOURNAMENT.SUBMIT.'.strtoupper($action)));
         return $formDef->getForm();
     }
 }

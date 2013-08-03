@@ -34,8 +34,61 @@ SELECT {
 }
 INPUT {
     font: 12pt Arial, sans-serif;
+    width: 100%;
 }
-
+/*
+    Form setup
+*/
+DIV.form_row {
+    padding-bottom: 10px;
+}
+DIV.form_label {
+    width: 250px;
+    margin-right: 20px;
+    float: left;
+}
+DIV.form_widget {
+    width: 450px;
+    float: left;
+}
+DIV.form_clear {
+    clear: both;
+}
+DIV.form_error {
+    
+}
+DIV.form_button {
+    float: left;
+    border-top: 1px solid #454545;
+    padding-top: 10px;
+    margin-top: 10px;
+    padding-right: 20px;
+}
+DIV.form_button BUTTON {
+    font-size: 12pt;
+    font-weight: bold;
+    padding-left: 10px;
+    padding-right: 10px;
+    border-radius: 5px;
+    -moz-border-radius: 5px;
+    -webkit-border-radius: 5px;
+    color: whitesmoke;
+    background-image: -o-linear-gradient(bottom, black 24%, #454545 62%);
+    background-image: -moz-linear-gradient(bottom, black 24%, #454545 62%);
+    background-image: -webkit-gradient(linear, left bottom, left top, color-stop(0.24, black), color-stop(0.62, #454545));
+    background-image: -webkit-linear-gradient(bottom, black 24%, #454545 62%);
+    background-image: -ms-linear-gradient(bottom, black 24%, #454545 62%);
+    background-image: linear-gradient(bottom, black 24%, #454545 62%);    
+}
+BUTTON#form_cancel {
+    color: #454545;
+    background-image: -o-linear-gradient(bottom, white 24%, whitesmoke 62%);
+    background-image: -moz-linear-gradient(bottom, white 24%, whitesmoke 62%);
+    background-image: -webkit-gradient(linear, left bottom, left top, color-stop(0.24, white), color-stop(0.62, whitesmoke));
+    background-image: -webkit-linear-gradient(bottom, white 24%, whitesmoke 62%);
+    background-image: -ms-linear-gradient(bottom, white 24%, whitesmoke 62%);
+    background-image: linear-gradient(bottom, white 24%, whitesmoke 62%);    
+}
 /*
     Class setup
 */

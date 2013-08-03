@@ -40,6 +40,10 @@ FORM:
       ADD: Tilføj ny turneringsvært
       CHG: Gem turneringsvært
       DEL: SLET TURNERINGSVÆRT
+    CANCEL:
+      ADD: Fortryd oprettelse
+      CHG: Fortryd ændringer
+      DEL: Fortryd slet
   TOURNAMENT:
     TITLE:
       ADD: Tilføj ny turnering
@@ -52,6 +56,10 @@ FORM:
       ADD: Tilføj ny turnering
       CHG: Gem turnering
       DEL: SLET TURNERING
+    CANCEL:
+      ADD: Fortryd oprettelse
+      CHG: Fortryd ændringer
+      DEL: Fortryd slet
       
 MENU:
   LANGCHOICE:

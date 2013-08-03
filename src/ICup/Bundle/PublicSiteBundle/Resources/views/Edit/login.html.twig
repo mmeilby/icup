@@ -11,25 +11,25 @@
     {% endif %}
 
     <form action="{{ path("_security_check") }}" method="post" id="login">
-        <div class="query_row">
-            <div class="query_label">
+        <div class="form_row">
+            <div class="form_label">
                 <label for="username">{% trans %}USERNAME{% endtrans %}:</label>
             </div>
-            <div class="query_widget">
+            <div class="form_widget">
                 <input type="text" id="username" name="_username" value="{{ last_username }}" />
             </div>
-            <div style="clear:both"></div>
+            <div class="form_clear"></div>
         </div>
-        <div class="query_row">
-            <div class="query_label">
+        <div class="form_row">
+            <div class="form_label">
                 <label for="password">{% trans %}PASSWORD{% endtrans %}:</label>
             </div>
-            <div class="query_widget">
+            <div class="form_widget">
                 <input type="password" id="password" name="_password" />
             </div>
-            <div style="clear:both"></div>
+            <div class="form_clear"></div>
         </div>
-        <input type="submit" class="symfony-button-grey" value="{% trans %}LOGIN{% endtrans %}" />
+        <input type="submit" name="login" value="{% trans %}LOGIN{% endtrans %}" class="form_button" />
     </form>
 </div>
 {% endblock %}

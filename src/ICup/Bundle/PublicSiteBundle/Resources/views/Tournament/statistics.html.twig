@@ -12,7 +12,7 @@
         </a>
         <p class="subcategory">
             {{ [group.category.gender,group.category.classification]|join|trans }}
-            {{ group.category.classification|trans }}
+            {{ group.category.classification|trans|lower }}
         </p>
         <table>
             <caption>{% trans %}CATEGORY{% endtrans %} {{ group.category.name }}</caption>

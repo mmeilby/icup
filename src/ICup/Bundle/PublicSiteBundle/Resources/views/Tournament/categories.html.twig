@@ -34,7 +34,7 @@
                         <b>{% trans %}CATEGORY{% endtrans %} {{ femalecategorylist[i].name }}</b>
                     </a><br />
                         {{ [femalecategorylist[i].gender,femalecategorylist[i].classification]|join|trans }}
-                        {{ femalecategorylist[i].classification|trans }}
+                        {{ femalecategorylist[i].classification|trans|lower }}
                 </td>
         {% else %}
                 <td class="categories"></td>
@@ -45,7 +45,7 @@
                         <b>{% trans %}CATEGORY{% endtrans %} {{ malecategorylist[i].name }}</b>
                     </a><br />
                         {{ [malecategorylist[i].gender,malecategorylist[i].classification]|join|trans }}
-                        {{ malecategorylist[i].classification|trans }}
+                        {{ malecategorylist[i].classification|trans|lower }}
                 </td>
             </tr>
         {% else %}

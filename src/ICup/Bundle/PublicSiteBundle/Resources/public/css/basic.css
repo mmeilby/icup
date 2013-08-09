@@ -9,6 +9,12 @@ BODY {
     color: #454545;
     text-align: center;
 }
+H1 {
+    -webkit-margin-after: 0px;
+}
+H2 {
+    -webkit-margin-after: 0px;
+}
 TABLE {
     border-collapse: collapse
 }
@@ -28,13 +34,26 @@ FIELDSET {
 LEGEND {
 }
 LABEL {
+    color: #454545;
 }
 SELECT {
     font: 12pt Arial, sans-serif;
+    color: #454545;
+}
+SELECT[disabled="disabled"] {
+    border: none;
+    font-weight: bold;
+    margin-left: 0px;
+    -webkit-appearance: inherit;
 }
 INPUT {
     font: 12pt Arial, sans-serif;
+    color: #454545;
     width: 100%;
+}
+INPUT[disabled="disabled"] {
+    border: none;
+    font-weight: bold;
 }
 /*
     Form setup
@@ -171,6 +190,9 @@ DIV.champions {
     width: 33%;
     float: left;
 }
+DIV.champions_clear {
+    clear: left;
+}
 DIV.header1 {
     font-size: 30px;
     font-weight: bold; 
@@ -179,6 +201,10 @@ DIV.header1 {
 DIV.header3 {
     font-weight: bold;
     padding-bottom: 10px;
+}
+P.subtitle {
+    -webkit-margin-before: 0px;
+    font-weight: bold;    
 }
 P.subcategory {
     -webkit-margin-before: 0px;
@@ -364,9 +390,22 @@ TD.placement {
     padding-top: 5px;
     text-decoration: underline;
 }
+TD.host_solo {
+    font-weight: bold;
+    font-size: 18px;
+    padding-top: 5px;
+    padding-left: 5px;
+}
+TD.indent {
+    width: 30px;
+}
+TD.operand {
+    width: 20px;
+    text-align: center;
+}
 
-DIV.admin {
-    background-color: lightpink;
+DIV.admin H1 {
+    color: #6666ff;
 }
 
 /*

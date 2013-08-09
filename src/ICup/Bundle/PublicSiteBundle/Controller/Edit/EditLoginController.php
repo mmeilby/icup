@@ -27,7 +27,26 @@ class EditLoginController extends Controller
 
         $tournament = $em->getRepository('ICup\Bundle\PublicSiteBundle\Entity\Doctrine\Tournament')
                             ->find($tournamentId);
-        
+
+/*
+        $formDef = $this->createFormBuilder(array('_username' => $request->getSession()->get(SecurityContext::LAST_USERNAME)));
+        $formDef->setAction($this->generateUrl('_security_check'));
+//        $formDef->add('id', 'hidden', array('mapped' => false));
+        $formDef->add('_username', 'text', array('label' => 'USERNAME', 'required' => false));
+        $formDef->add('_password', 'password', array('label' => 'PASSWORD', 'required' => false));
+        $formDef->add('login', 'submit', array('label' => 'LOGIN'));
+        $form = $formDef->getForm();
+        $form->handleRequest($request);
+        if ($form->isValid()) {
+            return $this->redirect($this->generateUrl('_edit_host_list'));
+        }
+        return array(
+            'form' => $form->createView(),
+            'tournament'    => $tournament,
+            'error'         => $error
+        );
+
+ */        
         return array(
             'last_username' => $request->getSession()->get(SecurityContext::LAST_USERNAME),
             'tournament'    => $tournament,

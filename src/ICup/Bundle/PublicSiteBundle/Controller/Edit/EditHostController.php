@@ -11,13 +11,13 @@ use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 /**
  * List the tournaments available
  */
-class EditTournamentController extends Controller
+class EditHostController extends Controller
 {
     /**
      * List the tournaments available
      * @Route("/edit/host/list", name="_edit_host_list")
      * @Method("GET")
-     * @Template("ICupPublicSiteBundle:Edit:listtournament.html.twig")
+     * @Template("ICupPublicSiteBundle:Edit:listhosts.html.twig")
      */
     public function listAction() {
         $this->get('util')->setupController($this);
@@ -53,11 +53,12 @@ class EditTournamentController extends Controller
             return $this->redirect($this->generateUrl('_edit_host_list'));
         }
         if ($form->isValid()) {
+            $em = $this->getDoctrine()->getManager();
             $em->persist($host);
             $em->flush();
             return $this->redirect($this->generateUrl('_edit_host_list'));
         }
-        return array('form' => $form->createView(), 'action' => 'add', 'host' => $host);
+        return array('form' => $form->createView(), 'action' => 'add', 'host' => $host, 'error' => null);
     }
     
     /**
@@ -71,21 +72,21 @@ class EditTournamentController extends Controller
         
         $host = $em->getRepository('ICup\Bundle\PublicSiteBundle\Entity\Doctrine\Host')->find($hostid);
         if ($host == null) {
-            return $this->redirect($this->generateUrl('_edit_host_list'));
+            $error = "FORM.ERROR.BADHOST";
         }
-                
+     
         $form = $this->makeHostForm($host, 'chg');
         $request = $this->getRequest();
         $form->handleRequest($request);
         if ($form->get('cancel')->isClicked()) {
             return $this->redirect($this->generateUrl('_edit_host_list'));
         }
-        if ($form->isValid()) {
+        if (!isset($error) && $form->isValid()) {
             $em->persist($host);
             $em->flush();
             return $this->redirect($this->generateUrl('_edit_host_list'));
         }
-        return array('form' => $form->createView(), 'action' => 'chg', 'host' => $host);
+        return array('form' => $form->createView(), 'action' => 'chg', 'host' => $host, 'error' => isset($error) ? $error : null);
     }
     
     /**
@@ -99,7 +100,7 @@ class EditTournamentController extends Controller
         
         $host = $em->getRepository('ICup\Bundle\PublicSiteBundle\Entity\Doctrine\Host')->find($hostid);
         if ($host == null) {
-            return $this->redirect($this->generateUrl('_edit_host_list'));
+            $error = "FORM.ERROR.BADHOST";
         }
                 
         $form = $this->makeHostForm($host, 'del');
@@ -108,17 +109,17 @@ class EditTournamentController extends Controller
         if ($form->get('cancel')->isClicked()) {
             return $this->redirect($this->generateUrl('_edit_host_list'));
         }
-        if ($form->isValid()) {
+        if (!isset($error) && $form->isValid()) {
             $em->remove($host);
             $em->flush();
             return $this->redirect($this->generateUrl('_edit_host_list'));
         }
-        return array('form' => $form->createView(), 'action' => 'del', 'host' => $host);
+        return array('form' => $form->createView(), 'action' => 'del', 'host' => $host, 'error' => isset($error) ? $error : null);
     }
     
     private function makeHostForm($host, $action) {
         $formDef = $this->createFormBuilder($host);
-        $formDef->add('name', 'text', array('label' => 'FORM.HOST.NAME', 'required' => false));
+        $formDef->add('name', 'text', array('label' => 'FORM.HOST.NAME', 'required' => false, 'disabled' => $action == 'del'));
         $formDef->add('cancel', 'submit', array('label' => 'FORM.HOST.CANCEL.'.strtoupper($action)));
         $formDef->add('save', 'submit', array('label' => 'FORM.HOST.SUBMIT.'.strtoupper($action)));
         return $formDef->getForm();
@@ -135,23 +136,23 @@ class EditTournamentController extends Controller
         
         $host = $em->getRepository('ICup\Bundle\PublicSiteBundle\Entity\Doctrine\Host')->find($hostid);
         if ($host == null) {
-            return $this->redirect($this->generateUrl('_edit_host_list'));
+            $error = "FORM.ERROR.BADHOST";
         }
                 
         $tournament = new Tournament();
-        $tournament->setPid($host->getId());
+        $tournament->setPid($host != null ? $host->getId() : 0);
         $form = $this->makeTournamentForm($tournament, 'add');
         $request = $this->getRequest();
         $form->handleRequest($request);
         if ($form->get('cancel')->isClicked()) {
             return $this->redirect($this->generateUrl('_edit_host_list'));
         }
-        if ($form->isValid()) {
+        if (!isset($error) && $form->isValid()) {
             $em->persist($tournament);
             $em->flush();
             return $this->redirect($this->generateUrl('_edit_host_list'));
         }
-        return array('form' => $form->createView(), 'action' => 'add', 'tournament' => $tournament);
+        return array('form' => $form->createView(), 'action' => 'add', 'tournament' => $tournament, 'error' => isset($error) ? $error : null);
     }
     
     /**
@@ -165,7 +166,7 @@ class EditTournamentController extends Controller
         
         $tournament = $em->getRepository('ICup\Bundle\PublicSiteBundle\Entity\Doctrine\Tournament')->find($tournamentid);
         if ($tournament == null) {
-            return $this->redirect($this->generateUrl('_edit_host_list'));
+            $error = "FORM.ERROR.BADTOURNAMENT";
         }
         
         $form = $this->makeTournamentForm($tournament, 'chg');
@@ -174,12 +175,12 @@ class EditTournamentController extends Controller
         if ($form->get('cancel')->isClicked()) {
             return $this->redirect($this->generateUrl('_edit_host_list'));
         }
-        if ($form->isValid()) {
+        if (!isset($error) && $form->isValid()) {
             $em->persist($tournament);
             $em->flush();
             return $this->redirect($this->generateUrl('_edit_host_list'));
         }
-        return array('form' => $form->createView(), 'action' => 'chg', 'tournament' => $tournament);
+        return array('form' => $form->createView(), 'action' => 'chg', 'tournament' => $tournament, 'error' => isset($error) ? $error : null);
     }
     
     /**
@@ -193,7 +194,7 @@ class EditTournamentController extends Controller
         
         $tournament = $em->getRepository('ICup\Bundle\PublicSiteBundle\Entity\Doctrine\Tournament')->find($tournamentid);
         if ($tournament == null) {
-            return $this->redirect($this->generateUrl('_edit_host_list'));
+            $error = "FORM.ERROR.BADTOURNAMENT";
         }
         
         $form = $this->makeTournamentForm($tournament, 'del');
@@ -202,21 +203,19 @@ class EditTournamentController extends Controller
         if ($form->get('cancel')->isClicked()) {
             return $this->redirect($this->generateUrl('_edit_host_list'));
         }
-        if ($form->isValid()) {
+        if (!isset($error) && $form->isValid()) {
             $em->remove($tournament);
             $em->flush();
             return $this->redirect($this->generateUrl('_edit_host_list'));
         }
-        return array('form' => $form->createView(), 'action' => 'del', 'tournament' => $tournament);
+        return array('form' => $form->createView(), 'action' => 'del', 'tournament' => $tournament, 'error' => isset($error) ? $error : null);
     }
     
     private function makeTournamentForm($tournament, $action) {
         $formDef = $this->createFormBuilder($tournament);
-//        $formDef->setAction($this->generateUrl('_edit_tournament_post', array('action' => $action)));
-//        $formDef->add('id', 'hidden', array('mapped' => false));
-        $formDef->add('name', 'text', array('label' => 'FORM.TOURNAMENT.NAME', 'required' => false));
-        $formDef->add('key', 'text', array('label' => 'FORM.TOURNAMENT.KEY', 'required' => false));
-        $formDef->add('edition', 'text', array('label' => 'FORM.TOURNAMENT.EDITION', 'required' => false));
+        $formDef->add('name', 'text', array('label' => 'FORM.TOURNAMENT.NAME', 'required' => false, 'disabled' => $action == 'del'));
+        $formDef->add('key', 'text', array('label' => 'FORM.TOURNAMENT.KEY', 'required' => false, 'disabled' => $action == 'del'));
+        $formDef->add('edition', 'text', array('label' => 'FORM.TOURNAMENT.EDITION', 'required' => false, 'disabled' => $action == 'del'));
         $formDef->add('cancel', 'submit', array('label' => 'FORM.TOURNAMENT.CANCEL.'.strtoupper($action)));
         $formDef->add('save', 'submit', array('label' => 'FORM.TOURNAMENT.SUBMIT.'.strtoupper($action)));
         return $formDef->getForm();

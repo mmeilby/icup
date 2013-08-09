@@ -1,4 +1,5 @@
 <IfModule mod_rewrite.c>
+    php_flag magic_quotes_gpc Off
     RewriteEngine On
 
     #<IfModule mod_vhost_alias.c>

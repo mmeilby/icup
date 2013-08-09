@@ -1,26 +1,15 @@
-{% extends "ICupPublicSiteBundle:Default:layout.script.html.twig" %}
+{% extends "ICupPublicSiteBundle:Masters:edit.html.twig" %}
 
-{% form_theme form _self %}
+{% form_theme form 'ICupPublicSiteBundle:Default:layout.script.html.twig' %}
 
-{% block body %}
-<a href="{{ path('_edit_host_list') }}">
-    <h1 class="category">iCup Tournament Administration</h1>
-</a>
-<p class="subcategory">{{ ['FORM.HOST.TITLE.',action]|join|upper|trans }}</p>
-<p>
-    <form action="{{ path('_edit_host_post', {'action': action }) }}" method="POST">
-{% if action != 'del' %}
-        <p>Indtast oplysninger på turneringsværten.</p>
-        {{ form_rest(form) }}
+{% block adminbody %}
+<h1>{% trans %}FORM.ADMIN{% endtrans %}</h1>
+<p class="subtitle">{{ ['FORM.HOST.TITLE.',action]|join|upper|trans }}</p>
+{% if error %}
+    <p>{{ error|trans }}</p>
+    <p><a href="{{ path('_edit_host_list') }}">{% trans %}FORM.ERROR.BACK{% endtrans %}</a></p>
 {% else %}
-        <p>Følgende turneringsvært vil bliver slettet.
-           Alle kampresultater samt turneringsoplysninger knyttet til turneringensværten vil også blive fjernet.
-           Det er ikke muligt at fortryde når turneringensværten er fjernet.</p>
-        {{ form_rest(form) }}
+    <p>{{ ['FORM.HOST.PROMPT.',action]|join|upper|trans }}</p>
+    {{ form(form) }}
 {% endif %}
-        <div class="form_button">
-            <input type="submit" name="save" value="{{ ['FORM.HOST.SUBMIT.',action]|join|upper|trans }}" class="form_button" />
-        </div>
-    </form>
-</p>
 {% endblock %}

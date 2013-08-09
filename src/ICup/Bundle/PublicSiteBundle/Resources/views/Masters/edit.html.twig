@@ -1,3 +1,9 @@
 {% extends "ICupPublicSiteBundle:Masters:menu.html.twig" %}
 
-{% block title %}iCup Administration - icup.dk{% endblock %}
+{% block title %}{% trans %}FORM.ADMIN{% endtrans %} - icup.dk{% endblock %}
+
+{% block body %}
+<div class="admin">
+    {% block adminbody %}{% endblock %}
+</div>
+{% endblock %}

@@ -1,4 +1,4 @@
-{% extends "ICupPublicSiteBundle:Masters:standard.html.twig" %}
+{% extends "ICupPublicSiteBundle:Masters:edit.html.twig" %}
 
 {% block body %}
 <h1 class="category">{% trans %}LOGIN{% endtrans %}</h1>
@@ -6,11 +6,11 @@
     {{ tournament.name }}
 </p>
 <div class="form_content">
-    {% if error %}
-        <div class="form_error">{{ error.message }}</div>
-    {% endif %}
+{% if error %}
+    <div class="form_error">{{ error.message }}</div>
+{% endif %}
 
-    <form action="{{ path("_security_check") }}" method="post" id="login">
+    <form action="{{ path("_security_check") }}" method="post">
         <div class="form_row">
             <div class="form_label">
                 <label for="username">{% trans %}USERNAME{% endtrans %}:</label>
@@ -29,7 +29,9 @@
             </div>
             <div class="form_clear"></div>
         </div>
-        <input type="submit" name="login" value="{% trans %}LOGIN{% endtrans %}" class="form_button" />
+        <div class="form_button">
+            <button type="submit" name="login">{% trans %}LOGIN{% endtrans %}</button>
+        </div>
     </form>
 </div>
 {% endblock %}

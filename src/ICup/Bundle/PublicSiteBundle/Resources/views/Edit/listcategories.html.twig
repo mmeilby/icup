@@ -1,0 +1,106 @@
+{% extends "ICupPublicSiteBundle:Masters:edit.html.twig" %}
+
+{% block adminbody %}
+<h1>{% trans %}FORM.ADMIN{% endtrans %}</h1>
+<p class="subtitle">{% trans %}FORM.LISTCATEGORIES.TITLE{% endtrans %}</p>
+<p class="subtitle"><a href="{{ path('_edit_host_list') }}">{{ tournament.name }}</a></p>
+<table>
+    <caption>{% trans %}FORM.LISTCATEGORIES.CAPTION{% endtrans %}</caption>
+    <thead>
+        <tr>
+            <td class="indent"></td>
+            <td></td>
+            <td class="operand"></td>
+            <td class="operand"></td>
+            <td class="operand"></td>
+        </tr>
+    </thead>
+    <tboby>
+{% if categories|length > 0 %}
+    {% for category in categories %}
+        <tr class="{{ cycle(['even','odd'],loop.index) }}">
+            <td class="host_solo" colspan="2">
+                <a href="{{ path('_edit_category_chg', { 'categoryid': category.id }) }}">
+                {% trans %}CATEGORY{% endtrans %} {{ category.name|upper }}
+                </a>    
+            </td>
+            <td class="operand">
+                <a href="{{ path('_edit_category_add', { 'tournamentid': tournament.id }) }}">
+                +
+                </a>    
+            </td>
+            <td class="operand">
+                <a href="{{ path('_edit_category_chg', { 'categoryid': category.id }) }}">
+                E
+                </a>    
+            </td>
+            <td class="operand">
+                <a href="{{ path('_edit_category_del', { 'categoryid': category.id }) }}">
+                -
+                </a>    
+            </td>
+        </tr>
+        {% if category.id in groups|keys %}
+            {% for group in groups[category.id] %}
+        <tr class="{{ cycle(['even','odd'],loop.index) }}">
+            <td></td>
+            <td><a href="{{ path('_edit_group_chg', { 'groupid': group.id }) }}">{{ group.name }}</a></td>
+            <td class="operand">
+                <a href="{{ path('_edit_group_add', { 'categoryid': category.id }) }}">
+                +
+                </a>    
+            </td>
+            <td class="operand">
+                <a href="{{ path('_edit_group_chg', { 'groupid': group.id }) }}">
+                E
+                </a>    
+            </td>
+            <td class="operand">
+                <a href="{{ path('_edit_group_del', { 'groupid': group.id }) }}">
+                -
+                </a>    
+            </td>
+        </tr>
+            {% endfor %}
+        {% else %}
+        <tr class="{{ cycle(['even','odd'],loop.index) }}">
+            <td></td>
+            <td><a href="{{ path('_edit_group_add', { 'categoryid': category.id }) }}">{{'FORM.LISTCATEGORIES.NOGROUP'|trans|upper}}</a></td>
+            <td class="operand">
+                <a href="{{ path('_edit_group_add', { 'categoryid': category.id }) }}">
+                +
+                </a>    
+            </td>
+            <td>
+            </td>
+            <td>
+            </td>
+        </tr>
+        {% endif %}
+    {% endfor %}
+{% else %}
+        <tr class="odd">
+            <td class="host_solo" colspan="2">
+                <a href="{{ path('_edit_category_add', { 'tournamentid': tournament.id }) }}">
+                {{'FORM.LISTCATEGORIES.NOCATEGORY'|trans|upper}}
+                </a>    
+            </td>
+            <td class="operand">
+                <a href="{{ path('_edit_category_add', { 'tournamentid': tournament.id }) }}">
+                +
+                </a>    
+            </td>
+            <td>
+            </td>
+            <td>
+            </td>
+        </tr>
+{% endif %}
+    </tboby>
+    <tfoot>
+        <tr>
+            <td colspan="5"></td>
+        </tr>
+    </tfoot>
+</table>
+{% endblock %}

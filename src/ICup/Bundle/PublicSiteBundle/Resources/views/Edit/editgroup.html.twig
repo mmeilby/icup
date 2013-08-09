@@ -1,24 +1,15 @@
-{% extends "ICupPublicSiteBundle:Default:layout.script.html.twig" %}
+{% extends "ICupPublicSiteBundle:Masters:edit.html.twig" %}
 
-{% form_theme form _self %}
+{% form_theme form 'ICupPublicSiteBundle:Default:layout.script.html.twig' %}
 
-{% block body %}
-<a href="{{ path('_editmenu', {'categoryId': category.id, 'tournament': tournament.key }) }}">
-    <h1 class="category">{{ tournament.name }}</h1>
-</a>
-<p class="subcategory">{% trans %}EDITGROUP{% endtrans %}</p>
-<p class="subgroup">
-    {{ [category.gender,category.classification]|join|trans }}
-    {{ category.classification|trans }}
-</p>
-<p>
-    <form action="{{ path('_newgrouppost', {'categoryId': category.id, 'tournament': tournament.key }) }}" method="POST">
-        <p>Indtast oplysninger på puljen.</p>
-        {{ form_rest(form) }}
-        
-        <div style="float: right;">
-            <input type="submit" name="save" value="Save" class="form_button" />
-        </div>
-    </form>
-</p>
+{% block adminbody %}
+<h1>{% trans %}FORM.ADMIN{% endtrans %}</h1>
+<p class="subtitle">{{ ['FORM.GROUP.TITLE.',action]|join|upper|trans }}</p>
+{% if error %}
+    <p>{{ error|trans }}</p>
+    <p><a href="{{ path('_edit_host_list') }}">{% trans %}FORM.ERROR.BACK{% endtrans %}</a></p>
+{% else %}
+    <p>{{ ['FORM.GROUP.PROMPT.',action]|join|upper|trans }}</p>
+    {{ form(form) }}
+{% endif %}
 {% endblock %}

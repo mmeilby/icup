@@ -47,7 +47,15 @@ class InlineFragmentRenderer extends RoutableFragmentRenderer
         $reference = null;
         if ($uri instanceof ControllerReference) {
             $reference = $uri;
+
+            // Remove attributes from the genereated URI because if not, the Symfony
+            // routing system will use them to populate the Request attributes. We don't
+            // want that as we want to preserve objects (so we manually set Request attributes
+            // below instead)
+            $attributes = $reference->attributes;
+            $reference->attributes = array();
             $uri = $this->generateFragmentUri($uri, $request);
+            $reference->attributes = array_merge($attributes, $reference->attributes);
         }
 
         $subRequest = $this->createSubRequest($uri, $request);
@@ -89,7 +97,10 @@ class InlineFragmentRenderer extends RoutableFragmentRenderer
         // the sub-request is internal
         $server['REMOTE_ADDR'] = '127.0.0.1';
 
-        $subRequest = Request::create($uri, 'get', array(), $cookies, array(), $server);
+        $subRequest = $request::create($uri, 'get', array(), $cookies, array(), $server);
+        if ($request->headers->has('Surrogate-Capability')) {
+            $subRequest->headers->set('Surrogate-Capability', $request->headers->get('Surrogate-Capability'));
+        }
         if ($session = $request->getSession()) {
             $subRequest->setSession($session);
         }

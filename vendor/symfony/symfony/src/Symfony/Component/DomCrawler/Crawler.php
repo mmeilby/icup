@@ -78,6 +78,10 @@ class Crawler extends \SplObjectStorage
     /**
      * Adds HTML/XML content.
      *
+     * If the charset is not set via the content type, it is assumed
+     * to be ISO-8859-1, which is the default charset defined by the
+     * HTTP 1.1 specification.
+     *
      * @param string      $content A string to parse as HTML/XML
      * @param null|string $type    The content type of the string
      *
@@ -432,7 +436,9 @@ class Crawler extends \SplObjectStorage
             throw new \InvalidArgumentException('The current node list is empty.');
         }
 
-        return new static($this->sibling($this->getNode(0)->firstChild), $this->uri);
+        $node = $this->getNode(0)->firstChild;
+
+        return new static($node ? $this->sibling($node) : array(), $this->uri);
     }
 
     /**

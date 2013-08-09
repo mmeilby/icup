@@ -50,11 +50,7 @@ class InlineFragmentRendererTest extends \PHPUnit_Framework_TestCase
         $object = new \stdClass();
 
         $subRequest = Request::create('/_fragment?_path=_format%3Dhtml%26_controller%3Dmain_controller');
-        $subRequest->attributes->replace(array(
-            'object'      => $object,
-            '_format'     => 'html',
-            '_controller' => 'main_controller',
-        ));
+        $subRequest->attributes->replace(array('object' => $object, '_format' => 'html', '_controller' => 'main_controller'));
 
         $kernel = $this->getMock('Symfony\Component\HttpKernel\HttpKernelInterface');
         $kernel
@@ -136,5 +132,24 @@ class InlineFragmentRendererTest extends \PHPUnit_Framework_TestCase
         $renderer->render('/', Request::create('/'), array('ignore_errors' => true));
 
         $this->assertEquals('Foo', ob_get_clean());
+    }
+
+    public function testESIHeaderIsKeptInSubrequest()
+    {
+        $expectedSubRequest = Request::create('/');
+        $expectedSubRequest->headers->set('Surrogate-Capability', 'abc="ESI/1.0"');
+
+        $kernel = $this->getMock('Symfony\Component\HttpKernel\HttpKernelInterface');
+        $kernel
+            ->expects($this->any())
+            ->method('handle')
+            ->with($expectedSubRequest)
+        ;
+
+        $strategy = new InlineFragmentRenderer($kernel);
+
+        $request = Request::create('/');
+        $request->headers->set('Surrogate-Capability', 'abc="ESI/1.0"');
+        $strategy->render('/', $request);
     }
 }

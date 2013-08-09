@@ -62,11 +62,11 @@ abstract class Kernel implements KernelInterface, TerminableInterface
     protected $classes;
     protected $errorReportingLevel;
 
-    const VERSION         = '2.2.0';
-    const VERSION_ID      = '20100';
+    const VERSION         = '2.2.4';
+    const VERSION_ID      = '20204';
     const MAJOR_VERSION   = '2';
     const MINOR_VERSION   = '2';
-    const RELEASE_VERSION = '0';
+    const RELEASE_VERSION = '4';
     const EXTRA_VERSION   = '';
 
     /**
@@ -101,7 +101,9 @@ abstract class Kernel implements KernelInterface, TerminableInterface
         if ($this->debug) {
             error_reporting(-1);
 
-            DebugClassLoader::enable();
+            if (class_exists('Symfony\Component\ClassLoader\DebugClassLoader')) {
+                DebugClassLoader::enable();
+            }
             ErrorHandler::register($this->errorReportingLevel);
             if ('cli' !== php_sapi_name()) {
                 ExceptionHandler::register();

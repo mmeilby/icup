@@ -43,8 +43,40 @@ DIV.centerpage {
     width: 700px;
     margin: 0px auto;
     text-align: left;
+    min-height: 500px;
 }
-
+DIV.spacer {
+    padding: 2px;
+    clear: both;
+}
+DIV.footer {
+    width: 100%;
+    text-align: left;
+    background: #313131;
+}
+DIV.menu_footer {
+    width: 170px;
+    vertical-align: top;
+    padding-bottom: 20px;
+    display: inline-table;
+}
+DIV.menu_footer UL {
+    color: #D1D1D1;
+    margin: 0px;
+    padding: 0px;
+}
+DIV.menu_footer UL LI {
+    list-style: none;
+}
+DIV.menu_footer UL LI A {
+    color: #D1D1D1;
+}
+DIV.menu_footer UL LI A:hover {
+    color: #D1D1D1;
+}
+DIV.menu_footer H3 {
+    color: #D1D1D1;
+}
 H1.category {
 }
 P.subcategory {
@@ -59,8 +91,21 @@ P.subgroup {
     top: -18px;
     font-weight: bold;    
 }
-
+P.language {
+    font-size: 12px;
+    padding-top: 10px;
+    margin-bottom: 10px;
+}
+CAPTION {
+    font-weight: bold;
+    text-transform: uppercase;
+    padding-top: 5px;
+    padding-bottom: 5px;
+    color: #D1D1D1;
+    background: #313131;
+}
 THEAD TR TD {
+    padding: 5px;
     font-weight: bold;
 }
 THEAD TR {
@@ -130,13 +175,44 @@ TD.date_solo {
     padding-left: 5px;
     text-decoration: underline;
 }
+TD.clubs {
+    min-width: 200px;
+    vertical-align: top;
+}
+TD.teams {
+    min-width: 250px;
+    padding: 5px;
+}
+TD.sites {
+    font-weight: bold;
+    font-size: 18px;
+    padding-top: 5px;
+    padding-left: 5px;
+    text-decoration: underline;
+    width: 10px;
+}
 TD.playgrounds {
     width: 400px;
 }
-TD.categories {
+TD.classification {
+    padding: 5px;
+    font-weight: bold;
     width: 200px;
 }
+TD.categories {
+    padding: 5px;
+    width: 250px;
+}
+TD.placement {
+    font-weight: bold;
+    font-size: 18px;
+    padding-top: 5px;
+    text-decoration: underline;
+}
 
+DIV.admin {
+    background-color: lightpink;
+}
 
 
 

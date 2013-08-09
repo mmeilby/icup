@@ -117,6 +117,8 @@ class ScriptHandler
 
         $webDir = $options['symfony-web-dir'];
 
+        // if the user has already removed the config.php file, do nothing
+        // as the file must be removed for production use
         if (is_file($webDir.'/config.php')) {
             copy(__DIR__.'/../Resources/skeleton/web/config.php', $webDir.'/config.php');
         }
@@ -129,7 +131,7 @@ class ScriptHandler
             unlink($file);
         }
 
-        ClassCollectionLoader::load(array(
+        $classes = array(
             'Symfony\\Component\\DependencyInjection\\ContainerAwareInterface',
             // Cannot be included because annotations will parse the big compiled class file
             //'Symfony\\Component\\DependencyInjection\\ContainerAware',
@@ -139,10 +141,22 @@ class ScriptHandler
             'Symfony\\Component\\ClassLoader\\ApcClassLoader',
             'Symfony\\Component\\HttpKernel\\Bundle\\Bundle',
             'Symfony\\Component\\Config\\ConfigCache',
-            'Symfony\\Bundle\\FrameworkBundle\\HttpKernel',
             // cannot be included as commands are discovered based on the path to this class via Reflection
             //'Symfony\\Bundle\\FrameworkBundle\\FrameworkBundle',
-        ), dirname($file), basename($file, '.php.cache'), false, false, '.php.cache');
+        );
+
+        // introspect the autoloader to get the right file
+        // we cannot use class_exist() here as it would load the class
+        // which won't be included into the cache then.
+        // we know that composer autoloader is first (see bin/build_bootstrap.php)
+        $autoloaders = spl_autoload_functions();
+        if ($autoloaders[0][0]->findFile('Symfony\\Bundle\\FrameworkBundle\\HttpKernel')) {
+            $classes[] = 'Symfony\\Bundle\\FrameworkBundle\\HttpKernel';
+        } else {
+            $classes[] = 'Symfony\\Component\\HttpKernel\\DependencyInjection\\ContainerAwareHttpKernel';
+        }
+
+        ClassCollectionLoader::load($classes, dirname($file), basename($file, '.php.cache'), false, false, '.php.cache');
 
         file_put_contents($file, sprintf("<?php
 

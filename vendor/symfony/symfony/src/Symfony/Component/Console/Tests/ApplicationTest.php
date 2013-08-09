@@ -57,7 +57,7 @@ class ApplicationTest extends \PHPUnit_Framework_TestCase
     {
         $application = new Application('foo', 'bar');
         $this->assertEquals('foo', $application->getName(), '__construct() takes the application name as its first argument');
-        $this->assertEquals('bar', $application->getVersion(), '__construct() takes the application version as its first argument');
+        $this->assertEquals('bar', $application->getVersion(), '__construct() takes the application version as its second argument');
         $this->assertEquals(array('help', 'list'), array_keys($application->all()), '__construct() registered the help and list commands by default');
     }
 
@@ -219,6 +219,16 @@ class ApplicationTest extends \PHPUnit_Framework_TestCase
         }
     }
 
+    public function testFindCommandEqualNamespace()
+    {
+        $application = new Application();
+        $application->add(new \Foo3Command());
+        $application->add(new \Foo4Command());
+
+        $this->assertInstanceOf('Foo3Command', $application->find('foo3:bar'), '->find() returns the good command even if a namespace has same name');
+        $this->assertInstanceOf('Foo4Command', $application->find('foo3:bar:toh'), '->find() returns a command even if its namespace equals another command name');
+    }
+
     public function testFindAlternativeExceptionMessage()
     {
         $application = new Application();
@@ -343,6 +353,16 @@ class ApplicationTest extends \PHPUnit_Framework_TestCase
             $this->assertRegExp('/foo1/', $e->getMessage(), '->find() throws an \InvalidArgumentException if namespace does not exist, with alternative : "foo1"');
             $this->assertRegExp('/foo3/', $e->getMessage(), '->find() throws an \InvalidArgumentException if namespace does not exist, with alternative : "foo3"');
         }
+    }
+
+    public function testFindNamespaceDoesNotFailOnDeepSimilarNamespaces()
+    {
+        $application = $this->getMock('Symfony\Component\Console\Application', array('getNamespaces'));
+        $application->expects($this->once())
+            ->method('getNamespaces')
+            ->will($this->returnValue(array('foo:sublong', 'bar:sub')));
+
+        $this->assertEquals('foo:sublong', $application->findNamespace('f:sub'));
     }
 
     public function testSetCatchExceptions()
@@ -492,6 +512,36 @@ class ApplicationTest extends \PHPUnit_Framework_TestCase
 
         $tester->run(array('command' => 'foo:bar', '-n' => true), array('decorated' => false));
         $this->assertSame('called'.PHP_EOL, $tester->getDisplay(), '->run() does not call interact() if -n is passed');
+    }
+
+    public function testRunReturnsIntegerExitCode()
+    {
+        $exception = new \Exception('', 4);
+
+        $application = $this->getMock('Symfony\Component\Console\Application', array('doRun'));
+        $application->setAutoExit(false);
+        $application->expects($this->once())
+             ->method('doRun')
+             ->will($this->throwException($exception));
+
+        $exitCode = $application->run(new ArrayInput(array()), new NullOutput());
+
+        $this->assertSame(4, $exitCode, '->run() returns integer exit code extracted from raised exception');
+    }
+
+    public function testRunReturnsExitCodeOneForExceptionCodeZero()
+    {
+        $exception = new \Exception('', 0);
+
+        $application = $this->getMock('Symfony\Component\Console\Application', array('doRun'));
+        $application->setAutoExit(false);
+        $application->expects($this->once())
+             ->method('doRun')
+             ->will($this->throwException($exception));
+
+        $exitCode = $application->run(new ArrayInput(array()), new NullOutput());
+
+        $this->assertSame(1, $exitCode, '->run() returns exit code 1 when exception code is 0');
     }
 
     /**

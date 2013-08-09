@@ -102,7 +102,7 @@ class Parser
                         $parser->refs =& $this->refs;
 
                         $block = $values['value'];
-                        if (!$this->isNextLineIndented()) {
+                        if ($this->isNextLineIndented()) {
                             $block .= "\n".$this->getNextEmbedBlock($this->getCurrentLineIndentation() + 2);
                         }
 
@@ -174,7 +174,7 @@ class Parser
                 // hash
                 } elseif (!isset($values['value']) || '' == trim($values['value'], ' ') || 0 === strpos(ltrim($values['value'], ' '), '#')) {
                     // if next line is less indented or equal, then it means that the current value is null
-                    if ($this->isNextLineIndented() && !$this->isNextLineUnIndentedCollection()) {
+                    if (!$this->isNextLineIndented() && !$this->isNextLineUnIndentedCollection()) {
                         $data[$key] = null;
                     } else {
                         $c = $this->getRealCurrentLineNb() + 1;
@@ -304,14 +304,16 @@ class Parser
 
         $isItUnindentedCollection = $this->isStringUnIndentedCollectionItem($this->currentLine);
 
-        while ($this->moveToNextLine()) {
+        // We are in string block (ie. after a line ending with "|")
+        $removeComments = !preg_match('~(.*)\|[\s]*$~', $this->currentLine);
 
+        while ($this->moveToNextLine()) {
             if ($isItUnindentedCollection && !$this->isStringUnIndentedCollectionItem($this->currentLine)) {
                 $this->moveToPreviousLine();
                 break;
             }
 
-            if ($this->isCurrentLineEmpty()) {
+            if ($removeComments && $this->isCurrentLineEmpty() || $this->isCurrentLineBlank()) {
                 if ($this->isCurrentLineBlank()) {
                     $data[] = substr($this->currentLine, $newIndent);
                 }
@@ -414,64 +416,71 @@ class Parser
      */
     private function parseFoldedScalar($separator, $indicator = '', $indentation = 0)
     {
-        $separator = '|' == $separator ? "\n" : ' ';
-        $text = '';
-
         $notEOF = $this->moveToNextLine();
-
-        while ($notEOF && $this->isCurrentLineBlank()) {
-            $text .= "\n";
-
-            $notEOF = $this->moveToNextLine();
-        }
-
         if (!$notEOF) {
             return '';
         }
 
-        if (!preg_match('#^(?P<indent>'.($indentation ? str_repeat(' ', $indentation) : ' +').')(?P<text>.*)$#u', $this->currentLine, $matches)) {
-            $this->moveToPreviousLine();
+        $isCurrentLineBlank = $this->isCurrentLineBlank();
+        $text = '';
 
-            return '';
-        }
-
-        $textIndent = $matches['indent'];
-        $previousIndent = 0;
-
-        $text .= $matches['text'].$separator;
-        while ($this->currentLineNb + 1 < count($this->lines)) {
-            $this->moveToNextLine();
-
-            if (preg_match('#^(?P<indent> {'.strlen($textIndent).',})(?P<text>.+)$#u', $this->currentLine, $matches)) {
-                if (' ' == $separator && $previousIndent != $matches['indent']) {
-                    $text = substr($text, 0, -1)."\n";
-                }
-                $previousIndent = $matches['indent'];
-
-                $text .= str_repeat(' ', $diff = strlen($matches['indent']) - strlen($textIndent)).$matches['text'].($diff ? "\n" : $separator);
-            } elseif (preg_match('#^(?P<text> *)$#', $this->currentLine, $matches)) {
-                $text .= preg_replace('#^ {1,'.strlen($textIndent).'}#', '', $matches['text'])."\n";
-            } else {
-                $this->moveToPreviousLine();
-
-                break;
+        // leading blank lines are consumed before determining indentation
+        while ($notEOF && $isCurrentLineBlank) {
+            // newline only if not EOF
+            if ($notEOF = $this->moveToNextLine()) {
+                $text .= "\n";
+                $isCurrentLineBlank = $this->isCurrentLineBlank();
             }
         }
 
-        if (' ' == $separator) {
-            // replace last separator by a newline
-            $text = preg_replace('/ (\n*)$/', "\n$1", $text);
+        // determine indentation if not specified
+        if (0 === $indentation) {
+            if (preg_match('/^ +/', $this->currentLine, $matches)) {
+                $indentation = strlen($matches[0]);
+            }
         }
 
-        switch ($indicator) {
-            case '':
-                $text = preg_replace('#\n+$#s', "\n", $text);
-                break;
-            case '+':
-                break;
-            case '-':
-                $text = preg_replace('#\n+$#s', '', $text);
-                break;
+        if ($indentation > 0) {
+            $pattern = sprintf('/^ {%d}(.*)$/', $indentation);
+
+            while (
+                $notEOF && (
+                    $isCurrentLineBlank ||
+                    preg_match($pattern, $this->currentLine, $matches)
+                )
+            ) {
+                if ($isCurrentLineBlank) {
+                    $text .= substr($this->currentLine, $indentation);
+                } else {
+                    $text .= $matches[1];
+                }
+
+                // newline only if not EOF
+                if ($notEOF = $this->moveToNextLine()) {
+                    $text .= "\n";
+                    $isCurrentLineBlank = $this->isCurrentLineBlank();
+                }
+            }
+        } elseif ($notEOF) {
+            $text .= "\n";
+        }
+
+        if ($notEOF) {
+            $this->moveToPreviousLine();
+        }
+
+        // replace all non-trailing single newlines with spaces in folded blocks
+        if ('>' === $separator) {
+            preg_match('/(\n*)$/', $text, $matches);
+            $text = preg_replace('/(?<!\n)\n(?!\n)/', ' ', rtrim($text, "\n"));
+            $text .= $matches[1];
+        }
+
+        // deal with trailing newlines as indicated
+        if ('' === $indicator) {
+            $text = preg_replace('/\n+$/s', "\n", $text);
+        } elseif ('-' === $indicator) {
+            $text = preg_replace('/\n+$/s', '', $text);
         }
 
         return $text;
@@ -485,18 +494,18 @@ class Parser
     private function isNextLineIndented()
     {
         $currentIndentation = $this->getCurrentLineIndentation();
-        $notEOF = $this->moveToNextLine();
+        $EOF = !$this->moveToNextLine();
 
-        while ($notEOF && $this->isCurrentLineEmpty()) {
-            $notEOF = $this->moveToNextLine();
+        while (!$EOF && $this->isCurrentLineEmpty()) {
+            $EOF = !$this->moveToNextLine();
         }
 
-        if (false === $notEOF) {
+        if ($EOF) {
             return false;
         }
 
         $ret = false;
-        if ($this->getCurrentLineIndentation() <= $currentIndentation) {
+        if ($this->getCurrentLineIndentation() > $currentIndentation) {
             $ret = true;
         }
 

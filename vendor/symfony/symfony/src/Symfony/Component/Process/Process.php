@@ -35,10 +35,14 @@ class Process
     const STDOUT = 1;
     const STDERR = 2;
 
+    // Timeout Precision in seconds.
+    const TIMEOUT_PRECISION = 0.2;
+
     private $commandline;
     private $cwd;
     private $env;
     private $stdin;
+    private $starttime;
     private $timeout;
     private $options;
     private $exitcode;
@@ -131,15 +135,17 @@ class Process
 
         $this->commandline = $commandline;
         $this->cwd = $cwd;
+
         // on windows, if the cwd changed via chdir(), proc_open defaults to the dir where php was started
-        if (null === $this->cwd && defined('PHP_WINDOWS_VERSION_BUILD')) {
+        // on gnu/linux, PHP builds with --enable-maintainer-zts are also affected
+        // @see : https://bugs.php.net/bug.php?id=51800
+        // @see : https://bugs.php.net/bug.php?id=50524
+
+        if (null === $this->cwd && (defined('ZEND_THREAD_SAFE') || defined('PHP_WINDOWS_VERSION_BUILD'))) {
             $this->cwd = getcwd();
         }
         if (null !== $env) {
-            $this->env = array();
-            foreach ($env as $key => $value) {
-                $this->env[(binary) $key] = (binary) $value;
-            }
+            $this->setEnv($env);
         } else {
             $this->env = null;
         }
@@ -223,6 +229,7 @@ class Process
             throw new RuntimeException('Process is already running');
         }
 
+        $this->starttime = microtime(true);
         $this->stdout = '';
         $this->stderr = '';
         $this->incrementalOutputOffset = 0;
@@ -299,15 +306,17 @@ class Process
             $w = $writePipes;
             $e = null;
 
-            $n = @stream_select($r, $w, $e, $this->timeout);
-
-            if (false === $n) {
+            if (false === $n = @stream_select($r, $w, $e, 0, ceil(static::TIMEOUT_PRECISION * 1E6))) {
+                // if a system call has been interrupted, forget about it, let's try again
+                if ($this->hasSystemCallBeenInterrupted()) {
+                    continue;
+                }
                 break;
             }
-            if ($n === 0) {
-                proc_terminate($this->process);
 
-                throw new RuntimeException('The process timed out.');
+            // nothing has changed, let's wait until the process is ready
+            if (0 === $n) {
+                continue;
             }
 
             if ($w) {
@@ -332,6 +341,8 @@ class Process
                     unset($this->pipes[$type]);
                 }
             }
+
+            $this->checkTimeout();
         }
 
         $this->updateStatus();
@@ -355,7 +366,7 @@ class Process
     public function restart($callback = null)
     {
         if ($this->isRunning()) {
-            throw new \RuntimeException('Process is already running');
+            throw new RuntimeException('Process is already running');
         }
 
         $process = clone $this;
@@ -386,26 +397,27 @@ class Process
             if (defined('PHP_WINDOWS_VERSION_BUILD') && $this->fileHandles) {
                 $this->processFileHandles($callback, !$this->pipes);
             }
+            $this->checkTimeout();
 
             if ($this->pipes) {
                 $r = $this->pipes;
                 $w = null;
                 $e = null;
 
-                if (false === $n = @stream_select($r, $w, $e, $this->timeout)) {
-                    $lastError = error_get_last();
-
-                    // stream_select returns false when the `select` system call is interrupted by an incoming signal
-                    if (isset($lastError['message']) && false === stripos($lastError['message'], 'interrupted system call')) {
+                // let's have a look if something changed in streams
+                if (false === $n = @stream_select($r, $w, $e, 0, ceil(static::TIMEOUT_PRECISION * 1E6))) {
+                    // if a system call has been interrupted, forget about it, let's try again
+                    // otherwise, an error occured, let's reset pipes
+                    if (!$this->hasSystemCallBeenInterrupted()) {
                         $this->pipes = array();
                     }
 
                     continue;
                 }
-                if (0 === $n) {
-                    proc_terminate($this->process);
 
-                    throw new RuntimeException('The process timed out.');
+                // nothing has changed
+                if (0 === $n) {
+                    continue;
                 }
 
                 foreach ($r as $pipe) {
@@ -429,7 +441,11 @@ class Process
         }
         $this->updateStatus();
         if ($this->processInformation['signaled']) {
-            throw new RuntimeException(sprintf('The process stopped because of a "%s" signal.', $this->processInformation['stopsig']));
+            if ($this->isSigchildEnabled()) {
+                throw new RuntimeException('The process has been signaled.');
+            }
+
+            throw new RuntimeException(sprintf('The process has been signaled with signal "%s".', $this->processInformation['termsig']));
         }
 
         $time = 0;
@@ -441,7 +457,11 @@ class Process
         $exitcode = proc_close($this->process);
 
         if ($this->processInformation['signaled']) {
-            throw new RuntimeException(sprintf('The process stopped because of a "%s" signal.', $this->processInformation['stopsig']));
+            if ($this->isSigchildEnabled()) {
+                throw new RuntimeException('The process has been signaled.');
+            }
+
+            throw new RuntimeException(sprintf('The process has been signaled with signal "%s".', $this->processInformation['termsig']));
         }
 
         $this->exitcode = $this->processInformation['running'] ? $exitcode : $this->processInformation['exitcode'];
@@ -707,13 +727,17 @@ class Process
      */
     public function stop($timeout = 10)
     {
-        $timeoutMicro = (int) $timeout*10E6;
+        $timeoutMicro = (int) $timeout*1E6;
         if ($this->isRunning()) {
             proc_terminate($this->process);
             $time = 0;
             while (1 == $this->isRunning() && $time < $timeoutMicro) {
                 $time += 1000;
                 usleep(1000);
+            }
+
+            if (!defined('PHP_WINDOWS_VERSION_BUILD') && $this->isRunning()) {
+                proc_terminate($this->process, SIGKILL);
             }
 
             foreach ($this->pipes as $pipe) {
@@ -795,7 +819,7 @@ class Process
      *
      * To disable the timeout, set this value to null.
      *
-     * @param integer|null $timeout The timeout in seconds
+     * @param float|null $timeout The timeout in seconds
      *
      * @return self The current Process instance
      *
@@ -809,10 +833,10 @@ class Process
             return $this;
         }
 
-        $timeout = (integer) $timeout;
+        $timeout = (float) $timeout;
 
         if ($timeout < 0) {
-            throw new InvalidArgumentException('The timeout value must be a valid positive integer.');
+            throw new InvalidArgumentException('The timeout value must be a valid positive integer or float number.');
         }
 
         $this->timeout = $timeout;
@@ -864,13 +888,25 @@ class Process
     /**
      * Sets the environment variables.
      *
+     * An environment variable value should be a string.
+     * If it is an array, the variable is ignored.
+     *
+     * That happens in PHP when 'argv' is registered into
+     * the $_ENV array for instance.
+     *
      * @param array $env The new environment variables
      *
      * @return self The current Process instance
      */
     public function setEnv(array $env)
     {
-        $this->env = $env;
+        // Process can not handle env values that are arrays
+        $env = array_filter($env, function ($value) { if (!is_array($value)) { return true; } });
+
+        $this->env = array();
+        foreach ($env as $key => $value) {
+            $this->env[(binary) $key] = (binary) $value;
+        }
 
         return $this;
     }
@@ -975,6 +1011,24 @@ class Process
         $this->enhanceSigchildCompatibility = (Boolean) $enhance;
 
         return $this;
+    }
+
+    /**
+     * Performs a check between the timeout definition and the time the process
+     * started
+     *
+     * In case you run a background process (with the start method), you should
+     * trigger this method regularly to ensure the process timeout
+     *
+     * @throws RuntimeException In case the timeout was reached
+     */
+    public function checkTimeout()
+    {
+        if (0 < $this->timeout && $this->timeout < microtime(true) - $this->starttime) {
+            $this->stop(0);
+
+            throw new RuntimeException('The process timed-out.');
+        }
     }
 
     /**
@@ -1086,5 +1140,18 @@ class Process
                 unset($this->fileHandles[$type]);
             }
         }
+    }
+
+    /**
+     * Returns true if a system call has been interrupted.
+     *
+     * @return Boolean
+     */
+    private function hasSystemCallBeenInterrupted()
+    {
+        $lastError = error_get_last();
+
+        // stream_select returns false when the `select` system call is interrupted by an incoming signal
+        return isset($lastError['message']) && false !== stripos($lastError['message'], 'interrupted system call');
     }
 }

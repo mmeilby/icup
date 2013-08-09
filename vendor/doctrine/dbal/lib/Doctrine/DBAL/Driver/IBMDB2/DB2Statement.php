@@ -1,5 +1,7 @@
 <?php
 /*
+ *  $Id$
+ *
  * THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS
  * "AS IS" AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT
  * LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR
@@ -15,7 +17,7 @@
  * This software consists of voluntary contributions made by many individuals
  * and is licensed under the MIT license. For more information, see
  * <http://www.doctrine-project.org>.
- */
+*/
 
 namespace Doctrine\DBAL\Driver\IBMDB2;
 
@@ -23,24 +25,14 @@ use \Doctrine\DBAL\Driver\Statement;
 
 class DB2Statement implements \IteratorAggregate, Statement
 {
-    /**
-     * @var resource
-     */
     private $_stmt = null;
 
-    /**
-     * @var array
-     */
     private $_bindParam = array();
 
-    /**
-     * @var integer
-     */
     private $_defaultFetchMode = \PDO::FETCH_BOTH;
 
     /**
      * DB2_BINARY, DB2_CHAR, DB2_DOUBLE, or DB2_LONG
-     *
      * @var array
      */
     static private $_typeMap = array(
@@ -48,9 +40,6 @@ class DB2Statement implements \IteratorAggregate, Statement
         \PDO::PARAM_STR => DB2_CHAR,
     );
 
-    /**
-     * @param resource $stmt
-     */
     public function __construct($stmt)
     {
         $this->_stmt = $stmt;
@@ -80,7 +69,6 @@ class DB2Statement implements \IteratorAggregate, Statement
         if (!db2_bind_param($this->_stmt, $column, "variable", DB2_PARAM_IN, $type)) {
             throw new DB2Exception(db2_stmt_errormsg());
         }
-
         return true;
     }
 
@@ -97,7 +85,6 @@ class DB2Statement implements \IteratorAggregate, Statement
         db2_free_result($this->_stmt);
         $ret = db2_free_stmt($this->_stmt);
         $this->_stmt = false;
-
         return $ret;
     }
 
@@ -109,7 +96,6 @@ class DB2Statement implements \IteratorAggregate, Statement
         if ( ! $this->_stmt) {
             return false;
         }
-
         return db2_num_fields($this->_stmt);
     }
 
@@ -156,7 +142,6 @@ class DB2Statement implements \IteratorAggregate, Statement
         if ($retval === false) {
             throw new DB2Exception(db2_stmt_errormsg());
         }
-
         return $retval;
     }
 
@@ -166,8 +151,6 @@ class DB2Statement implements \IteratorAggregate, Statement
     public function setFetchMode($fetchMode, $arg2 = null, $arg3 = null)
     {
         $this->_defaultFetchMode = $fetchMode;
-
-        return true;
     }
 
     /**
@@ -176,7 +159,6 @@ class DB2Statement implements \IteratorAggregate, Statement
     public function getIterator()
     {
         $data = $this->fetchAll();
-
         return new \ArrayIterator($data);
     }
 
@@ -207,7 +189,6 @@ class DB2Statement implements \IteratorAggregate, Statement
         while ($row = $this->fetch($fetchMode)) {
             $rows[] = $row;
         }
-
         return $rows;
     }
 
@@ -220,7 +201,6 @@ class DB2Statement implements \IteratorAggregate, Statement
         if ($row && isset($row[$columnIndex])) {
             return $row[$columnIndex];
         }
-
         return false;
     }
 

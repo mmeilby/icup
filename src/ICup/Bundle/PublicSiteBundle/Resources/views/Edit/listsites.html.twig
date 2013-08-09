@@ -1,0 +1,106 @@
+{% extends "ICupPublicSiteBundle:Masters:edit.html.twig" %}
+
+{% block adminbody %}
+<h1>{% trans %}FORM.ADMIN{% endtrans %}</h1>
+<p class="subtitle">{% trans %}FORM.LISTTOURNAMENTS.TITLE{% endtrans %}</p>
+<p class="subtitle"><a href="{{ path('_edit_host_list') }}">{{ tournament.name }}</a></p>
+<table>
+    <caption>{% trans %}FORM.LISTTOURNAMENTS.CAPTION{% endtrans %}</caption>
+    <thead>
+        <tr>
+            <td class="indent"></td>
+            <td></td>
+            <td class="operand"></td>
+            <td class="operand"></td>
+            <td class="operand"></td>
+        </tr>
+    </thead>
+    <tboby>
+{% if sites|length > 0 %}
+    {% for site in sites %}
+        <tr class="{{ cycle(['even','odd'],loop.index) }}">
+            <td class="host_solo" colspan="2">
+                <a href="{{ path('_edit_site_chg', { 'siteid': site.id }) }}">
+                {{ site.name|upper }}
+                </a>    
+            </td>
+            <td class="operand">
+                <a href="{{ path('_edit_site_add', { 'tournamentid': tournament.id }) }}">
+                +
+                </a>    
+            </td>
+            <td class="operand">
+                <a href="{{ path('_edit_site_chg', { 'siteid': site.id }) }}">
+                E
+                </a>    
+            </td>
+            <td class="operand">
+                <a href="{{ path('_edit_site_del', { 'siteid': site.id }) }}">
+                -
+                </a>    
+            </td>
+        </tr>
+        {% if site.id in playgrounds|keys %}
+            {% for playground in playgrounds[site.id] %}
+        <tr class="{{ cycle(['even','odd'],loop.index) }}">
+            <td></td>
+            <td><a href="{{ path('_edit_playground_chg', { 'playgroundid': playground.id }) }}">{{ playground.name }}</a></td>
+            <td class="operand">
+                <a href="{{ path('_edit_playground_add', { 'siteid': site.id }) }}">
+                +
+                </a>    
+            </td>
+            <td class="operand">
+                <a href="{{ path('_edit_playground_chg', { 'playgroundid': playground.id }) }}">
+                E
+                </a>    
+            </td>
+            <td class="operand">
+                <a href="{{ path('_edit_playground_del', { 'playgroundid': playground.id }) }}">
+                -
+                </a>    
+            </td>
+        </tr>
+            {% endfor %}
+        {% else %}
+        <tr class="{{ cycle(['even','odd'],loop.index) }}">
+            <td></td>
+            <td><a href="{{ path('_edit_playground_add', { 'siteid': site.id }) }}">{{'FORM.LISTTOURNAMENTS.NOPLAYGROUND'|trans|upper}}</a></td>
+            <td class="operand">
+                <a href="{{ path('_edit_playground_add', { 'siteid': site.id }) }}">
+                +
+                </a>    
+            </td>
+            <td>
+            </td>
+            <td>
+            </td>
+        </tr>
+        {% endif %}
+    {% endfor %}
+{% else %}
+        <tr class="odd">
+            <td class="host_solo" colspan="2">
+                <a href="{{ path('_edit_site_add', { 'tournamentid': tournament.id }) }}">
+                {{'FORM.LISTTOURNAMENTS.NOSITE'|trans|upper}}
+                </a>    
+            </td>
+            <td class="operand">
+                <a href="{{ path('_edit_site_add', { 'tournamentid': tournament.id }) }}">
+                +
+                </a>    
+            </td>
+            <td>
+            </td>
+            <td>
+            </td>
+        </tr>
+{% endif %}
+    </tboby>
+    <tfoot>
+        <tr>
+            <td colspan="5"></td>
+        </tr>
+    </tfoot>
+</table>
+{% endblock %}

@@ -1,9 +1,9 @@
-{% extends "base.html.twig" %}
+{% extends "ICupPublicSiteBundle:Masters:standard.html.twig" %}
 
 {% block body %}
 <h1 class="category">{{ tournament.name }}</h1>
 <p class="subcategory">
-    {% trans %}RESULTS{% endtrans %}<br />
+    {% trans %}RESULTS{% endtrans %} {{ tournament.edition }}<br />
 </p>
 <div>
     <table>
@@ -20,10 +20,10 @@
     {% for countries in column %}
     {% for country,teamlist in countries %}
                     <p>
-                        <img src="{{ imagepath }}/flags/{{ flags[country] }}" alt="{{ country|trans }}" title="{{ country|trans }}">
-                        <b>{{ country|trans }}</b><br />
+                        <img src="{{ imagepath }}/flags/{{ flags[country] }}" alt="{{ country|trans({},'lang') }}" title="{{ country|trans({},'lang') }}">
+                        <b>{{ country|trans({},'lang') }}</b><br />
         {% for id,team in teamlist %}
-                    <a href="{{ path('_tournament_teams', { 'tournament': tournamentkey, 'clubId': id }) }}">{{ team }}</a><br />
+                    <a href="{{ path('_tournament_teams', { 'tournament': tournament.key, 'clubId': id }) }}">{{ team }}</a><br />
         {% endfor %}
                     </p>
     {% endfor %}

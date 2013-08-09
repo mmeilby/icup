@@ -1,9 +1,9 @@
-{% extends "base.html.twig" %}
+{% extends "ICupPublicSiteBundle:Masters:standard.html.twig" %}
 
 {% block body %}
 <h1 class="category">{{ tournament.name }}</h1>
 <p class="subcategory">
-    {% trans %}RESULTS{% endtrans %}<br />
+    {% trans %}RESULTS{% endtrans %} {{ tournament.edition }}<br />
 </p>
 <div>
     <table>
@@ -24,7 +24,7 @@
             <tr class="{{ cycle(['even','odd'],loop.index) }}">
                 <td class="sites"></td>
                 <td class="playgrounds">
-                    <a href="{{ path('_showplayground_full', { 'tournament': tournamentkey, 'playgroundid': id }) }}">
+                    <a href="{{ path('_showplayground_full', { 'tournament': tournament.key, 'playgroundid': id }) }}">
                         {{ name }}
                     </a>
                 </td>

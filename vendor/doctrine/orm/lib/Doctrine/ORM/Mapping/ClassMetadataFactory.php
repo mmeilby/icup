@@ -103,10 +103,6 @@ class ClassMetadataFactory extends AbstractClassMetadataFactory
             $class->setLifecycleCallbacks($parent->lifecycleCallbacks);
             $class->setChangeTrackingPolicy($parent->changeTrackingPolicy);
 
-            if ( ! empty($parent->customGeneratorDefinition)) {
-                $class->setCustomGeneratorDefinition($parent->customGeneratorDefinition);
-            }
-
             if ($parent->isMappedSuperclass) {
                 $class->setCustomRepositoryClass($parent->customRepositoryClassName);
             }
@@ -160,10 +156,6 @@ class ClassMetadataFactory extends AbstractClassMetadataFactory
             $this->addInheritedSqlResultSetMappings($class, $parent);
         }
 
-        if ($parent && !empty($parent->entityListeners) && empty($class->entityListeners)) {
-            $class->entityListeners = $parent->entityListeners;
-        }
-
         $class->setParentClasses($nonSuperclassParents);
 
         if ( $class->isRootEntity() && ! $class->isInheritanceTypeNone() && ! $class->discriminatorMap) {
@@ -175,17 +167,15 @@ class ClassMetadataFactory extends AbstractClassMetadataFactory
             $this->evm->dispatchEvent(Events::loadClassMetadata, $eventArgs);
         }
 
+        $this->wakeupReflection($class, $this->getReflectionService());
         $this->validateRuntimeMetadata($class, $parent);
     }
 
     /**
      * Validate runtime metadata is correctly defined.
      *
-     * @param ClassMetadata               $class
-     * @param ClassMetadataInterface|null $parent
-     *
-     * @return void
-     *
+     * @param ClassMetadata $class
+     * @param $parent
      * @throws MappingException
      */
     protected function validateRuntimeMetadata($class, $parent)
@@ -196,7 +186,7 @@ class ClassMetadataFactory extends AbstractClassMetadataFactory
         }
 
         $class->validateIdentifier();
-        $class->validateAssociations();
+        $class->validateAssocations();
         $class->validateLifecycleCallbacks($this->getReflectionService());
 
         // verify inheritance
@@ -237,7 +227,6 @@ class ClassMetadataFactory extends AbstractClassMetadataFactory
      * each class as key.
      *
      * @param \Doctrine\ORM\Mapping\ClassMetadata $class
-     *
      * @throws MappingException
      */
     private function addDefaultDiscriminatorMap(ClassMetadata $class)
@@ -267,10 +256,9 @@ class ClassMetadataFactory extends AbstractClassMetadataFactory
     }
 
     /**
-     * Gets the lower-case short name of a class.
+     * Get the lower-case short name of a class.
      *
      * @param string $className
-     *
      * @return string
      */
     private function getShortName($className)
@@ -288,8 +276,6 @@ class ClassMetadataFactory extends AbstractClassMetadataFactory
      *
      * @param \Doctrine\ORM\Mapping\ClassMetadata $subClass
      * @param \Doctrine\ORM\Mapping\ClassMetadata $parentClass
-     *
-     * @return void
      */
     private function addInheritedFields(ClassMetadata $subClass, ClassMetadata $parentClass)
     {
@@ -312,9 +298,6 @@ class ClassMetadataFactory extends AbstractClassMetadataFactory
      *
      * @param \Doctrine\ORM\Mapping\ClassMetadata $subClass
      * @param \Doctrine\ORM\Mapping\ClassMetadata $parentClass
-     *
-     * @return void
-     *
      * @throws MappingException
      */
     private function addInheritedRelations(ClassMetadata $subClass, ClassMetadata $parentClass)
@@ -322,7 +305,7 @@ class ClassMetadataFactory extends AbstractClassMetadataFactory
         foreach ($parentClass->associationMappings as $field => $mapping) {
             if ($parentClass->isMappedSuperclass) {
                 if ($mapping['type'] & ClassMetadata::TO_MANY && !$mapping['isOwningSide']) {
-                    throw MappingException::illegalToManyAssociationOnMappedSuperclass($parentClass->name, $field);
+                    throw MappingException::illegalToManyAssocationOnMappedSuperclass($parentClass->name, $field);
                 }
                 $mapping['sourceEntity'] = $subClass->name;
             }
@@ -342,11 +325,8 @@ class ClassMetadataFactory extends AbstractClassMetadataFactory
      * Adds inherited named queries to the subclass mapping.
      *
      * @since 2.2
-     *
      * @param \Doctrine\ORM\Mapping\ClassMetadata $subClass
      * @param \Doctrine\ORM\Mapping\ClassMetadata $parentClass
-     *
-     * @return void
      */
     private function addInheritedNamedQueries(ClassMetadata $subClass, ClassMetadata $parentClass)
     {
@@ -364,11 +344,8 @@ class ClassMetadataFactory extends AbstractClassMetadataFactory
      * Adds inherited named native queries to the subclass mapping.
      *
      * @since 2.3
-     *
      * @param \Doctrine\ORM\Mapping\ClassMetadata $subClass
      * @param \Doctrine\ORM\Mapping\ClassMetadata $parentClass
-     *
-     * @return void
      */
     private function addInheritedNamedNativeQueries(ClassMetadata $subClass, ClassMetadata $parentClass)
     {
@@ -389,11 +366,8 @@ class ClassMetadataFactory extends AbstractClassMetadataFactory
      * Adds inherited sql result set mappings to the subclass mapping.
      *
      * @since 2.3
-     *
      * @param \Doctrine\ORM\Mapping\ClassMetadata $subClass
      * @param \Doctrine\ORM\Mapping\ClassMetadata $parentClass
-     *
-     * @return void
      */
     private function addInheritedSqlResultSetMappings(ClassMetadata $subClass, ClassMetadata $parentClass)
     {
@@ -423,9 +397,6 @@ class ClassMetadataFactory extends AbstractClassMetadataFactory
      * most appropriate for the targeted database platform.
      *
      * @param ClassMetadataInfo $class
-     *
-     * @return void
-     *
      * @throws ORMException
      */
     private function completeIdGeneratorMapping(ClassMetadataInfo $class)
@@ -465,7 +436,7 @@ class ClassMetadataFactory extends AbstractClassMetadataFactory
                     $sequenceName = $this->em->getConfiguration()->getQuoteStrategy()->getSequenceName($definition, $class, $this->targetPlatform);
                 }
 
-                $generator = ($fieldName && $class->fieldMappings[$fieldName]['type'] === 'bigint')
+                $generator = ($fieldName && $class->fieldMappings[$fieldName]['type'] === "bigint")
                     ? new BigIntegerIdentityGenerator($sequenceName)
                     : new IdentityGenerator($sequenceName);
 

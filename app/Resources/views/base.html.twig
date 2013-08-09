@@ -2,105 +2,22 @@
 <html>
     <head>
         <meta charset="UTF-8" />
-        <title>{% block title %}Interamnia World Cup 2013 - RESULTS - icup.dk{% endblock %}</title>
-        {% stylesheets 'bundles/icuppublicsite/css/*' output="bundles/icuppublicsite/css/basic.css" filter="cssrewrite" %}
+        {% block meta %}{% endblock %}
+        <title>{% block title %}{% endblock %}</title>
+        {% stylesheets '@ICupPublicSiteBundle/Resources/public/css/*' output="bundles/icuppublicsite/css/basic.css" %}
             <link rel="stylesheet" href="{{ asset_url }}" />
         {% endstylesheets %}
-        {% block stylesheets %}{% endblock %}
         <link rel="icon" type="image/x-icon" href="{{ asset('favicon.ico') }}" />
     </head>
     <body>
-        {% set tournamentkey = app.session.get('Tournament') is empty ? '_' : app.session.get('Tournament') %}
-        {% set imagepath = app.session.get('ImagePath') is empty ? '_' : app.session.get('ImagePath') %}
+        <div class="header">
+            {% block header %}{% endblock %}
+        </div>
         <div class="centerpage">
             {% block body %}{% endblock %}
         </div>
-        <div class="spacer">&nbsp;</div>
         <div class="footer">
-            <div class="centerpage">
-                    <div class="menu_footer">
-                        <h3>{% trans %}MENU.LANGCHOICE.TITLE{% endtrans %}</h3>
-                        <ul>
-                            {% for local in ['en','it','fr','de','es','po','da'] %}
-                                {% set flag = cycle(['gb','it','fr','de','es','pl','dk'], loop.index0) %}
-                                {% set lang = ['LANG.',local|upper]|join|trans %}
-                            <li>
-                                <a href="{{ path('_switch', { 'locale': local }) }}">
-                                    <img src="{{ imagepath }}/flags/{{ flag }}.png"
-                                         alt="{{ lang }}"
-                                         title="{% trans %}CHOOSELANG{% endtrans %}: {{ lang }}" />
-                                    &nbsp;{{ lang }}
-                                </a>
-                            </li>
-                            {% endfor %}
-                        </ul>
-                    </div>
-                    <div class="menu_footer">
-                        <h3>{% trans %}MENU.TOURNAMENT.TITLE{% endtrans %}</h3>
-                        <ul>
-                            <li>
-                                <a href="{{ path('_tournament_categories', { 'tournament': tournamentkey }) }}">{% trans %}MENU.TOURNAMENT.OVERVIEW{% endtrans %}</a>
-                            </li>
-                            <li>
-                                <a href="{{ path('_tournament_categories', { 'tournament': tournamentkey }) }}">{% trans %}MENU.TOURNAMENT.GROUPS{% endtrans %}</a>
-                            </li>
-                            <li>
-                                <a href="{{ path('_tournament_playgrounds', { 'tournament': tournamentkey }) }}">{% trans %}MENU.TOURNAMENT.PLAYGROUNDS{% endtrans %}</a>
-                            </li>
-                            <li>
-                                <a href="{{ path('_tournament_clubs', { 'tournament': tournamentkey }) }}">{% trans %}MENU.TOURNAMENT.TEAMS{% endtrans %}</a>
-                            </li>
-                        </ul>
-                    </div>
-                    <div class="menu_footer">
-                        <h3>{% trans %}MENU.ENROLLMENT.TITLE{% endtrans %}</h3>
-                        <ul>
-                            <li>
-                                <a href="{{ path('_showtournament', { 'tournament': tournamentkey }) }}">{% trans %}MENU.ENROLLMENT.CLUBS{% endtrans %}</a>
-                            </li>
-                            <li>
-                                <a href="{{ path('_showtournament', { 'tournament': tournamentkey }) }}">{% trans %}MENU.ENROLLMENT.TEAMS{% endtrans %}</a>
-                            </li>
-                            <li>
-                                <a href="{{ path('_showtournament', { 'tournament': tournamentkey }) }}">{% trans %}MENU.ENROLLMENT.REFEREES{% endtrans %}</a>
-                            </li>
-                        </ul>
-                    </div>
-                    <div class="menu_footer">
-                        <h3>{% trans %}MENU.ADMIN.TITLE{% endtrans %}</h3>
-                        <ul>
-                            <li>
-                                <a href="{{ path('_showtournament', { 'tournament': tournamentkey }) }}">{% trans %}MENU.ADMIN.RESULTS{% endtrans %}</a>
-                            </li>
-                            <li>
-                                <a href="{{ path('_showtournament', { 'tournament': tournamentkey }) }}">{% trans %}MENU.ADMIN.TOURNAMENT{% endtrans %}</a>
-                            </li>
-                            <li>
-                                <a href="{{ path('_showtournament', { 'tournament': tournamentkey }) }}">{% trans %}MENU.ADMIN.TEAMS{% endtrans %}</a>
-                            </li>
-                            <li>
-                                <a href="{{ path('_showtournament', { 'tournament': tournamentkey }) }}">{% trans %}MENU.ADMIN.PLAYERS{% endtrans %}</a>
-                            </li>
-                            <li>
-                                <a href="{{ path('_showtournament', { 'tournament': tournamentkey }) }}">{% trans %}MENU.ADMIN.REFEREES{% endtrans %}</a>
-                            </li>
-                        </ul>
-                    </div>
-                    <div class="menu_footer">
-                        <h3>{% trans %}MENU.INFO.TITLE{% endtrans %}</h3>
-                        <ul>
-                            <li>
-                                <a href="{{ path('_showtournament', { 'tournament': tournamentkey }) }}">{% trans %}MENU.INFO.ABOUT{% endtrans %}</a>
-                            </li>
-                            <li>
-                                <a href="{{ path('_showtournament', { 'tournament': tournamentkey }) }}">{% trans %}MENU.INFO.PRICES{% endtrans %}</a>
-                            </li>
-                            <li>
-                                <a href="{{ path('_showtournament') }}">{% trans %}MENU.INFO.FAQ{% endtrans %}</a>
-                            </li>
-                        </ul>
-                    </div>
-            </div>
+            {% block footer %}{% endblock %}
         </div>
         {% block javascripts %}{% endblock %}
     </body>

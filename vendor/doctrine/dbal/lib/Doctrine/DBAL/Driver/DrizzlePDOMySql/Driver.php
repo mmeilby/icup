@@ -43,9 +43,7 @@ class Driver implements \Doctrine\DBAL\Driver
     /**
      * Constructs the Drizzle MySql PDO DSN.
      *
-     * @param array $params
-     *
-     * @return string The DSN.
+     * @return string  The DSN.
      */
     private function _constructPdoDsn(array $params)
     {
@@ -96,7 +94,6 @@ class Driver implements \Doctrine\DBAL\Driver
     public function getDatabase(\Doctrine\DBAL\Connection $conn)
     {
         $params = $conn->getParams();
-
         return $params['dbname'];
     }
 }

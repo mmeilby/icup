@@ -1,5 +1,7 @@
 <?php
 /*
+ *  $Id: Interface.php 3882 2008-02-22 18:11:35Z jwage $
+ *
  * THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS
  * "AS IS" AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT
  * LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR
@@ -27,16 +29,8 @@ namespace Doctrine\DBAL\Driver;
  */
 class PDOStatement extends \PDOStatement implements Statement
 {
-    /**
-     * Private constructor.
-     */
-    private function __construct()
-    {
-    }
+    private function __construct() {}
 
-    /**
-     * {@inheritdoc}
-     */
     public function setFetchMode($fetchMode, $arg2 = null, $arg3 = null)
     {
         // This thin wrapper is necessary to shield against the weird signature

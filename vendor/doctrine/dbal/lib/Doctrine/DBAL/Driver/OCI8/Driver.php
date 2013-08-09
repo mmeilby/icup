@@ -1,5 +1,7 @@
 <?php
 /*
+ *  $Id$
+ *
  * THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS
  * "AS IS" AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT
  * LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR
@@ -29,9 +31,6 @@ use Doctrine\DBAL\Platforms;
  */
 class Driver implements \Doctrine\DBAL\Driver
 {
-    /**
-     * {@inheritdoc}
-     */
     public function connect(array $params, $username = null, $password = null, array $driverOptions = array())
     {
         return new OCI8Connection(
@@ -46,8 +45,6 @@ class Driver implements \Doctrine\DBAL\Driver
 
     /**
      * Constructs the Oracle DSN.
-     *
-     * @param array $params
      *
      * @return string The DSN.
      */
@@ -76,41 +73,27 @@ class Driver implements \Doctrine\DBAL\Driver
         } else {
             $dsn .= $params['dbname'];
         }
-
         return $dsn;
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function getDatabasePlatform()
     {
         return new \Doctrine\DBAL\Platforms\OraclePlatform();
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function getSchemaManager(\Doctrine\DBAL\Connection $conn)
     {
         return new \Doctrine\DBAL\Schema\OracleSchemaManager($conn);
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function getName()
     {
         return 'oci8';
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function getDatabase(\Doctrine\DBAL\Connection $conn)
     {
         $params = $conn->getParams();
-
         return $params['user'];
     }
 }

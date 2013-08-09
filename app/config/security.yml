@@ -1,39 +1,46 @@
-jms_security_extra:
-    secure_all_services: false
-    expressions: true
-
 security:
     encoders:
-        Symfony\Component\Security\Core\User\User: plaintext
-
+        Symfony\Component\Security\Core\User\User:
+            algorithm: sha1
+            iterations: 1
+            encode_as_base64: false          
+        ICup\Bundle\PublicSiteBundle\Entity\Doctrine\Club: sha512
+        
     role_hierarchy:
-        ROLE_ADMIN:       ROLE_USER
-        ROLE_SUPER_ADMIN: [ROLE_USER, ROLE_ADMIN, ROLE_ALLOWED_TO_SWITCH]
+        ROLE_EDITOR:      [ROLE_USER]
+        ROLE_ADMIN:       [ROLE_EDITOR, ROLE_ALLOWED_TO_SWITCH]
 
     providers:
+        chain_provider:
+            chain:
+                providers: [in_memory, user_db]
         in_memory:
             memory:
                 users:
-                    editor: { password: %security_password%, roles: [ 'ROLE_ADMIN' ] }
+                    editor: { password: %security_editor_password%, roles: [ 'ROLE_EDITOR' ] }
+                    admin: { password: %security_password%, roles: [ 'ROLE_ADMIN' ] }
+        user_db:
+            entity: { class: ICup\Bundle\PublicSiteBundle\Entity\Doctrine\Club, property: username }
 
     firewalls:
         dev:
             pattern:  ^/(_(profiler|wdt)|css|images|js)/
             security: false
 
-        login:
-            pattern:  ^/edit/login$
-            security: false
-
         secured_area:
-            pattern:    ^/edit
+            pattern:    ^/
+            anonymous: ~
+            switch_user: true
             form_login:
-                check_path: /edit/login_check
-                login_path: /edit/login
+                check_path: _security_check
+                login_path: _admin_login
             logout:
-                path:   /edit/logout
-                target: /tournament
+                path:   _admin_logout
+                target: _icup
 
     access_control:
-        #- { path: ^/login, roles: IS_AUTHENTICATED_ANONYMOUSLY, requires_channel: https }
-        #- { path: ^/_internal/secure, roles: IS_AUTHENTICATED_ANONYMOUSLY, ip: 127.0.0.1 }
+        - { path: ^/user, roles: ROLE_USER }
+        - { path: ^/edit, roles: ROLE_EDITOR }
+        - { path: ^/admin, roles: ROLE_ADMIN }
+
+        #- { path: ^/_internal/secure, roles: IS_AUTHENTICATED_ANONYMOUSLY, ip: 127.0.0.1, requires_channel: https }

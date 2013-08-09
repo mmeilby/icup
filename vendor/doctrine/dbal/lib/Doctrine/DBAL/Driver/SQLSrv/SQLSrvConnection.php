@@ -33,16 +33,11 @@ class SQLSrvConnection implements \Doctrine\DBAL\Driver\Connection
     protected $conn;
 
     /**
-     * @var \Doctrine\DBAL\Driver\SQLSrv\LastInsertId
+     * @var LastInsertId
      */
     protected $lastInsertId;
 
-    /**
-     * @param string $serverName
-     * @param array  $connectionOptions
-     *
-     * @throws \Doctrine\DBAL\Driver\SQLSrv\SQLSrvException
-     */
+
     public function __construct($serverName, $connectionOptions)
     {
         $this->conn = sqlsrv_connect($serverName, $connectionOptions);
@@ -69,7 +64,6 @@ class SQLSrvConnection implements \Doctrine\DBAL\Driver\Connection
         $sql = $args[0];
         $stmt = $this->prepare($sql);
         $stmt->execute();
-
         return $stmt;
     }
 
@@ -95,7 +89,6 @@ class SQLSrvConnection implements \Doctrine\DBAL\Driver\Connection
     {
         $stmt = $this->prepare($statement);
         $stmt->execute();
-
         return $stmt->rowCount();
     }
 
@@ -154,7 +147,6 @@ class SQLSrvConnection implements \Doctrine\DBAL\Driver\Connection
         if ($errors) {
             return $errors[0]['code'];
         }
-
         return false;
     }
 
@@ -166,3 +158,4 @@ class SQLSrvConnection implements \Doctrine\DBAL\Driver\Connection
         return sqlsrv_errors(SQLSRV_ERR_ERRORS);
     }
 }
+

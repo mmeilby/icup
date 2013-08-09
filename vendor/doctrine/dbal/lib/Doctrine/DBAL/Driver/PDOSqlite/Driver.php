@@ -36,7 +36,13 @@ class Driver implements \Doctrine\DBAL\Driver
     );
 
     /**
-     * {@inheritdoc}
+     * Tries to establish a database connection to SQLite.
+     *
+     * @param array $params
+     * @param string $username
+     * @param string $password
+     * @param array $driverOptions
+     * @return \Doctrine\DBAL\Driver\PDOConnection
      */
     public function connect(array $params, $username = null, $password = null, array $driverOptions = array())
     {
@@ -63,9 +69,8 @@ class Driver implements \Doctrine\DBAL\Driver
     /**
      * Constructs the Sqlite PDO DSN.
      *
-     * @param array $params
-     *
-     * @return string The DSN.
+     * @return string  The DSN.
+     * @override
      */
     protected function _constructPdoDsn(array $params)
     {
@@ -80,7 +85,7 @@ class Driver implements \Doctrine\DBAL\Driver
     }
 
     /**
-     * {@inheritdoc}
+     * Gets the database platform that is relevant for this driver.
      */
     public function getDatabasePlatform()
     {
@@ -88,28 +93,24 @@ class Driver implements \Doctrine\DBAL\Driver
     }
 
     /**
-     * {@inheritdoc}
+     * Gets the schema manager that is relevant for this driver.
+     *
+     * @param \Doctrine\DBAL\Connection $conn
+     * @return \Doctrine\DBAL\Schema\SqliteSchemaManager
      */
     public function getSchemaManager(\Doctrine\DBAL\Connection $conn)
     {
         return new \Doctrine\DBAL\Schema\SqliteSchemaManager($conn);
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function getName()
     {
         return 'pdo_sqlite';
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function getDatabase(\Doctrine\DBAL\Connection $conn)
     {
         $params = $conn->getParams();
-
         return isset($params['path']) ? $params['path'] : null;
     }
 }

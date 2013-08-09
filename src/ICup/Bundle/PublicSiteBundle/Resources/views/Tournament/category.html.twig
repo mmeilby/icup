@@ -1,25 +1,24 @@
-{% extends "base.html.twig" %}
+{% extends "ICupPublicSiteBundle:Masters:standard.html.twig" %}
 
 {% block body %}
 <h1 class="category">{{ tournament.name }}</h1>
 <p class="subcategory">
-    {% trans %}RESULTS{% endtrans %}<br />
+    {% trans %}RESULTS{% endtrans %} {{ tournament.edition }}<br />
 </p>
-<a href="{{ path('_tournament_categories', {'tournament': tournamentkey }) }}">
+<a href="{{ path('_tournament_categories', {'tournament': tournament.key }) }}">
     <h1 class="category">{% trans %}CATEGORY{% endtrans %} {{ category.name }}</h1>
 </a>
 <p class="subcategory">
     {{ [category.gender,category.classification]|join|trans }}
-    {{ category.classification|trans }}
+    {{ category.classification|trans|lower }}
 </p>
+<div class="tab active" onclick="location.href='{{ path('_showcategory', {'tournament': tournament.key, 'categoryid': category.id }) }}'">{{ 'PRELIMINARY'|trans|upper }}</div>
+<div class="tab" onclick="location.href='{{ path('_showcategory_classification', {'tournament': tournament.key, 'categoryid': category.id }) }}'">{{ 'CLASSIFICATION'|trans|upper }}</div>
+<div class="tab" onclick="location.href='{{ path('_showcategory_finals', {'tournament': tournament.key, 'categoryid': category.id }) }}'">{{ 'FINALS'|trans|upper }}</div>
 {% for group in grouplist %}
     <p>
         <table>
-    {% if group.group.classification == 0 %}
             <caption>{% trans %}GROUP{% endtrans %} {{ group.group.name }}</caption>
-    {% else %}
-            <caption>{{ ['GROUPCLASS.',group.group.classification]|join|trans }}</caption>
-    {% endif %}
             <thead>
                 <tr>
                     <td class="flag"></td>
@@ -34,8 +33,8 @@
             <tboby>
     {% for team in group.teams %}
                 <tr class="{{ cycle(['even','odd'],loop.index) }}">
-                    <td class="flag"><img src="{{ imagepath }}/flags/{{ flags[team.country] }}" alt="{{ team.country|trans }}" title="{{ team.country|trans }}"></td>
-                    <td class="team"><a href="{{ path('_showteam', { 'tournament': tournamentkey, 'teamid': team.id, 'groupid': group.group.id }) }}">{{ team.name }}</a></td>
+                    <td class="flag"><img src="{{ imagepath }}/flags/{{ flags[team.country] }}" alt="{{ team.country|trans({},'lang') }}" title="{{ team.country|trans({},'lang') }}"></td>
+                    <td class="team"><a href="{{ path('_showteam', { 'tournament': tournament.key, 'teamid': team.id, 'groupid': group.group.id }) }}">{{ team.name }}</a></td>
                     <td class="matches">{{ team.matches }}</td>
                     <td class="score">{{ team.score }}</td>
                     <td class="goals">{{ team.goals }}</td>

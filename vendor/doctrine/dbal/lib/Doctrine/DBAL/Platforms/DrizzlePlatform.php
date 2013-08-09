@@ -19,10 +19,10 @@
 
 namespace Doctrine\DBAL\Platforms;
 
-use Doctrine\DBAL\DBALException;
-use Doctrine\DBAL\Schema\TableDiff;
-use Doctrine\DBAL\Schema\Index;
-use Doctrine\DBAL\Schema\Table;
+use Doctrine\DBAL\DBALException,
+    Doctrine\DBAL\Schema\TableDiff,
+    Doctrine\DBAL\Schema\Index,
+    Doctrine\DBAL\Schema\Table;
 
 /**
  * Drizzle platform
@@ -47,10 +47,10 @@ class DrizzlePlatform extends AbstractPlatform
         return '`';
     }
 
+
     /**
      * {@inheritDoc}
-     */
-    public function getConcatExpression()
+     */    public function getConcatExpression()
     {
         $args = func_get_args();
 
@@ -202,9 +202,6 @@ class DrizzlePlatform extends AbstractPlatform
         return 'DROP DATABASE ' . $name;
     }
 
-    /**
-     * {@inheritDoc}
-     */
     public function getListDatabasesSQL()
     {
         return "SELECT SCHEMA_NAME FROM INFORMATION_SCHEMA.SCHEMATA WHERE CATALOG_NAME='LOCAL'";
@@ -218,17 +215,11 @@ class DrizzlePlatform extends AbstractPlatform
         return 'Doctrine\DBAL\Platforms\Keywords\DrizzleKeywords';
     }
 
-    /**
-     * {@inheritDoc}
-     */
     public function getListTablesSQL()
     {
         return "SELECT TABLE_NAME FROM INFORMATION_SCHEMA.TABLES WHERE TABLE_TYPE='BASE' AND TABLE_SCHEMA=DATABASE()";
     }
 
-    /**
-     * {@inheritDoc}
-     */
     public function getListTableColumnsSQL($table, $database = null)
     {
         if ($database) {
@@ -243,9 +234,6 @@ class DrizzlePlatform extends AbstractPlatform
                " WHERE TABLE_SCHEMA=" . $database . " AND TABLE_NAME = '" . $table . "'";
     }
 
-    /**
-     * {@inheritDoc}
-     */
     public function getListTableForeignKeysSQL($table, $database = null)
     {
         if ($database) {
@@ -336,7 +324,10 @@ class DrizzlePlatform extends AbstractPlatform
     }
 
     /**
-     * {@inheritDoc}
+     * @param Index $index
+     * @param Table $table
+     *
+     * @return string
      */
     protected function getDropPrimaryKeySQL($table)
     {

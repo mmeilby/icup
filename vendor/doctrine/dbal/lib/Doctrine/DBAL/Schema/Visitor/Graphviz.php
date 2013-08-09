@@ -1,4 +1,5 @@
 <?php
+
 /*
  * THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS
  * "AS IS" AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT
@@ -19,24 +20,24 @@
 
 namespace Doctrine\DBAL\Schema\Visitor;
 
-use Doctrine\DBAL\Platforms\AbstractPlatform;
-use Doctrine\DBAL\Schema\Table;
-use Doctrine\DBAL\Schema\Schema;
-use Doctrine\DBAL\Schema\ForeignKeyConstraint;
+use Doctrine\DBAL\Platforms\AbstractPlatform,
+ Doctrine\DBAL\Schema\Table,
+ Doctrine\DBAL\Schema\Schema,
+ Doctrine\DBAL\Schema\Column,
+ Doctrine\DBAL\Schema\ForeignKeyConstraint,
+ Doctrine\DBAL\Schema\Constraint,
+ Doctrine\DBAL\Schema\Sequence,
+ Doctrine\DBAL\Schema\Index;
 
-/**
- * Create a Graphviz output of a Schema.
- */
-class Graphviz extends AbstractVisitor
+class Graphviz implements \Doctrine\DBAL\Schema\Visitor\Visitor
 {
-    /**
-     * @var string
-     */
     private $output = '';
 
-    /**
-     * {@inheritdoc}
-     */
+    public function acceptColumn(Table $table, Column $column)
+    {
+
+    }
+
     public function acceptForeignKey(Table $localTable, ForeignKeyConstraint $fkConstraint)
     {
         $this->output .= $this->createNodeRelation(
@@ -50,9 +51,11 @@ class Graphviz extends AbstractVisitor
         );
     }
 
-    /**
-     * {@inheritdoc}
-     */
+    public function acceptIndex(Table $table, Index $index)
+    {
+
+    }
+
     public function acceptSchema(Schema $schema)
     {
         $this->output  = 'digraph "' . sha1( mt_rand() ) . '" {' . "\n";
@@ -63,9 +66,11 @@ class Graphviz extends AbstractVisitor
         $this->output .= 'sep = .2;' . "\n";
     }
 
-    /**
-     * {@inheritdoc}
-     */
+    public function acceptSequence(Sequence $sequence)
+    {
+
+    }
+
     public function acceptTable(Table $table)
     {
         $this->output .= $this->createNode(
@@ -77,12 +82,7 @@ class Graphviz extends AbstractVisitor
         );
     }
 
-    /**
-     * @param \Doctrine\DBAL\Schema\Table $table
-     *
-     * @return string
-     */
-    private function createTableLabel(Table $table)
+    private function createTableLabel( Table $table )
     {
         // Start the table
         $label = '<<TABLE CELLSPACING="0" BORDER="1" ALIGN="LEFT">';
@@ -111,13 +111,7 @@ class Graphviz extends AbstractVisitor
         return $label;
     }
 
-    /**
-     * @param string $name
-     * @param array  $options
-     *
-     * @return string
-     */
-    private function createNode($name, $options)
+    private function createNode( $name, $options )
     {
         $node = $name . " [";
         foreach( $options as $key => $value )
@@ -125,18 +119,10 @@ class Graphviz extends AbstractVisitor
             $node .= $key . '=' . $value . ' ';
         }
         $node .= "]\n";
-
         return $node;
     }
 
-    /**
-     * @param string $node1
-     * @param string $node2
-     * @param array  $options
-     *
-     * @return string
-     */
-    private function createNodeRelation($node1, $node2, $options)
+    private function createNodeRelation( $node1, $node2, $options )
     {
         $relation = $node1 . ' -> ' . $node2 . ' [';
         foreach( $options as $key => $value )
@@ -144,22 +130,11 @@ class Graphviz extends AbstractVisitor
             $relation .= $key . '=' . $value . ' ';
         }
         $relation .= "]\n";
-
         return $relation;
     }
 
     /**
-     * Get Graphviz Output
-     *
-     * @return string
-     */
-    public function getOutput()
-    {
-        return $this->output . "}";
-    }
-
-    /**
-     * Writes dot language output to a file. This should usually be a *.dot file.
+     * Write dot language output to a file. This should usually be a *.dot file.
      *
      * You have to convert the output into a viewable format. For example use "neato" on linux systems
      * and execute:
@@ -167,11 +142,10 @@ class Graphviz extends AbstractVisitor
      *  neato -Tpng -o er.png er.dot
      *
      * @param string $filename
-     *
      * @return void
      */
     public function write($filename)
     {
-        file_put_contents($filename, $this->getOutput());
+        file_put_contents($filename, $this->output . "}");
     }
 }

@@ -22,76 +22,71 @@ namespace Doctrine\DBAL\Schema;
 use \Doctrine\DBAL\Platforms\AbstractPlatform;
 
 /**
- * Schema Diff.
+ * Schema Diff
  *
- * @link      www.doctrine-project.org
+ * 
+ * @link    www.doctrine-project.org
  * @copyright Copyright (C) 2005-2009 eZ Systems AS. All rights reserved.
- * @license   http://ez.no/licenses/new_bsd New BSD License
- * @since     2.0
- * @author    Benjamin Eberlei <kontakt@beberlei.de>
+ * @license http://ez.no/licenses/new_bsd New BSD License
+ * @since   2.0
+ * @version $Revision$
+ * @author  Benjamin Eberlei <kontakt@beberlei.de>
  */
 class SchemaDiff
 {
     /**
-     * @var \Doctrine\DBAL\Schema\Schema
-     */
-    public $fromSchema;
-
-    /**
-     * All added tables.
+     * All added tables
      *
-     * @var \Doctrine\DBAL\Schema\Table[]
+     * @var array(string=>ezcDbSchemaTable)
      */
     public $newTables = array();
 
     /**
-     * All changed tables.
+     * All changed tables
      *
-     * @var \Doctrine\DBAL\Schema\TableDiff[]
+     * @var array(string=>ezcDbSchemaTableDiff)
      */
     public $changedTables = array();
 
     /**
-     * All removed tables.
+     * All removed tables
      *
-     * @var \Doctrine\DBAL\Schema\Table[]
+     * @var array(string=>Table)
      */
     public $removedTables = array();
 
     /**
-     * @var \Doctrine\DBAL\Schema\Sequence[]
+     * @var array
      */
     public $newSequences = array();
 
     /**
-     * @var \Doctrine\DBAL\Schema\Sequence[]
+     * @var array
      */
     public $changedSequences = array();
 
     /**
-     * @var \Doctrine\DBAL\Schema\Sequence[]
+     * @var array
      */
     public $removedSequences = array();
 
     /**
-     * @var \Doctrine\DBAL\Schema\ForeignKeyConstraint[]
+     * @var array
      */
     public $orphanedForeignKeys = array();
 
     /**
      * Constructs an SchemaDiff object.
      *
-     * @param \Doctrine\DBAL\Schema\Table[]     $newTables
-     * @param \Doctrine\DBAL\Schema\TableDiff[] $changedTables
-     * @param \Doctrine\DBAL\Schema\Table[]     $removedTables
-     * @param \Doctrine\DBAL\Schema\Schema|null $fromSchema
+     * @param array(string=>Table)      $newTables
+     * @param array(string=>TableDiff)  $changedTables
+     * @param array(string=>bool)       $removedTables
      */
-    public function __construct($newTables = array(), $changedTables = array(), $removedTables = array(), Schema $fromSchema = null)
+    public function __construct($newTables = array(), $changedTables = array(), $removedTables = array())
     {
-        $this->newTables     = $newTables;
+        $this->newTables = $newTables;
         $this->changedTables = $changedTables;
         $this->removedTables = $removedTables;
-        $this->fromSchema    = $fromSchema;
     }
 
     /**
@@ -103,8 +98,7 @@ class SchemaDiff
      *
      * This way it is ensured that assets are deleted which might not be relevant to the metadata schema at all.
      *
-     * @param \Doctrine\DBAL\Platforms\AbstractPlatform $platform
-     *
+     * @param AbstractPlatform $platform
      * @return array
      */
     public function toSaveSql(AbstractPlatform $platform)
@@ -113,8 +107,7 @@ class SchemaDiff
     }
 
     /**
-     * @param \Doctrine\DBAL\Platforms\AbstractPlatform $platform
-     *
+     * @param AbstractPlatform $platform
      * @return array
      */
     public function toSql(AbstractPlatform $platform)
@@ -123,9 +116,8 @@ class SchemaDiff
     }
 
     /**
-     * @param \Doctrine\DBAL\Platforms\AbstractPlatform $platform
-     * @param boolean                                   $saveMode
-     *
+     * @param AbstractPlatform $platform
+     * @param bool $saveMode
      * @return array
      */
     protected function _toSql(AbstractPlatform $platform, $saveMode = false)

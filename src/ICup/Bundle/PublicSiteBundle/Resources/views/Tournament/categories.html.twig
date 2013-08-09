@@ -1,9 +1,9 @@
-{% extends "base.html.twig" %}
+{% extends "ICupPublicSiteBundle:Masters:standard.html.twig" %}
 
 {% block body %}
 <h1 class="category">{{ tournament.name }}</h1>
 <p class="subcategory">
-    {% trans %}RESULTS{% endtrans %}<br />
+    {% trans %}RESULTS{% endtrans %} {{ tournament.edition }}<br />
 </p>
 <div>
     <table>
@@ -30,22 +30,22 @@
         {% endif %}
         {% if femalecategorylist[i] is defined %}
                 <td class="categories">
-                    <a href="{{ path('_showcategory', { 'tournament': tournamentkey, 'categoryid': femalecategorylist[i].id }) }}">
+                    <a href="{{ path('_showcategory', { 'tournament': tournament.key, 'categoryid': femalecategorylist[i].id }) }}">
                         <b>{% trans %}CATEGORY{% endtrans %} {{ femalecategorylist[i].name }}</b>
                     </a><br />
                         {{ [femalecategorylist[i].gender,femalecategorylist[i].classification]|join|trans }}
-                        {{ femalecategorylist[i].classification|trans }}
+                        {{ femalecategorylist[i].classification|trans|lower }}
                 </td>
         {% else %}
                 <td class="categories"></td>
         {% endif %}
         {% if malecategorylist[i] is defined %}
                 <td class="categories">
-                    <a href="{{ path('_showcategory', { 'tournament': tournamentkey, 'categoryid': malecategorylist[i].id }) }}">
+                    <a href="{{ path('_showcategory', { 'tournament': tournament.key, 'categoryid': malecategorylist[i].id }) }}">
                         <b>{% trans %}CATEGORY{% endtrans %} {{ malecategorylist[i].name }}</b>
                     </a><br />
                         {{ [malecategorylist[i].gender,malecategorylist[i].classification]|join|trans }}
-                        {{ malecategorylist[i].classification|trans }}
+                        {{ malecategorylist[i].classification|trans|lower }}
                 </td>
             </tr>
         {% else %}

@@ -24,7 +24,7 @@ use IteratorAggregate;
 use Doctrine\DBAL\Driver\Statement;
 
 /**
- * SQL Server Statement.
+ * SQL Server Statement
  *
  * @since 2.3
  * @author Benjamin Eberlei <kontakt@beberlei.de>
@@ -32,35 +32,35 @@ use Doctrine\DBAL\Driver\Statement;
 class SQLSrvStatement implements IteratorAggregate, Statement
 {
     /**
-     * The SQLSRV Resource.
+     * SQLSRV Resource
      *
      * @var resource
      */
     private $conn;
 
     /**
-     * The SQL statement to execute.
+     * SQL Statement to execute
      *
      * @var string
      */
     private $sql;
 
     /**
-     * The SQLSRV statement resource.
+     * SQLSRV Statement Resource
      *
      * @var resource
      */
     private $stmt;
 
     /**
-     * Parameters to bind.
+     * Parameters to bind
      *
      * @var array
      */
     private $params = array();
 
     /**
-     * Translations.
+     * Translations
      *
      * @var array
      */
@@ -71,16 +71,14 @@ class SQLSrvStatement implements IteratorAggregate, Statement
     );
 
     /**
-     * The fetch style.
+     * Fetch Style
      *
-     * @param integer
+     * @param int
      */
     private $defaultFetchMode = PDO::FETCH_BOTH;
 
     /**
-     * The last insert ID.
-     *
-     * @var \Doctrine\DBAL\Driver\SQLSrv\LastInsertId|null
+     * @var int|null
      */
     private $lastInsertId;
 
@@ -91,11 +89,6 @@ class SQLSrvStatement implements IteratorAggregate, Statement
      */
     const LAST_INSERT_ID_SQL = ';SELECT SCOPE_IDENTITY() AS LastInsertId;';
 
-    /**
-     * @param resource     $conn
-     * @param string       $sql
-     * @param integer|null $lastInsertId
-     */
     public function __construct($conn, $sql, $lastInsertId = null)
     {
         $this->conn = $conn;
@@ -107,9 +100,6 @@ class SQLSrvStatement implements IteratorAggregate, Statement
         }
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function bindValue($param, $value, $type = null)
     {
         return $this->bindParam($param, $value, $type,null);
@@ -131,9 +121,6 @@ class SQLSrvStatement implements IteratorAggregate, Statement
         }
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function closeCursor()
     {
         if ($this->stmt) {
@@ -141,16 +128,13 @@ class SQLSrvStatement implements IteratorAggregate, Statement
         }
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function columnCount()
     {
         return sqlsrv_num_fields($this->stmt);
     }
 
     /**
-     * {@inheritdoc}
+     * {@inheritDoc}
      */
     public function errorCode()
     {
@@ -158,21 +142,17 @@ class SQLSrvStatement implements IteratorAggregate, Statement
         if ($errors) {
             return $errors[0]['code'];
         }
-
         return false;
     }
 
     /**
-     * {@inheritdoc}
+     * {@inheritDoc}
      */
     public function errorInfo()
     {
         return sqlsrv_errors(SQLSRV_ERR_ERRORS);
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function execute($params = null)
     {
         if ($params) {
@@ -195,14 +175,9 @@ class SQLSrvStatement implements IteratorAggregate, Statement
         }
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function setFetchMode($fetchMode, $arg2 = null, $arg3 = null)
     {
         $this->defaultFetchMode = $fetchMode;
-
-        return true;
     }
 
     /**
@@ -211,7 +186,6 @@ class SQLSrvStatement implements IteratorAggregate, Statement
     public function getIterator()
     {
         $data = $this->fetchAll();
-
         return new \ArrayIterator($data);
     }
 
@@ -254,7 +228,6 @@ class SQLSrvStatement implements IteratorAggregate, Statement
         while ($row = $this->fetch($fetchMode, $className, $ctorArgs)) {
             $rows[] = $row;
         }
-
         return $rows;
     }
 
@@ -264,7 +237,6 @@ class SQLSrvStatement implements IteratorAggregate, Statement
     public function fetchColumn($columnIndex = 0)
     {
         $row = $this->fetch(PDO::FETCH_NUM);
-
         return $row[$columnIndex];
     }
 
@@ -276,3 +248,4 @@ class SQLSrvStatement implements IteratorAggregate, Statement
         return sqlsrv_rows_affected($this->stmt);
     }
 }
+

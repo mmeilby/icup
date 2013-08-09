@@ -1,6 +1,3 @@
-icup.language: DA
-icup.charset: UTF-8
-
 CATEGORY: Gruppe
 GROUP: Pulje
 TEAM: Hold
@@ -11,8 +8,9 @@ CLUBS: Klubber
 TOWNANDNO: By og bane
 CLUBSBYCOUNTRY: Sorteret efter land
 TEAMSBYCLUB: Hold tilknyttet klubben
+WINNERS: Turneringens vindere
 
-RESULTS: Resultater for 2013
+RESULTS: Resultater for
 EDITRESULTS: Rediger resultater
 LOGIN: Log på
 USERNAME: Brugernavn
@@ -29,6 +27,149 @@ EDITCATEGORY: Administrer gruppe
 EDITGROUP: Administrer pulje
 EDITGROUPORDER: Administrer hold i pulje
 EDITMATCH: Administrer kamp
+SAVE: Gem oplysninger
+
+FORM:
+  ADMIN: iCup Turnerings Administration
+  ERROR:
+    BACK: Videre...
+    BADHOST: Den valgte turneringsvært findes ikke.
+    BADTOURNAMENT: Den valgte turnering findes ikke.
+    BADSITE: Den valgte lokalitet findes ikke.
+    BADPLAYGROUND: Den valgte bane findes ikke.
+    BADCATEGORY: Den valgte gruppe findes ikke.
+    BADGROUP: Den valgte pulje findes ikke.
+  LISTHOSTS:
+    TITLE: Vedligehold turneringer og værter
+    CAPTION: Værter og turneringer
+    NOTOURNAMENT: Tilføj ny turnering
+  HOST:
+    TITLE:
+      ADD: Tilføj ny turneringsvært
+      CHG: Rediger turneringsvært
+      DEL: SLET TURNERINGSVÆRT
+    PROMPT:
+      ADD: Indtast oplysninger på turneringsværten.
+      CHG: Ret oplysninger på turneringsværten.
+      DEL: Følgende turneringsvært vil bliver slettet. Alle kampresultater samt turneringsoplysninger knyttet til turneringensværten vil også blive fjernet. Det er ikke muligt at fortryde når turneringensværten er fjernet.
+    NAME: Navn
+    SUBMIT:
+      ADD: Tilføj ny turneringsvært
+      CHG: Gem turneringsvært
+      DEL: SLET TURNERINGSVÆRT
+    CANCEL:
+      ADD: Fortryd oprettelse
+      CHG: Fortryd ændringer
+      DEL: Fortryd slet
+  TOURNAMENT:
+    TITLE:
+      ADD: Tilføj ny turnering
+      CHG: Rediger turnering
+      DEL: SLET TURNERING
+    PROMPT:
+      ADD: Indtast oplysninger om turneringen.
+      CHG: Ret oplysninger om turneringen.
+      DEL: Følgende turnering vil bliver slettet. Alle kampresultater samt oplysninger knyttet til turneringen vil også blive fjernet. Det er ikke muligt at fortryde når turneringen er fjernet.
+    NAME: Navn
+    KEY: Identifikation
+    EDITION: Udgave
+    SUBMIT:
+      ADD: Tilføj ny turnering
+      CHG: Gem turnering
+      DEL: SLET TURNERING
+    CANCEL:
+      ADD: Fortryd oprettelse
+      CHG: Fortryd ændringer
+      DEL: Fortryd slet
+  LISTTOURNAMENTS:
+    TITLE: Vedligehold turnering
+    CAPTION: Lokaliteter og baner
+    NOSITE: Tilføj ny lokalitet
+    NOPLAYGROUND: Tilføj ny bane
+  SITE:
+    TITLE:
+      ADD: Tilføj ny lokalitet
+      CHG: Rediger lokalitet
+      DEL: SLET LOKALITET
+    PROMPT:
+      ADD: Indtast oplysninger på lokaliteten.
+      CHG: Ret oplysninger på lokaliteten.
+      DEL: Følgende lokalitet vil bliver slettet. Alle kampresultater samt turneringsoplysninger knyttet til lokaliteten vil også blive fjernet. Det er ikke muligt at fortryde når lokaliteten er fjernet.
+    NAME: Navn
+    SUBMIT:
+      ADD: Tilføj ny lokalitet
+      CHG: Gem lokalitet
+      DEL: SLET LOKALITET
+    CANCEL:
+      ADD: Fortryd oprettelse
+      CHG: Fortryd ændringer
+      DEL: Fortryd slet
+  PLAYGROUND:
+    TITLE:
+      ADD: Tilføj ny bane
+      CHG: Rediger bane
+      DEL: SLET BANE
+    PROMPT:
+      ADD: Indtast oplysninger om banen.
+      CHG: Ret oplysninger om banen.
+      DEL: Følgende bane vil bliver slettet. Alle kampresultater samt oplysninger knyttet til banen vil også blive fjernet. Det er ikke muligt at fortryde når banen er fjernet.
+    NAME: Navn
+    NO: Banenr.
+    SUBMIT:
+      ADD: Tilføj ny bane
+      CHG: Gem bane
+      DEL: SLET BANE
+    CANCEL:
+      ADD: Fortryd oprettelse
+      CHG: Fortryd ændringer
+      DEL: Fortryd slet
+  LISTCATEGORIES:
+    TITLE: Vedligehold turnering
+    CAPTION: Grupper og puljer
+    NOCATEGORY: Tilføj ny gruppe
+    NOGROUP: Tilføj ny pulje
+  CATEGORY:
+    DEFAULT: Vælg...
+    TITLE:
+      ADD: Tilføj ny gruppe
+      CHG: Rediger gruppe
+      DEL: SLET GRUPPE
+    PROMPT:
+      ADD: Indtast oplysninger på gruppen.
+      CHG: Ret oplysninger på gruppen.
+      DEL: Følgende gruppe vil bliver slettet. Alle kampresultater samt turneringsoplysninger knyttet til gruppen vil også blive fjernet. Det er ikke muligt at fortryde når gruppen er fjernet.
+    NAME: Navn
+    GENDER: Køn
+    CLASSIFICATION: Klasse
+    SUBMIT:
+      ADD: Tilføj ny gruppe
+      CHG: Gem gruppe
+      DEL: SLET GRUPPE
+    CANCEL:
+      ADD: Fortryd oprettelse
+      CHG: Fortryd ændringer
+      DEL: Fortryd slet
+  GROUP:
+    DEFAULT: Vælg...
+    TITLE:
+      ADD: Tilføj ny pulje
+      CHG: Rediger pulje
+      DEL: SLET PULJE
+    PROMPT:
+      ADD: Indtast oplysninger om puljen.
+      CHG: Ret oplysninger om puljen.
+      DEL: Følgende pulje vil bliver slettet. Alle kampresultater samt oplysninger knyttet til puljen vil også blive fjernet. Det er ikke muligt at fortryde når puljen er fjernet.
+    NAME: Navn
+    TIME: Spilletid (min.)
+    CLASSIFICATION: Puljetype
+    SUBMIT:
+      ADD: Tilføj ny pulje
+      CHG: Gem pulje
+      DEL: SLET PULJE
+    CANCEL:
+      ADD: Fortryd oprettelse
+      CHG: Fortryd ændringer
+      DEL: Fortryd slet
 
 MENU:
   LANGCHOICE:
@@ -39,6 +180,8 @@ MENU:
     GROUPS: Grupper
     PLAYGROUNDS: Baner
     TEAMS: Klubber
+    WINNERS: Vindere
+    STATISTICS: Statistik
   ENROLLMENT:
     TITLE: Tilmelding
     CLUBS: Klubber
@@ -56,17 +199,47 @@ MENU:
     ABOUT: Om turneringen
     PRICES: Priser
     FAQ: FAQ
+  LOGIN: Bruger Login
+  LOGOUT: log af
+  EXIT: Skift bruger
 
+TEASER:
+  TOURNAMENT:
+    GROUPS:
+      TITLE: Gruppe resultater
+      DESC: Se sammensætningen af puljerne i en gruppe eller følg et hold fra gruppen.
+    PLAYGROUNDS:
+      TITLE: Bane oversigt
+      DESC: Se resultater fra banerne eller få overblik over kampplanen.
+    TEAMS:
+      TITLE: Deltagende hold
+      DESC: Find hold der deltager i turneringen og se deres resultater.
+    WINNERS:
+      TITLE: Vindere
+      DESC: Se alle vinderne fra denne turnering.
+    STATISTICS:
+      TITLE: Hold statistik
+      DESC: Hvilket hold klarede sig bedst? Se hvem og mange andre spændende informationer om turneringen.
+
+PRELIMINARY: Grundspil
+CLASSIFICATION: Klassifikation
+FINALS: Slutspil
 STANDING: Gruppe resultat
+FINALS: Finaler
+SEMIFINALS: Semifinaler
+BRONZEMATCH: Bronzekamp
 FIRST: Vinder
 SECOND: 2. plads
 THIRD: 3. plads
 FORTH: 4. plads
 
 GROUPCLASS:
+  0: Grundspil
   1: Playoff
+  6: 1/8 finale
+  7: 1/4 finale
   8: Semifinale
-  9: 3/4 finale
+  9: Bronzekamp
   10: Finale
     
 LANG:
@@ -111,13 +284,13 @@ FU21: Piger
 FU30: Kvinder
 FU30/U21: Kvinder
 
-U12: under 12
-U14: under 14
-U16: under 16
-U18: under 18
-U21: under 21
-U30: under 30
-U30/U21: under 30/21
+U12: Under 12
+U14: Under 14
+U16: Under 16
+U18: Under 18
+U21: Under 21
+U30: Under 30
+U30/U21: Under 30/21
 
 WEEK:
   MON: mandag
@@ -141,248 +314,3 @@ MONTH:
   OCT: oktober
   NOV: november
   DEC: december
-
-# Country codes
-AFG: Afghanistan
-ALB: Albanien
-DZA: Algeriet
-ASM: Amerikansk Samoa
-USA: USA
-AND: Andorra
-AGO: Angola
-AIA: Anguilla
-ATA: Antarktis Antarktika
-ATG: Antigua og Barbuda
-ARG: Argentina
-ARM: Armenien
-ABW: Aruba
-AUS: Australien
-AZE: Aserbajdsjan
-BHS: Bahamas
-BHR: Bahrain
-BGD: Bangladesh
-BRB: Barbados
-BEL: Belgien
-BLZ: Belize
-BEN: Benin
-BMU: Bermuda
-BTN: Bhutan
-BOL: Bolivia
-BIH: Bosnien-Hercegovina
-BWA: Botswana
-BVT: Bouvetøen
-BRA: Brasilien
-IOT: British Indian Ocean Territory
-BRN: Brunei
-BGR: Bulgarien
-BFA: Burkina Faso
-BDI: Burundi
-CAN: Canada
-CYM: Caymanøerne
-CHL: Chile
-CXR: Juleøen
-COL: Colombia
-COK: Cookøerne
-CRI: Costa Rica
-CUB: Cuba
-CUW: Cura\u00e7ao
-DNK: Danmark
-DJI: Djibouti
-DMA: Dominica
-DOM: Dominikanske Republik
-ECU: Ecuador
-EGY: Egypten
-CIV: Elfenbenskysten
-GNQ: Ækvatorialguinea
-SLV: El Salvador
-ERI: Eritrea
-EST: Estland
-ETH: Etiopien
-FLK: Falklandsøerne
-FJI: Fiji
-PHL: Filippinerne
-FIN: Finland
-FRA: Frankrig
-GUF: Fransk Guiana
-PYF: Fransk Polynesien
-ATF: Franske Sydterritorier
-FRO: Færøerne
-GAB: Gabon
-GMB: Gambia
-GEO: Georgien
-GHA: Ghana
-GIB: Gibraltar
-GRD: Grenada
-GRL: Grønland
-GLP: Guadeloupe
-GUM: Guam
-GTM: Guatemala
-GIN: Guinea
-GNB: Guinea-Bissau
-GUY: Guyana
-HTI: Haiti
-HMD: Heard-øen og McDonald-øerne
-GRC: Grækenland
-HND: Honduras
-HKG: Hongkong
-BLR: Hviderusland
-IND: Indien
-IDN: Indonesien
-IRQ: Irak
-IRN: Iran
-IRL: Irland
-ISL: Island
-ISR: Israel
-ITA: Italien
-JAM: Jamaica
-JPN: Japan
-YEM: Yemen
-VGB: Britiske Jomfruøer
-VIR: Amerikanske Jomfruøer
-JOR: Jordan
-KHM: Cambodja
-CMR: Cameroun
-CPV: Kap Verde
-BES: Nederlandske Antiller
-KAZ: Kasakhstan
-KEN: Kenya
-CHN: Kina
-KGZ: Kirgisistan
-KIR: Kiribati
-CCK: Cocosøerne
-COM: Comorerne
-COG: Congo
-COD: Demokratiske Republik Congo
-HRV: Kroatien
-KWT: Kuwait
-CYP: Cypern
-LAO: Laos
-LVA: Letland
-LSO: Lesotho
-LBN: Libanon
-LBR: Liberia
-LBY: Libyen
-LIE: Liechtenstein
-LTU: Litauen
-LUX: Luxembourg
-MAC: Macao
-MDG: Madagaskar
-MKD: Makedonien
-MWI: Malawi
-MYS: Malaysia
-MDV: Maldiverne
-MLI: Mali
-MLT: Malta
-MAR: Marokko
-MHL: Marshalløerne
-MTQ: Martinique
-MRT: Mauretanien
-MUS: Mauritius
-MYT: Mayotte
-MEX: Mexico
-FSM: Mikronesien
-MDA: Moldova
-MCO: Monaco
-MNG: Mongoliet
-MNE: Montenegro
-MSR: Montserrat
-MOZ: Mozambique
-MMR: Burma
-NAM: Namibia
-NRU: Nauru
-NLD: Holland
-NPL: Nepal
-NZL: New Zealand
-NIC: Nicaragua
-NER: Niger
-NGA: Nigeria
-NIU: Niue
-PRK: Nordkorea
-MNP: Nordmarianerne
-NFK: Norfolk Island
-NOR: Norge
-NCL: Ny Kaledonien
-OMN: Oman
-PAK: Pakistan
-PLW: Palau
-PSE: Palæstina
-PAN: Panama
-PNG: Papua Ny Guinea
-PRY: Paraguay
-PER: Peru
-PCN: Pitcairn
-POL: Polen
-PRT: Portugal
-PRI: Puerto Rico
-QAT: Qatar
-REU: R\u00e9union
-ROU: Rumænien
-RUS: Rusland
-RWA: Rwanda
-SHN: Sankt Helena
-KNA: Saint Kitts og Nevis
-LCA: Saint Lucia
-SPM: Saint-Pierre og Miquelon
-VCT: Saint Vincent og Grenadinerne
-SLB: Salomonøerne
-WSM: Samoa
-SMR: San Marino
-STP: Sao Tome og Principe
-SAU: Saudi-Arabien
-SEN: Senegal
-CAF: Centralafrikanske Republik
-SRB: Serbien
-SYC: Seychellerne
-SLE: Sierra Leone
-SGP: Singapore
-SXM: Sint Maarten
-SVK: Slovakiet
-SVN: Slovenien
-SOM: Somalia
-ESP: Spanien
-LKA: Sri Lanka
-GBR: Storbritannien
-SDN: Sudan
-SUR: Surinam
-SJM: Norge Svalbard og Jan Mayen
-SWE: Sverige
-CHE: Schweiz
-SWZ: Swaziland
-SYR: Syrien
-ZAF: Sydafrika
-SGS: South Georgia og South Sandwich Islands
-KOR: Sydkorea
-TWN: Republikken Kina Taiwan
-TJK: Tadsjikistan
-TZA: Tanzania
-THA: Thailand
-TLS: Østtimor
-TGO: Togo
-TKL: Tokelau
-TON: Tonga
-TTO: Trinidad og Tobago
-TCD: Tchad
-CZE: Tjekkiet
-TUN: Tunesien
-TUR: Tyrkiet
-TKM: Turkmenistan
-TCA: Turks- og Caicosøerne
-DEU: Tyskland
-TUV: Tuvalu
-UGA: Uganda
-UKR: Ukraine
-HUN: Ungarn
-ARE: Forenede Arabiske Emirater
-UMI: United States Minor Outlying Islands
-URY: Uruguay
-UZB: Usbekistan
-VUT: Vanuatu
-VAT: Vatikanstaten
-VEN: Venezuela
-ESH: Vestsahara
-VNM: Vietnam
-WLF: Wallis og Futuna
-ZMB: Zambia
-ZWE: Zimbabwe
-AUT: Østrig
-ALA: Ålandsøerne

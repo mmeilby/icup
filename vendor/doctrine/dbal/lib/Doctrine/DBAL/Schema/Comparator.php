@@ -20,24 +20,26 @@
 namespace Doctrine\DBAL\Schema;
 
 /**
- * Compares two Schemas and return an instance of SchemaDiff.
+ * Compare to Schemas and return an instance of SchemaDiff
  *
- * @link   www.doctrine-project.org
- * @since  2.0
- * @author Benjamin Eberlei <kontakt@beberlei.de>
+ * @copyright Copyright (C) 2005-2009 eZ Systems AS. All rights reserved.
+ * @license http://ez.no/licenses/new_bsd New BSD License
+ *
+ * @link    www.doctrine-project.org
+ * @since   2.0
+ * @version $Revision$
+ * @author  Benjamin Eberlei <kontakt@beberlei.de>
  */
 class Comparator
 {
     /**
-     * @param \Doctrine\DBAL\Schema\Schema $fromSchema
-     * @param \Doctrine\DBAL\Schema\Schema $toSchema
-     *
-     * @return \Doctrine\DBAL\Schema\SchemaDiff
+     * @param Schema $fromSchema
+     * @param Schema $toSchema
+     * @return SchemaDiff
      */
-    static public function compareSchemas(Schema $fromSchema, Schema $toSchema)
+    static public function compareSchemas( Schema $fromSchema, Schema $toSchema )
     {
         $c = new self();
-
         return $c->compare($fromSchema, $toSchema);
     }
 
@@ -48,15 +50,14 @@ class Comparator
      * operations to change the schema stored in $fromSchema to the schema that is
      * stored in $toSchema.
      *
-     * @param \Doctrine\DBAL\Schema\Schema $fromSchema
-     * @param \Doctrine\DBAL\Schema\Schema $toSchema
+     * @param Schema $fromSchema
+     * @param Schema $toSchema
      *
-     * @return \Doctrine\DBAL\Schema\SchemaDiff
+     * @return SchemaDiff
      */
     public function compare(Schema $fromSchema, Schema $toSchema)
     {
         $diff = new SchemaDiff();
-        $diff->fromSchema = $fromSchema;
 
         $foreignKeysToTable = array();
 
@@ -135,12 +136,6 @@ class Comparator
         return $diff;
     }
 
-    /**
-     * @param \Doctrine\DBAL\Schema\Schema   $schema
-     * @param \Doctrine\DBAL\Schema\Sequence $sequence
-     *
-     * @return boolean
-     */
     private function isAutoIncrementSequenceInSchema($schema, $sequence)
     {
         foreach ($schema->getTables() as $table) {
@@ -153,10 +148,9 @@ class Comparator
     }
 
     /**
-     * @param \Doctrine\DBAL\Schema\Sequence $sequence1
-     * @param \Doctrine\DBAL\Schema\Sequence $sequence2
      *
-     * @return boolean
+     * @param Sequence $sequence1
+     * @param Sequence $sequence2
      */
     public function diffSequence(Sequence $sequence1, Sequence $sequence2)
     {
@@ -176,16 +170,15 @@ class Comparator
      *
      * If there are no differences this method returns the boolean false.
      *
-     * @param \Doctrine\DBAL\Schema\Table $table1
-     * @param \Doctrine\DBAL\Schema\Table $table2
+     * @param Table $table1
+     * @param Table $table2
      *
-     * @return boolean|\Doctrine\DBAL\Schema\TableDiff
+     * @return bool|TableDiff
      */
     public function diffTable(Table $table1, Table $table2)
     {
         $changes = 0;
         $tableDifferences = new TableDiff($table1->getName());
-        $tableDifferences->fromTable = $table1;
 
         $table1Columns = $table1->getColumns();
         $table2Columns = $table2->getColumns();
@@ -210,7 +203,6 @@ class Comparator
                 $changedProperties = $this->diffColumn( $column, $table2->getColumn($columnName) );
                 if (count($changedProperties) ) {
                     $columnDiff = new ColumnDiff($column->getName(), $table2->getColumn($columnName), $changedProperties);
-                    $columnDiff->fromColumn = $column;
                     $tableDifferences->changedColumns[$column->getName()] = $columnDiff;
                     $changes++;
                 }
@@ -267,12 +259,12 @@ class Comparator
             }
         }
 
-        foreach ($fromFkeys as $constraint1) {
+        foreach ($fromFkeys as $key1 => $constraint1) {
             $tableDifferences->removedForeignKeys[] = $constraint1;
             $changes++;
         }
 
-        foreach ($toFkeys as $constraint2) {
+        foreach ($toFkeys as $key2 => $constraint2) {
             $tableDifferences->addedForeignKeys[] = $constraint2;
             $changes++;
         }
@@ -284,15 +276,13 @@ class Comparator
      * Try to find columns that only changed their name, rename operations maybe cheaper than add/drop
      * however ambiguities between different possibilities should not lead to renaming at all.
      *
-     * @param \Doctrine\DBAL\Schema\TableDiff $tableDifferences
-     *
-     * @return void
+     * @param TableDiff $tableDifferences
      */
     private function detectColumnRenamings(TableDiff $tableDifferences)
     {
         $renameCandidates = array();
         foreach ($tableDifferences->addedColumns as $addedColumnName => $addedColumn) {
-            foreach ($tableDifferences->removedColumns as $removedColumn) {
+            foreach ($tableDifferences->removedColumns as $removedColumnName => $removedColumn) {
                 if (count($this->diffColumn($addedColumn, $removedColumn)) == 0) {
                     $renameCandidates[$addedColumn->getName()][] = array($removedColumn, $addedColumn, $addedColumnName);
                 }
@@ -315,10 +305,9 @@ class Comparator
     }
 
     /**
-     * @param \Doctrine\DBAL\Schema\ForeignKeyConstraint $key1
-     * @param \Doctrine\DBAL\Schema\ForeignKeyConstraint $key2
-     *
-     * @return boolean
+     * @param ForeignKeyConstraint $key1
+     * @param ForeignKeyConstraint $key2
+     * @return bool
      */
     public function diffForeignKey(ForeignKeyConstraint $key1, ForeignKeyConstraint $key2)
     {
@@ -351,8 +340,8 @@ class Comparator
      * If there are differences this method returns $field2, otherwise the
      * boolean false.
      *
-     * @param \Doctrine\DBAL\Schema\Column $column1
-     * @param \Doctrine\DBAL\Schema\Column $column2
+     * @param Column $column1
+     * @param Column $column2
      *
      * @return array
      */
@@ -430,17 +419,15 @@ class Comparator
      * Compares $index1 with $index2 and returns $index2 if there are any
      * differences or false in case there are no differences.
      *
-     * @param \Doctrine\DBAL\Schema\Index $index1
-     * @param \Doctrine\DBAL\Schema\Index $index2
-     *
-     * @return boolean
+     * @param Index $index1
+     * @param Index $index2
+     * @return bool
      */
     public function diffIndex(Index $index1, Index $index2)
     {
         if ($index1->isFullfilledBy($index2) && $index2->isFullfilledBy($index1)) {
             return false;
         }
-
         return true;
     }
 }

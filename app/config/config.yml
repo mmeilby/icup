@@ -1,4 +1,5 @@
 imports:
+    - { resource: parameters.yml }
     - { resource: security.yml }
 
 framework:
@@ -27,7 +28,7 @@ twig:
 assetic:
     debug:          %kernel.debug%
     use_controller: false
-    bundles:        [ ]
+    bundles:        [ ICupPublicSiteBundle ]
     #java: /usr/bin/java
     filters:
         cssrewrite: ~

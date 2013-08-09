@@ -1,5 +1,7 @@
 <?php
 /*
+ *  $Id$
+ *
  * THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS
  * "AS IS" AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT
  * LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR
@@ -20,21 +22,20 @@
 namespace Doctrine\DBAL\Schema;
 
 /**
- * Represents the change of a column.
+ * Represent the change of a column
  *
- * @link   www.doctrine-project.org
- * @since  2.0
+ * 
+ * @link    www.doctrine-project.org
+ * @since   2.0
+ * @version $Revision$
  * @author Benjamin Eberlei <kontakt@beberlei.de>
  */
 class ColumnDiff
 {
-    /**
-     * @var string
-     */
     public $oldColumnName;
 
     /**
-     * @var \Doctrine\DBAL\Schema\Column
+     * @var Column
      */
     public $column;
 
@@ -43,30 +44,13 @@ class ColumnDiff
      */
     public $changedProperties = array();
 
-    /**
-     * @var \Doctrine\DBAL\Schema\Column
-     */
-    public $fromColumn;
-
-    /**
-     * @param string                       $oldColumnName
-     * @param \Doctrine\DBAL\Schema\Column $column
-     * @param array                        $changedProperties
-     * @param \Doctrine\DBAL\Schema\Column $fromColumn
-     */
-    public function __construct($oldColumnName, Column $column, array $changedProperties = array(), Column $fromColumn = null)
+    public function __construct($oldColumnName, Column $column, array $changedProperties = array())
     {
         $this->oldColumnName = $oldColumnName;
         $this->column = $column;
         $this->changedProperties = $changedProperties;
-        $this->fromColumn = $fromColumn;
     }
 
-    /**
-     * @param string $propertyName
-     *
-     * @return boolean
-     */
     public function hasChanged($propertyName)
     {
         return in_array($propertyName, $this->changedProperties);

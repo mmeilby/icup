@@ -1,5 +1,7 @@
 <?php
 /*
+ *  $Id$
+ *
  * THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS
  * "AS IS" AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT
  * LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR
@@ -19,20 +21,25 @@
 
 namespace Doctrine\DBAL\Schema\Visitor;
 
-use Doctrine\DBAL\Platforms\AbstractPlatform;
-use Doctrine\DBAL\Schema\Table;
-use Doctrine\DBAL\Schema\ForeignKeyConstraint;
-use Doctrine\DBAL\Schema\Sequence;
-use Doctrine\DBAL\Schema\SchemaException;
+use Doctrine\DBAL\Platforms\AbstractPlatform,
+    Doctrine\DBAL\Schema\Table,
+    Doctrine\DBAL\Schema\Schema,
+    Doctrine\DBAL\Schema\Column,
+    Doctrine\DBAL\Schema\ForeignKeyConstraint,
+    Doctrine\DBAL\Schema\Constraint,
+    Doctrine\DBAL\Schema\Sequence,
+    Doctrine\DBAL\Schema\SchemaException,
+    Doctrine\DBAL\Schema\Index;
 
 /**
- * Gathers SQL statements that allow to completely drop the current schema.
+ * Gather SQL statements that allow to completly drop the current schema.
  *
- * @link   www.doctrine-project.org
- * @since  2.0
- * @author Benjamin Eberlei <kontakt@beberlei.de>
+ * 
+ * @link    www.doctrine-project.org
+ * @since   2.0
+ * @author  Benjamin Eberlei <kontakt@beberlei.de>
  */
-class DropSchemaSqlCollector extends AbstractVisitor
+class DropSchemaSqlCollector implements Visitor
 {
     /**
      * @var \SplObjectStorage
@@ -50,12 +57,13 @@ class DropSchemaSqlCollector extends AbstractVisitor
     private $tables;
 
     /**
+     *
      * @var \Doctrine\DBAL\Platforms\AbstractPlatform
      */
     private $platform;
 
     /**
-     * @param \Doctrine\DBAL\Platforms\AbstractPlatform $platform
+     * @param AbstractPlatform $platform
      */
     public function __construct(AbstractPlatform $platform)
     {
@@ -64,7 +72,15 @@ class DropSchemaSqlCollector extends AbstractVisitor
     }
 
     /**
-     * {@inheritdoc}
+     * @param Schema $schema
+     */
+    public function acceptSchema(Schema $schema)
+    {
+
+    }
+
+    /**
+     * @param Table $table
      */
     public function acceptTable(Table $table)
     {
@@ -72,7 +88,16 @@ class DropSchemaSqlCollector extends AbstractVisitor
     }
 
     /**
-     * {@inheritdoc}
+     * @param Column $column
+     */
+    public function acceptColumn(Table $table, Column $column)
+    {
+
+    }
+
+    /**
+     * @param Table $localTable
+     * @param ForeignKeyConstraint $fkConstraint
      */
     public function acceptForeignKey(Table $localTable, ForeignKeyConstraint $fkConstraint)
     {
@@ -85,7 +110,16 @@ class DropSchemaSqlCollector extends AbstractVisitor
     }
 
     /**
-     * {@inheritdoc}
+     * @param Table $table
+     * @param Index $index
+     */
+    public function acceptIndex(Table $table, Index $index)
+    {
+
+    }
+
+    /**
+     * @param Sequence $sequence
      */
     public function acceptSequence(Sequence $sequence)
     {
@@ -108,7 +142,6 @@ class DropSchemaSqlCollector extends AbstractVisitor
     public function getQueries()
     {
         $sql = array();
-
         foreach ($this->constraints as $fkConstraint) {
             $localTable = $this->constraints[$fkConstraint];
             $sql[] = $this->platform->getDropForeignKeySQL($fkConstraint, $localTable);

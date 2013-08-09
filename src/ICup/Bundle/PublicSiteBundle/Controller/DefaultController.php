@@ -3,7 +3,6 @@
 namespace ICup\Bundle\PublicSiteBundle\Controller;
 
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
-use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 
@@ -11,7 +10,6 @@ class DefaultController extends Controller
 {
     /**
      * @Route("/switch/{locale}", name="_switch")
-     * @Template()
      */
     public function switchAction($locale)
     {
@@ -24,11 +22,17 @@ class DefaultController extends Controller
     
     /**
      * @Route("/tournament", name="_showtournament")
-     * @Template()
      */
     public function listAction()
     {
-        return $this->redirect($this->generateUrl('_tournament_categories', array('tournament' => '_')));
+        return $this->redirect($this->generateUrl('_tournament_overview', array('tournament' => '_')));
     }
 
+    /**
+     * @Route("/", name="_icup")
+     */
+    public function rootAction()
+    {
+        return $this->redirect($this->generateUrl('_tournament_overview', array('tournament' => '_')));
+    }
 }

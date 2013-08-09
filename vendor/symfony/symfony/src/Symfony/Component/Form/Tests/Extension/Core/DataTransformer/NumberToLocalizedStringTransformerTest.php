@@ -12,12 +12,16 @@
 namespace Symfony\Component\Form\Tests\Extension\Core\DataTransformer;
 
 use Symfony\Component\Form\Extension\Core\DataTransformer\NumberToLocalizedStringTransformer;
+use Symfony\Component\Intl\Util\IntlTestHelper;
 
-class NumberToLocalizedStringTransformerTest extends LocalizedTestCase
+class NumberToLocalizedStringTransformerTest extends \PHPUnit_Framework_TestCase
 {
     protected function setUp()
     {
         parent::setUp();
+
+        // Since we test against "de_AT", we need the full implementation
+        IntlTestHelper::requireFullIntl($this);
 
         \Locale::setDefault('de_AT');
     }
@@ -137,10 +141,6 @@ class NumberToLocalizedStringTransformerTest extends LocalizedTestCase
 
     public function testDecimalSeparatorMayBeDotIfGroupingSeparatorIsNotDot()
     {
-        if ($this->isLowerThanIcuVersion('4.7')) {
-            $this->markTestSkipped('Please upgrade ICU version to 4.7+');
-        }
-
         \Locale::setDefault('fr');
         $transformer = new NumberToLocalizedStringTransformer(null, true);
 
@@ -158,10 +158,6 @@ class NumberToLocalizedStringTransformerTest extends LocalizedTestCase
      */
     public function testDecimalSeparatorMayNotBeDotIfGroupingSeparatorIsDot()
     {
-        if ($this->isLowerThanIcuVersion('4.7')) {
-            $this->markTestSkipped('Please upgrade ICU version to 4.7+');
-        }
-
         $transformer = new NumberToLocalizedStringTransformer(null, true);
 
         $transformer->reverseTransform('1.234.5');
@@ -172,10 +168,6 @@ class NumberToLocalizedStringTransformerTest extends LocalizedTestCase
      */
     public function testDecimalSeparatorMayNotBeDotIfGroupingSeparatorIsDotWithNoGroupSep()
     {
-        if ($this->isLowerThanIcuVersion('4.7')) {
-            $this->markTestSkipped('Please upgrade ICU version to 4.7+');
-        }
-
         $transformer = new NumberToLocalizedStringTransformer(null, true);
 
         $transformer->reverseTransform('1234.5');
@@ -192,11 +184,7 @@ class NumberToLocalizedStringTransformerTest extends LocalizedTestCase
 
     public function testDecimalSeparatorMayBeCommaIfGroupingSeparatorIsNotComma()
     {
-        if ($this->isLowerThanIcuVersion('4.7')) {
-            $this->markTestSkipped('Please upgrade ICU version to 4.7+');
-        }
-
-        \Locale::setDefault('ak');
+        \Locale::setDefault('bg');
         $transformer = new NumberToLocalizedStringTransformer(null, true);
 
         // completely valid format
@@ -213,10 +201,6 @@ class NumberToLocalizedStringTransformerTest extends LocalizedTestCase
      */
     public function testDecimalSeparatorMayNotBeCommaIfGroupingSeparatorIsComma()
     {
-        if ($this->isLowerThanIcuVersion('4.7')) {
-            $this->markTestSkipped('Please upgrade ICU version to 4.7+');
-        }
-
         \Locale::setDefault('en');
         $transformer = new NumberToLocalizedStringTransformer(null, true);
 
@@ -228,10 +212,6 @@ class NumberToLocalizedStringTransformerTest extends LocalizedTestCase
      */
     public function testDecimalSeparatorMayNotBeCommaIfGroupingSeparatorIsCommaWithNoGroupSep()
     {
-        if ($this->isLowerThanIcuVersion('4.7')) {
-            $this->markTestSkipped('Please upgrade ICU version to 4.7+');
-        }
-
         \Locale::setDefault('en');
         $transformer = new NumberToLocalizedStringTransformer(null, true);
 

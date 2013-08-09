@@ -1,5 +1,7 @@
 <?php
 /*
+ *  $Id$
+ *
  * THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS
  * "AS IS" AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT
  * LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR
@@ -15,26 +17,34 @@
  * This software consists of voluntary contributions made by many individuals
  * and is licensed under the MIT license. For more information, see
  * <http://www.doctrine-project.org>.
- */
+*/
 
 namespace Doctrine\DBAL\Driver\PDOIbm;
 
 use Doctrine\DBAL\Connection;
 
 /**
- * Driver for the PDO IBM extension.
+ * Driver for the PDO IBM extension
  *
- * @link   www.doctrine-project.org
- * @since  1.0
- * @author Benjamin Eberlei <kontakt@beberlei.de>
- * @author Guilherme Blanco <guilhermeblanco@hotmail.com>
- * @author Jonathan Wage <jonwage@gmail.com>
- * @author Roman Borschel <roman@code-factory.org>
+ * @license     http://www.opensource.org/licenses/lgpl-license.php LGPL
+ * @link        www.doctrine-project.com
+ * @since       1.0
+ * @version     $Revision$
+ * @author      Benjamin Eberlei <kontakt@beberlei.de>
+ * @author      Guilherme Blanco <guilhermeblanco@hotmail.com>
+ * @author      Jonathan Wage <jonwage@gmail.com>
+ * @author      Roman Borschel <roman@code-factory.org>
  */
 class Driver implements \Doctrine\DBAL\Driver
 {
     /**
-     * {@inheritdoc}
+     * Attempts to establish a connection with the underlying driver.
+     *
+     * @param array $params
+     * @param string $username
+     * @param string $password
+     * @param array $driverOptions
+     * @return \Doctrine\DBAL\Driver\Connection
      */
     public function connect(array $params, $username = null, $password = null, array $driverOptions = array())
     {
@@ -44,16 +54,13 @@ class Driver implements \Doctrine\DBAL\Driver
             $password,
             $driverOptions
         );
-
         return $conn;
     }
 
     /**
-     * Constructs the IBM PDO DSN.
+     * Constructs the MySql PDO DSN.
      *
-     * @param array $params
-     *
-     * @return string The DSN.
+     * @return string  The DSN.
      */
     private function _constructPdoDsn(array $params)
     {
@@ -73,7 +80,10 @@ class Driver implements \Doctrine\DBAL\Driver
     }
 
     /**
-     * {@inheritdoc}
+     * Gets the DatabasePlatform instance that provides all the metadata about
+     * the platform this driver connects to.
+     *
+     * @return \Doctrine\DBAL\Platforms\AbstractPlatform The database platform.
      */
     public function getDatabasePlatform()
     {
@@ -81,7 +91,11 @@ class Driver implements \Doctrine\DBAL\Driver
     }
 
     /**
-     * {@inheritdoc}
+     * Gets the SchemaManager that can be used to inspect and change the underlying
+     * database schema of the platform this driver connects to.
+     *
+     * @param  \Doctrine\DBAL\Connection $conn
+     * @return \Doctrine\DBAL\Schema\DB2SchemaManager
      */
     public function getSchemaManager(Connection $conn)
     {
@@ -89,7 +103,9 @@ class Driver implements \Doctrine\DBAL\Driver
     }
 
     /**
-     * {@inheritdoc}
+     * Gets the name of the driver.
+     *
+     * @return string The name of the driver.
      */
     public function getName()
     {
@@ -97,12 +113,14 @@ class Driver implements \Doctrine\DBAL\Driver
     }
 
     /**
-     * {@inheritdoc}
+     * Get the name of the database connected to for this driver.
+     *
+     * @param  \Doctrine\DBAL\Connection $conn
+     * @return string $database
      */
     public function getDatabase(\Doctrine\DBAL\Connection $conn)
     {
         $params = $conn->getParams();
-
         return $params['dbname'];
     }
 }

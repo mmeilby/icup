@@ -19,9 +19,14 @@ class CategoryController extends Controller
 
         $tournament = $em->getRepository('ICup\Bundle\PublicSiteBundle\Entity\Doctrine\Tournament')
                             ->find($tournamentId);
-
+        if ($tournament == null) {
+            return $this->redirect($this->generateUrl('_icup'));
+        }
         $category = $em->getRepository('ICup\Bundle\PublicSiteBundle\Entity\Doctrine\Category')
                             ->find($categoryid);
+        if ($category == null) {
+            return $this->redirect($this->generateUrl('_icup'));
+        }
 
         $qb = $em->createQuery("select g ".
                                "from ICup\Bundle\PublicSiteBundle\Entity\Doctrine\Group g ".
@@ -50,9 +55,15 @@ class CategoryController extends Controller
 
         $tournament = $em->getRepository('ICup\Bundle\PublicSiteBundle\Entity\Doctrine\Tournament')
                             ->find($tournamentId);
+        if ($tournament == null) {
+            return $this->redirect($this->generateUrl('_icup'));
+        }
 
         $category = $em->getRepository('ICup\Bundle\PublicSiteBundle\Entity\Doctrine\Category')
                             ->find($categoryid);
+        if ($category == null) {
+            return $this->redirect($this->generateUrl('_icup'));
+        }
 
         $qb = $em->createQuery("select g ".
                                "from ICup\Bundle\PublicSiteBundle\Entity\Doctrine\Group g ".
@@ -81,9 +92,15 @@ class CategoryController extends Controller
 
         $tournament = $em->getRepository('ICup\Bundle\PublicSiteBundle\Entity\Doctrine\Tournament')
                             ->find($tournamentId);
+        if ($tournament == null) {
+            return $this->redirect($this->generateUrl('_icup'));
+        }
 
         $category = $em->getRepository('ICup\Bundle\PublicSiteBundle\Entity\Doctrine\Category')
                             ->find($categoryid);
+        if ($category == null) {
+            return $this->redirect($this->generateUrl('_icup'));
+        }
 
         $qb = $em->createQuery("select g ".
                                "from ICup\Bundle\PublicSiteBundle\Entity\Doctrine\Group g ".

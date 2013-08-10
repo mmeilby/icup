@@ -19,6 +19,9 @@ class WinnersController extends Controller
 
         $tournament = $em->getRepository('ICup\Bundle\PublicSiteBundle\Entity\Doctrine\Tournament')
                             ->find($tournamentId);
+        if ($tournament == null) {
+            return $this->redirect($this->generateUrl('_icup'));
+        }
 
         $championList = array();
 

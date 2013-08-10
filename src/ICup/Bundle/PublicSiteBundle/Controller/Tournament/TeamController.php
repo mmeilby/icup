@@ -28,9 +28,15 @@ class TeamController extends Controller
 
         $tournament = $em->getRepository('ICup\Bundle\PublicSiteBundle\Entity\Doctrine\Tournament')
                             ->find($tournamentId);
+        if ($tournament == null) {
+            return $this->redirect($this->generateUrl('_icup'));
+        }
 
         $team = $em->getRepository('ICup\Bundle\PublicSiteBundle\Entity\Doctrine\Team')
                             ->find($teamid);
+        if ($team == null) {
+            return $this->redirect($this->generateUrl('_icup'));
+        }
         $name = $team->getName();
         if ($team->getDivision() != '') {
             $name.= ' "'.$team->getDivision().'"';
@@ -39,6 +45,9 @@ class TeamController extends Controller
 
         $group = $em->getRepository('ICup\Bundle\PublicSiteBundle\Entity\Doctrine\Group')
                             ->find($groupid);
+        if ($group == null) {
+            return $this->redirect($this->generateUrl('_icup'));
+        }
 
         $category = $em->getRepository('ICup\Bundle\PublicSiteBundle\Entity\Doctrine\Category')
                             ->find($group->getPid());

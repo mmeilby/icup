@@ -51,9 +51,9 @@ class Util
             'MENU.ADMIN.TITLE' => array(
                 'MENU.ADMIN.RESULTS' => $container->generateUrl('_tournament_playgrounds', array('tournament' => $tournament)),
                 'MENU.ADMIN.TOURNAMENT' => $container->generateUrl('_edit_host_list'),
-                'MENU.ADMIN.TEAMS' => $container->generateUrl('_editmaster', array('tournament' => $tournament)),
-                'MENU.ADMIN.PLAYERS' => $container->generateUrl('_editmaster', array('tournament' => $tournament)),
-                'MENU.ADMIN.REFEREES' => $container->generateUrl('_editmaster', array('tournament' => $tournament)))
+                'MENU.ADMIN.TEAMS' => $container->generateUrl('_edit_host_list', array('tournament' => $tournament)),
+                'MENU.ADMIN.PLAYERS' => $container->generateUrl('_edit_host_list', array('tournament' => $tournament)),
+                'MENU.ADMIN.REFEREES' => $container->generateUrl('_edit_host_list', array('tournament' => $tournament)))
         );
         $session->set('FooterMenu', $footerMenu);
 

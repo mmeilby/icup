@@ -5,49 +5,32 @@
 <p class="subcategory">
     {% trans %}RESULTS{% endtrans %} {{ tournament.edition }}<br />
 </p>
-{% for group in grouplist %}
-    <p>
-        <a href="{{ path('_tournament_categories', {'tournament': tournament.key }) }}">
-            <h1 class="category">{% trans %}CATEGORY{% endtrans %} {{ group.category.name }}</h1>
-        </a>
-        <p class="subcategory">
-            {{ [group.category.gender,group.category.classification]|join|trans }}
-            {{ group.category.classification|trans|lower }}
-        </p>
-        <table>
-            <caption>{% trans %}CATEGORY{% endtrans %} {{ group.category.name }}</caption>
-            <thead>
-                <tr>
-                    <td class="flag"></td>
-                    <td class="team">{% trans %}TEAM{% endtrans %}</td>
-                    <td class="matches">{% trans %}LEGEND.MATCHES{% endtrans %}</td>
-                    <td class="score">{% trans %}LEGEND.GOALS.WON{% endtrans %}</td>
-                    <td class="goals">{% trans %}LEGEND.GOALS.LOST{% endtrans %}</td>
-                    <td class="diff">{% trans %}LEGEND.GOALS.DIFF{% endtrans %}</td>
-                    <td class="points">{% trans %}LEGEND.POINTS{% endtrans %}</td>
-                    <td class="points">{% trans %}LEGEND.POINTS{% endtrans %}</td>
-                </tr>
-            </thead>
-            <tboby>
-    {% for team in group.teams %}
-                <tr class="{{ cycle(['even','odd'],loop.index) }}">
-                    <td class="flag"><img src="{{ imagepath }}/flags/{{ flags[team.country] }}" alt="{{ team.country|trans({},'lang') }}" title="{{ team.country|trans({},'lang') }}"></td>
-                    <td class="team"><a href="{{ path('_showteam', { 'tournament': tournament.key, 'teamid': team.id, 'groupid': team.group }) }}">{{ team.name }}</a></td>
-                    <td class="matches">{{ team.matches }}</td>
-                    <td class="score">{{ team.score }}</td>
-                    <td class="goals">{{ team.goals }}</td>
-                    <td class="diff">{{ team.diff }}</td>
-                    <td class="points">{{ team.points }}</td>
-                    <td class="points">{{ team.maxscore }}</td>
-                </tr>
+<table>
+    <caption>{% trans %}STATISTICS.TITLE{% endtrans %}</caption>
+    <thead>
+        <tr>
+            <td colspan="2">{% trans %}STATISTICS.LEGEND.KEY{% endtrans %}</td>
+            <td class="statistics">{% trans %}STATISTICS.LEGEND.FIGURE{% endtrans %}</td>
+        </tr>
+    </thead>
+    <tboby>
+{% for group,grouporder in order %}
+        <tr class="odd">
+            <td class="title" colspan="3">{{ ['STATISTICS.GROUP.',group]|join()|upper|trans }}</td>
+        </tr>
+    {% for key in grouporder %}
+        <tr class="{{ cycle(['even','odd'],loop.index0) }}">
+            <td class="indent"></td>
+            <td>{{ ['STATISTICS.KEY.',key]|join()|upper|trans }}</td>
+            <td class="statistics">{{ statistics[key] }}</td>
+        </tr>
     {% endfor %}
-            </tboby>
-            <tfoot>
-                <tr>
-                    <td colspan="8"></td>
-                </tr>
-            </tfoot>
-        </table>
-    </p>
 {% endfor %}
+    </tboby>
+    <tfoot>
+        <tr>
+            <td colspan="3"></td>
+        </tr>
+    </tfoot>
+</table>
 {% endblock %}

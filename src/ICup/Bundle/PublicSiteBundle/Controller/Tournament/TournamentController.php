@@ -19,6 +19,9 @@ class TournamentController extends Controller
 
         $tournament = $em->getRepository('ICup\Bundle\PublicSiteBundle\Entity\Doctrine\Tournament')
                             ->find($tournamentId);
+        if ($tournament == null) {
+            return $this->redirect($this->generateUrl('_icup'));
+        }
         
         $categories = $em->getRepository('ICup\Bundle\PublicSiteBundle\Entity\Doctrine\Category')
                             ->findBy(array('pid' => $tournament->getId()), array('classification' => 'asc', 'gender' => 'asc'));
@@ -44,6 +47,9 @@ class TournamentController extends Controller
 
         $tournament = $em->getRepository('ICup\Bundle\PublicSiteBundle\Entity\Doctrine\Tournament')
                             ->find($tournamentId);
+        if ($tournament == null) {
+            return $this->redirect($this->generateUrl('_icup'));
+        }
         
         $qb = $em->createQuery("select p.id,p.name,s.name as site ".
                                "from ICup\Bundle\PublicSiteBundle\Entity\Doctrine\Site s, ".
@@ -74,6 +80,9 @@ class TournamentController extends Controller
 
         $tournament = $em->getRepository('ICup\Bundle\PublicSiteBundle\Entity\Doctrine\Tournament')
                             ->find($tournamentId);
+        if ($tournament == null) {
+            return $this->redirect($this->generateUrl('_icup'));
+        }
         
         $qb = $em->createQuery("select c ".
                                "from ICup\Bundle\PublicSiteBundle\Entity\Doctrine\Category cat, ".
@@ -125,6 +134,9 @@ class TournamentController extends Controller
 
         $tournament = $em->getRepository('ICup\Bundle\PublicSiteBundle\Entity\Doctrine\Tournament')
                             ->find($tournamentId);
+        if ($tournament == null) {
+            return $this->redirect($this->generateUrl('_icup'));
+        }
 
         $categories = $em->getRepository('ICup\Bundle\PublicSiteBundle\Entity\Doctrine\Category')
                             ->findBy(array('pid' => $tournament->getId()), array('classification' => 'asc', 'gender' => 'asc'));
@@ -135,6 +147,9 @@ class TournamentController extends Controller
 
         $club = $em->getRepository('ICup\Bundle\PublicSiteBundle\Entity\Doctrine\Club')
                             ->find($clubId);
+        if ($club == null) {
+            return $this->redirect($this->generateUrl('_icup'));
+        }
         
         $qb = $em->createQuery("select t.id, t.name, t.division, c.id as catid, c.name as category, c.classification, c.gender, g.id as groupid, g.name as grp ".
                                "from ICup\Bundle\PublicSiteBundle\Entity\Doctrine\Team t, ".

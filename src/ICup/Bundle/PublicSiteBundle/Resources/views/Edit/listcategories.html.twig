@@ -18,7 +18,8 @@
     <tboby>
 {% if categories|length > 0 %}
     {% for category in categories %}
-        <tr class="{{ cycle(['even','odd'],loop.index) }}">
+        {% set loopindex = loop.index %}
+        <tr class="{{ cycle(['even','odd'],loopindex) }}">
             <td class="host_solo" colspan="2">
                 <a href="{{ path('_edit_category_chg', { 'categoryid': category.id }) }}">
                 {% trans %}CATEGORY{% endtrans %} {{ category.name|upper }}
@@ -42,7 +43,7 @@
         </tr>
         {% if category.id in groups|keys %}
             {% for group in groups[category.id] %}
-        <tr class="{{ cycle(['even','odd'],loop.index) }}">
+        <tr class="{{ cycle(['even','odd'],loopindex+loop.index) }}">
             <td></td>
             <td><a href="{{ path('_edit_group_chg', { 'groupid': group.id }) }}">{{ group.name }}</a></td>
             <td class="operand">
@@ -63,7 +64,7 @@
         </tr>
             {% endfor %}
         {% else %}
-        <tr class="{{ cycle(['even','odd'],loop.index) }}">
+        <tr class="{{ cycle(['even','odd'],loopindex) }}">
             <td></td>
             <td><a href="{{ path('_edit_group_add', { 'categoryid': category.id }) }}">{{'FORM.LISTCATEGORIES.NOGROUP'|trans|upper}}</a></td>
             <td class="operand">

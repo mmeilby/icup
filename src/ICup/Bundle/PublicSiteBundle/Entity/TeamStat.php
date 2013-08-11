@@ -4,6 +4,7 @@ namespace ICup\Bundle\PublicSiteBundle\Entity;
 class TeamStat {
 
     public $id;
+    public $club;
     public $name;
     public $country;
     public $group;

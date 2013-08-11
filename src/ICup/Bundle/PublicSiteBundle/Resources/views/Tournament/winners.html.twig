@@ -1,80 +1,75 @@
 {% extends "ICupPublicSiteBundle:Masters:standard.html.twig" %}
 
-{% block title %}Vindere{% endblock %}
+{% import _self as formatter %}
 
+{% macro club(teams, context) %}
+    <table>
+    {% for team in teams %}
+        <tr>
+        {% if team.matches > 0 %}
+            <td class="winner_flag"><img src="{{ context.imagepath }}/flags/{{ context.flags[team.country] }}" alt="{{ team.country|trans({},'lang') }}" title="{{ team.country|trans({},'lang') }}"></td>
+            <td class="winner_team"><a href="{{ path('_showteam', { 'tournament': context.tournament.key, 'teamid': team.id, 'groupid': team.group }) }}">{{ team.name }}</a></td>
+        {% endif %}
+        </tr>
+    {% endfor %}
+    {% if teams|length == 0 %}
+        <tr>
+            <td class="winner_flag">&nbsp;</td>
+            <td class="winner_team">&nbsp;</td>
+        </tr>
+    {% endif %}
+    </table>
+{% endmacro %}
+        
 {% block body %}
 <h1 class="category">{{ tournament.name }}</h1>
 <p class="subcategory">
     {% trans %}RESULTS{% endtrans %} {{ tournament.edition }}<br />
 </p>
-<h2 class="group">{% trans %}WINNERS{% endtrans %}</h2>
-{% for category in championlist %}
-    <div class="champions">
-    {% for champion in category %}
-        {% set group = champion.group %}
-        {% if loop.index == 1 %}
-        <div class="header1">
-            <a href="{{ path('_showcategory', {'tournament': tournament.key, 'categoryid': group.catid }) }}">
-                {% trans %}CATEGORY{% endtrans %} {{ group.category }}
-            </a>
-        </div>
-        <div class="header3">
-            {{ [group.gender,group.class]|join|trans }}
-            {{ group.class|trans|lower }}
-        </div>
-        {% endif %}
-        <table>
-        {% for team in champion.teams %}
-            {% if group.classification == 10 %}
-                {% if team.matches > 0 %}
-                <tr>
-                    <td class="placement" colspan="3">{{ cycle(['FIRST','SECOND'],loop.index0)|trans }}</td>
-                </tr>
-                <tr>
-                    <td class="flag"><img src="{{ imagepath }}/flags/{{ flags[team.country] }}" alt="{{ team.country|trans({},'lang') }}" title="{{ team.country|trans({},'lang') }}"></td>
-                    <td class="team"><a href="{{ path('_showteam', { 'tournament': tournament.key, 'teamid': team.id, 'groupid': group.id }) }}">{{ team.name }}</a></td>
-                    <td class="score"></td>
-                </tr>
-                {% else %}
-                    {% if loop.index == 1 %}
-                <tr>
-                    <td class="placement" colspan="3">{{ ['GROUPCLASS.',group.classification]|join|trans }}</td>
-                </tr>
-                    {% endif %}
-                <tr>
-                    <td class="flag"><img src="{{ imagepath }}/flags/{{ flags[team.country] }}" alt="{{ team.country|trans({},'lang') }}" title="{{ team.country|trans({},'lang') }}"></td>
-                    <td class="team"><a href="{{ path('_showteam', { 'tournament': tournament.key, 'teamid': team.id, 'groupid': group.id }) }}">{{ team.name }}</a></td>
-                    <td class="score"></td>
-                </tr>
-                {% endif %}
-            {% endif %}
-            {% if group.classification == 9 %}
-                {% if team.matches > 0 %}
-                <tr>
-                    <td class="placement" colspan="3">{{ cycle(['THIRD','FORTH'],loop.index0)|trans }}</td>
-                </tr>
-                <tr>
-                    <td class="flag"><img src="{{ imagepath }}/flags/{{ flags[team.country] }}" alt="{{ team.country|trans({},'lang') }}" title="{{ team.country|trans({},'lang') }}"></td>
-                    <td class="team"><a href="{{ path('_showteam', { 'tournament': tournament.key, 'teamid': team.id, 'groupid': group.id }) }}">{{ team.name }}</a></td>
-                    <td class="score"></td>
-                </tr>
-                {% else %}
-                    {% if loop.index == 1 %}
-                <tr>
-                    <td class="placement" colspan="3">{{ ['GROUPCLASS.',group.classification]|join|trans }}</td>
-                </tr>
-                    {% endif %}
-                <tr>
-                    <td class="flag"><img src="{{ imagepath }}/flags/{{ flags[team.country] }}" alt="{{ team.country|trans({},'lang') }}" title="{{ team.country|trans({},'lang') }}"></td>
-                    <td class="team"><a href="{{ path('_showteam', { 'tournament': tournament.key, 'teamid': team.id, 'groupid': group.id }) }}">{{ team.name }}</a></td>
-                    <td class="score"></td>
-                </tr>
-                {% endif %}
-            {% endif %}
-        {% endfor %}
-        </table>
+<div class="tab active" onclick="location.href='{{ path('_tournament_winners', {'tournament': tournament.key }) }}'">{{ 'WINNERS'|trans|upper }}</div>
+<div class="tab" onclick="location.href='{{ path('_tournament_winners_countries', {'tournament': tournament.key }) }}'">{{ 'WINNING_COUNTRIES'|trans|upper }}</div>
+<div class="tab" onclick="location.href='{{ path('_tournament_winners_clubs', {'tournament': tournament.key }) }}'">{{ 'WINNING_CLUBS'|trans|upper }}</div>
+<table>
+    <caption>{% trans %}WINNERS{% endtrans %}</caption>
+    <thead>
+        <tr>
+            <td class="winner_first winners">{% trans %}FIRST{% endtrans %}</td>
+            <td class="winner_second winners">{% trans %}SECOND{% endtrans %}</td>
+            <td class="winner_third winners">{% trans %}THIRD{% endtrans %}<br />{% trans %}FORTH{% endtrans %}</td>
+        </tr>
+    </thead>
+    <tboby>
+    {% for category in championlist %}
+        {% set group = category.group %}
+        <tr class="{{ cycle(['even','odd'],loop.index) }}">
+            <td class="winner_category" colspan="2">
+                <a href="{{ path('_showcategory_finals', {'tournament': tournament.key, 'categoryid': group.catid }) }}">
+                    {% trans %}CATEGORY{% endtrans %} {{ group.category }}
+                </a>
+            </td>
+            <td class="winner_subcategory">
+                {{ [group.gender,group.class]|join|trans }}
+                {{ group.class|trans|lower }}
+            </td>
+        </tr>
+        <tr class="{{ cycle(['even','odd'],loop.index) }}">
+            <td class="winner_first">
+                {{ formatter.club(category.first, _context) }}
+            </td>
+            <td class="winner_second">
+                {{ formatter.club(category.second, _context) }}
+            </td>
+            <td class="winner_third">
+                {{ formatter.club(category.third, _context) }}<br />
+                {{ formatter.club(category.forth, _context) }}
+            </td>
+        </tr>
     {% endfor %}
-    </div>
-{% endfor %}
-    <div class="champions_clear"></div>
+    </tboby>
+    <tfoot>
+        <tr>
+            <td colspan="3"></td>
+        </tr>
+    </tfoot>
+</table>
 {% endblock %}

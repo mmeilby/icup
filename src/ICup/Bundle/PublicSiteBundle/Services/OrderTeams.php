@@ -9,7 +9,7 @@ class OrderTeams
 {
     public function sortGroup(Controller $container, $group) {
         $em = $container->getDoctrine()->getManager();
-        $qb = $em->createQuery("select t.id,t.name,t.division,c.country ".
+        $qb = $em->createQuery("select t.id,t.name,t.division,c.name as club,c.country ".
                                "from ICup\Bundle\PublicSiteBundle\Entity\Doctrine\GroupOrder o, ".
                                     "ICup\Bundle\PublicSiteBundle\Entity\Doctrine\Team t, ".
                                     "ICup\Bundle\PublicSiteBundle\Entity\Doctrine\Club c ".
@@ -38,6 +38,7 @@ class OrderTeams
         foreach ($teams as $team) {
             $stat = new TeamStat();
             $stat->id = $team['id'];
+            $stat->club = $team['club'];
             $stat->name = $this->teamName($team['name'], $team['division']);
             $stat->country = $team['country'];
             if (key_exists('grp', $team)) {

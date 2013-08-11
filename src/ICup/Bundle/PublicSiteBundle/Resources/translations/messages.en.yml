@@ -8,7 +8,9 @@ CLUBS: Clubs
 TOWNANDNO: Town and place
 CLUBSBYCOUNTRY: Ordered by country
 TEAMSBYCLUB: Teams enrolled by the club
-WINNERS: This tournaments champions
+WINNERS: The champions
+WINNING_COUNTRIES: Medals by country
+WINNING_CLUBS: Medals by club
 
 RESULTS: Results for
 EDITRESULTS: Edit results
@@ -28,6 +30,34 @@ EDITGROUP: Update group
 EDITGROUPORDER: Add team to group
 EDITMATCH: Add match
 SAVE: Save information
+
+# Statistics page translations
+STATISTICS:
+  TITLE: This tournament in numbers
+  LEGEND:
+    KEY: The facts...
+    FIGURE: Numbers
+  KEY:
+    COUNTRIES: Different countries participating the tournament
+    CLUBS: Clubs enrolled
+    TEAMS: Teams attending the preliminary round
+    FEMALETEAMS: -- female teams
+    MALETEAMS: -- male teams
+    ADULTTEAMS: -- teams over 18
+    CHILDTEAMS:	-- teams under 18
+    CATEGORIES:	Categories available in the tournament
+    GROUPS:	Groups in the preliminary round
+    SITES: Sites used in the tournament
+    PLAYGROUNDS: Playgrounds used during the tournament
+    MATCHES: Matches played in total
+    GOALS: Goals scored in all matches
+    MOSTGOALS: Most goals scored by a team in one match
+    MOSTTROPHYS: Most trophies won by a country
+    DAYS: The length of the tournament in days
+  GROUP:
+    TEAMS: Facts about the teams
+    TOURNAMENT: Facts about the tournament
+    TOP: Top achievements in the tournament
 
 MENU:
   LANGCHOICE:

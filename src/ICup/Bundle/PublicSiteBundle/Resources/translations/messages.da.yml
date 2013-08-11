@@ -9,6 +9,8 @@ TOWNANDNO: By og bane
 CLUBSBYCOUNTRY: Sorteret efter land
 TEAMSBYCLUB: Hold tilknyttet klubben
 WINNERS: Turneringens vindere
+WINNING_COUNTRIES: Vindende lande
+WINNING_CLUBS: Vindende klubber
 
 RESULTS: Resultater for
 EDITRESULTS: Rediger resultater
@@ -29,6 +31,35 @@ EDITGROUPORDER: Administrer hold i pulje
 EDITMATCH: Administrer kamp
 SAVE: Gem oplysninger
 
+# Statistics page translations
+STATISTICS:
+  TITLE: Turneringsstatistik
+  LEGEND:
+    KEY: Så mange...
+    FIGURE: Antal
+  KEY:
+    COUNTRIES: Forskellige lande der deltager i turneringen
+    CLUBS: Klubber der er tilmeldt
+    TEAMS: Hold der deltager i grundspillet
+    FEMALETEAMS: Heraf er pigehold
+    MALETEAMS: Heraf er drengehold
+    ADULTTEAMS: Heraf er voksenhold
+    CHILDTEAMS:	Heraf er ungdomshold
+    CATEGORIES:	Grupper der danner ramme for turneringen
+    GROUPS:	Puljer der er i grundspillet
+    SITES: Spillesteder der anvendes
+    PLAYGROUNDS: Baner i brug under hele turneringen
+    MATCHES: Kampe der spilles i turneringen
+    GOALS: Mål scoret samlet i hele turneringen
+    MOSTGOALS: Flest mål scoret af et hold i en enkelt kamp
+    MOSTTROPHYS: Flest vundne pokaler af et enkelt land
+    DAYS: Dage turneringen afvikles over
+  GROUP:
+    TEAMS: Lidt statistik om holdene der deltager
+    TOURNAMENT: Fakta om turneringen
+    TOP: Størst i turneringen
+
+# Form translations
 FORM:
   ADMIN: iCup Turnerings Administration
   ERROR:

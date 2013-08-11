@@ -74,7 +74,7 @@ DIV.form_clear {
     clear: both;
 }
 DIV.form_error {
-    
+    color: #d66;
 }
 DIV.form_button {
     float: left;
@@ -158,7 +158,7 @@ DIV.footer {
     text-align: left;
     background: #313131;
     min-height: 100px;
-    margin-top: 10px;
+    margin-top: 30px;
 }
 DIV.menu_footer {
     width: 170px;
@@ -192,6 +192,15 @@ DIV.champions {
 }
 DIV.champions_clear {
     clear: left;
+}
+DIV.winner_category {
+    font-size: 14pt;
+    font-weight: bold; 
+    padding-top: 10px;
+}
+P.winner_subcategory {
+    -webkit-margin-before: 0px;
+    -webkit-margin-after: 0px;
 }
 DIV.header1 {
     font-size: 30px;
@@ -236,6 +245,9 @@ DIV.active {
     color: whitesmoke;
 }
 
+/*
+ *  Category finals
+ */
 TD.winner {
     font-weight: bold;    
 }
@@ -274,6 +286,70 @@ TD.lineSU {
 TD.spacer {
     padding-top: 25px;
 }
+
+/*
+ *  Winners
+ */
+TD.winner_category {
+    padding-top: 10px;
+    padding-left: 5px;
+    background-color: whiteSmoke;
+    font-weight: bold;
+    font-size: 14pt;
+}
+TD.winner_subcategory {
+    padding-top: 10px;
+    padding-right: 5px;
+    text-align: right;
+    font-weight: bold;
+    background-color: whiteSmoke;
+}
+TD.winners_country {
+    width: 80px;
+    text-align: center;
+}
+TD.winners {
+    width: 33%;
+}
+TD.winner_first {
+    padding: 5px;
+    background-color: gold;
+    background-image: -o-linear-gradient(bottom, gold 5%, white 95%);
+    background-image: -moz-linear-gradient(bottom, gold 5%, white 95%);
+    background-image: -webkit-gradient(linear, left bottom, left top, color-stop(0.05, gold), color-stop(0.95, white));
+    background-image: -webkit-linear-gradient(bottom, gold 5%, white 95%);
+    background-image: -ms-linear-gradient(bottom, gold 5%, white 95%);
+    background-image: linear-gradient(bottom, gold 5%, white 95%);    
+    font-weight: bold;
+}
+TD.winner_second {
+    padding: 5px;
+    background-color: silver;
+    background-image: -o-linear-gradient(bottom, silver 5%, white 95%);
+    background-image: -moz-linear-gradient(bottom, silver 5%, white 95%);
+    background-image: -webkit-gradient(linear, left bottom, left top, color-stop(0.05, silver), color-stop(0.95, white));
+    background-image: -webkit-linear-gradient(bottom, silver 5%, white 95%);
+    background-image: -ms-linear-gradient(bottom, silver 5%, white 95%);
+    background-image: linear-gradient(bottom, silver 5%, white 95%);    
+}
+TD.winner_third {
+    padding: 5px;
+    background-color: burlywood;
+    background-image: -o-linear-gradient(bottom, burlywood 5%, white 95%);
+    background-image: -moz-linear-gradient(bottom, burlywood 5%, white 95%);
+    background-image: -webkit-gradient(linear, left bottom, left top, color-stop(0.05, burlywood), color-stop(0.95, white));
+    background-image: -webkit-linear-gradient(bottom, burlywood 5%, white 95%);
+    background-image: -ms-linear-gradient(bottom, burlywood 5%, white 95%);
+    background-image: linear-gradient(bottom, burlywood 5%, white 95%);    
+}
+TD.winner_flag {
+    padding: 2px;
+}
+TD.winner_team {
+    padding: 2px;
+    width: 300px;
+}
+
 /*
     TABLE STYLES
 */
@@ -396,6 +472,12 @@ TD.host_solo {
     padding-top: 5px;
     padding-left: 5px;
 }
+TD.title {
+    font-weight: bold;
+    font-size: 18px;
+    padding-top: 5px;
+    padding-left: 5px;
+}
 TD.indent {
     width: 30px;
 }
@@ -403,7 +485,10 @@ TD.operand {
     width: 20px;
     text-align: center;
 }
-
+TD.statistics {
+    width: 100px;
+    text-align: right;
+}
 DIV.admin H1 {
     color: #6666ff;
 }

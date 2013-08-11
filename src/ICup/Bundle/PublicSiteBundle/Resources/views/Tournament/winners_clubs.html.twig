@@ -1,0 +1,49 @@
+{% extends "ICupPublicSiteBundle:Masters:standard.html.twig" %}
+
+{% block body %}
+<h1 class="category">{{ tournament.name }}</h1>
+<p class="subcategory">
+    {% trans %}RESULTS{% endtrans %} {{ tournament.edition }}<br />
+</p>
+<div class="tab" onclick="location.href='{{ path('_tournament_winners', {'tournament': tournament.key }) }}'">{{ 'WINNERS'|trans|upper }}</div>
+<div class="tab" onclick="location.href='{{ path('_tournament_winners_countries', {'tournament': tournament.key }) }}'">{{ 'WINNING_COUNTRIES'|trans|upper }}</div>
+<div class="tab active" onclick="location.href='{{ path('_tournament_winners_clubs', {'tournament': tournament.key }) }}'">{{ 'WINNING_CLUBS'|trans|upper }}</div>
+<table>
+    <caption>{% trans %}WINNING_CLUBS{% endtrans %}</caption>
+    <thead>
+        <tr>
+            <td colspan="2"></td>
+            <td class="winner_first winners_country">{% trans %}FIRST{% endtrans %}</td>
+            <td class="winner_second winners_country">{% trans %}SECOND{% endtrans %}</td>
+            <td class="winner_third winners_country">{% trans %}THIRD{% endtrans %}</td>
+            <td class="winner_third winners_country">{% trans %}FORTH{% endtrans %}</td>
+        </tr>
+    </thead>
+    <tboby>
+    {% for ranks in championlist %}
+        {% set country = ranks.country %}
+        <tr class="{{ cycle(['even','odd'],loop.index) }}">
+            <td class="winner_flag"><img src="{{ imagepath }}/flags/{{ flags[country] }}" alt="{{ country|trans({},'lang') }}" title="{{ country|trans({},'lang') }}"></td>
+            <td class="winner_team">{{ ranks.club }}</td>
+            <td class="winners_country">
+                {{ ranks.first }}
+            </td>
+            <td class="winners_country">
+                {{ ranks.second }}
+            </td>
+            <td class="winners_country">
+                {{ ranks.third }}
+            </td>
+            <td class="winners_country">
+                {{ ranks.forth }}
+            </td>
+        </tr>
+    {% endfor %}
+    </tboby>
+    <tfoot>
+        <tr>
+            <td colspan="6"></td>
+        </tr>
+    </tfoot>
+</table>
+{% endblock %}

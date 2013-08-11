@@ -93,7 +93,7 @@ class StatisticsController extends Controller
         $statmap['adultteams'] = $statmap['teams'] - $statmap['childteams'];
         $statmap['maleteams'] = $statmap['teams'] - $statmap['femaleteams'];
 
-        $qbw = $em->createQuery("select t.id,t.name,t.division,c.country ".
+        $qbw = $em->createQuery("select t.id,t.name,t.division,c.name as club,c.country ".
                                 "from ICup\Bundle\PublicSiteBundle\Entity\Doctrine\Category cat, ".
                                      "ICup\Bundle\PublicSiteBundle\Entity\Doctrine\Group g, ".
                                      "ICup\Bundle\PublicSiteBundle\Entity\Doctrine\GroupOrder o, ".

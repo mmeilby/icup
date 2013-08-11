@@ -36,8 +36,178 @@ class WinnersController extends Controller
         
         foreach ($groups as $group) {
             $teamsList = $this->get('orderTeams')->sortGroup($this, $group['id']);
-            $championList[$group['catid']][] = array('group' => $group, 'teams' => $teamsList);
+            if ($group['classification'] == 10) {
+                $championList[$group['catid']]['group'] = $group;
+                $championList[$group['catid']]['first'][] = $teamsList[0];
+                $championList[$group['catid']]['second'][] = $teamsList[1];
+                $championList[$group['catid']]['third'] = array();
+                $championList[$group['catid']]['forth'] = array();
+            }
+            else {
+                $championList[$group['catid']]['third'][] = $teamsList[0];
+                $championList[$group['catid']]['forth'][] = $teamsList[1];
+            }
         }
         return array('tournament' => $tournament, 'championlist' => $championList);
     }
+
+    /**
+     * @Route("/tmnt/{tournament}/cwn", name="_tournament_winners_countries")
+     * @Template("ICupPublicSiteBundle:Tournament:winners_countries.html.twig")
+     */
+    public function listCountriesAction($tournament)
+    {
+        $this->get('util')->setupController($this, $tournament);
+        $tournamentId = $this->get('util')->getTournament($this);
+        $em = $this->getDoctrine()->getManager();
+
+        $tournament = $em->getRepository('ICup\Bundle\PublicSiteBundle\Entity\Doctrine\Tournament')
+                            ->find($tournamentId);
+        if ($tournament == null) {
+            return $this->redirect($this->generateUrl('_icup'));
+        }
+
+        $qb = $em->createQuery("select c.id as catid,c.name as category,c.gender,c.classification as class,g.id,g.classification ".
+                               "from ICup\Bundle\PublicSiteBundle\Entity\Doctrine\Category c, ".
+                                    "ICup\Bundle\PublicSiteBundle\Entity\Doctrine\Group g ".
+                               "where c.pid=:tournament and g.pid=c.id and g.classification >= :finals ".
+                               "order by c.gender asc, c.classification asc, g.classification desc");
+        $qb->setParameter('tournament', $tournament->getId());
+        $qb->setParameter('finals', 9);
+        $groups = $qb->getResult();
+        
+        $countryList = array();
+        foreach ($groups as $group) {
+            $teamsList = $this->get('orderTeams')->sortGroup($this, $group['id']);
+            if (key_exists($teamsList[0]->country, $countryList))
+                $winner_country = $countryList[$teamsList[0]->country];
+            else
+                $winner_country = array('country' => $teamsList[0]->country, 'first' => 0, 'second' => 0, 'third' => 0, 'forth' => 0);
+            if (key_exists($teamsList[1]->country, $countryList))
+                $looser_country = $countryList[$teamsList[1]->country];
+            else
+                $looser_country = array('country' => $teamsList[1]->country, 'first' => 0, 'second' => 0, 'third' => 0, 'forth' => 0);
+            if ($group['classification'] == 10) {
+                $winner_country['first']++;
+                $looser_country['second']++;
+            }
+            else {
+                $winner_country['third']++;
+                $looser_country['forth']++;
+            }
+            $countryList[$teamsList[0]->country] = $winner_country;
+            $countryList[$teamsList[1]->country] = $looser_country;
+        }
+        $championList = array();
+        foreach ($countryList as $rank) {
+            $insert = false;
+            for ($index = 0; $index < count($championList); $index++) {
+                $crank = $championList[$index];
+                if ($rank['first'] > $crank['first'])
+                    $insert = true;
+                else if ($rank['first'] == $crank['first']) {
+                    if ($rank['second'] > $crank['second'])
+                        $insert = true;
+                    else if ($rank['second'] == $crank['second']) {
+                        if ($rank['third'] > $crank['third'])
+                            $insert = true;
+                        else if ($rank['third'] == $crank['third'] && $rank['forth'] > $crank['forth']) {
+                            $insert = true;
+                        }
+                    }
+                }
+                if ($insert) {
+                    $first = array_slice($championList, 0, $index);
+                    $second = array_slice($championList, $index);
+                    $championList = array_merge($first, array($rank), $second);
+                    break;
+                }
+            }
+            if (!$insert) {
+                $championList[] = $rank;
+            }
+        }
+        
+        return array('tournament' => $tournament, 'championlist' => $championList);
+    }
+    
+    /**
+     * @Route("/tmnt/{tournament}/clbwn", name="_tournament_winners_clubs")
+     * @Template("ICupPublicSiteBundle:Tournament:winners_clubs.html.twig")
+     */
+    public function listClubsAction($tournament)
+    {
+        $this->get('util')->setupController($this, $tournament);
+        $tournamentId = $this->get('util')->getTournament($this);
+        $em = $this->getDoctrine()->getManager();
+
+        $tournament = $em->getRepository('ICup\Bundle\PublicSiteBundle\Entity\Doctrine\Tournament')
+                            ->find($tournamentId);
+        if ($tournament == null) {
+            return $this->redirect($this->generateUrl('_icup'));
+        }
+
+        $qb = $em->createQuery("select c.id as catid,c.name as category,c.gender,c.classification as class,g.id,g.classification ".
+                               "from ICup\Bundle\PublicSiteBundle\Entity\Doctrine\Category c, ".
+                                    "ICup\Bundle\PublicSiteBundle\Entity\Doctrine\Group g ".
+                               "where c.pid=:tournament and g.pid=c.id and g.classification >= :finals ".
+                               "order by c.gender asc, c.classification asc, g.classification desc");
+        $qb->setParameter('tournament', $tournament->getId());
+        $qb->setParameter('finals', 9);
+        $groups = $qb->getResult();
+        
+        $countryList = array();
+        foreach ($groups as $group) {
+            $teamsList = $this->get('orderTeams')->sortGroup($this, $group['id']);
+            if (key_exists($teamsList[0]->club, $countryList))
+                $winner_country = $countryList[$teamsList[0]->club];
+            else
+                $winner_country = array('club' => $teamsList[0]->club, 'country' => $teamsList[0]->country, 'first' => 0, 'second' => 0, 'third' => 0, 'forth' => 0);
+            if (key_exists($teamsList[1]->club, $countryList))
+                $looser_country = $countryList[$teamsList[1]->club];
+            else
+                $looser_country = array('club' => $teamsList[1]->club, 'country' => $teamsList[1]->country, 'first' => 0, 'second' => 0, 'third' => 0, 'forth' => 0);
+            if ($group['classification'] == 10) {
+                $winner_country['first']++;
+                $looser_country['second']++;
+            }
+            else {
+                $winner_country['third']++;
+                $looser_country['forth']++;
+            }
+            $countryList[$teamsList[0]->club] = $winner_country;
+            $countryList[$teamsList[1]->club] = $looser_country;
+        }
+        $championList = array();
+        foreach ($countryList as $rank) {
+            $insert = false;
+            for ($index = 0; $index < count($championList); $index++) {
+                $crank = $championList[$index];
+                if ($rank['first'] > $crank['first'])
+                    $insert = true;
+                else if ($rank['first'] == $crank['first']) {
+                    if ($rank['second'] > $crank['second'])
+                        $insert = true;
+                    else if ($rank['second'] == $crank['second']) {
+                        if ($rank['third'] > $crank['third'])
+                            $insert = true;
+                        else if ($rank['third'] == $crank['third'] && $rank['forth'] > $crank['forth']) {
+                            $insert = true;
+                        }
+                    }
+                }
+                if ($insert) {
+                    $first = array_slice($championList, 0, $index);
+                    $second = array_slice($championList, $index);
+                    $championList = array_merge($first, array($rank), $second);
+                    break;
+                }
+            }
+            if (!$insert) {
+                $championList[] = $rank;
+            }
+        }
+        
+        return array('tournament' => $tournament, 'championlist' => $championList);
+    }    
 }

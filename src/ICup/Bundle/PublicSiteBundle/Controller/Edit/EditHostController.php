@@ -119,9 +119,9 @@ class EditHostController extends Controller
     
     private function makeHostForm($host, $action) {
         $formDef = $this->createFormBuilder($host);
-        $formDef->add('name', 'text', array('label' => 'FORM.HOST.NAME', 'required' => false, 'disabled' => $action == 'del'));
-        $formDef->add('cancel', 'submit', array('label' => 'FORM.HOST.CANCEL.'.strtoupper($action)));
-        $formDef->add('save', 'submit', array('label' => 'FORM.HOST.SUBMIT.'.strtoupper($action)));
+        $formDef->add('name', 'text', array('label' => 'FORM.HOST.NAME', 'required' => false, 'disabled' => $action == 'del', 'translation_domain' => 'admin'));
+        $formDef->add('cancel', 'submit', array('label' => 'FORM.HOST.CANCEL.'.strtoupper($action), 'translation_domain' => 'admin'));
+        $formDef->add('save', 'submit', array('label' => 'FORM.HOST.SUBMIT.'.strtoupper($action), 'translation_domain' => 'admin'));
         return $formDef->getForm();
     }
     
@@ -213,11 +213,11 @@ class EditHostController extends Controller
     
     private function makeTournamentForm($tournament, $action) {
         $formDef = $this->createFormBuilder($tournament);
-        $formDef->add('name', 'text', array('label' => 'FORM.TOURNAMENT.NAME', 'required' => false, 'disabled' => $action == 'del'));
-        $formDef->add('key', 'text', array('label' => 'FORM.TOURNAMENT.KEY', 'required' => false, 'disabled' => $action == 'del'));
-        $formDef->add('edition', 'text', array('label' => 'FORM.TOURNAMENT.EDITION', 'required' => false, 'disabled' => $action == 'del'));
-        $formDef->add('cancel', 'submit', array('label' => 'FORM.TOURNAMENT.CANCEL.'.strtoupper($action)));
-        $formDef->add('save', 'submit', array('label' => 'FORM.TOURNAMENT.SUBMIT.'.strtoupper($action)));
+        $formDef->add('name', 'text', array('label' => 'FORM.TOURNAMENT.NAME', 'required' => false, 'disabled' => $action == 'del', 'translation_domain' => 'admin'));
+        $formDef->add('key', 'text', array('label' => 'FORM.TOURNAMENT.KEY', 'required' => false, 'disabled' => $action == 'del', 'translation_domain' => 'admin'));
+        $formDef->add('edition', 'text', array('label' => 'FORM.TOURNAMENT.EDITION', 'required' => false, 'disabled' => $action == 'del', 'translation_domain' => 'admin'));
+        $formDef->add('cancel', 'submit', array('label' => 'FORM.TOURNAMENT.CANCEL.'.strtoupper($action), 'translation_domain' => 'admin'));
+        $formDef->add('save', 'submit', array('label' => 'FORM.TOURNAMENT.SUBMIT.'.strtoupper($action), 'translation_domain' => 'admin'));
         return $formDef->getForm();
     }
 }

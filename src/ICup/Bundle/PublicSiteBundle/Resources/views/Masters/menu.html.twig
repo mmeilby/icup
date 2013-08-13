@@ -36,7 +36,7 @@
                 <ul>
                     {% for local in ['en','it','fr','de','es','po','da'] %}
                         {% set flag = flags[cycle(['GBR','ITA','FRA','DEU','ESP','POL','DNK'], loop.index0)] %}
-                        {% set lang = ['LANG.',local|upper]|join|trans %}
+                        {% set lang = ['LANG.',local|upper]|join|trans({}, 'common') %}
                     <li>
                         <a href="{{ path('_switch', { 'locale': local }) }}">
                             <img src="{{ imagepath }}/flags/{{ flag }}"

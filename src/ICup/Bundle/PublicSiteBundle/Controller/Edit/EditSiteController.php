@@ -138,9 +138,9 @@ class EditSiteController extends Controller
     
     private function makeSiteForm($site, $action) {
         $formDef = $this->createFormBuilder($site);
-        $formDef->add('name', 'text', array('label' => 'FORM.SITE.NAME', 'required' => false, 'disabled' => $action == 'del'));
-        $formDef->add('cancel', 'submit', array('label' => 'FORM.SITE.CANCEL.'.strtoupper($action)));
-        $formDef->add('save', 'submit', array('label' => 'FORM.SITE.SUBMIT.'.strtoupper($action)));
+        $formDef->add('name', 'text', array('label' => 'FORM.SITE.NAME', 'required' => false, 'disabled' => $action == 'del', 'translation_domain' => 'admin'));
+        $formDef->add('cancel', 'submit', array('label' => 'FORM.SITE.CANCEL.'.strtoupper($action), 'translation_domain' => 'admin'));
+        $formDef->add('save', 'submit', array('label' => 'FORM.SITE.SUBMIT.'.strtoupper($action), 'translation_domain' => 'admin'));
         return $formDef->getForm();
     }
     
@@ -244,10 +244,10 @@ class EditSiteController extends Controller
     
     private function makePlaygroundForm($playground, $action) {
         $formDef = $this->createFormBuilder($playground);
-        $formDef->add('name', 'text', array('label' => 'FORM.PLAYGROUND.NAME', 'required' => false, 'disabled' => $action == 'del'));
-        $formDef->add('no', 'text', array('label' => 'FORM.PLAYGROUND.NO', 'required' => false, 'disabled' => $action == 'del'));
-        $formDef->add('cancel', 'submit', array('label' => 'FORM.PLAYGROUND.CANCEL.'.strtoupper($action)));
-        $formDef->add('save', 'submit', array('label' => 'FORM.PLAYGROUND.SUBMIT.'.strtoupper($action)));
+        $formDef->add('name', 'text', array('label' => 'FORM.PLAYGROUND.NAME', 'required' => false, 'disabled' => $action == 'del', 'translation_domain' => 'admin'));
+        $formDef->add('no', 'text', array('label' => 'FORM.PLAYGROUND.NO', 'required' => false, 'disabled' => $action == 'del', 'translation_domain' => 'admin'));
+        $formDef->add('cancel', 'submit', array('label' => 'FORM.PLAYGROUND.CANCEL.'.strtoupper($action), 'translation_domain' => 'admin'));
+        $formDef->add('save', 'submit', array('label' => 'FORM.PLAYGROUND.SUBMIT.'.strtoupper($action), 'translation_domain' => 'admin'));
         return $formDef->getForm();
     }
 }

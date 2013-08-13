@@ -52,24 +52,8 @@
         "symfony-app-dir": "app",
         "symfony-web-dir": "web",
         "incenteev-parameters": {
-            "file": "app/config/parameters.yml",
+            "file": "app/config/local/parameters.yml",
             "env-map": {
-                "database_driver":   "pdo_mysql",
-                "database_host":     "localhost",
-                "database_port":     "3306",
-                "database_name":     "icup",
-                "database_user":     "root",
-                "database_password": "sVP32ld193",
-
-                "mailer_transport":  "smtp",
-                "mailer_host":       "localhost",
-                "mailer_user":       "mmeilby@gmail.com",
-                "mailer_password":   "bingoboy",
-
-                "security_password": "sVP283bojn023",
-
-                "locale":            "da",
-                "secret":            "95e910aceacd17510f316697a05adbaf3e"
             }
         },
         "branch-alias": {

@@ -1,0 +1,9 @@
+# Common expressions for all locales
+LANG:
+  EN: English
+  PO: Polski
+  ES: Español
+  DA: Dansk
+  IT: Italiano
+  FR: Fraçais
+  DE: Deutsch

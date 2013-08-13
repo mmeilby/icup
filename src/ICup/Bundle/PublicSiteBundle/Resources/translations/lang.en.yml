@@ -29,7 +29,7 @@ BLM: Saint Bartholemy
 BLR: Belarus
 BLZ: Belize
 BMU: Bermuda
-BOL: Bolivia, Plurinational State of
+BOL: Bolivia
 BRA: Brazil
 BRB: Barbados
 BRN: Brunei Darussalam
@@ -44,7 +44,7 @@ CHL: Chile
 CHN: China
 CIV: Côte d'Ivoire
 CMR: Cameroon
-COD: Congo, the Democratic Republic of the
+COD: Democratic Republic of Congo
 COG: Congo
 COK: Cook Islands
 COL: Colombia
@@ -75,7 +75,7 @@ FJI: Fiji
 FLK: Falkland Islands (Malvinas)
 FRA: France
 FRO: Faroe Islands
-FSM: Micronesia, Federated States of
+FSM: Federated States of Micronesia
 GAB: Gabon
 GBR: United Kingdom
 GEO: Georgia
@@ -105,7 +105,7 @@ IMN: Isle of Man
 IND: India
 IOT: British Indian Ocean Territory
 IRL: Ireland
-IRN: Iran, Islamic Republic of
+IRN: Iran
 IRQ: Iraq
 ISL: Iceland
 ISR: Israel
@@ -120,9 +120,9 @@ KGZ: Kyrgyzstan
 KHM: Cambodia
 KIR: Kiribati
 KNA: Saint Kitts and Nevis
-KOR: Korea, Republic of
+KOR: South Korea
 KWT: Kuwait
-LAO: Lao People's Democratic Republic
+LAO: Lao
 LBN: Lebanon
 LBR: Liberia
 LBY: Libyan Arab Jamahiriya
@@ -137,12 +137,12 @@ MAC: Macao
 MAF: Saint Martin (French part)
 MAR: Morocco
 MCO: Monaco
-MDA: Moldova, Republic of
+MDA: Moldova
 MDG: Madagascar
 MDV: Maldives
 MEX: Mexico
 MHL: Marshall Islands
-MKD: Macedonia, the former Yugoslav Republic of
+MKD: Macedonia
 MLI: Mali
 MLT: Malta
 MMR: Myanmar
@@ -179,10 +179,10 @@ PLW: Palau
 PNG: Papua New Guinea
 POL: Poland
 PRI: Puerto Rico
-PRK: Korea, Democratic People's Republic of
+PRK: North Korea
 PRT: Portugal
 PRY: Paraguay
-PSE: Palestinian Territory, Occupied
+PSE: Palestine
 PYF: French Polynesia
 QAT: Qatar
 REU: Reunion
@@ -226,8 +226,8 @@ TTO: Trinidad and Tobago
 TUN: Tunisia
 TUR: Turkey
 TUV: Tuvalu
-TWN: Taiwan, Province of China
-TZA: Tanzania, United Republic of
+TWN: Taiwan
+TZA: Tanzania
 UGA: Uganda
 UKR: Ukraine
 UMI: United States Minor Outlying Islands

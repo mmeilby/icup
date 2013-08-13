@@ -1,4 +1,5 @@
 {% extends "ICupPublicSiteBundle:Masters:edit.html.twig" %}
+{% trans_default_domain "admin" %}
 
 {% block adminbody %}
 <h1>{% trans %}FORM.ADMIN{% endtrans %}</h1>
@@ -22,7 +23,7 @@
         <tr class="{{ cycle(['even','odd'],loopindex) }}">
             <td class="host_solo" colspan="2">
                 <a href="{{ path('_edit_category_chg', { 'categoryid': category.id }) }}">
-                {% trans %}CATEGORY{% endtrans %} {{ category.name|upper }}
+                {% trans from "messages" %}CATEGORY{% endtrans %} {{ category.name|upper }}
                 </a>    
             </td>
             <td class="operand">
@@ -45,7 +46,7 @@
             {% for group in groups[category.id] %}
         <tr class="{{ cycle(['even','odd'],loopindex+loop.index) }}">
             <td></td>
-            <td><a href="{{ path('_edit_group_chg', { 'groupid': group.id }) }}">{{ group.name }}</a></td>
+            <td><a href="{{ path('_edit_group_chg', { 'groupid': group.id }) }}">{% trans from "messages" %}GROUP{% endtrans %} {{ group.name }}</a></td>
             <td class="operand">
                 <a href="{{ path('_edit_group_add', { 'categoryid': category.id }) }}">
                 +

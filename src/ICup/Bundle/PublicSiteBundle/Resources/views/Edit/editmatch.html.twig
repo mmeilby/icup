@@ -1,6 +1,7 @@
 {% extends "ICupPublicSiteBundle:Default:layout.script.html.twig" %}
 
 {% form_theme form _self %}
+{% trans_default_domain "admin" %}
 
 {% block body %}
 <a href="{{ path('_editmenu', {'categoryId': category.id, 'tournament': tournament.key }) }}">

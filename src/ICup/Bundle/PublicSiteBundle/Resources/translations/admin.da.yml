@@ -1,0 +1,166 @@
+# Form translations
+FORM:
+  ADMIN: iCup Turnerings Administration
+  ERROR:
+    BACK: Videre...
+    BADHOST: Den valgte turneringsvært findes ikke.
+    BADTOURNAMENT: Den valgte turnering findes ikke.
+    BADSITE: Den valgte lokalitet findes ikke.
+    BADPLAYGROUND: Den valgte bane findes ikke.
+    BADCATEGORY: Den valgte gruppe findes ikke.
+    BADGROUP: Den valgte pulje findes ikke.
+  LISTHOSTS:
+    TITLE: Vedligehold turneringer og værter
+    CAPTION: Værter og turneringer
+    NOTOURNAMENT: Tilføj ny turnering
+  HOST:
+    TITLE:
+      ADD: Tilføj ny turneringsvært
+      CHG: Rediger turneringsvært
+      DEL: SLET TURNERINGSVÆRT
+    PROMPT:
+      ADD: Indtast oplysninger på turneringsværten.
+      CHG: Ret oplysninger på turneringsværten.
+      DEL: Følgende turneringsvært vil bliver slettet. Alle kampresultater samt turneringsoplysninger knyttet til turneringensværten vil også blive fjernet. Det er ikke muligt at fortryde når turneringensværten er fjernet.
+    NAME: Navn
+    SUBMIT:
+      ADD: Tilføj ny turneringsvært
+      CHG: Gem turneringsvært
+      DEL: SLET TURNERINGSVÆRT
+    CANCEL:
+      ADD: Fortryd oprettelse
+      CHG: Fortryd ændringer
+      DEL: Fortryd slet
+  TOURNAMENT:
+    TITLE:
+      ADD: Tilføj ny turnering
+      CHG: Rediger turnering
+      DEL: SLET TURNERING
+    PROMPT:
+      ADD: Indtast oplysninger om turneringen.
+      CHG: Ret oplysninger om turneringen.
+      DEL: Følgende turnering vil bliver slettet. Alle kampresultater samt oplysninger knyttet til turneringen vil også blive fjernet. Det er ikke muligt at fortryde når turneringen er fjernet.
+    NAME: Navn
+    KEY: Identifikation
+    EDITION: Udgave
+    SUBMIT:
+      ADD: Tilføj ny turnering
+      CHG: Gem turnering
+      DEL: SLET TURNERING
+    CANCEL:
+      ADD: Fortryd oprettelse
+      CHG: Fortryd ændringer
+      DEL: Fortryd slet
+  LISTTOURNAMENTS:
+    TITLE: Vedligehold turnering
+    CAPTION: Lokaliteter og baner
+    NOSITE: Tilføj ny lokalitet
+    NOPLAYGROUND: Tilføj ny bane
+  SITE:
+    TITLE:
+      ADD: Tilføj ny lokalitet
+      CHG: Rediger lokalitet
+      DEL: SLET LOKALITET
+    PROMPT:
+      ADD: Indtast oplysninger på lokaliteten.
+      CHG: Ret oplysninger på lokaliteten.
+      DEL: Følgende lokalitet vil bliver slettet. Alle kampresultater samt turneringsoplysninger knyttet til lokaliteten vil også blive fjernet. Det er ikke muligt at fortryde når lokaliteten er fjernet.
+    NAME: Navn
+    SUBMIT:
+      ADD: Tilføj ny lokalitet
+      CHG: Gem lokalitet
+      DEL: SLET LOKALITET
+    CANCEL:
+      ADD: Fortryd oprettelse
+      CHG: Fortryd ændringer
+      DEL: Fortryd slet
+  PLAYGROUND:
+    TITLE:
+      ADD: Tilføj ny bane
+      CHG: Rediger bane
+      DEL: SLET BANE
+    PROMPT:
+      ADD: Indtast oplysninger om banen.
+      CHG: Ret oplysninger om banen.
+      DEL: Følgende bane vil bliver slettet. Alle kampresultater samt oplysninger knyttet til banen vil også blive fjernet. Det er ikke muligt at fortryde når banen er fjernet.
+    NAME: Navn
+    NO: Banenr.
+    SUBMIT:
+      ADD: Tilføj ny bane
+      CHG: Gem bane
+      DEL: SLET BANE
+    CANCEL:
+      ADD: Fortryd oprettelse
+      CHG: Fortryd ændringer
+      DEL: Fortryd slet
+  LISTCATEGORIES:
+    TITLE: Vedligehold turnering
+    CAPTION: Grupper og puljer
+    NOCATEGORY: Tilføj ny gruppe
+    NOGROUP: Tilføj ny pulje
+  CATEGORY:
+    DEFAULT: Vælg...
+    TITLE:
+      ADD: Tilføj ny gruppe
+      CHG: Rediger gruppe
+      DEL: SLET GRUPPE
+    PROMPT:
+      ADD: Indtast oplysninger på gruppen.
+      CHG: Ret oplysninger på gruppen.
+      DEL: Følgende gruppe vil bliver slettet. Alle kampresultater samt turneringsoplysninger knyttet til gruppen vil også blive fjernet. Det er ikke muligt at fortryde når gruppen er fjernet.
+    NAME: Navn
+    GENDER: Køn
+    SEX:
+      FEMALE: Kvinder
+      MALE: Mænd
+    CLASSIFICATION: Klasse
+    CLASS:
+      U12: Under 12
+      U14: Under 14
+      U16: Under 16
+      U18: Under 18
+      U21: Under 21
+      U30: Under 30
+      U30/U21: Under 30/21
+    SUBMIT:
+      ADD: Tilføj ny gruppe
+      CHG: Gem gruppe
+      DEL: SLET GRUPPE
+    CANCEL:
+      ADD: Fortryd oprettelse
+      CHG: Fortryd ændringer
+      DEL: Fortryd slet
+  GROUP:
+    DEFAULT: Vælg...
+    TITLE:
+      ADD: Tilføj ny pulje
+      CHG: Rediger pulje
+      DEL: SLET PULJE
+    PROMPT:
+      ADD: Indtast oplysninger om puljen.
+      CHG: Ret oplysninger om puljen.
+      DEL: Følgende pulje vil bliver slettet. Alle kampresultater samt oplysninger knyttet til puljen vil også blive fjernet. Det er ikke muligt at fortryde når puljen er fjernet.
+    NAME: Navn
+    TIME: Spilletid (min.)
+    CLASSIFICATION: Puljetype
+    CLASS:
+      0: Grundspil
+      1: Playoff
+#      2: 1/128 finale
+#      3: 1/64 finale
+#      4: 1/32 finale
+#      5: 1/16 finale
+      6: 1/8 finale
+      7: 1/4 finale
+      8: Semifinale
+      9: Bronzekamp
+      10: Finale
+    SUBMIT:
+      ADD: Tilføj ny pulje
+      CHG: Gem pulje
+      DEL: SLET PULJE
+    CANCEL:
+      ADD: Fortryd oprettelse
+      CHG: Fortryd ændringer
+      DEL: Fortryd slet
+

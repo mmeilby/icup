@@ -134,17 +134,17 @@ class EditCategoryController extends Controller
     }
     
     private function makeCategoryForm($category, $action) {
-        $gender = array( 'M' => 'MALE', 'F' => 'FEMALE' );
+        $gender = array( 'M' => 'FORM.CATEGORY.SEX.MALE', 'F' => 'FORM.CATEGORY.SEX.FEMALE' );
         $classifications = array();
         foreach (array('U12','U14','U16','U18','U21','U30','U30/U21') as $id) {
-            $classifications[$id] = $id;
+            $classifications[$id] = 'FORM.CATEGORY.CLASS.'.$id;
         }
         $formDef = $this->createFormBuilder($category);
-        $formDef->add('name', 'text', array('label' => 'FORM.CATEGORY.NAME', 'required' => false, 'disabled' => $action == 'del'));
-        $formDef->add('gender', 'choice', array('label' => 'FORM.CATEGORY.GENDER', 'required' => false, 'choices' => $gender, 'empty_value' => 'FORM.CATEGORY.DEFAULT', 'disabled' => $action == 'del'));
-        $formDef->add('classification', 'choice', array('label' => 'FORM.CATEGORY.CLASSIFICATION', 'required' => false, 'choices' => $classifications, 'empty_value' => 'FORM.CATEGORY.DEFAULT', 'disabled' => $action == 'del'));
-        $formDef->add('cancel', 'submit', array('label' => 'FORM.CATEGORY.CANCEL.'.strtoupper($action)));
-        $formDef->add('save', 'submit', array('label' => 'FORM.CATEGORY.SUBMIT.'.strtoupper($action)));
+        $formDef->add('name', 'text', array('label' => 'FORM.CATEGORY.NAME', 'required' => false, 'disabled' => $action == 'del', 'translation_domain' => 'admin'));
+        $formDef->add('gender', 'choice', array('label' => 'FORM.CATEGORY.GENDER', 'required' => false, 'choices' => $gender, 'empty_value' => 'FORM.CATEGORY.DEFAULT', 'disabled' => $action == 'del', 'translation_domain' => 'admin'));
+        $formDef->add('classification', 'choice', array('label' => 'FORM.CATEGORY.CLASSIFICATION', 'required' => false, 'choices' => $classifications, 'empty_value' => 'FORM.CATEGORY.DEFAULT', 'disabled' => $action == 'del', 'translation_domain' => 'admin'));
+        $formDef->add('cancel', 'submit', array('label' => 'FORM.CATEGORY.CANCEL.'.strtoupper($action), 'translation_domain' => 'admin'));
+        $formDef->add('save', 'submit', array('label' => 'FORM.CATEGORY.SUBMIT.'.strtoupper($action), 'translation_domain' => 'admin'));
         return $formDef->getForm();
     }
     
@@ -249,14 +249,14 @@ class EditCategoryController extends Controller
     private function makeGroupForm($playground, $action) {
         $classifications = array();
         foreach (array(0,1,6,7,8,9,10) as $id) {
-            $classifications[$id] = 'GROUPCLASS.'.$id;
+            $classifications[$id] = 'FORM.GROUP.CLASS.'.$id;
         }
         $formDef = $this->createFormBuilder($playground);
-        $formDef->add('name', 'text', array('label' => 'FORM.GROUP.NAME', 'required' => false, 'disabled' => $action == 'del'));
-        $formDef->add('playingtime', 'text', array('label' => 'FORM.GROUP.TIME', 'required' => false, 'disabled' => $action == 'del'));
-        $formDef->add('classification', 'choice', array('label' => 'FORM.GROUP.CLASSIFICATION', 'required' => false, 'choices' => $classifications, 'empty_value' => 'FORM.GROUP.DEFAULT', 'disabled' => $action == 'del'));
-        $formDef->add('cancel', 'submit', array('label' => 'FORM.GROUP.CANCEL.'.strtoupper($action)));
-        $formDef->add('save', 'submit', array('label' => 'FORM.GROUP.SUBMIT.'.strtoupper($action)));
+        $formDef->add('name', 'text', array('label' => 'FORM.GROUP.NAME', 'required' => false, 'disabled' => $action == 'del', 'translation_domain' => 'admin'));
+        $formDef->add('playingtime', 'text', array('label' => 'FORM.GROUP.TIME', 'required' => false, 'disabled' => $action == 'del', 'translation_domain' => 'admin'));
+        $formDef->add('classification', 'choice', array('label' => 'FORM.GROUP.CLASSIFICATION', 'required' => false, 'choices' => $classifications, 'empty_value' => 'FORM.GROUP.DEFAULT', 'disabled' => $action == 'del', 'translation_domain' => 'admin'));
+        $formDef->add('cancel', 'submit', array('label' => 'FORM.GROUP.CANCEL.'.strtoupper($action), 'translation_domain' => 'admin'));
+        $formDef->add('save', 'submit', array('label' => 'FORM.GROUP.SUBMIT.'.strtoupper($action), 'translation_domain' => 'admin'));
         return $formDef->getForm();
     }
 }

@@ -111,7 +111,6 @@ TEASER:
 
 PRELIMINARY: Preliminary round
 CLASSIFICATION: Playoff rounds
-FINALS: Finals
 STANDING: Final standing
 FINALS: Finals
 SEMIFINALS: Semifinals
@@ -122,20 +121,14 @@ THIRD: 3rd
 FORTH: 4th
 
 GROUPCLASS:
+  0: Preliminary round
   1: Playoff
+  6: 1/8 final
+  7: 1/4 final
   8: Semi final
-  9: 3/4 final
+  9: Bronze medal game
   10: Final
     
-LANG:
-  EN: English
-  PO: Polski
-  ES: Español
-  DA: Dansk
-  IT: Italiano
-  FR: Fraçais
-  DE: Deutsch
-
 LEGEND:
   NO: No.
   TIME: Time
@@ -199,130 +192,3 @@ MONTH:
   OCT: October
   NOV: November
   DEC: December
-
-
-icup.logo: iCup
-icup.punchline: Match planning tool on the web
-
-icup.subtitle: Ups....
-icup.instruction: This page can not show its content. We apologize for the inconvenience this may cause. Please try to go back to last page using the browser back button.
-  
-lobby.frontdesk.home: iCup home
-lobby.frontdesk.language: Language
-lobby.frontdesk.myhome: Tournament
-lobby.frontdesk.register: Register
-lobby.frontdesk.enroll: Enroll
-lobby.frontdesk.invitation: Program
-lobby.frontdesk.search: Search
-lobby.frontdesk.results: Results
-lobby.frontdesk.logout: Logout
-lobby.frontdesk.login: Login
-
-lobby.frontdesk.guest.title: iCup - Match planning tool on the web
-lobby.frontdesk.guest.description: Match planning tool on the web
-lobby.frontdesk.guest.keywords: Tournament,Match,Planning,Results,Tool
-
-lobby.search.title: Search for tournaments
-lobby.search.description: Search for available tournaments
-lobby.search.keywords: Tournament,Enroll,Results
-
-lobby.search.subtitle: Select a tournament
-lobby.search.instruction: Pick a tournament to attend or view the results for.
-
-lobby.frontdesk.title: Front desk
-lobby.frontdesk.description: Start page for the tournament site
-lobby.frontdesk.keywords: Tournament,Enroll,Results
-
-lobby.register.club.title: Register club
-lobby.register.club.description: Register a club for attending tournaments
-lobby.register.club.keywords: Register,Club,Tournaments
-lobby.register.club.instruction: You are about to register your club and a login for you as the administrator of the club. After you have registered the club and your login you can add other logins to attach to the club.
-lobby.register.club.legend: Club details
-lobby.register.club.name.label: Club name
-lobby.register.club.country.label: Country
-lobby.register.user.legend: Login details
-lobby.register.user.name.label: Full name
-lobby.register.user.email.label: E-mail
-lobby.register.user.username.label: User name
-lobby.register.user.password.label: Password
-lobby.register.user.password_verify.label: Verify password
-lobby.register.club.submit: Register
-lobby.register.club.country.option0: Please select from the list...
-
-lobby.register.club.name.empty: Club name can not be blank - please choose a proper name.
-lobby.register.club.name.inuse: Club name is in use - please use a different.
-lobby.register.club.country.empty: Country can not be blank - please choose a proper country.
-lobby.register.club.invalid.access: Can not register a new club at this stage - please log off and try again.
-lobby.register.user.name.empty: User name can not be blank - please choose a proper name.
-lobby.register.user.name.inuse: User name is in use - please use a different.
-lobby.register.user.name.invalid: User name is not valid.
-lobby.register.user.email.invalid: Email is not valid.
-lobby.register.user.password.empty: Password can not be blank - please choose a proper one.
-lobby.register.user.password.invalid: Password is not valid.
-lobby.register.user.password.different: Password is not verified - please enter the same password in the verify entry field.
-
-lobby.register.welcome.title: Registration completed
-lobby.register.welcome.description: Registration completed
-lobby.register.welcome.keywords: Register,
-lobby.register.welcome.instruction: <b>Welcome!</b><p>You have successfully registered a profile that allows you to sign up for tournaments listed at this site.<p><p>Follow the link below to login with your user name and begin to browse for tournaments to enroll.</p> 
-lobby.register.loginlink: Login your new profile...
-
-lobby.login.title: Login
-lobby.login.instruction: <p>To enroll the tournament please identify the participating club using the login below.</p>If this is the first time the club enrolls for a tournament use the following link
-lobby.login.legend: Login
-lobby.frontdesk.enroll.club.enrolllink: Enroll club for the first time...
-lobby.login.username.label: User name
-lobby.login.password.label: Password
-lobby.login.submit: Login
-lobby.login.invalid: E-mail or password was not correct. Please retry to login.
-
-lobby.frontdesk.enroll.title: Enroll the tournament
-lobby.frontdesk.enroll.instruction: To enroll the tournament a short list of information is required. During the next two steps you will be asked to identify the club and then each team participating in the tournament. Should you previously have entered information about the club and want to add more teams to your enrollment please login rather than register the club once more.
-lobby.frontdesk.enroll.club.legend: The club
-lobby.frontdesk.enroll.club.name.label: Name of the club
-lobby.frontdesk.enroll.club.country.label: Nationality
-lobby.frontdesk.enroll.club.email.inuse: E-mail is in use - are you duplicating the club registration?
-lobby.frontdesk.enroll.club.username.inuse: User name is in use - please choose a different.
-
-lobby.frontdesk.enroll.team.legend: Team enrollment
-lobby.frontdesk.enroll.team.category.label: Choose a category to enroll
-lobby.frontdesk.enroll.team.no_of_teams.label: No of teams to enroll
-lobby.frontdesk.enroll.team.no.invalid: Invalid number of teams used for enrollment.
-lobby.frontdesk.enroll.team.submit: OK
-lobby.frontdesk.enroll.club.submit: Done
-
-# viewGroupResults
-results:
-  group:
-    title: Results by category
-    description: Shows the group results in a category
-    keywords: Results,Category,Team
-    headline: Category
-    category.label: Choose a category
-    submit: Show results
-    legend:
-      title: Results for category
-      team: Team
-      matches: MP
-      won: W
-      tie: T
-      lost: L
-      goals:
-        won: GF
-        lost: GA
-        diff: GD
-      points: Pts
-# viewTeamResults
-  team:
-    title: Results by team
-    description: Shows the results by team
-    keywords: Results,Category,Team
-    legend:
-      matchno: Match
-      date: Date
-      time: Time
-      name: Teams
-      playground: Field
-      goals: Score
-      playgrounds: List of playgrounds
-

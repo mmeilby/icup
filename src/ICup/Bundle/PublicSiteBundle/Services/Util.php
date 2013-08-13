@@ -22,9 +22,6 @@ class Util
         $session->set('Tournament', $tournament);
 
         $this->switchLanguage($container);
-        if ($session->get('ImagePath') == null) {
-            $session->set('ImagePath', $this->getImagePath($container));
-        }
         if ($session->get('Countries') == null) {
             $session->set('Countries', $this->getCountries());
         }
@@ -56,15 +53,6 @@ class Util
                 'MENU.ADMIN.REFEREES' => $container->generateUrl('_edit_host_list', array('tournament' => $tournament)))
         );
         $session->set('FooterMenu', $footerMenu);
-
-        /* @var $user User */
-        $user = $container->getUser();
-        if ($user == null) {
-            $session->set('User', '-');
-        }
-        else {
-            $session->set('User', $user->getUsername());
-        }
     }
     
     public function switchLanguage(Controller $container)
@@ -103,9 +91,5 @@ class Util
         $tournament = $em->getRepository('ICup\Bundle\PublicSiteBundle\Entity\Doctrine\Tournament')
                                 ->findOneBy(array('key' => $tournamentKey));
         return $tournament != null ? $tournament->getId() : 0;
-    }
-    
-    public function getImagePath(Controller $container) {
-        return '/icup/web/bundles/icuppublicsite/images';
     }
 }

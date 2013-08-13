@@ -707,8 +707,6 @@ return array(
     'Doctrine\\ORM\\Version' => $vendorDir . '/doctrine/orm/lib/Doctrine/ORM/Version.php',
     'ICup\\Bundle\\PublicSiteBundle\\Controller\\DefaultController' => $baseDir . '/src/ICup/Bundle/PublicSiteBundle/Controller/DefaultController.php',
     'ICup\\Bundle\\PublicSiteBundle\\Controller\\Edit\\EditCategoryController' => $baseDir . '/src/ICup/Bundle/PublicSiteBundle/Controller/Edit/EditCategoryController.php',
-    'ICup\\Bundle\\PublicSiteBundle\\Controller\\Edit\\EditController' => $baseDir . '/src/ICup/Bundle/PublicSiteBundle/Controller/Edit/EditController.php',
-    'ICup\\Bundle\\PublicSiteBundle\\Controller\\Edit\\EditGroupController' => $baseDir . '/src/ICup/Bundle/PublicSiteBundle/Controller/Edit/EditGroupController.php',
     'ICup\\Bundle\\PublicSiteBundle\\Controller\\Edit\\EditGroupOrderController' => $baseDir . '/src/ICup/Bundle/PublicSiteBundle/Controller/Edit/EditGroupOrderController.php',
     'ICup\\Bundle\\PublicSiteBundle\\Controller\\Edit\\EditHostController' => $baseDir . '/src/ICup/Bundle/PublicSiteBundle/Controller/Edit/EditHostController.php',
     'ICup\\Bundle\\PublicSiteBundle\\Controller\\Edit\\EditLoginController' => $baseDir . '/src/ICup/Bundle/PublicSiteBundle/Controller/Edit/EditLoginController.php',

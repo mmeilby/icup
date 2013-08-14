@@ -53,6 +53,7 @@
         "symfony-web-dir": "web",
         "incenteev-parameters": {
             "file": "app/config/local/parameters.yml",
+            "dist-file": "app/config/parameters.yml.dist",
             "env-map": {
             }
         },

@@ -15,10 +15,10 @@
             <ul>
                 <li>
                     {% if is_granted('ROLE_PREVIOUS_ADMIN') %}
-                        <a href="{{ path('_icup', {'_switch_user': '_exit'}) }}">{% trans %}MENU.EXIT{% endtrans %}</a>&nbsp;
+                        <a href="{{ path('_icup', {'_switch_user': '_exit'}) }}">{% trans %}MENU.EXIT{% endtrans %}</a>&nbsp;|&nbsp;
                     {% endif %}
                     {% if app.user != null %}
-                        <a href="{{ path('_admin_logout') }}">{{ app.user.username|capitalize }} {% trans %}MENU.LOGOUT{% endtrans %}</a>
+                        <a href="{{ path('_admin_logout') }}">{{ app.user.username|upper }} {% trans %}MENU.LOGOUT{% endtrans %}</a>
                     {% else %}
                         <a href="{{ path('_admin_login') }}">{% trans %}MENU.LOGIN{% endtrans %}</a>
                     {% endif %}

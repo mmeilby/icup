@@ -42,15 +42,15 @@ class Util
                 'MENU.TOURNAMENT.WINNERS' => $container->generateUrl('_tournament_winners', array('tournament' => $tournament)),
                 'MENU.TOURNAMENT.STATISTICS' => $container->generateUrl('_tournament_statistics', array('tournament' => $tournament))),
             'MENU.ENROLLMENT.TITLE' => array(
-                'MENU.ENROLLMENT.CLUBS' => $container->generateUrl('_tournament_overview', array('tournament' => $tournament)),
-                'MENU.ENROLLMENT.TEAMS' => $container->generateUrl('_tournament_overview', array('tournament' => $tournament)),
-                'MENU.ENROLLMENT.REFEREES' => $container->generateUrl('_tournament_overview', array('tournament' => $tournament))),
+                'MENU.ENROLLMENT.CLUBS' => $container->generateUrl('_club_enroll_list'),
+                'MENU.ENROLLMENT.TEAMS' => $container->generateUrl('_club_enroll_list'),
+                'MENU.ENROLLMENT.REFEREES' => $container->generateUrl('_club_enroll_list')),
             'MENU.ADMIN.TITLE' => array(
                 'MENU.ADMIN.RESULTS' => $container->generateUrl('_tournament_playgrounds', array('tournament' => $tournament)),
                 'MENU.ADMIN.TOURNAMENT' => $container->generateUrl('_edit_host_list'),
-                'MENU.ADMIN.TEAMS' => $container->generateUrl('_edit_host_list', array('tournament' => $tournament)),
-                'MENU.ADMIN.PLAYERS' => $container->generateUrl('_edit_host_list', array('tournament' => $tournament)),
-                'MENU.ADMIN.REFEREES' => $container->generateUrl('_edit_host_list', array('tournament' => $tournament)))
+                'MENU.ADMIN.TEAMS' => $container->generateUrl('_edit_host_list'),
+                'MENU.ADMIN.PLAYERS' => $container->generateUrl('_edit_host_list'),
+                'MENU.ADMIN.REFEREES' => $container->generateUrl('_edit_host_list'))
         );
         $session->set('FooterMenu', $footerMenu);
     }

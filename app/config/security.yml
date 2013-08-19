@@ -39,7 +39,7 @@ security:
                 target: _icup
 
     access_control:
-        - { path: ^/user, roles: ROLE_USER }
+        - { path: ^/club, roles: ROLE_USER }
         - { path: ^/edit, roles: ROLE_EDITOR }
         - { path: ^/admin, roles: ROLE_ADMIN }
 

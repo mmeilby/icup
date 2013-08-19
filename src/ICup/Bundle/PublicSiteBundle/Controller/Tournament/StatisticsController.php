@@ -139,7 +139,12 @@ class StatisticsController extends Controller
             }
         }
 
-        $statmap['mosttrophys'] = $countries[$maxTrophy];
+        if ($maxTrophy != null) {
+            $statmap['mosttrophys'] = $countries[$maxTrophy];
+        }
+        else {
+            $statmap['mosttrophys'] = 0;
+        }
         
         return array(
             'tournament' => $tournament,

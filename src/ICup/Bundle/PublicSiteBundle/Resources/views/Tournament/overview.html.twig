@@ -9,6 +9,13 @@
             <div class="overviewHeader">
                 <h1>{{ tournament.edition }}</h1>
                 <b>{{ tournament.name }}</b>
+                <p>{{ "now"|date_modify('+2month')|localizeddate(format='LLLL') }}</p>
+                <p>
+{% set tournamentid = tournament.id %}
+{% sandbox %}
+    {% include ['@db', tournamentid]|join(':') ignore missing %}
+{% endsandbox %}
+                </p>
                 <div class="overviewNews">
             {% if newsstream|length > 0 %}
                     <table>

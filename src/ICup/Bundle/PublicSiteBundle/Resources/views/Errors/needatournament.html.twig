@@ -1,0 +1,11 @@
+{% extends "ICupPublicSiteBundle:Masters:standard.html.twig" %}
+
+{% trans_default_domain "errors" %}
+
+{% block body %}
+<h1 class="category">{% trans %}ERROR.NOTOURNAMENT.TITLE{% endtrans %}</h1>
+<p class="subcategory">
+    {% trans %}ERROR.NOTOURNAMENT.SOLUTION{% endtrans %}
+</p>
+<p><a href="{{ path('_icup') }}">{% trans %}ERROR.CLICKFORMORE{% endtrans %}</a></p>
+{% endblock %}

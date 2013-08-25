@@ -46,7 +46,7 @@ class Club implements UserInterface
     /**
      * @var string $password
      *
-     * @ORM\Column(name="password", type="string", length=50, nullable=false)
+     * @ORM\Column(name="password", type="string", length=128, nullable=false)
      */
     private $password;
 
@@ -206,7 +206,6 @@ class Club implements UserInterface
      */
     public function eraseCredentials()
     {
-        unset($this->username);
         unset($this->password);
     }
 }

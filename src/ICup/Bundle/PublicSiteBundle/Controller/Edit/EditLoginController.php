@@ -15,7 +15,7 @@ class EditLoginController extends Controller
     public function loginAction()
     {
         $this->get('util')->setupController($this);
-        $tournamentId = $this->get('util')->getTournament($this);
+        $tournamentId = $this->get('util')->getTournamentId($this);
         $request = $this->getRequest();
         if ($request->attributes->has(SecurityContext::AUTHENTICATION_ERROR)) {
             $error = $request->attributes->get(SecurityContext::AUTHENTICATION_ERROR);

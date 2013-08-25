@@ -26,7 +26,7 @@ class EditScoreController extends Controller
     public function listAction($tournamentkey, $playgroundid, $date)
     {
         $this->get('util')->setupController($this, $tournamentkey);
-        $tournamentId = $this->get('util')->getTournament($this);
+        $tournamentId = $this->get('util')->getTournamentId($this);
         $em = $this->getDoctrine()->getManager();
 
         if ($tournamentId == 0) {

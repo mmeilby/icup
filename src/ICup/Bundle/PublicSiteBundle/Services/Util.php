@@ -81,15 +81,23 @@ class Util
         return $countries;
     }
     
-    public function getTournament(Controller $container) {
+    public function getTournamentKey(Controller $container) {
         /* @var $request Request */
         /* @var $session Session */
         $request = $container->getRequest();
         $session = $request->getSession();
-        $em = $container->getDoctrine()->getManager();
-        $tournamentKey = $session->get('Tournament', '_');
-        $tournament = $em->getRepository('ICup\Bundle\PublicSiteBundle\Entity\Doctrine\Tournament')
-                                ->findOneBy(array('key' => $tournamentKey));
+        return $session->get('Tournament', '_');
+    }
+
+    public function getTournament(Controller $container) {
+        $tournamentKey = $this->getTournamentKey($container);
+        return $container->getDoctrine()->getManager()
+                ->getRepository('ICup\Bundle\PublicSiteBundle\Entity\Doctrine\Tournament')
+                ->findOneBy(array('key' => $tournamentKey));
+    }
+
+    public function getTournamentId(Controller $container) {
+        $tournament = $this->getTournament($container);
         return $tournament != null ? $tournament->getId() : 0;
     }
 }

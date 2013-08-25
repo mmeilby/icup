@@ -1,0 +1,17 @@
+FORM:
+  TITLE: iCup tilmelding
+  CLUB: 
+    WELLCOME: Velkommen til iCup
+    TITLE:
+      ADD: Tilmeld klub
+      CHG: Tilpas klubinformationer
+      DEL: FJERN KLUB FRA ICUP
+    PROMPT:
+      ADD: Klubben bliver registreret i iCup kluboversigt og får mulighed for at tilmelde hold til de åbne turneringer.
+      CHG: Ret klubinformationer. Ændring af login oplysninger skal foretages ved at følge linket.
+      DEL: Klubben fjernes fra kluboversigten og alle hold og kampe knyttet til klubbens aktiviteter slettes. Det er ikke muligt at fortryde når klubben er fjernet.
+  LISTENROLLED:
+    TITLE: Vis tilmeldte hold til turneringen
+    CAPTION: Antal tilmeldte hold per gruppe
+  ERROR:
+    BACK: Videre...

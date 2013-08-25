@@ -1,0 +1,16 @@
+{% extends "ICupPublicSiteBundle:Masters:standard.html.twig" %}
+
+{% form_theme form 'ICupPublicSiteBundle:Default:layout.script.html.twig' %}
+{% trans_default_domain "club" %}
+
+{% block body %}
+<h1>{% trans %}FORM.CLUB.WELLCOME{% endtrans %}</h1>
+<p class="subtitle">{{ ['FORM.CLUB.TITLE.',action]|join|upper|trans }}</p>
+{% if error %}
+    <p>{{ error|trans }}</p>
+    <p><a href="{{ path('_icup') }}">{% trans %}FORM.ERROR.BACK{% endtrans %}</a></p>
+{% else %}
+    <p>{{ ['FORM.CLUB.PROMPT.',action]|join|upper|trans }}</p>
+    {{ form(form) }}
+{% endif %}
+{% endblock %}

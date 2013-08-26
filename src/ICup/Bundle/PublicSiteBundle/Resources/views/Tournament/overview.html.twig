@@ -2,62 +2,9 @@
 
 {% block body %}
 <div class="overviewBlock">
-    <img src="{{ imagepath }}/IWC/bg.jpg" class="overviewImageBackground" />
-    <div class="overview">
-        <div>
-            <img src="{{ imagepath }}/IWC/logo.png" alt="{{ tournament.name }} logo" />
-            <div class="overviewHeader">
-                <h1>{{ tournament.edition }}</h1>
-                <b>{{ tournament.name }}</b>
-                <p>{{ "now"|date_modify('+2month')|localizeddate(format='LLLL') }}</p>
-                <p>
-{% set tournamentid = tournament.id %}
-{% sandbox %}
-    {% include ['@db', tournamentid]|join(':') ignore missing %}
-{% endsandbox %}
-                </p>
-                <div class="overviewNews">
-            {% if newsstream|length > 0 %}
-                    <table>
-                        <caption>{% trans %}NEWS{% endtrans %}</caption>
-                        <thead>
-                            <tr>
-                                <td>{% trans %}DATE{% endtrans %}</td>
-                                <td></td>
-                            </tr>
-                        </thead>
-                        <tboby>
-                    {% for news in newsstream %}
-                            <tr class="{{ cycle(['even','odd'],loop.index) }}">
-                                <td class="dates">{{ news.date|date(' j. ') }}{{ ['MONTH.',news.date|date('M')|upper]|join|trans }}</td>
-                                <td class="news">
-                                    <a href="{{ news.path }}">{{ news.text }}</a>
-                                </td>
-                            </tr>
-                    {% endfor %}
-                        </tboby>
-                        <tfoot>
-                            <tr>
-                                <td colspan="2"></td>
-                            </tr>
-                        </tfoot>
-                    </table>
-            {% endif %}
-                </div>
-            </div>
-            <div class="overviewMenu">
-                <div class="overviewMenuBackground">
-                    <div class="overviewMenuContent">
-                {% for teaser in teaserlist %}
-                        <div class="teaserBlock" onclick="location.href='{{ teaser.path }}'">
-                            <div class="teaserTitle">{{ teaser.titletext|trans }}</div>
-                            <div class="teaser">{{ teaser.text|trans }}</div>
-                        </div>
-                {% endfor %}
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
+    {% set tournamentid = tournament.id %}
+    {% sandbox %}
+        {% include [['@db', tournamentid]|join(':'), 'ICupPublicSiteBundle:Tournament:overview.default.html.twig'] ignore missing %}
+    {% endsandbox %}
 </div>
 {% endblock %}

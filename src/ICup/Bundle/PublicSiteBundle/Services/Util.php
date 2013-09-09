@@ -48,7 +48,7 @@ class Util
             'MENU.ADMIN.TITLE' => array(
                 'MENU.ADMIN.RESULTS' => $container->generateUrl('_tournament_playgrounds', array('tournament' => $tournament)),
                 'MENU.ADMIN.TOURNAMENT' => $container->generateUrl('_edit_host_list'),
-                'MENU.ADMIN.TEAMS' => $container->generateUrl('_edit_host_list'),
+                'MENU.ADMIN.TEAMS' => $container->generateUrl('_edit_club_list'),
                 'MENU.ADMIN.PLAYERS' => $container->generateUrl('_edit_host_list'),
                 'MENU.ADMIN.REFEREES' => $container->generateUrl('_edit_host_list'))
         );
@@ -58,12 +58,12 @@ class Util
     public function switchLanguage(Controller $container)
     {
         /* @var $request Request */
-        /* @var $session Session */
         $request = $container->getRequest();
+        /* @var $session Session */
         $session = $request->getSession();
         $language = $session->get('locale', $request->getPreferredLanguage());
-        if (!array_key_exists($language, array('en', 'da', 'it', 'fr', 'de', 'es', 'po'))) $language = 'en';
-        $request->setLocale($session->get('locale', $request->getPreferredLanguage()));
+        if (!array_search($language, array('en', 'da', 'it', 'fr', 'de', 'es', 'po'))) $language = 'en';
+        $request->setLocale($language);
     }
 
     public function getCountries()
@@ -83,8 +83,8 @@ class Util
     
     public function getTournamentKey(Controller $container) {
         /* @var $request Request */
-        /* @var $session Session */
         $request = $container->getRequest();
+        /* @var $session Session */
         $session = $request->getSession();
         return $session->get('Tournament', '_');
     }

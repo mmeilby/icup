@@ -15,3 +15,5 @@ FORM:
     CAPTION: Antal tilmeldte hold per gruppe
   ERROR:
     BACK: Videre...
+    NAMEEXIST: Klubnavn er allerede anvendt (tilknytning til eksisterende klub foretages af klubadministrator).
+    CANTCHANGENAME: Klubnavn er allerede anvendt. Dette navn kan ikke bruges.

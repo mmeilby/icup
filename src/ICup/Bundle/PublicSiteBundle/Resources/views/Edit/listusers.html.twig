@@ -1,0 +1,74 @@
+{% extends "ICupPublicSiteBundle:Masters:edit.html.twig" %}
+{% trans_default_domain "admin" %}
+
+{% block adminbody %}
+<h1>{% trans %}FORM.ADMIN{% endtrans %}</h1>
+<p class="subtitle">{% trans %}FORM.LISTUSERS.TITLE{% endtrans %}</p>
+<p class="subtitle"><a href="{{ path('_edit_club_list') }}">{{ club.name }}</a></p>
+<table>
+    <caption>{% trans %}FORM.LISTUSERS.CAPTION{% endtrans %}</caption>
+    <thead>
+        <tr>
+            <td></td>
+            <td class="operand"></td>
+            <td class="operand"></td>
+            <td class="operand"></td>
+            <td class="operand"></td>
+        </tr>
+    </thead>
+    <tboby>
+{% if users|length > 0 %}
+    {% for user in users %}
+        <tr class="{{ cycle(['even','odd'],loop.index) }}">
+            <td class="user">
+                <a href="{{ path('_edit_user_chg', { 'userid': user.id }) }}">
+                {{ user.name|upper }}
+                </a>    
+            </td>
+            <td class="operand">
+                <a href="{{ path('_edit_user_add', { 'clubid': club.id }) }}">
+                +
+                </a>    
+            </td>
+            <td class="operand">
+                <a href="{{ path('_edit_user_chg', { 'userid': user.id }) }}">
+                E
+                </a>    
+            </td>
+            <td class="operand">
+                <a href="{{ path('_edit_user_del', { 'userid': user.id }) }}">
+                -
+                </a>    
+            </td>
+            <td class="operand">
+                <a href="{{ path('_edit_user_chg_pass', { 'userid': user.id }) }}">
+                P
+                </a>    
+            </td>
+        </tr>
+    {% endfor %}
+{% else %}
+        <tr class="odd">
+            <td class="user">
+                <a href="{{ path('_edit_user_add', { 'clubid': club.id }) }}">
+                {{'FORM.LISTUSERS.NOUSER'|trans|upper}}
+                </a>    
+            </td>
+            <td class="operand">
+                <a href="{{ path('_edit_user_add', { 'clubid': club.id }) }}">
+                +
+                </a>    
+            </td>
+            <td></td>
+            <td></td>
+            <td></td>
+        </tr>
+{% endif %}
+    </tboby>
+    <tfoot>
+        <tr>
+            <td colspan="5"></td>
+        </tr>
+    </tfoot>
+</table>
+{% endblock %}

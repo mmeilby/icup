@@ -163,4 +163,72 @@ FORM:
       ADD: Fortryd oprettelse
       CHG: Fortryd ændringer
       DEL: Fortryd slet
-
+  LISTCLUBS:
+    TITLE: Vedligehold klubber
+    CAPTION: Klubliste på tværs af alle turneringer
+    LEGEND: Klubber sorteret efter land
+    NOCLUB: Tilføj ny klub
+  CLUB: 
+    DEFAULT: Vælg...
+    NONAME: Et klubnavn skal angives.
+    NOCOUNTRY: Klubbens hjemland skal angives.
+    NAMEEXIST: En anden klub er allerede oprettet med samme navn og land. Er oplysningerne korrekte, så ret i stedet kluboplysningerne.
+    CANTCHANGENAME: En anden klub er allerede oprettet med samme navn og land. Vælg et andet navn til klubben.
+    TITLE:
+      ADD: Tilføj ny klub
+      CHG: Rediger klubinformationer
+      DEL: SLET KLUB
+    PROMPT:
+      ADD: Indtast oplysninger om klubben.
+      CHG: Ret klubinformationer.
+      DEL: Følgende klub vil bliver slettet. Alle hold og brugere knyttet til klubben vil også blive fjernet. Det er ikke muligt at fortryde når klubben er fjernet.
+    NAME: Klubnavn
+    COUNTRY: Hjemland
+    SUBMIT:
+      ADD: Tilføj ny klub
+      CHG: Gem kluboplysninger
+      DEL: SLET KLUB
+    CANCEL:
+      ADD: Fortryd oprettelse
+      CHG: Fortryd ændringer
+      DEL: Fortryd slet
+  LISTUSERS:
+    TITLE: Vedligehold brugere
+    CAPTION: Brugere
+    NOUSER: Tilføj ny bruger
+  USER: 
+    DEFAULT: Vælg...
+    CHOICE:
+      ROLE:
+        1: Klubbruger
+        2: Klubansvarlig
+        3: Redaktør
+        4: Turneringsansvarlig
+      STATUS:
+        1: Ny bruger
+        2: Bekræftet bruger
+        3: Ansøger
+        4: Klubmedlem
+    TITLE:
+      ADD: Tilføj ny bruger
+      CHG: Rediger brugerinformationer
+      DEL: SLET BRUGER
+    PROMPT:
+      ADD: Indtast oplysninger om brugeren.
+      CHG: Ret brugerinformationer.
+      DEL: Følgende bruger vil bliver slettet. Det er ikke muligt at fortryde når brugeren er fjernet.
+    NAME: Navn
+    EMAIL: E-mail
+    ROLE: Brugerrolle
+    STATUS: Status
+    USERNAME: Brugernavn
+    PASSWORD: Kodeord
+    PASSWORD2: Gentag kodeord
+    SUBMIT:
+      ADD: Tilføj ny bruger
+      CHG: Gem brugeroplysninger
+      DEL: SLET BRUGER
+    CANCEL:
+      ADD: Fortryd oprettelse
+      CHG: Fortryd ændringer
+      DEL: Fortryd slet

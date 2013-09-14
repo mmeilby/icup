@@ -36,6 +36,13 @@ class Enrollment
     private $cid;
 
     /**
+     * @var integer $uid
+     * Relation to User - uid=user.id 
+     * @ORM\Column(name="uid", type="integer", nullable=false)
+     */
+    private $uid;
+
+    /**
      * @var string $date
      * Enrollment date - DD/MM/YYYY
      * @ORM\Column(name="date", type="string", length=10, nullable=false)
@@ -98,6 +105,29 @@ class Enrollment
         return $this->cid;
     }
     
+    /**
+     * Set user id - related user
+     *
+     * @param integer $uid
+     * @return Enrollment
+     */
+    public function setUid($uid)
+    {
+        $this->uid = $uid;
+    
+        return $this;
+    }
+
+    /**
+     * Get user id - related user
+     *
+     * @return integer 
+     */
+    public function getUid()
+    {
+        return $this->uid;
+    }
+
     /**
      * Set date
      *

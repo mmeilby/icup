@@ -21,7 +21,7 @@
     {% for user in users %}
         <tr class="{{ cycle(['even','odd'],loop.index) }}">
             <td class="user">
-                <a href="{{ path('_edit_user_chg', { 'userid': user.id }) }}">
+                <a href="{{ path('_icup', {'_switch_user': user.username }) }}">
                 {{ user.name|upper }}
                 </a>    
             </td>

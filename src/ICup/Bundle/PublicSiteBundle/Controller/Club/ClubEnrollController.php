@@ -2,7 +2,6 @@
 namespace ICup\Bundle\PublicSiteBundle\Controller\Club;
 
 use DateTime;
-use ICup\Bundle\PublicSiteBundle\Entity\Doctrine\Club;
 use ICup\Bundle\PublicSiteBundle\Entity\Doctrine\Enrollment;
 use ICup\Bundle\PublicSiteBundle\Entity\Doctrine\Team;
 use RuntimeException;
@@ -10,8 +9,6 @@ use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
-use Symfony\Component\Form\FormError;
-use Symfony\Component\Security\Core\User\User;
 
 /**
  * List the categories and groups available
@@ -38,12 +35,15 @@ class ClubEnrollController extends Controller
         if ($user == null) {
             throw new RuntimeException("This controller is not available for anonymous users");
         }
+        if (!is_a($user, 'ICup\Bundle\PublicSiteBundle\Entity\Doctrine\User')) {
+            // Controller is called by default admin - switch to select club view
+            return $this->redirect($this->generateUrl('_edit_club_list'));
+        }
         /* @var $club Club */
-        $club = $em->getRepository('ICup\Bundle\PublicSiteBundle\Entity\Doctrine\Club')
-                            ->findOneBy(array('username' => $user->getUsername()));
+        $club = $em->getRepository('ICup\Bundle\PublicSiteBundle\Entity\Doctrine\Club')->find($user->getCid());
         if ($club == null) {
             // Controller is called by editor or admin - switch to select club view
-            return $this->redirect($this->generateUrl('_edit_club_list', array('tournamentid' => $tournament->getId())));
+            return $this->redirect($this->generateUrl('_edit_club_list'));
         }
         
         $categories = $em->getRepository('ICup\Bundle\PublicSiteBundle\Entity\Doctrine\Category')
@@ -76,17 +76,15 @@ class ClubEnrollController extends Controller
             'club' => $club,
             'classifications' => $classMap,
             'enrolled' => $enrolledList,
-            'categories' => $categoryMap,
-            'error' => isset($error) ? $error : null);
+            'categories' => $categoryMap);
     }
 
     /**
-     * Add new category
+     * Enrolls a club in a tournament by adding new team to category
      * @Route("/club/enroll/add/{categoryid}", name="_club_enroll_add")
      * @Method("GET")
-     * @Template("ICupPublicSiteBundle:Edit:editcategory.html.twig")
      */
-    public function addAction($categoryid) {
+    public function addEnrollAction($categoryid) {
         $this->get('util')->setupController($this);
         $tournament = $this->get('util')->getTournament($this);
 
@@ -100,18 +98,20 @@ class ClubEnrollController extends Controller
         if ($user == null) {
             throw new RuntimeException("This controller is not available for anonymous users");
         }
+        if (!is_a($user, 'ICup\Bundle\PublicSiteBundle\Entity\Doctrine\User')) {
+            // Controller is called by default admin - switch to select club view
+            return $this->redirect($this->generateUrl('_edit_club_list'));
+        }
         /* @var $club Club */
-        $club = $em->getRepository('ICup\Bundle\PublicSiteBundle\Entity\Doctrine\Club')
-                            ->findOneBy(array('username' => $user->getUsername()));
+        $club = $em->getRepository('ICup\Bundle\PublicSiteBundle\Entity\Doctrine\Club')->find($user->getCid());
         if ($club == null) {
             // Controller is called by editor or admin - switch to select club view
-            return $this->redirect($this->generateUrl('_edit_club_list', array('tournamentid' => $tournament->getId())));
+            return $this->redirect($this->generateUrl('_edit_club_list'));
         }
         
         $category = $em->getRepository('ICup\Bundle\PublicSiteBundle\Entity\Doctrine\Category')->find($categoryid);
         if ($category == null || $category->getPid() != $tournament->getId()) {
-            $error = "FORM.ERROR.BADCATEGORY";
-            return $this->redirect($this->generateUrl('_club_enroll_list'));
+            return $this->render('ICupPublicSiteBundle:Errors:badcategory.html.twig', array('redirect' => $this->generateUrl('_club_enroll_list')));
         }
         
         $qb = $em->createQuery("select e ".
@@ -124,9 +124,9 @@ class ClubEnrollController extends Controller
         $enrolled = $qb->getResult();
  
         $noTeams = count($enrolled);
-        if ($noTeams >= 20) {
-            $error = "FORM.ERROR.NOMORETEAMS";
-            return $this->redirect($this->generateUrl('_club_enroll_list'));
+        if ($noTeams >= 26) {
+            // Can not add more than 26 teams to same category - Team A -> Team Z
+            return $this->render('ICupPublicSiteBundle:Errors:nomoreteams.html.twig', array('redirect' => $this->generateUrl('_club_enroll_list')));
         }
         
         $team = new Team();
@@ -141,6 +141,7 @@ class ClubEnrollController extends Controller
         $enroll = new Enrollment();
         $enroll->setCid($team->getId());
         $enroll->setPid($categoryid);
+        $enroll->setUid($user->getId());
         $enroll->setDate($today->format('d/m/Y'));
         $em->persist($enroll);
         $em->flush();
@@ -149,12 +150,11 @@ class ClubEnrollController extends Controller
     }
     
     /**
-     * Remove category from the register - including all related groups and match results
+     * Remove last team from category - including all related match results
      * @Route("/club/enroll/del/{categoryid}", name="_club_enroll_del")
      * @Method("GET")
-     * @Template("ICupPublicSiteBundle:Edit:editcategory.html.twig")
      */
-    public function delAction($categoryid) {
+    public function delEnrollAction($categoryid) {
         $this->get('util')->setupController($this);
         $tournament = $this->get('util')->getTournament($this);
 
@@ -168,33 +168,34 @@ class ClubEnrollController extends Controller
         if ($user == null) {
             throw new RuntimeException("This controller is not available for anonymous users");
         }
+        if (!is_a($user, 'ICup\Bundle\PublicSiteBundle\Entity\Doctrine\User')) {
+            // Controller is called by default admin - switch to select club view
+            return $this->redirect($this->generateUrl('_edit_club_list'));
+        }
         /* @var $club Club */
-        $club = $em->getRepository('ICup\Bundle\PublicSiteBundle\Entity\Doctrine\Club')
-                            ->findOneBy(array('username' => $user->getUsername()));
+        $club = $em->getRepository('ICup\Bundle\PublicSiteBundle\Entity\Doctrine\Club')->find($user->getCid());
         if ($club == null) {
             // Controller is called by editor or admin - switch to select club view
-            return $this->redirect($this->generateUrl('_edit_club_list', array('tournamentid' => $tournament->getId())));
+            return $this->redirect($this->generateUrl('_edit_club_list'));
         }
         
         $category = $em->getRepository('ICup\Bundle\PublicSiteBundle\Entity\Doctrine\Category')->find($categoryid);
         if ($category == null || $category->getPid() != $tournament->getId()) {
-            $error = "FORM.ERROR.BADCATEGORY";
-            return $this->redirect($this->generateUrl('_club_enroll_list'));
+            return $this->render('ICupPublicSiteBundle:Errors:badcategory.html.twig', array('redirect' => $this->generateUrl('_club_enroll_list')));
         }
         
         $qb = $em->createQuery("select e ".
                                "from ICup\Bundle\PublicSiteBundle\Entity\Doctrine\Enrollment e, ".
                                     "ICup\Bundle\PublicSiteBundle\Entity\Doctrine\Team t ".
                                "where e.pid=:category and e.cid=t.id and t.pid=:club ".
-                               "order by e.pid");
+                               "order by t.division");
         $qb->setParameter('category', $categoryid);
         $qb->setParameter('club', $club->getId());
         $enrolled = $qb->getResult();
  
         $enroll = array_pop(&$enrolled);
         if ($enroll == null) {
-            $error = "FORM.ERROR.NOMORETEAMS";
-            return $this->redirect($this->generateUrl('_club_enroll_list'));
+            return $this->render('ICupPublicSiteBundle:Errors:noteams.html.twig', array('redirect' => $this->generateUrl('_club_enroll_list')));
         }
                 
         $team = $em->getRepository('ICup\Bundle\PublicSiteBundle\Entity\Doctrine\Team')->find($enroll->getCid());
@@ -204,69 +205,5 @@ class ClubEnrollController extends Controller
         $em->flush();
 
         return $this->redirect($this->generateUrl('_club_enroll_list'));
-    }
-    
-    /**
-     * Enrolls a club in a tournament
-     * @Route("/enroll", name="_club_enroll")
-     * @Template("ICupPublicSiteBundle:Club:clubenroll.html.twig")
-     */
-    public function enrollAction() {
-        $this->get('util')->setupController($this);
-        $em = $this->getDoctrine()->getManager();
-
-        /* @var $user User */
-        $user = $this->getUser();
-        if ($user != null) {
-            /* @var $club Club */
-            $club = $em->getRepository('ICup\Bundle\PublicSiteBundle\Entity\Doctrine\Club')
-                                ->findOneBy(array('username' => $user->getUsername()));
-            if ($club != null) {
-                // Controller is called by non editor or admin - switch to club edit view
-                return $this->redirect($this->generateUrl('_club_chg', array('clubid' => $club->getId())));
-            }
-        }
-        
-        $club = new Club();
-        $form = $this->makeClubForm($club, 'add');
-        $request = $this->getRequest();
-        $form->handleRequest($request);
-        if ($form->get('cancel')->isClicked()) {
-            return $this->redirect($this->generateUrl('_icup'));
-        }
-        if ($form->isValid()) {
-            if (array_search($club->getUsername(), array(1 => 'admin', 2 => 'editor'))) {
-                $form->addError(new FormError('Can not use editor or admin'));
-            }
-            else if ($em->getRepository('ICup\Bundle\PublicSiteBundle\Entity\Doctrine\Club')->findOneBy(array('username' => $club->getUsername())) != null) {
-                $form->addError(new FormError('Username in use'));
-            }
-            else {
-                $factory = $this->get('security.encoder_factory');
-                $encoder = $factory->getEncoder($club);
-                $password = $encoder->encodePassword($club->getPassword(), $club->getSalt());
-                echo $password;
-                $club->setPassword($password);
-                $em->persist($club);
-                $em->flush();
-                return $this->render('ICupPublicSiteBundle:Club:clubwellcome.html.twig');
-            }
-        }
-        return array('form' => $form->createView(), 'action' => 'add', 'club' => $club, 'error' => isset($error) ? $error : null);
-    }
-    
-    private function makeClubForm($club, $action) {
-        $countries = array();
-        foreach (array_keys($this->get('util')->getCountries()) as $ccode) {
-            $countries[$ccode] = $ccode;
-        }
-        $formDef = $this->createFormBuilder($club);
-        $formDef->add('name', 'text', array('label' => 'FORM.CLUB.NAME', 'required' => false, 'disabled' => $action == 'del', 'translation_domain' => 'admin'));
-        $formDef->add('country', 'choice', array('label' => 'FORM.CLUB.COUNTRY', 'required' => false, 'choices' => $countries, 'empty_value' => 'FORM.CLUB.DEFAULT', 'disabled' => $action == 'del', 'translation_domain' => 'lang'));
-        $formDef->add('username', 'text', array('label' => 'FORM.CLUB.USERNAME', 'required' => false, 'disabled' => $action == 'del', 'translation_domain' => 'admin'));
-        $formDef->add('password', 'password', array('label' => 'FORM.CLUB.PASSWORD', 'required' => false, 'disabled' => $action == 'del', 'translation_domain' => 'admin'));
-        $formDef->add('cancel', 'submit', array('label' => 'FORM.CLUB.CANCEL.'.strtoupper($action), 'translation_domain' => 'admin'));
-        $formDef->add('save', 'submit', array('label' => 'FORM.CLUB.SUBMIT.'.strtoupper($action), 'translation_domain' => 'admin'));
-        return $formDef->getForm();
     }
 }

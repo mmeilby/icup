@@ -1,5 +1,30 @@
 ERROR:
-  CLICKFORMORE: Klik her for hjælp...
+  CLICKFORMORE: Klik her for at komme tilbage...
   NOTOURNAMENT:
     TITLE: Vælg en turnering
     SOLUTION: Det er nødvendigt at vælge en turnering for at se turneringsspecifikke oplysninger. Benyt det følgende link for at se en turneringsoversigt.
+  NOHOST:
+    TITLE: Der er ikke angivet en turneringsvært
+    SOLUTION: Det er nødvendigt at angive en turneringsvært for at vise dennes oplysninger. Benyt det følgende link for at se en oversigt af turneringsværter.
+  NOCLUB:
+    TITLE: Der er ikke angivet en klub
+    SOLUTION: Det er nødvendigt at angive en klub for at vise oplysninger om klubben. Benyt det følgende link for at se en kluboversigt.
+  INVALIDCATEGORY:
+    TITLE: Der er problemer med den valgte gruppe
+    SOLUTION: Den valgte gruppe findes ikke. Benyt det følgende link for at kunne vælge en gruppe der findes.
+  INVALIDCLUB:
+    TITLE: Der er problemer med den valgte klub
+    SOLUTION: Den valgte klub findes ikke. Benyt det følgende link for at kunne vælge en klub der findes.
+  INVALIDHOST:
+    TITLE: Der er problemer med den valgte turneringsvært
+    SOLUTION: Den valgte turneringsvært findes ikke. Benyt det følgende link for at kunne vælge en turneringsvært der findes.
+  INVALIDUSER:
+    TITLE: Der er problemer med den valgte bruger
+    SOLUTION: Den valgte bruger findes ikke. Benyt det følgende link for at kunne vælge en bruger der findes.
+  NOTEAMS:
+    TITLE: Der er ingen hold tilmeldt gruppen
+    SOLUTION: Det er ikke muligt at afmelde et hold fra denne gruppe - klubben har slet ikke tilmedt sig gruppen.
+  NOMORETEAMS:
+    TITLE: Der er ikke plads til flere hold i gruppen
+    SOLUTION: Klubben har tilmeldt det største antal hold det er muligt at deltage med i denne gruppe.
+    

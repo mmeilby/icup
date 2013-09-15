@@ -24,7 +24,7 @@ class EditUserController extends Controller
 
         $club = $em->getRepository('ICup\Bundle\PublicSiteBundle\Entity\Doctrine\Club')->find($clubid);
         if ($club == null) {
-            return $this->render('ICupPublicSiteBundle:Errors:needaclub.html.twig');
+            return $this->render('ICupPublicSiteBundle:Errors:badclub.html.twig');
         }
         
         $users = $em->getRepository('ICup\Bundle\PublicSiteBundle\Entity\Doctrine\User')

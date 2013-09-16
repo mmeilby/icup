@@ -3,16 +3,212 @@ namespace ICup\Bundle\PublicSiteBundle\Controller\Club;
 
 use ICup\Bundle\PublicSiteBundle\Entity\Doctrine\Club;
 use ICup\Bundle\PublicSiteBundle\Entity\Doctrine\User;
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\Form\FormError;
+use Symfony\Component\Yaml\Exception\RuntimeException;
 
 /**
  * List the categories and groups available
  */
 class ClubEditController extends Controller
 {
+    /**
+     * List the clubs available
+     * @Route("/club/list", name="_club_list")
+     * @Method("GET")
+     * @Template("ICupPublicSiteBundle:Club:listclub.html.twig")
+     */
+    public function listClubsAction()
+    {
+        $this->get('util')->setupController($this);
+        $em = $this->getDoctrine()->getManager();
+
+        /* @var $user User */
+        $user = $this->getUser();
+        if ($user == null) {
+            throw new RuntimeException("This controller is not available for anonymous users");
+        }
+
+        if (!is_a($user, 'ICup\Bundle\PublicSiteBundle\Entity\Doctrine\User')) {
+            // Controller is called by default admin - switch to select club view
+            return $this->redirect($this->generateUrl('_edit_club_list'));
+        }
+        if (!$user->isClub()) {
+            // Admins and editors should select a club from clublist
+            return $this->redirect($this->generateUrl('_edit_club_list'));
+        }
+        if (!$user->isRelated()) {
+            // Non related users get a different view
+            return array('currentuser' => $user);
+        }
+        
+        /* @var $club Club */
+        $club = $em->getRepository('ICup\Bundle\PublicSiteBundle\Entity\Doctrine\Club')->find($user->getCid());
+        if ($club == null) {
+            // User was related to a missing club
+            return $this->render('ICupPublicSiteBundle:Errors:badclub.html.twig');
+        }
+
+        $users = $em->getRepository('ICup\Bundle\PublicSiteBundle\Entity\Doctrine\User')
+                        ->findBy(array('cid' => $club->getId()), array('name' => 'asc'));
+
+        return array('club' => $club, 'users' => $users, 'currentuser' => $user);
+    }
+    
+    /**
+     * List the clubs available
+     * @Route("/club/disc/{userid}", name="_club_user_disconnect")
+     * @Method("GET")
+     * @Template("ICupPublicSiteBundle:Club:listclub.html.twig")
+     */
+    public function disconnectAction($userid)
+    {
+        $this->get('util')->setupController($this);
+        $em = $this->getDoctrine()->getManager();
+
+        /* @var $thisuser User */
+        $thisuser = $this->getUser();
+        if ($thisuser == null) {
+            throw new RuntimeException("This controller is not available for anonymous users");
+        }
+        // User must have CLUB_ADMIN role to change user relation
+        if (!$this->get('security.context')->isGranted('ROLE_CLUB_ADMIN')) {
+             return $this->render('ICupPublicSiteBundle:Errors:notclubadmin.html.twig');
+        }
+
+        /* @var $user User */
+        $user = $em->getRepository('ICup\Bundle\PublicSiteBundle\Entity\Doctrine\User')->find($userid);
+        if ($user == null) {
+             return $this->render('ICupPublicSiteBundle:Errors:baduser.html.twig');
+        }
+        if (!$user->isClub() || !$user->isRelated()) {
+            // The user to be disconnected has no relation?
+            return $this->render('ICupPublicSiteBundle:Errors:baduser.html.twig');
+        }
+
+        // If controller is not called by default admin - then validate the rights to change user relation
+        if (is_a($thisuser, 'ICup\Bundle\PublicSiteBundle\Entity\Doctrine\User')) {
+            if ($thisuser->isClub() && $thisuser->getCid() != $user->getCid()) {
+                // Even though this is a club admin - the admin does not administer the user's related club
+                return $this->render('ICupPublicSiteBundle:Errors:notclubadmin.html.twig');
+            }
+        }
+        
+        // Disconnect user from club - make user a verified user with no relation
+        $user->setCid(0);
+        $user->setRole(User::$CLUB);
+        $user->setStatus(User::$VER);
+        $em->flush();
+        
+        return $this->redirect($this->generateUrl('_club_list'));
+    }
+
+    /**
+     * List the clubs available
+     * @Route("/club/connect/{clubid}/{userid}", name="_club_user_connect")
+     * @Method("GET")
+     * @Template("ICupPublicSiteBundle:Club:listclub.html.twig")
+     */
+    public function connectAction($clubid, $userid)
+    {
+        $this->get('util')->setupController($this);
+        $em = $this->getDoctrine()->getManager();
+
+        /* @var $thisuser User */
+        $thisuser = $this->getUser();
+        if ($thisuser == null) {
+            throw new RuntimeException("This controller is not available for anonymous users");
+        }
+        // User must have CLUB_ADMIN role to change user relation
+        if (!$this->get('security.context')->isGranted('ROLE_CLUB_ADMIN')) {
+             return $this->render('ICupPublicSiteBundle:Errors:notclubadmin.html.twig');
+        }
+
+        /* @var $club Club */
+        $club = $em->getRepository('ICup\Bundle\PublicSiteBundle\Entity\Doctrine\Club')->find($clubid);
+        if ($club == null) {
+            // User was related to a missing club
+            return $this->render('ICupPublicSiteBundle:Errors:badclub.html.twig');
+        }
+        
+        // If controller is not called by default admin then validate the rights to change user relation
+        if (is_a($thisuser, 'ICup\Bundle\PublicSiteBundle\Entity\Doctrine\User')) {
+            if ($thisuser->isClub() && $thisuser->getCid() != $club->getId()) {
+                // Even though this is a club admin - the admin does not administer this club
+                return $this->render('ICupPublicSiteBundle:Errors:notclubadmin.html.twig');
+            }
+        }
+        
+        /* @var $user User */
+        $user = $em->getRepository('ICup\Bundle\PublicSiteBundle\Entity\Doctrine\User')->find($userid);
+        if ($user == null) {
+             return $this->render('ICupPublicSiteBundle:Errors:baduser.html.twig');
+        }
+        if (!$user->isClub() || $user->getStatus() != User::$PRO || $user->getCid() != $club->getId()) {
+            // The user to be connected is not a prospect?
+            return $this->render('ICupPublicSiteBundle:Errors:baduser.html.twig');
+        }
+
+        // Connect user to the club - make user an attached user
+        $user->setStatus(User::$ATT);
+        $em->flush();
+        
+        return $this->redirect($this->generateUrl('_club_list'));
+    }
+
+    /**
+     * List the clubs available
+     * @Route("/club/chgrole/{userid}", name="_club_user_chg_role")
+     * @Method("GET")
+     * @Template("ICupPublicSiteBundle:Club:listclub.html.twig")
+     */
+    public function chgRoleAction($userid)
+    {
+        $this->get('util')->setupController($this);
+        $em = $this->getDoctrine()->getManager();
+
+        /* @var $thisuser User */
+        $thisuser = $this->getUser();
+        if ($thisuser == null) {
+            throw new RuntimeException("This controller is not available for anonymous users");
+        }
+        // User must have CLUB_ADMIN role to change user relation
+        if (!$this->get('security.context')->isGranted('ROLE_CLUB_ADMIN')) {
+             return $this->render('ICupPublicSiteBundle:Errors:notclubadmin.html.twig');
+        }
+
+        /* @var $user User */
+        $user = $em->getRepository('ICup\Bundle\PublicSiteBundle\Entity\Doctrine\User')->find($userid);
+        if ($user == null) {
+             return $this->render('ICupPublicSiteBundle:Errors:baduser.html.twig');
+        }
+        if (!$user->isClub() || !$user->isRelated()) {
+            // The user to change role has no relation?
+            return $this->render('ICupPublicSiteBundle:Errors:baduser.html.twig');
+        }
+
+        // If controller is not called by default admin then validate the rights to change user relation
+        if (is_a($thisuser, 'ICup\Bundle\PublicSiteBundle\Entity\Doctrine\User')) {
+            if ($thisuser->isClub() && $thisuser->getCid() != $user->getCid()) {
+                // Even though this is a club admin - the admin does not administer the user's related club
+                return $this->render('ICupPublicSiteBundle:Errors:notclubadmin.html.twig');
+            }
+        }
+        
+        if ($user->getRole() == User::$CLUB) {
+            $user->setRole(User::$CLUB_ADMIN);
+        }
+        else {
+            $user->setRole(User::$CLUB);
+        }
+        $em->flush();
+        
+        return $this->redirect($this->generateUrl('_club_list'));
+    }
+
     /**
      * Add new club
      * @Route("/club/add", name="_club_add")
@@ -29,12 +225,24 @@ class ClubEditController extends Controller
         }
 
         if ($user->isClub()) {
-            /* @var $newclub Club */
-            $newclub = $em->getRepository('ICup\Bundle\PublicSiteBundle\Entity\Doctrine\Club')->find($user->getPid());
-            if ($newclub != null) {
-                // Controller is called by user assigned to a club - switch to club edit view
-                return $this->redirect($this->generateUrl('_club_chg_withid', array('clubid' => $newclub->getId())));
+            if ($user->isRelated()) {
+                /* @var $newclub Club */
+                $newclub = $em->getRepository('ICup\Bundle\PublicSiteBundle\Entity\Doctrine\Club')->find($user->getPid());
+                if ($newclub != null) {
+                    // Controller is called by user assigned to a club - switch to club edit view
+                    return $this->redirect($this->generateUrl('_club_chg_withid', array('clubid' => $newclub->getId())));
+                }
+                else {
+                    // User was related to missing club - update status to non related
+                    $user->setPid(0);
+                    $user->setStatus(User::$VER);
+                    $em->flush();
+                }
             }
+        }
+        else {
+            // Controller is called by editor or admin user - switch to club list view
+            return $this->redirect($this->generateUrl('_edit_club_list'));
         }
         
         $club = new Club();
@@ -44,22 +252,14 @@ class ClubEditController extends Controller
         if ($form->get('cancel')->isClicked()) {
             return $this->redirect($this->generateUrl('_club_enroll_list'));
         }
-        if ($form->isValid()) {
-            if ($em->getRepository('ICup\Bundle\PublicSiteBundle\Entity\Doctrine\Club')->findOneBy(array('name' => $club->getName())) != null) {
-                $form->addError(new FormError('ERROR.NAMEEXIST'));
-            }
-            else {
-                $em->persist($club);
-                $em->flush();
-                if ($user->isClub()) {
-                    $user->setPid($club->getId());
-                    $em->flush();
-                    return $this->render('ICupPublicSiteBundle:Club:clubwellcome.html.twig', array('club' => $club));
-                }
-                else {
-                    return $this->render('ICupPublicSiteBundle:Club:clubwellcome.html.twig', array('club' => $club));
-                }
-            }
+        if ($this->checkForm($form, $club, 'add')) {
+            $em->persist($club);
+            $em->flush();
+            $user->setPid($club->getId());
+            $user->setRole(User::$CLUB_ADMIN);
+            $user->setStatus(User::$ATT);
+            $em->flush();
+            return $this->render('ICupPublicSiteBundle:Club:clubwellcome.html.twig', array('club' => $club));
         }
         return array('form' => $form->createView(), 'action' => 'add', 'club' => $club);
     }
@@ -175,6 +375,33 @@ class ClubEditController extends Controller
         return $formDef->getForm();
     }
     
+    private function checkForm($form, $club, $action) {
+        if ($form->isValid()) {
+            if ($club->getName() == null || trim($club->getName()) == '') {
+                $form->addError(new FormError($this->get('translator')->trans('FORM.CLUB.NONAME', array(), 'admin')));
+                return false;
+            }
+            if ($club->getCountry() == null) {
+                $form->addError(new FormError($this->get('translator')->trans('FORM.CLUB.NOCOUNTRY', array(), 'admin')));
+                return false;
+            }
+            $em = $this->getDoctrine()->getManager();
+            $clubs = $em->getRepository('ICup\Bundle\PublicSiteBundle\Entity\Doctrine\Club')
+                        ->findBy(array('name' => $club->getName(), 'country' => $club->getCountry()));
+            if ($clubs != null && count($clubs) > 0 && $clubs[0]->getId() != $club->getId()) {
+                if ($action == 'add') {
+                    $form->addError(new FormError($this->get('translator')->trans('FORM.CLUB.NAMEEXIST', array(), 'admin')));
+                }
+                else {
+                    $form->addError(new FormError($this->get('translator')->trans('FORM.CLUB.CANTCHANGENAME', array(), 'admin')));
+                }
+                return false;
+            }
+            return true;
+        }
+        return false;
+    }
+
     /**
      * Enrolls a club in a tournament
      * @Route("/club/newuser/{clubid}", name="_club_enroll_new_user")

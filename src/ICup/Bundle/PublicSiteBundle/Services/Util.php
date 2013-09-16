@@ -42,7 +42,7 @@ class Util
                 'MENU.TOURNAMENT.WINNERS' => $container->generateUrl('_tournament_winners', array('tournament' => $tournament)),
                 'MENU.TOURNAMENT.STATISTICS' => $container->generateUrl('_tournament_statistics', array('tournament' => $tournament))),
             'MENU.ENROLLMENT.TITLE' => array(
-                'MENU.ENROLLMENT.CLUBS' => $container->generateUrl('_club_enroll_list'),
+                'MENU.ENROLLMENT.CLUBS' => $container->generateUrl('_club_list'),
                 'MENU.ENROLLMENT.TEAMS' => $container->generateUrl('_club_enroll_list'),
                 'MENU.ENROLLMENT.REFEREES' => $container->generateUrl('_club_enroll_list')),
             'MENU.ADMIN.TITLE' => array(

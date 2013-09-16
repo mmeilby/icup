@@ -176,7 +176,7 @@ class User implements UserInterface
 
     /**
      * Set role
-     * User role: 1: user, 2: club_admin, 3: editor, 4: tournament_admin, 9: admin
+     * User role: CLUB: user, CLUB_ADMIN: club_admin, EDITOR: editor, EDITOR_ADMIN: tournament_admin, ADMIN: admin
      * @param integer $role
      * @return User
      */
@@ -189,7 +189,7 @@ class User implements UserInterface
 
     /**
      * Get role
-     * User role: 1: user, 2: club_admin, 3: editor, 4: tournament_admin, 9: admin
+     * User role: CLUB: user, CLUB_ADMIN: club_admin, EDITOR: editor, EDITOR_ADMIN: tournament_admin, ADMIN: admin
      * @return integer 
      */
     public function getRole()
@@ -204,7 +204,7 @@ class User implements UserInterface
      */
     public function isClub()
     {
-        return $this->role === 1 || $this->role === 2;
+        return $this->role === User::$CLUB || $this->role === User::$CLUB_ADMIN;
     }
 
     /**
@@ -214,7 +214,7 @@ class User implements UserInterface
      */
     public function isEditor()
     {
-        return $this->role === 3 || $this->role === 4;
+        return $this->role === User::$EDITOR || $this->role === User::$EDITOR_ADMIN;
     }
 
     /**
@@ -224,12 +224,12 @@ class User implements UserInterface
      */
     public function isAdmin()
     {
-        return $this->role === 9;
+        return $this->role === User::$ADMIN;
     }
     
     /**
      * Set status
-     * User status: 1: authenticating, 2: verified, 3: prospector, 4: attached, 9: system
+     * User status: AUTH: authenticating, VER: verified, PRO: prospector, ATT: attached, SYSTEM: system
      * @param integer $status
      * @return User
      */
@@ -242,7 +242,7 @@ class User implements UserInterface
 
     /**
      * Get status
-     * User status: 1: authenticating, 2: verified, 3: prospector, 4: attached, 9: system
+     * User status: AUTH: authenticating, VER: verified, PRO: prospector, ATT: attached, SYSTEM: system
      * @return integer 
      */
     public function getStatus()
@@ -250,6 +250,16 @@ class User implements UserInterface
         return $this->status;
     }
 
+    /**
+     * Test for club relation
+     * Test if user has the admin role
+     * @return boolean - true if the user has the admin role 
+     */
+    public function isRelated()
+    {
+        return $this->status === User::$PRO || $this->status === User::$ATT;
+    }
+    
     /**
      * Set email
      *
@@ -292,21 +302,20 @@ class User implements UserInterface
      */
     public function getRoles()
     {
-        // User role: 1: user, 2: club_admin, 3: editor, 9: admin
         switch ($this->role) {
-            case 1:
+            case User::$CLUB:
                 $roles = 'ROLE_USER';
                 break;
-            case 2:
+            case User::$CLUB_ADMIN:
                 $roles = 'ROLE_CLUB_ADMIN';
                 break;
-            case 3:
+            case User::$EDITOR:
                 $roles = 'ROLE_EDITOR';
                 break;
-            case 4:
+            case User::$EDITOR_ADMIN:
                 $roles = 'ROLE_EDITOR_ADMIN';
                 break;
-            case 9:
+            case User::$ADMIN:
                 $roles = 'ROLE_ADMIN';
                 break;
             default:

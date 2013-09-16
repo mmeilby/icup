@@ -48,7 +48,8 @@ class EditUserController extends Controller
         }
 
         $user = new User();
-        $user->setStatus(User::$AUTH);
+        // User should be attached to the club when created this way
+        $user->setStatus(User::$ATT);
         $user->setRole(User::$CLUB);
         $form = $this->makeUserForm($user, 'add');
         $request = $this->getRequest();
@@ -242,9 +243,9 @@ class EditUserController extends Controller
         if ($user->getRole() != User::$ADMIN) {
             $formDef->add('role', 'choice', array('label' => 'FORM.USER.ROLE', 'required' => false, 'choices' => $roles, 'empty_value' => 'FORM.USER.DEFAULT', 'disabled' => $action == 'del', 'translation_domain' => 'admin'));
         }
-        if ($user->getRole() != User::$SYSTEM) {
-            $formDef->add('status', 'choice', array('label' => 'FORM.USER.STATUS', 'required' => false, 'choices' => $status, 'empty_value' => 'FORM.USER.DEFAULT', 'disabled' => $action == 'del', 'translation_domain' => 'admin'));
-        }
+//        if ($user->getRole() != User::$SYSTEM) {
+//            $formDef->add('status', 'choice', array('label' => 'FORM.USER.STATUS', 'required' => false, 'choices' => $status, 'empty_value' => 'FORM.USER.DEFAULT', 'disabled' => $action == 'del', 'translation_domain' => 'admin'));
+//        }
 //        $formDef->add('password', 'text', array('label' => 'FORM.USER.PASSWORD', 'required' => false, 'disabled' => $action == 'del', 'translation_domain' => 'admin'));
         $formDef->add('cancel', 'submit', array('label' => 'FORM.USER.CANCEL.'.strtoupper($action), 'translation_domain' => 'admin'));
         $formDef->add('save', 'submit', array('label' => 'FORM.USER.SUBMIT.'.strtoupper($action), 'translation_domain' => 'admin'));

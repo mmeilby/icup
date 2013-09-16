@@ -2,6 +2,7 @@
 namespace ICup\Bundle\PublicSiteBundle\Controller\Edit;
 
 use ICup\Bundle\PublicSiteBundle\Entity\Doctrine\Club;
+use ICup\Bundle\PublicSiteBundle\Entity\Doctrine\User;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
@@ -130,6 +131,10 @@ class EditClubController extends Controller
             $users = $em->getRepository('ICup\Bundle\PublicSiteBundle\Entity\Doctrine\User')
                     ->findBy(array('cid' => $clubid));
             foreach ($users as $usr) {
+                if ($usr->isClub() && $usr->isRelated()) {
+                    $usr->setRole(User::$CLUB);
+                    $usr->setStatus(User::$VER);
+                }
                 $usr->setCid(0);
             }
             $em->remove($club);

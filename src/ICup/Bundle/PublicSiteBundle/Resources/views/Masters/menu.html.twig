@@ -1,16 +1,25 @@
 {% extends "ICupPublicSiteBundle:Masters:base.html.twig" %}
 
 {% set flags = app.session.get('Countries') %}
+{% set tmnt = app.session.get('Tournament') %}
 
 {% block header %}
     <div class="menu">
-    {% for menuitem,path in app.session.get('HeaderMenu') %}
         <div class="menu_header">
             <ul>
-                <li><a href="{{ path }}">{{ menuitem|trans }}</a></li>
+                <li><a href="{{ path('_tournament_overview', {'tournament': tmnt}) }}">{{ 'MENU.TOURNAMENT.OVERVIEW'|trans }}</a></li>
             </ul>
         </div>
-    {% endfor %}
+        <div class="menu_header">
+            <ul>
+                <li><a href="{{ path('_tournament_overview', {'tournament': tmnt}) }}">{{ 'MENU.INFO.ABOUT'|trans }}</a></li>
+            </ul>
+        </div>
+        <div class="menu_header">
+            <ul>
+                <li><a href="{{ path('_tournament_overview', {'tournament': tmnt}) }}">{{ 'MENU.INFO.FAQ'|trans }}</a></li>
+            </ul>
+        </div>
         <div class="menu_header last">
             <ul>
                 <li>
@@ -47,15 +56,34 @@
                     {% endfor %}
                 </ul>
             </div>
-        {% for title,menu in app.session.get('FooterMenu') %}
             <div class="menu_footer">
-                <h3>{{ title|trans }}</h3>
+                <h3>{% trans %}MENU.TOURNAMENT.TITLE{% endtrans %}</h3>
                 <ul>
-            {% for menuitem,path in menu %}
-                    <li><a href="{{ path }}">{{ menuitem|trans }}</a></li>
-            {% endfor %}
+                    <li><a href="{{ path('_tournament_overview', {'tournament': tmnt}) }}">{% trans %}MENU.TOURNAMENT.OVERVIEW{% endtrans %}</a></li>
+                    <li><a href="{{ path('_tournament_categories', {'tournament': tmnt}) }}">{% trans %}MENU.TOURNAMENT.GROUPS{% endtrans %}</a></li>
+                    <li><a href="{{ path('_tournament_playgrounds', {'tournament': tmnt}) }}">{% trans %}MENU.TOURNAMENT.PLAYGROUNDS{% endtrans %}</a></li>
+                    <li><a href="{{ path('_tournament_clubs', {'tournament': tmnt}) }}">{% trans %}MENU.TOURNAMENT.TEAMS{% endtrans %}</a></li>
+                    <li><a href="{{ path('_tournament_winners', {'tournament': tmnt}) }}">{% trans %}MENU.TOURNAMENT.WINNERS{% endtrans %}</a></li>
+                    <li><a href="{{ path('_tournament_statistics', {'tournament': tmnt}) }}">{% trans %}MENU.TOURNAMENT.STATISTICS{% endtrans %}</a></li>
                 </ul>
             </div>
-        {% endfor %}
+            <div class="menu_footer">
+                <h3>{% trans %}MENU.ENROLLMENT.TITLE{% endtrans %}</h3>
+                <ul>
+                    <li><a href="{{ path('_club_list') }}">{% trans %}MENU.ENROLLMENT.CLUBS{% endtrans %}</a></li>
+                    <li><a href="{{ path('_club_enroll_list') }}">{% trans %}MENU.ENROLLMENT.TEAMS{% endtrans %}</a></li>
+                    <li><a href="{{ path('_club_enroll_list') }}">{% trans %}MENU.ENROLLMENT.REFEREES{% endtrans %}</a></li>
+                </ul>
+            </div>
+            <div class="menu_footer">
+                <h3>{% trans %}MENU.ADMIN.TITLE{% endtrans %}</h3>
+                <ul>
+                    <li><a href="{{ path('_tournament_playgrounds', {'tournament': tmnt}) }}">{% trans %}MENU.ADMIN.RESULTS{% endtrans %}</a></li>
+                    <li><a href="{{ path('_edit_host_list') }}">{% trans %}MENU.ADMIN.TOURNAMENT{% endtrans %}</a></li>
+                    <li><a href="{{ path('_edit_club_list') }}">{% trans %}MENU.ADMIN.TEAMS{% endtrans %}</a></li>
+                    <li><a href="{{ path('_edit_host_list') }}">{% trans %}MENU.ADMIN.PLAYERS{% endtrans %}</a></li>
+                    <li><a href="{{ path('_edit_host_list') }}">{% trans %}MENU.ADMIN.REFEREES{% endtrans %}</a></li>
+                </ul>
+            </div>
     </div>
 {% endblock %}

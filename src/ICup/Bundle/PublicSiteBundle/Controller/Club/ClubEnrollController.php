@@ -4,6 +4,8 @@ namespace ICup\Bundle\PublicSiteBundle\Controller\Club;
 use DateTime;
 use ICup\Bundle\PublicSiteBundle\Entity\Doctrine\Enrollment;
 use ICup\Bundle\PublicSiteBundle\Entity\Doctrine\Team;
+use ICup\Bundle\PublicSiteBundle\Entity\Doctrine\Club;
+use ICup\Bundle\PublicSiteBundle\Entity\Doctrine\User;
 use RuntimeException;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
@@ -39,11 +41,20 @@ class ClubEnrollController extends Controller
             // Controller is called by default admin - switch to select club view
             return $this->redirect($this->generateUrl('_edit_club_list'));
         }
+        if (!$user->isClub()) {
+            // Controller is called by editor or admin - switch to select club view
+            return $this->redirect($this->generateUrl('_edit_club_list'));
+        }
+        if (!$user->isRelated()) {
+            // User is not related to a club yet - explain the problem...
+            return $this->render('ICupPublicSiteBundle:Errors:needtoberelated.html.twig');
+        }
         /* @var $club Club */
         $club = $em->getRepository('ICup\Bundle\PublicSiteBundle\Entity\Doctrine\Club')->find($user->getCid());
         if ($club == null) {
-            // Controller is called by editor or admin - switch to select club view
-            return $this->redirect($this->generateUrl('_edit_club_list'));
+            // User is not related to a valid club - explain the problem...
+            $this->get('logger')->addError("User CID is invalid: " . $user->dump());
+            return $this->render('ICupPublicSiteBundle:Errors:needtoberelated.html.twig');
         }
         
         $categories = $em->getRepository('ICup\Bundle\PublicSiteBundle\Entity\Doctrine\Category')
@@ -102,11 +113,20 @@ class ClubEnrollController extends Controller
             // Controller is called by default admin - switch to select club view
             return $this->redirect($this->generateUrl('_edit_club_list'));
         }
+        if (!$user->isClub()) {
+            // Controller is called by editor or admin - switch to select club view
+            return $this->redirect($this->generateUrl('_edit_club_list'));
+        }
+        if (!$user->isRelated()) {
+            // User is not related to a club yet - explain the problem...
+            return $this->render('ICupPublicSiteBundle:Errors:needtoberelated.html.twig');
+        }
         /* @var $club Club */
         $club = $em->getRepository('ICup\Bundle\PublicSiteBundle\Entity\Doctrine\Club')->find($user->getCid());
         if ($club == null) {
-            // Controller is called by editor or admin - switch to select club view
-            return $this->redirect($this->generateUrl('_edit_club_list'));
+            // User is not related to a valid club - explain the problem...
+            $this->get('logger')->addError("User CID is invalid: " . $user->dump());
+            return $this->render('ICupPublicSiteBundle:Errors:needtoberelated.html.twig');
         }
         
         $category = $em->getRepository('ICup\Bundle\PublicSiteBundle\Entity\Doctrine\Category')->find($categoryid);
@@ -172,11 +192,20 @@ class ClubEnrollController extends Controller
             // Controller is called by default admin - switch to select club view
             return $this->redirect($this->generateUrl('_edit_club_list'));
         }
+        if (!$user->isClub()) {
+            // Controller is called by editor or admin - switch to select club view
+            return $this->redirect($this->generateUrl('_edit_club_list'));
+        }
+        if (!$user->isRelated()) {
+            // User is not related to a club yet - explain the problem...
+            return $this->render('ICupPublicSiteBundle:Errors:needtoberelated.html.twig');
+        }
         /* @var $club Club */
         $club = $em->getRepository('ICup\Bundle\PublicSiteBundle\Entity\Doctrine\Club')->find($user->getCid());
         if ($club == null) {
-            // Controller is called by editor or admin - switch to select club view
-            return $this->redirect($this->generateUrl('_edit_club_list'));
+            // User is not related to a valid club - explain the problem...
+            $this->get('logger')->addError("User CID is invalid: " . $user->dump());
+            return $this->render('ICupPublicSiteBundle:Errors:needtoberelated.html.twig');
         }
         
         $category = $em->getRepository('ICup\Bundle\PublicSiteBundle\Entity\Doctrine\Category')->find($categoryid);
@@ -193,7 +222,7 @@ class ClubEnrollController extends Controller
         $qb->setParameter('club', $club->getId());
         $enrolled = $qb->getResult();
  
-        $enroll = array_pop(&$enrolled);
+        $enroll = array_pop($enrolled);
         if ($enroll == null) {
             return $this->render('ICupPublicSiteBundle:Errors:noteams.html.twig', array('redirect' => $this->generateUrl('_club_enroll_list')));
         }

@@ -38,11 +38,14 @@ security:
             form_login:
                 check_path: _security_check
                 login_path: _admin_login
+                username_parameter: 'form[username]'
+                password_parameter: 'form[password]'
             logout:
                 path:   _admin_logout
                 target: _icup
 
     access_control:
+        - { path: ^/user, roles: ROLE_USER }
         - { path: ^/club, roles: ROLE_USER }
         - { path: ^/edit, roles: ROLE_EDITOR }
         - { path: ^/admin, roles: ROLE_EDITOR_ADMIN }

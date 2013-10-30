@@ -1,0 +1,50 @@
+{% extends "ICupPublicSiteBundle:Masters:standard.html.twig" %}
+
+{% form_theme form 'ICupPublicSiteBundle:Default:layout.script.html.twig' %}
+{% trans_default_domain "club" %}
+
+{% block body %}
+    <div style="width: 70%; float: left;">
+    <h1 class="category">{{ tournament.name }}</h1>
+    <p class="subcategory">{% trans %}FORM.TITLE{% endtrans %}</p>
+    <p>{% trans %}FORM.LOGIN.TITLE{% endtrans %}</p>
+    {% if error is defined and error %}
+        <div class="form_error">{{ error.message }}</div>
+    {% endif %}
+    {{ form(form) }}
+    </div>
+    <div class="new_user" style="width: 25%; float: left;">
+        <p><b>{{ 'FORM.LOGIN.SECTION.HEADER'|trans|upper }}</b></p>
+        <p>{% trans %}FORM.LOGIN.SECTION.TEXT{% endtrans %}</p>
+        <p><a href="{{ path('_ausr_new_club') }}">{% trans %}FORM.LOGIN.SECTION.LINK{% endtrans %}</a></p>
+    </div>
+{% endblock %}
+
+{% block javascripts %}
+    {% javascripts '@ICupPublicSiteBundle/Resources/public/js/jquery-1.8.0.min.js' output="bundles/icuppublicsite/js/jquery.min.js" %}
+    <script type="text/javascript" src="{{ asset_url }}"></script>
+    {% endjavascripts  %}
+
+    <script type="text/javascript">
+        $(function onLoad() {
+            var optDefault = $('select#form_clubs').html();
+            $('input#form_name').keyup(function OnKeyUp(){
+                $('select#form_clubs').empty();
+                $.getJSON("{{ path('_rest_list_clubs') }}",
+                           {'pattern': '%'+$('input#form_name').val()+'%'},
+                           function readClubs(data, status) {
+                            opt = '';
+                            $.each(data, 
+                                   function updateDropDown(index, club) {
+                                     opt += "<option id='"+club.id+"'>"+club.name+" ("+club.country+")</option>";
+                                   });
+                            if (opt !== '')      
+                                $('select#form_clubs').html(opt);
+                            else
+                                $('select#form_clubs').html(optDefault);
+                           }
+                         );
+            });
+        });
+    </script>
+{% endblock %}

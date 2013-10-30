@@ -29,7 +29,7 @@
                     {% if app.user != null %}
                         <a href="{{ path('_admin_logout') }}">{{ app.user.username|upper }} {% trans %}MENU.LOGOUT{% endtrans %}</a>
                     {% else %}
-                        <a href="{{ path('_admin_login') }}">{% trans %}MENU.LOGIN{% endtrans %}</a>
+                        <a href="{{ path('_user_my_page') }}">{% trans %}MENU.LOGIN{% endtrans %}</a>
                     {% endif %}
                 </li>
             </ul>
@@ -39,51 +39,88 @@
 
 {% block footer %}
     <div class="menu">
-            <div class="menu_footer">
-                <h3>{% trans %}MENU.LANGCHOICE.TITLE{% endtrans %}</h3>
-                <ul>
-                    {% for local in ['en','it','fr','de','es','po','da'] %}
-                        {% set flag = flags[cycle(['GBR','ITA','FRA','DEU','ESP','POL','DNK'], loop.index0)] %}
-                        {% set lang = ['LANG.',local|upper]|join|trans({}, 'common') %}
-                    <li>
-                        <a href="{{ path('_switch', { 'locale': local }) }}">
-                            <img src="{{ imagepath }}/flags/{{ flag }}"
-                                 alt="{{ lang }}"
-                                 title="{% trans %}CHOOSELANG{% endtrans %}: {{ lang }}" />
-                            &nbsp;{{ lang }}
-                        </a>
-                    </li>
-                    {% endfor %}
-                </ul>
-            </div>
-            <div class="menu_footer">
-                <h3>{% trans %}MENU.TOURNAMENT.TITLE{% endtrans %}</h3>
-                <ul>
-                    <li><a href="{{ path('_tournament_overview', {'tournament': tmnt}) }}">{% trans %}MENU.TOURNAMENT.OVERVIEW{% endtrans %}</a></li>
-                    <li><a href="{{ path('_tournament_categories', {'tournament': tmnt}) }}">{% trans %}MENU.TOURNAMENT.GROUPS{% endtrans %}</a></li>
-                    <li><a href="{{ path('_tournament_playgrounds', {'tournament': tmnt}) }}">{% trans %}MENU.TOURNAMENT.PLAYGROUNDS{% endtrans %}</a></li>
-                    <li><a href="{{ path('_tournament_clubs', {'tournament': tmnt}) }}">{% trans %}MENU.TOURNAMENT.TEAMS{% endtrans %}</a></li>
-                    <li><a href="{{ path('_tournament_winners', {'tournament': tmnt}) }}">{% trans %}MENU.TOURNAMENT.WINNERS{% endtrans %}</a></li>
-                    <li><a href="{{ path('_tournament_statistics', {'tournament': tmnt}) }}">{% trans %}MENU.TOURNAMENT.STATISTICS{% endtrans %}</a></li>
-                </ul>
-            </div>
-            <div class="menu_footer">
-                <h3>{% trans %}MENU.ENROLLMENT.TITLE{% endtrans %}</h3>
-                <ul>
-                    <li><a href="{{ path('_club_list') }}">{% trans %}MENU.ENROLLMENT.CLUBS{% endtrans %}</a></li>
-                    <li><a href="{{ path('_club_enroll_list') }}">{% trans %}MENU.ENROLLMENT.TEAMS{% endtrans %}</a></li>
-                    <li><a href="{{ path('_club_enroll_list') }}">{% trans %}MENU.ENROLLMENT.REFEREES{% endtrans %}</a></li>
-                </ul>
-            </div>
-            <div class="menu_footer">
-                <h3>{% trans %}MENU.ADMIN.TITLE{% endtrans %}</h3>
-                <ul>
-                    <li><a href="{{ path('_tournament_playgrounds', {'tournament': tmnt}) }}">{% trans %}MENU.ADMIN.RESULTS{% endtrans %}</a></li>
-                    <li><a href="{{ path('_edit_host_list') }}">{% trans %}MENU.ADMIN.TOURNAMENT{% endtrans %}</a></li>
-                    <li><a href="{{ path('_edit_club_list') }}">{% trans %}MENU.ADMIN.TEAMS{% endtrans %}</a></li>
-                    <li><a href="{{ path('_edit_host_list') }}">{% trans %}MENU.ADMIN.PLAYERS{% endtrans %}</a></li>
-                    <li><a href="{{ path('_edit_host_list') }}">{% trans %}MENU.ADMIN.REFEREES{% endtrans %}</a></li>
-                </ul>
-            </div>
+        <!-- Language section -->
+        <div class="menu_footer">
+            <h3>{% trans %}MENU.LANGCHOICE.TITLE{% endtrans %}</h3>
+            <ul>
+                {% for local in ['en','it','fr','de','es','po','da'] %}
+                    {% set flag = flags[cycle(['GBR','ITA','FRA','DEU','ESP','POL','DNK'], loop.index0)] %}
+                    {% set lang = ['LANG.',local|upper]|join|trans({}, 'common') %}
+                <li>
+                    <a href="{{ path('_switch', { 'locale': local }) }}">
+                        <img src="{{ imagepath }}/flags/{{ flag }}"
+                             alt="{{ lang }}"
+                             title="{% trans %}CHOOSELANG{% endtrans %}: {{ lang }}" />
+                        &nbsp;{{ lang }}
+                    </a>
+                </li>
+                {% endfor %}
+            </ul>
+        </div>
+        <!-- Tournament section -->
+        <div class="menu_footer">
+            <h3>{% trans %}MENU.TOURNAMENT.TITLE{% endtrans %}</h3>
+            <ul>
+                <li><a href="{{ path('_tournament_overview', {'tournament': tmnt}) }}">{% trans %}MENU.TOURNAMENT.OVERVIEW{% endtrans %}</a></li>
+                <li><a href="{{ path('_tournament_categories', {'tournament': tmnt}) }}">{% trans %}MENU.TOURNAMENT.GROUPS{% endtrans %}</a></li>
+                <li><a href="{{ path('_tournament_playgrounds', {'tournament': tmnt}) }}">{% trans %}MENU.TOURNAMENT.PLAYGROUNDS{% endtrans %}</a></li>
+                <li><a href="{{ path('_tournament_clubs', {'tournament': tmnt}) }}">{% trans %}MENU.TOURNAMENT.TEAMS{% endtrans %}</a></li>
+                <li><a href="{{ path('_tournament_winners', {'tournament': tmnt}) }}">{% trans %}MENU.TOURNAMENT.WINNERS{% endtrans %}</a></li>
+                <li><a href="{{ path('_tournament_statistics', {'tournament': tmnt}) }}">{% trans %}MENU.TOURNAMENT.STATISTICS{% endtrans %}</a></li>
+            </ul>
+        </div>
+        <!-- Enrollment section
+             Anonymous users
+                Create new club_admin
+                Create new club_user - attach to existing club
+                Create new referess_user
+             CLUB_USER
+                Update user
+                Enroll teams
+             CLUB_ADMIN
+                Update user
+                Admin club and attached users
+                Enroll teams
+             EDITOR
+                Update user
+             EDITOR_ADMIN
+                Update user
+                Admin host and attached users
+             ADMIN
+                Update user
+        -->
+        <div class="menu_footer">
+{% if app.user == null %}
+            <h3>{% trans %}MENU.NEWUSER.TITLE{% endtrans %}</h3>
+            <ul>
+                <li><a href="{{ path('_club_enroll_list') }}">{% trans %}MENU.NEWUSER.ENROLL{% endtrans %}</a></li>
+            </ul>
+{% else %}
+            <h3>{% trans %}MENU.ENROLLMENT.TITLE{% endtrans %}</h3>
+            <ul>
+                <li><a href="{{ path('_user_my_page') }}">{% trans %}MENU.ENROLLMENT.MYPAGE{% endtrans %}</a></li>
+    {% if is_granted('ROLE_CLUB_ADMIN') %}
+                <li><a href="{{ path('_club_list') }}">{% trans %}MENU.ENROLLMENT.CLUBS{% endtrans %}</a></li>
+    {% endif %}
+                <li><a href="{{ path('_club_enroll_list') }}">{% trans %}MENU.ENROLLMENT.TEAMS{% endtrans %}</a></li>
+    {% if is_granted('ROLE_EDITOR_ADMIN') %}
+    {% endif %}
+    {% if is_granted('ROLE_EDITOR') %}
+    {% endif %}
+            </ul>
+{% endif %}
+        </div>
+        <div class="menu_footer">
+            <h3>{% trans %}MENU.ADMIN.TITLE{% endtrans %}</h3>
+            <ul>
+                <li><a href="{{ path('_tournament_playgrounds', {'tournament': tmnt}) }}">{% trans %}MENU.ADMIN.RESULTS{% endtrans %}</a></li>
+    {% if is_granted('ROLE_ADMIN') %}
+                <li><a href="{{ path('_edit_host_list') }}">{% trans %}MENU.ADMIN.TOURNAMENT{% endtrans %}</a></li>
+                <li><a href="{{ path('_edit_club_list') }}">{% trans %}MENU.ADMIN.TEAMS{% endtrans %}</a></li>
+                <li><a href="{{ path('_edit_host_list') }}">{% trans %}MENU.ADMIN.PLAYERS{% endtrans %}</a></li>
+                <li><a href="{{ path('_edit_host_list') }}">{% trans %}MENU.ADMIN.REFEREES{% endtrans %}</a></li>
+    {% endif %}
+            </ul>
+        </div>
     </div>
 {% endblock %}

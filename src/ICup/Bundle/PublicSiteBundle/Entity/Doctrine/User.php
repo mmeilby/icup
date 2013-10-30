@@ -19,15 +19,15 @@ class User implements UserInterface
     public static $EDITOR_ADMIN = 4;
     public static $ADMIN = 9;
 
-    // Authenticated user
+    /* Authenticated user - just created and not yet verified */
     public static $AUTH = 1;
-    // Verified user
+    /* Verified user - verified by email response however not connected to a club */
     public static $VER = 2;
-    // Prospector
+    /* Prospector - verified user requesting a reference to a club - cid must be valid */
     public static $PRO = 3;
-    // Attached user
+    /* Attached user - verified user - accepted to reference a club - cid must be valid */
     public static $ATT = 4;
-    // System user
+    /* System user */
     public static $SYSTEM = 9;
 
     /**
@@ -199,7 +199,6 @@ class User implements UserInterface
 
     /**
      * Test for club role
-     * Test if user has the club role
      * @return boolean - true if the user has the club role 
      */
     public function isClub()
@@ -209,7 +208,6 @@ class User implements UserInterface
 
     /**
      * Test for editor role
-     * Test if user has the editor role
      * @return boolean - true if the user has the editor role 
      */
     public function isEditor()
@@ -219,7 +217,6 @@ class User implements UserInterface
 
     /**
      * Test for admin role
-     * Test if user has the admin role
      * @return boolean - true if the user has the admin role 
      */
     public function isAdmin()
@@ -252,8 +249,7 @@ class User implements UserInterface
 
     /**
      * Test for club relation
-     * Test if user has the admin role
-     * @return boolean - true if the user has the admin role 
+     * @return boolean - true if the user is attached or prospector to a club - cid refers to a valid club
      */
     public function isRelated()
     {
@@ -404,5 +400,16 @@ class User implements UserInterface
     public function eraseCredentials()
     {
         unset($this->password);
+    }
+    
+    public function dump() {
+        return "User: id=".$this->getId().
+                ", usr=".$this->getUsername().
+                ", name=".$this->getName().
+                ", email=".$this->getEmail().
+                ", cid=".$this->getCid().
+                ", pid=".$this->getPid().
+                ", role=".$this->getRole().
+                ", status=".$this->getStatus();
     }
 }

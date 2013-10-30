@@ -296,6 +296,9 @@ class EditUserController extends Controller
         $encoder = $factory->getEncoder($user);
         $password = $encoder->encodePassword($secret, $user->getSalt());
         $user->setPassword($password);
-        $this->get('logger')->addNotice($user->getName() . ": " . $secret . " -> " . $password);
+        $pwValid = $encoder->isPasswordValid($password, $secret, $user->getSalt());
+        if (!$pwValid)
+            $this->get('logger')->addNotice("Password is not valid: " . $user->getName() . ": " . $secret . " -> " . $password);
+        return $pwValid;
     }
 }

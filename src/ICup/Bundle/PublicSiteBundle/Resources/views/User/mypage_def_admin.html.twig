@@ -1,0 +1,9 @@
+{% extends "ICupPublicSiteBundle:Masters:edit.html.twig" %}
+{% trans_default_domain "club" %}
+
+{% block body %}
+<h1>{% trans %}FORM.MYPAGE.TITLE{% endtrans %}</h1>
+<p class="subtitle">{% trans %}FORM.MYPAGE.DEFAULT_ADMIN{% endtrans %}</p>
+<p>{% trans %}FORM.MYPAGE.DEFADM.WARNING{% endtrans %}</p>
+<p><a href="{{ path('_user_chg_pass') }}">{% trans %}FORM.MYPAGE.DEFADM.LINK{% endtrans %}</a></p>
+{% endblock %}

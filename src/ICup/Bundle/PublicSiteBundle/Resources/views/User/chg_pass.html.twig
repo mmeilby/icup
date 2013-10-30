@@ -1,0 +1,15 @@
+{% extends "ICupPublicSiteBundle:Masters:standard.html.twig" %}
+
+{% form_theme form 'ICupPublicSiteBundle:Default:layout.script.html.twig' %}
+{% trans_default_domain "club" %}
+
+{% block body %}
+<h1>{% trans %}FORM.MYPAGE.TITLE{% endtrans %}</h1>
+<p class="subtitle">{{ user.name|capitalize }} ({{ user.username|upper }})</p>
+<p><b>{% trans %}FORM.NEWPASS.TITLE{% endtrans %}</b></p>
+<p>{% trans %}FORM.NEWPASS.PROMPT{% endtrans %}</p>
+{% if error is defined and error %}
+    <div class="form_error">{{ error.message }}</div>
+{% endif %}
+{{ form(form) }}
+{% endblock %}

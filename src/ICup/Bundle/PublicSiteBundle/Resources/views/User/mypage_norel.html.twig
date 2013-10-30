@@ -1,0 +1,14 @@
+{% extends "ICupPublicSiteBundle:Masters:edit.html.twig" %}
+{% trans_default_domain "club" %}
+
+{% block body %}
+<h1>{% trans %}FORM.MYPAGE.TITLE{% endtrans %}</h1>
+<p class="subtitle">{{ currentuser.name|capitalize }} ({{ currentuser.username|upper }})</p>
+<p><b>
+{% if currentuser.role == 2 %}
+{% trans %}FORM.MYPAGE.CLUBADMIN{% endtrans %}
+{% else %}
+{% trans %}FORM.MYPAGE.CLUBUSER{% endtrans %}
+{% endif %}
+</b></p>
+{% endblock %}

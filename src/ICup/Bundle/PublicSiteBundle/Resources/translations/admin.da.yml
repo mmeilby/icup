@@ -13,6 +13,12 @@ FORM:
     TITLE: Vedligehold turneringer og værter
     CAPTION: Værter og turneringer
     NOTOURNAMENT: Tilføj ny turnering
+  LOGIN:
+    TITLE: Log på
+    PROMPT: Log ind med dit brugernavn hvis du har en profil.
+    USERNAME: Brugernavn
+    PASSWORD: Kodeord
+    LOGIN: Log på
   HOST:
     TITLE:
       ADD: Tilføj ny turneringsvært
@@ -198,6 +204,12 @@ FORM:
     NOUSER: Tilføj ny bruger
   USER: 
     DEFAULT: Vælg...
+    NONAME: Et navn skal angives.
+    NOUSERNAME: Et brugernavn skal angives.
+    NOEMAIL: E-mail skal angives.
+    NOPASSWORD: Et kodeord skal angives.
+    NAMEEXIST: En anden bruger er allerede oprettet med samme brugernavn. Er oplysningerne korrekte, så forsøg at logge på.
+    BADPASSWORD: Det valgte kodeord er ikke gyldigt.
     CHOICE:
       ROLE:
         1: Klubbruger

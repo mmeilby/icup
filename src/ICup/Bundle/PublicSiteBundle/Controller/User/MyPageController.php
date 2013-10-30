@@ -1,6 +1,7 @@
 <?php
-namespace ICup\Bundle\PublicSiteBundle\Controller\Club;
+namespace ICup\Bundle\PublicSiteBundle\Controller\User;
 
+use ICup\Bundle\PublicSiteBundle\Services\Util;
 use ICup\Bundle\PublicSiteBundle\Entity\Doctrine\Club;
 use ICup\Bundle\PublicSiteBundle\Entity\Doctrine\User;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
@@ -13,15 +14,15 @@ use Symfony\Component\Yaml\Exception\RuntimeException;
 /**
  * List the categories and groups available
  */
-class ClubEditController extends Controller
+class MyPageController extends Controller
 {
     /**
-     * List the clubs available
-     * @Route("/club/list", name="_club_list")
+     * Show myICup page for authenticated users
+     * @Route("/user/mypage", name="_user_my_page")
      * @Method("GET")
-     * @Template("ICupPublicSiteBundle:Club:listclub.html.twig")
+     * @Template("ICupPublicSiteBundle:User:mypage.html.twig")
      */
-    public function listClubsAction()
+    public function myPageAction()
     {
         $this->get('util')->setupController($this);
         $em = $this->getDoctrine()->getManager();
@@ -34,15 +35,29 @@ class ClubEditController extends Controller
 
         if (!is_a($user, 'ICup\Bundle\PublicSiteBundle\Entity\Doctrine\User')) {
             // Controller is called by default admin - switch to select club view
-            return $this->redirect($this->generateUrl('_edit_club_list'));
+            return $this->render('ICupPublicSiteBundle:User:mypage_def_admin.html.twig');
         }
-        if (!$user->isClub()) {
-            // Admins and editors should select a club from clublist
-            return $this->redirect($this->generateUrl('_edit_club_list'));
+        if ($user->isAdmin()) {
+            // Admins should get a different view
+            return $this->render('ICupPublicSiteBundle:User:mypage_admin.html.twig', array('currentuser' => $user));
+        }
+        if ($user->isEditor()) {
+            /* @var $host Host */
+            $host = $em->getRepository('ICup\Bundle\PublicSiteBundle\Entity\Doctrine\Host')->find($user->getPid());
+            if ($host == null) {
+                // User was related to a missing host
+                return $this->render('ICupPublicSiteBundle:Errors:badhost.html.twig');
+            }
+            $users = $em->getRepository('ICup\Bundle\PublicSiteBundle\Entity\Doctrine\User')
+                            ->findBy(array('pid' => $host->getId()), array('name' => 'asc'));
+
+            // Editors should get a different view
+            return $this->render('ICupPublicSiteBundle:User:mypage_editor.html.twig',
+                    array('host' => $host, 'users' => $users, 'currentuser' => $user));
         }
         if (!$user->isRelated()) {
             // Non related users get a different view
-            return array('currentuser' => $user);
+            return $this->render('ICupPublicSiteBundle:User:mypage_nonrel.html.twig', array('currentuser' => $user));
         }
         
         /* @var $club Club */
@@ -53,16 +68,15 @@ class ClubEditController extends Controller
         }
 
         $users = $em->getRepository('ICup\Bundle\PublicSiteBundle\Entity\Doctrine\User')
-                        ->findBy(array('cid' => $club->getId()), array('name' => 'asc'));
+                        ->findBy(array('cid' => $club->getId()), array('status' => 'asc', 'role' => 'desc', 'name' => 'asc'));
 
         return array('club' => $club, 'users' => $users, 'currentuser' => $user);
     }
     
     /**
-     * List the clubs available
+     * Disconnect club relation for user
      * @Route("/club/disc/{userid}", name="_club_user_disconnect")
      * @Method("GET")
-     * @Template("ICupPublicSiteBundle:Club:listclub.html.twig")
      */
     public function disconnectAction($userid)
     {
@@ -98,19 +112,18 @@ class ClubEditController extends Controller
         }
         
         // Disconnect user from club - make user a verified user with no relation
-        $user->setCid(0);
+//        $user->setCid(0);
         $user->setRole(User::$CLUB);
-        $user->setStatus(User::$VER);
+        $user->setStatus(User::$PRO);
         $em->flush();
         
-        return $this->redirect($this->generateUrl('_club_list'));
+        return $this->redirect($this->generateUrl('_user_my_page'));
     }
 
     /**
-     * List the clubs available
+     * Connect user to club
      * @Route("/club/connect/{clubid}/{userid}", name="_club_user_connect")
      * @Method("GET")
-     * @Template("ICupPublicSiteBundle:Club:listclub.html.twig")
      */
     public function connectAction($clubid, $userid)
     {
@@ -156,14 +169,13 @@ class ClubEditController extends Controller
         $user->setStatus(User::$ATT);
         $em->flush();
         
-        return $this->redirect($this->generateUrl('_club_list'));
+        return $this->redirect($this->generateUrl('_user_my_page'));
     }
 
     /**
      * List the clubs available
      * @Route("/club/chgrole/{userid}", name="_club_user_chg_role")
      * @Method("GET")
-     * @Template("ICupPublicSiteBundle:Club:listclub.html.twig")
      */
     public function chgRoleAction($userid)
     {
@@ -206,9 +218,70 @@ class ClubEditController extends Controller
         }
         $em->flush();
         
-        return $this->redirect($this->generateUrl('_club_list'));
+        return $this->redirect($this->generateUrl('_user_my_page'));
     }
 
+   /**
+     * Change password for logged in user
+     * @Route("/user/chg/pass", name="_user_chg_pass")
+     * @Template("ICupPublicSiteBundle:User:chg_pass.html.twig")
+     */
+    public function passAction() {
+        /* @var $utilService Util */
+        $utilService = $this->get('util');
+        $utilService->setupController($this);
+        $em = $this->getDoctrine()->getManager();
+
+        /* @var $user User */
+        $user = $this->getUser();
+        if ($user == null) {
+            throw new RuntimeException("This controller is not available for anonymous users");
+        }
+
+        if (!is_a($user, 'ICup\Bundle\PublicSiteBundle\Entity\Doctrine\User')) {
+            // Controller is called by default admin - prepare a new database user
+            $admin = $em->getRepository('ICup\Bundle\PublicSiteBundle\Entity\Doctrine\User')->findBy(array('username' => $user->getUsername()));
+            if ($admin == null) {
+                $admin = new User();
+                $admin->setName($user->getUsername());
+                $admin->setUsername($user->getUsername());
+                $admin->setRole(User::$ADMIN);
+                $admin->setStatus(User::$SYSTEM);
+                $admin->setEmail('');
+                $admin->setPid(0);
+                $admin->setCid(0);
+                $utilService->generatePassword($this, $admin, $user->getUsername());
+                $em->persist($admin);
+                $em->flush();
+                $user = $admin;
+            }
+            else {
+                $user = $admin[0];
+            }
+        }
+        
+        $pwd = new \ICup\Bundle\PublicSiteBundle\Entity\Password();
+        $formDef = $this->createFormBuilder($pwd);
+        $formDef->add('password', 'password', array('label' => 'FORM.NEWPASS.PASSWORD', 'required' => false, 'translation_domain' => 'club'));
+        $formDef->add('password2', 'password', array('label' => 'FORM.NEWPASS.PASSWORD2', 'required' => false, 'translation_domain' => 'club'));
+        $formDef->add('cancel', 'submit', array('label' => 'FORM.NEWPASS.CANCEL', 'translation_domain' => 'club'));
+        $formDef->add('save', 'submit', array('label' => 'FORM.NEWPASS.SUBMIT', 'translation_domain' => 'club'));
+        $form = $formDef->getForm();
+        $request = $this->getRequest();
+        $form->handleRequest($request);
+        if ($form->get('cancel')->isClicked()) {
+            return $this->redirect($this->generateUrl('_user_my_page'));
+        }
+        if ($form->isValid()) {
+            $utilService->generatePassword($this, $user, $pwd->getPassword());
+            $em->flush();
+            return $this->redirect($this->generateUrl('_user_my_page'));
+        }
+        return array('form' => $form->createView(), 'user' => $user);
+    }
+    
+// TODO: FROM THIS POINT CHECK CODE
+    
     /**
      * Add new club
      * @Route("/club/add", name="_club_add")
@@ -456,6 +529,153 @@ class ClubEditController extends Controller
         $formDef->add('cancel', 'submit', array('label' => 'FORM.USER.CANCEL.'.strtoupper($action), 'translation_domain' => 'admin'));
         $formDef->add('save', 'submit', array('label' => 'FORM.USER.SUBMIT.'.strtoupper($action), 'translation_domain' => 'admin'));
         return $formDef->getForm();
+    }
+
+    
+// TODO: VALIDATE THIS CODE    
+    
+    
+    /**
+     * Login club users and club administrators
+     * @Route("/user/enroll", name="_ausr_enroll")
+     * @Method("GET")
+     * @Template("ICupPublicSiteBundle:User:ausr_enroll.html.twig")
+     */
+    public function enrollAction()
+    {
+        /* @var $utilService Util */
+        $utilService = $this->get('util');
+        $utilService->setupController($this);
+
+        /* @var $user User */
+        $user = $this->getUser();
+        if ($user != null) {
+            // Controller is called by authenticated user - switch to "MyPage"
+            return $this->redirect($this->generateUrl('_user_my_page'));
+        }
+
+        $tournament = $utilService->getTournament($this);
+        return array('tournament' => $tournament);
+    }
+
+
+    /**
+     * Add new club user - part 2
+     * @Route("/new/club", name="_ausr_new_club_step2")
+     * @Template("ICupPublicSiteBundle:User:ausr_new_club.html.twig")
+     */
+    public function newClubAction()
+    {
+        /* @var $utilService Util */
+        $utilService = $this->get('util');
+        $utilService->setupController($this);
+        $em = $this->getDoctrine()->getManager();
+
+        /* @var $user User */
+        $user = $this->getUser();
+        if ($user == null) {
+            return $this->redirect($this->generateUrl('_ausr_new_club'));
+        }
+
+        if (!$user->isClub() || $user->isRelated()) {
+            // Controller is called by authenticated user directly - not a new user - switch to "MyPage"
+            return $this->redirect($this->generateUrl('_user_my_page'));
+        }
+
+        $tournament = $utilService->getTournament($this);
+
+        $country = $this->getRequest()->get('country');
+        if ($country == null) {
+            $map = array('en'=>'GBR', 'da'=>'DNK', 'it'=>'ITA', 'fr'=>'FRA', 'de'=>'DEU', 'es'=>'ESP', 'po'=>'POL');
+            $country = $map[$this->getRequest()->getLocale()];
+        }
+
+        $club = new \ICup\Bundle\PublicSiteBundle\Entity\NewClub();
+        // If country is a part of the request parameters - use it
+        $club->setCountry($country);
+        $form = $this->makeClubFormAlt($club, 'sel');
+        $request = $this->getRequest();
+        $form->handleRequest($request);
+        if ($form->get('cancel')->isClicked()) {
+            return $this->redirect($this->generateUrl('_user_my_page'));
+        }
+        if ($this->checkFormAlt($form, $club, 'sel')) {
+            $newClub = new Club();
+            $newClub->setName($club->getName());
+            $newClub->setCountry($club->getCountry());
+            $em->persist($newClub);
+            $em->flush();
+
+            $user->setStatus(User::$AUTH);
+            $user->setRole(User::$CLUB);
+            $user->setCid($club->getId());
+            $em->flush();
+                
+            return $this->redirect($this->generateUrl('_ausr_enroll'));
+        }
+        return array('form' => $form->createView(), 'action' => 'add', 'user' => $user, 'tournament' => $tournament);
+    }
+
+    /**
+     * List the clubs available
+     * @Route("/rest/list/clubs", name="_rest_list_clubs")
+     */
+    public function restListClubsAction()
+    {
+        /* @var $utilService Util */
+        $utilService = $this->get('util');
+        $utilService->setupController($this);
+        $request = $this->getRequest();
+        $pattern = $request->get('pattern', '%');
+        $em = $this->getDoctrine()->getManager();
+        $qb = $em->createQuery("select c ".
+                               "from ICup\Bundle\PublicSiteBundle\Entity\Doctrine\Club c ".
+                               "where c.name like :pattern ".
+                               "order by c.name");
+        $qb->setParameter('pattern', $pattern);
+        $clubs = $qb->getResult();
+        $result = array();
+        foreach ($clubs as $club) {
+            $country = $this->get('translator')->trans($club->getCountry(), array(), 'lang');
+            $result[] = array('id' => $club->getId(), 'name' => $club->getname(), 'country' => $country);
+        }
+        return new Response(json_encode($result));
+    }
+    
+    
+    private function makeClubFormAlt($club, $action) {
+        $countries = array();
+        foreach (array_keys($this->get('util')->getCountries()) as $ccode) {
+            $country = $this->get('translator')->trans($ccode, array(), 'lang');
+            $countries[$ccode] = $country;
+        }
+        asort($countries);
+        $formDef = $this->createFormBuilder($club);
+        $formDef->add('name', 'text', array('label' => 'FORM.CLUB.NAME', 'required' => false, 'disabled' => $action == 'del', 'translation_domain' => 'admin'));
+        if ($action === 'add') {
+            $formDef->add('country', 'choice', array('label' => 'FORM.CLUB.COUNTRY', 'required' => false, 'choices' => $countries, 'empty_value' => 'FORM.CLUB.DEFAULT', 'disabled' => $action == 'del', 'translation_domain' => 'admin'));
+        }
+        else {
+            $formDef->add('clubs', 'choice', array('label' => 'FORM.CLUB.NAME', 'required' => false, 'choices' => array(), 'empty_value' => 'FORM.CLUB.DEFAULT', 'disabled' => $action == 'del', 'translation_domain' => 'admin'));
+        }
+        $formDef->add('cancel', 'submit', array('label' => 'FORM.CLUB.CANCEL.'.strtoupper($action), 'translation_domain' => 'admin'));
+        $formDef->add('save', 'submit', array('label' => 'FORM.CLUB.SUBMIT.'.strtoupper($action), 'translation_domain' => 'admin'));
+        return $formDef->getForm();
+    }
+    
+    private function checkFormAlt($form, $club, $action) {
+        if ($form->isValid()) {
+            if ($club->getName() == null || trim($club->getName()) == '') {
+                $form->addError(new FormError($this->get('translator')->trans('FORM.CLUB.NONAME', array(), 'admin')));
+                return false;
+            }
+            if ($club->getCountry() == null) {
+                $form->addError(new FormError($this->get('translator')->trans('FORM.CLUB.NOCOUNTRY', array(), 'admin')));
+                return false;
+            }
+            return true;
+        }
+        return false;
     }
     
 }

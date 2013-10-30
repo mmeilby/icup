@@ -14,9 +14,6 @@ WINNING_CLUBS: Vindende klubber
 
 RESULTS: Resultater for
 EDITRESULTS: Rediger resultater
-LOGIN: Log på
-USERNAME: Brugernavn
-PASSWORD: Kodeord
 CHOOSELANG: Vælg sprog
 
 ADMIN: Administration
@@ -70,8 +67,14 @@ MENU:
     TEAMS: Klubber
     WINNERS: Vindere
     STATISTICS: Statistik
+  NEWUSER:
+    TITLE: Registrer
+    TEAM: Ny klub
+    REFEREE: Ny dommer
+    ENROLL: Tilmelding
   ENROLLMENT:
     TITLE: Tilmelding
+    MYPAGE: Mit iCup
     CLUBS: Klubber
     TEAMS: Hold
     REFEREES: Dommere

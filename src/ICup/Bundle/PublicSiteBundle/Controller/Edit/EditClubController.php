@@ -150,7 +150,7 @@ class EditClubController extends Controller
             $country = $this->get('translator')->trans($ccode, array(), 'lang');
             $countries[$ccode] = $country;
         }
-        asort(&$countries);
+        asort($countries);
         $formDef = $this->createFormBuilder($club);
         $formDef->add('name', 'text', array('label' => 'FORM.CLUB.NAME', 'required' => false, 'disabled' => $action == 'del', 'translation_domain' => 'admin'));
         $formDef->add('country', 'choice', array('label' => 'FORM.CLUB.COUNTRY', 'required' => false, 'choices' => $countries, 'empty_value' => 'FORM.CLUB.DEFAULT', 'disabled' => $action == 'del', 'translation_domain' => 'admin'));

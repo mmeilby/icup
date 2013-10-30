@@ -10,14 +10,41 @@ FORM:
       ADD: Klubben bliver registreret i iCup kluboversigt og får mulighed for at tilmelde hold til de åbne turneringer.
       CHG: Ret klubinformationer. Ændring af login oplysninger skal foretages ved at følge linket.
       DEL: Klubben fjernes fra kluboversigten og alle hold og kampe knyttet til klubbens aktiviteter slettes. Det er ikke muligt at fortryde når klubben er fjernet.
-  LISTCLUB:
-    TITLE: 
+  NEWUSER:
+    TITLE: Du har valgt at oprette et ny profil. Indtast følgende oplysninger til brug for profilen.
+    SECTION:
+      HEADER: Første gang?
+      TEXT: Er din klub ikke på iCup kan du oprette en klubprofil om lidt.<br /><br />Start med at oprette din personlige profil.
+  LOGIN:
+    TITLE: Tilmelding af klub og hold kan ske med en aktiv profil. Log ind med dit brugernavn hvis du har en profil. Ellers opret en ny profil.
+    SECTION:
+      HEADER: Opret en ny profil
+      TEXT: Som holdleder eller klubansvarlig kan du oprette en gratis profil og tilmelde dine hold.
+      LINK: Klik her for at oprette en gratis profil
+  MYPAGE:
+    TITLE: Mit iCup
+    EDITOR: Turneringsansvarlig redaktør
+    EDITOR_ADMIN: Turneringsansvarlig administrator
+    ADMIN: Administrator
+    DEFAULT_ADMIN: Standard administrator
     CLUBUSER: Klubbruger
     CLUBADMIN: Klubansvarlig
     ATTACHEDTO: Tilknyttet
     CAPTION: Klubbrugere tilknyttet denne klub
     ATTACHED: Tilknyttet
     PROSPECT: Ansøgt om tilknytning
+    DEFADM:
+      WARNING: <b>Skift kodeord for administrator</b><br />Standard administrator er ikke en sikker bruger. Benyt følgende link til at vælge et nyt kodeord til administrator brugeren.
+      LINK: Vælg nyt kodeord til administrator
+  NEWPASS: 
+    NOPASSWORD: Et kodeord skal angives.
+    BADPASSWORD: Det valgte kodeord er ikke gyldigt.
+    TITLE: Skift kodeord
+    PROMPT: Et kodeord bør indeholde ...
+    PASSWORD: Kodeord
+    PASSWORD2: Gentag kodeord
+    SUBMIT: Skift kodeord
+    CANCEL: Fortryd ændringer
   LISTENROLLED:
     TITLE: Vis tilmeldte hold til turneringen
     CAPTION: Antal tilmeldte hold per gruppe
@@ -25,3 +52,4 @@ FORM:
     BACK: Videre...
     NAMEEXIST: Klubnavn er allerede anvendt (tilknytning til eksisterende klub foretages af klubadministrator).
     CANTCHANGENAME: Klubnavn er allerede anvendt. Dette navn kan ikke bruges.
+    NOTOURNAMENT: Turnering er ikke valgt

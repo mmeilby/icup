@@ -5,7 +5,7 @@ namespace ICup\Bundle\PublicSiteBundle\Services;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Session;
-use Symfony\Component\Security\Core\User\User;
+use ICup\Bundle\PublicSiteBundle\Entity\Doctrine\User;
 use Symfony\Component\Yaml\Exception\ParseException;
 
 class Util
@@ -71,5 +71,23 @@ class Util
     public function getTournamentId(Controller $container) {
         $tournament = $this->getTournament($container);
         return $tournament != null ? $tournament->getId() : 0;
+    }
+    
+    public function generatePassword(Controller $container, User $user, $secret = null) {
+        if ($secret == null) {
+            $secret = $this->generateSecret();
+        }
+        $factory = $container->get('security.encoder_factory');
+        $encoder = $factory->getEncoder($user);
+        $password = $encoder->encodePassword($secret, $user->getSalt());
+        $user->setPassword($password);
+        $pwValid = $encoder->isPasswordValid($password, $secret, $user->getSalt());
+        if (!$pwValid)
+            $container->get('logger')->addNotice("Password is not valid: " . $user->getName() . ": " . $secret . " -> " . $password);
+        return $pwValid ? $secret : FALSE;
+    }
+    
+    public function generateSecret() {
+        return uniqid();
     }
 }

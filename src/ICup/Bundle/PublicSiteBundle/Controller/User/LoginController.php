@@ -32,8 +32,8 @@ class LoginController extends Controller
         $requestedPath = $request->getSession()->get('_security.secured_area.target_path', '');
         $startpos = strripos($requestedPath, $request->getBaseUrl());
         $basePath = substr($requestedPath, $startpos);
-        if ($basePath === $this->generateUrl('_club_enroll_list')) {
-            $twig = 'ICupPublicSiteBundle:User:ausr_enroll.html.twig';
+        if ($basePath === $this->generateUrl('_club_enroll_check')) {
+            $twig = 'ICupPublicSiteBundle:User:ausr_login.html.twig';
         }
 
         $formDef = $this->createFormBuilder(array('username' => $request->getSession()->get(SecurityContext::LAST_USERNAME)));

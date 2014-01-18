@@ -15,6 +15,12 @@ FORM:
     SECTION:
       HEADER: Første gang?
       TEXT: Er din klub ikke på iCup kan du oprette en klubprofil om lidt.<br /><br />Start med at oprette din personlige profil.
+  NEWCLUB:
+    CAPTION: Resultat af søgning
+    LEGEND: Klubber
+    NOCLUBS: Ingen klubber passer til det søgte
+    MORECLUBS: Mange klubber passer til det søgte (et udvalg er vist her) - fortsæt indtastning eller vælg en af klubberne
+    INFO: Hvis du vil knyttes til en klub der står i listen, skal du klikke på klubbens navn.
   LOGIN:
     TITLE: Tilmelding af klub og hold kan ske med en aktiv profil. Log ind med dit brugernavn hvis du har en profil. Ellers opret en ny profil.
     SECTION:
@@ -23,6 +29,8 @@ FORM:
       LINK: Klik her for at oprette en gratis profil
   MYPAGE:
     TITLE: Mit iCup
+    USERS:
+      TITLE: Mit iCup klubbrugere
     EDITOR: Turneringsansvarlig redaktør
     EDITOR_ADMIN: Turneringsansvarlig administrator
     ADMIN: Administrator
@@ -36,6 +44,14 @@ FORM:
     DEFADM:
       WARNING: <b>Skift kodeord for administrator</b><br />Standard administrator er ikke en sikker bruger. Benyt følgende link til at vælge et nyt kodeord til administrator brugeren.
       LINK: Vælg nyt kodeord til administrator
+    TOURNAMENTS:
+      CAPTION: Turneringer - åbne for tilmelding
+      TOURNAMENT: Turnering
+      TEAMS: Tilmeldte hold
+    NONREL:
+      TITLE: Vælg en klub
+      TEXT: Din profil er ikke forbundet med en klub. Det er tid til at forbinde med en eksisterende klub. Du kan også vælge at oprette en ny klubprofil. Klik på det følgende link for at forbinde med en ny eller eksisterende klub.
+      LINK: Forbind til klub
   NEWPASS: 
     NOPASSWORD: Et kodeord skal angives.
     BADPASSWORD: Det valgte kodeord er ikke gyldigt.

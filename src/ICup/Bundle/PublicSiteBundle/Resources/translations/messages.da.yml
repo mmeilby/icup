@@ -61,6 +61,7 @@ MENU:
     TITLE: Sprogvalg
   TOURNAMENT:
     TITLE: Turnering
+    SELECT: Vælg turnering
     OVERVIEW: Oversigt
     GROUPS: Grupper
     PLAYGROUNDS: Baner
@@ -72,9 +73,12 @@ MENU:
     TEAM: Ny klub
     REFEREE: Ny dommer
     ENROLL: Tilmelding
+  NONREL:
+    ENROLL: Klubvalg
   ENROLLMENT:
     TITLE: Tilmelding
     MYPAGE: Mit iCup
+    MYPAGE_USERS: Klubbrugere
     CLUBS: Klubber
     TEAMS: Hold
     REFEREES: Dommere

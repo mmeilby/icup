@@ -27,4 +27,13 @@ ERROR:
   NOMORETEAMS:
     TITLE: Der er ikke plads til flere hold i gruppen
     SOLUTION: Klubben har tilmeldt det største antal hold det er muligt at deltage med i denne gruppe.
-    
+  NOTCLUBADMIN:
+    TITLE: Du er ikke klubansvarlig for denne klub
+    SOLUTION: For at udføre den funktion du har valgt skal du være klubansvarlig for klubben. Du har ikke mulighed for at administrere denne klub.
+  NEEDTOBERELATED:
+    TITLE: Du er ikke knyttet til en klub
+    SOLUTION: For at udføre den funktion du har valgt skal du være knyttet til en klub. Du har ikke mulighed for at tilmelde hold uden denne relation.
+  CANNOTBERELATED:
+    TITLE: Du må ikke være knyttet til en klub
+    SOLUTION: For at udføre den funktion du har valgt må du ikke være knyttet til en klub.
+      

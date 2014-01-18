@@ -19,16 +19,16 @@ class ClubEnrollController extends Controller
 {
     /**
      * List the current enrollments for a club
-     * @Route("/club/enroll/list", name="_club_enroll_list")
+     * @Route("/club/enroll/list/{tournament}", name="_club_enroll_list")
      * @Method("GET")
      * @Template("ICupPublicSiteBundle:Club:listenrolled.html.twig")
      */
-    public function listAction() {
+    public function listAction($tournament) {
         $this->get('util')->setupController($this);
-        $tournament = $this->get('util')->getTournament($this);
-
         $em = $this->getDoctrine()->getManager();
-        if ($tournament == null) {
+        
+        $tmnt = $em->getRepository('ICup\Bundle\PublicSiteBundle\Entity\Doctrine\Tournament')->find($tournament);
+        if ($tmnt == null) {
             return $this->render('ICupPublicSiteBundle:Errors:needatournament.html.twig');
         }
 
@@ -58,7 +58,7 @@ class ClubEnrollController extends Controller
         }
         
         $categories = $em->getRepository('ICup\Bundle\PublicSiteBundle\Entity\Doctrine\Category')
-                            ->findBy(array('pid' => $tournament->getId()), array('classification' => 'asc', 'gender' => 'asc'));
+                            ->findBy(array('pid' => $tmnt->getId()), array('classification' => 'asc', 'gender' => 'asc'));
         
         $qb = $em->createQuery("select e ".
                                "from ICup\Bundle\PublicSiteBundle\Entity\Doctrine\Enrollment e, ".
@@ -66,7 +66,7 @@ class ClubEnrollController extends Controller
                                     "ICup\Bundle\PublicSiteBundle\Entity\Doctrine\Team t ".
                                "where c.pid=:tournament and e.pid=c.id and e.cid=t.id and t.pid=:club ".
                                "order by e.pid");
-        $qb->setParameter('tournament', $tournament->getId());
+        $qb->setParameter('tournament', $tmnt->getId());
         $qb->setParameter('club', $club->getId());
         $enrolled = $qb->getResult();
 
@@ -83,7 +83,7 @@ class ClubEnrollController extends Controller
             $categoryMap[$cls][] = $category;
         }
         return array(
-            'tournament' => $tournament,
+            'tournament' => $tmnt,
             'club' => $club,
             'classifications' => $classMap,
             'enrolled' => $enrolledList,
@@ -91,18 +91,29 @@ class ClubEnrollController extends Controller
     }
 
     /**
+     * Check for tournament before enroll
+     * @Route("/club/enroll/check", name="_club_enroll_check")
+     * @Method("GET")
+     */
+    public function checkAction() {
+        $this->get('util')->setupController($this);
+        $em = $this->getDoctrine()->getManager();
+        
+        $tmnt = $this->get('util')->getTournament($this);
+        if ($tmnt == null) {
+            return $this->render('ICupPublicSiteBundle:Errors:needatournament.html.twig');
+        }
+        return $this->redirect($this->generateUrl('_club_enroll_list', array('tournament' => $tmnt->getId())));
+    }
+    
+    /**
      * Enrolls a club in a tournament by adding new team to category
      * @Route("/club/enroll/add/{categoryid}", name="_club_enroll_add")
      * @Method("GET")
      */
     public function addEnrollAction($categoryid) {
         $this->get('util')->setupController($this);
-        $tournament = $this->get('util')->getTournament($this);
-
         $em = $this->getDoctrine()->getManager();
-        if ($tournament == null) {
-            return $this->render('ICupPublicSiteBundle:Errors:needatournament.html.twig');
-        }
 
         /* @var $user User */
         $user = $this->getUser();
@@ -130,8 +141,8 @@ class ClubEnrollController extends Controller
         }
         
         $category = $em->getRepository('ICup\Bundle\PublicSiteBundle\Entity\Doctrine\Category')->find($categoryid);
-        if ($category == null || $category->getPid() != $tournament->getId()) {
-            return $this->render('ICupPublicSiteBundle:Errors:badcategory.html.twig', array('redirect' => $this->generateUrl('_club_enroll_list')));
+        if ($category == null) {
+            return $this->render('ICupPublicSiteBundle:Errors:badcategory.html.twig');
         }
         
         $qb = $em->createQuery("select e ".
@@ -146,7 +157,7 @@ class ClubEnrollController extends Controller
         $noTeams = count($enrolled);
         if ($noTeams >= 26) {
             // Can not add more than 26 teams to same category - Team A -> Team Z
-            return $this->render('ICupPublicSiteBundle:Errors:nomoreteams.html.twig', array('redirect' => $this->generateUrl('_club_enroll_list')));
+            return $this->render('ICupPublicSiteBundle:Errors:nomoreteams.html.twig', array('redirect' => $this->generateUrl('_club_enroll_list', array('tournament' => $category->getPid()))));
         }
         
         $team = new Team();
@@ -166,7 +177,7 @@ class ClubEnrollController extends Controller
         $em->persist($enroll);
         $em->flush();
 
-        return $this->redirect($this->generateUrl('_club_enroll_list'));
+        return $this->redirect($this->generateUrl('_club_enroll_list', array('tournament' => $category->getPid())));
     }
     
     /**
@@ -176,12 +187,7 @@ class ClubEnrollController extends Controller
      */
     public function delEnrollAction($categoryid) {
         $this->get('util')->setupController($this);
-        $tournament = $this->get('util')->getTournament($this);
-
         $em = $this->getDoctrine()->getManager();
-        if ($tournament == null) {
-             return $this->render('ICupPublicSiteBundle:Errors:needatournament.html.twig');
-        }
 
         /* @var $user User */
         $user = $this->getUser();
@@ -209,8 +215,8 @@ class ClubEnrollController extends Controller
         }
         
         $category = $em->getRepository('ICup\Bundle\PublicSiteBundle\Entity\Doctrine\Category')->find($categoryid);
-        if ($category == null || $category->getPid() != $tournament->getId()) {
-            return $this->render('ICupPublicSiteBundle:Errors:badcategory.html.twig', array('redirect' => $this->generateUrl('_club_enroll_list')));
+        if ($category == null) {
+            return $this->render('ICupPublicSiteBundle:Errors:badcategory.html.twig');
         }
         
         $qb = $em->createQuery("select e ".
@@ -224,7 +230,7 @@ class ClubEnrollController extends Controller
  
         $enroll = array_pop($enrolled);
         if ($enroll == null) {
-            return $this->render('ICupPublicSiteBundle:Errors:noteams.html.twig', array('redirect' => $this->generateUrl('_club_enroll_list')));
+            return $this->render('ICupPublicSiteBundle:Errors:noteams.html.twig', array('redirect' => $this->generateUrl('_club_enroll_list', array('tournament' => $category->getPid()))));
         }
                 
         $team = $em->getRepository('ICup\Bundle\PublicSiteBundle\Entity\Doctrine\Team')->find($enroll->getCid());
@@ -233,6 +239,6 @@ class ClubEnrollController extends Controller
         $em->remove($enroll);
         $em->flush();
 
-        return $this->redirect($this->generateUrl('_club_enroll_list'));
+        return $this->redirect($this->generateUrl('_club_enroll_list', array('tournament' => $category->getPid())));
     }
 }

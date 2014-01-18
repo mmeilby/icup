@@ -5,7 +5,11 @@
 
 {% block body %}
     <div style="width: 70%; float: left;">
+{% if tournament is defined and tournament %}
     <h1 class="category">{{ tournament.name }}</h1>
+{% else %}
+    <h1 class="category">{% trans %}FORM.ERROR.NOTOURNAMENT{% endtrans %}</h1>
+{% endif %}
     <p class="subcategory">{% trans %}FORM.TITLE{% endtrans %}</p>
     <p>{% trans %}FORM.LOGIN.TITLE{% endtrans %}</p>
     {% if error is defined and error %}
@@ -13,10 +17,20 @@
     {% endif %}
     {{ form(form) }}
     </div>
-    <div class="new_user" style="width: 25%; float: left;">
-        <p><b>{{ 'FORM.LOGIN.SECTION.HEADER'|trans|upper }}</b></p>
-        <p>{% trans %}FORM.LOGIN.SECTION.TEXT{% endtrans %}</p>
-        <p><a href="{{ path('_ausr_new_club') }}">{% trans %}FORM.LOGIN.SECTION.LINK{% endtrans %}</a></p>
+    <div class="searchresult" style="width: 25%; float: left;">
+        <table width="100%">
+            <caption>{% trans %}FORM.NEWCLUB.CAPTION{% endtrans %}</caption>
+            <thead>
+                <tr><td>{% trans %}FORM.NEWCLUB.LEGEND{% endtrans %}</td></tr>
+            </thead>
+            <tbody id="form_div">
+                <tr><td class="column">{% trans %}FORM.NEWCLUB.NOCLUBS{% endtrans %}</td></tr>    
+            </tboby>
+            <tfoot>
+                <tr><td></td></tr>
+            </tfoot>
+        </table>
+        <div class="searchresult_info">{% trans %}FORM.NEWCLUB.INFO{% endtrans %}</div>
     </div>
 {% endblock %}
 
@@ -27,24 +41,43 @@
 
     <script type="text/javascript">
         $(function onLoad() {
-            var optDefault = $('select#form_clubs').html();
-            $('input#form_name').keyup(function OnKeyUp(){
-                $('select#form_clubs').empty();
+            $('input#form_name').keyup(OnKeyUp);
+            $('select#form_country').change(OnKeyUp);
+        });
+        function OnKeyUp() {
                 $.getJSON("{{ path('_rest_list_clubs') }}",
-                           {'pattern': '%'+$('input#form_name').val()+'%'},
+                           {
+                               'pattern': '%'+$('input#form_name').val()+'%',
+                               'country': $('select#form_country').val()
+                           },
                            function readClubs(data, status) {
-                            opt = '';
-                            $.each(data, 
-                                   function updateDropDown(index, club) {
-                                     opt += "<option id='"+club.id+"'>"+club.name+" ("+club.country+")</option>";
-                                   });
-                            if (opt !== '')      
-                                $('select#form_clubs').html(opt);
-                            else
-                                $('select#form_clubs').html(optDefault);
+                               if (data.length > 0) {
+                                    $('#form_div').html(buildTable(data));
+                                }
+                                else {
+                                    $('#form_div').html(buildDefault());
+                                }
                            }
                          );
-            });
-        });
+        };
+        function buildTable(data) {
+           opt = '';
+           $.each(data, 
+                   function updateDropDown(index, club) {
+                       if (index < 3) {
+                         opt += "<tr><td class='column'>";
+                         opt += "<span class='link' onclick='location.href=\"{{ path('_club_user_request') }}?clubid="+club.id+"\"'>"+club.name+"</span>";
+                         opt += "</td></tr>";
+                       }
+                   });
+           if (data.length > 3) {
+               opt += "<tr class='info'><td class='column'>{% trans %}FORM.NEWCLUB.MORECLUBS{% endtrans %}</td></tr>";
+           }
+           return opt;
+        };
+        function buildDefault() {
+           opt = "<tr><td class='column'>{% trans %}FORM.NEWCLUB.NOCLUBS{% endtrans %}</td></tr>";
+           return opt;
+        };
     </script>
 {% endblock %}

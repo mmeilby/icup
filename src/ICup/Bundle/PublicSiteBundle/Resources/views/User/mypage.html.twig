@@ -16,73 +16,37 @@
 &nbsp;
 <img src="{{ imagepath }}/flags/{{ flags[club.country] }}" alt="{{ club.country|trans({},'lang') }}" title="{{ club.country|trans({},'lang') }}">
 </p>
-{% if users|length > 0 %}
+{% if prospectors|length > 0 %}
+<p>Prospectors available...</p>
+{% endif %}
+{% if tournaments|length > 0 %}
 <table>
-    <caption>{% trans %}FORM.MYPAGE.CAPTION{% endtrans %}</caption>
+    <caption>{% trans %}FORM.MYPAGE.TOURNAMENTS.CAPTION{% endtrans %}</caption>
     <thead>
         <tr>
-            <td></td>
+            <td>{% trans %}FORM.MYPAGE.TOURNAMENTS.TOURNAMENT{% endtrans %}</td>
             <td class="operand"></td>
-            <td class="operand"></td>
-            <td class="role"></td>
-            <td class="operand"></td>
+            <td class="operand">{% trans %}FORM.MYPAGE.TOURNAMENTS.TEAMS{% endtrans %}</td>
         </tr>
     </thead>
     <tboby>
-    {% for user in users %}
-        {% if currentuser != user %}
+    {% for tmnt in tournaments %}
+        {% set tournament = tmnt.tournament %}
         <tr class="{{ cycle(['even','odd'],loop.index) }}">
-            <td class="user">
-                {{ user.name|upper }}
+            <td class="clubname">
+                <a href="{{ path('_club_enroll_list', { 'tournament': tournament.id }) }}">{{ tournament.name|upper }}</a>
             </td>
             <td class="operand">
-{% if currentuser.role == 2 and user.status == 4 %}
-                <a href="{{ path('_club_user_disconnect', { 'userid': user.id }) }}">
-                -
+                <a href="{{ path('_club_enroll_list', { 'tournament': tournament.id }) }}">
+                E
                 </a>    
-{% endif %}
             </td>
-            <td class="role">
-{% if currentuser.role == 2 and user.status == 4 %}
-                <a href="{{ path('_club_user_chg_role', { 'userid': user.id }) }}">
-    {% if user.role == 1 %}
-                P
-    {% else %}
-                D
-    {% endif %}
-                </a>&nbsp;
-{% endif %}
-{% if user.status == 3 %}
-            {% trans %}FORM.MYPAGE.PROSPECT{% endtrans %}
-{% else %}
-    {% if user.role == 1 %}
-                {% trans %}FORM.MYPAGE.CLUBUSER{% endtrans %}
-    {% else %}
-                {% trans %}FORM.MYPAGE.CLUBADMIN{% endtrans %}
-    {% endif %}
-{% endif %}
-            </td>
-            <td class="operand">
-{% if currentuser.role == 2 %}
-    {% if user.status == 3 %}
-                <a href="{{ path('_club_user_connect', { 'clubid': club.id, 'userid': user.id }) }}">
-                +
-                </a>    
-    {% else %}
-                {% trans %}FORM.MYPAGE.ATTACHED{% endtrans %}
-    {% endif %}
-{% else %}
-    {% if user.status == 3 %}
-                {% trans %}FORM.MYPAGE.PROSPECT{% endtrans %}
-    {% else %}
-                {% trans %}FORM.MYPAGE.ATTACHED{% endtrans %}
-    {% endif %}
-{% endif %}
-            </td>
-            <td class="operand">
+            <td class="score">
+{% if tmnt.enrolled > 0 %}
+                {{ tmnt.enrolled }}
+{% endif %}                
             </td>
         </tr>
-        {% endif %}
     {% endfor %}
     </tboby>
     <tfoot>

@@ -21,18 +21,16 @@ class DefaultController extends Controller
     }
     
     /**
-     * @Route("/tournament", name="_showtournament")
-     */
-    public function listAction()
-    {
-        return $this->redirect($this->generateUrl('_tournament_overview', array('tournament' => '_')));
-    }
-
-    /**
      * @Route("/", name="_icup")
      */
     public function rootAction()
     {
-        return $this->redirect($this->generateUrl('_tournament_overview', array('tournament' => '_')));
+        $tmnt = $this->get('util')->getTournamentKey($this);
+        if ($tmnt != '_') {
+            return $this->redirect($this->generateUrl('_tournament_overview', array('tournament' => $tmnt)));
+        }
+        else {
+            return $this->redirect($this->generateUrl('_tournament_select'));
+        }
     }
 }

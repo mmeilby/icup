@@ -257,6 +257,15 @@ class User implements UserInterface
     }
     
     /**
+     * Test for club relation to specific club
+     * @return boolean - true if the user is attached or prospector to the club - cid refers to the specific club
+     */
+    public function isRelatedTo($clubid)
+    {
+        return $this->isRelated() && $this->getCid() == $clubid;
+    }
+    
+    /**
      * Set email
      *
      * @param string $email

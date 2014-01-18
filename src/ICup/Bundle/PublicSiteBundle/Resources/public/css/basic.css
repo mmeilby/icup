@@ -162,6 +162,11 @@ DIV.infobox {
     background-image: -ms-linear-gradient(bottom, cornflowerblue 5%, white 150%);
     background-image: linear-gradient(bottom, cornflowerblue 5%, white 150%);    
 }
+DIV.searchresult {
+    font-size: 12pt;
+    margin-top: 90px;
+    color: #454545;
+}
 /*
     Class setup
 */
@@ -563,6 +568,21 @@ TD.statistics {
 }
 DIV.admin H1 {
     color: #6666ff;
+}
+TR.info {
+    border-top: 1px solid black;
+    background: lightgray;
+}
+TR.info TD {
+    padding: 5px;
+}
+SPAN.link {
+    color: #454545;
+    text-decoration: none;
+    cursor: pointer;
+}
+SPAN.link:hover {
+    text-decoration: underline;
 }
 
 /*

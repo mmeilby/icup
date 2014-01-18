@@ -17,7 +17,7 @@ class Util
         $request = $container->getRequest();
         $session = $request->getSession();
         if ($tournament == '_') {
-            $tournament = $session->get('Tournament', 'IWC2013');
+            $tournament = $session->get('Tournament', '_');
         }
         $session->set('Tournament', $tournament);
 
@@ -29,13 +29,19 @@ class Util
     
     public function switchLanguage(Controller $container)
     {
+        // List of supported locales - first locale is preferred default if user requests unsupported locale
+        $supported_locales = array('en', 'da', 'it', 'fr', 'de', 'es', 'po');
         /* @var $request Request */
         $request = $container->getRequest();
         /* @var $session Session */
         $session = $request->getSession();
-        $language = $session->get('locale', $request->getPreferredLanguage());
-        if (!array_search($language, array('en', 'da', 'it', 'fr', 'de', 'es', 'po'))) $language = 'en';
-        $request->setLocale($language);
+        $language = $session->get('locale', $request->getPreferredLanguage($supported_locales));
+        if (!array_search($language, $supported_locales)) {
+            $request->setLocale($supported_locales[0]);
+        }
+        else {
+            $request->setLocale($language);
+        }
     }
 
     public function getCountries()

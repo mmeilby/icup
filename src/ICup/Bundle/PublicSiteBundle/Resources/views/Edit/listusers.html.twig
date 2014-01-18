@@ -10,6 +10,7 @@
     <thead>
         <tr>
             <td></td>
+            <td class="role"></td>
             <td class="operand"></td>
             <td class="operand"></td>
             <td class="operand"></td>
@@ -21,9 +22,16 @@
     {% for user in users %}
         <tr class="{{ cycle(['even','odd'],loop.index) }}">
             <td class="user">
-                <a href="{{ path('_icup', {'_switch_user': user.username }) }}">
+                <a href="{{ path('_user_my_page', {'_switch_user': user.username }) }}">
                 {{ user.name|upper }}
                 </a>    
+            </td>
+            <td class="role">
+    {% if user.role == 1 %}
+                {{ 'FORM.MYPAGE.CLUBUSER'|trans({},'club') }}
+    {% else %}
+                {{ 'FORM.MYPAGE.CLUBADMIN'|trans({},'club') }}
+    {% endif %}
             </td>
             <td class="operand">
                 <a href="{{ path('_edit_user_add', { 'clubid': club.id }) }}">
@@ -67,7 +75,7 @@
     </tboby>
     <tfoot>
         <tr>
-            <td colspan="5"></td>
+            <td colspan="6"></td>
         </tr>
     </tfoot>
 </table>

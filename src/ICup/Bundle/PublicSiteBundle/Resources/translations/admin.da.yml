@@ -184,20 +184,24 @@ FORM:
       ADD: Tilføj ny klub
       CHG: Rediger klubinformationer
       DEL: SLET KLUB
+      SEL: Vælg klub
     PROMPT:
       ADD: Indtast oplysninger om klubben.
       CHG: Ret klubinformationer.
       DEL: Følgende klub vil bliver slettet. Alle hold og brugere knyttet til klubben vil også blive fjernet. Det er ikke muligt at fortryde når klubben er fjernet.
+      SEL: Vælg klub du vil forbinde til
     NAME: Klubnavn
     COUNTRY: Hjemland
     SUBMIT:
       ADD: Tilføj ny klub
       CHG: Gem kluboplysninger
       DEL: SLET KLUB
+      SEL: Tilknyt klub
     CANCEL:
       ADD: Fortryd oprettelse
       CHG: Fortryd ændringer
       DEL: Fortryd slet
+      SEL: Fortryd tilknytning
   LISTUSERS:
     TITLE: Vedligehold brugere
     CAPTION: Brugere

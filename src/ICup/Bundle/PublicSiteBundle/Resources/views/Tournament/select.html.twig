@@ -1,15 +1,16 @@
 {% extends "ICupPublicSiteBundle:Masters:standard.html.twig" %}
+{% trans_default_domain "tournament" %}
 
 {% block body %}
-<h1 class="category">{% trans %}RESULTS{% endtrans %}</h1>
+<h1 class="category">{% trans %}FORM.SEL_TMNT.TITLE{% endtrans %}</h1>
 <p class="subcategory">
-    {% trans %}RESULTS{% endtrans %}<br />
+    {% trans %}FORM.SEL_TMNT.SUBTITLE{% endtrans %}<br />
 </p>
 <table>
-    <caption>{% trans %}STATISTICS.TITLE{% endtrans %}</caption>
+    <caption>{% trans %}FORM.SEL_TMNT.CAPTION{% endtrans %}</caption>
     <thead>
         <tr>
-            <td class="statistics">{% trans %}STATISTICS.LEGEND.FIGURE{% endtrans %}</td>
+            <td class="statistics">{% trans %}FORM.SEL_TMNT.LEGEND{% endtrans %}</td>
         </tr>
     </thead>
     <tboby>

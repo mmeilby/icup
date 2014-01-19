@@ -40,7 +40,11 @@
                 -
                 </a>    
             </td>
-            <td></td>
+            <td class="operand">
+                <a href="{{ path('_edit_club_list', { 'hostid': host.id }) }}">
+                C
+                </a>    
+            </td>
             <td></td>
         </tr>
         {% if host.id in tournaments|keys %}

@@ -19,7 +19,7 @@ class EditGroupOrderController extends Controller
      */
     public function newAction($tournament, $categoryId) {
         $this->get('util')->setupController($this, $tournament);
-        $tournamentId = $this->get('util')->getTournament($this);
+        $tournamentId = $this->get('util')->getTournamentId($this);
         $em = $this->getDoctrine()->getManager();
 
         $tournament = $em->getRepository('ICup\Bundle\PublicSiteBundle\Entity\Doctrine\Tournament')
@@ -41,7 +41,7 @@ class EditGroupOrderController extends Controller
      */
     public function newPostAction($tournament, $categoryId) {
         $this->get('util')->setupController($this, $tournament);
-        $tournamentId = $this->get('util')->getTournament($this);
+        $tournamentId = $this->get('util')->getTournamentId($this);
         $em = $this->getDoctrine()->getManager();
 
         $tournament = $em->getRepository('ICup\Bundle\PublicSiteBundle\Entity\Doctrine\Tournament')

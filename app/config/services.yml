@@ -1,0 +1,57 @@
+parameters:
+    tournament_table: "ICup\\Bundle\\PublicSiteBundle\\Entity\\Doctrine\\Tournament"
+    club_table: "ICup\\Bundle\\PublicSiteBundle\\Entity\\Doctrine\\Club"
+    
+services:
+# REGISTER TWIG EXTENSIONS
+    custom.twig.sandbox.policy:
+        class: Twig_Sandbox_SecurityPolicy
+        arguments:
+          # tags
+          - [ if, for, trans ]
+          # filters
+          - [ upper, trans, join, lower, date, escape, length ]
+          # methods
+          - { %tournament_table%: [getName, getEdition], %club_table%: [getName] }
+          # properties
+          - { %tournament_table%: [name, edition], %club_table%: [name] }
+          # functions
+          - [ cycle ]
+        public: false
+
+    custom.twig.extension.sandbox:
+        class: Twig_Extension_Sandbox
+        arguments:
+          - "@custom.twig.sandbox.policy"
+        tags:
+          - { name: 'twig.extension' }
+
+    custom.twig.extension.intl:
+        class: Twig_Extensions_Extension_Intl
+        tags:
+          - { name: 'twig.extension' }
+
+    custom.twig.extension.text:
+        class: Twig_Extensions_Extension_Text
+        tags:
+          - { name: 'twig.extension' }
+
+# APPEND NEW TWIG LOADER - DatabaseTwigLoader
+    icup.publicsitebundle.twig_filesystem_loader:
+        class: "Symfony\\Bundle\\TwigBundle\\Loader\\FilesystemLoader"
+        arguments:
+            - "@templating.locator"
+            - "@templating.name_parser"
+
+    icup.publicsitebundle.twig_database_loader:
+        class: "ICup\\Bundle\\PublicSiteBundle\\Services\\DatabaseTwigLoader"
+        arguments:
+          - "@doctrine.orm.entity_manager"
+          - "@logger"
+
+    icup.publicsitebundle.twig_chain_loader:
+        class: Twig_Loader_Chain
+        arguments:
+            - [ "@icup.publicsitebundle.twig_filesystem_loader", "@icup.publicsitebundle.twig_database_loader" ]
+        tags:
+          - { name: 'twig.loader' }

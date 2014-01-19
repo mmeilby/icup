@@ -14,9 +14,6 @@ WINNING_CLUBS: Vindende klubber
 
 RESULTS: Resultater for
 EDITRESULTS: Rediger resultater
-LOGIN: Log på
-USERNAME: Brugernavn
-PASSWORD: Kodeord
 CHOOSELANG: Vælg sprog
 
 ADMIN: Administration
@@ -64,14 +61,24 @@ MENU:
     TITLE: Sprogvalg
   TOURNAMENT:
     TITLE: Turnering
+    SELECT: Vælg turnering
     OVERVIEW: Oversigt
     GROUPS: Grupper
     PLAYGROUNDS: Baner
     TEAMS: Klubber
     WINNERS: Vindere
     STATISTICS: Statistik
+  NEWUSER:
+    TITLE: Registrer
+    TEAM: Ny klub
+    REFEREE: Ny dommer
+    ENROLL: Tilmelding
+  NONREL:
+    ENROLL: Klubvalg
   ENROLLMENT:
     TITLE: Tilmelding
+    MYPAGE: Mit iCup
+    MYPAGE_USERS: Klubbrugere
     CLUBS: Klubber
     TEAMS: Hold
     REFEREES: Dommere

@@ -1,37 +1,14 @@
-{% extends "ICupPublicSiteBundle:Masters:edit.html.twig" %}
+{% extends "ICupPublicSiteBundle:Masters:standard.html.twig" %}
+
+{% form_theme form 'ICupPublicSiteBundle:Default:layout.script.html.twig' %}
+{% trans_default_domain "admin" %}
 
 {% block body %}
-<h1 class="category">{% trans %}LOGIN{% endtrans %}</h1>
-<p class="subcategory">
-    {{ tournament.name }}
-</p>
-<div class="form_content">
-{% if error %}
+    <h1>{% trans %}FORM.LOGIN.TITLE{% endtrans %}</h1>
+    <p class="subtitle">{{ tournament.name }}</p>
+{% if error is defined and error %}
     <div class="form_error">{{ error.message }}</div>
 {% endif %}
-
-    <form action="{{ path("_security_check") }}" method="post">
-        <div class="form_row">
-            <div class="form_label">
-                <label for="username">{% trans %}USERNAME{% endtrans %}:</label>
-            </div>
-            <div class="form_widget">
-                <input type="text" id="username" name="_username" value="{{ last_username }}" />
-            </div>
-            <div class="form_clear"></div>
-        </div>
-        <div class="form_row">
-            <div class="form_label">
-                <label for="password">{% trans %}PASSWORD{% endtrans %}:</label>
-            </div>
-            <div class="form_widget">
-                <input type="password" id="password" name="_password" />
-            </div>
-            <div class="form_clear"></div>
-        </div>
-        <div class="form_button">
-            <button type="submit" name="login">{% trans %}LOGIN{% endtrans %}</button>
-        </div>
-    </form>
-</div>
+    <p>{% trans %}FORM.LOGIN.PROMPT{% endtrans %}</p>
+    {{ form(form) }}
 {% endblock %}

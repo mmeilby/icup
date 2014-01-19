@@ -14,7 +14,7 @@ class StatisticsController extends Controller
     public function listAction($tournament)
     {
         $this->get('util')->setupController($this, $tournament);
-        $tournamentId = $this->get('util')->getTournament($this);
+        $tournamentId = $this->get('util')->getTournamentId($this);
         $em = $this->getDoctrine()->getManager();
 
         $tournament = $em->getRepository('ICup\Bundle\PublicSiteBundle\Entity\Doctrine\Tournament')
@@ -139,7 +139,12 @@ class StatisticsController extends Controller
             }
         }
 
-        $statmap['mosttrophys'] = $countries[$maxTrophy];
+        if ($maxTrophy != null) {
+            $statmap['mosttrophys'] = $countries[$maxTrophy];
+        }
+        else {
+            $statmap['mosttrophys'] = 0;
+        }
         
         return array(
             'tournament' => $tournament,

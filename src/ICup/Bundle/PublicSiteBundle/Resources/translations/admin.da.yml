@@ -13,6 +13,12 @@ FORM:
     TITLE: Vedligehold turneringer og værter
     CAPTION: Værter og turneringer
     NOTOURNAMENT: Tilføj ny turnering
+  LOGIN:
+    TITLE: Log på
+    PROMPT: Log ind med dit brugernavn hvis du har en profil.
+    USERNAME: Brugernavn
+    PASSWORD: Kodeord
+    LOGIN: Log på
   HOST:
     TITLE:
       ADD: Tilføj ny turneringsvært
@@ -163,4 +169,82 @@ FORM:
       ADD: Fortryd oprettelse
       CHG: Fortryd ændringer
       DEL: Fortryd slet
-
+  LISTCLUBS:
+    TITLE: Vedligehold klubber
+    CAPTION: Klubliste på tværs af alle turneringer
+    LEGEND: Klubber sorteret efter land
+    NOCLUB: Tilføj ny klub
+  CLUB: 
+    DEFAULT: Vælg...
+    NONAME: Et klubnavn skal angives.
+    NOCOUNTRY: Klubbens hjemland skal angives.
+    NAMEEXIST: En anden klub er allerede oprettet med samme navn og land. Er oplysningerne korrekte, så ret i stedet kluboplysningerne.
+    CANTCHANGENAME: En anden klub er allerede oprettet med samme navn og land. Vælg et andet navn til klubben.
+    TITLE:
+      ADD: Tilføj ny klub
+      CHG: Rediger klubinformationer
+      DEL: SLET KLUB
+      SEL: Vælg klub
+    PROMPT:
+      ADD: Indtast oplysninger om klubben.
+      CHG: Ret klubinformationer.
+      DEL: Følgende klub vil bliver slettet. Alle hold og brugere knyttet til klubben vil også blive fjernet. Det er ikke muligt at fortryde når klubben er fjernet.
+      SEL: Vælg klub du vil forbinde til
+    NAME: Klubnavn
+    COUNTRY: Hjemland
+    SUBMIT:
+      ADD: Tilføj ny klub
+      CHG: Gem kluboplysninger
+      DEL: SLET KLUB
+      SEL: Tilknyt klub
+    CANCEL:
+      ADD: Fortryd oprettelse
+      CHG: Fortryd ændringer
+      DEL: Fortryd slet
+      SEL: Fortryd tilknytning
+  LISTUSERS:
+    TITLE: Vedligehold brugere
+    CAPTION: Brugere
+    NOUSER: Tilføj ny bruger
+  USER: 
+    DEFAULT: Vælg...
+    NONAME: Et navn skal angives.
+    NOUSERNAME: Et brugernavn skal angives.
+    NOEMAIL: E-mail skal angives.
+    NOPASSWORD: Et kodeord skal angives.
+    NAMEEXIST: En anden bruger er allerede oprettet med samme brugernavn. Er oplysningerne korrekte, så forsøg at logge på.
+    BADPASSWORD: Det valgte kodeord er ikke gyldigt.
+    CHOICE:
+      ROLE:
+        1: Klubbruger
+        2: Klubansvarlig
+        3: Redaktør
+        4: Turneringsansvarlig
+      STATUS:
+        1: Ny bruger
+        2: Bekræftet bruger
+        3: Ansøger
+        4: Klubmedlem
+    TITLE:
+      ADD: Tilføj ny bruger
+      CHG: Rediger brugerinformationer
+      DEL: SLET BRUGER
+    PROMPT:
+      ADD: Indtast oplysninger om brugeren.
+      CHG: Ret brugerinformationer.
+      DEL: Følgende bruger vil bliver slettet. Det er ikke muligt at fortryde når brugeren er fjernet.
+    NAME: Navn
+    EMAIL: E-mail
+    ROLE: Brugerrolle
+    STATUS: Status
+    USERNAME: Brugernavn
+    PASSWORD: Kodeord
+    PASSWORD2: Gentag kodeord
+    SUBMIT:
+      ADD: Tilføj ny bruger
+      CHG: Gem brugeroplysninger
+      DEL: SLET BRUGER
+    CANCEL:
+      ADD: Fortryd oprettelse
+      CHG: Fortryd ændringer
+      DEL: Fortryd slet

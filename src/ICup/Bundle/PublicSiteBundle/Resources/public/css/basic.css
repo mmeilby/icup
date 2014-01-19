@@ -110,6 +110,63 @@ BUTTON#form_cancel {
     background-image: -ms-linear-gradient(bottom, black -150%, white 50%);
     background-image: linear-gradient(bottom, black -150%, white 50%);    
 }
+BUTTON#form_opt1 {
+    color: #454545;
+    background-color: whitesmoke;
+    background-image: -o-linear-gradient(bottom, #6d6 -50%, white 50%);
+    background-image: -moz-linear-gradient(bottom, #6d6 -50%, white 50%);
+    background-image: -webkit-gradient(linear, left bottom, left top, color-stop(-0.5, #6d6), color-stop(0.50, white));
+    background-image: -webkit-linear-gradient(bottom, #6d6 -50%, white 50%);
+    background-image: -ms-linear-gradient(bottom, #6d6 -50%, white 50%);
+    background-image: linear-gradient(bottom, #6d6 -50%, white 50%);    
+}
+BUTTON#form_opt2 {
+    color: #454545;
+    background-color: whitesmoke;
+    background-image: -o-linear-gradient(bottom, cornflowerblue -100%, white 50%);
+    background-image: -moz-linear-gradient(bottom, cornflowerblue -100%, white 50%);
+    background-image: -webkit-gradient(linear, left bottom, left top, color-stop(-1.0, cornflowerblue), color-stop(0.50, white));
+    background-image: -webkit-linear-gradient(bottom, cornflowerblue -100%, white 50%);
+    background-image: -ms-linear-gradient(bottom, cornflowerblue -100%, white 50%);
+    background-image: linear-gradient(bottom, cornflowerblue -100%, white 50%);    
+}
+DIV.new_user {
+    font-size: 12pt;
+    margin-top: 90px;
+    padding: 10px;
+    border-radius: 5px;
+    -moz-border-radius: 5px;
+    -webkit-border-radius: 5px;
+    color: #454545;
+    background-color: #6d6;
+    background-image: -o-linear-gradient(bottom, #6d6 5%, white 150%);
+    background-image: -moz-linear-gradient(bottom, #6d6 5%, white 150%);
+    background-image: -webkit-gradient(linear, left bottom, left top, color-stop(0.05, #6d6), color-stop(1.50, white));
+    background-image: -webkit-linear-gradient(bottom, #6d6 5%, white 150%);
+    background-image: -ms-linear-gradient(bottom, #6d6 5%, white 150%);
+    background-image: linear-gradient(bottom, #6d6 5%, white 150%);    
+}
+DIV.infobox {
+    font-size: 12pt;
+    margin-top: 90px;
+    padding: 10px;
+    border-radius: 5px;
+    -moz-border-radius: 5px;
+    -webkit-border-radius: 5px;
+    color: #454545;
+    background-color: cornflowerblue;
+    background-image: -o-linear-gradient(bottom, cornflowerblue 5%, white 150%);
+    background-image: -moz-linear-gradient(bottom, cornflowerblue 5%, white 150%);
+    background-image: -webkit-gradient(linear, left bottom, left top, color-stop(0.05, cornflowerblue), color-stop(1.50, white));
+    background-image: -webkit-linear-gradient(bottom, cornflowerblue 5%, white 150%);
+    background-image: -ms-linear-gradient(bottom, cornflowerblue 5%, white 150%);
+    background-image: linear-gradient(bottom, cornflowerblue 5%, white 150%);    
+}
+DIV.searchresult {
+    font-size: 12pt;
+    margin-top: 90px;
+    color: #454545;
+}
 /*
     Class setup
 */
@@ -436,6 +493,18 @@ TD.date_solo {
     padding-left: 5px;
     text-decoration: underline;
 }
+TD.column {
+    vertical-align: top;
+}
+TD.country_spacer {
+    padding-top: 10px;
+}
+TD.clubname {
+    min-width: 250px;
+}
+TD.country {
+    min-width: 250px;
+}
 TD.clubs {
     min-width: 200px;
     vertical-align: top;
@@ -485,6 +554,10 @@ TD.title {
 TD.indent {
     width: 30px;
 }
+TD.role {
+    padding-left: 5px;
+    width: 200px;
+}
 TD.operand {
     width: 20px;
     text-align: center;
@@ -495,6 +568,21 @@ TD.statistics {
 }
 DIV.admin H1 {
     color: #6666ff;
+}
+TR.info {
+    border-top: 1px solid black;
+    background: lightgray;
+}
+TR.info TD {
+    padding: 5px;
+}
+SPAN.link {
+    color: #454545;
+    text-decoration: none;
+    cursor: pointer;
+}
+SPAN.link:hover {
+    text-decoration: underline;
 }
 
 /*

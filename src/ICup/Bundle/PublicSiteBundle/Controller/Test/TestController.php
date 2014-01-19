@@ -4,6 +4,7 @@ namespace ICup\Bundle\PublicSiteBundle\Controller\Test;
 
 use ICup\Bundle\PublicSiteBundle\Entity\Doctrine\Category;
 use ICup\Bundle\PublicSiteBundle\Entity\Doctrine\Club;
+use ICup\Bundle\PublicSiteBundle\Entity\Doctrine\Enrollment;
 use ICup\Bundle\PublicSiteBundle\Entity\Doctrine\Group;
 use ICup\Bundle\PublicSiteBundle\Entity\Doctrine\GroupOrder;
 use ICup\Bundle\PublicSiteBundle\Entity\Doctrine\Host;
@@ -27,16 +28,39 @@ class TestController extends Controller
     public function saltAction()
     {
         var_dump(hash('sha1',''));
-        /*
-        $factory = $this->get('security.encoder_factory');
-        $user = new Club();
-
-        $encoder = $factory->getEncoder($user);
-        $password = $encoder->encodePassword($pass, $user->getSalt());
-        $user->setPassword($password);
-         * 
-         */
     }
+
+    /**
+     * @Route("/upgrade/1")
+     * @Template()
+     */
+    public function upgradeAction()
+    {
+        $em = $this->getDoctrine()->getManager();
+        $qb = $em->createQuery("update ICup\Bundle\PublicSiteBundle\Entity\Doctrine\Club c set c.username=c.name");
+        $qb->getResult();
+        
+        $qb = $em->createQuery("select t.id,c.id as category ".
+                               "from ICup\Bundle\PublicSiteBundle\Entity\Doctrine\Category c, ".
+                                    "ICup\Bundle\PublicSiteBundle\Entity\Doctrine\Group g, ".
+                                    "ICup\Bundle\PublicSiteBundle\Entity\Doctrine\GroupOrder o, ".
+                                    "ICup\Bundle\PublicSiteBundle\Entity\Doctrine\Team t ".
+                               "where g.pid=c.id and ".
+                                     "g.classification = 0 and ".
+                                     "o.pid=g.id and ".
+                                     "o.cid=t.id ".
+                               "order by c.id");
+        $teams = $qb->getResult();
+        foreach ($teams as $team) {
+            $enroll = new Enrollment();
+            $enroll->setCid($team['id']);
+            $enroll->setPid($team['category']);
+            $enroll->setDate('01/01/2000');
+            $em->persist($enroll);
+        }
+        $em->flush();
+        return $this->redirect($this->generateUrl('_icup'));
+     }
     
     /**
      * @Route("/init")
@@ -57,7 +81,7 @@ class TestController extends Controller
         } catch (Exception $e) {
             echo $e->getMessage();
         }
-        return array('name' => 'JohnDoe');
+        return $this->redirect($this->generateUrl('_icup'));
     }
 
     /**
@@ -73,7 +97,7 @@ class TestController extends Controller
         }
         $xml = simplexml_load_string($dbConfig, null, LIBXML_NOWARNING);
         $this->drillDownXml2($xml->host);
-        return array('name' => 'JohnDoe');
+        return $this->redirect($this->generateUrl('_icup'));
     }
 
     private function drillDownXml($host) {

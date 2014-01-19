@@ -1,26 +1,40 @@
-{% extends "base.html.twig" %}
+{% extends "ICupPublicSiteBundle:Masters:base.html.twig" %}
 
 {% set flags = app.session.get('Countries') %}
+{% set tmnt = app.session.get('Tournament') %}
 
 {% block header %}
     <div class="menu">
-    {% for menuitem,path in app.session.get('HeaderMenu') %}
         <div class="menu_header">
             <ul>
-                <li><a href="{{ path }}">{{ menuitem|trans }}</a></li>
+{% if app.user == null %}
+                <li><a href="{{ path('_tournament_overview', {'tournament': tmnt}) }}">{{ 'MENU.TOURNAMENT.OVERVIEW'|trans }}</a></li>
+{% else %}
+                <li><a href="{{ path('_user_my_page') }}">{% trans %}MENU.ENROLLMENT.MYPAGE{% endtrans %}</a></li>
+{% endif %}
             </ul>
         </div>
-    {% endfor %}
+        <div class="menu_header">
+            <ul>
+                <li><a href="{{ path('_tournament_overview', {'tournament': tmnt}) }}">{{ 'MENU.INFO.ABOUT'|trans }}</a></li>
+            </ul>
+        </div>
+        <div class="menu_header">
+            <ul>
+                <li><a href="{{ path('_tournament_overview', {'tournament': tmnt}) }}">{{ 'MENU.INFO.FAQ'|trans }}</a></li>
+            </ul>
+        </div>
         <div class="menu_header last">
             <ul>
                 <li>
                     {% if is_granted('ROLE_PREVIOUS_ADMIN') %}
-                        <a href="{{ path('_icup', {'_switch_user': '_exit'}) }}">{% trans %}MENU.EXIT{% endtrans %}</a>&nbsp;
-                    {% endif %}
-                    {% if app.user != null %}
-                        <a href="{{ path('_admin_logout') }}">{{ app.user.username|capitalize }} {% trans %}MENU.LOGOUT{% endtrans %}</a>
+                        <a href="{{ path('_user_my_page', {'_switch_user': '_exit'}) }}">{{ app.user.username|upper }} {% trans %}MENU.LOGOUT{% endtrans %}</a>
                     {% else %}
-                        <a href="{{ path('_admin_login') }}">{% trans %}MENU.LOGIN{% endtrans %}</a>
+                        {% if app.user != null %}
+                            <a href="{{ path('_admin_logout') }}">{{ app.user.username|upper }} {% trans %}MENU.LOGOUT{% endtrans %}</a>
+                        {% else %}
+                            <a href="{{ path('_user_my_page') }}">{% trans %}MENU.LOGIN{% endtrans %}</a>
+                        {% endif %}
                     {% endif %}
                 </li>
             </ul>
@@ -30,32 +44,104 @@
 
 {% block footer %}
     <div class="menu">
-            <div class="menu_footer">
-                <h3>{% trans %}MENU.LANGCHOICE.TITLE{% endtrans %}</h3>
-                <ul>
-                    {% for local in ['en','it','fr','de','es','po','da'] %}
-                        {% set flag = flags[cycle(['GBR','ITA','FRA','DEU','ESP','POL','DNK'], loop.index0)] %}
-                        {% set lang = ['LANG.',local|upper]|join|trans({}, 'common') %}
-                    <li>
-                        <a href="{{ path('_switch', { 'locale': local }) }}">
-                            <img src="{{ imagepath }}/flags/{{ flag }}"
-                                 alt="{{ lang }}"
-                                 title="{% trans %}CHOOSELANG{% endtrans %}: {{ lang }}" />
-                            &nbsp;{{ lang }}
-                        </a>
-                    </li>
-                    {% endfor %}
-                </ul>
-            </div>
-        {% for title,menu in app.session.get('FooterMenu') %}
-            <div class="menu_footer">
-                <h3>{{ title|trans }}</h3>
-                <ul>
-            {% for menuitem,path in menu %}
-                    <li><a href="{{ path }}">{{ menuitem|trans }}</a></li>
-            {% endfor %}
-                </ul>
-            </div>
-        {% endfor %}
+        <!-- Language section -->
+        <div class="menu_footer">
+            <h3>{% trans %}MENU.LANGCHOICE.TITLE{% endtrans %}</h3>
+            <ul>
+                {% for local in ['en','it','fr','de','es','po','da'] %}
+                    {% set flag = flags[cycle(['GBR','ITA','FRA','DEU','ESP','POL','DNK'], loop.index0)] %}
+                    {% set lang = ['LANG.',local|upper]|join|trans({}, 'common') %}
+                <li>
+                    <a href="{{ path('_switch', { 'locale': local }) }}">
+                        <img src="{{ imagepath }}/flags/{{ flag }}"
+                             alt="{{ lang }}"
+                             title="{% trans %}CHOOSELANG{% endtrans %}: {{ lang }}" />
+                        &nbsp;{{ lang }}
+                    </a>
+                </li>
+                {% endfor %}
+            </ul>
+        </div>
+        <!-- Tournament section -->
+        <div class="menu_footer">
+            <h3>{% trans %}MENU.TOURNAMENT.TITLE{% endtrans %}</h3>
+            <ul>
+{% if tmnt != '_' %}
+                <li><a href="{{ path('_tournament_overview', {'tournament': tmnt}) }}">{% trans %}MENU.TOURNAMENT.OVERVIEW{% endtrans %}</a></li>
+                <li><a href="{{ path('_tournament_categories', {'tournament': tmnt}) }}">{% trans %}MENU.TOURNAMENT.GROUPS{% endtrans %}</a></li>
+                <li><a href="{{ path('_tournament_playgrounds', {'tournament': tmnt}) }}">{% trans %}MENU.TOURNAMENT.PLAYGROUNDS{% endtrans %}</a></li>
+                <li><a href="{{ path('_tournament_clubs', {'tournament': tmnt}) }}">{% trans %}MENU.TOURNAMENT.TEAMS{% endtrans %}</a></li>
+                <li><a href="{{ path('_tournament_winners', {'tournament': tmnt}) }}">{% trans %}MENU.TOURNAMENT.WINNERS{% endtrans %}</a></li>
+                <li><a href="{{ path('_tournament_statistics', {'tournament': tmnt}) }}">{% trans %}MENU.TOURNAMENT.STATISTICS{% endtrans %}</a></li>
+{% endif %}
+                <li><a href="{{ path('_tournament_select') }}">{% trans %}MENU.TOURNAMENT.SELECT{% endtrans %}</a></li>
+            </ul>
+        </div>
+        <!-- Enrollment section
+             Anonymous users
+                Create new club_admin
+                Create new club_user - attach to existing club
+                Create new referess_user
+             CLUB_USER
+                Update user
+                Enroll teams
+             CLUB_ADMIN
+                Update user
+                Admin club and attached users
+                Enroll teams
+             EDITOR
+                Update user
+             EDITOR_ADMIN
+                Update user
+                Admin host and attached users
+             ADMIN
+                Update user
+        -->
+        <div class="menu_footer">
+{% if app.user == null %}
+            <h3>{% trans %}MENU.NEWUSER.TITLE{% endtrans %}</h3>
+            <ul>
+                <li><a href="{{ path('_club_enroll_check') }}">{% trans %}MENU.NEWUSER.ENROLL{% endtrans %}</a></li>
+            </ul>
+{% else %}
+    {% if is_granted('ROLE_USER') %}
+            <h3>{% trans %}MENU.ENROLLMENT.TITLE{% endtrans %}</h3>
+            <ul>
+        {% if is_granted('ROLE_CLUB_ADMIN') %}
+                <li><a href="{{ path('_club_enroll_check') }}">{% trans %}MENU.ENROLLMENT.CLUBS{% endtrans %}</a></li>
+        {% else %}
+            {% if app.user.status < 3 %}
+                <li><a href="{{ path('_club_new') }}">{% trans %}MENU.NONREL.ENROLL{% endtrans %}</a></li>
+            {% else %}
+                <li><a href="{{ path('_club_enroll_check') }}">{% trans %}MENU.ENROLLMENT.CLUBS{% endtrans %}</a></li>
+            {% endif %}
+        {% endif %}
+            </ul>
+    {% endif %}
+    {% if is_granted('ROLE_EDITOR_ADMIN') %}
+    {% endif %}
+    {% if is_granted('ROLE_EDITOR') %}
+    {% endif %}
+{% endif %}
+        </div>
+        <div class="menu_footer">
+            <h3>{% trans %}MENU.ADMIN.TITLE{% endtrans %}</h3>
+            <ul>
+{% if app.user == null %}
+                <li><a href="{{ path('_tournament_playgrounds', {'tournament': tmnt}) }}">{% trans %}MENU.ADMIN.RESULTS{% endtrans %}</a></li>
+{% else %}
+                <li><a href="{{ path('_user_my_page') }}">{% trans %}MENU.ENROLLMENT.MYPAGE{% endtrans %}</a></li>
+    {% if is_granted('ROLE_CLUB_ADMIN') %}
+                <li><a href="{{ path('_user_my_page_users') }}">{% trans %}MENU.ENROLLMENT.MYPAGE_USERS{% endtrans %}</a></li>
+    {% endif %}
+{% endif %}
+    {% if is_granted('ROLE_ADMIN') %}
+                <li><a href="{{ path('_edit_host_list') }}">{% trans %}MENU.ADMIN.TOURNAMENT{% endtrans %}</a></li>
+                <li><a href="{{ path('_edit_club_list') }}">{% trans %}MENU.ADMIN.TEAMS{% endtrans %}</a></li>
+                <li><a href="{{ path('_edit_host_list') }}">{% trans %}MENU.ADMIN.PLAYERS{% endtrans %}</a></li>
+                <li><a href="{{ path('_edit_host_list') }}">{% trans %}MENU.ADMIN.REFEREES{% endtrans %}</a></li>
+    {% endif %}
+            </ul>
+        </div>
     </div>
 {% endblock %}

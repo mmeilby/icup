@@ -1,0 +1,88 @@
+{% extends "ICupPublicSiteBundle:Masters:edit.html.twig" %}
+{% trans_default_domain "club" %}
+
+{% block body %}
+<h1>{% trans %}FORM.TITLE{% endtrans %}</h1>
+<p class="subtitle">{% trans %}FORM.LISTCLUB.TITLE{% endtrans %}</p>
+<p>{{ currentuser.name }}<br />
+{% if currentuser.role == 2 %}
+{% trans %}FORM.LISTCLUB.CLUBADMIN{% endtrans %}
+{% endif %}
+</p>
+{% if club is defined %}
+<p>{% trans %}FORM.LISTCLUB.ATTACHEDTO{% endtrans %}: {{ club.name }}</p>
+{% endif %}
+{% if users is defined and users|length > 0 %}
+<table>
+    <caption>{% trans %}FORM.LISTCLUB.CAPTION{% endtrans %}</caption>
+    <thead>
+        <tr>
+            <td></td>
+            <td class="operand"></td>
+            <td class="operand"></td>
+            <td class="operand"></td>
+            <td class="operand"></td>
+        </tr>
+    </thead>
+    <tboby>
+    {% for user in users %}
+        {% if currentuser != user %}
+        <tr class="{{ cycle(['even','odd'],loop.index) }}">
+            <td class="user">
+                {{ user.name|upper }}
+            </td>
+            <td class="operand">
+{% if currentuser.role == 2 %}
+                <a href="{{ path('_club_user_disconnect', { 'userid': user.id }) }}">
+                -
+                </a>    
+{% endif %}
+            </td>
+            <td class="operand">
+{% if currentuser.role == 2 %}
+                <a href="{{ path('_club_user_chg_role', { 'userid': user.id }) }}">
+    {% if user.role == 1 %}
+                P
+    {% else %}
+                D
+    {% endif %}
+                </a>
+{% else %}
+    {% if user.role == 1 %}
+                {% trans %}FORM.LISTCLUB.CLUBUSER{% endtrans %}
+    {% else %}
+                {% trans %}FORM.LISTCLUB.CLUBADMIN{% endtrans %}
+    {% endif %}
+{% endif %}
+            </td>
+            <td class="operand">
+{% if currentuser.role == 2 %}
+    {% if user.status == 3 %}
+                <a href="{{ path('_club_user_connect', { 'clubid': club.id, 'userid': user.id }) }}">
+                +
+                </a>    
+    {% else %}
+                {% trans %}FORM.LISTCLUB.ATTACHED{% endtrans %}
+    {% endif %}
+{% else %}
+    {% if user.status == 3 %}
+                {% trans %}FORM.LISTCLUB.PROSPECT{% endtrans %}
+    {% else %}
+                {% trans %}FORM.LISTCLUB.ATTACHED{% endtrans %}
+    {% endif %}
+{% endif %}
+            </td>
+            <td class="operand">
+            </td>
+        </tr>
+        {% endif %}
+    {% endfor %}
+    </tboby>
+    <tfoot>
+        <tr>
+            <td colspan="5"></td>
+        </tr>
+    </tfoot>
+</table>
+{% endif %}
+{% endblock %}

@@ -1,0 +1,59 @@
+{% extends "ICupPublicSiteBundle:Masters:edit.html.twig" %}
+{% trans_default_domain "club" %}
+
+{% block body %}
+<h1>{% trans %}FORM.MYPAGE.TITLE{% endtrans %}</h1>
+<p class="subtitle">{{ currentuser.name|capitalize }} ({{ currentuser.username|upper }})</p>
+<p><b>
+{% if currentuser.role == 2 %}
+{% trans %}FORM.MYPAGE.CLUBADMIN{% endtrans %}
+{% else %}
+{% trans %}FORM.MYPAGE.CLUBUSER{% endtrans %}
+{% endif %}
+</b>
+<br />
+{{ club.name }}
+&nbsp;
+<img src="{{ imagepath }}/flags/{{ flags[club.country] }}" alt="{{ club.country|trans({},'lang') }}" title="{{ club.country|trans({},'lang') }}">
+</p>
+{% if prospectors|length > 0 %}
+<p>Prospectors available...</p>
+{% endif %}
+{% if tournaments|length > 0 %}
+<table>
+    <caption>{% trans %}FORM.MYPAGE.TOURNAMENTS.CAPTION{% endtrans %}</caption>
+    <thead>
+        <tr>
+            <td>{% trans %}FORM.MYPAGE.TOURNAMENTS.TOURNAMENT{% endtrans %}</td>
+            <td class="operand"></td>
+            <td class="operand">{% trans %}FORM.MYPAGE.TOURNAMENTS.TEAMS{% endtrans %}</td>
+        </tr>
+    </thead>
+    <tboby>
+    {% for tmnt in tournaments %}
+        {% set tournament = tmnt.tournament %}
+        <tr class="{{ cycle(['even','odd'],loop.index) }}">
+            <td class="clubname">
+                <a href="{{ path('_club_enroll_list', { 'tournament': tournament.id }) }}">{{ tournament.name|upper }}</a>
+            </td>
+            <td class="operand">
+                <a href="{{ path('_club_enroll_list', { 'tournament': tournament.id }) }}">
+                E
+                </a>    
+            </td>
+            <td class="score">
+{% if tmnt.enrolled > 0 %}
+                {{ tmnt.enrolled }}
+{% endif %}                
+            </td>
+        </tr>
+    {% endfor %}
+    </tboby>
+    <tfoot>
+        <tr>
+            <td colspan="5"></td>
+        </tr>
+    </tfoot>
+</table>
+{% endif %}
+{% endblock %}

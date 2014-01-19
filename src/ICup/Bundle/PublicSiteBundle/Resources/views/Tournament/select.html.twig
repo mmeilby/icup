@@ -1,0 +1,31 @@
+{% extends "ICupPublicSiteBundle:Masters:standard.html.twig" %}
+
+{% block body %}
+<h1 class="category">{% trans %}RESULTS{% endtrans %}</h1>
+<p class="subcategory">
+    {% trans %}RESULTS{% endtrans %}<br />
+</p>
+<table>
+    <caption>{% trans %}STATISTICS.TITLE{% endtrans %}</caption>
+    <thead>
+        <tr>
+            <td class="statistics">{% trans %}STATISTICS.LEGEND.FIGURE{% endtrans %}</td>
+        </tr>
+    </thead>
+    <tboby>
+{% for tmnt in tournaments %}
+    {% set tournament = tmnt.tournament %}
+        <tr class="{{ cycle(['even','odd'],loop.index0) }}">
+            <td class="title" colspan="1">
+                <a href="{{ path('_tournament_overview', { 'tournament': tournament.key }) }}">{{ tournament.name }}</a>
+            </td>
+        </tr>
+{% endfor %}
+    </tboby>
+    <tfoot>
+        <tr>
+            <td colspan="1"></td>
+        </tr>
+    </tfoot>
+</table>
+{% endblock %}

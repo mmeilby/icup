@@ -13,7 +13,7 @@
         }
     ],
     "require": {
-        "php": ">=5.3.3",
+        "php": ">=5.3.7",
         "symfony/symfony": "2.3.*",
         "doctrine/orm": ">=2.2.3,<2.4-dev",
         "doctrine/doctrine-bundle": "1.2.*",
@@ -26,7 +26,8 @@
         "sensio/generator-bundle": "2.3.*",
         "incenteev/composer-parameter-handler": "~2.0",
         "symfony/icu": "1.0.*",
-        "jms/security-extra-bundle": "1.5.*"
+        "jms/security-extra-bundle": "1.5.*",
+        "ircmaxell/password-compat": "1.0.*"
     },
     "scripts": {
         "post-install-cmd": [

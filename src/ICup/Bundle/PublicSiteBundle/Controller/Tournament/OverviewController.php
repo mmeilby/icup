@@ -14,11 +14,7 @@ class OverviewController extends Controller
     public function overviewAction($tournament)
     {
         $this->get('util')->setupController($this, $tournament);
-        $tournamentId = $this->get('util')->getTournament($this);
-        $em = $this->getDoctrine()->getManager();
-
-        $tournament = $em->getRepository('ICup\Bundle\PublicSiteBundle\Entity\Doctrine\Tournament')
-                            ->find($tournamentId);
+        $tournament = $this->get('util')->getTournament($this);
         if ($tournament == null) {
             return $this->redirect($this->generateUrl('_icup'));
         }
@@ -64,6 +60,9 @@ class OverviewController extends Controller
                 'path' => $this->generateUrl('_tournament_statistics', array('tournament' => $tournament->getKey()))
             )
         );
-        return array('tournament' => $tournament, 'newsstream' => $newsStream, 'teaserlist' => $teaserList);
+
+        return array('tournament' => $tournament,
+                     'newsstream' => $newsStream,
+                     'teaserlist' => $teaserList);
     }
 }

@@ -1,0 +1,14 @@
+{% extends "ICupPublicSiteBundle:Masters:edit.html.twig" %}
+{% trans_default_domain "club" %}
+
+{% block body %}
+<h1>{% trans %}FORM.MYPAGE.TITLE{% endtrans %}</h1>
+<p class="subtitle">{{ currentuser.name|capitalize }} ({{ currentuser.username|upper }})</p>
+<p>
+    <b>{% trans %}FORM.MYPAGE.NONREL.TITLE{% endtrans %}</b><br />
+    {% trans %}FORM.MYPAGE.NONREL.TEXT{% endtrans %}
+</p>
+<p>
+    <a href="{{ path('_club_new') }}">{% trans %}FORM.MYPAGE.NONREL.LINK{% endtrans %}</a>
+</p>
+{% endblock %}

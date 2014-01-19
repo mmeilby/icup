@@ -5,7 +5,7 @@ namespace ICup\Bundle\PublicSiteBundle\Services;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Session;
-use Symfony\Component\Security\Core\User\User;
+use ICup\Bundle\PublicSiteBundle\Entity\Doctrine\User;
 use Symfony\Component\Yaml\Exception\ParseException;
 
 class Util
@@ -17,7 +17,7 @@ class Util
         $request = $container->getRequest();
         $session = $request->getSession();
         if ($tournament == '_') {
-            $tournament = $session->get('Tournament', 'IWC2013');
+            $tournament = $session->get('Tournament', '_');
         }
         $session->set('Tournament', $tournament);
 
@@ -25,45 +25,23 @@ class Util
         if ($session->get('Countries') == null) {
             $session->set('Countries', $this->getCountries());
         }
-
-        $headerMenu = array(
-                'MENU.TOURNAMENT.OVERVIEW' => $container->generateUrl('_tournament_overview', array('tournament' => $tournament)),
-                'MENU.INFO.ABOUT' => $container->generateUrl('_tournament_overview', array('tournament' => $tournament)),
-                'MENU.INFO.FAQ' => $container->generateUrl('_tournament_overview', array('tournament' => $tournament))
-        );
-        $session->set('HeaderMenu', $headerMenu);
-
-        $footerMenu = array(
-            'MENU.TOURNAMENT.TITLE' => array(
-                'MENU.TOURNAMENT.OVERVIEW' => $container->generateUrl('_tournament_overview', array('tournament' => $tournament)),
-                'MENU.TOURNAMENT.GROUPS' => $container->generateUrl('_tournament_categories', array('tournament' => $tournament)),
-                'MENU.TOURNAMENT.PLAYGROUNDS' => $container->generateUrl('_tournament_playgrounds', array('tournament' => $tournament)),
-                'MENU.TOURNAMENT.TEAMS' => $container->generateUrl('_tournament_clubs', array('tournament' => $tournament)),
-                'MENU.TOURNAMENT.WINNERS' => $container->generateUrl('_tournament_winners', array('tournament' => $tournament)),
-                'MENU.TOURNAMENT.STATISTICS' => $container->generateUrl('_tournament_statistics', array('tournament' => $tournament))),
-            'MENU.ENROLLMENT.TITLE' => array(
-                'MENU.ENROLLMENT.CLUBS' => $container->generateUrl('_tournament_overview', array('tournament' => $tournament)),
-                'MENU.ENROLLMENT.TEAMS' => $container->generateUrl('_tournament_overview', array('tournament' => $tournament)),
-                'MENU.ENROLLMENT.REFEREES' => $container->generateUrl('_tournament_overview', array('tournament' => $tournament))),
-            'MENU.ADMIN.TITLE' => array(
-                'MENU.ADMIN.RESULTS' => $container->generateUrl('_tournament_playgrounds', array('tournament' => $tournament)),
-                'MENU.ADMIN.TOURNAMENT' => $container->generateUrl('_edit_host_list'),
-                'MENU.ADMIN.TEAMS' => $container->generateUrl('_edit_host_list', array('tournament' => $tournament)),
-                'MENU.ADMIN.PLAYERS' => $container->generateUrl('_edit_host_list', array('tournament' => $tournament)),
-                'MENU.ADMIN.REFEREES' => $container->generateUrl('_edit_host_list', array('tournament' => $tournament)))
-        );
-        $session->set('FooterMenu', $footerMenu);
     }
     
     public function switchLanguage(Controller $container)
     {
+        // List of supported locales - first locale is preferred default if user requests unsupported locale
+        $supported_locales = array('en', 'da', 'it', 'fr', 'de', 'es', 'po');
         /* @var $request Request */
-        /* @var $session Session */
         $request = $container->getRequest();
+        /* @var $session Session */
         $session = $request->getSession();
-        $language = $session->get('locale', $request->getPreferredLanguage());
-        if (!array_key_exists($language, array('en', 'da', 'it', 'fr', 'de', 'es', 'po'))) $language = 'en';
-        $request->setLocale($session->get('locale', $request->getPreferredLanguage()));
+        $language = $session->get('locale', $request->getPreferredLanguage($supported_locales));
+        if (!array_search($language, $supported_locales)) {
+            $request->setLocale($supported_locales[0]);
+        }
+        else {
+            $request->setLocale($language);
+        }
     }
 
     public function getCountries()
@@ -81,15 +59,41 @@ class Util
         return $countries;
     }
     
-    public function getTournament(Controller $container) {
+    public function getTournamentKey(Controller $container) {
         /* @var $request Request */
-        /* @var $session Session */
         $request = $container->getRequest();
+        /* @var $session Session */
         $session = $request->getSession();
-        $em = $container->getDoctrine()->getManager();
-        $tournamentKey = $session->get('Tournament', '_');
-        $tournament = $em->getRepository('ICup\Bundle\PublicSiteBundle\Entity\Doctrine\Tournament')
-                                ->findOneBy(array('key' => $tournamentKey));
+        return $session->get('Tournament', '_');
+    }
+
+    public function getTournament(Controller $container) {
+        $tournamentKey = $this->getTournamentKey($container);
+        return $container->getDoctrine()->getManager()
+                ->getRepository('ICup\Bundle\PublicSiteBundle\Entity\Doctrine\Tournament')
+                ->findOneBy(array('key' => $tournamentKey));
+    }
+
+    public function getTournamentId(Controller $container) {
+        $tournament = $this->getTournament($container);
         return $tournament != null ? $tournament->getId() : 0;
+    }
+    
+    public function generatePassword(Controller $container, User $user, $secret = null) {
+        if ($secret == null) {
+            $secret = $this->generateSecret();
+        }
+        $factory = $container->get('security.encoder_factory');
+        $encoder = $factory->getEncoder($user);
+        $password = $encoder->encodePassword($secret, $user->getSalt());
+        $user->setPassword($password);
+        $pwValid = $encoder->isPasswordValid($password, $secret, $user->getSalt());
+        if (!$pwValid)
+            $container->get('logger')->addNotice("Password is not valid: " . $user->getName() . ": " . $secret . " -> " . $password);
+        return $pwValid ? $secret : FALSE;
+    }
+    
+    public function generateSecret() {
+        return uniqid();
     }
 }

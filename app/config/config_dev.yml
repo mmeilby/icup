@@ -15,15 +15,13 @@ monolog:
             type:  stream
             path:  %kernel.logs_dir%/%kernel.environment%.log
             level: debug
-        firephp:
-            type:  firephp
-            level: info
-        chromephp:
-            type:  chromephp
-            level: info
+        essential:
+            type:  stream
+            path:  %kernel.logs_dir%/%kernel.environment%_ess.log
+            level: notice
 
 assetic:
     use_controller: true
 
-#swiftmailer:
-#    delivery_address: me@example.com
+swiftmailer:
+    delivery_address: mm@iserve.dk

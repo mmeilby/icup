@@ -6,11 +6,11 @@
 {% block body %}
 <div style="width: 70%; float: left;">
 {% if tournament is defined and tournament %}
-<h1 class="category">{{ tournament.name }}</h1>
+    <h1 class="category">{{ tournament.name }}</h1>
+    <p class="subcategory">{% trans %}FORM.TITLE{% endtrans %}</p>
 {% else %}
-<h1 class="category">{% trans %}FORM.ERROR.NOTOURNAMENT{% endtrans %}</h1>
+    <h1 class="category">{% trans %}FORM.TITLE{% endtrans %}</h1>
 {% endif %}
-<p class="subcategory">{% trans %}FORM.TITLE{% endtrans %}</p>
 <p>{% trans %}FORM.LOGIN.TITLE{% endtrans %}</p>
 {% if error is defined and error %}
     <div class="form_error">{{ error.message }}</div>

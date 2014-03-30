@@ -46,8 +46,9 @@ security:
 
     access_control:
         - { path: ^/user, roles: ROLE_USER }
-        - { path: ^/club, roles: ROLE_USER }
-        - { path: ^/edit, roles: ROLE_EDITOR }
-        - { path: ^/admin, roles: ROLE_EDITOR_ADMIN }
+        - { path: ^/club, roles: ROLE_CLUB_ADMIN }
+        - { path: ^/host, roles: ROLE_EDITOR }
+        - { path: ^/edit, roles: ROLE_EDITOR_ADMIN }
+        - { path: ^/admin, roles: ROLE_ADMIN }
 
         #- { path: ^/_internal/secure, roles: IS_AUTHENTICATED_ANONYMOUSLY, ip: 127.0.0.1, requires_channel: https }

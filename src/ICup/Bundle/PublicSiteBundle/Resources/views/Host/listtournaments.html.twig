@@ -4,12 +4,14 @@
 {% block adminbody %}
 <h1>{% trans %}FORM.ADMIN{% endtrans %}</h1>
 <p class="subtitle">{% trans %}FORM.LISTHOSTS.TITLE{% endtrans %}</p>
+<p class="subtitle">{{ host.name|upper }}</p>
 <table>
-    <caption>{% trans %}FORM.LISTHOSTS.CAPTION{% endtrans %}</caption>
+    <caption>{% trans %}FORM.LISTHOSTS.CAPTION_TNMT{% endtrans %}</caption>
     <thead>
         <tr>
-            <td class="indent"></td>
             <td></td>
+            <td></td>
+            <td class="operand"></td>
             <td class="operand"></td>
             <td class="operand"></td>
             <td class="operand"></td>
@@ -18,48 +20,15 @@
         </tr>
     </thead>
     <tboby>
-{% for host in hosts %}
+{% if tournaments|length > 0 %}
+    {% for tournament in tournaments %}
         <tr class="{{ cycle(['even','odd'],loop.index) }}">
-            <td class="host_solo" colspan="2">
-                <a href="{{ path('_edit_host_chg', { 'hostid': host.id }) }}">
-                {{ host.name|upper }}
-                </a>    
-            </td>
-            <td class="operand">
-                <a href="{{ path('_edit_host_add') }}">
-                +
-                </a>    
-            </td>
-            <td class="operand">
-                <a href="{{ path('_edit_host_chg', { 'hostid': host.id }) }}">
-                E
-                </a>    
-            </td>
-            <td class="operand">
-                <a href="{{ path('_edit_host_del', { 'hostid': host.id }) }}">
-                -
-                </a>    
-            </td>
-            <td class="operand">
-                <a href="{{ path('_edit_club_list', { 'hostid': host.id }) }}">
-                C
-                </a>    
-            </td>
-            <td class="operand">
-                <a href="{{ path('_edit_editor_list', { 'hostid': host.id }) }}">
-                U
-                </a>    
-            </td>
-        </tr>
-        {% if host.id in tournaments|keys %}
-{% for tournament in tournaments[host.id] %}
-        <tr class="{{ cycle(['even','odd'],loop.index) }}">
-            <td></td>
             <td>
                 <a href="{{ path('_edit_tournament_chg', { 'tournamentid': tournament.id }) }}">
                 {{ tournament.name }}
                 </a>
             </td>
+            <td></td>
             <td class="operand">
                 <a href="{{ path('_edit_tournament_add', { 'hostid': host.id }) }}">
                 +
@@ -85,12 +54,17 @@
                 C
                 </a>
             </td>
+            <td class="operand">
+                <a href="{{ path('_host_list_clubs', { 'tournamentid': tournament.id }) }}">
+                T
+                </a>
+            </td>
         </tr>
-{% endfor %}
-        {% else %}
-        <tr class="{{ cycle(['even','odd'],loop.index) }}">
-            <td></td>
+    {% endfor %}
+{% else %}
+        <tr class="even">
             <td><a href="{{ path('_edit_tournament_add', { 'hostid': host.id }) }}">{{'FORM.LISTHOSTS.NOTOURNAMENT'|trans|upper}}</a></td>
+            <td></td>
             <td class="operand">
                 <a href="{{ path('_edit_tournament_add', { 'hostid': host.id }) }}">
                 +
@@ -100,13 +74,13 @@
             <td></td>
             <td></td>
             <td></td>
+            <td></td>
         </tr>
-        {% endif %}
-{% endfor %}
+{% endif %}
     </tboby>
     <tfoot>
         <tr>
-            <td colspan="7"></td>
+            <td colspan="8"></td>
         </tr>
     </tfoot>
 </table>

@@ -18,6 +18,9 @@ ERROR:
   INVALIDHOST:
     TITLE: Der er problemer med den valgte turneringsvært
     SOLUTION: Den valgte turneringsvært findes ikke. Benyt det følgende link for at kunne vælge en turneringsvært der findes.
+  INVALIDTOURNAMENT:
+    TITLE: Der er problemer med den valgte turnering
+    SOLUTION: Den valgte turnering findes ikke. Benyt det følgende link for at kunne vælge en turnering der findes.
   INVALIDUSER:
     TITLE: Der er problemer med den valgte bruger
     SOLUTION: Den valgte bruger findes ikke. Benyt det følgende link for at kunne vælge en bruger der findes.
@@ -30,10 +33,16 @@ ERROR:
   NOTCLUBADMIN:
     TITLE: Du er ikke klubansvarlig for denne klub
     SOLUTION: For at udføre den funktion du har valgt skal du være klubansvarlig for klubben. Du har ikke mulighed for at administrere denne klub.
+  NOTEDITORADMIN:
+    TITLE: Du er ikke turneringsansvarlig for denne turnering
+    SOLUTION: For at udføre den funktion du har valgt skal du være turneringsansvarlig for turneringen. Du har ikke mulighed for at administrere denne turnering.
   NEEDTOBERELATED:
     TITLE: Du er ikke knyttet til en klub
     SOLUTION: For at udføre den funktion du har valgt skal du være knyttet til en klub. Du har ikke mulighed for at tilmelde hold uden denne relation.
   CANNOTBERELATED:
     TITLE: Du må ikke være knyttet til en klub
     SOLUTION: For at udføre den funktion du har valgt må du ikke være knyttet til en klub.
+  NOLOCALADMIN:
+    TITLE: Du kan ikke bruge lokal administrator
+    SOLUTION: For at udføre den funktion du har valgt kan du ikke være lokal administrator. Udvid dine rettigheder som lokal administrator.
       

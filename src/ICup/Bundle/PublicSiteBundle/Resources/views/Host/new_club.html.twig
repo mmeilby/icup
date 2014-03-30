@@ -1,17 +1,14 @@
-{% extends "ICupPublicSiteBundle:Masters:standard.html.twig" %}
-
+{% extends "ICupPublicSiteBundle:Masters:edit.html.twig" %}
 {% form_theme form 'ICupPublicSiteBundle:Default:layout.script.html.twig' %}
-{% trans_default_domain "club" %}
+{% trans_default_domain "admin" %}
 
-{% block body %}
-    <div style="width: 70%; float: left;">
+{% block adminbody %}
+<div style="width: 70%; float: left;">
+    <h1 class="category">{% trans %}FORM.ADMIN{% endtrans %}</h1>
 {% if tournament is defined and tournament %}
-    <h1 class="category">{{ tournament.name }}</h1>
-    <p class="subcategory">{% trans %}FORM.TITLE{% endtrans %}</p>
-{% else %}
-    <h1 class="category">{% trans %}FORM.TITLE{% endtrans %}</h1>
+    <p class="subcategory">{{ tournament.name }}</p>
 {% endif %}
-    <p>{% trans %}FORM.LOGIN.TITLE{% endtrans %}</p>
+    <p>{% trans %}FORM.NEWCLUB.TITLE{% endtrans %}</p>
     {% if error is defined and error %}
         <div class="form_error">{{ error.message }}</div>
     {% endif %}
@@ -66,7 +63,7 @@
                    function updateDropDown(index, club) {
                        if (index < 3) {
                          opt += "<tr><td class='column'>";
-                         opt += "<span class='link' onclick='location.href=\"{{ path('_club_user_request') }}?clubid="+club.id+"\"'>"+club.name+"</span>";
+                         opt += "<span class='link' onclick='location.href=\"{{ path('_host_select_club') }}?clubid="+club.id+"&tournamentid={{ tournament.id }}\"'>"+club.name+"</span>";
                          opt += "</td></tr>";
                        }
                    });

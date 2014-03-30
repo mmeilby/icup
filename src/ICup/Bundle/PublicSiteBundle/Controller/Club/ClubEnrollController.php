@@ -1,11 +1,13 @@
 <?php
 namespace ICup\Bundle\PublicSiteBundle\Controller\Club;
 
-use DateTime;
+use ICup\Bundle\PublicSiteBundle\Entity\Doctrine\Category;
+use ICup\Bundle\PublicSiteBundle\Entity\Doctrine\Club;
 use ICup\Bundle\PublicSiteBundle\Entity\Doctrine\Enrollment;
 use ICup\Bundle\PublicSiteBundle\Entity\Doctrine\Team;
-use ICup\Bundle\PublicSiteBundle\Entity\Doctrine\Club;
+use ICup\Bundle\PublicSiteBundle\Entity\Doctrine\Tournament;
 use ICup\Bundle\PublicSiteBundle\Entity\Doctrine\User;
+use ICup\Bundle\PublicSiteBundle\Exceptions\ValidationException;
 use RuntimeException;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
@@ -57,6 +59,65 @@ class ClubEnrollController extends Controller
             return $this->render('ICupPublicSiteBundle:Errors:needtoberelated.html.twig');
         }
         
+        return $this->listEnrolled($tmnt, $club);
+    }
+
+    /**
+     * List the current enrollments for a club explicit
+     * @Route("/host/enroll/list/{tournament}/{club}", name="_club_enroll_list_admin")
+     * @Method("GET")
+     * @Template("ICupPublicSiteBundle:Host:listenrolled.html.twig")
+     */
+    public function listActionHost($tournament, $club) {
+        $this->get('util')->setupController($this);
+        $em = $this->getDoctrine()->getManager();
+        
+        /* @var $user User */
+        $user = $this->getUser();
+        if ($user == null) {
+            throw new RuntimeException("This controller is not available for anonymous users");
+        }
+        if ($user->getRole() !== User::$EDITOR_ADMIN) {
+            return $this->render('ICupPublicSiteBundle:Errors:noteditoradmin.html.twig');
+        }
+        /* @var $tmnt Tournament */
+        $tmnt = $em->getRepository('ICup\Bundle\PublicSiteBundle\Entity\Doctrine\Tournament')->find($tournament);
+        if ($tmnt == null) {
+            return $this->render('ICupPublicSiteBundle:Errors:badtournament.html.twig');
+        }
+
+        /* @var $clb Club */
+        $clb = $em->getRepository('ICup\Bundle\PublicSiteBundle\Entity\Doctrine\Club')->find($club);
+        if ($clb == null) {
+            return $this->render('ICupPublicSiteBundle:Errors:badclub.html.twig');
+        }
+        
+        return $this->listEnrolled($tmnt, $clb);
+    }
+
+    /**
+     * Check for tournament before enroll
+     * @Route("/club/enroll/check", name="_club_enroll_check")
+     * @Method("GET")
+     */
+    public function checkAction() {
+        $this->get('util')->setupController($this);
+        $em = $this->getDoctrine()->getManager();
+        
+        $tmnt = $this->get('util')->getTournament($this);
+        if ($tmnt == null) {
+            return $this->render('ICupPublicSiteBundle:Errors:needatournament.html.twig');
+        }
+        return $this->redirect($this->generateUrl('_club_enroll_list', array('tournament' => $tmnt->getId())));
+    }
+    
+    private function listEnrolled(Tournament $tmnt, Club $club) {
+        $em = $this->getDoctrine()->getManager();
+
+        $host = $em->getRepository('ICup\Bundle\PublicSiteBundle\Entity\Doctrine\Host')
+                            ->find($tmnt->getPid());
+        
+        /* @var $category Category */
         $categories = $em->getRepository('ICup\Bundle\PublicSiteBundle\Entity\Doctrine\Category')
                             ->findBy(array('pid' => $tmnt->getId()), array('classification' => 'asc', 'gender' => 'asc'));
         
@@ -83,27 +144,12 @@ class ClubEnrollController extends Controller
             $categoryMap[$cls][] = $category;
         }
         return array(
+            'host' => $host,
             'tournament' => $tmnt,
             'club' => $club,
             'classifications' => $classMap,
             'enrolled' => $enrolledList,
             'categories' => $categoryMap);
-    }
-
-    /**
-     * Check for tournament before enroll
-     * @Route("/club/enroll/check", name="_club_enroll_check")
-     * @Method("GET")
-     */
-    public function checkAction() {
-        $this->get('util')->setupController($this);
-        $em = $this->getDoctrine()->getManager();
-        
-        $tmnt = $this->get('util')->getTournament($this);
-        if ($tmnt == null) {
-            return $this->render('ICupPublicSiteBundle:Errors:needatournament.html.twig');
-        }
-        return $this->redirect($this->generateUrl('_club_enroll_list', array('tournament' => $tmnt->getId())));
     }
     
     /**
@@ -140,44 +186,63 @@ class ClubEnrollController extends Controller
             return $this->render('ICupPublicSiteBundle:Errors:needtoberelated.html.twig');
         }
         
+        /* @var $category Category */
         $category = $em->getRepository('ICup\Bundle\PublicSiteBundle\Entity\Doctrine\Category')->find($categoryid);
         if ($category == null) {
             return $this->render('ICupPublicSiteBundle:Errors:badcategory.html.twig');
         }
+        $tournamentid = $category->getPid();
         
-        $qb = $em->createQuery("select e ".
-                               "from ICup\Bundle\PublicSiteBundle\Entity\Doctrine\Enrollment e, ".
-                                    "ICup\Bundle\PublicSiteBundle\Entity\Doctrine\Team t ".
-                               "where e.pid=:category and e.cid=t.id and t.pid=:club ".
-                               "order by e.pid");
-        $qb->setParameter('category', $categoryid);
-        $qb->setParameter('club', $club->getId());
-        $enrolled = $qb->getResult();
- 
-        $noTeams = count($enrolled);
-        if ($noTeams >= 26) {
-            // Can not add more than 26 teams to same category - Team A -> Team Z
-            return $this->render('ICupPublicSiteBundle:Errors:nomoreteams.html.twig', array('redirect' => $this->generateUrl('_club_enroll_list', array('tournament' => $category->getPid()))));
+        try {
+            $this->get('util')->addEnrolled($this, $category, $club, $user);
+            return $this->redirect($this->generateUrl('_club_enroll_list', 
+                    array('tournament' => $tournamentid)));
+        } catch (ValidationException $vexc) {
+            return $this->render('ICupPublicSiteBundle:Errors:' . $vexc->getMessage(), 
+                    array('redirect' => $this->generateUrl('_club_enroll_list', 
+                            array('tournament' => $tournamentid))));
+        } 
+    }
+    
+    /**
+     * Enrolls a club in a tournament by adding new team to category
+     * @Route("/host/enroll/add/{categoryid}/{clubid}", name="_club_enroll_add_admin")
+     * @Method("GET")
+     */
+    public function addEnrollActionHost($categoryid, $clubid) {
+        $this->get('util')->setupController($this);
+        $em = $this->getDoctrine()->getManager();
+
+        /* @var $user User */
+        $user = $this->getUser();
+        if ($user == null) {
+            throw new RuntimeException("This controller is not available for anonymous users");
+        }
+        if ($user->getRole() !== User::$EDITOR_ADMIN) {
+            return $this->render('ICupPublicSiteBundle:Errors:noteditoradmin.html.twig');
+        }
+        /* @var $club Club */
+        $club = $em->getRepository('ICup\Bundle\PublicSiteBundle\Entity\Doctrine\Club')->find($clubid);
+        if ($club == null) {
+            return $this->render('ICupPublicSiteBundle:Errors:badclub.html.twig');
         }
         
-        $team = new Team();
-        $team->setPid($club->getId());
-        $team->setName($club->getName());
-        $team->setColor('');
-        $team->setDivision(chr($noTeams + 65));
-        $em->persist($team);
-        $em->flush();
+        /* @var $category Category */
+        $category = $em->getRepository('ICup\Bundle\PublicSiteBundle\Entity\Doctrine\Category')->find($categoryid);
+        if ($category == null) {
+            return $this->render('ICupPublicSiteBundle:Errors:badcategory.html.twig');
+        }
+        $tournamentid = $category->getPid();
         
-        $today = new DateTime();
-        $enroll = new Enrollment();
-        $enroll->setCid($team->getId());
-        $enroll->setPid($categoryid);
-        $enroll->setUid($user->getId());
-        $enroll->setDate($today->format('d/m/Y'));
-        $em->persist($enroll);
-        $em->flush();
-
-        return $this->redirect($this->generateUrl('_club_enroll_list', array('tournament' => $category->getPid())));
+        try {
+            $this->get('util')->addEnrolled($this, $category, $club, $user);
+            return $this->redirect($this->generateUrl('_club_enroll_list_admin', 
+                    array('tournament' => $tournamentid, 'club' => $clubid)));
+        } catch (ValidationException $vexc) {
+            return $this->render('ICupPublicSiteBundle:Errors:' . $vexc->getMessage(), 
+                    array('redirect' => $this->generateUrl('_club_enroll_list_admin', 
+                            array('tournament' => $tournamentid, 'club' => $clubid))));
+        } 
     }
     
     /**
@@ -214,31 +279,62 @@ class ClubEnrollController extends Controller
             return $this->render('ICupPublicSiteBundle:Errors:needtoberelated.html.twig');
         }
         
+        /* @var $category Category */
         $category = $em->getRepository('ICup\Bundle\PublicSiteBundle\Entity\Doctrine\Category')->find($categoryid);
         if ($category == null) {
             return $this->render('ICupPublicSiteBundle:Errors:badcategory.html.twig');
         }
+        $tournamentid = $category->getPid();
         
-        $qb = $em->createQuery("select e ".
-                               "from ICup\Bundle\PublicSiteBundle\Entity\Doctrine\Enrollment e, ".
-                                    "ICup\Bundle\PublicSiteBundle\Entity\Doctrine\Team t ".
-                               "where e.pid=:category and e.cid=t.id and t.pid=:club ".
-                               "order by t.division");
-        $qb->setParameter('category', $categoryid);
-        $qb->setParameter('club', $club->getId());
-        $enrolled = $qb->getResult();
- 
-        $enroll = array_pop($enrolled);
-        if ($enroll == null) {
-            return $this->render('ICupPublicSiteBundle:Errors:noteams.html.twig', array('redirect' => $this->generateUrl('_club_enroll_list', array('tournament' => $category->getPid()))));
-        }
-                
-        $team = $em->getRepository('ICup\Bundle\PublicSiteBundle\Entity\Doctrine\Team')->find($enroll->getCid());
-        $em->remove($team);
-        
-        $em->remove($enroll);
-        $em->flush();
+        try {
+            $this->get('util')->deleteEnrolled($this, $categoryid, $club->getId());
+            return $this->redirect($this->generateUrl('_club_enroll_list', 
+                    array('tournament' => $tournamentid)));
+        } catch (ValidationException $vexc) {
+            return $this->render('ICupPublicSiteBundle:Errors:' . $vexc->getMessage(), 
+                    array('redirect' => $this->generateUrl('_club_enroll_list', 
+                            array('tournament' => $tournamentid))));
+        } 
+    }
+    
+    /**
+     * Remove last team from category - including all related match results
+     * @Route("/host/enroll/del/{categoryid}/{clubid}", name="_club_enroll_del_admin")
+     * @Method("GET")
+     */
+    public function delEnrollActionHost($categoryid, $clubid) {
+        $this->get('util')->setupController($this);
+        $em = $this->getDoctrine()->getManager();
 
-        return $this->redirect($this->generateUrl('_club_enroll_list', array('tournament' => $category->getPid())));
+        /* @var $user User */
+        $user = $this->getUser();
+        if ($user == null) {
+            throw new RuntimeException("This controller is not available for anonymous users");
+        }
+        if ($user->getRole() !== User::$EDITOR_ADMIN) {
+            return $this->render('ICupPublicSiteBundle:Errors:noteditoradmin.html.twig');
+        }
+        /* @var $club Club */
+        $club = $em->getRepository('ICup\Bundle\PublicSiteBundle\Entity\Doctrine\Club')->find($clubid);
+        if ($club == null) {
+            return $this->render('ICupPublicSiteBundle:Errors:badclub.html.twig');
+        }
+        
+        /* @var $category Category */
+        $category = $em->getRepository('ICup\Bundle\PublicSiteBundle\Entity\Doctrine\Category')->find($categoryid);
+        if ($category == null) {
+            return $this->render('ICupPublicSiteBundle:Errors:badcategory.html.twig');
+        }
+        $tournamentid = $category->getPid();
+        
+        try {
+            $this->get('util')->deleteEnrolled($this, $categoryid, $club->getId());
+            return $this->redirect($this->generateUrl('_club_enroll_list_admin', 
+                    array('tournament' => $tournamentid, 'club' => $clubid)));
+        } catch (ValidationException $vexc) {
+            return $this->render('ICupPublicSiteBundle:Errors:' . $vexc->getMessage(), 
+                    array('redirect' => $this->generateUrl('_club_enroll_list_admin', 
+                            array('tournament' => $tournamentid, 'club' => $clubid))));
+        } 
     }
 }

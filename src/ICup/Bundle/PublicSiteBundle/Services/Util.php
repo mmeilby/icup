@@ -2,10 +2,16 @@
 
 namespace ICup\Bundle\PublicSiteBundle\Services;
 
+use DateTime;
+use ICup\Bundle\PublicSiteBundle\Entity\Doctrine\Team;
+use ICup\Bundle\PublicSiteBundle\Entity\Doctrine\Enrollment;
+use ICup\Bundle\PublicSiteBundle\Entity\Doctrine\Category;
+use ICup\Bundle\PublicSiteBundle\Entity\Doctrine\Tournament;
+use ICup\Bundle\PublicSiteBundle\Entity\Doctrine\Club;
+use ICup\Bundle\PublicSiteBundle\Entity\Doctrine\User;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Session;
-use ICup\Bundle\PublicSiteBundle\Entity\Doctrine\User;
 use Symfony\Component\Yaml\Exception\ParseException;
 
 class Util
@@ -95,5 +101,168 @@ class Util
     
     public function generateSecret() {
         return uniqid();
+    }
+    
+    /**
+     * Get the current logged in user
+     * @return User
+     * @throws RuntimeException - if no user is logged in
+     */
+    public function getCurrentUser(Controller $container) {
+        /* @var $thisuser User */
+        $thisuser = $container->getUser();
+        if ($thisuser == null) {
+            throw new RuntimeException("This controller is not available for anonymous users");
+        }
+        return $thisuser;
+    }
+
+    /**
+     * Check that user is a true editor (pid is referring to a valid host)
+     * @param \ICup\Bundle\PublicSiteBundle\Entity\Doctrine\User $user
+     * @throws \ICup\Bundle\PublicSiteBundle\Controller\Host\RedirectException
+     */
+    public function validateHostUser(Controller $container, User $user) {
+        // Validate the user - must be an editor
+        if (!is_a($user, 'ICup\Bundle\PublicSiteBundle\Entity\Doctrine\User') || !$user->isEditor()) {
+            // Controller is called by admin user - switch to my page
+            $rexp = new RedirectException();
+            $rexp->setResponse($container->redirect($container->generateUrl('_user_my_page')));
+            throw $rexp;
+        }
+    }
+
+    public function validateClubUser(Controller $container, User $user) {
+        // Validate the user - must be a club user
+        if (!is_a($user, 'ICup\Bundle\PublicSiteBundle\Entity\Doctrine\User') || !$user->isClub()) {
+            // Controller is called by editor or admin user - switch to my page
+            $rexp = new RedirectException();
+            $rexp->setResponse($container->redirect($container->generateUrl('_user_my_page')));
+            throw $rexp;
+        }
+    }
+    
+    public function validateCurrentUser(Controller $container, $clubid) {
+        /* @var $thisuser User */
+        $thisuser = $this->getCurrentUser($container);
+        // User must have CLUB_ADMIN role to change user properties
+        if (!$container->get('security.context')->isGranted('ROLE_CLUB_ADMIN')) {
+            throw new ValidationException("notclubadmin.html.twig");
+        }
+        // If controller is not called by default admin then validate the user
+        if (is_a($thisuser, 'ICup\Bundle\PublicSiteBundle\Entity\Doctrine\User')) {
+            // If user is a club administrator then validate relation to the club
+            if ($thisuser->isClub() && !$thisuser->isRelatedTo($clubid)) {
+                // Even though this is a club admin - the admin does not administer this club
+                throw new ValidationException("notclubadmin.html.twig");
+            }
+        }
+        return $thisuser;
+    }
+
+    /**
+     * Get the host from the host id
+     * @param $hostid
+     * @return Host
+     * @throws ValidationException
+     */
+    public function getHostById(Controller $container, $hostid) {
+        $em = $container->getDoctrine()->getManager();
+        /* @var $host Host */
+        $host = $em->getRepository('ICup\Bundle\PublicSiteBundle\Entity\Doctrine\Host')->find($hostid);
+        if ($host == null) {
+            // That host id is pointing to nowhere....
+            throw new ValidationException("badhost.html.twig");
+        }
+        return $host;
+    }
+    
+    public function getUserById(Controller $container, $userid) {
+        $em = $container->getDoctrine()->getManager();
+        /* @var $user User */
+        $user = $em->getRepository('ICup\Bundle\PublicSiteBundle\Entity\Doctrine\User')->find($userid);
+        if ($user == null) {
+            throw new ValidationException("baduser.html.twig");
+        }
+        if (!$user->isClub() || !$user->isRelated()) {
+            // The user to be disconnected has no relation?
+            throw new ValidationException("baduser.html.twig");
+        }
+        return $user;
+    }
+
+    public function getClubById(Controller $container, $clubid) {
+        $em = $container->getDoctrine()->getManager();
+        /* @var $club Club */
+        $club = $em->getRepository('ICup\Bundle\PublicSiteBundle\Entity\Doctrine\Club')->find($clubid);
+        if ($club == null) {
+            // User was related to a missing club
+            throw new ValidationException("badclub.html.twig");
+        }
+        return $club;
+    }
+    
+    public function addEnrolled(Controller $container, Category $category, Club $club, User $user) {
+        $em = $container->getDoctrine()->getManager();
+
+        $qb = $em->createQuery("select e ".
+                               "from ICup\Bundle\PublicSiteBundle\Entity\Doctrine\Enrollment e, ".
+                                    "ICup\Bundle\PublicSiteBundle\Entity\Doctrine\Team t ".
+                               "where e.pid=:category and e.cid=t.id and t.pid=:club ".
+                               "order by e.pid");
+        $qb->setParameter('category', $category->getId());
+        $qb->setParameter('club', $club->getId());
+        $enrolled = $qb->getResult();
+ 
+        $noTeams = count($enrolled);
+        if ($noTeams >= 26) {
+            // Can not add more than 26 teams to same category - Team A -> Team Z
+            throw new ValidationException("nomoreteams.html.twig");
+        }
+        
+        $team = new Team();
+        $team->setPid($club->getId());
+        $team->setName($club->getName());
+        $team->setColor('');
+        $team->setDivision(chr($noTeams + 65));
+        $em->persist($team);
+        $em->flush();
+        
+        $today = new DateTime();
+        $enroll = new Enrollment();
+        $enroll->setCid($team->getId());
+        $enroll->setPid($category->getId());
+        $enroll->setUid($user->getId());
+        $enroll->setDate($today->format('d/m/Y'));
+        $em->persist($enroll);
+        $em->flush();
+
+        return $enroll;
+    }
+    
+    public function deleteEnrolled(Controller $container, $categoryid, $clubid) {
+        $em = $container->getDoctrine()->getManager();
+
+        $qb = $em->createQuery("select e ".
+                               "from ICup\Bundle\PublicSiteBundle\Entity\Doctrine\Enrollment e, ".
+                                    "ICup\Bundle\PublicSiteBundle\Entity\Doctrine\Team t ".
+                               "where e.pid=:category and e.cid=t.id and t.pid=:club ".
+                               "order by t.division");
+        $qb->setParameter('category', $categoryid);
+        $qb->setParameter('club', $clubid);
+        $enrolled = $qb->getResult();
+ 
+        $enroll = array_pop($enrolled);
+        if ($enroll == null) {
+            throw new ValidationException("noteams.html.twig");
+        }
+                
+        $team = $em->getRepository('ICup\Bundle\PublicSiteBundle\Entity\Doctrine\Team')->find($enroll->getCid());
+        $em->remove($team);
+        
+        $em->remove($enroll);
+        $em->flush();
+
+        return $enroll;
     }
 }

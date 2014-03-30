@@ -3,14 +3,12 @@
 
 {% block adminbody %}
 <h1>{% trans %}FORM.ADMIN{% endtrans %}</h1>
-<p class="subtitle">{% trans %}FORM.LISTUSERS.TITLE{% endtrans %}</p>
+<p class="subtitle">{% trans %}FORM.LISTEDITORS.TITLE{% endtrans %}</p>
 <p class="subtitle">
-<a href="{{ path('_edit_club_list') }}">{{ club.name }}</a>
-&nbsp;
-<img src="{{ imagepath }}/flags/{{ flags[club.country] }}" alt="{{ club.country|trans({},'lang') }}" title="{{ club.country|trans({},'lang') }}">
+<a href="{{ path('_edit_host_list') }}">{{ host.name }}</a>
 </p>
 <table>
-    <caption>{% trans %}FORM.LISTUSERS.CAPTION{% endtrans %}</caption>
+    <caption>{% trans %}FORM.LISTEDITORS.CAPTION{% endtrans %}</caption>
     <thead>
         <tr>
             <td></td>
@@ -35,18 +33,14 @@
         {% endif %}
             </td>
             <td class="role">
-{% if user.status == 3 %}
-                {{ 'FORM.MYPAGE.PROSPECT'|trans({},'club') }}
-{% else %}
-    {% if user.role == 1 %}
-                {{ 'FORM.MYPAGE.CLUBUSER'|trans({},'club') }}
+    {% if user.role == 3 %}
+                {{ 'FORM.MYPAGE.EDITOR'|trans({},'club') }}
     {% else %}
-                {{ 'FORM.MYPAGE.CLUBADMIN'|trans({},'club') }}
+                {{ 'FORM.MYPAGE.EDITOR_ADMIN'|trans({},'club') }}
     {% endif %}
-{% endif %}
             </td>
             <td class="operand">
-                <a href="{{ path('_edit_user_add', { 'clubid': club.id }) }}">
+                <a href="{{ path('_edit_user_add_host', { 'hostid': host.id }) }}">
                 +
                 </a>    
             </td>
@@ -70,12 +64,12 @@
 {% else %}
         <tr class="odd">
             <td class="user">
-                <a href="{{ path('_edit_user_add', { 'clubid': club.id }) }}">
-                {{'FORM.LISTUSERS.NOUSER'|trans|upper}}
+                <a href="{{ path('_edit_user_add_host', { 'hostid': host.id }) }}">
+                {{'FORM.LISTEDITORS.NOUSER'|trans|upper}}
                 </a>    
             </td>
             <td class="operand">
-                <a href="{{ path('_edit_user_add', { 'clubid': club.id }) }}">
+                <a href="{{ path('_edit_user_add_host', { 'hostid': host.id }) }}">
                 +
                 </a>    
             </td>

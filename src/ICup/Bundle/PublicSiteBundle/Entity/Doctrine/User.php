@@ -408,7 +408,7 @@ class User implements UserInterface
      */
     public function eraseCredentials()
     {
-        unset($this->password);
+//        unset($this->password);
     }
     
     public function dump() {

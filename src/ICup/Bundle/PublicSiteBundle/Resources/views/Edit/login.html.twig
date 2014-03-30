@@ -5,7 +5,11 @@
 
 {% block body %}
     <h1>{% trans %}FORM.LOGIN.TITLE{% endtrans %}</h1>
+{% if tournament is defined and tournament %}
     <p class="subtitle">{{ tournament.name }}</p>
+{% else %}
+    <p class="subtitle">{% trans %}FORM.ERROR.NOTOURNAMENT{% endtrans %}</p>
+{% endif %}
 {% if error is defined and error %}
     <div class="form_error">{{ error.message }}</div>
 {% endif %}

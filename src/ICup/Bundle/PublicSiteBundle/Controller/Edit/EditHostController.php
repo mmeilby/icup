@@ -22,7 +22,11 @@ class EditHostController extends Controller
     public function listAction() {
         $this->get('util')->setupController($this);
         $em = $this->getDoctrine()->getManager();
-
+        // If user is not admin redirect to editor view
+        if (!$this->get('security.context')->isGranted('ROLE_ADMIN')) {
+            return $this->redirect($this->generateUrl('_host_list_tournaments'));
+        }
+        
         $hosts = $em->getRepository('ICup\Bundle\PublicSiteBundle\Entity\Doctrine\Host')
                             ->findAll();
         
@@ -216,6 +220,7 @@ class EditHostController extends Controller
         $formDef->add('name', 'text', array('label' => 'FORM.TOURNAMENT.NAME', 'required' => false, 'disabled' => $action == 'del', 'translation_domain' => 'admin'));
         $formDef->add('key', 'text', array('label' => 'FORM.TOURNAMENT.KEY', 'required' => false, 'disabled' => $action == 'del', 'translation_domain' => 'admin'));
         $formDef->add('edition', 'text', array('label' => 'FORM.TOURNAMENT.EDITION', 'required' => false, 'disabled' => $action == 'del', 'translation_domain' => 'admin'));
+        $formDef->add('description', 'text', array('label' => 'FORM.TOURNAMENT.DESC', 'required' => false, 'disabled' => $action == 'del', 'translation_domain' => 'admin'));
         $formDef->add('cancel', 'submit', array('label' => 'FORM.TOURNAMENT.CANCEL.'.strtoupper($action), 'translation_domain' => 'admin'));
         $formDef->add('save', 'submit', array('label' => 'FORM.TOURNAMENT.SUBMIT.'.strtoupper($action), 'translation_domain' => 'admin'));
         return $formDef->getForm();

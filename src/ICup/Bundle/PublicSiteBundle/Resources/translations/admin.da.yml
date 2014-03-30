@@ -9,9 +9,11 @@ FORM:
     BADPLAYGROUND: Den valgte bane findes ikke.
     BADCATEGORY: Den valgte gruppe findes ikke.
     BADGROUP: Den valgte pulje findes ikke.
+    NOTOURNAMENT: Turnering er ikke valgt
   LISTHOSTS:
     TITLE: Vedligehold turneringer og værter
     CAPTION: Værter og turneringer
+    CAPTION_TNMT: Turneringer
     NOTOURNAMENT: Tilføj ny turnering
   LOGIN:
     TITLE: Log på
@@ -49,6 +51,7 @@ FORM:
     NAME: Navn
     KEY: Identifikation
     EDITION: Udgave
+    DESC: Beskrivelse
     SUBMIT:
       ADD: Tilføj ny turnering
       CHG: Gem turnering
@@ -169,6 +172,10 @@ FORM:
       ADD: Fortryd oprettelse
       CHG: Fortryd ændringer
       DEL: Fortryd slet
+  LISTEDITORS:
+    TITLE: Vedligehold redaktører
+    CAPTION: Redaktører og turneringsansvarlige
+    NOUSER: Tilføj ny redaktør
   LISTCLUBS:
     TITLE: Vedligehold klubber
     CAPTION: Klubliste på tværs af alle turneringer
@@ -202,6 +209,13 @@ FORM:
       CHG: Fortryd ændringer
       DEL: Fortryd slet
       SEL: Fortryd tilknytning
+  NEWCLUB:
+    CAPTION: Resultat af søgning
+    TITLE: Tilmelding af klub og hold kan ske med en aktiv profil. Log ind med dit brugernavn hvis du har en profil. Ellers opret en ny profil.
+    LEGEND: Klubber
+    NOCLUBS: Ingen klubber passer til det søgte
+    MORECLUBS: Mange klubber passer til det søgte (et udvalg er vist her) - fortsæt indtastning eller vælg en af klubberne
+    INFO: Hvis du vil vælge en klub der står i listen, skal du klikke på klubbens navn.
   LISTUSERS:
     TITLE: Vedligehold brugere
     CAPTION: Brugere
@@ -212,7 +226,8 @@ FORM:
     NOUSERNAME: Et brugernavn skal angives.
     NOEMAIL: E-mail skal angives.
     NOPASSWORD: Et kodeord skal angives.
-    NAMEEXIST: En anden bruger er allerede oprettet med samme brugernavn. Er oplysningerne korrekte, så forsøg at logge på.
+    NAMEEXIST: En anden bruger er allerede oprettet med samme brugernavn.
+    CANTCHANGENAME: En anden bruger er allerede oprettet med samme brugernavn. Vælg et andet brugernavn.
     BADPASSWORD: Det valgte kodeord er ikke gyldigt.
     CHOICE:
       ROLE:

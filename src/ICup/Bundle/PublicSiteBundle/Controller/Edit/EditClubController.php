@@ -21,6 +21,10 @@ class EditClubController extends Controller
     {
         $this->get('util')->setupController($this);
         $em = $this->getDoctrine()->getManager();
+        // If user is not admin redirect to editor view
+        if (!$this->get('security.context')->isGranted('ROLE_ADMIN')) {
+            return $this->redirect($this->generateUrl('_host_list_tournaments'));
+        }
 
         $clubs = $em->getRepository('ICup\Bundle\PublicSiteBundle\Entity\Doctrine\Club')
                         ->findBy(array(), array('country' => 'asc', 'name' => 'asc'));

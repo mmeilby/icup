@@ -1,6 +1,7 @@
 <?php
 namespace ICup\Bundle\PublicSiteBundle\Controller\User;
 
+use ICup\Bundle\PublicSiteBundle\Entity\Doctrine\Tournament;
 use ICup\Bundle\PublicSiteBundle\Entity\Doctrine\Club;
 use ICup\Bundle\PublicSiteBundle\Entity\Doctrine\User;
 use ICup\Bundle\PublicSiteBundle\Entity\NewClub;
@@ -13,6 +14,7 @@ use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\Form\FormError;
 use Symfony\Component\Yaml\Exception\RuntimeException;
 use Symfony\Component\HttpFoundation\Response;
+use ICup\Bundle\PublicSiteBundle\Services\Util;
 
 /**
  * Club administrator core functions
@@ -27,14 +29,16 @@ class ClubAdminController extends Controller
      */
     public function disconnectAction($userid)
     {
-        $this->get('util')->setupController($this);
+        /* @var $utilService Util */
+        $utilService = $this->get('util');
+        $utilService->setupController($this);
         $em = $this->getDoctrine()->getManager();
 
         try {
             /* @var $user User */
-            $user = $this->getUserById($em, $userid);
+            $user = $utilService->getUserById($this, $userid);
             // Validate current user - is it a club administrator?
-            $this->validateCurrentUser($user->getCid());
+            $utilService->validateCurrentUser($this, $user->getCid());
             // Disconnect user from club - make user a verified user with no relation
             // However cid should not be cleared in order to restore the connection if in error
             $user->setRole(User::$CLUB);
@@ -43,7 +47,7 @@ class ClubAdminController extends Controller
             // Redirect to my page
             return $this->redirect($this->generateUrl('_user_my_page_users'));
         } catch (ValidationException $vexc) {
-            return $this->render('ICupPublicSiteBundle:Errors:' . $vexc->getMessage(), array('redirect' => '_user_my_page'));
+            return $this->render('ICupPublicSiteBundle:Errors:' . $vexc->getMessage(), array('redirect' => $this->generateUrl('_user_my_page')));
         } 
     }
 
@@ -57,26 +61,28 @@ class ClubAdminController extends Controller
      */
     public function connectAction($clubid, $userid)
     {
-        $this->get('util')->setupController($this);
+        /* @var $utilService Util */
+        $utilService = $this->get('util');
+        $utilService->setupController($this);
         $em = $this->getDoctrine()->getManager();
 
         try {
             /* @var $user User */
-            $user = $this->getUserById($em, $userid);
+            $user = $utilService->getUserById($this, $userid);
             // Validate user - must be a club user prospect
             if (!$user->isRelatedTo($clubid)) {
                 // User is not related to the club
                 throw new ValidationException("notclubadmin.html.twig");
             }
             // Validate current user - is it a club administrator?
-            $this->validateCurrentUser($clubid);
+            $utilService->validateCurrentUser($this, $clubid);
             // Connect user to the club - make user an attached user
             $user->setStatus(User::$ATT);
             $em->flush();
             // Redirect to my page
             return $this->redirect($this->generateUrl('_user_my_page_users'));
         } catch (ValidationException $vexc) {
-            return $this->render('ICupPublicSiteBundle:Errors:' . $vexc->getMessage(), array('redirect' => '_user_my_page'));
+            return $this->render('ICupPublicSiteBundle:Errors:' . $vexc->getMessage(), array('redirect' => $this->generateUrl('_user_my_page')));
         } 
     }
 
@@ -90,21 +96,23 @@ class ClubAdminController extends Controller
      */
     public function chgRoleAction($userid)
     {
-        $this->get('util')->setupController($this);
+        /* @var $utilService Util */
+        $utilService = $this->get('util');
+        $utilService->setupController($this);
         $em = $this->getDoctrine()->getManager();
 
         try {
             /* @var $user User */
-            $user = $this->getUserById($em, $userid);
+            $user = $utilService->getUserById($this, $userid);
             // Validate current user - is it a club administrator?
-            $this->validateCurrentUser($user->getCid());
+            $utilService->validateCurrentUser($this, $user->getCid());
             // Switch user role
             $user->setRole($user->getRole() === User::$CLUB ? User::$CLUB_ADMIN : User::$CLUB);
             $em->flush();
             // Redirect to my page
             return $this->redirect($this->generateUrl('_user_my_page_users'));
         } catch (ValidationException $vexc) {
-            return $this->render('ICupPublicSiteBundle:Errors:' . $vexc->getMessage(), array('redirect' => '_user_my_page'));
+            return $this->render('ICupPublicSiteBundle:Errors:' . $vexc->getMessage(), array('redirect' => $this->generateUrl('_user_my_page')));
         } 
     }
 
@@ -118,20 +126,22 @@ class ClubAdminController extends Controller
      */
     public function requestAction()
     {
-        $this->get('util')->setupController($this);
+        /* @var $utilService Util */
+        $utilService = $this->get('util');
+        $utilService->setupController($this);
         $em = $this->getDoctrine()->getManager();
 
         $clubid = $this->getRequest()->get('clubid', '');
         try {
             /* @var $user User */
-            $user = $this->getCurrentUser();
+            $user = $utilService->getCurrentUser($this);
             // Validate user - must be an unrelated user
             if ($user->isRelated()) {
                 // User is related to the club
                 throw new ValidationException("cannotberelated.html.twig");
             }
             // Validate club id
-            $club = $this->getClubById($clubid);
+            $club = $utilService->getClubById($this, $clubid);
             // Connect user to the club - make user a prospected user
             $user->setStatus(User::$PRO);
             $user->setCid($club->getId());
@@ -139,7 +149,41 @@ class ClubAdminController extends Controller
             // Redirect to my page
             return $this->redirect($this->generateUrl('_user_my_page'));
         } catch (ValidationException $vexc) {
-            return $this->render('ICupPublicSiteBundle:Errors:' . $vexc->getMessage(), array('redirect' => '_user_my_page'));
+            return $this->render('ICupPublicSiteBundle:Errors:' . $vexc->getMessage(), array('redirect' => $this->generateUrl('_user_my_page')));
+        } 
+    }
+
+    /**
+     * Cancel submitted request for club relation from current user
+     * Current user must be prospect user for any club
+     * User will be reset to a verified user with no relation
+     * @Route("/club/refuse", name="_club_user_refuse")
+     * @Method("GET")
+     */
+    public function refuseAction()
+    {
+        /* @var $utilService Util */
+        $utilService = $this->get('util');
+        $utilService->setupController($this);
+        $em = $this->getDoctrine()->getManager();
+
+        try {
+            /* @var $user User */
+            $user = $utilService->getCurrentUser($this);
+            // Validate user - must be a prospect user
+            if (!$user->isRelated()) {
+                // User is not related to any club
+                throw new ValidationException("needtoberelated.html.twig");
+            }
+            // Disconnect user from club - make user a verified user with no relation
+            // However cid should not be cleared in order to restore the connection if in error
+            $user->setRole(User::$CLUB);
+            $user->setStatus(User::$VER);
+            $em->flush();
+            // Redirect to my page
+            return $this->redirect($this->generateUrl('_user_my_page'));
+        } catch (ValidationException $vexc) {
+            return $this->render('ICupPublicSiteBundle:Errors:' . $vexc->getMessage(), array('redirect' => $this->generateUrl('_user_my_page')));
         } 
     }
 
@@ -157,9 +201,9 @@ class ClubAdminController extends Controller
 
         try {
             /* @var $user User */
-            $user = $this->getCurrentUser();
+            $user = $utilService->getCurrentUser($this);
             // Validate current user - is it a club user/administrator?
-            $this->validateClubUser($user);
+            $utilService->validateClubUser($this, $user);
             // Validate user - must be a non related club user
             if ($user->isRelated()) {
                 // Controller is called by user assigned to a club - switch to my page
@@ -184,8 +228,70 @@ class ClubAdminController extends Controller
             return $rexc->getResponse();
         } catch (ValidationException $vexc) {
             $this->get('logger')->addError("User CID/PID is invalid: " . $user->dump());
-            return $this->render('ICupPublicSiteBundle:Errors:' . $vexc->getMessage(), array('redirect' => '_user_my_page'));
+            return $this->render('ICupPublicSiteBundle:Errors:' . $vexc->getMessage(), array('redirect' => $this->generateUrl('_user_my_page')));
         }
+    }
+
+    /**
+     * Add new club for for selected tournament
+     * - Editor version only -
+     * @Route("/host/club/new/{tournamentid}", name="_host_club_new")
+     * @Template("ICupPublicSiteBundle:Host:new_club.html.twig")
+     */
+    public function hostNewClubAction($tournamentid)
+    {
+        /* @var $utilService Util */
+        $utilService = $this->get('util');
+        $utilService->setupController($this);
+        $em = $this->getDoctrine()->getManager();
+
+        try {
+            /* @var $user User */
+            $user = $utilService->getCurrentUser($this);
+            // Check that user is editor
+            $utilService->validateHostUser($this, $user);
+            // Get tournament if defined
+            /* @var $tournament Tournament */
+            $tournament = $em->getRepository('ICup\Bundle\PublicSiteBundle\Entity\Doctrine\Tournament')->find($tournamentid);
+            if ($tournament == null) {
+                throw new ValidationException("baduser.html.twig");
+            }
+            if ($user->getPid() != $tournament->getPid()) {
+                throw new ValidationException("noteditoradmin.html.twig");
+            }
+            // Prepare default data for form
+            $clubFormData = $this->getClubDefaults();
+            $form = $this->makeClubForm($clubFormData, 'sel');
+            $request = $this->getRequest();
+            $form->handleRequest($request);
+            if ($form->get('cancel')->isClicked()) {
+                return $this->redirect($this->generateUrl('_host_list_clubs', array('tournamentid' => $tournamentid)));
+            }
+            if ($this->checkForm($form, $clubFormData, 'sel')) {
+                $club = $this->enrollClub($tournament, $user, $clubFormData);
+                return $this->redirect($this->generateUrl('_club_enroll_list_admin', array('tournament' => $tournamentid, 'club' => $club->getId())));
+            }
+            return array('form' => $form->createView(), 'action' => 'add', 'user' => $user, 'tournament' => $tournament);
+        } catch (RedirectException $rexc) {
+            return $rexc->getResponse();
+        } catch (ValidationException $vexc) {
+            return $this->render('ICupPublicSiteBundle:Errors:' . $vexc->getMessage(), array('redirect' => $this->generateUrl('_host_list_clubs', array('tournamentid' => $tournamentid))));
+        }
+    }
+
+    /**
+     * Submit request for current user to be an attached user to club identified by clubid
+     * Current user must be a non related plain user
+     * This function can not promote related prospect users
+     * NOTE: this action will be requested from javascript and can not be parameterized the traditional Symfony way
+     * @Route("/host/select/club", name="_host_select_club")
+     * @Method("GET")
+     */
+    public function selectClubAction()
+    {
+        $clubid = $this->getRequest()->get('clubid', '');
+        $tournamentid = $this->getRequest()->get('tournamentid', '');
+        return $this->redirect($this->generateUrl('_club_enroll_list_admin', array('tournament' => $tournamentid, 'club' => $clubid)));
     }
 
     /**
@@ -256,6 +362,20 @@ class ClubAdminController extends Controller
         return $club;
     }
     
+    private function enrollClub(Tournament $tournament, User $user, NewClub $clubFormData) {
+        $em = $this->getDoctrine()->getManager();
+        $club = $em->getRepository('ICup\Bundle\PublicSiteBundle\Entity\Doctrine\Club')
+                   ->findOneBy(array('name' => $clubFormData->getName(), 'country' => $clubFormData->getCountry()));
+        if ($club == null) {
+            $club = new Club();
+            $club->setName($clubFormData->getName());
+            $club->setCountry($clubFormData->getCountry());
+            $em->persist($club);
+            $em->flush();
+        }
+        return $club;
+    }
+    
     private function makeClubForm($club, $action) {
         $countries = array();
         foreach (array_keys($this->get('util')->getCountries()) as $ccode) {
@@ -284,65 +404,5 @@ class ClubAdminController extends Controller
             return true;
         }
         return false;
-    }
-
-    private function validateClubUser(User $user) {
-        if (!$user->isClub()) {
-            // Controller is called by editor or admin user - switch to my page
-            $rexp = new RedirectException();
-            $rexp->setResponse($this->redirect($this->generateUrl('_user_my_page')));
-            throw $rexp;
-        }
-    }
-    
-    private function validateCurrentUser($clubid) {
-        /* @var $thisuser User */
-        $thisuser = $this->getCurrentUser();
-        // User must have CLUB_ADMIN role to change user properties
-        if (!$this->get('security.context')->isGranted('ROLE_CLUB_ADMIN')) {
-            throw new ValidationException("notclubadmin.html.twig");
-        }
-        // If controller is not called by default admin then validate the user
-        if (is_a($thisuser, 'ICup\Bundle\PublicSiteBundle\Entity\Doctrine\User')) {
-            // If user is a club administrator then validate relation to the club
-            if ($thisuser->isClub() && !$thisuser->isRelatedTo($clubid)) {
-                // Even though this is a club admin - the admin does not administer this club
-                throw new ValidationException("notclubadmin.html.twig");
-            }
-        }
-        return $thisuser;
-    }
-
-    private function getCurrentUser() {
-        /* @var $thisuser User */
-        $thisuser = $this->getUser();
-        if ($thisuser == null) {
-            throw new RuntimeException("This controller is not available for anonymous users");
-        }
-        return $thisuser;
-    }
-    
-    private function getUserById($em, $userid) {
-        /* @var $user User */
-        $user = $em->getRepository('ICup\Bundle\PublicSiteBundle\Entity\Doctrine\User')->find($userid);
-        if ($user == null) {
-            throw new ValidationException("baduser.html.twig");
-        }
-        if (!$user->isClub() || !$user->isRelated()) {
-            // The user to be disconnected has no relation?
-            throw new ValidationException("baduser.html.twig");
-        }
-        return $user;
-    }
-
-    private function getClubById($clubid) {
-        $em = $this->getDoctrine()->getManager();
-        /* @var $club Club */
-        $club = $em->getRepository('ICup\Bundle\PublicSiteBundle\Entity\Doctrine\Club')->find($clubid);
-        if ($club == null) {
-            // User was related to a missing club
-            throw new ValidationException("badclub.html.twig");
-        }
-        return $club;
     }
 }

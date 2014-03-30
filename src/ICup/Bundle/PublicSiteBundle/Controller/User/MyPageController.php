@@ -42,7 +42,7 @@ class MyPageController extends Controller
             return $rexc->getResponse();
         } catch (ValidationException $vexc) {
             $this->get('logger')->addError("User CID/PID is invalid: " . $user->dump());
-            return $this->render('ICupPublicSiteBundle:Errors:' . $vexc->getMessage(), array('redirect' => '_user_my_page'));
+            return $this->render('ICupPublicSiteBundle:Errors:' . $vexc->getMessage(), array('redirect' => $this->generateUrl('_user_my_page')));
         } 
     }
 
@@ -60,8 +60,8 @@ class MyPageController extends Controller
         }
         try {
             if (!is_a($user, 'ICup\Bundle\PublicSiteBundle\Entity\Doctrine\User')) {
-                // 
-                throw new ValidationException("notclubadmin.html.twig");
+                // Local admins should not get access to this function
+                return $this->render('ICupPublicSiteBundle:Errors:nolocaladmin.html.twig', array('redirect' => $this->generateUrl('_user_my_page')));
             }
             if ($user->getRole() !== User::$CLUB_ADMIN) {
                 // 
@@ -80,17 +80,18 @@ class MyPageController extends Controller
             return $rexc->getResponse();
         } catch (ValidationException $vexc) {
             $this->get('logger')->addError("User CID/PID is invalid: " . $user->dump());
-            return $this->render('ICupPublicSiteBundle:Errors:' . $vexc->getMessage(), array('redirect' => '_user_my_page'));
+            return $this->render('ICupPublicSiteBundle:Errors:' . $vexc->getMessage(), array('redirect' => $this->generateUrl('_user_my_page')));
         } 
     }
 
-    private function redirectMyAdminPage(User $user) {
+    private function redirectMyAdminPage($user) {
         if (!is_a($user, 'ICup\Bundle\PublicSiteBundle\Entity\Doctrine\User')) {
             // Controller is called by default admin
             $rexp = new RedirectException();
             $rexp->setResponse($this->render('ICupPublicSiteBundle:User:mypage_def_admin.html.twig'));
             throw $rexp;
         }
+        /* @var $user User */
         if ($user->isAdmin()) {
             // Admins should get a different view
             $rexp = new RedirectException();

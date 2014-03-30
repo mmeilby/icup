@@ -59,7 +59,7 @@ class EditUserController extends Controller
         }
         if ($form->isValid()) {
             $usr = $em->getRepository('ICup\Bundle\PublicSiteBundle\Entity\Doctrine\User')
-                    ->findOneBy(array('name' => $user->getUsername()));
+                    ->findOneBy(array('username' => $user->getUsername()));
             if ($usr != null) {
                 $form->addError(new FormError($this->get('translator')->trans('FORM.USER.NAMEEXIST', array(), 'admin')));
             }
@@ -88,6 +88,7 @@ class EditUserController extends Controller
         if ($host == null) {
             return $this->render('ICupPublicSiteBundle:Errors:badhost.html.twig');
         }
+        $returnUrl = $this->generateUrl('_edit_editor_list', array('hostid' => $hostid));
 
         $user = new User();
         $user->setStatus(User::$SYSTEM);
@@ -96,13 +97,13 @@ class EditUserController extends Controller
         $request = $this->getRequest();
         $form->handleRequest($request);
         if ($form->get('cancel')->isClicked()) {
-            return $this->redirect($this->generateUrl('_edit_host_list'));
+            return $this->redirect($returnUrl);
         }
         if ($form->isValid()) {
             $usr = $em->getRepository('ICup\Bundle\PublicSiteBundle\Entity\Doctrine\User')
-                    ->findOneBy(array('name' => $user->getUsername()));
+                    ->findOneBy(array('username' => $user->getUsername()));
             if ($usr != null) {
-                $form->addError(new FormError('ERROR.NAMEEXIST'));
+                $form->addError(new FormError($this->get('translator')->trans('FORM.USER.NAMEEXIST', array(), 'admin')));
             }
             else {
                 $user->setCid(0);
@@ -110,7 +111,7 @@ class EditUserController extends Controller
                 $this->generatePassword($user);
                 $em->persist($user);
                 $em->flush();
-                return $this->redirect($this->generateUrl('_edit_host_list'));
+                return $this->redirect($returnUrl);
             }
         }
         return array('form' => $form->createView(), 'action' => 'add', 'host' => $hostid, 'user' => $user);
@@ -136,9 +137,9 @@ class EditUserController extends Controller
         }
         if ($form->isValid()) {
             $usr = $em->getRepository('ICup\Bundle\PublicSiteBundle\Entity\Doctrine\User')
-                    ->findOneBy(array('name' => $user->getUsername()));
+                    ->findOneBy(array('username' => $user->getUsername()));
             if ($usr != null) {
-                $form->addError(new FormError('ERROR.NAMEEXIST'));
+                $form->addError(new FormError($this->get('translator')->trans('FORM.USER.NAMEEXIST', array(), 'admin')));
             }
             else {
                 $user->setCid(0);
@@ -167,24 +168,39 @@ class EditUserController extends Controller
              return $this->render('ICupPublicSiteBundle:Errors:baduser.html.twig');
         }
 
+        if ($user->isClub()) {
+            $returnUrl = $this->generateUrl('_edit_user_list', array('clubid' => $user->getCid()));
+        }
+        elseif ($user->isEditor()) {
+            $returnUrl = $this->generateUrl('_edit_editor_list', array('hostid' => $user->getPid()));
+        }
+        else {
+            $this->generateUrl('_edit_host_list');
+        }
+        
         $form = $this->makeUserForm($user, 'chg');
         $request = $this->getRequest();
         $form->handleRequest($request);
         if ($form->get('cancel')->isClicked()) {
-            return $this->redirect($this->generateUrl('_edit_user_list', array('clubid' => $user->getCid())));
+            return $this->redirect($returnUrl);
         }
         if ($form->isValid()) {
             $otherUser = $em->getRepository('ICup\Bundle\PublicSiteBundle\Entity\Doctrine\User')
-                    ->findOneBy(array('name' => $user->getUsername()));
+                    ->findOneBy(array('username' => $user->getUsername()));
             if ($otherUser != null && $otherUser->getId() != $user->getId()) {
-                $form->addError(new FormError('ERROR.CANTCHANGENAME'));
+                $form->addError(new FormError($this->get('translator')->trans('FORM.USER.CANTCHANGENAME', array(), 'admin')));
             }
             else {
                 $em->flush();
-                return $this->redirect($this->generateUrl('_edit_user_list', array('clubid' => $user->getCid())));
+                return $this->redirect($returnUrl);
             }
         }
-        $club = $em->getRepository('ICup\Bundle\PublicSiteBundle\Entity\Doctrine\Club')->find($user->getCid());
+        if ($user->isClub()) {
+            $club = $em->getRepository('ICup\Bundle\PublicSiteBundle\Entity\Doctrine\Club')->find($user->getCid());
+        }
+        else {
+            $club = null;
+        }
         return array('form' => $form->createView(), 'action' => 'chg', 'host' => $user->getPid(), 'club' => $club, 'user' => $user, 'error' => isset($error) ? $error : null);
     }
     
@@ -203,18 +219,33 @@ class EditUserController extends Controller
              return $this->render('ICupPublicSiteBundle:Errors:baduser.html.twig');
         }
         
+        if ($user->isClub()) {
+            $returnUrl = $this->generateUrl('_edit_user_list', array('clubid' => $user->getCid()));
+        }
+        elseif ($user->isEditor()) {
+            $returnUrl = $this->generateUrl('_edit_editor_list', array('hostid' => $user->getPid()));
+        }
+        else {
+            $this->generateUrl('_edit_host_list');
+        }
+        
         $form = $this->makeUserForm($user, 'del');
         $request = $this->getRequest();
         $form->handleRequest($request);
         if ($form->get('cancel')->isClicked()) {
-            return $this->redirect($this->generateUrl('_edit_user_list', array('clubid' => $user->getCid())));
+            return $this->redirect($returnUrl);
         }
         if ($form->isValid()) {
             $em->remove($user);
             $em->flush();
-            return $this->redirect($this->generateUrl('_edit_user_list', array('clubid' => $user->getCid())));
+            return $this->redirect($returnUrl);
         }
-        $club = $em->getRepository('ICup\Bundle\PublicSiteBundle\Entity\Doctrine\Club')->find($user->getCid());
+        if ($user->isClub()) {
+            $club = $em->getRepository('ICup\Bundle\PublicSiteBundle\Entity\Doctrine\Club')->find($user->getCid());
+        }
+        else {
+            $club = null;
+        }
         return array('form' => $form->createView(), 'action' => 'del', 'host' => $user->getPid(), 'club' => $club, 'user' => $user, 'error' => isset($error) ? $error : null);
     }
     
@@ -267,6 +298,16 @@ class EditUserController extends Controller
              return $this->render('ICupPublicSiteBundle:Errors:baduser.html.twig');
         }
         
+        if ($user->isClub()) {
+            $returnUrl = $this->generateUrl('_edit_user_list', array('clubid' => $user->getCid()));
+        }
+        elseif ($user->isEditor()) {
+            $returnUrl = $this->generateUrl('_edit_editor_list', array('hostid' => $user->getPid()));
+        }
+        else {
+            $this->generateUrl('_edit_host_list');
+        }
+        
         $pwd = new Password();
         $formDef = $this->createFormBuilder($pwd);
         $formDef->add('password', 'password', array('label' => 'FORM.USER.PASSWORD', 'required' => false, 'translation_domain' => 'admin'));
@@ -277,14 +318,19 @@ class EditUserController extends Controller
         $request = $this->getRequest();
         $form->handleRequest($request);
         if ($form->get('cancel')->isClicked()) {
-            return $this->redirect($this->generateUrl('_edit_user_list', array('clubid' => $user->getCid())));
+            return $this->redirect($returnUrl);
         }
         if ($form->isValid()) {
             $this->generatePassword($user, $pwd->getPassword());
             $em->flush();
-            return $this->redirect($this->generateUrl('_edit_user_list', array('clubid' => $user->getCid())));
+            return $this->redirect($returnUrl);
         }
-        $club = $em->getRepository('ICup\Bundle\PublicSiteBundle\Entity\Doctrine\Club')->find($user->getCid());
+        if ($user->isClub()) {
+            $club = $em->getRepository('ICup\Bundle\PublicSiteBundle\Entity\Doctrine\Club')->find($user->getCid());
+        }
+        else {
+            $club = null;
+        }
         return array('form' => $form->createView(), 'action' => 'chg', 'host' => $user->getPid(), 'club' => $club, 'user' => $user, 'error' => isset($error) ? $error : null);
     }
     
@@ -297,8 +343,9 @@ class EditUserController extends Controller
         $password = $encoder->encodePassword($secret, $user->getSalt());
         $user->setPassword($password);
         $pwValid = $encoder->isPasswordValid($password, $secret, $user->getSalt());
-        if (!$pwValid)
-            $this->get('logger')->addNotice("Password is not valid: " . $user->getName() . ": " . $secret . " -> " . $password);
+        if (!$pwValid) {
+            $this->get('logger')->addNotice("Password is not valid: " . $user->getUsername() . ": " . $secret . " -> " . $password);
+        }
         return $pwValid;
     }
 }

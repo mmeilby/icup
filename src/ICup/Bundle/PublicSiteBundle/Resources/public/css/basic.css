@@ -19,7 +19,7 @@ TABLE {
     border-collapse: collapse
 }
 TD {
-    padding-right: 5px;
+    padding: 5px;
 }
 A {
     color: #454545;
@@ -566,6 +566,16 @@ TD.statistics {
     width: 100px;
     text-align: right;
 }
+TD.tournament {
+    padding-left: 5px;
+    width: 250px;
+}
+TD.edition {
+}
+TD.description {
+    width: 350px;
+}
+
 DIV.admin H1 {
     color: #6666ff;
 }

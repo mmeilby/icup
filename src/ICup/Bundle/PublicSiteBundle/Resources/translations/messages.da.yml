@@ -73,6 +73,7 @@ MENU:
     TEAM: Ny klub
     REFEREE: Ny dommer
     ENROLL: Tilmelding
+    REGISTER: Ny profil
   NONREL:
     ENROLL: Klubvalg
   ENROLLMENT:
@@ -89,6 +90,9 @@ MENU:
     TEAMS: Hold
     PLAYERS: Spiller
     REFEREES: Dommer
+    EDITORS: Redaktører
+  INFORMATION:
+    TITLE: Information
   INFO:
     TITLE: Information
     ABOUT: Om turneringen

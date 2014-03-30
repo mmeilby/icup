@@ -39,21 +39,25 @@
         {% endif %}
             </td>
             <td class="operand">
+{% if user.status != 3 %}
         {% if currentuser != user %}
                 <a href="{{ path('_club_user_disconnect', { 'userid': user.id }) }}">
                 -
                 </a>    
         {% endif %}
+{% endif %}
             </td>
             <td class="operand">
         {% if currentuser != user %}
+{% if user.status != 3 %}
                 <a href="{{ path('_club_user_chg_role', { 'userid': user.id }) }}">
     {% if user.role == 1 %}
                 P
     {% else %}
                 D
     {% endif %}
-                </a>&nbsp;
+                </a>
+{% endif %}
         {% endif %}
             </td>
             <td class="role">

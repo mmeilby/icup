@@ -77,71 +77,66 @@
                 <li><a href="{{ path('_tournament_select') }}">{% trans %}MENU.TOURNAMENT.SELECT{% endtrans %}</a></li>
             </ul>
         </div>
-        <!-- Enrollment section
-             Anonymous users
-                Create new club_admin
-                Create new club_user - attach to existing club
-                Create new referess_user
-             CLUB_USER
-                Update user
-                Enroll teams
-             CLUB_ADMIN
-                Update user
-                Admin club and attached users
-                Enroll teams
-             EDITOR
-                Update user
-             EDITOR_ADMIN
-                Update user
-                Admin host and attached users
-             ADMIN
-                Update user
-        -->
-        <div class="menu_footer">
+<!-- ANNONOMOUS USER -->
 {% if app.user == null %}
+        <!-- Information section -->
+        <div class="menu_footer">
+            <h3>{% trans %}MENU.INFORMATION.TITLE{% endtrans %}</h3>
+        </div>
+        <!-- Enrollment/registration section -->
+        <div class="menu_footer">
             <h3>{% trans %}MENU.NEWUSER.TITLE{% endtrans %}</h3>
             <ul>
+                <li><a href="{{ path('_ausr_new_user') }}">{% trans %}MENU.NEWUSER.REGISTER{% endtrans %}</a></li>
+    {% if tmnt != '_' %}
                 <li><a href="{{ path('_club_enroll_check') }}">{% trans %}MENU.NEWUSER.ENROLL{% endtrans %}</a></li>
+    {% endif %}
             </ul>
+        </div>
+<!-- REGISTRATED USER -->
 {% else %}
-    {% if is_granted('ROLE_USER') %}
+    {% if not is_granted('ROLE_ADMIN') %}
+        <!-- Enrollment/registration section -->
+        <div class="menu_footer">
             <h3>{% trans %}MENU.ENROLLMENT.TITLE{% endtrans %}</h3>
             <ul>
-        {% if is_granted('ROLE_CLUB_ADMIN') %}
+        {% if is_granted('ROLE_USER') %}
+            {% if is_granted('ROLE_CLUB_ADMIN') %}
+                {% if tmnt != '_' %}
                 <li><a href="{{ path('_club_enroll_check') }}">{% trans %}MENU.ENROLLMENT.CLUBS{% endtrans %}</a></li>
-        {% else %}
-            {% if app.user.status < 3 %}
+                {% endif %}
+            {% elseif app.user.status < 3 %}
                 <li><a href="{{ path('_club_new') }}">{% trans %}MENU.NONREL.ENROLL{% endtrans %}</a></li>
-            {% else %}
-                <li><a href="{{ path('_club_enroll_check') }}">{% trans %}MENU.ENROLLMENT.CLUBS{% endtrans %}</a></li>
+            {% endif %}
+        {% elseif is_granted('ROLE_EDITOR') %}
+            {% if is_granted('ROLE_EDITOR_ADMIN') %}
+                <li><a href="{{ path('_club_enroll_check') }}">TBD:{% trans %}MENU.ENROLLMENT.CLUBS{% endtrans %}</a></li>
+            {% endif %}
+            {% if tmnt != '_' %}
+                    <li><a href="{{ path('_tournament_playgrounds', {'tournament': tmnt}) }}">TBD:{% trans %}MENU.ADMIN.RESULTS{% endtrans %}</a></li>
             {% endif %}
         {% endif %}
             </ul>
-    {% endif %}
-    {% if is_granted('ROLE_EDITOR_ADMIN') %}
-    {% endif %}
-    {% if is_granted('ROLE_EDITOR') %}
-    {% endif %}
-{% endif %}
         </div>
+    {% endif %}
+        <!-- Admin section -->
         <div class="menu_footer">
             <h3>{% trans %}MENU.ADMIN.TITLE{% endtrans %}</h3>
             <ul>
-{% if app.user == null %}
-                <li><a href="{{ path('_tournament_playgrounds', {'tournament': tmnt}) }}">{% trans %}MENU.ADMIN.RESULTS{% endtrans %}</a></li>
-{% else %}
                 <li><a href="{{ path('_user_my_page') }}">{% trans %}MENU.ENROLLMENT.MYPAGE{% endtrans %}</a></li>
-    {% if is_granted('ROLE_CLUB_ADMIN') %}
-                <li><a href="{{ path('_user_my_page_users') }}">{% trans %}MENU.ENROLLMENT.MYPAGE_USERS{% endtrans %}</a></li>
-    {% endif %}
-{% endif %}
     {% if is_granted('ROLE_ADMIN') %}
                 <li><a href="{{ path('_edit_host_list') }}">{% trans %}MENU.ADMIN.TOURNAMENT{% endtrans %}</a></li>
                 <li><a href="{{ path('_edit_club_list') }}">{% trans %}MENU.ADMIN.TEAMS{% endtrans %}</a></li>
                 <li><a href="{{ path('_edit_host_list') }}">{% trans %}MENU.ADMIN.PLAYERS{% endtrans %}</a></li>
                 <li><a href="{{ path('_edit_host_list') }}">{% trans %}MENU.ADMIN.REFEREES{% endtrans %}</a></li>
+    {% elseif is_granted('ROLE_EDITOR_ADMIN') %}
+                <li><a href="{{ path('_host_list_tournaments') }}">{% trans %}MENU.ADMIN.TOURNAMENT{% endtrans %}</a></li>
+                <li><a href="{{ path('_edit_editors_list') }}">{% trans %}MENU.ADMIN.EDITORS{% endtrans %}</a></li>
+    {% elseif is_granted('ROLE_CLUB_ADMIN') %}
+                <li><a href="{{ path('_user_my_page_users') }}">{% trans %}MENU.ENROLLMENT.MYPAGE_USERS{% endtrans %}</a></li>
     {% endif %}
             </ul>
         </div>
+{% endif %}
     </div>
 {% endblock %}

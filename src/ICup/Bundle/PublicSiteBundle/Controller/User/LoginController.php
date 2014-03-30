@@ -22,14 +22,15 @@ class LoginController extends Controller
         $utilService->setupController($this);
 
         $request = $this->getRequest();
+        $session = $request->getSession();
         if ($request->attributes->has(SecurityContext::AUTHENTICATION_ERROR)) {
             $error = $request->attributes->get(SecurityContext::AUTHENTICATION_ERROR);
         } else {
-            $error = $request->getSession()->get(SecurityContext::AUTHENTICATION_ERROR);
+            $error = $session->remove(SecurityContext::AUTHENTICATION_ERROR);
         }
         
         $twig = 'ICupPublicSiteBundle:Edit:login.html.twig';
-        $requestedPath = $request->getSession()->get('_security.secured_area.target_path', '');
+        $requestedPath = $session->get('_security.secured_area.target_path', '');
         $startpos = strripos($requestedPath, $request->getBaseUrl());
         $basePath = substr($requestedPath, $startpos);
         if ($basePath === $this->generateUrl('_club_enroll_check')) {

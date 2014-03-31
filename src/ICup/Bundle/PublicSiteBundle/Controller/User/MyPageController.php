@@ -24,7 +24,7 @@ class MyPageController extends Controller
      */
     public function myPageAction()
     {
-        $this->get('util')->setupController($this);
+        $this->get('util')->setupController();
         $user = $this->getUser();
         if ($user == null) {
             throw new RuntimeException("This controller is not available for anonymous users");
@@ -53,7 +53,7 @@ class MyPageController extends Controller
      */
     public function myPageUsersAction()
     {
-        $this->get('util')->setupController($this);
+        $this->get('util')->setupController();
         $user = $this->getUser();
         if ($user == null) {
             throw new RuntimeException("This controller is not available for anonymous users");

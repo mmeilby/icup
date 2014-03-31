@@ -19,7 +19,7 @@ class LoginController extends Controller
     {
         /* @var $utilService Util */
         $utilService = $this->get('util');
-        $utilService->setupController($this);
+        $utilService->setupController();
 
         $request = $this->getRequest();
         $session = $request->getSession();
@@ -45,7 +45,7 @@ class LoginController extends Controller
         $form = $formDef->getForm();
         $form->handleRequest($request);
 
-        $tournament = $utilService->getTournament($this);
+        $tournament = $utilService->getTournament();
         return $this->render($twig, array(
             'form'          => $form->createView(),
             'tournament'    => $tournament,

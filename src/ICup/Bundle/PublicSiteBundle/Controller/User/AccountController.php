@@ -22,7 +22,7 @@ class AccountController extends Controller
     public function passAction() {
         /* @var $utilService Util */
         $utilService = $this->get('util');
-        $utilService->setupController($this);
+        $utilService->setupController();
         $em = $this->getDoctrine()->getManager();
 
         /* @var $user User */
@@ -43,7 +43,7 @@ class AccountController extends Controller
                 $admin->setEmail('');
                 $admin->setPid(0);
                 $admin->setCid(0);
-                $utilService->generatePassword($this, $admin, $user->getUsername());
+                $utilService->generatePassword($admin, $user->getUsername());
                 $em->persist($admin);
                 $em->flush();
                 $user = $admin;
@@ -66,7 +66,7 @@ class AccountController extends Controller
             return $this->redirect($this->generateUrl('_user_my_page'));
         }
         if ($form->isValid()) {
-            $utilService->generatePassword($this, $user, $pwd->getPassword());
+            $utilService->generatePassword($user, $pwd->getPassword());
             $em->flush();
             return $this->redirect($this->generateUrl('_user_my_page'));
         }

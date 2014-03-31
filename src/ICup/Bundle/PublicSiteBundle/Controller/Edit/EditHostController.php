@@ -20,7 +20,7 @@ class EditHostController extends Controller
      * @Template("ICupPublicSiteBundle:Edit:listhosts.html.twig")
      */
     public function listAction() {
-        $this->get('util')->setupController($this);
+        $this->get('util')->setupController();
         $em = $this->getDoctrine()->getManager();
         // If user is not admin redirect to editor view
         if (!$this->get('security.context')->isGranted('ROLE_ADMIN')) {
@@ -47,7 +47,7 @@ class EditHostController extends Controller
      * @Template("ICupPublicSiteBundle:Edit:edithost.html.twig")
      */
     public function addAction() {
-        $this->get('util')->setupController($this);
+        $this->get('util')->setupController();
         
         $host = new Host();
         $form = $this->makeHostForm($host, 'add');
@@ -71,7 +71,7 @@ class EditHostController extends Controller
      * @Template("ICupPublicSiteBundle:Edit:edithost.html.twig")
      */
     public function chgAction($hostid) {
-        $this->get('util')->setupController($this);
+        $this->get('util')->setupController();
         $em = $this->getDoctrine()->getManager();
         
         $host = $em->getRepository('ICup\Bundle\PublicSiteBundle\Entity\Doctrine\Host')->find($hostid);
@@ -99,7 +99,7 @@ class EditHostController extends Controller
      * @Template("ICupPublicSiteBundle:Edit:edithost.html.twig")
      */
     public function delAction($hostid) {
-        $this->get('util')->setupController($this);
+        $this->get('util')->setupController();
         $em = $this->getDoctrine()->getManager();
         
         $host = $em->getRepository('ICup\Bundle\PublicSiteBundle\Entity\Doctrine\Host')->find($hostid);
@@ -135,7 +135,7 @@ class EditHostController extends Controller
      * @Template("ICupPublicSiteBundle:Edit:edittournament.html.twig")
      */
     public function addTournamentAction($hostid) {
-        $this->get('util')->setupController($this);
+        $this->get('util')->setupController();
         $em = $this->getDoctrine()->getManager();
         
         $host = $em->getRepository('ICup\Bundle\PublicSiteBundle\Entity\Doctrine\Host')->find($hostid);
@@ -165,7 +165,7 @@ class EditHostController extends Controller
      * @Template("ICupPublicSiteBundle:Edit:edittournament.html.twig")
      */
     public function chgTournamentAction($tournamentid) {
-        $this->get('util')->setupController($this);
+        $this->get('util')->setupController();
         $em = $this->getDoctrine()->getManager();
         
         $tournament = $em->getRepository('ICup\Bundle\PublicSiteBundle\Entity\Doctrine\Tournament')->find($tournamentid);
@@ -193,7 +193,7 @@ class EditHostController extends Controller
      * @Template("ICupPublicSiteBundle:Edit:edittournament.html.twig")
      */
     public function delTournamentAction($tournamentid) {
-        $this->get('util')->setupController($this);
+        $this->get('util')->setupController();
         $em = $this->getDoctrine()->getManager();
         
         $tournament = $em->getRepository('ICup\Bundle\PublicSiteBundle\Entity\Doctrine\Tournament')->find($tournamentid);

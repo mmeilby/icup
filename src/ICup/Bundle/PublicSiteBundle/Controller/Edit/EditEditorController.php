@@ -21,17 +21,17 @@ class EditEditorController extends Controller
     {
         /* @var $utilService Util */
         $utilService = $this->get('util');
-        $utilService->setupController($this);
+        $utilService->setupController();
         $em = $this->getDoctrine()->getManager();
 
         try {
             /* @var $user User */
-            $user = $utilService->getCurrentUser($this);
+            $user = $utilService->getCurrentUser();
             // Validate current user - is it an editor?
-            $utilService->validateHostUser($this, $user);
+            $utilService->validateHostUser($user);
             // Get the host from current user
             $hostid = $user->getPid();
-            $host = $utilService->getHostById($this, $hostid);
+            $host = $this->get('entity')->getHostById($hostid);
             $users = $em->getRepository('ICup\Bundle\PublicSiteBundle\Entity\Doctrine\User')
                     ->findBy(array('pid' => $hostid));
 
@@ -49,17 +49,17 @@ class EditEditorController extends Controller
      */
     public function listUsersAction($hostid)
     {
-        $this->get('util')->setupController($this);
+        $this->get('util')->setupController();
         $em = $this->getDoctrine()->getManager();
 
-        $host = $em->getRepository('ICup\Bundle\PublicSiteBundle\Entity\Doctrine\Host')->find($hostid);
-        if ($host == null) {
-            return $this->render('ICupPublicSiteBundle:Errors:badhost.html.twig');
-        }
-        
-        $users = $em->getRepository('ICup\Bundle\PublicSiteBundle\Entity\Doctrine\User')
-                ->findBy(array('pid' => $hostid));
+        try {
+            $host = $this->get('entity')->getHostById($hostid);
+            $users = $em->getRepository('ICup\Bundle\PublicSiteBundle\Entity\Doctrine\User')
+                    ->findBy(array('pid' => $hostid));
 
-        return array('host' => $host, 'users' => $users);
+            return array('host' => $host, 'users' => $users);
+        } catch (ValidationException $vexc) {
+            return $this->render('ICupPublicSiteBundle:Errors:' . $vexc->getMessage(), array('redirect' => $this->generateUrl('_user_my_page')));
+        } 
     }
 }

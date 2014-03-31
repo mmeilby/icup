@@ -13,8 +13,8 @@ class WinnersController extends Controller
      */
     public function listAction($tournament)
     {
-        $this->get('util')->setupController($this, $tournament);
-        $tournamentId = $this->get('util')->getTournamentId($this);
+        $this->get('util')->setupController($tournament);
+        $tournamentId = $this->get('util')->getTournamentId();
         $em = $this->getDoctrine()->getManager();
 
         $tournament = $em->getRepository('ICup\Bundle\PublicSiteBundle\Entity\Doctrine\Tournament')
@@ -35,7 +35,7 @@ class WinnersController extends Controller
         $groups = $qb->getResult();
         
         foreach ($groups as $group) {
-            $teamsList = $this->get('orderTeams')->sortGroup($this, $group['id']);
+            $teamsList = $this->get('orderTeams')->sortGroup($group['id']);
             if ($group['classification'] == 10) {
                 $championList[$group['catid']]['group'] = $group;
                 $championList[$group['catid']]['first'][] = $teamsList[0];
@@ -57,8 +57,8 @@ class WinnersController extends Controller
      */
     public function listCountriesAction($tournament)
     {
-        $this->get('util')->setupController($this, $tournament);
-        $tournamentId = $this->get('util')->getTournamentId($this);
+        $this->get('util')->setupController($tournament);
+        $tournamentId = $this->get('util')->getTournamentId();
         $em = $this->getDoctrine()->getManager();
 
         $tournament = $em->getRepository('ICup\Bundle\PublicSiteBundle\Entity\Doctrine\Tournament')
@@ -78,7 +78,7 @@ class WinnersController extends Controller
         
         $countryList = array();
         foreach ($groups as $group) {
-            $teamsList = $this->get('orderTeams')->sortGroup($this, $group['id']);
+            $teamsList = $this->get('orderTeams')->sortGroup($group['id']);
             if (key_exists($teamsList[0]->country, $countryList))
                 $winner_country = $countryList[$teamsList[0]->country];
             else
@@ -137,8 +137,8 @@ class WinnersController extends Controller
      */
     public function listClubsAction($tournament)
     {
-        $this->get('util')->setupController($this, $tournament);
-        $tournamentId = $this->get('util')->getTournamentId($this);
+        $this->get('util')->setupController($tournament);
+        $tournamentId = $this->get('util')->getTournamentId();
         $em = $this->getDoctrine()->getManager();
 
         $tournament = $em->getRepository('ICup\Bundle\PublicSiteBundle\Entity\Doctrine\Tournament')
@@ -158,7 +158,7 @@ class WinnersController extends Controller
         
         $countryList = array();
         foreach ($groups as $group) {
-            $teamsList = $this->get('orderTeams')->sortGroup($this, $group['id']);
+            $teamsList = $this->get('orderTeams')->sortGroup($group['id']);
             if (key_exists($teamsList[0]->club, $countryList))
                 $winner_country = $countryList[$teamsList[0]->club];
             else

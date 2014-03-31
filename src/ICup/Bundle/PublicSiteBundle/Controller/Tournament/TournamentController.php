@@ -13,8 +13,8 @@ class TournamentController extends Controller
      */
     public function listCategoriesAction($tournament)
     {
-        $this->get('util')->setupController($this, $tournament);
-        $tournamentId = $this->get('util')->getTournamentId($this);
+        $this->get('util')->setupController($tournament);
+        $tournamentId = $this->get('util')->getTournamentId();
         $em = $this->getDoctrine()->getManager();
 
         $tournament = $em->getRepository('ICup\Bundle\PublicSiteBundle\Entity\Doctrine\Tournament')
@@ -41,8 +41,8 @@ class TournamentController extends Controller
      */
     public function listPlaygroundsAction($tournament)
     {
-        $this->get('util')->setupController($this, $tournament);
-        $tournamentId = $this->get('util')->getTournamentId($this);
+        $this->get('util')->setupController($tournament);
+        $tournamentId = $this->get('util')->getTournamentId();
         $em = $this->getDoctrine()->getManager();
 
         $tournament = $em->getRepository('ICup\Bundle\PublicSiteBundle\Entity\Doctrine\Tournament')
@@ -74,8 +74,8 @@ class TournamentController extends Controller
      */
     public function listClubsAction($tournament)
     {
-        $this->get('util')->setupController($this, $tournament);
-        $tournamentId = $this->get('util')->getTournamentId($this);
+        $this->get('util')->setupController($tournament);
+        $tournamentId = $this->get('util')->getTournamentId();
         $em = $this->getDoctrine()->getManager();
 
         $tournament = $em->getRepository('ICup\Bundle\PublicSiteBundle\Entity\Doctrine\Tournament')
@@ -128,8 +128,8 @@ class TournamentController extends Controller
      */
     public function listTeamsAction($tournament, $clubId)
     {
-        $this->get('util')->setupController($this, $tournament);
-        $tournamentId = $this->get('util')->getTournamentId($this);
+        $this->get('util')->setupController($tournament);
+        $tournamentId = $this->get('util')->getTournamentId();
         $em = $this->getDoctrine()->getManager();
 
         $tournament = $em->getRepository('ICup\Bundle\PublicSiteBundle\Entity\Doctrine\Tournament')

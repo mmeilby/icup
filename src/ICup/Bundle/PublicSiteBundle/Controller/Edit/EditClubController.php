@@ -19,7 +19,7 @@ class EditClubController extends Controller
      */
     public function listClubsAction()
     {
-        $this->get('util')->setupController($this);
+        $this->get('util')->setupController();
         $em = $this->getDoctrine()->getManager();
         // If user is not admin redirect to editor view
         if (!$this->get('security.context')->isGranted('ROLE_ADMIN')) {
@@ -56,7 +56,7 @@ class EditClubController extends Controller
      * @Template("ICupPublicSiteBundle:Edit:editclub.html.twig")
      */
     public function addAction() {
-        $this->get('util')->setupController($this);
+        $this->get('util')->setupController();
         $em = $this->getDoctrine()->getManager();
         
         $country = $this->getRequest()->get('country');
@@ -88,7 +88,7 @@ class EditClubController extends Controller
      * @Template("ICupPublicSiteBundle:Edit:editclub.html.twig")
      */
     public function chgAction($clubid) {
-        $this->get('util')->setupController($this);
+        $this->get('util')->setupController();
         $em = $this->getDoctrine()->getManager();
 
         /* @var $club Club */
@@ -116,7 +116,7 @@ class EditClubController extends Controller
      * @Template("ICupPublicSiteBundle:Edit:editclub.html.twig")
      */
     public function delAction($clubid) {
-        $this->get('util')->setupController($this);
+        $this->get('util')->setupController();
         $em = $this->getDoctrine()->getManager();
 
         /* @var $club Club */

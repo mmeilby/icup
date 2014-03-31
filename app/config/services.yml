@@ -55,3 +55,25 @@ services:
             - [ "@icup.publicsitebundle.twig_filesystem_loader", "@icup.publicsitebundle.twig_database_loader" ]
         tags:
           - { name: 'twig.loader' }
+
+# BUSINESS LOGIC 
+    entity:
+        class: "ICup\\Bundle\\PublicSiteBundle\\Services\\Doctrine\\Entity"
+        arguments:
+          - "@doctrine.orm.entity_manager"
+          - "ICup\\Bundle\\PublicSiteBundle\\Entity\\Doctrine\\"
+          - "@logger"
+
+    util:
+        class: "ICup\\Bundle\\PublicSiteBundle\\Services\\Util"
+        arguments:
+          - "@service_container"
+          - "@doctrine.orm.entity_manager"
+          - "@logger"
+
+    orderTeams:
+        class: "ICup\\Bundle\\PublicSiteBundle\\Services\\OrderTeams"
+        arguments:
+          - "@doctrine.orm.entity_manager"
+          - "@logger"
+        

@@ -18,8 +18,8 @@ class EditGroupOrderController extends Controller
      * @Template("ICupPublicSiteBundle:Edit:editgrouporder.html.twig")
      */
     public function newAction($tournament, $categoryId) {
-        $this->get('util')->setupController($this, $tournament);
-        $tournamentId = $this->get('util')->getTournamentId($this);
+        $this->get('util')->setupController($tournament);
+        $tournamentId = $this->get('util')->getTournamentId();
         $em = $this->getDoctrine()->getManager();
 
         $tournament = $em->getRepository('ICup\Bundle\PublicSiteBundle\Entity\Doctrine\Tournament')
@@ -40,8 +40,8 @@ class EditGroupOrderController extends Controller
      * @Template("ICupPublicSiteBundle:Edit:editgrouporder.html.twig")
      */
     public function newPostAction($tournament, $categoryId) {
-        $this->get('util')->setupController($this, $tournament);
-        $tournamentId = $this->get('util')->getTournamentId($this);
+        $this->get('util')->setupController($tournament);
+        $tournamentId = $this->get('util')->getTournamentId();
         $em = $this->getDoctrine()->getManager();
 
         $tournament = $em->getRepository('ICup\Bundle\PublicSiteBundle\Entity\Doctrine\Tournament')

@@ -9,36 +9,52 @@ use ICup\Bundle\PublicSiteBundle\Entity\Doctrine\Category;
 use ICup\Bundle\PublicSiteBundle\Entity\Doctrine\Tournament;
 use ICup\Bundle\PublicSiteBundle\Entity\Doctrine\Club;
 use ICup\Bundle\PublicSiteBundle\Entity\Doctrine\User;
-use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Session;
 use Symfony\Component\Yaml\Exception\ParseException;
+use Symfony\Component\DependencyInjection\ContainerInterface;
+use Doctrine\ORM\EntityManager;
+use Monolog\Logger;
 
 class Util
 {
-    public function setupController(Controller $container, $tournament = '_')
+    /* @var $container ContainerInterface */
+    protected $container;
+    /* @var $em EntityManager */
+    protected $em;
+    /* @var $logger Logger */
+    protected $logger;
+
+    public function __construct(ContainerInterface $container, EntityManager $em, Logger $logger)
+    {
+        $this->container = $container;
+        $this->em = $em;
+        $this->logger = $logger;
+    }
+
+    public function setupController($tournament = '_')
     {
         /* @var $request Request */
+        $request = $this->container->get('request');
         /* @var $session Session */
-        $request = $container->getRequest();
         $session = $request->getSession();
         if ($tournament == '_') {
             $tournament = $session->get('Tournament', '_');
         }
         $session->set('Tournament', $tournament);
 
-        $this->switchLanguage($container);
+        $this->switchLanguage();
         if ($session->get('Countries') == null) {
             $session->set('Countries', $this->getCountries());
         }
     }
     
-    public function switchLanguage(Controller $container)
+    public function switchLanguage()
     {
         // List of supported locales - first locale is preferred default if user requests unsupported locale
         $supported_locales = array('en', 'da', 'it', 'fr', 'de', 'es', 'po');
         /* @var $request Request */
-        $request = $container->getRequest();
+        $request = $this->container->get('request');
         /* @var $session Session */
         $session = $request->getSession();
         $language = $session->get('locale', $request->getPreferredLanguage($supported_locales));
@@ -65,37 +81,37 @@ class Util
         return $countries;
     }
     
-    public function getTournamentKey(Controller $container) {
+    public function getTournamentKey() {
         /* @var $request Request */
-        $request = $container->getRequest();
+        $request = $this->container->get('request');
         /* @var $session Session */
         $session = $request->getSession();
         return $session->get('Tournament', '_');
     }
 
-    public function getTournament(Controller $container) {
-        $tournamentKey = $this->getTournamentKey($container);
-        return $container->getDoctrine()->getManager()
-                ->getRepository('ICup\Bundle\PublicSiteBundle\Entity\Doctrine\Tournament')
-                ->findOneBy(array('key' => $tournamentKey));
+    public function getTournament() {
+        $tournamentKey = $this->getTournamentKey();
+        return $this->em->getRepository('ICup\Bundle\PublicSiteBundle\Entity\Doctrine\Tournament')
+                        ->findOneBy(array('key' => $tournamentKey));
     }
 
-    public function getTournamentId(Controller $container) {
-        $tournament = $this->getTournament($container);
+    public function getTournamentId() {
+        $tournament = $this->getTournament();
         return $tournament != null ? $tournament->getId() : 0;
     }
     
-    public function generatePassword(Controller $container, User $user, $secret = null) {
+    public function generatePassword(User $user, $secret = null) {
         if ($secret == null) {
             $secret = $this->generateSecret();
         }
-        $factory = $container->get('security.encoder_factory');
+        $factory = $this->container->get('security.encoder_factory');
         $encoder = $factory->getEncoder($user);
         $password = $encoder->encodePassword($secret, $user->getSalt());
         $user->setPassword($password);
         $pwValid = $encoder->isPasswordValid($password, $secret, $user->getSalt());
-        if (!$pwValid)
-            $container->get('logger')->addNotice("Password is not valid: " . $user->getName() . ": " . $secret . " -> " . $password);
+        if (!$pwValid) {
+            $this->logger->addNotice("Password is not valid: " . $user->getName() . ": " . $secret . " -> " . $password);
+        }
         return $pwValid ? $secret : FALSE;
     }
     
@@ -108,9 +124,9 @@ class Util
      * @return User
      * @throws RuntimeException - if no user is logged in
      */
-    public function getCurrentUser(Controller $container) {
+    public function getCurrentUser() {
         /* @var $thisuser User */
-        $thisuser = $container->getUser();
+        $thisuser = $this->container->get('security.context')->getToken()->getUser();
         if ($thisuser == null) {
             throw new RuntimeException("This controller is not available for anonymous users");
         }
@@ -122,35 +138,35 @@ class Util
      * @param \ICup\Bundle\PublicSiteBundle\Entity\Doctrine\User $user
      * @throws \ICup\Bundle\PublicSiteBundle\Controller\Host\RedirectException
      */
-    public function validateHostUser(Controller $container, User $user) {
+    public function validateHostUser(User $user) {
         // Validate the user - must be an editor
-        if (!is_a($user, 'ICup\Bundle\PublicSiteBundle\Entity\Doctrine\User') || !$user->isEditor()) {
+        if ($this->container->get('entity')->isLocalAdmin($user) || !$user->isEditor()) {
             // Controller is called by admin user - switch to my page
             $rexp = new RedirectException();
-            $rexp->setResponse($container->redirect($container->generateUrl('_user_my_page')));
+            $rexp->setResponse($this->container->redirect($this->container->generateUrl('_user_my_page')));
             throw $rexp;
         }
     }
 
-    public function validateClubUser(Controller $container, User $user) {
+    public function validateClubUser(User $user) {
         // Validate the user - must be a club user
-        if (!is_a($user, 'ICup\Bundle\PublicSiteBundle\Entity\Doctrine\User') || !$user->isClub()) {
+        if ($this->container->get('entity')->isLocalAdmin($user) || !$user->isClub()) {
             // Controller is called by editor or admin user - switch to my page
             $rexp = new RedirectException();
-            $rexp->setResponse($container->redirect($container->generateUrl('_user_my_page')));
+            $rexp->setResponse($this->container->redirect($this->container->generateUrl('_user_my_page')));
             throw $rexp;
         }
     }
     
-    public function validateCurrentUser(Controller $container, $clubid) {
+    public function validateCurrentUser($clubid) {
         /* @var $thisuser User */
-        $thisuser = $this->getCurrentUser($container);
+        $thisuser = $this->getCurrentUser();
         // User must have CLUB_ADMIN role to change user properties
-        if (!$container->get('security.context')->isGranted('ROLE_CLUB_ADMIN')) {
+        if (!$this->container->get('security.context')->isGranted('ROLE_CLUB_ADMIN')) {
             throw new ValidationException("notclubadmin.html.twig");
         }
         // If controller is not called by default admin then validate the user
-        if (is_a($thisuser, 'ICup\Bundle\PublicSiteBundle\Entity\Doctrine\User')) {
+        if (!$this->container->get('entity')->isLocalAdmin($thisuser)) {
             // If user is a club administrator then validate relation to the club
             if ($thisuser->isClub() && !$thisuser->isRelatedTo($clubid)) {
                 // Even though this is a club admin - the admin does not administer this club
@@ -159,31 +175,10 @@ class Util
         }
         return $thisuser;
     }
-
-    /**
-     * Get the host from the host id
-     * @param $hostid
-     * @return Host
-     * @throws ValidationException
-     */
-    public function getHostById(Controller $container, $hostid) {
-        $em = $container->getDoctrine()->getManager();
-        /* @var $host Host */
-        $host = $em->getRepository('ICup\Bundle\PublicSiteBundle\Entity\Doctrine\Host')->find($hostid);
-        if ($host == null) {
-            // That host id is pointing to nowhere....
-            throw new ValidationException("badhost.html.twig");
-        }
-        return $host;
-    }
     
-    public function getUserById(Controller $container, $userid) {
-        $em = $container->getDoctrine()->getManager();
+    public function getUserById($userid) {
         /* @var $user User */
-        $user = $em->getRepository('ICup\Bundle\PublicSiteBundle\Entity\Doctrine\User')->find($userid);
-        if ($user == null) {
-            throw new ValidationException("baduser.html.twig");
-        }
+        $user = $this->container->get('entity')->getUserById($userid);
         if (!$user->isClub() || !$user->isRelated()) {
             // The user to be disconnected has no relation?
             throw new ValidationException("baduser.html.twig");
@@ -191,21 +186,8 @@ class Util
         return $user;
     }
 
-    public function getClubById(Controller $container, $clubid) {
-        $em = $container->getDoctrine()->getManager();
-        /* @var $club Club */
-        $club = $em->getRepository('ICup\Bundle\PublicSiteBundle\Entity\Doctrine\Club')->find($clubid);
-        if ($club == null) {
-            // User was related to a missing club
-            throw new ValidationException("badclub.html.twig");
-        }
-        return $club;
-    }
-    
-    public function addEnrolled(Controller $container, Category $category, Club $club, User $user) {
-        $em = $container->getDoctrine()->getManager();
-
-        $qb = $em->createQuery("select e ".
+    public function addEnrolled(Category $category, Club $club, User $user) {
+        $qb = $this->em->createQuery("select e ".
                                "from ICup\Bundle\PublicSiteBundle\Entity\Doctrine\Enrollment e, ".
                                     "ICup\Bundle\PublicSiteBundle\Entity\Doctrine\Team t ".
                                "where e.pid=:category and e.cid=t.id and t.pid=:club ".
@@ -225,8 +207,8 @@ class Util
         $team->setName($club->getName());
         $team->setColor('');
         $team->setDivision(chr($noTeams + 65));
-        $em->persist($team);
-        $em->flush();
+        $this->em->persist($team);
+        $this->em->flush();
         
         $today = new DateTime();
         $enroll = new Enrollment();
@@ -234,16 +216,14 @@ class Util
         $enroll->setPid($category->getId());
         $enroll->setUid($user->getId());
         $enroll->setDate($today->format('d/m/Y'));
-        $em->persist($enroll);
-        $em->flush();
+        $this->em->persist($enroll);
+        $this->em->flush();
 
         return $enroll;
     }
     
-    public function deleteEnrolled(Controller $container, $categoryid, $clubid) {
-        $em = $container->getDoctrine()->getManager();
-
-        $qb = $em->createQuery("select e ".
+    public function deleteEnrolled($categoryid, $clubid) {
+        $qb = $this->em->createQuery("select e ".
                                "from ICup\Bundle\PublicSiteBundle\Entity\Doctrine\Enrollment e, ".
                                     "ICup\Bundle\PublicSiteBundle\Entity\Doctrine\Team t ".
                                "where e.pid=:category and e.cid=t.id and t.pid=:club ".
@@ -257,11 +237,11 @@ class Util
             throw new ValidationException("noteams.html.twig");
         }
                 
-        $team = $em->getRepository('ICup\Bundle\PublicSiteBundle\Entity\Doctrine\Team')->find($enroll->getCid());
-        $em->remove($team);
+        $team = $this->em->getRepository('ICup\Bundle\PublicSiteBundle\Entity\Doctrine\Team')->find($enroll->getCid());
+        $this->em->remove($team);
         
-        $em->remove($enroll);
-        $em->flush();
+        $this->em->remove($enroll);
+        $this->em->flush();
 
         return $enroll;
     }

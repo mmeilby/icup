@@ -23,7 +23,7 @@ class WasteController extends Controller
      * @Template("ICupPublicSiteBundle:Club:newuser.html.twig")
      */
     public function addUserAction($clubid) {
-        $this->get('util')->setupController($this);
+        $this->get('util')->setupController();
         $em = $this->getDoctrine()->getManager();
 
         /* @var $user User */
@@ -85,7 +85,7 @@ class WasteController extends Controller
      * @Template("ICupPublicSiteBundle:User:ausr_new_club.html.twig")
      */
     public function addAction() {
-        $this->get('util')->setupController($this);
+        $this->get('util')->setupController();
         $em = $this->getDoctrine()->getManager();
 
         try {
@@ -130,7 +130,7 @@ class WasteController extends Controller
      * @Template("ICupPublicSiteBundle:Club:clubenroll.html.twig")
      */
     public function chgClubAction() {
-        $this->get('util')->setupController($this);
+        $this->get('util')->setupController();
         $em = $this->getDoctrine()->getManager();
 
         try {
@@ -178,7 +178,7 @@ class WasteController extends Controller
      * @Template("ICupPublicSiteBundle:Club:clubenroll.html.twig")
      */
     public function delClubAction() {
-        $this->get('util')->setupController($this);
+        $this->get('util')->setupController();
         $em = $this->getDoctrine()->getManager();
 
         try {

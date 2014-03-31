@@ -9,6 +9,7 @@ use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\Form\FormError;
+use ICup\Bundle\PublicSiteBundle\Exceptions\ValidationException;
 
 class HostTournamentController extends Controller
 {
@@ -21,19 +22,18 @@ class HostTournamentController extends Controller
     public function listAction() {
         /* @var $utilService Util */
         $utilService = $this->get('util');
-        $utilService->setupController($this);
-        $em = $this->getDoctrine()->getManager();
+        $utilService->setupController();
 
         try {
             /* @var $user User */
-            $user = $utilService->getCurrentUser($this);
+            $user = $utilService->getCurrentUser();
             // Validate current user - is it an editor?
-            $utilService->validateHostUser($this, $user);
+            $utilService->validateHostUser($user);
             // Get the host from current user
             $hostid = $user->getPid();
-            $host = $utilService->getHostById($this, $hostid);
+            $host = $this->get('entity')->getHostById($hostid);
             // Find list of tournaments for this host
-            $tournaments = $em->getRepository('ICup\Bundle\PublicSiteBundle\Entity\Doctrine\Tournament')
+            $tournaments = $this->get('entity')->getTournamentRepo()
                                 ->findBy(array('pid' => $hostid), array('name' => 'asc'));
             return array('tournaments' => $tournaments, 'host' => $host);
         } catch (ValidationException $vexc) {
@@ -50,23 +50,19 @@ class HostTournamentController extends Controller
     public function listClubsAction($tournamentid) {
         /* @var $utilService Util */
         $utilService = $this->get('util');
-        $utilService->setupController($this);
+        $utilService->setupController();
         $em = $this->getDoctrine()->getManager();
 
         try {
             /* @var $user User */
-            $user = $utilService->getCurrentUser($this);
+            $user = $utilService->getCurrentUser();
             // Validate current user - is it an editor?
-            $utilService->validateHostUser($this, $user);
+            $utilService->validateHostUser($user);
             // Get the host from current user
             $hostid = $user->getPid();
-            $host = $utilService->getHostById($this, $hostid);
+            $host = $this->get('entity')->getHostById($hostid);
             
-            $tmnt = $em->getRepository('ICup\Bundle\PublicSiteBundle\Entity\Doctrine\Tournament')
-                                ->find($tournamentid);
-            if ($tmnt == null) {
-                throw new ValidationException("badtournament.html.twig");
-            }
+            $tmnt = $this->get('entity')->getTournamentById($tournamentid);
             
             if ($tmnt->getPid() != $hostid) {
                 throw new ValidationException("noteditoradmin.html.twig");
@@ -118,30 +114,20 @@ class HostTournamentController extends Controller
     {
         /* @var $utilService Util */
         $utilService = $this->get('util');
-        $utilService->setupController($this);
+        $utilService->setupController();
         $em = $this->getDoctrine()->getManager();
 
         try {
             /* @var $user User */
-            $user = $utilService->getCurrentUser($this);
+            $user = $utilService->getCurrentUser();
             // Validate current user - is it an editor?
-            $utilService->validateHostUser($this, $user);
+            $utilService->validateHostUser($user);
             // Get the host from current user
             $hostid = $user->getPid();
-            $host = $utilService->getHostById($this, $hostid);
-
+            $host = $this->get('entity')->getHostById($hostid);
             /* @var $category Category */
-            $category = $em->getRepository('ICup\Bundle\PublicSiteBundle\Entity\Doctrine\Category')
-                                ->find($categoryid);
-            if ($category == null) {
-                throw new ValidationException("badcategory.html.twig");
-            }
-
-            $tournament = $em->getRepository('ICup\Bundle\PublicSiteBundle\Entity\Doctrine\Tournament')
-                                ->find($category->getPid());
-            if ($tournament == null) {
-                throw new ValidationException("badtournament.html.twig");
-            }
+            $category = $this->get('entity')->getCategoryById($categoryid);
+            $tournament = $this->get('entity')->getTournamentById($category->getPid());
 
             $qb = $em->createQuery("select g ".
                                    "from ICup\Bundle\PublicSiteBundle\Entity\Doctrine\Group g ".
@@ -152,7 +138,7 @@ class HostTournamentController extends Controller
 
             $groupList = array();
             foreach ($groups as $group) {
-                $teamsList = $this->get('orderTeams')->sortGroup($this, $group->getId());
+                $teamsList = $this->get('orderTeams')->sortGroup($group->getId());
                 $groupList[$group->getName()] = array('group' => $group, 'teams' => $teamsList);
             }
             return array('tournament' => $tournament, 'category' => $category, 'grouplist' => $groupList);

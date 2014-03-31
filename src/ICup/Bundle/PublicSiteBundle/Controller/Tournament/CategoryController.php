@@ -13,8 +13,8 @@ class CategoryController extends Controller
      */
     public function listAction($tournament, $categoryid)
     {
-        $this->get('util')->setupController($this, $tournament);
-        $tournamentId = $this->get('util')->getTournamentId($this);
+        $this->get('util')->setupController($tournament);
+        $tournamentId = $this->get('util')->getTournamentId();
         $em = $this->getDoctrine()->getManager();
 
         $tournament = $em->getRepository('ICup\Bundle\PublicSiteBundle\Entity\Doctrine\Tournament')
@@ -37,7 +37,7 @@ class CategoryController extends Controller
         
         $groupList = array();
         foreach ($groups as $group) {
-            $teamsList = $this->get('orderTeams')->sortGroup($this, $group->getId());
+            $teamsList = $this->get('orderTeams')->sortGroup($group->getId());
             $groupList[$group->getName()] = array('group' => $group, 'teams' => $teamsList);
         }
         return array('tournament' => $tournament, 'category' => $category, 'grouplist' => $groupList);
@@ -49,8 +49,8 @@ class CategoryController extends Controller
      */
     public function listClassAction($tournament, $categoryid)
     {
-        $this->get('util')->setupController($this, $tournament);
-        $tournamentId = $this->get('util')->getTournamentId($this);
+        $this->get('util')->setupController($tournament);
+        $tournamentId = $this->get('util')->getTournamentId();
         $em = $this->getDoctrine()->getManager();
 
         $tournament = $em->getRepository('ICup\Bundle\PublicSiteBundle\Entity\Doctrine\Tournament')
@@ -74,7 +74,7 @@ class CategoryController extends Controller
         
         $groupList = array();
         foreach ($groups as $group) {
-            $teamsList = $this->get('orderTeams')->sortGroup($this, $group->getId());
+            $teamsList = $this->get('orderTeams')->sortGroup($group->getId());
             $groupList[$group->getId()] = array('group' => $group, 'teams' => $teamsList);
         }
         return array('tournament' => $tournament, 'category' => $category, 'grouplist' => $groupList);
@@ -86,8 +86,8 @@ class CategoryController extends Controller
      */
     public function listFinalsAction($tournament, $categoryid)
     {
-        $this->get('util')->setupController($this, $tournament);
-        $tournamentId = $this->get('util')->getTournamentId($this);
+        $this->get('util')->setupController($tournament);
+        $tournamentId = $this->get('util')->getTournamentId();
         $em = $this->getDoctrine()->getManager();
 
         $tournament = $em->getRepository('ICup\Bundle\PublicSiteBundle\Entity\Doctrine\Tournament')
@@ -111,7 +111,7 @@ class CategoryController extends Controller
         
         $champions = array('SA'=>null,'SB'=>null,'SC'=>null,'SD'=>null,'FA'=>null,'FB'=>null,'FC'=>null,'FD'=>null);
         foreach ($groups as $group) {
-            $teamsList = $this->get('orderTeams')->sortGroup($this, $group->getId());
+            $teamsList = $this->get('orderTeams')->sortGroup($group->getId());
             foreach ($teamsList as $team) {
                 $keys = array();
                 switch ($group->getClassification()) {

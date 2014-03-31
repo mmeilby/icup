@@ -26,7 +26,7 @@ class ClubEnrollController extends Controller
      * @Template("ICupPublicSiteBundle:Club:listenrolled.html.twig")
      */
     public function listAction($tournament) {
-        $this->get('util')->setupController($this);
+        $this->get('util')->setupController();
         $em = $this->getDoctrine()->getManager();
         
         $tmnt = $em->getRepository('ICup\Bundle\PublicSiteBundle\Entity\Doctrine\Tournament')->find($tournament);
@@ -69,7 +69,7 @@ class ClubEnrollController extends Controller
      * @Template("ICupPublicSiteBundle:Host:listenrolled.html.twig")
      */
     public function listActionHost($tournament, $club) {
-        $this->get('util')->setupController($this);
+        $this->get('util')->setupController();
         $em = $this->getDoctrine()->getManager();
         
         /* @var $user User */
@@ -101,10 +101,10 @@ class ClubEnrollController extends Controller
      * @Method("GET")
      */
     public function checkAction() {
-        $this->get('util')->setupController($this);
+        $this->get('util')->setupController();
         $em = $this->getDoctrine()->getManager();
         
-        $tmnt = $this->get('util')->getTournament($this);
+        $tmnt = $this->get('util')->getTournament();
         if ($tmnt == null) {
             return $this->render('ICupPublicSiteBundle:Errors:needatournament.html.twig');
         }
@@ -158,7 +158,7 @@ class ClubEnrollController extends Controller
      * @Method("GET")
      */
     public function addEnrollAction($categoryid) {
-        $this->get('util')->setupController($this);
+        $this->get('util')->setupController();
         $em = $this->getDoctrine()->getManager();
 
         /* @var $user User */
@@ -194,7 +194,7 @@ class ClubEnrollController extends Controller
         $tournamentid = $category->getPid();
         
         try {
-            $this->get('util')->addEnrolled($this, $category, $club, $user);
+            $this->get('util')->addEnrolled($category, $club, $user);
             return $this->redirect($this->generateUrl('_club_enroll_list', 
                     array('tournament' => $tournamentid)));
         } catch (ValidationException $vexc) {
@@ -210,7 +210,7 @@ class ClubEnrollController extends Controller
      * @Method("GET")
      */
     public function addEnrollActionHost($categoryid, $clubid) {
-        $this->get('util')->setupController($this);
+        $this->get('util')->setupController();
         $em = $this->getDoctrine()->getManager();
 
         /* @var $user User */
@@ -235,7 +235,7 @@ class ClubEnrollController extends Controller
         $tournamentid = $category->getPid();
         
         try {
-            $this->get('util')->addEnrolled($this, $category, $club, $user);
+            $this->get('util')->addEnrolled($category, $club, $user);
             return $this->redirect($this->generateUrl('_club_enroll_list_admin', 
                     array('tournament' => $tournamentid, 'club' => $clubid)));
         } catch (ValidationException $vexc) {
@@ -251,7 +251,7 @@ class ClubEnrollController extends Controller
      * @Method("GET")
      */
     public function delEnrollAction($categoryid) {
-        $this->get('util')->setupController($this);
+        $this->get('util')->setupController();
         $em = $this->getDoctrine()->getManager();
 
         /* @var $user User */
@@ -287,7 +287,7 @@ class ClubEnrollController extends Controller
         $tournamentid = $category->getPid();
         
         try {
-            $this->get('util')->deleteEnrolled($this, $categoryid, $club->getId());
+            $this->get('util')->deleteEnrolled($categoryid, $club->getId());
             return $this->redirect($this->generateUrl('_club_enroll_list', 
                     array('tournament' => $tournamentid)));
         } catch (ValidationException $vexc) {
@@ -303,7 +303,7 @@ class ClubEnrollController extends Controller
      * @Method("GET")
      */
     public function delEnrollActionHost($categoryid, $clubid) {
-        $this->get('util')->setupController($this);
+        $this->get('util')->setupController();
         $em = $this->getDoctrine()->getManager();
 
         /* @var $user User */
@@ -328,7 +328,7 @@ class ClubEnrollController extends Controller
         $tournamentid = $category->getPid();
         
         try {
-            $this->get('util')->deleteEnrolled($this, $categoryid, $club->getId());
+            $this->get('util')->deleteEnrolled($categoryid, $club->getId());
             return $this->redirect($this->generateUrl('_club_enroll_list_admin', 
                     array('tournament' => $tournamentid, 'club' => $clubid)));
         } catch (ValidationException $vexc) {

@@ -13,8 +13,8 @@ class OverviewController extends Controller
      */
     public function overviewAction($tournament)
     {
-        $this->get('util')->setupController($this, $tournament);
-        $tournament = $this->get('util')->getTournament($this);
+        $this->get('util')->setupController($tournament);
+        $tournament = $this->get('util')->getTournament();
         if ($tournament == null) {
             return $this->redirect($this->generateUrl('_icup'));
         }

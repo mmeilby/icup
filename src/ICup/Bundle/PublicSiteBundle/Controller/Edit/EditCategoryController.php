@@ -20,7 +20,7 @@ class EditCategoryController extends Controller
      * @Template("ICupPublicSiteBundle:Edit:listcategories.html.twig")
      */
     public function listAction($tournamentid) {
-        $this->get('util')->setupController($this);
+        $this->get('util')->setupController();
         $em = $this->getDoctrine()->getManager();
 
         $tournament = $em->getRepository('ICup\Bundle\PublicSiteBundle\Entity\Doctrine\Tournament')->find($tournamentid);
@@ -53,7 +53,7 @@ class EditCategoryController extends Controller
      * @Template("ICupPublicSiteBundle:Edit:editcategory.html.twig")
      */
     public function addAction($tournamentid) {
-        $this->get('util')->setupController($this);
+        $this->get('util')->setupController();
         $em = $this->getDoctrine()->getManager();
         
         $tournament = $em->getRepository('ICup\Bundle\PublicSiteBundle\Entity\Doctrine\Tournament')->find($tournamentid);
@@ -83,7 +83,7 @@ class EditCategoryController extends Controller
      * @Template("ICupPublicSiteBundle:Edit:editcategory.html.twig")
      */
     public function chgAction($categoryid) {
-        $this->get('util')->setupController($this);
+        $this->get('util')->setupController();
         $em = $this->getDoctrine()->getManager();
         
         $category = $em->getRepository('ICup\Bundle\PublicSiteBundle\Entity\Doctrine\Category')->find($categoryid);
@@ -111,7 +111,7 @@ class EditCategoryController extends Controller
      * @Template("ICupPublicSiteBundle:Edit:editcategory.html.twig")
      */
     public function delAction($categoryid) {
-        $this->get('util')->setupController($this);
+        $this->get('util')->setupController();
         $em = $this->getDoctrine()->getManager();
         
         $category = $em->getRepository('ICup\Bundle\PublicSiteBundle\Entity\Doctrine\Category')->find($categoryid);
@@ -154,7 +154,7 @@ class EditCategoryController extends Controller
      * @Template("ICupPublicSiteBundle:Edit:editgroup.html.twig")
      */
     public function addGroupAction($categoryid) {
-        $this->get('util')->setupController($this);
+        $this->get('util')->setupController();
         $em = $this->getDoctrine()->getManager();
         
         $category = $em->getRepository('ICup\Bundle\PublicSiteBundle\Entity\Doctrine\Category')->find($categoryid);
@@ -184,7 +184,7 @@ class EditCategoryController extends Controller
      * @Template("ICupPublicSiteBundle:Edit:editgroup.html.twig")
      */
     public function chgGroupAction($groupid) {
-        $this->get('util')->setupController($this);
+        $this->get('util')->setupController();
         $em = $this->getDoctrine()->getManager();
         
         $group = $em->getRepository('ICup\Bundle\PublicSiteBundle\Entity\Doctrine\Group')->find($groupid);
@@ -218,7 +218,7 @@ class EditCategoryController extends Controller
      * @Template("ICupPublicSiteBundle:Edit:editgroup.html.twig")
      */
     public function delGroupAction($groupid) {
-        $this->get('util')->setupController($this);
+        $this->get('util')->setupController();
         $em = $this->getDoctrine()->getManager();
         
         $group = $em->getRepository('ICup\Bundle\PublicSiteBundle\Entity\Doctrine\Group')->find($groupid);

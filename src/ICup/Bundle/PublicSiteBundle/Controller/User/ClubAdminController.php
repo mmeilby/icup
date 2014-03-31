@@ -31,14 +31,14 @@ class ClubAdminController extends Controller
     {
         /* @var $utilService Util */
         $utilService = $this->get('util');
-        $utilService->setupController($this);
+        $utilService->setupController();
         $em = $this->getDoctrine()->getManager();
 
         try {
             /* @var $user User */
-            $user = $utilService->getUserById($this, $userid);
+            $user = $utilService->getUserById($userid);
             // Validate current user - is it a club administrator?
-            $utilService->validateCurrentUser($this, $user->getCid());
+            $utilService->validateCurrentUser($user->getCid());
             // Disconnect user from club - make user a verified user with no relation
             // However cid should not be cleared in order to restore the connection if in error
             $user->setRole(User::$CLUB);
@@ -63,19 +63,19 @@ class ClubAdminController extends Controller
     {
         /* @var $utilService Util */
         $utilService = $this->get('util');
-        $utilService->setupController($this);
+        $utilService->setupController();
         $em = $this->getDoctrine()->getManager();
 
         try {
             /* @var $user User */
-            $user = $utilService->getUserById($this, $userid);
+            $user = $utilService->getUserById($userid);
             // Validate user - must be a club user prospect
             if (!$user->isRelatedTo($clubid)) {
                 // User is not related to the club
                 throw new ValidationException("notclubadmin.html.twig");
             }
             // Validate current user - is it a club administrator?
-            $utilService->validateCurrentUser($this, $clubid);
+            $utilService->validateCurrentUser($clubid);
             // Connect user to the club - make user an attached user
             $user->setStatus(User::$ATT);
             $em->flush();
@@ -98,14 +98,14 @@ class ClubAdminController extends Controller
     {
         /* @var $utilService Util */
         $utilService = $this->get('util');
-        $utilService->setupController($this);
+        $utilService->setupController();
         $em = $this->getDoctrine()->getManager();
 
         try {
             /* @var $user User */
-            $user = $utilService->getUserById($this, $userid);
+            $user = $utilService->getUserById($userid);
             // Validate current user - is it a club administrator?
-            $utilService->validateCurrentUser($this, $user->getCid());
+            $utilService->validateCurrentUser($user->getCid());
             // Switch user role
             $user->setRole($user->getRole() === User::$CLUB ? User::$CLUB_ADMIN : User::$CLUB);
             $em->flush();
@@ -128,20 +128,20 @@ class ClubAdminController extends Controller
     {
         /* @var $utilService Util */
         $utilService = $this->get('util');
-        $utilService->setupController($this);
+        $utilService->setupController();
         $em = $this->getDoctrine()->getManager();
 
         $clubid = $this->getRequest()->get('clubid', '');
         try {
             /* @var $user User */
-            $user = $utilService->getCurrentUser($this);
+            $user = $utilService->getCurrentUser();
             // Validate user - must be an unrelated user
             if ($user->isRelated()) {
                 // User is related to the club
                 throw new ValidationException("cannotberelated.html.twig");
             }
             // Validate club id
-            $club = $utilService->getClubById($this, $clubid);
+            $club = $utilService->getClubById($clubid);
             // Connect user to the club - make user a prospected user
             $user->setStatus(User::$PRO);
             $user->setCid($club->getId());
@@ -164,12 +164,12 @@ class ClubAdminController extends Controller
     {
         /* @var $utilService Util */
         $utilService = $this->get('util');
-        $utilService->setupController($this);
+        $utilService->setupController();
         $em = $this->getDoctrine()->getManager();
 
         try {
             /* @var $user User */
-            $user = $utilService->getCurrentUser($this);
+            $user = $utilService->getCurrentUser();
             // Validate user - must be a prospect user
             if (!$user->isRelated()) {
                 // User is not related to any club
@@ -197,20 +197,20 @@ class ClubAdminController extends Controller
     {
         /* @var $utilService Util */
         $utilService = $this->get('util');
-        $utilService->setupController($this);
+        $utilService->setupController();
 
         try {
             /* @var $user User */
-            $user = $utilService->getCurrentUser($this);
+            $user = $utilService->getCurrentUser();
             // Validate current user - is it a club user/administrator?
-            $utilService->validateClubUser($this, $user);
+            $utilService->validateClubUser($user);
             // Validate user - must be a non related club user
             if ($user->isRelated()) {
                 // Controller is called by user assigned to a club - switch to my page
                 return $this->redirect($this->generateUrl('_user_my_page'));
             }
             // Get tournament if defined
-            $tournament = $utilService->getTournament($this);
+            $tournament = $utilService->getTournament();
             // Prepare default data for form
             $clubFormData = $this->getClubDefaults();
             $form = $this->makeClubForm($clubFormData, 'sel');
@@ -242,14 +242,14 @@ class ClubAdminController extends Controller
     {
         /* @var $utilService Util */
         $utilService = $this->get('util');
-        $utilService->setupController($this);
+        $utilService->setupController();
         $em = $this->getDoctrine()->getManager();
 
         try {
             /* @var $user User */
-            $user = $utilService->getCurrentUser($this);
+            $user = $utilService->getCurrentUser();
             // Check that user is editor
-            $utilService->validateHostUser($this, $user);
+            $utilService->validateHostUser($user);
             // Get tournament if defined
             /* @var $tournament Tournament */
             $tournament = $em->getRepository('ICup\Bundle\PublicSiteBundle\Entity\Doctrine\Tournament')->find($tournamentid);
@@ -305,7 +305,7 @@ class ClubAdminController extends Controller
     {
         /* @var $utilService Util */
         $utilService = $this->get('util');
-        $utilService->setupController($this);
+        $utilService->setupController();
         $request = $this->getRequest();
         $pattern = $request->get('pattern', '%');
         $countryCode = $request->get('country', '');

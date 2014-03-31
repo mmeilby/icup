@@ -20,7 +20,7 @@ class EditSiteController extends Controller
      * @Template("ICupPublicSiteBundle:Edit:listsites.html.twig")
      */
     public function listAction($tournamentid) {
-        $this->get('util')->setupController($this);
+        $this->get('util')->setupController();
         $em = $this->getDoctrine()->getManager();
 
         $tournament = $em->getRepository('ICup\Bundle\PublicSiteBundle\Entity\Doctrine\Tournament')->find($tournamentid);
@@ -56,7 +56,7 @@ class EditSiteController extends Controller
      * @Template("ICupPublicSiteBundle:Edit:editsite.html.twig")
      */
     public function addAction($tournamentid) {
-        $this->get('util')->setupController($this);
+        $this->get('util')->setupController();
         $em = $this->getDoctrine()->getManager();
         
         $tournament = $em->getRepository('ICup\Bundle\PublicSiteBundle\Entity\Doctrine\Tournament')->find($tournamentid);
@@ -86,7 +86,7 @@ class EditSiteController extends Controller
      * @Template("ICupPublicSiteBundle:Edit:editsite.html.twig")
      */
     public function chgAction($siteid) {
-        $this->get('util')->setupController($this);
+        $this->get('util')->setupController();
         $em = $this->getDoctrine()->getManager();
         
         $site = $em->getRepository('ICup\Bundle\PublicSiteBundle\Entity\Doctrine\Site')->find($siteid);
@@ -114,7 +114,7 @@ class EditSiteController extends Controller
      * @Template("ICupPublicSiteBundle:Edit:editsite.html.twig")
      */
     public function delAction($siteid) {
-        $this->get('util')->setupController($this);
+        $this->get('util')->setupController();
         $em = $this->getDoctrine()->getManager();
         
         $site = $em->getRepository('ICup\Bundle\PublicSiteBundle\Entity\Doctrine\Site')->find($siteid);
@@ -150,7 +150,7 @@ class EditSiteController extends Controller
      * @Template("ICupPublicSiteBundle:Edit:editplayground.html.twig")
      */
     public function addPlaygroundAction($siteid) {
-        $this->get('util')->setupController($this);
+        $this->get('util')->setupController();
         $em = $this->getDoctrine()->getManager();
         
         $site = $em->getRepository('ICup\Bundle\PublicSiteBundle\Entity\Doctrine\Site')->find($siteid);
@@ -180,7 +180,7 @@ class EditSiteController extends Controller
      * @Template("ICupPublicSiteBundle:Edit:editplayground.html.twig")
      */
     public function chgPlaygroundAction($playgroundid) {
-        $this->get('util')->setupController($this);
+        $this->get('util')->setupController();
         $em = $this->getDoctrine()->getManager();
         
         $playground = $em->getRepository('ICup\Bundle\PublicSiteBundle\Entity\Doctrine\Playground')->find($playgroundid);
@@ -214,7 +214,7 @@ class EditSiteController extends Controller
      * @Template("ICupPublicSiteBundle:Edit:editplayground.html.twig")
      */
     public function delPlaygroundAction($playgroundid) {
-        $this->get('util')->setupController($this);
+        $this->get('util')->setupController();
         $em = $this->getDoctrine()->getManager();
         
         $playground = $em->getRepository('ICup\Bundle\PublicSiteBundle\Entity\Doctrine\Playground')->find($playgroundid);

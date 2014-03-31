@@ -19,7 +19,7 @@ class EditUserController extends Controller
      */
     public function listUsersAction($clubid)
     {
-        $this->get('util')->setupController($this);
+        $this->get('util')->setupController();
         $em = $this->getDoctrine()->getManager();
 
         $club = $em->getRepository('ICup\Bundle\PublicSiteBundle\Entity\Doctrine\Club')->find($clubid);
@@ -39,7 +39,7 @@ class EditUserController extends Controller
      * @Template("ICupPublicSiteBundle:Edit:edituser.html.twig")
      */
     public function addAction($clubid) {
-        $this->get('util')->setupController($this);
+        $this->get('util')->setupController();
         $em = $this->getDoctrine()->getManager();
 
         $club = $em->getRepository('ICup\Bundle\PublicSiteBundle\Entity\Doctrine\Club')->find($clubid);
@@ -81,7 +81,7 @@ class EditUserController extends Controller
      * @Template("ICupPublicSiteBundle:Edit:edituser.html.twig")
      */
     public function addHostAction($hostid) {
-        $this->get('util')->setupController($this);
+        $this->get('util')->setupController();
         $em = $this->getDoctrine()->getManager();
 
         $host = $em->getRepository('ICup\Bundle\PublicSiteBundle\Entity\Doctrine\Host')->find($hostid);
@@ -123,7 +123,7 @@ class EditUserController extends Controller
      * @Template("ICupPublicSiteBundle:Edit:edituser.html.twig")
      */
     public function addSystemAction() {
-        $this->get('util')->setupController($this);
+        $this->get('util')->setupController();
         $em = $this->getDoctrine()->getManager();
 
         $user = new User();
@@ -159,7 +159,7 @@ class EditUserController extends Controller
      * @Template("ICupPublicSiteBundle:Edit:edituser.html.twig")
      */
     public function chgAction($userid) {
-        $this->get('util')->setupController($this);
+        $this->get('util')->setupController();
         $em = $this->getDoctrine()->getManager();
 
         /* @var $user User */
@@ -210,7 +210,7 @@ class EditUserController extends Controller
      * @Template("ICupPublicSiteBundle:Edit:edituser.html.twig")
      */
     public function delAction($userid) {
-        $this->get('util')->setupController($this);
+        $this->get('util')->setupController();
         $em = $this->getDoctrine()->getManager();
 
         /* @var $user User */
@@ -289,7 +289,7 @@ class EditUserController extends Controller
      * @Template("ICupPublicSiteBundle:Edit:edituser.html.twig")
      */
     public function passAction($userid) {
-        $this->get('util')->setupController($this);
+        $this->get('util')->setupController();
         $em = $this->getDoctrine()->getManager();
 
         /* @var $user User */

@@ -3,13 +3,24 @@ namespace ICup\Bundle\PublicSiteBundle\Services;
 
 use ICup\Bundle\PublicSiteBundle\Entity\Doctrine\MatchRelation;
 use ICup\Bundle\PublicSiteBundle\Entity\TeamStat;
-use Symfony\Bundle\FrameworkBundle\Controller\Controller;
+use Doctrine\ORM\EntityManager;
+use Monolog\Logger;
 
 class OrderTeams
 {
-    public function sortGroup(Controller $container, $group) {
-        $em = $container->getDoctrine()->getManager();
-        $qb = $em->createQuery("select t.id,t.name,t.division,c.name as club,c.country ".
+    /* @var $em EntityManager */
+    protected $em;
+    /* @var $logger Logger */
+    protected $logger;
+
+    public function __construct(EntityManager $em, Logger $logger)
+    {
+        $this->em = $em;
+        $this->logger = $logger;
+    }
+
+    public function sortGroup($group) {
+        $qb = $this->em->createQuery("select t.id,t.name,t.division,c.name as club,c.country ".
                                "from ICup\Bundle\PublicSiteBundle\Entity\Doctrine\GroupOrder o, ".
                                     "ICup\Bundle\PublicSiteBundle\Entity\Doctrine\Team t, ".
                                     "ICup\Bundle\PublicSiteBundle\Entity\Doctrine\Club c ".
@@ -20,7 +31,7 @@ class OrderTeams
         $qb->setParameter('group', $group);
         $teams = $qb->getResult();
 
-        $qbr = $em->createQuery("select r ".
+        $qbr = $this->em->createQuery("select r ".
                                 "from ICup\Bundle\PublicSiteBundle\Entity\Doctrine\MatchRelation r, ".
                                      "ICup\Bundle\PublicSiteBundle\Entity\Doctrine\Match m ".
                                 "where r.pid=m.id and m.pid=:group ".

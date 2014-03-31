@@ -25,10 +25,10 @@ class AnnonymousController extends Controller
     {
         /* @var $utilService Util */
         $utilService = $this->get('util');
-        $utilService->setupController($this);
+        $utilService->setupController();
         $em = $this->getDoctrine()->getManager();
 
-        $tournament = $utilService->getTournament($this);
+        $tournament = $utilService->getTournament();
 
         /* @var $user User */
         $user = $this->getUser();
@@ -107,7 +107,7 @@ class AnnonymousController extends Controller
             }
             /* @var $utilService Util */
             $utilService = $this->get('util');
-            if ($utilService->generatePassword($this, $user, $user->getPassword()) === FALSE) {
+            if ($utilService->generatePassword($user, $user->getPassword()) === FALSE) {
                 $form->addError(new FormError($this->get('translator')->trans('FORM.USER.BADPASSWORD', array(), 'admin')));
             }
             return $form->isValid();

@@ -4,13 +4,15 @@
 {% block adminbody %}
 <h1>{% trans %}FORM.ADMIN{% endtrans %}</h1>
 <p class="subtitle">{% trans %}FORM.LISTCATEGORIES.TITLE{% endtrans %}</p>
-<p class="subtitle"><a href="{{ path('_edit_host_list') }}">{{ tournament.name }}</a></p>
+<p class="subtitle"><a href="{{ path('_edit_host_list') }}">{{ host.name|upper }}</a></p>
+<p class="subtitle">{{ tournament.name }}</p>
 <table>
     <caption>{% trans %}FORM.LISTCATEGORIES.CAPTION{% endtrans %}</caption>
     <thead>
         <tr>
             <td class="indent"></td>
             <td></td>
+            <td class="operand"></td>
             <td class="operand"></td>
             <td class="operand"></td>
             <td class="operand"></td>
@@ -41,6 +43,11 @@
                 -
                 </a>    
             </td>
+            <td class="operand">
+                <a href="{{ path('_host_list_groups', { 'categoryid': category.id }) }}">
+                A
+                </a>    
+            </td>
         </tr>
         {% if category.id in groups|keys %}
             {% for group in groups[category.id] %}
@@ -62,6 +69,7 @@
                 -
                 </a>    
             </td>
+            <td></td>
         </tr>
             {% endfor %}
         {% else %}
@@ -73,10 +81,9 @@
                 +
                 </a>    
             </td>
-            <td>
-            </td>
-            <td>
-            </td>
+            <td></td>
+            <td></td>
+            <td></td>
         </tr>
         {% endif %}
     {% endfor %}
@@ -92,16 +99,15 @@
                 +
                 </a>    
             </td>
-            <td>
-            </td>
-            <td>
-            </td>
+            <td></td>
+            <td></td>
+            <td></td>
         </tr>
 {% endif %}
     </tboby>
     <tfoot>
         <tr>
-            <td colspan="5"></td>
+            <td colspan="6"></td>
         </tr>
     </tfoot>
 </table>

@@ -175,6 +175,16 @@ DIV.header {
     text-align: left;
     background: #313131;
 }
+DIV.caption {
+    font-weight: bold;
+    text-transform: uppercase;
+    padding-top: 5px;
+    padding-bottom: 5px;
+    background-color: whitesmoke;
+    color: #313131;
+    width: 100%;
+    text-align: center;
+}
 DIV.menu_header {
     vertical-align: bottom;
     padding: 15px 30px 5px 0px;
@@ -305,7 +315,6 @@ DIV.active {
     background-color: #2080f0;
     color: whitesmoke;
 }
-
 /*
  *  Category finals
  */

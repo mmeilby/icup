@@ -194,7 +194,7 @@ class ClubEnrollController extends Controller
         $tournamentid = $category->getPid();
         
         try {
-            $this->get('util')->addEnrolled($category, $club, $user);
+            $this->get('logic')->addEnrolled($category, $club, $user);
             return $this->redirect($this->generateUrl('_club_enroll_list', 
                     array('tournament' => $tournamentid)));
         } catch (ValidationException $vexc) {
@@ -235,7 +235,7 @@ class ClubEnrollController extends Controller
         $tournamentid = $category->getPid();
         
         try {
-            $this->get('util')->addEnrolled($category, $club, $user);
+            $this->get('logic')->addEnrolled($category, $club, $user);
             return $this->redirect($this->generateUrl('_club_enroll_list_admin', 
                     array('tournament' => $tournamentid, 'club' => $clubid)));
         } catch (ValidationException $vexc) {
@@ -287,7 +287,7 @@ class ClubEnrollController extends Controller
         $tournamentid = $category->getPid();
         
         try {
-            $this->get('util')->deleteEnrolled($categoryid, $club->getId());
+            $this->get('logic')->deleteEnrolled($categoryid, $club->getId());
             return $this->redirect($this->generateUrl('_club_enroll_list', 
                     array('tournament' => $tournamentid)));
         } catch (ValidationException $vexc) {
@@ -328,7 +328,7 @@ class ClubEnrollController extends Controller
         $tournamentid = $category->getPid();
         
         try {
-            $this->get('util')->deleteEnrolled($categoryid, $club->getId());
+            $this->get('logic')->deleteEnrolled($categoryid, $club->getId());
             return $this->redirect($this->generateUrl('_club_enroll_list_admin', 
                     array('tournament' => $tournamentid, 'club' => $clubid)));
         } catch (ValidationException $vexc) {

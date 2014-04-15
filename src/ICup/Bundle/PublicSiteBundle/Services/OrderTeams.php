@@ -3,42 +3,25 @@ namespace ICup\Bundle\PublicSiteBundle\Services;
 
 use ICup\Bundle\PublicSiteBundle\Entity\Doctrine\MatchRelation;
 use ICup\Bundle\PublicSiteBundle\Entity\TeamStat;
-use Doctrine\ORM\EntityManager;
+use ICup\Bundle\PublicSiteBundle\Services\Doctrine\BusinessLogic;
 use Monolog\Logger;
 
 class OrderTeams
 {
-    /* @var $em EntityManager */
-    protected $em;
+    /* @var $logic BusinessLogic */
+    protected $logic;
     /* @var $logger Logger */
     protected $logger;
 
-    public function __construct(EntityManager $em, Logger $logger)
+    public function __construct(BusinessLogic $logic, Logger $logger)
     {
-        $this->em = $em;
+        $this->logic = $logic;
         $this->logger = $logger;
     }
 
     public function sortGroup($group) {
-        $qb = $this->em->createQuery("select t.id,t.name,t.division,c.name as club,c.country ".
-                               "from ICup\Bundle\PublicSiteBundle\Entity\Doctrine\GroupOrder o, ".
-                                    "ICup\Bundle\PublicSiteBundle\Entity\Doctrine\Team t, ".
-                                    "ICup\Bundle\PublicSiteBundle\Entity\Doctrine\Club c ".
-                               "where o.pid=:group and ".
-                                     "o.cid=t.id and ".
-                                     "t.pid=c.id ".
-                               "order by o.id");
-        $qb->setParameter('group', $group);
-        $teams = $qb->getResult();
-
-        $qbr = $this->em->createQuery("select r ".
-                                "from ICup\Bundle\PublicSiteBundle\Entity\Doctrine\MatchRelation r, ".
-                                     "ICup\Bundle\PublicSiteBundle\Entity\Doctrine\Match m ".
-                                "where r.pid=m.id and m.pid=:group ".
-                                "order by r.pid");
-        $qbr->setParameter('group', $group);
-        $teamResults = $qbr->getResult();
-
+        $teams = $this->logic->listTeamsByGroup($group);
+        $teamResults = $this->logic->getTeamResultsByGroup($group);
         $teamsList = $this->generateStat($teams, $teamResults, $group);
         return $this->sortTeams($teamsList);
     }
@@ -48,17 +31,17 @@ class OrderTeams
         $teamMap = array();
         foreach ($teams as $team) {
             $stat = new TeamStat();
-            $stat->id = $team['id'];
-            $stat->club = $team['club'];
-            $stat->name = $this->teamName($team['name'], $team['division']);
-            $stat->country = $team['country'];
-            if (key_exists('grp', $team)) {
-                $stat->group = $team['grp'];
+            $stat->id = $team->id;
+            $stat->club = $team->club;
+            $stat->name = $team->name;
+            $stat->country = $team->country;
+            if (defined($team->group)) {
+                $stat->group = $team->group;
             }
             else {
                 $stat->group = $groupId;
             }
-            $teamMap[$team['id']] = $stat;
+            $teamMap[$team->id] = $stat;
         }
 
         $rel = 0;
@@ -147,14 +130,6 @@ class OrderTeams
             }
         }
         return $teamsList;
-    }
-    
-    public function teamName($name, $division) {
-        $teamName = $name;
-        if ($division != '') {
-            $teamName.= ' "'.$division.'"';
-        }
-        return $teamName;
     }
     
     public function isScoreValid(MatchRelation $relA, MatchRelation $relB) {

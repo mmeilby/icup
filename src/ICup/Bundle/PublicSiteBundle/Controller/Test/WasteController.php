@@ -1,5 +1,5 @@
 <?php
-namespace ICup\Bundle\PublicSiteBundle\Controller\User;
+namespace ICup\Bundle\PublicSiteBundle\Controller\Test;
 
 use ICup\Bundle\PublicSiteBundle\Entity\Doctrine\Club;
 use ICup\Bundle\PublicSiteBundle\Entity\Doctrine\User;

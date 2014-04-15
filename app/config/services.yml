@@ -46,7 +46,7 @@ services:
     icup.publicsitebundle.twig_database_loader:
         class: "ICup\\Bundle\\PublicSiteBundle\\Services\\DatabaseTwigLoader"
         arguments:
-          - "@doctrine.orm.entity_manager"
+          - "@entity"
           - "@logger"
 
     icup.publicsitebundle.twig_chain_loader:
@@ -64,16 +64,24 @@ services:
           - "ICup\\Bundle\\PublicSiteBundle\\Entity\\Doctrine\\"
           - "@logger"
 
+    logic:
+        class: "ICup\\Bundle\\PublicSiteBundle\\Services\\Doctrine\\BusinessLogic"
+        arguments:
+          - "@entity"
+          - "@doctrine.orm.entity_manager"
+          - "@logger"
+
     util:
         class: "ICup\\Bundle\\PublicSiteBundle\\Services\\Util"
         arguments:
           - "@service_container"
+          - "@entity"
           - "@doctrine.orm.entity_manager"
           - "@logger"
 
     orderTeams:
         class: "ICup\\Bundle\\PublicSiteBundle\\Services\\OrderTeams"
         arguments:
-          - "@doctrine.orm.entity_manager"
+          - "@logic"
           - "@logger"
         

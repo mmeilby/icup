@@ -1,0 +1,76 @@
+{% extends "ICupPublicSiteBundle:Masters:edit.html.twig" %}
+{% trans_default_domain "admin" %}
+
+{% block adminbody %}
+<h1>{% trans %}FORM.ADMIN{% endtrans %}</h1>
+<p class="subtitle">{% trans %}FORM.LISTGROUPS.TITLE{% endtrans %}</p>
+<p class="subtitle"><a href="{{ path('_edit_host_list') }}">{{ host.name|upper }}</a></p>
+<p class="subtitle"><a href="{{ path('_edit_category_list', {'tournamentid': tournament.id }) }}">{{ tournament.name }}</a></p>
+<h1 class="category">{% trans from 'tournament' %}CATEGORY{% endtrans %} {{ category.name }}</h1>
+<p class="subcategory">
+    {{ [category.gender,category.classification]|join|trans({},'tournament') }}
+    {{ category.classification|trans({},'tournament')|lower }}
+</p>
+<div class="tab active" onclick="location.href='{{ path('_showcategory', {'tournament': tournament.key, 'categoryid': category.id }) }}'">{{ 'PRELIMINARY'|trans({},'tournament')|upper }}</div>
+<div class="tab" onclick="location.href='{{ path('_showcategory_classification', {'tournament': tournament.key, 'categoryid': category.id }) }}'">{{ 'CLASSIFICATION'|trans({},'tournament')|upper }}</div>
+<div class="tab" onclick="location.href='{{ path('_showcategory_finals', {'tournament': tournament.key, 'categoryid': category.id }) }}'">{{ 'FINALS'|trans({},'tournament')|upper }}</div>
+    <div style="float:left;margin-right: 5px;">
+{% for group in grouplist %}
+    {% if selectedgroup.id == group.group.id %}
+        <table>
+            <caption>{% trans from 'tournament' %}GROUP{% endtrans %} {{ group.group.name }}</caption>
+            <thead>
+                <tr>
+                    <td class="flag"></td>
+                    <td class="team">{% trans from 'tournament' %}TEAM{% endtrans %}</td>
+                </tr>
+            </thead>
+            <tboby>
+        {% for team in group.teams %}
+                <tr class="{{ cycle(['even','odd'],loop.index) }}">
+                    <td class="flag"><img src="{{ imagepath }}/flags/{{ flags[team.country] }}" alt="{{ team.country|trans({},'lang') }}" title="{{ team.country|trans({},'lang') }}"></td>
+                    <td class="team"><a href="{{ path('_host_assign_del', { 'teamid': team.id, 'groupid': group.group.id }) }}">{{ team.name }}</a></td>
+                </tr>
+        {% endfor %}
+            </tboby>
+            <tfoot>
+                <tr>
+                    <td colspan="7"></td>
+                </tr>
+            </tfoot>
+        </table>
+    {% else %}
+        <div class="caption">
+            <a href="{{ path('_host_assign_select_group', { 'groupid': group.group.id }) }}">
+            {% trans from 'tournament' %}GROUP{% endtrans %} {{ group.group.name }}
+            </a>
+        </div>
+    {% endif %}
+{% endfor %}
+    </div>
+    <div style="float:left;">
+        <table>
+            <caption>{% trans from 'tournament' %}UNASSIGNED{% endtrans %}</caption>
+            <thead>
+                <tr>
+                    <td class="flag"></td>
+                    <td class="team">{% trans from 'tournament' %}TEAM{% endtrans %}</td>
+                </tr>
+            </thead>
+            <tboby>
+    {% for team in unassigned %}
+                <tr class="{{ cycle(['even','odd'],loop.index) }}">
+                    <td class="flag"><img src="{{ imagepath }}/flags/{{ flags[team.country] }}" alt="{{ team.country|trans({},'lang') }}" title="{{ team.country|trans({},'lang') }}"></td>
+                    <td class="team"><a href="{{ path('_host_assign_add', { 'teamid': team.id, 'groupid': selectedgroup.id }) }}">{{ team.name }}</a></td>
+                </tr>
+    {% endfor %}
+            </tboby>
+            <tfoot>
+                <tr>
+                    <td colspan="7"></td>
+                </tr>
+            </tfoot>
+        </table>
+    </div>
+    <div style="clear:both;"></div>
+{% endblock %}

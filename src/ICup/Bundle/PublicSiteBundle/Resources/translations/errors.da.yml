@@ -36,13 +36,24 @@ ERROR:
   NOTEDITORADMIN:
     TITLE: Du er ikke turneringsansvarlig for denne turnering
     SOLUTION: For at udføre den funktion du har valgt skal du være turneringsansvarlig for turneringen. Du har ikke mulighed for at administrere denne turnering.
+  NEEDTOBEEDITOR:
+    TITLE: Du er ikke redaktør for en turnering
+    SOLUTION: For at udføre den funktion du har valgt skal du være redaktør for en turnering.
   NEEDTOBERELATED:
     TITLE: Du er ikke knyttet til en klub
-    SOLUTION: For at udføre den funktion du har valgt skal du være knyttet til en klub. Du har ikke mulighed for at tilmelde hold uden denne relation.
+    SOLUTION: For at udføre den funktion du har valgt skal du være knyttet til en klub.
   CANNOTBERELATED:
     TITLE: Du må ikke være knyttet til en klub
     SOLUTION: For at udføre den funktion du har valgt må du ikke være knyttet til en klub.
   NOLOCALADMIN:
     TITLE: Du kan ikke bruge lokal administrator
     SOLUTION: For at udføre den funktion du har valgt kan du ikke være lokal administrator. Udvid dine rettigheder som lokal administrator.
-      
+  TEAMASSIGNED:
+    TITLE: Du kan ikke fordele holdet til gruppen
+    SOLUTION: Holdet er allerede fordelt til en anden gruppe i puljen og kan ikke fordeles til denne gruppe.
+  TEAMISNOTASSIGNED:
+    TITLE: Du kan ikke fjerne holdet fra gruppen
+    SOLUTION: Holdet er ikke fordelt til denne gruppe i puljen.
+  TEAMISACTIVE:
+    TITLE: Du kan ikke fjerne holdet fra gruppen
+    SOLUTION: Holdet har planlagte/spillede kampe i denne gruppe. Disse kampe skal aflyses før holdet kan fjernes fra gruppen.

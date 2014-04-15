@@ -28,6 +28,9 @@ class EditCategoryController extends Controller
             $error = "FORM.ERROR.BADTOURNAMENT";
         }
         
+        // TODO: fix all entity calls and check for errors
+        $host = $this->get('entity')->getHostById($tournament->getPid());
+      
         $categories = $em->getRepository('ICup\Bundle\PublicSiteBundle\Entity\Doctrine\Category')
                             ->findBy(array('pid' => $tournamentid));
         
@@ -44,7 +47,7 @@ class EditCategoryController extends Controller
             $groupList[$group->getPid()][] = $group;
         }
         
-        return array('tournament' => $tournament, 'groups' => $groupList, 'categories' => $categories, 'error' => isset($error) ? $error : null);
+        return array('host' => $host, 'tournament' => $tournament, 'groups' => $groupList, 'categories' => $categories, 'error' => isset($error) ? $error : null);
     }
 
     /**

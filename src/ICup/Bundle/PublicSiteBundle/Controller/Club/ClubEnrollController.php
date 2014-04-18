@@ -3,12 +3,9 @@ namespace ICup\Bundle\PublicSiteBundle\Controller\Club;
 
 use ICup\Bundle\PublicSiteBundle\Entity\Doctrine\Category;
 use ICup\Bundle\PublicSiteBundle\Entity\Doctrine\Club;
-use ICup\Bundle\PublicSiteBundle\Entity\Doctrine\Enrollment;
-use ICup\Bundle\PublicSiteBundle\Entity\Doctrine\Team;
 use ICup\Bundle\PublicSiteBundle\Entity\Doctrine\Tournament;
 use ICup\Bundle\PublicSiteBundle\Entity\Doctrine\User;
 use ICup\Bundle\PublicSiteBundle\Exceptions\ValidationException;
-use RuntimeException;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
@@ -20,79 +17,63 @@ use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 class ClubEnrollController extends Controller
 {
     /**
-     * List the current enrollments for a club
+     * List the enrollments for the club of the current user in a tournament
      * @Route("/club/enroll/list/{tournament}", name="_club_enroll_list")
      * @Method("GET")
      * @Template("ICupPublicSiteBundle:Club:listenrolled.html.twig")
      */
     public function listAction($tournament) {
-        $this->get('util')->setupController();
-        $em = $this->getDoctrine()->getManager();
-        
-        $tmnt = $em->getRepository('ICup\Bundle\PublicSiteBundle\Entity\Doctrine\Tournament')->find($tournament);
-        if ($tmnt == null) {
-            return $this->render('ICupPublicSiteBundle:Errors:needatournament.html.twig');
-        }
+        /* @var $utilService Util */
+        $utilService = $this->get('util');
+        $utilService->setupController();
 
-        /* @var $user User */
-        $user = $this->getUser();
-        if ($user == null) {
-            throw new RuntimeException("This controller is not available for anonymous users");
+        try {
+            /* @var $user User */
+            $user = $utilService->getCurrentUser();
+            if ($utilService->isAdmin($user)) {
+                // Controller is called by admin - switch to select club view
+                return $this->redirect($this->generateUrl('_edit_club_list'));
+            }
+            if (!$user->isClub()) {
+                // Controller is called by editor - switch to select club view
+                return $this->redirect($this->generateUrl('_edit_club_list'));
+            }
+            if (!$user->isRelated()) {
+                // User is not related to a club yet - explain the problem...
+                throw new ValidationException("needtoberelated.html.twig");
+            }
+            $tmnt = $this->get('entity')->getTournamentById($tournament);
+            $club = $this->get('entity')->getClubById($user->getCid());
+            return $this->listEnrolled($tmnt, $club);
+        } catch (ValidationException $vexc) {
+            return $this->render('ICupPublicSiteBundle:Errors:' . $vexc->getMessage(), array('redirect' => $this->generateUrl('_host_list_clubs', array('tournamentid' => $tournamentid))));
         }
-        if (!is_a($user, 'ICup\Bundle\PublicSiteBundle\Entity\Doctrine\User')) {
-            // Controller is called by default admin - switch to select club view
-            return $this->redirect($this->generateUrl('_edit_club_list'));
-        }
-        if (!$user->isClub()) {
-            // Controller is called by editor or admin - switch to select club view
-            return $this->redirect($this->generateUrl('_edit_club_list'));
-        }
-        if (!$user->isRelated()) {
-            // User is not related to a club yet - explain the problem...
-            return $this->render('ICupPublicSiteBundle:Errors:needtoberelated.html.twig');
-        }
-        /* @var $club Club */
-        $club = $em->getRepository('ICup\Bundle\PublicSiteBundle\Entity\Doctrine\Club')->find($user->getCid());
-        if ($club == null) {
-            // User is not related to a valid club - explain the problem...
-            $this->get('logger')->addError("User CID is invalid: " . $user->dump());
-            return $this->render('ICupPublicSiteBundle:Errors:needtoberelated.html.twig');
-        }
-        
-        return $this->listEnrolled($tmnt, $club);
     }
 
     /**
-     * List the current enrollments for a club explicit
-     * @Route("/host/enroll/list/{tournament}/{club}", name="_club_enroll_list_admin")
+     * List the current enrollments for a specific club in a tournament
+     * @Route("/edit/enroll/list/{tournament}/{club}", name="_club_enroll_list_admin")
      * @Method("GET")
      * @Template("ICupPublicSiteBundle:Host:listenrolled.html.twig")
      */
     public function listActionHost($tournament, $club) {
-        $this->get('util')->setupController();
-        $em = $this->getDoctrine()->getManager();
-        
-        /* @var $user User */
-        $user = $this->getUser();
-        if ($user == null) {
-            throw new RuntimeException("This controller is not available for anonymous users");
-        }
-        if ($user->getRole() !== User::$EDITOR_ADMIN) {
-            return $this->render('ICupPublicSiteBundle:Errors:noteditoradmin.html.twig');
-        }
-        /* @var $tmnt Tournament */
-        $tmnt = $em->getRepository('ICup\Bundle\PublicSiteBundle\Entity\Doctrine\Tournament')->find($tournament);
-        if ($tmnt == null) {
-            return $this->render('ICupPublicSiteBundle:Errors:badtournament.html.twig');
-        }
+        /* @var $utilService Util */
+        $utilService = $this->get('util');
+        $utilService->setupController();
 
-        /* @var $clb Club */
-        $clb = $em->getRepository('ICup\Bundle\PublicSiteBundle\Entity\Doctrine\Club')->find($club);
-        if ($clb == null) {
-            return $this->render('ICupPublicSiteBundle:Errors:badclub.html.twig');
+        try {
+            /* @var $user User */
+            $user = $utilService->getCurrentUser();
+            /* @var $tournament Tournament */
+            $tmnt = $this->get('entity')->getTournamentById($tournament);
+            // Check that user is editor
+            $utilService->validateEditorUser($user, $tmnt->getPid());
+
+            $clb = $this->get('entity')->getClubById($club);
+            return $this->listEnrolled($tmnt, $clb);
+        } catch (ValidationException $vexc) {
+            return $this->render('ICupPublicSiteBundle:Errors:' . $vexc->getMessage(), array('redirect' => $this->generateUrl('_host_list_clubs', array('tournamentid' => $tournamentid))));
         }
-        
-        return $this->listEnrolled($tmnt, $clb);
     }
 
     /**
@@ -102,8 +83,6 @@ class ClubEnrollController extends Controller
      */
     public function checkAction() {
         $this->get('util')->setupController();
-        $em = $this->getDoctrine()->getManager();
-        
         $tmnt = $this->get('util')->getTournament();
         if ($tmnt == null) {
             return $this->render('ICupPublicSiteBundle:Errors:needatournament.html.twig');
@@ -112,32 +91,18 @@ class ClubEnrollController extends Controller
     }
     
     private function listEnrolled(Tournament $tmnt, Club $club) {
-        $em = $this->getDoctrine()->getManager();
-
-        $host = $em->getRepository('ICup\Bundle\PublicSiteBundle\Entity\Doctrine\Host')
-                            ->find($tmnt->getPid());
-        
-        /* @var $category Category */
-        $categories = $em->getRepository('ICup\Bundle\PublicSiteBundle\Entity\Doctrine\Category')
-                            ->findBy(array('pid' => $tmnt->getId()), array('classification' => 'asc', 'gender' => 'asc'));
-        
-        $qb = $em->createQuery("select e ".
-                               "from ICup\Bundle\PublicSiteBundle\Entity\Doctrine\Enrollment e, ".
-                                    "ICup\Bundle\PublicSiteBundle\Entity\Doctrine\Category c, ".
-                                    "ICup\Bundle\PublicSiteBundle\Entity\Doctrine\Team t ".
-                               "where c.pid=:tournament and e.pid=c.id and e.cid=t.id and t.pid=:club ".
-                               "order by e.pid");
-        $qb->setParameter('tournament', $tmnt->getId());
-        $qb->setParameter('club', $club->getId());
-        $enrolled = $qb->getResult();
+        $host = $this->get('entity')->getHostById($tmnt->getPid());
+        $categories = $this->get('logic')->listCategories($tmnt->getId());
+        $enrolled = $this->get('logic')->listEnrolledByClub($tmnt->getId(), $club->getId());
 
         $enrolledList = array();
         foreach ($enrolled as $enroll) {
             $enrolledList[$enroll->getPid()][] = $enroll;
         }
-        
+
         $classMap = array();
         $categoryMap = array();
+        /* @var $category Category */
         foreach ($categories as $category) {
             $classMap[$category->getClassification()] = $category->getClassification();
             $cls = $category->getGender() . $category->getClassification();
@@ -158,42 +123,29 @@ class ClubEnrollController extends Controller
      * @Method("GET")
      */
     public function addEnrollAction($categoryid) {
-        $this->get('util')->setupController();
-        $em = $this->getDoctrine()->getManager();
+        /* @var $utilService Util */
+        $utilService = $this->get('util');
+        $utilService->setupController();
 
-        /* @var $user User */
-        $user = $this->getUser();
-        if ($user == null) {
-            throw new RuntimeException("This controller is not available for anonymous users");
-        }
-        if (!is_a($user, 'ICup\Bundle\PublicSiteBundle\Entity\Doctrine\User')) {
-            // Controller is called by default admin - switch to select club view
-            return $this->redirect($this->generateUrl('_edit_club_list'));
-        }
-        if (!$user->isClub()) {
-            // Controller is called by editor or admin - switch to select club view
-            return $this->redirect($this->generateUrl('_edit_club_list'));
-        }
-        if (!$user->isRelated()) {
-            // User is not related to a club yet - explain the problem...
-            return $this->render('ICupPublicSiteBundle:Errors:needtoberelated.html.twig');
-        }
-        /* @var $club Club */
-        $club = $em->getRepository('ICup\Bundle\PublicSiteBundle\Entity\Doctrine\Club')->find($user->getCid());
-        if ($club == null) {
-            // User is not related to a valid club - explain the problem...
-            $this->get('logger')->addError("User CID is invalid: " . $user->dump());
-            return $this->render('ICupPublicSiteBundle:Errors:needtoberelated.html.twig');
-        }
-        
-        /* @var $category Category */
-        $category = $em->getRepository('ICup\Bundle\PublicSiteBundle\Entity\Doctrine\Category')->find($categoryid);
-        if ($category == null) {
-            return $this->render('ICupPublicSiteBundle:Errors:badcategory.html.twig');
-        }
-        $tournamentid = $category->getPid();
-        
         try {
+            /* @var $user User */
+            $user = $utilService->getCurrentUser();
+            if ($utilService->isAdmin($user)) {
+                // Controller is called by admin - switch to select club view
+                return $this->redirect($this->generateUrl('_edit_club_list'));
+            }
+            if (!$user->isClub()) {
+                // Controller is called by editor - switch to select club view
+                return $this->redirect($this->generateUrl('_edit_club_list'));
+            }
+            if (!$user->isRelated()) {
+                // User is not related to a club yet - explain the problem...
+                throw new ValidationException("needtoberelated.html.twig");
+            }
+            /* @var $category Category */
+            $category = $this->get('entity')->getCategoryById($categoryid);
+            $tournamentid = $category->getPid();
+            $club = $this->get('entity')->getClubById($user->getCid());
             $this->get('logic')->addEnrolled($category, $club, $user);
             return $this->redirect($this->generateUrl('_club_enroll_list', 
                     array('tournament' => $tournamentid)));
@@ -201,40 +153,29 @@ class ClubEnrollController extends Controller
             return $this->render('ICupPublicSiteBundle:Errors:' . $vexc->getMessage(), 
                     array('redirect' => $this->generateUrl('_club_enroll_list', 
                             array('tournament' => $tournamentid))));
-        } 
+        }
     }
     
     /**
      * Enrolls a club in a tournament by adding new team to category
-     * @Route("/host/enroll/add/{categoryid}/{clubid}", name="_club_enroll_add_admin")
+     * @Route("/edit/enroll/add/{categoryid}/{clubid}", name="_club_enroll_add_admin")
      * @Method("GET")
      */
     public function addEnrollActionHost($categoryid, $clubid) {
-        $this->get('util')->setupController();
-        $em = $this->getDoctrine()->getManager();
+        /* @var $utilService Util */
+        $utilService = $this->get('util');
+        $utilService->setupController();
 
-        /* @var $user User */
-        $user = $this->getUser();
-        if ($user == null) {
-            throw new RuntimeException("This controller is not available for anonymous users");
-        }
-        if ($user->getRole() !== User::$EDITOR_ADMIN) {
-            return $this->render('ICupPublicSiteBundle:Errors:noteditoradmin.html.twig');
-        }
-        /* @var $club Club */
-        $club = $em->getRepository('ICup\Bundle\PublicSiteBundle\Entity\Doctrine\Club')->find($clubid);
-        if ($club == null) {
-            return $this->render('ICupPublicSiteBundle:Errors:badclub.html.twig');
-        }
-        
-        /* @var $category Category */
-        $category = $em->getRepository('ICup\Bundle\PublicSiteBundle\Entity\Doctrine\Category')->find($categoryid);
-        if ($category == null) {
-            return $this->render('ICupPublicSiteBundle:Errors:badcategory.html.twig');
-        }
-        $tournamentid = $category->getPid();
-        
         try {
+            /* @var $user User */
+            $user = $utilService->getCurrentUser();
+            /* @var $club Club */
+            $club = $this->get('entity')->getClubById($clubid);
+            /* @var $category Category */
+            $category = $this->get('entity')->getCategoryById($categoryid);
+            $tournamentid = $category->getPid();
+            // Check that user is editor
+            $utilService->validateEditorUser($user, $tournamentid);
             $this->get('logic')->addEnrolled($category, $club, $user);
             return $this->redirect($this->generateUrl('_club_enroll_list_admin', 
                     array('tournament' => $tournamentid, 'club' => $clubid)));
@@ -242,7 +183,7 @@ class ClubEnrollController extends Controller
             return $this->render('ICupPublicSiteBundle:Errors:' . $vexc->getMessage(), 
                     array('redirect' => $this->generateUrl('_club_enroll_list_admin', 
                             array('tournament' => $tournamentid, 'club' => $clubid))));
-        } 
+        }
     }
     
     /**
@@ -251,42 +192,29 @@ class ClubEnrollController extends Controller
      * @Method("GET")
      */
     public function delEnrollAction($categoryid) {
-        $this->get('util')->setupController();
-        $em = $this->getDoctrine()->getManager();
+        /* @var $utilService Util */
+        $utilService = $this->get('util');
+        $utilService->setupController();
 
-        /* @var $user User */
-        $user = $this->getUser();
-        if ($user == null) {
-            throw new RuntimeException("This controller is not available for anonymous users");
-        }
-        if (!is_a($user, 'ICup\Bundle\PublicSiteBundle\Entity\Doctrine\User')) {
-            // Controller is called by default admin - switch to select club view
-            return $this->redirect($this->generateUrl('_edit_club_list'));
-        }
-        if (!$user->isClub()) {
-            // Controller is called by editor or admin - switch to select club view
-            return $this->redirect($this->generateUrl('_edit_club_list'));
-        }
-        if (!$user->isRelated()) {
-            // User is not related to a club yet - explain the problem...
-            return $this->render('ICupPublicSiteBundle:Errors:needtoberelated.html.twig');
-        }
-        /* @var $club Club */
-        $club = $em->getRepository('ICup\Bundle\PublicSiteBundle\Entity\Doctrine\Club')->find($user->getCid());
-        if ($club == null) {
-            // User is not related to a valid club - explain the problem...
-            $this->get('logger')->addError("User CID is invalid: " . $user->dump());
-            return $this->render('ICupPublicSiteBundle:Errors:needtoberelated.html.twig');
-        }
-        
-        /* @var $category Category */
-        $category = $em->getRepository('ICup\Bundle\PublicSiteBundle\Entity\Doctrine\Category')->find($categoryid);
-        if ($category == null) {
-            return $this->render('ICupPublicSiteBundle:Errors:badcategory.html.twig');
-        }
-        $tournamentid = $category->getPid();
-        
         try {
+            /* @var $user User */
+            $user = $utilService->getCurrentUser();
+            if ($utilService->isAdmin($user)) {
+                // Controller is called by admin - switch to select club view
+                return $this->redirect($this->generateUrl('_edit_club_list'));
+            }
+            if (!$user->isClub()) {
+                // Controller is called by editor - switch to select club view
+                return $this->redirect($this->generateUrl('_edit_club_list'));
+            }
+            if (!$user->isRelated()) {
+                // User is not related to a club yet - explain the problem...
+                throw new ValidationException("needtoberelated.html.twig");
+            }
+            /* @var $category Category */
+            $category = $this->get('entity')->getCategoryById($categoryid);
+            $tournamentid = $category->getPid();
+            $club = $this->get('entity')->getClubById($user->getCid());
             $this->get('logic')->deleteEnrolled($categoryid, $club->getId());
             return $this->redirect($this->generateUrl('_club_enroll_list', 
                     array('tournament' => $tournamentid)));
@@ -294,40 +222,29 @@ class ClubEnrollController extends Controller
             return $this->render('ICupPublicSiteBundle:Errors:' . $vexc->getMessage(), 
                     array('redirect' => $this->generateUrl('_club_enroll_list', 
                             array('tournament' => $tournamentid))));
-        } 
+        }
     }
     
     /**
      * Remove last team from category - including all related match results
-     * @Route("/host/enroll/del/{categoryid}/{clubid}", name="_club_enroll_del_admin")
+     * @Route("/edit/enroll/del/{categoryid}/{clubid}", name="_club_enroll_del_admin")
      * @Method("GET")
      */
     public function delEnrollActionHost($categoryid, $clubid) {
-        $this->get('util')->setupController();
-        $em = $this->getDoctrine()->getManager();
+        /* @var $utilService Util */
+        $utilService = $this->get('util');
+        $utilService->setupController();
 
-        /* @var $user User */
-        $user = $this->getUser();
-        if ($user == null) {
-            throw new RuntimeException("This controller is not available for anonymous users");
-        }
-        if ($user->getRole() !== User::$EDITOR_ADMIN) {
-            return $this->render('ICupPublicSiteBundle:Errors:noteditoradmin.html.twig');
-        }
-        /* @var $club Club */
-        $club = $em->getRepository('ICup\Bundle\PublicSiteBundle\Entity\Doctrine\Club')->find($clubid);
-        if ($club == null) {
-            return $this->render('ICupPublicSiteBundle:Errors:badclub.html.twig');
-        }
-        
-        /* @var $category Category */
-        $category = $em->getRepository('ICup\Bundle\PublicSiteBundle\Entity\Doctrine\Category')->find($categoryid);
-        if ($category == null) {
-            return $this->render('ICupPublicSiteBundle:Errors:badcategory.html.twig');
-        }
-        $tournamentid = $category->getPid();
-        
         try {
+            /* @var $user User */
+            $user = $utilService->getCurrentUser();
+            /* @var $club Club */
+            $club = $this->get('entity')->getClubById($clubid);
+            /* @var $category Category */
+            $category = $this->get('entity')->getCategoryById($categoryid);
+            $tournamentid = $category->getPid();
+            // Check that user is editor
+            $utilService->validateEditorUser($user, $tournamentid);
             $this->get('logic')->deleteEnrolled($categoryid, $club->getId());
             return $this->redirect($this->generateUrl('_club_enroll_list_admin', 
                     array('tournament' => $tournamentid, 'club' => $clubid)));
@@ -335,6 +252,6 @@ class ClubEnrollController extends Controller
             return $this->render('ICupPublicSiteBundle:Errors:' . $vexc->getMessage(), 
                     array('redirect' => $this->generateUrl('_club_enroll_list_admin', 
                             array('tournament' => $tournamentid, 'club' => $clubid))));
-        } 
-    }
+        }
+     }
 }

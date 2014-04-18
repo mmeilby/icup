@@ -1,5 +1,5 @@
 <?php
-namespace ICup\Bundle\PublicSiteBundle\Controller\Edit;
+namespace ICup\Bundle\PublicSiteBundle\Controller\Host;
 
 use ICup\Bundle\PublicSiteBundle\Entity\Doctrine\User;
 use ICup\Bundle\PublicSiteBundle\Entity\Password;
@@ -7,22 +7,23 @@ use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
+use JMS\SecurityExtraBundle\Annotation\Secure;
 use Symfony\Component\Form\FormError;
+use ICup\Bundle\PublicSiteBundle\Exceptions\ValidationException;
 
-class EditEditorController extends Controller
+class EditorController extends Controller
 {
     /**
      * List the editors related to logged in editor admin
      * @Route("/edit/user/list/host", name="_edit_editors_list")
      * @Method("GET")
-     * @Template("ICupPublicSiteBundle:Edit:listeditors.html.twig")
+     * @Template("ICupPublicSiteBundle:Host:listeditors.html.twig")
      */
     public function listEditorsAction()
     {
         /* @var $utilService Util */
         $utilService = $this->get('util');
         $utilService->setupController();
-        $em = $this->getDoctrine()->getManager();
 
         try {
             /* @var $user User */
@@ -32,8 +33,7 @@ class EditEditorController extends Controller
             // Get the host from current user
             $hostid = $user->getPid();
             $host = $this->get('entity')->getHostById($hostid);
-            $users = $em->getRepository('ICup\Bundle\PublicSiteBundle\Entity\Doctrine\User')
-                    ->findBy(array('pid' => $hostid));
+            $users = $this->get('entity')->getUserRepo()->findBy(array('pid' => $hostid));
 
             return array('host' => $host, 'users' => $users);
         } catch (ValidationException $vexc) {
@@ -43,19 +43,24 @@ class EditEditorController extends Controller
     
     /**
      * List the editors related to a host
-     * @Route("/edit/user/list/host/{hostid}", name="_edit_editor_list")
+     * @Route("/admin/user/list/host/{hostid}", name="_edit_editor_list")
      * @Method("GET")
-     * @Template("ICupPublicSiteBundle:Edit:listeditors.html.twig")
+     * @Template("ICupPublicSiteBundle:Host:listeditors.html.twig")
      */
     public function listUsersAction($hostid)
     {
-        $this->get('util')->setupController();
-        $em = $this->getDoctrine()->getManager();
+        /* @var $utilService Util */
+        $utilService = $this->get('util');
+        $utilService->setupController();
 
         try {
+            /* @var $user User */
+            $user = $utilService->getCurrentUser();
+            if (!$utilService->isAdminUser($user)) {
+                throw new ValidationException("mustbeadmin.html.twig");
+            }
             $host = $this->get('entity')->getHostById($hostid);
-            $users = $em->getRepository('ICup\Bundle\PublicSiteBundle\Entity\Doctrine\User')
-                    ->findBy(array('pid' => $hostid));
+            $users = $this->get('entity')->getUserRepo()->findBy(array('pid' => $hostid));
 
             return array('host' => $host, 'users' => $users);
         } catch (ValidationException $vexc) {

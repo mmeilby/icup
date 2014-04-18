@@ -1,0 +1,134 @@
+<?php
+namespace ICup\Bundle\PublicSiteBundle\Controller\Admin\Tournament;
+
+use ICup\Bundle\PublicSiteBundle\Entity\Doctrine\Group;
+use ICup\Bundle\PublicSiteBundle\Entity\Doctrine\User;
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
+use Symfony\Bundle\FrameworkBundle\Controller\Controller;
+
+/**
+ * List the categories and groups available
+ */
+class GroupController extends Controller
+{
+    /**
+     * Add new group to a category
+     * @Route("/edit/group/add/{categoryid}", name="_edit_group_add")
+     * @Template("ICupPublicSiteBundle:Host:editgroup.html.twig")
+     */
+    public function addGroupAction($categoryid) {
+        /* @var $utilService Util */
+        $utilService = $this->get('util');
+        $utilService->setupController();
+        $em = $this->getDoctrine()->getManager();
+
+        /* @var $user User */
+        $user = $utilService->getCurrentUser();
+        $category = $this->get('entity')->getCategoryById($categoryid);
+        $tournament = $this->get('entity')->getTournamentById($category->getPid());
+        $utilService->validateEditorAdminUser($user, $tournament->getPid());
+
+        $group = new Group();
+        $group->setPid($category->getId());
+        $form = $this->makeGroupForm($group, 'add');
+        $request = $this->getRequest();
+        $form->handleRequest($request);
+        if ($form->get('cancel')->isClicked()) {
+            return $this->redirect($this->getReturnPath($user, $tournament->getId()));
+        }
+        if ($form->isValid()) {
+            $em->persist($group);
+            $em->flush();
+            return $this->redirect($this->getReturnPath($user, $tournament->getId()));
+        }
+        return array('form' => $form->createView(), 'action' => 'add', 'group' => $group, 'error' => null);
+    }
+    
+    /**
+     * Change information of an existing group
+     * @Route("/edit/group/chg/{groupid}", name="_edit_group_chg")
+     * @Template("ICupPublicSiteBundle:Host:editgroup.html.twig")
+     */
+    public function chgGroupAction($groupid) {
+        /* @var $utilService Util */
+        $utilService = $this->get('util');
+        $utilService->setupController();
+        $em = $this->getDoctrine()->getManager();
+
+        /* @var $user User */
+        $user = $utilService->getCurrentUser();
+        $group = $this->get('entity')->getGroupById($groupid);
+        $category = $this->get('entity')->getCategoryById($group->getPid());
+        $tournament = $this->get('entity')->getTournamentById($category->getPid());
+        $utilService->validateEditorAdminUser($user, $tournament->getPid());
+
+        $form = $this->makeGroupForm($group, 'chg');
+        $request = $this->getRequest();
+        $form->handleRequest($request);
+        if ($form->get('cancel')->isClicked()) {
+            return $this->redirect($this->getReturnPath($user, $tournament->getId()));
+        }
+        if ($form->isValid()) {
+            $em->persist($group);
+            $em->flush();
+            return $this->redirect($this->getReturnPath($user, $tournament->getId()));
+        }
+        return array('form' => $form->createView(), 'action' => 'chg', 'group' => $group, 'error' => null);
+    }
+    
+    /**
+     * Remove group from the register
+     * @Route("/edit/group/del/{groupid}", name="_edit_group_del")
+     * @Template("ICupPublicSiteBundle:Host:editgroup.html.twig")
+     */
+    public function delGroupAction($groupid) {
+        /* @var $utilService Util */
+        $utilService = $this->get('util');
+        $utilService->setupController();
+        $em = $this->getDoctrine()->getManager();
+
+        /* @var $user User */
+        $user = $utilService->getCurrentUser();
+        $group = $this->get('entity')->getGroupById($groupid);
+        $category = $this->get('entity')->getCategoryById($group->getPid());
+        $tournament = $this->get('entity')->getTournamentById($category->getPid());
+        $utilService->validateEditorAdminUser($user, $tournament->getPid());
+
+        $form = $this->makeGroupForm($group, 'del');
+        $request = $this->getRequest();
+        $form->handleRequest($request);
+        if ($form->get('cancel')->isClicked()) {
+            return $this->redirect($this->getReturnPath($user, $tournament->getId()));
+        }
+        if ($form->isValid()) {
+            $em->remove($group);
+            $em->flush();
+            return $this->redirect($this->getReturnPath($user, $tournament->getId()));
+        }
+        return array('form' => $form->createView(), 'action' => 'del', 'group' => $group, 'error' => null);
+    }
+    
+    private function makeGroupForm($group, $action) {
+        $classifications = array();
+        foreach (array(0,1,6,7,8,9,10) as $id) {
+            $classifications[$id] = 'FORM.GROUP.CLASS.'.$id;
+        }
+        $formDef = $this->createFormBuilder($group);
+        $formDef->add('name', 'text', array('label' => 'FORM.GROUP.NAME', 'required' => false, 'disabled' => $action == 'del', 'translation_domain' => 'admin'));
+        $formDef->add('playingtime', 'text', array('label' => 'FORM.GROUP.TIME', 'required' => false, 'disabled' => $action == 'del', 'translation_domain' => 'admin'));
+        $formDef->add('classification', 'choice', array('label' => 'FORM.GROUP.CLASSIFICATION', 'required' => false, 'choices' => $classifications, 'empty_value' => 'FORM.GROUP.DEFAULT', 'disabled' => $action == 'del', 'translation_domain' => 'admin'));
+        $formDef->add('cancel', 'submit', array('label' => 'FORM.GROUP.CANCEL.'.strtoupper($action), 'translation_domain' => 'admin'));
+        $formDef->add('save', 'submit', array('label' => 'FORM.GROUP.SUBMIT.'.strtoupper($action), 'translation_domain' => 'admin'));
+        return $formDef->getForm();
+    }
+    
+    private function getReturnPath(User $user, $tournamentid) {
+        if ($this->get('util')->isAdminUser($user)) {
+            return $this->generateUrl('_edit_category_list', array('tournamentid' => $tournamentid));
+        }
+        else {
+            return $this->generateUrl('_edit_category_list', array('tournamentid' => $tournamentid));
+        }
+    }
+}

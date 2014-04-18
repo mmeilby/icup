@@ -12,6 +12,9 @@ ERROR:
   INVALIDCATEGORY:
     TITLE: Der er problemer med den valgte gruppe
     SOLUTION: Den valgte gruppe findes ikke. Benyt det følgende link for at kunne vælge en gruppe der findes.
+  INVALIDGROUP:
+    TITLE: Der er problemer med den valgte pulje
+    SOLUTION: Den valgte pulje findes ikke. Benyt det følgende link for at kunne vælge en pulje der findes.
   INVALIDCLUB:
     TITLE: Der er problemer med den valgte klub
     SOLUTION: Den valgte klub findes ikke. Benyt det følgende link for at kunne vælge en klub der findes.
@@ -30,6 +33,9 @@ ERROR:
   NOMORETEAMS:
     TITLE: Der er ikke plads til flere hold i gruppen
     SOLUTION: Klubben har tilmeldt det største antal hold det er muligt at deltage med i denne gruppe.
+  MUSTBEADMIN:
+    TITLE: Du er ikke administrator
+    SOLUTION: For at udføre den funktion du har valgt skal du være administrator.
   NOTCLUBADMIN:
     TITLE: Du er ikke klubansvarlig for denne klub
     SOLUTION: For at udføre den funktion du har valgt skal du være klubansvarlig for klubben. Du har ikke mulighed for at administrere denne klub.

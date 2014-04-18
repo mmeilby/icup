@@ -1,5 +1,5 @@
 <?php
-namespace ICup\Bundle\PublicSiteBundle\Controller\Edit;
+namespace ICup\Bundle\PublicSiteBundle\Controller\Test;
 
 use ICup\Bundle\PublicSiteBundle\Entity\Doctrine\Match;
 use ICup\Bundle\PublicSiteBundle\Entity\Doctrine\MatchRelation;

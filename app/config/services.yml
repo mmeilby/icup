@@ -2,7 +2,16 @@ parameters:
     tournament_table: "ICup\\Bundle\\PublicSiteBundle\\Entity\\Doctrine\\Tournament"
     club_table: "ICup\\Bundle\\PublicSiteBundle\\Entity\\Doctrine\\Club"
     
-services:
+services:    
+    kernel.listener.exception.listener:
+        class: "ICup\\Bundle\\PublicSiteBundle\\EventListener\\ExceptionListener"
+        arguments:
+            - "@templating"
+            - "@router"
+            - "@logger"
+        tags:
+            - { name: kernel.event_listener, event: kernel.exception, method: onKernelException }
+    
 # REGISTER TWIG EXTENSIONS
     custom.twig.sandbox.policy:
         class: Twig_Sandbox_SecurityPolicy

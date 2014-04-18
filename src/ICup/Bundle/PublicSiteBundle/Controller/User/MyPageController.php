@@ -48,7 +48,7 @@ class MyPageController extends Controller
 
     /**
      * Show myICup page for club admin users
-     * @Route("/user/mypage/users", name="_user_my_page_users")
+     * @Route("/club/mypage/users", name="_user_my_page_users")
      * @Method("GET")
      */
     public function myPageUsersAction()

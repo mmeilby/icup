@@ -1,5 +1,5 @@
 <?php
-namespace ICup\Bundle\PublicSiteBundle\Controller\User;
+namespace ICup\Bundle\PublicSiteBundle\Controller\Club;
 
 use ICup\Bundle\PublicSiteBundle\Entity\Doctrine\Tournament;
 use ICup\Bundle\PublicSiteBundle\Entity\Doctrine\Club;
@@ -12,7 +12,6 @@ use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\Form\FormError;
-use Symfony\Component\Yaml\Exception\RuntimeException;
 use Symfony\Component\HttpFoundation\Response;
 use ICup\Bundle\PublicSiteBundle\Services\Util;
 
@@ -121,7 +120,7 @@ class ClubAdminController extends Controller
      * Current user must be a non related plain user
      * This function can not promote related prospect users
      * NOTE: this action will be requested from javascript and can not be parameterized the traditional Symfony way
-     * @Route("/club/request", name="_club_user_request")
+     * @Route("/user/request", name="_club_user_request")
      * @Method("GET")
      */
     public function requestAction()
@@ -141,7 +140,7 @@ class ClubAdminController extends Controller
                 throw new ValidationException("cannotberelated.html.twig");
             }
             // Validate club id
-            $club = $utilService->getClubById($clubid);
+            $club = $this->get('entity')->getClubById($clubid);
             // Connect user to the club - make user a prospected user
             $user->setStatus(User::$PRO);
             $user->setCid($club->getId());
@@ -157,7 +156,7 @@ class ClubAdminController extends Controller
      * Cancel submitted request for club relation from current user
      * Current user must be prospect user for any club
      * User will be reset to a verified user with no relation
-     * @Route("/club/refuse", name="_club_user_refuse")
+     * @Route("/user/refuse", name="_club_user_refuse")
      * @Method("GET")
      */
     public function refuseAction()
@@ -190,7 +189,7 @@ class ClubAdminController extends Controller
     /**
      * Add new club for user not related to any club
      * Current user must be a non related plain user
-     * @Route("/club/new", name="_club_new")
+     * @Route("/user/new", name="_club_new")
      * @Template("ICupPublicSiteBundle:User:ausr_new_club.html.twig")
      */
     public function newClubAction()
@@ -243,22 +242,15 @@ class ClubAdminController extends Controller
         /* @var $utilService Util */
         $utilService = $this->get('util');
         $utilService->setupController();
-        $em = $this->getDoctrine()->getManager();
 
         try {
             /* @var $user User */
             $user = $utilService->getCurrentUser();
-            // Check that user is editor
-            $utilService->validateHostUser($user);
-            // Get tournament if defined
             /* @var $tournament Tournament */
-            $tournament = $em->getRepository('ICup\Bundle\PublicSiteBundle\Entity\Doctrine\Tournament')->find($tournamentid);
-            if ($tournament == null) {
-                throw new ValidationException("baduser.html.twig");
-            }
-            if ($user->getPid() != $tournament->getPid()) {
-                throw new ValidationException("noteditoradmin.html.twig");
-            }
+            $tournament = $this->get('entity')->getTournamentById($tournamentid);
+            // Check that user is editor
+            $utilService->validateEditorUser($user, $tournament->getPid());
+
             // Prepare default data for form
             $clubFormData = $this->getClubDefaults();
             $form = $this->makeClubForm($clubFormData, 'sel');
@@ -280,9 +272,8 @@ class ClubAdminController extends Controller
     }
 
     /**
-     * Submit request for current user to be an attached user to club identified by clubid
-     * Current user must be a non related plain user
-     * This function can not promote related prospect users
+     * Select club from list of matched club names rather than adding a new club
+     * Current user must be an editor
      * NOTE: this action will be requested from javascript and can not be parameterized the traditional Symfony way
      * @Route("/host/select/club", name="_host_select_club")
      * @Method("GET")
@@ -309,14 +300,7 @@ class ClubAdminController extends Controller
         $request = $this->getRequest();
         $pattern = $request->get('pattern', '%');
         $countryCode = $request->get('country', '');
-        $em = $this->getDoctrine()->getManager();
-        $qb = $em->createQuery("select c ".
-                               "from ICup\Bundle\PublicSiteBundle\Entity\Doctrine\Club c ".
-                               "where c.name like :pattern and c.country=:country ".
-                               "order by c.name");
-        $qb->setParameter('pattern', $pattern);
-        $qb->setParameter('country', $countryCode);
-        $clubs = $qb->getResult();
+        $clubs = $this->get('logic')->listClubsByPattern($pattern, $countryCode);
         $result = array();
         foreach ($clubs as $club) {
             $country = $this->get('translator')->trans($club->getCountry(), array(), 'lang');
@@ -341,8 +325,7 @@ class ClubAdminController extends Controller
 
     private function updateOrCreateClub(User $user, NewClub $clubFormData) {
         $em = $this->getDoctrine()->getManager();
-        $club = $em->getRepository('ICup\Bundle\PublicSiteBundle\Entity\Doctrine\Club')
-                   ->findOneBy(array('name' => $clubFormData->getName(), 'country' => $clubFormData->getCountry()));
+        $club = $this->get('logic')->getClubByName($clubFormData->getName(), $clubFormData->getCountry());
         if ($club != null) {
             $user->setStatus(User::$PRO);
             $user->setRole(User::$CLUB);
@@ -364,8 +347,7 @@ class ClubAdminController extends Controller
     
     private function enrollClub(Tournament $tournament, User $user, NewClub $clubFormData) {
         $em = $this->getDoctrine()->getManager();
-        $club = $em->getRepository('ICup\Bundle\PublicSiteBundle\Entity\Doctrine\Club')
-                   ->findOneBy(array('name' => $clubFormData->getName(), 'country' => $clubFormData->getCountry()));
+        $club = $this->get('logic')->getClubByName($clubFormData->getName(), $clubFormData->getCountry());
         if ($club == null) {
             $club = new Club();
             $club->setName($clubFormData->getName());

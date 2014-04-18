@@ -9,10 +9,10 @@ use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\Form\FormError;
 
-class EditClubController extends Controller
+class ClubController extends Controller
 {
     /**
-     * List the clubs available
+     * List all clubs available
      * @Route("/edit/club/list", name="_edit_club_list")
      * @Method("GET")
      * @Template("ICupPublicSiteBundle:Edit:listclubs.html.twig")
@@ -20,14 +20,13 @@ class EditClubController extends Controller
     public function listClubsAction()
     {
         $this->get('util')->setupController();
-        $em = $this->getDoctrine()->getManager();
         // If user is not admin redirect to editor view
         if (!$this->get('security.context')->isGranted('ROLE_ADMIN')) {
-            return $this->redirect($this->generateUrl('_host_list_tournaments'));
+            return $this->redirect($this->generateUrl('_host_list_clubs'));
         }
 
-        $clubs = $em->getRepository('ICup\Bundle\PublicSiteBundle\Entity\Doctrine\Club')
-                        ->findBy(array(), array('country' => 'asc', 'name' => 'asc'));
+        $clubs = $this->get('entity')->getClubRepo()
+                      ->findBy(array(), array('country' => 'asc', 'name' => 'asc'));
 
         $teamList = array();
         foreach ($clubs as $club) {
@@ -52,7 +51,7 @@ class EditClubController extends Controller
     
     /**
      * Add new club
-     * @Route("/edit/club/add", name="_edit_club_add")
+     * @Route("/admin/club/add", name="_edit_club_add")
      * @Template("ICupPublicSiteBundle:Edit:editclub.html.twig")
      */
     public function addAction() {
@@ -84,7 +83,7 @@ class EditClubController extends Controller
     
    /**
      * Change club information
-     * @Route("/edit/club/chg/{clubid}", name="_edit_club_chg")
+     * @Route("/admin/club/chg/{clubid}", name="_edit_club_chg")
      * @Template("ICupPublicSiteBundle:Edit:editclub.html.twig")
      */
     public function chgAction($clubid) {
@@ -112,7 +111,7 @@ class EditClubController extends Controller
     
    /**
      * Delete club information
-     * @Route("/edit/club/del/{clubid}", name="_edit_club_del")
+     * @Route("/admin/club/del/{clubid}", name="_edit_club_del")
      * @Template("ICupPublicSiteBundle:Edit:editclub.html.twig")
      */
     public function delAction($clubid) {

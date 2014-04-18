@@ -1,5 +1,5 @@
 <?php
-namespace ICup\Bundle\PublicSiteBundle\Controller\Edit;
+namespace ICup\Bundle\PublicSiteBundle\Controller\Test;
 
 use DateTime;
 use JMS\SecurityExtraBundle\Annotation\Secure;

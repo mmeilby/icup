@@ -205,6 +205,58 @@ class BusinessLogic
         $qb->setParameter('tournament', $tournamentid);
         return $qb->getResult();
     }
+
+    public function listEnrolledByClub($tournamentid, $clubid) {
+        $qb = $this->em->createQuery(
+                "select e ".
+                "from ".$this->entity->getRepositoryPath('Enrollment')." e, ".
+                        $this->entity->getRepositoryPath('Category')." c, ".
+                        $this->entity->getRepositoryPath('Team')." t ".
+                "where c.pid=:tournament and e.pid=c.id and e.cid=t.id and t.pid=:club ".
+                "order by e.pid");
+        $qb->setParameter('tournament', $tournamentid);
+        $qb->setParameter('club', $clubid);
+        return $qb->getResult();
+    }
+    
+    public function listSites($tournamentid) {
+        return $this->entity->getSiteRepo()
+                ->findBy(array('pid' => $tournamentid));
+    }
+
+    public function listPlaygroundsByTournament($tournamentid) {
+        $qb = $this->em->createQuery(
+                "select p ".
+                "from ".$this->entity->getRepositoryPath('Playground')." p, ".
+                        $this->entity->getRepositoryPath('Site')." s ".
+                "where s.pid=:tournament and p.pid=s.id ".
+                "order by p.no asc");
+        $qb->setParameter('tournament', $tournamentid);
+        return $qb->getResult();
+    }
+    
+    public function listTournaments($hostid) {
+        return $this->entity->getTournamentRepo()
+                    ->findBy(array('pid' => $hostid),
+                             array('name' => 'asc'));
+    }
+
+    public function listCategories($tournamentid) {
+        return $this->entity->getCategoryRepo()
+                ->findBy(array('pid' => $tournamentid),
+                         array('classification' => 'asc', 'gender' => 'asc'));
+    }
+
+    public function listGroupsByTournament($tournamentid) {
+        $qb = $this->em->createQuery(
+                "select g ".
+                "from ".$this->entity->getRepositoryPath('Group')." g, ".
+                        $this->entity->getRepositoryPath('Category')." c ".
+                "where c.pid=:tournament and g.pid=c.id ".
+                "order by g.name asc");
+        $qb->setParameter('tournament', $tournamentid);
+        return $qb->getResult();
+    }
     
     public function listGroups(Category $category, $classification = 0) {
         $qb = $this->em->createQuery(
@@ -286,5 +338,20 @@ class BusinessLogic
             $teamName.= ' "'.$division.'"';
         }
         return $teamName;
+    }
+    
+    public function listClubsByPattern($pattern, $countryCode) {
+        $qb = $this->em->createQuery(
+                "select c ".
+                "from ".$this->entity->getRepositoryPath('Club')." c ".
+                "where c.name like :pattern and c.country=:country ".
+                "order by c.name");
+        $qb->setParameter('pattern', $pattern);
+        $qb->setParameter('country', $countryCode);
+        return $qb->getResult();
+    }
+    
+    public function getClubByName($name, $countryCode) {
+        return $this->entity->getClubRepo()->findOneBy(array('name' => $name, 'country' => $countryCode));
     }
 }

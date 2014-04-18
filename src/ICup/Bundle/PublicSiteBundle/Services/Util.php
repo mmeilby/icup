@@ -144,6 +144,33 @@ class Util
         return $this->entity->isLocalAdmin($user) || $user->isAdmin();
     }
 
+    public function validateEditorAdminUser(User $user, $hostid) {
+        // If user is admin anything is allowed...
+        if (!$this->isAdminUser($user)) {
+            // Since this is not the admin - validate for editor
+            if (!$user->isEditor()) {
+                // Controller is called by admin user - switch to my page
+                throw new ValidationException("noteditoradmin.html.twig");
+            }
+            if ($user->getPid() != $hostid) {
+                throw new ValidationException("noteditoradmin.html.twig");
+            }
+        }
+    }
+    
+    /**
+     * Check that user is a true editor admin and is allowed to access the host
+     * @param User $user
+     * @param Mixed $hostid The host this user wants to access
+     * @throws ValidationException
+     */
+    public function validateEditorUser($user, $hostid) {
+        $this->validateHostUser($user);
+        if ($user->getPid() != $hostid) {
+            throw new ValidationException("noteditoradmin.html.twig");
+        }
+    }
+    
     /**
      * Check that user is a true editor (pid is referring to a valid host)
      * @param User $user
@@ -192,7 +219,7 @@ class Util
         /* @var $user User */
         $user = $this->entity->getUserById($userid);
         if (!$user->isClub() || !$user->isRelated()) {
-            // The user to be disconnected has no relation?
+            // The user has no relation?
             throw new ValidationException("baduser.html.twig");
         }
         return $user;

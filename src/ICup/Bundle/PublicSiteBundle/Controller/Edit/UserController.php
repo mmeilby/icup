@@ -9,11 +9,11 @@ use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\Form\FormError;
 
-class EditUserController extends Controller
+class UserController extends Controller
 {
     /**
      * List the users related to a club
-     * @Route("/edit/user/list/club/{clubid}", name="_edit_user_list")
+     * @Route("/user/list/club/{clubid}", name="_edit_user_list")
      * @Method("GET")
      * @Template("ICupPublicSiteBundle:Edit:listusers.html.twig")
      */
@@ -35,7 +35,7 @@ class EditUserController extends Controller
     
     /**
      * Add new club attached user
-     * @Route("/edit/user/add/club/{clubid}", name="_edit_user_add")
+     * @Route("/user/add/club/{clubid}", name="_edit_user_add")
      * @Template("ICupPublicSiteBundle:Edit:edituser.html.twig")
      */
     public function addAction($clubid) {
@@ -119,7 +119,7 @@ class EditUserController extends Controller
     
     /**
      * Add new system user
-     * @Route("/edit/user/add/system", name="_edit_user_add_system")
+     * @Route("/admin/user/add/system", name="_edit_user_add_system")
      * @Template("ICupPublicSiteBundle:Edit:edituser.html.twig")
      */
     public function addSystemAction() {
@@ -155,7 +155,7 @@ class EditUserController extends Controller
     
    /**
      * Change user information
-     * @Route("/edit/user/chg/{userid}", name="_edit_user_chg")
+     * @Route("/user/chg/{userid}", name="_edit_user_chg")
      * @Template("ICupPublicSiteBundle:Edit:edituser.html.twig")
      */
     public function chgAction($userid) {
@@ -206,7 +206,7 @@ class EditUserController extends Controller
     
    /**
      * Delete user information
-     * @Route("/edit/user/del/{userid}", name="_edit_user_del")
+     * @Route("/user/del/{userid}", name="_edit_user_del")
      * @Template("ICupPublicSiteBundle:Edit:edituser.html.twig")
      */
     public function delAction($userid) {
@@ -285,7 +285,7 @@ class EditUserController extends Controller
     
    /**
      * Change password
-     * @Route("/edit/user/chg/pass/{userid}", name="_edit_user_chg_pass")
+     * @Route("/user/chg/pass/{userid}", name="_edit_user_chg_pass")
      * @Template("ICupPublicSiteBundle:Edit:edituser.html.twig")
      */
     public function passAction($userid) {

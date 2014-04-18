@@ -15,9 +15,30 @@ ERROR:
   INVALIDGROUP:
     TITLE: Der er problemer med den valgte pulje
     SOLUTION: Den valgte pulje findes ikke. Benyt det følgende link for at kunne vælge en pulje der findes.
+  INVALIDGROUPORDER:
+    TITLE: Der er et teknisk problem med den valgte pulje
+    SOLUTION: Problemet er optaget til analyse. Benyt det følgende link for at komme videre.
   INVALIDCLUB:
     TITLE: Der er problemer med den valgte klub
     SOLUTION: Den valgte klub findes ikke. Benyt det følgende link for at kunne vælge en klub der findes.
+  INVALIDTEAM:
+    TITLE: Der er problemer med det valgte hold
+    SOLUTION: Det valgte hold findes ikke. Benyt det følgende link for at kunne vælge et hold der findes.
+  INVALIDENROLLMENT:
+    TITLE: Der er et teknisk problem med det valgte hold
+    SOLUTION: Problemet er optaget til analyse. Benyt det følgende link for at komme videre.
+  INVALIDMATCH:
+    TITLE: Der er et teknisk problem med den valgte kamp
+    SOLUTION: Problemet er optaget til analyse. Benyt det følgende link for at komme videre.
+  INVALIDMATCHRELATION:
+    TITLE: Der er et teknisk problem med den valgte kamp
+    SOLUTION: Problemet er optaget til analyse. Benyt det følgende link for at komme videre.
+  INVALIDSITE:
+    TITLE: Der er problemer med den valgte lokation
+    SOLUTION: Den valgte lokation findes ikke. Benyt det følgende link for at kunne vælge en lokation der findes.
+  INVALIDPLAYGROUND:
+    TITLE: Der er problemer med den valgte bane
+    SOLUTION: Den valgte bane findes ikke. Benyt det følgende link for at kunne vælge en bane der findes.
   INVALIDHOST:
     TITLE: Der er problemer med den valgte turneringsvært
     SOLUTION: Den valgte turneringsvært findes ikke. Benyt det følgende link for at kunne vælge en turneringsvært der findes.

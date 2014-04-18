@@ -42,24 +42,11 @@ class ExceptionListener extends ContainerAware
     {
         $exception = $event->getException();
         if ($exception instanceof ValidationException) {
-            $response = new Response();
-            $response->setContent(
-                    $this->templating->renderResponse(
-                            'ICupPublicSiteBundle:Errors:' . $exception->getMessage(),
+            $event->setResponse(
+                        $this->templating->renderResponse(
+                            'ICupPublicSiteBundle:Errors:'.strtolower($exception->getMessage()).'.html.twig',
                             array('redirect' => $this->router->generate('_user_my_page'))));
-/*            
-            // HttpExceptionInterface is a special type of exception that
-            // holds status code and header details
-            if ($exception instanceof HttpExceptionInterface) {
-                $response->setStatusCode($exception->getStatusCode());
-                $response->headers->replace($exception->getHeaders());
-            } else {
-                $response->setStatusCode(Response::HTTP_INTERNAL_SERVER_ERROR);
-            }
-*/
-            // Send the modified response object to the event
-            $event->setResponse($response);
-            $this->logger->addError("ValidationException thrown: ".$exception->getMessage().' - '.$exception->getFile().':'.$exception->getLine());
+            $this->logger->addError("ValidationException ".$exception->getMessage().": ".$exception->getDebugInfo().' - '.$exception->getFile().':'.$exception->getLine());
         }
         elseif ($exception instanceof RedirectException) {
             $response = new Response();

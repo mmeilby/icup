@@ -165,7 +165,7 @@ class Entity
      * False if user is a Entity\Doctrine\User entity object
      */
     public function isLocalAdmin($user) {
-        return !is_a($user, $this->getRepositoryPath('User'));
+        return !($user instanceof User);
     }
     
     /**
@@ -179,7 +179,7 @@ class Entity
         $host = $this->getHostRepo()->find($hostid);
         if ($host == null) {
             // That host id is pointing to nowhere....
-            throw new ValidationException("badhost.html.twig");
+            throw new ValidationException("BADHOST", "Unknown hostid=".$hostid);
         }
         return $host;
     }
@@ -194,7 +194,7 @@ class Entity
         /* @var $user User */
         $user = $this->getUserRepo()->find($userid);
         if ($user == null) {
-            throw new ValidationException("baduser.html.twig");
+            throw new ValidationException("BADUSER", "Unknown userid=".$userid);
         }
         return $user;
     }
@@ -210,7 +210,7 @@ class Entity
         $club = $this->getClubRepo()->find($clubid);
         if ($club == null) {
             // User was related to a missing club
-            throw new ValidationException("badclub.html.twig");
+            throw new ValidationException("BADCLUB", "Unknown clubid=".$clubid);
         }
         return $club;
     }
@@ -225,7 +225,7 @@ class Entity
         /* @var $tournament Tournament */
         $tournament = $this->getTournamentRepo()->find($tournamentid);
         if ($tournament == null) {
-            throw new ValidationException("badtournament.html.twig");
+            throw new ValidationException("BADTOURNAMENT", "Unknown tournamentid=".$tournamentid);
         }
         return $tournament;
     }
@@ -240,7 +240,7 @@ class Entity
         /* @var $category Category */
         $category = $this->getCategoryRepo()->find($categoryid);
         if ($category == null) {
-            throw new ValidationException("badcategory.html.twig");
+            throw new ValidationException("BADCATEGORY", "Unknown categoryid=".$categoryid);
         }
         return $category;
     }
@@ -255,7 +255,7 @@ class Entity
         /* @var $group Group */
         $group = $this->getGroupRepo()->find($groupid);
         if ($group == null) {
-            throw new ValidationException("badgroup.html.twig"); // TODO:
+            throw new ValidationException("BADGROUP", "Unknown groupid=".$groupid);
         }
         return $group;
     }
@@ -270,7 +270,7 @@ class Entity
         /* @var $grouporder GroupOrder */
         $grouporder = $this->getGroupOrderRepo()->find($grouporderid);
         if ($grouporder == null) {
-            throw new ValidationException("badgrouporder.html.twig");   // TODO:
+            throw new ValidationException("BADGROUPORDER", "Unknown grouporderid=".$grouporderid);
         }
         return $grouporder;
     }
@@ -285,7 +285,7 @@ class Entity
         /* @var $match Match */
         $match = $this->getMatchRepo()->find($matchid);
         if ($match == null) {
-            throw new ValidationException("badmatch.html.twig");    // TODO:
+            throw new ValidationException("BADMATCH", "Unknown matchid=".$matchid);
         }
         return $match;
     }
@@ -300,7 +300,7 @@ class Entity
         /* @var $matchrelation MatchRelation */
         $matchrelation = $this->getMatchRelationRepo()->find($matchrelationid);
         if ($matchrelation == null) {
-            throw new ValidationException("badmatchrelation.html.twig");    // TODO:
+            throw new ValidationException("BADMATCHRELATION", "Unknown matchreleationid=".$matchrelationid);
         }
         return $matchrelation;
     }
@@ -315,7 +315,7 @@ class Entity
         /* @var $category Category */
         $playground = $this->getPlaygroundRepo()->find($playgroundid);
         if ($playground == null) {
-            throw new ValidationException("badplayground.html.twig");   // TODO:
+            throw new ValidationException("BADPLAYGROUND", "Unknown playgroundid=".$playgroundid);
         }
         return $playground;
     }
@@ -330,7 +330,7 @@ class Entity
         /* @var $site Site */
         $site = $this->getSiteRepo()->find($siteid);
         if ($site == null) {
-            throw new ValidationException("badsite.html.twig"); // TODO:
+            throw new ValidationException("BADSITE", "Unknown siteid=".$siteid);
         }
         return $site;
     }
@@ -345,7 +345,7 @@ class Entity
         /* @var $team Team */
         $team = $this->getTeamRepo()->find($teamid);
         if ($team == null) {
-            throw new ValidationException("badteam.html.twig"); // TODO:
+            throw new ValidationException("BADTEAM", "Unknown teamid=".$teamid);
         }
         return $team;
     }
@@ -360,7 +360,7 @@ class Entity
         /* @var $enrollment Enrollment */
         $enrollment = $this->getEnrollmentRepo()->find($enrollmentid);
         if ($enrollment == null) {
-            throw new ValidationException("badenrollment.html.twig");   // TODO:
+            throw new ValidationException("BADENROLLMENT", "Unknown enrollmentid=".$enrollmentid);
         }
         return $enrollment;
     }

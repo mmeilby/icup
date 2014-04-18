@@ -150,10 +150,10 @@ class Util
             // Since this is not the admin - validate for editor
             if (!$user->isEditor()) {
                 // Controller is called by admin user - switch to my page
-                throw new ValidationException("noteditoradmin.html.twig");
+                throw new ValidationException("NOTEDITORADMIN", "userid=".$user->getId().", role=".$user->getRole());
             }
             if ($user->getPid() != $hostid) {
-                throw new ValidationException("noteditoradmin.html.twig");
+                throw new ValidationException("NOTEDITORADMIN", "userid=".$user->getId().", hostid=".$hostid);
             }
         }
     }
@@ -167,7 +167,7 @@ class Util
     public function validateEditorUser($user, $hostid) {
         $this->validateHostUser($user);
         if ($user->getPid() != $hostid) {
-            throw new ValidationException("noteditoradmin.html.twig");
+                throw new ValidationException("NOTEDITORADMIN", "userid=".$user->getId().", hostid=".$hostid);
         }
     }
     
@@ -180,7 +180,8 @@ class Util
         // Validate the user - must be an editor
         if ($this->entity->isLocalAdmin($user) || !$user->isEditor()) {
             // Controller is called by admin user - switch to my page
-            throw new ValidationException("needtobeeditor.html.twig");
+            throw new ValidationException("NEEDTOBEEDITOR", $this->entity->isLocalAdmin($user) ?
+                    "Local admin" : "userid=".$user->getId().", role=".$user->getRole());
         }
     }
 

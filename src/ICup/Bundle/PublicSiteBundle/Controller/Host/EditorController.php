@@ -57,7 +57,7 @@ class EditorController extends Controller
             /* @var $user User */
             $user = $utilService->getCurrentUser();
             if (!$utilService->isAdminUser($user)) {
-                throw new ValidationException("mustbeadmin.html.twig");
+                throw new ValidationException("MUSTBEADMIN", "userid=".$user->getId().", role=".$user->getRole());
             }
             $host = $this->get('entity')->getHostById($hostid);
             $users = $this->get('entity')->getUserRepo()->findBy(array('pid' => $hostid));

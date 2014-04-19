@@ -65,10 +65,10 @@ class MyPageController extends Controller
             }
             if ($user->getRole() !== User::$CLUB_ADMIN) {
                 // 
-                throw new ValidationException("notclubadmin.html.twig");
+                throw new ValidationException("NOTCLUBADMIN", "userid=".$user->getId().", role=".$user->getRole());
             }
             $em = $this->getDoctrine()->getManager();
-            $club = $this->getClubById($user->getCid());
+            $club = $this->get('entity')->getClubById($user->getCid());
             $users = $em->getRepository('ICup\Bundle\PublicSiteBundle\Entity\Doctrine\User')
                             ->findBy(array('cid' => $club->getId()), array('status' => 'asc', 'role' => 'desc', 'name' => 'asc'));
             // Redirect to my page users list
@@ -104,11 +104,7 @@ class MyPageController extends Controller
        if ($user->isEditor()) {
             $em = $this->getDoctrine()->getManager();
             /* @var $host Host */
-            $host = $em->getRepository('ICup\Bundle\PublicSiteBundle\Entity\Doctrine\Host')->find($user->getPid());
-            if ($host == null) {
-                // User was related to a missing host
-                throw new ValidationException("badhost.html.twig");
-            }
+            $host = $this->get('entity')->getHostById($user->getPid());
             $users = $em->getRepository('ICup\Bundle\PublicSiteBundle\Entity\Doctrine\User')
                             ->findBy(array('pid' => $host->getId()), array('name' => 'asc'));
             // Editors should get a different view
@@ -130,7 +126,7 @@ class MyPageController extends Controller
 
     private function getMyClubUserPage(User $user) {
         $em = $this->getDoctrine()->getManager();
-        $club = $this->getClubById($user->getCid());
+        $club = $this->get('entity')->getClubById($user->getCid());
         $users = $em->getRepository('ICup\Bundle\PublicSiteBundle\Entity\Doctrine\User')
                         ->findBy(array('cid' => $club->getId()), array('status' => 'asc', 'role' => 'desc', 'name' => 'asc'));
         $prospectors = array();
@@ -173,16 +169,5 @@ class MyPageController extends Controller
             }
         }
         return $tournamentList;
-    }
-    
-    private function getClubById($clubid) {
-        $em = $this->getDoctrine()->getManager();
-        /* @var $club Club */
-        $club = $em->getRepository('ICup\Bundle\PublicSiteBundle\Entity\Doctrine\Club')->find($clubid);
-        if ($club == null) {
-            // User was related to a missing club
-            throw new ValidationException("badclub.html.twig");
-        }
-        return $club;
     }
 }

@@ -40,7 +40,7 @@ class ClubEnrollController extends Controller
             }
             if (!$user->isRelated()) {
                 // User is not related to a club yet - explain the problem...
-                throw new ValidationException("needtoberelated.html.twig");
+                throw new ValidationException("NEEDTOBERELATED", "userid=".$user->getId());
             }
             $tmnt = $this->get('entity')->getTournamentById($tournament);
             $club = $this->get('entity')->getClubById($user->getCid());
@@ -140,7 +140,7 @@ class ClubEnrollController extends Controller
             }
             if (!$user->isRelated()) {
                 // User is not related to a club yet - explain the problem...
-                throw new ValidationException("needtoberelated.html.twig");
+                throw new ValidationException("NEEDTOBERELATED", "userid=".$user->getId());
             }
             /* @var $category Category */
             $category = $this->get('entity')->getCategoryById($categoryid);
@@ -209,7 +209,7 @@ class ClubEnrollController extends Controller
             }
             if (!$user->isRelated()) {
                 // User is not related to a club yet - explain the problem...
-                throw new ValidationException("needtoberelated.html.twig");
+                throw new ValidationException("NEEDTOBERELATED", "userid=".$user->getId());
             }
             /* @var $category Category */
             $category = $this->get('entity')->getCategoryById($categoryid);

@@ -194,7 +194,8 @@ class Util
         // Validate the user - must be a club user
         if ($this->entity->isLocalAdmin($user) || !$user->isClub()) {
             // Controller is called by editor or admin user - switch to my page
-            throw new ValidationException("needtoberelated.html.twig");
+            throw new ValidationException("NEEDTOBERELATED", $this->entity->isLocalAdmin($user) ?
+                    "Local admin" : "userid=".$user->getId().", role=".$user->getRole());
         }
     }
     
@@ -203,14 +204,15 @@ class Util
         $thisuser = $this->getCurrentUser();
         // User must have CLUB_ADMIN role to change user properties
         if (!$this->container->get('security.context')->isGranted('ROLE_CLUB_ADMIN')) {
-            throw new ValidationException("notclubadmin.html.twig");
+            throw new ValidationException("NEEDTOBERELATED", $this->entity->isLocalAdmin($thisuser) ?
+                    "Local admin" : "userid=".$thisuser->getId().", role=".$thisuser->getRole());
         }
         // If controller is not called by default admin then validate the user
         if (!$this->entity->isLocalAdmin($thisuser)) {
             // If user is a club administrator then validate relation to the club
             if ($thisuser->isClub() && !$thisuser->isRelatedTo($clubid)) {
                 // Even though this is a club admin - the admin does not administer this club
-                throw new ValidationException("notclubadmin.html.twig");
+                throw new ValidationException("NOTCLUBADMIN", "userid=".$thisuser->getId().", role=".$thisuser->getRole());
             }
         }
         return $thisuser;
@@ -221,7 +223,7 @@ class Util
         $user = $this->entity->getUserById($userid);
         if (!$user->isClub() || !$user->isRelated()) {
             // The user has no relation?
-            throw new ValidationException("baduser.html.twig");
+            throw new ValidationException("NEEDTOBERELATED", "userid=".$user->getId().", role=".$user->getRole());
         }
         return $user;
     }

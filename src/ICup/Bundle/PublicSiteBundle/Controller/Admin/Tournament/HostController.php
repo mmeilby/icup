@@ -30,7 +30,7 @@ class HostController extends Controller
         $user = $utilService->getCurrentUser();
         if (!$utilService->isAdminUser($user)) {
             // Controller is called by a non admin user - fail...
-            throw new ValidationException("mustbeadmin.html.twig");
+            throw new ValidationException("MUSTBEADMIN", "userid=".$user->getId());
         }
 
         $host = new Host();

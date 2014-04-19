@@ -71,7 +71,7 @@ class ClubAdminController extends Controller
             // Validate user - must be a club user prospect
             if (!$user->isRelatedTo($clubid)) {
                 // User is not related to the club
-                throw new ValidationException("notclubadmin.html.twig");
+                throw new ValidationException("NOTCLUBADMIN", "userid=".$user->getId().", clubid=".$clubid);
             }
             // Validate current user - is it a club administrator?
             $utilService->validateCurrentUser($clubid);
@@ -137,7 +137,7 @@ class ClubAdminController extends Controller
             // Validate user - must be an unrelated user
             if ($user->isRelated()) {
                 // User is related to the club
-                throw new ValidationException("cannotberelated.html.twig");
+                throw new ValidationException("CANNOTBERELATED", "userid=".$user->getId());
             }
             // Validate club id
             $club = $this->get('entity')->getClubById($clubid);
@@ -172,7 +172,7 @@ class ClubAdminController extends Controller
             // Validate user - must be a prospect user
             if (!$user->isRelated()) {
                 // User is not related to any club
-                throw new ValidationException("needtoberelated.html.twig");
+                throw new ValidationException("NEEDTOBERELATED", "userid=".$user->getId());
             }
             // Disconnect user from club - make user a verified user with no relation
             // However cid should not be cleared in order to restore the connection if in error

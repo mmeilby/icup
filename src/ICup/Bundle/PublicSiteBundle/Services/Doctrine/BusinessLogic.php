@@ -52,7 +52,7 @@ class BusinessLogic
         $noTeams = count($enrolled);
         if ($noTeams >= 26) {
             // Can not add more than 26 teams to same category - Team A -> Team Z
-            throw new ValidationException("nomoreteams.html.twig");
+            throw new ValidationException("NOMORETEAMS", "More than 26 enrolled - club=".$club->getId().", category=".$category->getId());
         }
         else if ($noTeams == 0) {
             $division = '';
@@ -98,11 +98,11 @@ class BusinessLogic
  
         $enroll = array_pop($enrolled);
         if ($enroll == null) {
-            throw new ValidationException("noteams.html.twig");
+            throw new ValidationException("NOTEAMS", "No teams enrolled - club=".$clubid.", category=".$categoryid);
         }
         // Verify that the team is not assigned to a group
         if ($this->isTeamAssigned($categoryid, $enroll->getCid())) {
-            throw new ValidationException("teamassigned.html.twig");
+            throw new ValidationException("TEAMASSIGNED", "Team was assigned previously - team=".$enroll->getCid().", category=".$categoryid);
         }
         // Remove the team entity enrolled in this category
         $team = $this->entity->getTeamById($enroll->getCid());
@@ -147,7 +147,7 @@ class BusinessLogic
         $group = $this->entity->getGroupById($groupid);
         // Verify that the team is not assigned to any group
         if ($this->isTeamAssigned($group->getPid(), $teamid)) {
-            throw new ValidationException("teamassigned.html.twig");
+            throw new ValidationException("TEAMASSIGNED", "Team was assigned previously - team=".$teamid.", category=".$group->getPid());
         }
         $groupOrder = new GroupOrder();
         $groupOrder->setCid($teamid);
@@ -169,10 +169,10 @@ class BusinessLogic
         $qb->setParameter('team', $teamid);
         $groupOrder = $qb->getOneOrNullResult();
         if ($groupOrder == null) {
-            throw new ValidationException("teamisnotassigned.html.twig");
+            throw new ValidationException("TEAMISNOTASSIGNED", "Team is not assigned - team=".$teamid.", group=".$groupid);
         }
         if ($this->isTeamActive($groupid, $teamid)) {
-            throw new ValidationException("teamisactive.html.twig");
+            throw new ValidationException("TEAMISACTIVE", "Team has matchresults - team=".$teamid.", group=".$groupid);
         }
         $this->em->remove($groupOrder);
         $this->em->flush();

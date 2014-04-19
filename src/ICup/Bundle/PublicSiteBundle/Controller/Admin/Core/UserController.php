@@ -1,9 +1,8 @@
 <?php
-namespace ICup\Bundle\PublicSiteBundle\Controller\Edit;
+namespace ICup\Bundle\PublicSiteBundle\Controller\Admin\Core;
 
 use ICup\Bundle\PublicSiteBundle\Entity\Doctrine\User;
 use ICup\Bundle\PublicSiteBundle\Entity\Password;
-use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
@@ -11,28 +10,6 @@ use Symfony\Component\Form\FormError;
 
 class UserController extends Controller
 {
-    /**
-     * List the users related to a club
-     * @Route("/user/list/club/{clubid}", name="_edit_user_list")
-     * @Method("GET")
-     * @Template("ICupPublicSiteBundle:Edit:listusers.html.twig")
-     */
-    public function listUsersAction($clubid)
-    {
-        $this->get('util')->setupController();
-        $em = $this->getDoctrine()->getManager();
-
-        $club = $em->getRepository('ICup\Bundle\PublicSiteBundle\Entity\Doctrine\Club')->find($clubid);
-        if ($club == null) {
-            return $this->render('ICupPublicSiteBundle:Errors:badclub.html.twig');
-        }
-        
-        $users = $em->getRepository('ICup\Bundle\PublicSiteBundle\Entity\Doctrine\User')
-                ->findBy(array('cid' => $clubid));
-
-        return array('club' => $club, 'users' => $users);
-    }
-    
     /**
      * Add new club attached user
      * @Route("/user/add/club/{clubid}", name="_edit_user_add")
@@ -297,7 +274,7 @@ class UserController extends Controller
         if ($user == null) {
              return $this->render('ICupPublicSiteBundle:Errors:baduser.html.twig');
         }
-        
+/*        
         if ($user->isClub()) {
             $returnUrl = $this->generateUrl('_edit_user_list', array('clubid' => $user->getCid()));
         }
@@ -305,7 +282,18 @@ class UserController extends Controller
             $returnUrl = $this->generateUrl('_edit_editor_list', array('hostid' => $user->getPid()));
         }
         else {
-            $this->generateUrl('_edit_host_list');
+            $returnUrl = $this->generateUrl('_edit_host_list');
+        }
+*/
+        $request = $this->getRequest();
+        if ($request->isMethod('GET')) {
+            $returnUrl = $request->headers->get('referer');
+            $session = $request->getSession();
+            $session->set('icup.referer', $returnUrl);
+        }
+        else {
+            $session = $request->getSession();
+            $returnUrl = $session->get('icup.referer');
         }
         
         $pwd = new Password();
@@ -315,7 +303,7 @@ class UserController extends Controller
         $formDef->add('cancel', 'submit', array('label' => 'FORM.USER.CANCEL.CHG', 'translation_domain' => 'admin'));
         $formDef->add('save', 'submit', array('label' => 'FORM.USER.SUBMIT.CHG', 'translation_domain' => 'admin'));
         $form = $formDef->getForm();
-        $request = $this->getRequest();
+//        $request = $this->getRequest();
         $form->handleRequest($request);
         if ($form->get('cancel')->isClicked()) {
             return $this->redirect($returnUrl);

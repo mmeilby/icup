@@ -31,7 +31,7 @@ class AccountController extends Controller
             throw new RuntimeException("This controller is not available for anonymous users");
         }
 
-        if (!is_a($user, 'ICup\Bundle\PublicSiteBundle\Entity\Doctrine\User')) {
+        if (!($user instanceof User)) {
             // Controller is called by default admin - prepare a new database user
             $admin = $em->getRepository('ICup\Bundle\PublicSiteBundle\Entity\Doctrine\User')->findBy(array('username' => $user->getUsername()));
             if ($admin == null) {

@@ -1,9 +1,8 @@
 <?php
-namespace ICup\Bundle\PublicSiteBundle\Controller\Edit;
+namespace ICup\Bundle\PublicSiteBundle\Controller\Admin\Core;
 
 use ICup\Bundle\PublicSiteBundle\Entity\Doctrine\Club;
 use ICup\Bundle\PublicSiteBundle\Entity\Doctrine\User;
-use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
@@ -11,44 +10,6 @@ use Symfony\Component\Form\FormError;
 
 class ClubController extends Controller
 {
-    /**
-     * List all clubs available
-     * @Route("/edit/club/list", name="_edit_club_list")
-     * @Method("GET")
-     * @Template("ICupPublicSiteBundle:Edit:listclubs.html.twig")
-     */
-    public function listClubsAction()
-    {
-        $this->get('util')->setupController();
-        // If user is not admin redirect to editor view
-        if (!$this->get('security.context')->isGranted('ROLE_ADMIN')) {
-            return $this->redirect($this->generateUrl('_host_list_clubs'));
-        }
-
-        $clubs = $this->get('entity')->getClubRepo()
-                      ->findBy(array(), array('country' => 'asc', 'name' => 'asc'));
-
-        $teamList = array();
-        foreach ($clubs as $club) {
-            $country = $club->getCountry();
-            $teamList[$country][$club->getId()] = $club;
-        }
-
-        $teamcount = count($teamList, COUNT_RECURSIVE)/2;
-        $teamColumns = array();
-        $ccount = 0;
-        $column = 0;
-        foreach ($teamList as $country => $clubs) {
-            $teamColumns[$column][] = array($country => $clubs);
-            $ccount += count($clubs) + 1;
-            if ($ccount > $teamcount && $column < 1) {
-                $column++;
-                $ccount = 0;
-            }
-        }
-        return array('teams' => $teamColumns);
-    }
-    
     /**
      * Add new club
      * @Route("/admin/club/add", name="_edit_club_add")

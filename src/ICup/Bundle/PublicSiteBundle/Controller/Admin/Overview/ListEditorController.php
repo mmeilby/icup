@@ -1,17 +1,14 @@
 <?php
-namespace ICup\Bundle\PublicSiteBundle\Controller\Host;
+namespace ICup\Bundle\PublicSiteBundle\Controller\Admin\Overview;
 
 use ICup\Bundle\PublicSiteBundle\Entity\Doctrine\User;
-use ICup\Bundle\PublicSiteBundle\Entity\Password;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
-use JMS\SecurityExtraBundle\Annotation\Secure;
-use Symfony\Component\Form\FormError;
 use ICup\Bundle\PublicSiteBundle\Exceptions\ValidationException;
 
-class EditorController extends Controller
+class ListEditorController extends Controller
 {
     /**
      * List the editors related to logged in editor admin

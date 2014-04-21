@@ -10,22 +10,15 @@ class ListClubController extends Controller
 {
     /**
      * List all clubs available
-     * @Route("/edit/club/list", name="_edit_club_list")
+     * @Route("/admin/club/list", name="_edit_club_list")
      * @Method("GET")
      * @Template("ICupPublicSiteBundle:Edit:listclubs.html.twig")
      */
     public function listClubsAction()
     {
         $this->get('util')->setupController();
-        // If user is not admin redirect to editor view
-        if (!$this->get('security.context')->isGranted('ROLE_ADMIN')) {
-            // TODO: add tournamentid to this redirect
-            return $this->redirect($this->generateUrl('_host_list_clubs'));
-        }
 
-        $clubs = $this->get('entity')->getClubRepo()
-                      ->findBy(array(), array('country' => 'asc', 'name' => 'asc'));
-
+        $clubs = $this->get('logic')->listClubs();
         $teamList = array();
         foreach ($clubs as $club) {
             $country = $club->getCountry();
@@ -58,40 +51,34 @@ class ListClubController extends Controller
         $utilService = $this->get('util');
         $utilService->setupController();
 
-        try {
-            /* @var $user User */
-            $user = $utilService->getCurrentUser();
-            $tournament = $this->get('entity')->getTournamentById($tournamentid);
-            if (!$utilService->isAdminUser($user)) {
-                // Validate current user - is it an editor?
-                $utilService->validateEditorUser($user, $tournament->getPid());
-            }
-            $host = $this->get('entity')->getHostById($tournament->getPid());
-            $clubs = $this->get('logic')->listEnrolled($tournament->getId());
-            $teamcount = 0;
-            $teamList = array();
-            foreach ($clubs as $clb) {
-                $club = $clb['club'];
-                $country = $club->getCountry();
-                $teamList[$country][$club->getId()] = $clb;
-                $teamcount++;
-            }
+        /* @var $user User */
+        $user = $utilService->getCurrentUser();
+        $tournament = $this->get('entity')->getTournamentById($tournamentid);
+        $utilService->validateEditorAdminUser($user, $tournament->getPid());
+        
+        $host = $this->get('entity')->getHostById($tournament->getPid());
+        $clubs = $this->get('logic')->listEnrolled($tournament->getId());
+        $teamcount = 0;
+        $teamList = array();
+        foreach ($clubs as $clb) {
+            $club = $clb['club'];
+            $country = $club->getCountry();
+            $teamList[$country][$club->getId()] = $clb;
+            $teamcount++;
+        }
 
-            $teamcount /= 2;
-            $teamColumns = array();
-            $ccount = 0;
-            $column = 0;
-            foreach ($teamList as $country => $clubs) {
-                $teamColumns[$column][] = array($country => $clubs);
-                $ccount += count($clubs);
-                if ($ccount > $teamcount && $column < 1) {
-                    $column++;
-                    $ccount = 0;
-                }
+        $teamcount /= 2;
+        $teamColumns = array();
+        $ccount = 0;
+        $column = 0;
+        foreach ($teamList as $country => $clubs) {
+            $teamColumns[$column][] = array($country => $clubs);
+            $ccount += count($clubs);
+            if ($ccount > $teamcount && $column < 1) {
+                $column++;
+                $ccount = 0;
             }
-            return array('host' => $host, 'tournament' => $tournament, 'teams' => $teamColumns);
-        } catch (ValidationException $vexc) {
-            return $this->render('ICupPublicSiteBundle:Errors:' . $vexc->getMessage(), array('redirect' => $this->generateUrl('_user_my_page')));
-        } 
+        }
+        return array('host' => $host, 'tournament' => $tournament, 'teams' => $teamColumns);
     }
 }

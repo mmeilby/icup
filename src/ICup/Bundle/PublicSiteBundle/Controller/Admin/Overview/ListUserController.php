@@ -10,22 +10,16 @@ class ListUserController extends Controller
 {
     /**
      * List the users related to a club
-     * @Route("/user/list/club/{clubid}", name="_edit_user_list")
+     * @Route("/admin/list/club/{clubid}", name="_edit_user_list")
      * @Method("GET")
      * @Template("ICupPublicSiteBundle:Edit:listusers.html.twig")
      */
     public function listUsersAction($clubid)
     {
         $this->get('util')->setupController();
-        $em = $this->getDoctrine()->getManager();
-
-        $club = $em->getRepository('ICup\Bundle\PublicSiteBundle\Entity\Doctrine\Club')->find($clubid);
-        if ($club == null) {
-            return $this->render('ICupPublicSiteBundle:Errors:badclub.html.twig');
-        }
         
-        $users = $em->getRepository('ICup\Bundle\PublicSiteBundle\Entity\Doctrine\User')
-                ->findBy(array('cid' => $clubid));
+        $club = $this->get('entity')->getClubById($clubid);
+        $users = $this->get('logic')->listUsersByClub($clubid);
 
         return array('club' => $club, 'users' => $users);
     }

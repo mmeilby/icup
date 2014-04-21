@@ -187,6 +187,7 @@ FORM:
     NOCOUNTRY: Klubbens hjemland skal angives.
     NAMEEXIST: En anden klub er allerede oprettet med samme navn og land. Er oplysningerne korrekte, så ret i stedet kluboplysningerne.
     CANTCHANGENAME: En anden klub er allerede oprettet med samme navn og land. Vælg et andet navn til klubben.
+    TEAMSEXIST: Der er tilmeldt hold i en turnering for denne klub. Klubben kan ikke fjernes.
     TITLE:
       ADD: Tilføj ny klub
       CHG: Rediger klubinformationer
@@ -195,7 +196,7 @@ FORM:
     PROMPT:
       ADD: Indtast oplysninger om klubben.
       CHG: Ret klubinformationer.
-      DEL: Følgende klub vil bliver slettet. Alle hold og brugere knyttet til klubben vil også blive fjernet. Det er ikke muligt at fortryde når klubben er fjernet.
+      DEL: Følgende klub vil bliver slettet. Alle brugere knyttet til klubben vil blive klubløse. Det er ikke muligt at fortryde når klubben er fjernet.
       SEL: Vælg klub du vil forbinde til
     NAME: Klubnavn
     COUNTRY: Hjemland
@@ -226,6 +227,8 @@ FORM:
     NOUSERNAME: Et brugernavn skal angives.
     NOEMAIL: E-mail skal angives.
     NOPASSWORD: Et kodeord skal angives.
+    NOSTATUS: Klubstatus skal angives.
+    NOROLE: Brugerrolle skal angives.
     NAMEEXIST: En anden bruger er allerede oprettet med samme brugernavn.
     CANTCHANGENAME: En anden bruger er allerede oprettet med samme brugernavn. Vælg et andet brugernavn.
     BADPASSWORD: Det valgte kodeord er ikke gyldigt.

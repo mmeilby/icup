@@ -52,7 +52,7 @@ class ListHostController extends Controller
         /* @var $user User */
         $user = $utilService->getCurrentUser();
         // Validate current user - is it an editor?
-        $utilService->validateHostUser($user);
+        $utilService->validateEditorUser($user);
         // Get the host from current user
         $hostid = $user->getPid();
         $host = $this->get('entity')->getHostById($hostid);

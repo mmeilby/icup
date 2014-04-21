@@ -266,6 +266,15 @@ class User implements UserInterface
     }
     
     /**
+     * Test for host relation to specific host
+     * @return boolean - true if the user is editor for the host - pid refers to the specific host
+     */
+    public function isEditorFor($hostid)
+    {
+        return $this->isEditor() && $this->getPid() == $hostid;
+    }
+    
+    /**
      * Set email
      *
      * @param string $email

@@ -17,7 +17,7 @@ class ClubController extends Controller
      */
     public function addAction() {
         $this->get('util')->setupController();
-        $em = $this->getDoctrine()->getManager();
+        $returnUrl = $this->get('util')->getReferer();
         
         $country = $this->getRequest()->get('country');
         if ($country == null) {
@@ -32,12 +32,19 @@ class ClubController extends Controller
         $request = $this->getRequest();
         $form->handleRequest($request);
         if ($form->get('cancel')->isClicked()) {
-            return $this->redirect($this->generateUrl('_edit_club_list'));
+            return $this->redirect($returnUrl);
         }
-        if ($this->checkForm($form, $club, 'add')) {
-            $em->persist($club);
-            $em->flush();
-            return $this->redirect($this->generateUrl('_edit_club_list'));
+        if ($this->checkForm($form, $club)) {
+            $otherclub = $this->get('logic')->getClubByName($club->getName(), $club->getCountry());
+            if ($otherclub != null) {
+                $form->addError(new FormError($this->get('translator')->trans('FORM.CLUB.NAMEEXIST', array(), 'admin')));
+            }
+            else {
+                $em = $this->getDoctrine()->getManager();
+                $em->persist($club);
+                $em->flush();
+                return $this->redirect($returnUrl);
+            }
         }
         return array('form' => $form->createView(), 'action' => 'add', 'club' => $club);
     }
@@ -49,23 +56,27 @@ class ClubController extends Controller
      */
     public function chgAction($clubid) {
         $this->get('util')->setupController();
-        $em = $this->getDoctrine()->getManager();
+        $returnUrl = $this->get('util')->getReferer();
 
         /* @var $club Club */
-        $club = $em->getRepository('ICup\Bundle\PublicSiteBundle\Entity\Doctrine\Club')->find($clubid);
-        if ($club == null) {
-             return $this->render('ICupPublicSiteBundle:Errors:badclub.html.twig');
-        }
+        $club = $this->get('entity')->getClubById($clubid);
 
         $form = $this->makeClubForm($club, 'chg');
         $request = $this->getRequest();
         $form->handleRequest($request);
         if ($form->get('cancel')->isClicked()) {
-            return $this->redirect($this->generateUrl('_edit_club_list'));
+            return $this->redirect($returnUrl);
         }
-        if ($this->checkForm($form, $club, 'chg')) {
-            $em->flush();
-            return $this->redirect($this->generateUrl('_edit_club_list'));
+        if ($this->checkForm($form, $club)) {
+            $otherclub = $this->get('logic')->getClubByName($club->getName(), $club->getCountry());
+            if ($otherclub != null && $otherclub->getId() != $club->getId()) {
+                $form->addError(new FormError($this->get('translator')->trans('FORM.CLUB.CANTCHANGENAME', array(), 'admin')));
+            }
+            else {
+                $em = $this->getDoctrine()->getManager();
+                $em->flush();
+                return $this->redirect($returnUrl);
+            }
         }
         return array('form' => $form->createView(), 'action' => 'chg', 'club' => $club);
     }
@@ -77,23 +88,23 @@ class ClubController extends Controller
      */
     public function delAction($clubid) {
         $this->get('util')->setupController();
-        $em = $this->getDoctrine()->getManager();
+        $returnUrl = $this->get('util')->getReferer();
 
         /* @var $club Club */
-        $club = $em->getRepository('ICup\Bundle\PublicSiteBundle\Entity\Doctrine\Club')->find($clubid);
-        if ($club == null) {
-             return $this->render('ICupPublicSiteBundle:Errors:badclub.html.twig');
-        }
+        $club = $this->get('entity')->getClubById($clubid);
 
         $form = $this->makeClubForm($club, 'del');
+        $teams = $this->get('logic')->listTeamsByClub($clubid);
+        if ($teams != null) {
+            $form->addError(new FormError($this->get('translator')->trans('FORM.CLUB.TEAMSEXIST', array(), 'admin')));
+        }
         $request = $this->getRequest();
         $form->handleRequest($request);
         if ($form->get('cancel')->isClicked()) {
-            return $this->redirect($this->generateUrl('_edit_club_list'));
+            return $this->redirect($returnUrl);
         }
-        if ($form->isValid()) {
-            $users = $em->getRepository('ICup\Bundle\PublicSiteBundle\Entity\Doctrine\User')
-                    ->findBy(array('cid' => $clubid));
+        if ($form->isValid() && $teams == null) {
+            $users = $this->get('logic')->listUsersByClub($clubid);
             foreach ($users as $usr) {
                 if ($usr->isClub() && $usr->isRelated()) {
                     $usr->setRole(User::$CLUB);
@@ -101,9 +112,10 @@ class ClubController extends Controller
                 }
                 $usr->setCid(0);
             }
+            $em = $this->getDoctrine()->getManager();
             $em->remove($club);
             $em->flush();
-            return $this->redirect($this->generateUrl('_edit_club_list'));
+            return $this->redirect($returnUrl);
         }
         return array('form' => $form->createView(), 'action' => 'del', 'club' => $club);
     }
@@ -123,7 +135,7 @@ class ClubController extends Controller
         return $formDef->getForm();
     }
     
-    private function checkForm($form, $club, $action) {
+    private function checkForm($form, $club) {
         if ($form->isValid()) {
             if ($club->getName() == null || trim($club->getName()) == '') {
                 $form->addError(new FormError($this->get('translator')->trans('FORM.CLUB.NONAME', array(), 'admin')));
@@ -131,18 +143,6 @@ class ClubController extends Controller
             }
             if ($club->getCountry() == null) {
                 $form->addError(new FormError($this->get('translator')->trans('FORM.CLUB.NOCOUNTRY', array(), 'admin')));
-                return false;
-            }
-            $em = $this->getDoctrine()->getManager();
-            $clubs = $em->getRepository('ICup\Bundle\PublicSiteBundle\Entity\Doctrine\Club')
-                        ->findBy(array('name' => $club->getName(), 'country' => $club->getCountry()));
-            if ($clubs != null && count($clubs) > 0 && $clubs[0]->getId() != $club->getId()) {
-                if ($action == 'add') {
-                    $form->addError(new FormError($this->get('translator')->trans('FORM.CLUB.NAMEEXIST', array(), 'admin')));
-                }
-                else {
-                    $form->addError(new FormError($this->get('translator')->trans('FORM.CLUB.CANTCHANGENAME', array(), 'admin')));
-                }
                 return false;
             }
             return true;

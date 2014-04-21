@@ -35,9 +35,9 @@ class ClubAdminController extends Controller
 
         try {
             /* @var $user User */
-            $user = $utilService->getUserById($userid);
+            $user = $this->getClubUserById($userid);
             // Validate current user - is it a club administrator?
-            $utilService->validateCurrentUser($user->getCid());
+            $this->validateCurrentUser($user->getCid());
             // Disconnect user from club - make user a verified user with no relation
             // However cid should not be cleared in order to restore the connection if in error
             $user->setRole(User::$CLUB);
@@ -67,14 +67,14 @@ class ClubAdminController extends Controller
 
         try {
             /* @var $user User */
-            $user = $utilService->getUserById($userid);
+            $user = $this->getClubUserById($userid);
             // Validate user - must be a club user prospect
             if (!$user->isRelatedTo($clubid)) {
                 // User is not related to the club
                 throw new ValidationException("NOTCLUBADMIN", "userid=".$user->getId().", clubid=".$clubid);
             }
             // Validate current user - is it a club administrator?
-            $utilService->validateCurrentUser($clubid);
+            $this->validateCurrentUser($clubid);
             // Connect user to the club - make user an attached user
             $user->setStatus(User::$ATT);
             $em->flush();
@@ -102,9 +102,9 @@ class ClubAdminController extends Controller
 
         try {
             /* @var $user User */
-            $user = $utilService->getUserById($userid);
+            $user = $this->getClubUserById($userid);
             // Validate current user - is it a club administrator?
-            $utilService->validateCurrentUser($user->getCid());
+            $this->validateCurrentUser($user->getCid());
             // Switch user role
             $user->setRole($user->getRole() === User::$CLUB ? User::$CLUB_ADMIN : User::$CLUB);
             $em->flush();
@@ -249,7 +249,7 @@ class ClubAdminController extends Controller
             /* @var $tournament Tournament */
             $tournament = $this->get('entity')->getTournamentById($tournamentid);
             // Check that user is editor
-            $utilService->validateEditorUser($user, $tournament->getPid());
+            $utilService->validateEditorAdminUser($user, $tournament->getPid());
 
             // Prepare default data for form
             $clubFormData = $this->getClubDefaults();
@@ -386,5 +386,35 @@ class ClubAdminController extends Controller
             return true;
         }
         return false;
+    }
+    
+    private function getClubUserById($userid) {
+        /* @var $user User */
+        $user = $this->get('entity')->getUserById($userid);
+        if (!$user->isClub() || !$user->isRelated()) {
+            // The user has no relation?
+            throw new ValidationException("NEEDTOBERELATED", "userid=".$user->getId().", role=".$user->getRole());
+        }
+        return $user;
+    }
+    
+    
+    private function validateCurrentUser($clubid) {
+        /* @var $thisuser User */
+        $thisuser = $this->get('util')->getCurrentUser();
+        // User must have CLUB_ADMIN role to change user properties
+        if (!$this->get('security.context')->isGranted('ROLE_CLUB_ADMIN')) {
+            throw new ValidationException("NEEDTOBERELATED", $this->get('entity')->isLocalAdmin($thisuser) ?
+                    "Local admin" : "userid=".$thisuser->getId().", role=".$thisuser->getRole());
+        }
+        // If controller is not called by default admin then validate the user
+        if (!$this->get('entity')->isLocalAdmin($thisuser)) {
+            // If user is a club administrator then validate relation to the club
+            if ($thisuser->isClub() && !$thisuser->isRelatedTo($clubid)) {
+                // Even though this is a club admin - the admin does not administer this club
+                throw new ValidationException("NOTCLUBADMIN", "userid=".$thisuser->getId().", role=".$thisuser->getRole());
+            }
+        }
+        return $thisuser;
     }
 }

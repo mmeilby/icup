@@ -1,14 +1,12 @@
 <?php
 namespace ICup\Bundle\PublicSiteBundle\Controller\User;
 
-use ICup\Bundle\PublicSiteBundle\Entity\Doctrine\Club;
 use ICup\Bundle\PublicSiteBundle\Entity\Doctrine\Host;
 use ICup\Bundle\PublicSiteBundle\Entity\Doctrine\User;
 use ICup\Bundle\PublicSiteBundle\Exceptions\RedirectException;
 use ICup\Bundle\PublicSiteBundle\Exceptions\ValidationException;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
-use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\Yaml\Exception\RuntimeException;
 
@@ -40,9 +38,6 @@ class MyPageController extends Controller
             return $this->getMyClubUserPage($user);
         } catch (RedirectException $rexc) {
             return $rexc->getResponse();
-        } catch (ValidationException $vexc) {
-            $this->get('logger')->addError("User CID/PID is invalid: " . $user->dump());
-            return $this->render('ICupPublicSiteBundle:Errors:' . $vexc->getMessage(), array('redirect' => $this->generateUrl('_user_my_page')));
         } 
     }
 
@@ -78,9 +73,6 @@ class MyPageController extends Controller
                           'currentuser' => $user));
         } catch (RedirectException $rexc) {
             return $rexc->getResponse();
-        } catch (ValidationException $vexc) {
-            $this->get('logger')->addError("User CID/PID is invalid: " . $user->dump());
-            return $this->render('ICupPublicSiteBundle:Errors:' . $vexc->getMessage(), array('redirect' => $this->generateUrl('_user_my_page')));
         } 
     }
 

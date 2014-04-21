@@ -81,6 +81,21 @@ class Util
         return $countries;
     }
     
+    public function getReferer() {
+        /* @var $request Request */
+        $request = $this->container->get('request');
+        if ($request->isMethod('GET')) {
+            $returnUrl = $request->headers->get('referer');
+            $session = $request->getSession();
+            $session->set('icup.referer', $returnUrl);
+        }
+        else {
+            $session = $request->getSession();
+            $returnUrl = $session->get('icup.referer');
+        }
+        return $returnUrl;
+    }
+
     public function getTournamentKey() {
         /* @var $request Request */
         $request = $this->container->get('request');
@@ -144,39 +159,56 @@ class Util
         return $this->entity->isLocalAdmin($user) || $user->isAdmin();
     }
 
+    /**
+     * Verify that user is admin or an editor allowed to access the host specified by hostid.
+     * This function does not ensure that user->pid is referring to a valid host - if user is an admin.
+     * @param User $user
+     * @param Mixed $hostid
+     * @throws ValidationException
+     */
     public function validateEditorAdminUser(User $user, $hostid) {
         // If user is admin anything is allowed...
         if (!$this->isAdminUser($user)) {
             // Since this is not the admin - validate for editor
             if (!$user->isEditor()) {
-                // Controller is called by admin user - switch to my page
+                // Controller is called by club user user
                 throw new ValidationException("NOTEDITORADMIN", "userid=".$user->getId().", role=".$user->getRole());
             }
-            if ($user->getPid() != $hostid) {
+            if (!$user->isEditorFor($hostid)) {
+                // Controller is called by editor - however editor is not allowed to access this host
                 throw new ValidationException("NOTEDITORADMIN", "userid=".$user->getId().", hostid=".$hostid);
             }
         }
     }
     
     /**
-     * Check that user is a true editor admin and is allowed to access the host
+     * Verify that user is admin or a club user allowed to administer the club specified by clubid
+     * This function does not ensure that user->cid is referring to a valid club - if user is an admin.
      * @param User $user
-     * @param Mixed $hostid The host this user wants to access
+     * @param Mixed $clubid
      * @throws ValidationException
      */
-    public function validateEditorUser($user, $hostid) {
-        $this->validateHostUser($user);
-        if ($user->getPid() != $hostid) {
-                throw new ValidationException("NOTEDITORADMIN", "userid=".$user->getId().", hostid=".$hostid);
+    public function validateClubAdminUser(User $user, $clubid) {
+        // If user is admin anything is allowed...
+        if (!$this->isAdminUser($user)) {
+            // Since this is not the admin - validate for club admin
+            if (!$user->isClub()) {
+                // Controller is called by club user user
+                throw new ValidationException("NOTCLUBADMIN", "userid=".$user->getId().", role=".$user->getRole());
+            }
+            if (!$user->isRelatedTo($clubid)) {
+                // Even though this is a club admin - the admin does not administer this club
+                throw new ValidationException("NOTCLUBADMIN", "userid=".$user->getId().", clubid=".$clubid);
+            }
         }
     }
     
     /**
-     * Check that user is a true editor (pid is referring to a valid host)
+     * Verify that user is a true editor (pid is referring to a valid host)
      * @param User $user
      * @throws ValidationException
      */
-    public function validateHostUser(User $user) {
+    public function validateEditorUser(User $user) {
         // Validate the user - must be an editor
         if ($this->entity->isLocalAdmin($user) || !$user->isEditor()) {
             // Controller is called by admin user - switch to my page
@@ -186,45 +218,16 @@ class Util
     }
 
     /**
-     * Check that user is a true club user (cid is referring to a valid club)
+     * Verify that user is a true club user (cid is referring to a valid club)
      * @param User $user
      * @throws ValidationException
      */
     public function validateClubUser(User $user) {
         // Validate the user - must be a club user
-        if ($this->entity->isLocalAdmin($user) || !$user->isClub()) {
+        if ($this->entity->isLocalAdmin($user) || !$user->isClub() || !$user->isRelated()) {
             // Controller is called by editor or admin user - switch to my page
             throw new ValidationException("NEEDTOBERELATED", $this->entity->isLocalAdmin($user) ?
                     "Local admin" : "userid=".$user->getId().", role=".$user->getRole());
         }
-    }
-    
-    public function validateCurrentUser($clubid) {
-        /* @var $thisuser User */
-        $thisuser = $this->getCurrentUser();
-        // User must have CLUB_ADMIN role to change user properties
-        if (!$this->container->get('security.context')->isGranted('ROLE_CLUB_ADMIN')) {
-            throw new ValidationException("NEEDTOBERELATED", $this->entity->isLocalAdmin($thisuser) ?
-                    "Local admin" : "userid=".$thisuser->getId().", role=".$thisuser->getRole());
-        }
-        // If controller is not called by default admin then validate the user
-        if (!$this->entity->isLocalAdmin($thisuser)) {
-            // If user is a club administrator then validate relation to the club
-            if ($thisuser->isClub() && !$thisuser->isRelatedTo($clubid)) {
-                // Even though this is a club admin - the admin does not administer this club
-                throw new ValidationException("NOTCLUBADMIN", "userid=".$thisuser->getId().", role=".$thisuser->getRole());
-            }
-        }
-        return $thisuser;
-    }
-    
-    public function getUserById($userid) {
-        /* @var $user User */
-        $user = $this->entity->getUserById($userid);
-        if (!$user->isClub() || !$user->isRelated()) {
-            // The user has no relation?
-            throw new ValidationException("NEEDTOBERELATED", "userid=".$user->getId().", role=".$user->getRole());
-        }
-        return $user;
     }
 }

@@ -22,20 +22,16 @@ class ListEditorController extends Controller
         $utilService = $this->get('util');
         $utilService->setupController();
 
-        try {
-            /* @var $user User */
-            $user = $utilService->getCurrentUser();
-            // Validate current user - is it an editor?
-            $utilService->validateHostUser($user);
-            // Get the host from current user
-            $hostid = $user->getPid();
-            $host = $this->get('entity')->getHostById($hostid);
-            $users = $this->get('entity')->getUserRepo()->findBy(array('pid' => $hostid));
+        /* @var $user User */
+        $user = $utilService->getCurrentUser();
+        // Validate current user - is it an editor?
+        $utilService->validateEditorUser($user);
+        // Get the host from current user
+        $hostid = $user->getPid();
+        $host = $this->get('entity')->getHostById($hostid);
+        $users = $this->get('entity')->getUserRepo()->findBy(array('pid' => $hostid));
 
-            return array('host' => $host, 'users' => $users);
-        } catch (ValidationException $vexc) {
-            return $this->render('ICupPublicSiteBundle:Errors:' . $vexc->getMessage(), array('redirect' => $this->generateUrl('_user_my_page')));
-        } 
+        return array('host' => $host, 'users' => $users);
     }
     
     /**
@@ -50,18 +46,9 @@ class ListEditorController extends Controller
         $utilService = $this->get('util');
         $utilService->setupController();
 
-        try {
-            /* @var $user User */
-            $user = $utilService->getCurrentUser();
-            if (!$utilService->isAdminUser($user)) {
-                throw new ValidationException("MUSTBEADMIN", "userid=".$user->getId().", role=".$user->getRole());
-            }
-            $host = $this->get('entity')->getHostById($hostid);
-            $users = $this->get('entity')->getUserRepo()->findBy(array('pid' => $hostid));
+        $host = $this->get('entity')->getHostById($hostid);
+        $users = $this->get('entity')->getUserRepo()->findBy(array('pid' => $hostid));
 
-            return array('host' => $host, 'users' => $users);
-        } catch (ValidationException $vexc) {
-            return $this->render('ICupPublicSiteBundle:Errors:' . $vexc->getMessage(), array('redirect' => $this->generateUrl('_user_my_page')));
-        } 
+        return array('host' => $host, 'users' => $users);
     }
 }

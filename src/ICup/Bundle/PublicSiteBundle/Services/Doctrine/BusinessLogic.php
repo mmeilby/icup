@@ -206,6 +206,15 @@ class BusinessLogic
         return $qb->getResult();
     }
 
+    public function listEnrolledByUser($userid) {
+        $qb = $this->em->createQuery(
+                "select e ".
+                "from ".$this->entity->getRepositoryPath('Enrollment')." e ".
+                "where e.uid=:user");
+        $qb->setParameter('user', $userid);
+        return $qb->getResult();
+    }
+    
     public function listEnrolledByClub($tournamentid, $clubid) {
         $qb = $this->em->createQuery(
                 "select e ".
@@ -292,6 +301,15 @@ class BusinessLogic
         return $teamsList;
     }
     
+    public function listTeamsByClub($clubid) {
+        $qb = $this->em->createQuery(
+                "select t ".
+                "from ".$this->entity->getRepositoryPath('Team')." t ".
+                "where t.pid=:club");
+        $qb->setParameter('club', $clubid);
+        return $qb->getResult();
+    }
+    
     public function listTeamsEnrolledUnassigned($categoryid, $classification = 0) {
         $qb = $this->em->createQuery(
                 "select t.id,t.name,t.division,c.name as club,c.country ".
@@ -340,6 +358,10 @@ class BusinessLogic
         return $teamName;
     }
     
+    public function listClubs() {
+        return $this->entity->getClubRepo()->findBy(array(), array('country' => 'asc', 'name' => 'asc'));
+    }
+    
     public function listClubsByPattern($pattern, $countryCode) {
         $qb = $this->em->createQuery(
                 "select c ".
@@ -353,5 +375,24 @@ class BusinessLogic
     
     public function getClubByName($name, $countryCode) {
         return $this->entity->getClubRepo()->findOneBy(array('name' => $name, 'country' => $countryCode));
+    }
+
+    public function listUsersByClub($clubid) {
+        $qb = $this->em->createQuery(
+                "select u ".
+                "from ".$this->entity->getRepositoryPath('User')." u ".
+                "where u.cid=:club and ".
+                      "u.role in (".User::$CLUB.",".User::$CLUB_ADMIN.") and ".
+                      "u.status in (".User::$PRO.",".User::$ATT.")");
+        $qb->setParameter('club', $clubid);
+        return $qb->getResult();
+    }
+    
+    public function getUserByName($username) {
+        return $this->entity->getUserRepo()->findOneBy(array('username' => $username));
+    }
+    
+    public function isUserKnown($username) {
+        return $this->getUserByName($username) != null;
     }
 }

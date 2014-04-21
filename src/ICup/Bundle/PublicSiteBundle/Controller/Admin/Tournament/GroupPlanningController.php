@@ -31,10 +31,7 @@ class GroupPlanningController extends Controller
             $category = $this->get('entity')->getCategoryById($categoryid);
             $tournament = $this->get('entity')->getTournamentById($category->getPid());
             $host = $this->get('entity')->getHostById($tournament->getPid());
-            if (!$utilService->isAdminUser($user)) {
-                // Validate current user - is it an editor?
-                $utilService->validateEditorUser($user, $tournament->getPid());
-            }
+            $utilService->validateEditorAdminUser($user, $tournament->getPid());
 
             $groups = $this->get('logic')->listGroups($category);
             $teamsUnassigned = $this->get('logic')->listTeamsEnrolledUnassigned($categoryid);
@@ -95,11 +92,7 @@ class GroupPlanningController extends Controller
             /* @var $category Category */
             $category = $this->get('entity')->getCategoryById($group->getPid());
             $tournament = $this->get('entity')->getTournamentById($category->getPid());
-            
-            if (!$utilService->isAdminUser($user)) {
-                // Validate current user - is it an editor?
-                $utilService->validateEditorUser($user, $tournament->getPid());
-            }
+            $utilService->validateEditorAdminUser($user, $tournament->getPid());
             
             $this->setSelectedGroup($groupid);
             return $this->redirect(
@@ -130,11 +123,7 @@ class GroupPlanningController extends Controller
             /* @var $category Category */
             $category = $this->get('entity')->getCategoryById($group->getPid());
             $tournament = $this->get('entity')->getTournamentById($category->getPid());
-            
-            if (!$utilService->isAdminUser($user)) {
-                // Validate current user - is it an editor?
-                $utilService->validateEditorUser($user, $tournament->getPid());
-            }
+            $utilService->validateEditorAdminUser($user, $tournament->getPid());
             
             $this->get('logic')->assignEnrolled($teamid, $groupid);
             return $this->redirect(
@@ -165,11 +154,7 @@ class GroupPlanningController extends Controller
             /* @var $category Category */
             $category = $this->get('entity')->getCategoryById($group->getPid());
             $tournament = $this->get('entity')->getTournamentById($category->getPid());
-            
-            if (!$utilService->isAdminUser($user)) {
-                // Validate current user - is it an editor?
-                $utilService->validateEditorUser($user, $tournament->getPid());
-            }
+            $utilService->validateEditorAdminUser($user, $tournament->getPid());
             
             $this->get('logic')->removeEnrolled($teamid, $groupid);
             return $this->redirect(

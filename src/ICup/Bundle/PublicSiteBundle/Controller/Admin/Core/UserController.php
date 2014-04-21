@@ -12,17 +12,14 @@ class UserController extends Controller
 {
     /**
      * Add new club attached user
-     * @Route("/user/add/club/{clubid}", name="_edit_user_add")
+     * @Route("/admin/add/club/{clubid}", name="_edit_user_add")
      * @Template("ICupPublicSiteBundle:Edit:edituser.html.twig")
      */
     public function addAction($clubid) {
         $this->get('util')->setupController();
-        $em = $this->getDoctrine()->getManager();
+        $returnUrl = $this->get('util')->getReferer();
 
-        $club = $em->getRepository('ICup\Bundle\PublicSiteBundle\Entity\Doctrine\Club')->find($clubid);
-        if ($club == null) {
-            return $this->render('ICupPublicSiteBundle:Errors:badclub.html.twig');
-        }
+        $club = $this->get('entity')->getClubById($clubid);
 
         $user = new User();
         // User should be attached to the club when created this way
@@ -32,21 +29,20 @@ class UserController extends Controller
         $request = $this->getRequest();
         $form->handleRequest($request);
         if ($form->get('cancel')->isClicked()) {
-            return $this->redirect($this->generateUrl('_edit_user_list', array('clubid' => $clubid)));
+            return $this->redirect($returnUrl);
         }
         if ($form->isValid()) {
-            $usr = $em->getRepository('ICup\Bundle\PublicSiteBundle\Entity\Doctrine\User')
-                    ->findOneBy(array('username' => $user->getUsername()));
-            if ($usr != null) {
+            if ($this->get('logic')->isUserKnown($user->getUsername())) {
                 $form->addError(new FormError($this->get('translator')->trans('FORM.USER.NAMEEXIST', array(), 'admin')));
             }
             else {
                 $user->setCid($clubid);
                 $user->setPid(0);
-                $this->generatePassword($user);
+                $this->get('util')->generatePassword($user);
+                $em = $this->getDoctrine()->getManager();
                 $em->persist($user);
                 $em->flush();
-                return $this->redirect($this->generateUrl('_edit_user_list', array('clubid' => $clubid)));
+                return $this->redirect($returnUrl);
             }
         }
         return array('form' => $form->createView(), 'action' => 'add', 'club' => $club, 'user' => $user);
@@ -59,13 +55,12 @@ class UserController extends Controller
      */
     public function addHostAction($hostid) {
         $this->get('util')->setupController();
-        $em = $this->getDoctrine()->getManager();
+        $returnUrl = $this->get('util')->getReferer();
 
-        $host = $em->getRepository('ICup\Bundle\PublicSiteBundle\Entity\Doctrine\Host')->find($hostid);
-        if ($host == null) {
-            return $this->render('ICupPublicSiteBundle:Errors:badhost.html.twig');
-        }
-        $returnUrl = $this->generateUrl('_edit_editor_list', array('hostid' => $hostid));
+        /* @var $thisuser User */
+        $thisuser = $this->get('util')->getCurrentUser();
+        $host = $this->get('entity')->getHostById($hostid);
+        $this->get('util')->validateEditorAdminUser($thisuser, $hostid);
 
         $user = new User();
         $user->setStatus(User::$SYSTEM);
@@ -77,21 +72,20 @@ class UserController extends Controller
             return $this->redirect($returnUrl);
         }
         if ($form->isValid()) {
-            $usr = $em->getRepository('ICup\Bundle\PublicSiteBundle\Entity\Doctrine\User')
-                    ->findOneBy(array('username' => $user->getUsername()));
-            if ($usr != null) {
+            if ($this->get('logic')->isUserKnown($user->getUsername())) {
                 $form->addError(new FormError($this->get('translator')->trans('FORM.USER.NAMEEXIST', array(), 'admin')));
             }
             else {
                 $user->setCid(0);
                 $user->setPid($hostid);
-                $this->generatePassword($user);
+                $this->get('util')->generatePassword($user);
+                $em = $this->getDoctrine()->getManager();
                 $em->persist($user);
                 $em->flush();
                 return $this->redirect($returnUrl);
             }
         }
-        return array('form' => $form->createView(), 'action' => 'add', 'host' => $hostid, 'user' => $user);
+        return array('form' => $form->createView(), 'action' => 'add', 'host' => $host->getId(), 'user' => $user);
     }
     
     /**
@@ -101,7 +95,7 @@ class UserController extends Controller
      */
     public function addSystemAction() {
         $this->get('util')->setupController();
-        $em = $this->getDoctrine()->getManager();
+        $returnUrl = $this->get('util')->getReferer();
 
         $user = new User();
         $user->setStatus(User::$SYSTEM);
@@ -110,21 +104,20 @@ class UserController extends Controller
         $request = $this->getRequest();
         $form->handleRequest($request);
         if ($form->get('cancel')->isClicked()) {
-            return $this->redirect($this->generateUrl('_edit_host_list'));
+            return $this->redirect($returnUrl);
         }
-        if ($form->isValid()) {
-            $usr = $em->getRepository('ICup\Bundle\PublicSiteBundle\Entity\Doctrine\User')
-                    ->findOneBy(array('username' => $user->getUsername()));
-            if ($usr != null) {
+        if ($this->checkForm($form, $user)) {
+            if ($this->get('logic')->isUserKnown($user->getUsername())) {
                 $form->addError(new FormError($this->get('translator')->trans('FORM.USER.NAMEEXIST', array(), 'admin')));
             }
             else {
                 $user->setCid(0);
                 $user->setPid(0);
-                $this->generatePassword($user);
+                $this->get('util')->generatePassword($user);
+                $em = $this->getDoctrine()->getManager();
                 $em->persist($user);
                 $em->flush();
-                return $this->redirect($this->generateUrl('_edit_host_list'));
+                return $this->redirect($returnUrl);
             }
         }
         return array('form' => $form->createView(), 'action' => 'add', 'user' => $user);
@@ -132,79 +125,75 @@ class UserController extends Controller
     
    /**
      * Change user information
-     * @Route("/user/chg/{userid}", name="_edit_user_chg")
+     * @Route("/edit/chg/{userid}", name="_edit_user_chg")
      * @Template("ICupPublicSiteBundle:Edit:edituser.html.twig")
      */
     public function chgAction($userid) {
         $this->get('util')->setupController();
-        $em = $this->getDoctrine()->getManager();
+        $returnUrl = $this->get('util')->getReferer();
 
         /* @var $user User */
-        $user = $em->getRepository('ICup\Bundle\PublicSiteBundle\Entity\Doctrine\User')->find($userid);
-        if ($user == null) {
-             return $this->render('ICupPublicSiteBundle:Errors:baduser.html.twig');
-        }
+        $user = $this->get('entity')->getUserById($userid);
 
-        if ($user->isClub()) {
-            $returnUrl = $this->generateUrl('_edit_user_list', array('clubid' => $user->getCid()));
-        }
-        elseif ($user->isEditor()) {
-            $returnUrl = $this->generateUrl('_edit_editor_list', array('hostid' => $user->getPid()));
+        /* @var $thisuser User */
+        $thisuser = $this->get('util')->getCurrentUser();
+        if ($user->isEditor()) {
+            $hostid = $user->getPid();
         }
         else {
-            $this->generateUrl('_edit_host_list');
+            // If the user to be changed is not an editor - then make it impossible for editor admin to change it
+            $hostid = -1;
         }
-        
+        $this->get('util')->validateEditorAdminUser($thisuser, $hostid);
+
         $form = $this->makeUserForm($user, 'chg');
         $request = $this->getRequest();
         $form->handleRequest($request);
         if ($form->get('cancel')->isClicked()) {
             return $this->redirect($returnUrl);
         }
-        if ($form->isValid()) {
-            $otherUser = $em->getRepository('ICup\Bundle\PublicSiteBundle\Entity\Doctrine\User')
-                    ->findOneBy(array('username' => $user->getUsername()));
+        if ($this->checkForm($form, $user)) {
+            $otherUser = $this->get('logic')->getUserByName($user->getUsername());
             if ($otherUser != null && $otherUser->getId() != $user->getId()) {
                 $form->addError(new FormError($this->get('translator')->trans('FORM.USER.CANTCHANGENAME', array(), 'admin')));
             }
             else {
+                $em = $this->getDoctrine()->getManager();
                 $em->flush();
                 return $this->redirect($returnUrl);
             }
         }
-        if ($user->isClub()) {
-            $club = $em->getRepository('ICup\Bundle\PublicSiteBundle\Entity\Doctrine\Club')->find($user->getCid());
+        if ($user->isClub() && $user->isRelated()) {
+            $club = $this->get('entity')->getClubById($user->getCid());
         }
         else {
             $club = null;
         }
-        return array('form' => $form->createView(), 'action' => 'chg', 'host' => $user->getPid(), 'club' => $club, 'user' => $user, 'error' => isset($error) ? $error : null);
+        return array('form' => $form->createView(), 'action' => 'chg', 'host' => $user->getPid(), 'club' => $club, 'user' => $user, 'error' => null);
     }
     
    /**
      * Delete user information
-     * @Route("/user/del/{userid}", name="_edit_user_del")
+     * @Route("/edit/del/{userid}", name="_edit_user_del")
      * @Template("ICupPublicSiteBundle:Edit:edituser.html.twig")
      */
     public function delAction($userid) {
         $this->get('util')->setupController();
-        $em = $this->getDoctrine()->getManager();
+        $returnUrl = $this->get('util')->getReferer();
 
         /* @var $user User */
-        $user = $em->getRepository('ICup\Bundle\PublicSiteBundle\Entity\Doctrine\User')->find($userid);
-        if ($user == null) {
-             return $this->render('ICupPublicSiteBundle:Errors:baduser.html.twig');
-        }
-        
-        if ($user->isClub()) {
-            $returnUrl = $this->generateUrl('_edit_user_list', array('clubid' => $user->getCid()));
-        }
-        elseif ($user->isEditor()) {
-            $returnUrl = $this->generateUrl('_edit_editor_list', array('hostid' => $user->getPid()));
+        $user = $this->get('entity')->getUserById($userid);
+                
+        /* @var $thisuser User */
+        $thisuser = $this->get('util')->getCurrentUser();
+        if ($user->isEditor()) {
+            $hostid = $user->getPid();
         }
         else {
-            $this->generateUrl('_edit_host_list');
+            // If the user to be removed is not an editor - then make it impossible for editor admin to change it
+            $hostid = -1;
         }
+        $this->get('util')->validateEditorAdminUser($thisuser, $hostid);
         
         $form = $this->makeUserForm($user, 'del');
         $request = $this->getRequest();
@@ -213,17 +202,22 @@ class UserController extends Controller
             return $this->redirect($returnUrl);
         }
         if ($form->isValid()) {
+            $enrolls = $this->get('logic')->listEnrolledByUser($user->getId());
+            foreach ($enrolls as $enroll) {
+                $enroll->setUid(0);
+            }
+            $em = $this->getDoctrine()->getManager();
             $em->remove($user);
             $em->flush();
             return $this->redirect($returnUrl);
         }
-        if ($user->isClub()) {
-            $club = $em->getRepository('ICup\Bundle\PublicSiteBundle\Entity\Doctrine\Club')->find($user->getCid());
+        if ($user->isClub() && $user->isRelated()) {
+            $club = $this->get('entity')->getClubById($user->getCid());
         }
         else {
             $club = null;
         }
-        return array('form' => $form->createView(), 'action' => 'del', 'host' => $user->getPid(), 'club' => $club, 'user' => $user, 'error' => isset($error) ? $error : null);
+        return array('form' => $form->createView(), 'action' => 'del', 'host' => $user->getPid(), 'club' => $club, 'user' => $user, 'error' => null);
     }
     
     private function makeUserForm(User $user, $action) {
@@ -236,65 +230,78 @@ class UserController extends Controller
             $roles = array();
             foreach ($roleCategory as $role) {
                 $roles[$role] = 'FORM.USER.CHOICE.ROLE.'.$role;
-                if ($user->getRole() === $role) $found = true;
+                if ($user->getRole() === $role) {
+                    $found = true;
+                }
             }
-            if ($found) break;
+            if ($found) {
+                break;
+            }
         }
         $status = array();
-        foreach (array(User::$AUTH,User::$VER,User::$PRO,User::$ATT) as $stat) {
+        foreach (array(User::$AUTH, User::$VER, User::$PRO, User::$ATT) as $stat) {
             $status[$stat] = 'FORM.USER.CHOICE.STATUS.'.$stat;
         }
         $formDef = $this->createFormBuilder($user);
         $formDef->add('name', 'text', array('label' => 'FORM.USER.NAME', 'required' => false, 'disabled' => $action == 'del', 'translation_domain' => 'admin'));
         $formDef->add('email', 'text', array('label' => 'FORM.USER.EMAIL', 'required' => false, 'disabled' => $action == 'del', 'translation_domain' => 'admin'));
         $formDef->add('username', 'text', array('label' => 'FORM.USER.USERNAME', 'required' => false, 'disabled' => $action == 'del', 'translation_domain' => 'admin'));
-        if ($user->getRole() != User::$ADMIN) {
+        if (!$user->isAdmin()) {
             $formDef->add('role', 'choice', array('label' => 'FORM.USER.ROLE', 'required' => false, 'choices' => $roles, 'empty_value' => 'FORM.USER.DEFAULT', 'disabled' => $action == 'del', 'translation_domain' => 'admin'));
         }
-//        if ($user->getRole() != User::$SYSTEM) {
-//            $formDef->add('status', 'choice', array('label' => 'FORM.USER.STATUS', 'required' => false, 'choices' => $status, 'empty_value' => 'FORM.USER.DEFAULT', 'disabled' => $action == 'del', 'translation_domain' => 'admin'));
-//        }
-//        $formDef->add('password', 'text', array('label' => 'FORM.USER.PASSWORD', 'required' => false, 'disabled' => $action == 'del', 'translation_domain' => 'admin'));
+        if ($user->isClub()) {
+            $formDef->add('status', 'choice', array('label' => 'FORM.USER.STATUS', 'required' => false, 'choices' => $status, 'empty_value' => 'FORM.USER.DEFAULT', 'disabled' => $action == 'del', 'translation_domain' => 'admin'));
+        }
         $formDef->add('cancel', 'submit', array('label' => 'FORM.USER.CANCEL.'.strtoupper($action), 'translation_domain' => 'admin'));
         $formDef->add('save', 'submit', array('label' => 'FORM.USER.SUBMIT.'.strtoupper($action), 'translation_domain' => 'admin'));
         return $formDef->getForm();
     }
     
+    private function checkForm($form, User $user) {
+        if ($form->isValid()) {
+            if ($user->getName() == null || trim($user->getName()) == '') {
+                $form->addError(new FormError($this->get('translator')->trans('FORM.USER.NONAME', array(), 'admin')));
+                return false;
+            }
+            if ($user->getUsername() == null || trim($user->getUsername()) == '') {
+                $form->addError(new FormError($this->get('translator')->trans('FORM.USER.NOUSERNAME', array(), 'admin')));
+                return false;
+            }
+            if ($user->getRole() == null) {
+                $form->addError(new FormError($this->get('translator')->trans('FORM.USER.NOROLE', array(), 'admin')));
+                return false;
+            }
+            if ($user->getStatus() == null) {
+                $form->addError(new FormError($this->get('translator')->trans('FORM.USER.NOSTATUS', array(), 'admin')));
+                return false;
+            }
+            return true;
+        }
+        return false;
+    }
+    
    /**
      * Change password
-     * @Route("/user/chg/pass/{userid}", name="_edit_user_chg_pass")
+     * @Route("/edit/chg/pass/{userid}", name="_edit_user_chg_pass")
      * @Template("ICupPublicSiteBundle:Edit:edituser.html.twig")
      */
     public function passAction($userid) {
         $this->get('util')->setupController();
-        $em = $this->getDoctrine()->getManager();
-
+        $returnUrl = $this->get('util')->getReferer();
+        
         /* @var $user User */
-        $user = $em->getRepository('ICup\Bundle\PublicSiteBundle\Entity\Doctrine\User')->find($userid);
-        if ($user == null) {
-             return $this->render('ICupPublicSiteBundle:Errors:baduser.html.twig');
-        }
-/*        
-        if ($user->isClub()) {
-            $returnUrl = $this->generateUrl('_edit_user_list', array('clubid' => $user->getCid()));
-        }
-        elseif ($user->isEditor()) {
-            $returnUrl = $this->generateUrl('_edit_editor_list', array('hostid' => $user->getPid()));
+        $user = $this->get('entity')->getUserById($userid);
+        
+        /* @var $thisuser User */
+        $thisuser = $this->get('util')->getCurrentUser();
+        if ($user->isEditor()) {
+            $hostid = $user->getPid();
         }
         else {
-            $returnUrl = $this->generateUrl('_edit_host_list');
+            // If the user to change is not an editor - then make it impossible for editor admin to change it
+            $hostid = -1;
         }
-*/
-        $request = $this->getRequest();
-        if ($request->isMethod('GET')) {
-            $returnUrl = $request->headers->get('referer');
-            $session = $request->getSession();
-            $session->set('icup.referer', $returnUrl);
-        }
-        else {
-            $session = $request->getSession();
-            $returnUrl = $session->get('icup.referer');
-        }
+        $this->get('util')->validateEditorAdminUser($thisuser, $hostid);
         
         $pwd = new Password();
         $formDef = $this->createFormBuilder($pwd);
@@ -303,37 +310,23 @@ class UserController extends Controller
         $formDef->add('cancel', 'submit', array('label' => 'FORM.USER.CANCEL.CHG', 'translation_domain' => 'admin'));
         $formDef->add('save', 'submit', array('label' => 'FORM.USER.SUBMIT.CHG', 'translation_domain' => 'admin'));
         $form = $formDef->getForm();
-//        $request = $this->getRequest();
+        $request = $this->getRequest();
         $form->handleRequest($request);
         if ($form->get('cancel')->isClicked()) {
             return $this->redirect($returnUrl);
         }
         if ($form->isValid()) {
-            $this->generatePassword($user, $pwd->getPassword());
+            $this->get('util')->generatePassword($user, $pwd->getPassword());
+            $em = $this->getDoctrine()->getManager();
             $em->flush();
             return $this->redirect($returnUrl);
         }
-        if ($user->isClub()) {
-            $club = $em->getRepository('ICup\Bundle\PublicSiteBundle\Entity\Doctrine\Club')->find($user->getCid());
+        if ($user->isClub() && $user->isRelated()) {
+            $club = $this->get('entity')->getClubById($user->getCid());
         }
         else {
             $club = null;
         }
-        return array('form' => $form->createView(), 'action' => 'chg', 'host' => $user->getPid(), 'club' => $club, 'user' => $user, 'error' => isset($error) ? $error : null);
-    }
-    
-    private function generatePassword(User $user, $secret = null) {
-        if ($secret == null) {
-            $secret = uniqid();
-        }
-        $factory = $this->get('security.encoder_factory');
-        $encoder = $factory->getEncoder($user);
-        $password = $encoder->encodePassword($secret, $user->getSalt());
-        $user->setPassword($password);
-        $pwValid = $encoder->isPasswordValid($password, $secret, $user->getSalt());
-        if (!$pwValid) {
-            $this->get('logger')->addNotice("Password is not valid: " . $user->getUsername() . ": " . $secret . " -> " . $password);
-        }
-        return $pwValid;
+        return array('form' => $form->createView(), 'action' => 'chg', 'host' => $user->getPid(), 'club' => $club, 'user' => $user, 'error' => null);
     }
 }

@@ -28,22 +28,7 @@ class PlaygroundController extends Controller
         $group = $this->get('entity')->getGroupById($groupid);
         $category = $this->get('entity')->getCategoryById($group->getPid());
         
-        $em = $this->getDoctrine()->getManager();
-        $qb = $em->createQuery("select m.matchno,m.date,m.time,r.awayteam,r.scorevalid,r.score,r.points,t.id,t.name as team,t.division,c.country ".
-                               "from ICup\Bundle\PublicSiteBundle\Entity\Doctrine\MatchRelation r, ".
-                                    "ICup\Bundle\PublicSiteBundle\Entity\Doctrine\Match m, ".
-                                    "ICup\Bundle\PublicSiteBundle\Entity\Doctrine\Team t, ".
-                                    "ICup\Bundle\PublicSiteBundle\Entity\Doctrine\Club c ".
-                               "where m.pid=:group and ".
-                                     "m.playground=:playground and ".
-                                     "r.pid=m.id and ".
-                                     "t.id=r.cid and ".
-                                     "c.id=t.pid ".
-                               "order by m.id");
-        $qb->setParameter('group', $groupid);
-        $qb->setParameter('playground', $playgroundid);
-        $matches = $qb->getResult();
-
+        $matches = $this->get('tmnt')->listMatchesByGroupPlayground($groupid, $playgroundid);
         $matchList = array();
 
         $rel = 0;
@@ -123,24 +108,7 @@ class PlaygroundController extends Controller
         $tournament = $this->get('util')->getTournament();
         $playground = $this->get('entity')->getPlaygroundById($playgroundid);
 
-        $em = $this->getDoctrine()->getManager();
-        $qb = $em->createQuery("select m.matchno,m.date,m.time,g.id as gid,g.name as grp,cat.name as category,r.awayteam,r.scorevalid,r.score,r.points,t.id,t.name as team,t.division,c.country ".
-                               "from ICup\Bundle\PublicSiteBundle\Entity\Doctrine\MatchRelation r, ".
-                                    "ICup\Bundle\PublicSiteBundle\Entity\Doctrine\Match m, ".
-                                    "ICup\Bundle\PublicSiteBundle\Entity\Doctrine\Group g, ".
-                                    "ICup\Bundle\PublicSiteBundle\Entity\Doctrine\Category cat, ".
-                                    "ICup\Bundle\PublicSiteBundle\Entity\Doctrine\Team t, ".
-                                    "ICup\Bundle\PublicSiteBundle\Entity\Doctrine\Club c ".
-                               "where m.playground=:playground and ".
-                                     "m.pid=g.id and ".
-                                     "g.pid=cat.id and ".
-                                     "r.pid=m.id and ".
-                                     "t.id=r.cid and ".
-                                     "c.id=t.pid ".
-                               "order by m.id");
-        $qb->setParameter('playground', $playgroundid);
-        $matches = $qb->getResult();
-
+        $matches = $this->get('tmnt')->listMatchesByPlayground($playgroundid);
         $matchList = array();
 
         $rel = 0;

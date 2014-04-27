@@ -16,17 +16,7 @@ class WinnersController extends Controller
         $this->get('util')->setupController($tournament);
         $tournament = $this->get('util')->getTournament();
         $championList = array();
-
-        $em = $this->getDoctrine()->getManager();
-        $qb = $em->createQuery("select c.id as catid,c.name as category,c.gender,c.classification as class,g.id,g.classification ".
-                               "from ICup\Bundle\PublicSiteBundle\Entity\Doctrine\Category c, ".
-                                    "ICup\Bundle\PublicSiteBundle\Entity\Doctrine\Group g ".
-                               "where c.pid=:tournament and g.pid=c.id and g.classification >= :finals ".
-                               "order by c.gender asc, c.classification asc, g.classification desc");
-        $qb->setParameter('tournament', $tournament->getId());
-        $qb->setParameter('finals', 9);
-        $groups = $qb->getResult();
-        
+        $groups = $this->get('tmnt')->listChampionsByTournament($tournament->getId());
         foreach ($groups as $group) {
             $teamsList = $this->get('orderTeams')->sortGroup($group['id']);
             if ($group['classification'] == 10) {
@@ -52,17 +42,7 @@ class WinnersController extends Controller
     {
         $this->get('util')->setupController($tournament);
         $tournament = $this->get('util')->getTournament();
-
-        $em = $this->getDoctrine()->getManager();
-        $qb = $em->createQuery("select c.id as catid,c.name as category,c.gender,c.classification as class,g.id,g.classification ".
-                               "from ICup\Bundle\PublicSiteBundle\Entity\Doctrine\Category c, ".
-                                    "ICup\Bundle\PublicSiteBundle\Entity\Doctrine\Group g ".
-                               "where c.pid=:tournament and g.pid=c.id and g.classification >= :finals ".
-                               "order by c.gender asc, c.classification asc, g.classification desc");
-        $qb->setParameter('tournament', $tournament->getId());
-        $qb->setParameter('finals', 9);
-        $groups = $qb->getResult();
-        
+        $groups = $this->get('tmnt')->listChampionsByTournament($tournament->getId());
         $countryList = array();
         foreach ($groups as $group) {
             $teamsList = $this->get('orderTeams')->sortGroup($group['id']);
@@ -126,17 +106,7 @@ class WinnersController extends Controller
     {
         $this->get('util')->setupController($tournament);
         $tournament = $this->get('util')->getTournament();
-
-        $em = $this->getDoctrine()->getManager();
-        $qb = $em->createQuery("select c.id as catid,c.name as category,c.gender,c.classification as class,g.id,g.classification ".
-                               "from ICup\Bundle\PublicSiteBundle\Entity\Doctrine\Category c, ".
-                                    "ICup\Bundle\PublicSiteBundle\Entity\Doctrine\Group g ".
-                               "where c.pid=:tournament and g.pid=c.id and g.classification >= :finals ".
-                               "order by c.gender asc, c.classification asc, g.classification desc");
-        $qb->setParameter('tournament', $tournament->getId());
-        $qb->setParameter('finals', 9);
-        $groups = $qb->getResult();
-        
+        $groups = $this->get('tmnt')->listChampionsByTournament($tournament->getId());
         $countryList = array();
         foreach ($groups as $group) {
             $teamsList = $this->get('orderTeams')->sortGroup($group['id']);

@@ -34,17 +34,7 @@ class TournamentController extends Controller
     {
         $this->get('util')->setupController($tournament);
         $tournament = $this->get('util')->getTournament();
-
-        $em = $this->getDoctrine()->getManager();
-        $qb = $em->createQuery("select p.id,p.name,s.name as site ".
-                               "from ICup\Bundle\PublicSiteBundle\Entity\Doctrine\Site s, ".
-                                    "ICup\Bundle\PublicSiteBundle\Entity\Doctrine\Playground p ".
-                               "where s.pid=:tournament and ".
-                                     "p.pid=s.id ".
-                               "order by p.no");
-        $qb->setParameter('tournament', $tournament->getId());
-        $playgrounds = $qb->getResult();
-
+        $playgrounds = $this->get('tmnt')->listPlaygroundsByTournament($tournament->getId());
         $playgroundList = array();
         foreach ($playgrounds as $playground) {
             $site = $playground['site'];
@@ -61,24 +51,7 @@ class TournamentController extends Controller
     {
         $this->get('util')->setupController($tournament);
         $tournament = $this->get('util')->getTournament();
-
-        $em = $this->getDoctrine()->getManager();
-        $qb = $em->createQuery("select c ".
-                               "from ICup\Bundle\PublicSiteBundle\Entity\Doctrine\Category cat, ".
-                                    "ICup\Bundle\PublicSiteBundle\Entity\Doctrine\Group g, ".
-                                    "ICup\Bundle\PublicSiteBundle\Entity\Doctrine\GroupOrder o, ".
-                                    "ICup\Bundle\PublicSiteBundle\Entity\Doctrine\Team t, ".
-                                    "ICup\Bundle\PublicSiteBundle\Entity\Doctrine\Club c ".
-                               "where cat.pid=:tournament and ".
-                                     "g.pid=cat.id and ".
-                                     "g.classification=0 and ".
-                                     "o.pid=g.id and ".
-                                     "o.cid=t.id and ".
-                                     "t.pid=c.id ".
-                               "order by c.country asc, c.name asc");
-        $qb->setParameter('tournament', $tournament->getId());
-        $clubs = $qb->getResult();
-
+        $clubs = $this->get('logic')->listClubsByTournament($tournament->getId());
         $teamList = array();
         foreach ($clubs as $club) {
             $country = $club->getCountry();
@@ -115,22 +88,7 @@ class TournamentController extends Controller
             $categoryList[$category->getId()] = $category;
         }
         $club = $this->get('entity')->getClubById($clubId);
-
-        $em = $this->getDoctrine()->getManager();
-        $qb = $em->createQuery("select t.id, t.name, t.division, c.id as catid, c.name as category, c.classification, c.gender, g.id as groupid, g.name as grp ".
-                               "from ICup\Bundle\PublicSiteBundle\Entity\Doctrine\Team t, ".
-                                    "ICup\Bundle\PublicSiteBundle\Entity\Doctrine\GroupOrder o, ".
-                                    "ICup\Bundle\PublicSiteBundle\Entity\Doctrine\Group g, ".
-                                    "ICup\Bundle\PublicSiteBundle\Entity\Doctrine\Category c ".
-                               "where t.pid=:club and ".
-                                     "o.cid=t.id and ".
-                                     "o.pid=g.id and ".
-                                     "g.classification=0 and ".
-                                     "g.pid=c.id ".
-                               "order by c.gender asc, c.classification asc, t.division asc");
-        $qb->setParameter('club', $club->getId());
-        $teams = $qb->getResult();
-
+        $teams = $this->get('tmnt')->listTeamsByClub($tournament->getId(), $clubId);
         $teamList = array();
         foreach ($teams as $team) {
             $name = $team['name'];

@@ -302,10 +302,30 @@ class BusinessLogic
         return $this->entity->getGroupRepo()->findBy(array('pid' => $categoryid));
     }
 
-    public function listGroups(Category $category, $classification = 0) {
+    public function listGroups($categoryid, $classification = 0) {
         return $this->entity->getGroupRepo()
-                    ->findBy(array('pid' => $category->getId(), 'classification' => $classification),
+                    ->findBy(array('pid' => $categoryid, 'classification' => $classification),
                              array('name' => 'asc'));
+    }
+    
+    public function listGroupsClassification($categoryid) {
+        $qb = $this->em->createQuery(
+                "select g ".
+                "from ".$this->entity->getRepositoryPath('Group')." g ".
+                "where g.pid=:category and g.classification > 0 and g.classification < 8 ".
+                "order by g.classification asc, g.name asc");
+        $qb->setParameter('category', $categoryid);
+        return $qb->getResult();
+    }
+    
+    public function listGroupsFinals($categoryid) {
+        $qb = $this->em->createQuery(
+                "select g ".
+                "from ".$this->entity->getRepositoryPath('Group')." g ".
+                "where g.pid=:category and g.classification > 7 ".
+                "order by g.classification desc, g.name asc");
+        $qb->setParameter('category', $categoryid);
+        return $qb->getResult();
     }
     
     public function listGroupOrders($groupid) {
@@ -404,6 +424,25 @@ class BusinessLogic
         return $this->entity->getClubRepo()->findBy(array(), array('country' => 'asc', 'name' => 'asc'));
     }
     
+    public function listClubsByTournament($tournamentid) {
+        $qb = $this->em->createQuery(
+                "select c ".
+                "from ".$this->entity->getRepositoryPath('Category')." cat, ".
+                        $this->entity->getRepositoryPath('Group')." g, ".
+                        $this->entity->getRepositoryPath('GroupOrder')." o, ".
+                        $this->entity->getRepositoryPath('Team')." t, ".
+                        $this->entity->getRepositoryPath('Club')." c ".
+                "where cat.pid=:tournament and ".
+                        "g.pid=cat.id and ".
+                        "g.classification=0 and ".
+                        "o.pid=g.id and ".
+                        "o.cid=t.id and ".
+                        "t.pid=c.id ".
+                "order by c.country asc, c.name asc");
+        $qb->setParameter('tournament', $tournamentid);
+        return $qb->getResult();
+    }
+
     public function listClubsByPattern($pattern, $countryCode) {
         $qb = $this->em->createQuery(
                 "select c ".

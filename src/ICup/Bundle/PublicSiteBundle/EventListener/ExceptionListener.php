@@ -49,10 +49,7 @@ class ExceptionListener extends ContainerAware
             $this->logger->addError("ValidationException ".$exception->getMessage().": ".$exception->getDebugInfo().' - '.$exception->getFile().':'.$exception->getLine());
         }
         elseif ($exception instanceof RedirectException) {
-            $response = new Response();
-            $response->setContent($exception->getResponse());
-            // Send the modified response object to the event
-            $event->setResponse($response);
+            $event->setResponse($exception->getResponse());
         }
     }
 }

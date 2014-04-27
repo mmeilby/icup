@@ -80,6 +80,12 @@ services:
           - "@doctrine.orm.entity_manager"
           - "@logger"
 
+    tmnt:
+        class: "ICup\\Bundle\\PublicSiteBundle\\Services\\Doctrine\\TournamentSupport"
+        arguments:
+          - "@service_container"
+          - "@logger"
+
     util:
         class: "ICup\\Bundle\\PublicSiteBundle\\Services\\Util"
         arguments:

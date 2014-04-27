@@ -10,6 +10,7 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Session;
 use Symfony\Component\Yaml\Exception\ParseException;
 use ICup\Bundle\PublicSiteBundle\Exceptions\ValidationException;
+use ICup\Bundle\PublicSiteBundle\Exceptions\RedirectException;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 use Doctrine\ORM\EntityManager;
 use Monolog\Logger;

@@ -19,15 +19,14 @@ class OrderTeams
         $this->logger = $logger;
     }
 
-    public function sortGroup($group) {
-        $teams = $this->logic->listTeamsByGroup($group);
-        $teamResults = $this->logic->getTeamResultsByGroup($group);
-        $teamsList = $this->generateStat($teams, $teamResults, $group);
+    public function sortGroup($groupid) {
+        $teams = $this->logic->listTeamsByGroup($groupid);
+        $teamResults = $this->logic->getTeamResultsByGroup($groupid);
+        $teamsList = $this->generateStat($teams, $teamResults, $groupid);
         return $this->sortTeams($teamsList);
     }
 
     public function generateStat($teams, $teamResults, $groupId = 0) {
-
         $teamMap = array();
         foreach ($teams as $team) {
             $stat = new TeamStat();

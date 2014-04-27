@@ -30,7 +30,7 @@ class GroupPlanningController extends Controller
         $host = $this->get('entity')->getHostById($tournament->getPid());
         $utilService->validateEditorAdminUser($user, $tournament->getPid());
 
-        $groups = $this->get('logic')->listGroups($category);
+        $groups = $this->get('logic')->listGroups($categoryid);
         $teamsUnassigned = $this->get('logic')->listTeamsEnrolledUnassigned($categoryid);
         $groupList = array();
         $selectedGroup = null;

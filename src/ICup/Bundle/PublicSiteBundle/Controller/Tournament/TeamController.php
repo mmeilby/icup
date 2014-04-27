@@ -32,25 +32,7 @@ class TeamController extends Controller
         }
         $group = $this->get('entity')->getGroupById($groupid);
         $category = $this->get('entity')->getCategoryById($group->getPid());
-
-        $em = $this->getDoctrine()->getManager();
-        $qb = $em->createQuery("select m.matchno,m.date,m.time,p.id as playgroundid,p.no,p.name as playground,r.awayteam,r.scorevalid,r.score,r.points,t.id,t.name as team,t.division,c.country ".
-                               "from ICup\Bundle\PublicSiteBundle\Entity\Doctrine\MatchRelation r, ".
-                                    "ICup\Bundle\PublicSiteBundle\Entity\Doctrine\Match m, ".
-                                    "ICup\Bundle\PublicSiteBundle\Entity\Doctrine\Playground p, ".
-                                    "ICup\Bundle\PublicSiteBundle\Entity\Doctrine\Team t, ".
-                                    "ICup\Bundle\PublicSiteBundle\Entity\Doctrine\Club c ".
-                               "where m.pid=:group and ".
-                                     "m.id in (select rx.pid from ICup\Bundle\PublicSiteBundle\Entity\Doctrine\MatchRelation rx where rx.cid=:team) and ".
-                                     "p.id=m.playground and ".
-                                     "r.pid=m.id and ".
-                                     "t.id=r.cid and ".
-                                     "c.id=t.pid ".
-                               "order by m.id");
-        $qb->setParameter('group', $groupid);
-        $qb->setParameter('team', $teamid);
-        $matches = $qb->getResult();
-        
+        $matches = $this->get('tmnt')->listMatchesByGroupTeam($groupid, $teamid);
         $matchList = array();
 
         $rel = 0;

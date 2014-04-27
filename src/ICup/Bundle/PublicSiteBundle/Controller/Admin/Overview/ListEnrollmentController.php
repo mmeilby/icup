@@ -5,7 +5,6 @@ use ICup\Bundle\PublicSiteBundle\Entity\Doctrine\Category;
 use ICup\Bundle\PublicSiteBundle\Entity\Doctrine\Club;
 use ICup\Bundle\PublicSiteBundle\Entity\Doctrine\Tournament;
 use ICup\Bundle\PublicSiteBundle\Entity\Doctrine\User;
-use ICup\Bundle\PublicSiteBundle\Exceptions\ValidationException;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
@@ -68,6 +67,20 @@ class ListEnrollmentController extends Controller
 
         $clb = $this->get('entity')->getClubById($club);
         return $this->listEnrolled($tmnt, $clb);
+    }
+
+    /**
+     * Select club from list of matched club names rather than adding a new club
+     * Current user must be an editor
+     * NOTE: this action will be requested from javascript and can not be parameterized the traditional Symfony way
+     * @Route("/edit/enroll/list/check", name="_host_select_club")
+     * @Method("GET")
+     */
+    public function selectClubAction()
+    {
+        $clubid = $this->getRequest()->get('clubid', '');
+        $tournamentid = $this->getRequest()->get('tournamentid', '');
+        return $this->redirect($this->generateUrl('_club_enroll_list_admin', array('tournament' => $tournamentid, 'club' => $clubid)));
     }
 
     private function listEnrolled(Tournament $tmnt, Club $club) {

@@ -2,14 +2,12 @@
 namespace ICup\Bundle\PublicSiteBundle\Controller\Admin\Tournament;
 
 use ICup\Bundle\PublicSiteBundle\Entity\Doctrine\User;
-use ICup\Bundle\PublicSiteBundle\Entity\Doctrine\Host;
 use ICup\Bundle\PublicSiteBundle\Entity\Doctrine\Group;
 use ICup\Bundle\PublicSiteBundle\Entity\Doctrine\Category;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
-use ICup\Bundle\PublicSiteBundle\Exceptions\ValidationException;
 
 class GroupPlanningController extends Controller
 {
@@ -24,39 +22,35 @@ class GroupPlanningController extends Controller
         $utilService = $this->get('util');
         $utilService->setupController();
 
-        try {
-            /* @var $user User */
-            $user = $utilService->getCurrentUser();
-            /* @var $category Category */
-            $category = $this->get('entity')->getCategoryById($categoryid);
-            $tournament = $this->get('entity')->getTournamentById($category->getPid());
-            $host = $this->get('entity')->getHostById($tournament->getPid());
-            $utilService->validateEditorAdminUser($user, $tournament->getPid());
+        /* @var $user User */
+        $user = $utilService->getCurrentUser();
+        /* @var $category Category */
+        $category = $this->get('entity')->getCategoryById($categoryid);
+        $tournament = $this->get('entity')->getTournamentById($category->getPid());
+        $host = $this->get('entity')->getHostById($tournament->getPid());
+        $utilService->validateEditorAdminUser($user, $tournament->getPid());
 
-            $groups = $this->get('logic')->listGroups($category);
-            $teamsUnassigned = $this->get('logic')->listTeamsEnrolledUnassigned($categoryid);
-            $groupList = array();
-            $selectedGroup = null;
-            $preferredGroup = $this->getSelectedGroup();
-            foreach ($groups as $group) {
-                $teamsList = $this->get('logic')->listTeamsByGroup($group->getId());
-                $groupList[$group->getName()] = array('group' => $group, 'teams' => $teamsList);
-                if ($preferredGroup == $group->getId()) {
-                    $selectedGroup = $group;
-                }
-                elseif ($selectedGroup === null) {
-                    $selectedGroup = $group;
-                }
+        $groups = $this->get('logic')->listGroups($category);
+        $teamsUnassigned = $this->get('logic')->listTeamsEnrolledUnassigned($categoryid);
+        $groupList = array();
+        $selectedGroup = null;
+        $preferredGroup = $this->getSelectedGroup();
+        foreach ($groups as $group) {
+            $teamsList = $this->get('logic')->listTeamsByGroup($group->getId());
+            $groupList[$group->getName()] = array('group' => $group, 'teams' => $teamsList);
+            if ($preferredGroup == $group->getId()) {
+                $selectedGroup = $group;
             }
-            return array('host' => $host,
-                         'tournament' => $tournament,
-                         'category' => $category,
-                         'grouplist' => $groupList,
-                         'unassigned' => $teamsUnassigned,
-                         'selectedgroup' => $selectedGroup);
-        } catch (ValidationException $vexc) {
-            return $this->render('ICupPublicSiteBundle:Errors:' . $vexc->getMessage(), array('redirect' => $this->generateUrl('_user_my_page')));
+            elseif ($selectedGroup === null) {
+                $selectedGroup = $group;
+            }
         }
+        return array('host' => $host,
+                     'tournament' => $tournament,
+                     'category' => $category,
+                     'grouplist' => $groupList,
+                     'unassigned' => $teamsUnassigned,
+                     'selectedgroup' => $selectedGroup);
     }
 
     private function getSelectedGroup() {
@@ -84,25 +78,18 @@ class GroupPlanningController extends Controller
         /* @var $utilService Util */
         $utilService = $this->get('util');
         $utilService->setupController();
-        try {
-            /* @var $user User */
-            $user = $utilService->getCurrentUser();
-            /* @var $group Group */
-            $group = $this->get('entity')->getGroupById($groupid);
-            /* @var $category Category */
-            $category = $this->get('entity')->getCategoryById($group->getPid());
-            $tournament = $this->get('entity')->getTournamentById($category->getPid());
-            $utilService->validateEditorAdminUser($user, $tournament->getPid());
-            
-            $this->setSelectedGroup($groupid);
-            return $this->redirect(
-                    $this->generateUrl('_host_list_groups', 
-                                        array('categoryid' => $category->getId())));
-            
-        } catch (ValidationException $vexc) {
-            return $this->render('ICupPublicSiteBundle:Errors:' . $vexc->getMessage(),
-                                 array('redirect' => $this->generateUrl('_user_my_page')));
-        } 
+        $returnUrl = $utilService->getReferer();
+        /* @var $user User */
+        $user = $utilService->getCurrentUser();
+        /* @var $group Group */
+        $group = $this->get('entity')->getGroupById($groupid);
+        /* @var $category Category */
+        $category = $this->get('entity')->getCategoryById($group->getPid());
+        $tournament = $this->get('entity')->getTournamentById($category->getPid());
+        $utilService->validateEditorAdminUser($user, $tournament->getPid());
+
+        $this->setSelectedGroup($groupid);
+        return $this->redirect($returnUrl);
     }
     
     /**
@@ -114,26 +101,18 @@ class GroupPlanningController extends Controller
         /* @var $utilService Util */
         $utilService = $this->get('util');
         $utilService->setupController();
+        $returnUrl = $utilService->getReferer();
+        /* @var $user User */
+        $user = $utilService->getCurrentUser();
+        /* @var $group Group */
+        $group = $this->get('entity')->getGroupById($groupid);
+        /* @var $category Category */
+        $category = $this->get('entity')->getCategoryById($group->getPid());
+        $tournament = $this->get('entity')->getTournamentById($category->getPid());
+        $utilService->validateEditorAdminUser($user, $tournament->getPid());
 
-        try {
-            /* @var $user User */
-            $user = $utilService->getCurrentUser();
-            /* @var $group Group */
-            $group = $this->get('entity')->getGroupById($groupid);
-            /* @var $category Category */
-            $category = $this->get('entity')->getCategoryById($group->getPid());
-            $tournament = $this->get('entity')->getTournamentById($category->getPid());
-            $utilService->validateEditorAdminUser($user, $tournament->getPid());
-            
-            $this->get('logic')->assignEnrolled($teamid, $groupid);
-            return $this->redirect(
-                    $this->generateUrl('_host_list_groups', 
-                                        array('categoryid' => $category->getId())));
-            
-        } catch (ValidationException $vexc) {
-            return $this->render('ICupPublicSiteBundle:Errors:' . $vexc->getMessage(),
-                                 array('redirect' => $this->generateUrl('_user_my_page')));
-        } 
+        $this->get('logic')->assignEnrolled($teamid, $groupid);
+        return $this->redirect($returnUrl);
     }
     
     /**
@@ -145,25 +124,17 @@ class GroupPlanningController extends Controller
         /* @var $utilService Util */
         $utilService = $this->get('util');
         $utilService->setupController();
+        $returnUrl = $utilService->getReferer();
+        /* @var $user User */
+        $user = $utilService->getCurrentUser();
+        /* @var $group Group */
+        $group = $this->get('entity')->getGroupById($groupid);
+        /* @var $category Category */
+        $category = $this->get('entity')->getCategoryById($group->getPid());
+        $tournament = $this->get('entity')->getTournamentById($category->getPid());
+        $utilService->validateEditorAdminUser($user, $tournament->getPid());
 
-        try {
-            /* @var $user User */
-            $user = $utilService->getCurrentUser();
-            /* @var $group Group */
-            $group = $this->get('entity')->getGroupById($groupid);
-            /* @var $category Category */
-            $category = $this->get('entity')->getCategoryById($group->getPid());
-            $tournament = $this->get('entity')->getTournamentById($category->getPid());
-            $utilService->validateEditorAdminUser($user, $tournament->getPid());
-            
-            $this->get('logic')->removeEnrolled($teamid, $groupid);
-            return $this->redirect(
-                    $this->generateUrl('_host_list_groups', 
-                                        array('categoryid' => $category->getId())));
-            
-        } catch (ValidationException $vexc) {
-            return $this->render('ICupPublicSiteBundle:Errors:' . $vexc->getMessage(),
-                                 array('redirect' => $this->generateUrl('_user_my_page')));
-        } 
+        $this->get('logic')->removeEnrolled($teamid, $groupid);
+        return $this->redirect($returnUrl);
     }
 }

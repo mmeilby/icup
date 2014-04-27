@@ -21,7 +21,7 @@ class GroupController extends Controller
         /* @var $utilService Util */
         $utilService = $this->get('util');
         $utilService->setupController();
-        $em = $this->getDoctrine()->getManager();
+        $returnUrl = $utilService->getReferer();
 
         /* @var $user User */
         $user = $utilService->getCurrentUser();
@@ -35,12 +35,13 @@ class GroupController extends Controller
         $request = $this->getRequest();
         $form->handleRequest($request);
         if ($form->get('cancel')->isClicked()) {
-            return $this->redirect($this->getReturnPath($user, $tournament->getId()));
+            return $this->redirect($returnUrl);
         }
-        if ($form->isValid()) {
+        if ($this->checkForm($form, $group)) {
+            $em = $this->getDoctrine()->getManager();
             $em->persist($group);
             $em->flush();
-            return $this->redirect($this->getReturnPath($user, $tournament->getId()));
+            return $this->redirect($returnUrl);
         }
         return array('form' => $form->createView(), 'action' => 'add', 'group' => $group, 'error' => null);
     }
@@ -54,7 +55,7 @@ class GroupController extends Controller
         /* @var $utilService Util */
         $utilService = $this->get('util');
         $utilService->setupController();
-        $em = $this->getDoctrine()->getManager();
+        $returnUrl = $utilService->getReferer();
 
         /* @var $user User */
         $user = $utilService->getCurrentUser();
@@ -67,12 +68,13 @@ class GroupController extends Controller
         $request = $this->getRequest();
         $form->handleRequest($request);
         if ($form->get('cancel')->isClicked()) {
-            return $this->redirect($this->getReturnPath($user, $tournament->getId()));
+            return $this->redirect($returnUrl);
         }
-        if ($form->isValid()) {
+        if ($this->checkForm($form, $group)) {
+            $em = $this->getDoctrine()->getManager();
             $em->persist($group);
             $em->flush();
-            return $this->redirect($this->getReturnPath($user, $tournament->getId()));
+            return $this->redirect($returnUrl);
         }
         return array('form' => $form->createView(), 'action' => 'chg', 'group' => $group, 'error' => null);
     }
@@ -86,7 +88,7 @@ class GroupController extends Controller
         /* @var $utilService Util */
         $utilService = $this->get('util');
         $utilService->setupController();
-        $em = $this->getDoctrine()->getManager();
+        $returnUrl = $utilService->getReferer();
 
         /* @var $user User */
         $user = $utilService->getCurrentUser();
@@ -99,12 +101,21 @@ class GroupController extends Controller
         $request = $this->getRequest();
         $form->handleRequest($request);
         if ($form->get('cancel')->isClicked()) {
-            return $this->redirect($this->getReturnPath($user, $tournament->getId()));
+            return $this->redirect($returnUrl);
         }
         if ($form->isValid()) {
-            $em->remove($group);
-            $em->flush();
-            return $this->redirect($this->getReturnPath($user, $tournament->getId()));
+            if ($this->get('logic')->listGroupOrders($group->getId()) != null) {
+                $form->addError(new FormError($this->get('translator')->trans('FORM.GROUP.ORDEREXIST', array(), 'admin')));
+            }
+            elseif ($this->get('logic')->listMatches($group->getId()) != null) {
+                $form->addError(new FormError($this->get('translator')->trans('FORM.GROUP.MATCHESEXIST', array(), 'admin')));
+            }
+            else {
+                $em = $this->getDoctrine()->getManager();
+                $em->remove($group);
+                $em->flush();
+                return $this->redirect($returnUrl);
+            }
         }
         return array('form' => $form->createView(), 'action' => 'del', 'group' => $group, 'error' => null);
     }
@@ -123,12 +134,18 @@ class GroupController extends Controller
         return $formDef->getForm();
     }
     
-    private function getReturnPath(User $user, $tournamentid) {
-        if ($this->get('util')->isAdminUser($user)) {
-            return $this->generateUrl('_edit_category_list', array('tournamentid' => $tournamentid));
+    private function checkForm($form, Group $group) {
+        if ($form->isValid()) {
+            if ($group->getName() == null || trim($group->getName()) == '') {
+                $form->addError(new FormError($this->get('translator')->trans('FORM.GROUP.NONAME', array(), 'admin')));
+                return false;
+            }
+            if ($group->getClassification() == null) {
+                $form->addError(new FormError($this->get('translator')->trans('FORM.GROUP.NOCLASSIFICATION', array(), 'admin')));
+                return false;
+            }
+            return true;
         }
-        else {
-            return $this->generateUrl('_edit_category_list', array('tournamentid' => $tournamentid));
-        }
+        return false;
     }
 }

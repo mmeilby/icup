@@ -15,10 +15,6 @@ class OverviewController extends Controller
     {
         $this->get('util')->setupController($tournament);
         $tournament = $this->get('util')->getTournament();
-        if ($tournament == null) {
-            return $this->redirect($this->generateUrl('_icup'));
-        }
-        
         $newsStream = array(
 /*            
             array(

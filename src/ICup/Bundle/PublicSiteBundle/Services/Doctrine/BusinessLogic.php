@@ -192,6 +192,19 @@ class BusinessLogic
         return $results != null ? $results['results'] > 0 : false;
     }
     
+    public function listAnyEnrolledByClub($clubid) {
+        $qb = $this->em->createQuery(
+                "select c.pid as tid,count(e) as enrolled ".
+                "from ".$this->entity->getRepositoryPath('Enrollment')." e, ".
+                        $this->entity->getRepositoryPath('Category')." c, ".
+                        $this->entity->getRepositoryPath('Team')." t ".
+                "where e.pid=c.id and e.cid=t.id and t.pid=:club ".
+                "group by c.pid ".
+                "order by c.pid asc");
+        $qb->setParameter('club', $clubid);
+        return $qb->getResult();
+    }
+        
     public function listEnrolled($tournamentid) {
         $qb = $this->em->createQuery(
                 "select clb as club, count(e) as enrolled ".
@@ -215,6 +228,10 @@ class BusinessLogic
         return $qb->getResult();
     }
     
+    public function listEnrolledByCategory($categoryid) {
+        return $this->entity->getEnrollmentRepo()->findBy(array('pid' => $categoryid));
+    }
+    
     public function listEnrolledByClub($tournamentid, $clubid) {
         $qb = $this->em->createQuery(
                 "select e ".
@@ -229,8 +246,11 @@ class BusinessLogic
     }
     
     public function listSites($tournamentid) {
-        return $this->entity->getSiteRepo()
-                ->findBy(array('pid' => $tournamentid));
+        return $this->entity->getSiteRepo()->findBy(array('pid' => $tournamentid));
+    }
+
+    public function listPlaygrounds($siteid) {
+        return $this->entity->getPlaygroundRepo()->findBy(array('pid' => $siteid));
     }
 
     public function listPlaygroundsByTournament($tournamentid) {
@@ -242,6 +262,17 @@ class BusinessLogic
                 "order by p.no asc");
         $qb->setParameter('tournament', $tournamentid);
         return $qb->getResult();
+    }
+    
+    public function getTournamentByKey($key) {
+        return $this->entity->getTournamentRepo()->findOneBy(array('key' => $key));
+    }
+
+    /* TODO: this function must restrict til available tournaments */
+    public function listAvailableTournaments() {
+        return $this->entity->getTournamentRepo()
+                    ->findAll(array(),
+                              array('name' => 'asc'));
     }
     
     public function listTournaments($hostid) {
@@ -267,15 +298,26 @@ class BusinessLogic
         return $qb->getResult();
     }
     
+    public function listGroupsByCategory($categoryid) {
+        return $this->entity->getGroupRepo()->findBy(array('pid' => $categoryid));
+    }
+
     public function listGroups(Category $category, $classification = 0) {
-        $qb = $this->em->createQuery(
-                "select g ".
-                "from ".$this->entity->getRepositoryPath('Group')." g ".
-                "where g.pid=:category and g.classification=:class ".
-                "order by g.name asc");
-        $qb->setParameter('category', $category->getId());
-        $qb->setParameter('class', $classification);
-        return $qb->getResult();
+        return $this->entity->getGroupRepo()
+                    ->findBy(array('pid' => $category->getId(), 'classification' => $classification),
+                             array('name' => 'asc'));
+    }
+    
+    public function listGroupOrders($groupid) {
+        return $this->entity->getGroupOrderRepo()->findBy(array('pid' => $groupid));
+    }
+    
+    public function listMatches($groupid) {
+        return $this->entity->getMatchRepo()->findBy(array('pid' => $groupid));
+    }
+    
+    public function listMatchesByPlayground($playgroundid) {
+        return $this->entity->getMatchRepo()->findBy(array('playground' => $playgroundid));
     }
     
     public function listTeamsByGroup($groupid) {
@@ -383,8 +425,20 @@ class BusinessLogic
                 "from ".$this->entity->getRepositoryPath('User')." u ".
                 "where u.cid=:club and ".
                       "u.role in (".User::$CLUB.",".User::$CLUB_ADMIN.") and ".
-                      "u.status in (".User::$PRO.",".User::$ATT.")");
+                      "u.status in (".User::$PRO.",".User::$ATT.") ".
+                "order by u.status, u.role desc, u.name");
         $qb->setParameter('club', $clubid);
+        return $qb->getResult();
+    }
+
+    public function listUsersByHost($hostid) {
+        $qb = $this->em->createQuery(
+                "select u ".
+                "from ".$this->entity->getRepositoryPath('User')." u ".
+                "where u.pid=:host and ".
+                      "u.role in (".User::$EDITOR.",".User::$EDITOR_ADMIN.") ".
+                "order by u.role desc, u.name");
+        $qb->setParameter('host', $hostid);
         return $qb->getResult();
     }
     

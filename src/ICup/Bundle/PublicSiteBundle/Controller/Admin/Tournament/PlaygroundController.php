@@ -22,7 +22,7 @@ class PlaygroundController extends Controller
         /* @var $utilService Util */
         $utilService = $this->get('util');
         $utilService->setupController();
-        $em = $this->getDoctrine()->getManager();
+        $returnUrl = $utilService->getReferer();
 
         /* @var $user User */
         $user = $utilService->getCurrentUser();
@@ -36,12 +36,13 @@ class PlaygroundController extends Controller
         $request = $this->getRequest();
         $form->handleRequest($request);
         if ($form->get('cancel')->isClicked()) {
-            return $this->redirect($this->getReturnPath($user, $tournament->getId()));
+            return $this->redirect($returnUrl);
         }
-        if ($form->isValid()) {
+        if ($this->checkForm($form, $playground)) {
+            $em = $this->getDoctrine()->getManager();
             $em->persist($playground);
             $em->flush();
-            return $this->redirect($this->getReturnPath($user, $tournament->getId()));
+            return $this->redirect($returnUrl);
         }
         return array('form' => $form->createView(), 'action' => 'add', 'playground' => $playground, 'error' => null);
     }
@@ -55,7 +56,7 @@ class PlaygroundController extends Controller
         /* @var $utilService Util */
         $utilService = $this->get('util');
         $utilService->setupController();
-        $em = $this->getDoctrine()->getManager();
+        $returnUrl = $utilService->getReferer();
 
         /* @var $user User */
         $user = $utilService->getCurrentUser();
@@ -68,12 +69,13 @@ class PlaygroundController extends Controller
         $request = $this->getRequest();
         $form->handleRequest($request);
         if ($form->get('cancel')->isClicked()) {
-            return $this->redirect($this->getReturnPath($user, $tournament->getId()));
+            return $this->redirect($returnUrl);
         }
-        if ($form->isValid()) {
+        if ($this->checkForm($form, $playground)) {
+            $em = $this->getDoctrine()->getManager();
             $em->persist($playground);
             $em->flush();
-            return $this->redirect($this->getReturnPath($user, $tournament->getId()));
+            return $this->redirect($returnUrl);
         }
         return array('form' => $form->createView(), 'action' => 'chg', 'playground' => $playground, 'error' => null);
     }
@@ -87,7 +89,7 @@ class PlaygroundController extends Controller
         /* @var $utilService Util */
         $utilService = $this->get('util');
         $utilService->setupController();
-        $em = $this->getDoctrine()->getManager();
+        $returnUrl = $utilService->getReferer();
 
         /* @var $user User */
         $user = $utilService->getCurrentUser();
@@ -100,12 +102,18 @@ class PlaygroundController extends Controller
         $request = $this->getRequest();
         $form->handleRequest($request);
         if ($form->get('cancel')->isClicked()) {
-            return $this->redirect($this->getReturnPath($user, $tournament->getId()));
+            return $this->redirect($returnUrl);
         }
         if ($form->isValid()) {
-            $em->remove($playground);
-            $em->flush();
-            return $this->redirect($this->getReturnPath($user, $tournament->getId()));
+            if ($this->get('logic')->listMatchesByPlayground($playground->getId()) != null) {
+                $form->addError(new FormError($this->get('translator')->trans('FORM.PLAYGROUND.MATCHESEXIST', array(), 'admin')));
+            }
+            else {
+                $em = $this->getDoctrine()->getManager();
+                $em->remove($playground);
+                $em->flush();
+                return $this->redirect($returnUrl);
+            }
         }
         return array('form' => $form->createView(), 'action' => 'del', 'playground' => $playground, 'error' => null);
     }
@@ -119,12 +127,18 @@ class PlaygroundController extends Controller
         return $formDef->getForm();
     }
     
-    private function getReturnPath(User $user, $tournamentid) {
-        if ($this->get('util')->isAdminUser($user)) {
-            return $this->generateUrl('_edit_site_list', array('tournamentid' => $tournamentid));
+    private function checkForm($form, Playground $playground) {
+        if ($form->isValid()) {
+            if ($playground->getName() == null || trim($playground->getName()) == '') {
+                $form->addError(new FormError($this->get('translator')->trans('FORM.PLAYGROUND.NONAME', array(), 'admin')));
+                return false;
+            }
+            if ($playground->getNo() == null || trim($playground->getNo()) == '') {
+                $form->addError(new FormError($this->get('translator')->trans('FORM.PLAYGROUND.NONO', array(), 'admin')));
+                return false;
+            }
+            return true;
         }
-        else {
-            return $this->generateUrl('_edit_site_list', array('tournamentid' => $tournamentid));
-        }
+        return false;
     }
 }

@@ -23,35 +23,17 @@ class TeamController extends Controller
     public function listAction($tournament, $teamid, $groupid)
     {
         $this->get('util')->setupController($tournament);
-        $tournamentId = $this->get('util')->getTournamentId();
-        $em = $this->getDoctrine()->getManager();
-
-        $tournament = $em->getRepository('ICup\Bundle\PublicSiteBundle\Entity\Doctrine\Tournament')
-                            ->find($tournamentId);
-        if ($tournament == null) {
-            return $this->redirect($this->generateUrl('_icup'));
-        }
-
-        $team = $em->getRepository('ICup\Bundle\PublicSiteBundle\Entity\Doctrine\Team')
-                            ->find($teamid);
-        if ($team == null) {
-            return $this->redirect($this->generateUrl('_icup'));
-        }
+        $tournament = $this->get('util')->getTournament();
+        $team = $this->get('entity')->getTeamById($teamid);
         $name = $team->getName();
         if ($team->getDivision() != '') {
             $name.= ' "'.$team->getDivision().'"';
             $team->setName($name);
         }
+        $group = $this->get('entity')->getGroupById($groupid);
+        $category = $this->get('entity')->getCategoryById($group->getPid());
 
-        $group = $em->getRepository('ICup\Bundle\PublicSiteBundle\Entity\Doctrine\Group')
-                            ->find($groupid);
-        if ($group == null) {
-            return $this->redirect($this->generateUrl('_icup'));
-        }
-
-        $category = $em->getRepository('ICup\Bundle\PublicSiteBundle\Entity\Doctrine\Category')
-                            ->find($group->getPid());
-        
+        $em = $this->getDoctrine()->getManager();
         $qb = $em->createQuery("select m.matchno,m.date,m.time,p.id as playgroundid,p.no,p.name as playground,r.awayteam,r.scorevalid,r.score,r.points,t.id,t.name as team,t.division,c.country ".
                                "from ICup\Bundle\PublicSiteBundle\Entity\Doctrine\MatchRelation r, ".
                                     "ICup\Bundle\PublicSiteBundle\Entity\Doctrine\Match m, ".

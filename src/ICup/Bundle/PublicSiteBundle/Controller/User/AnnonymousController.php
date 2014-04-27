@@ -26,7 +26,6 @@ class AnnonymousController extends Controller
         /* @var $utilService Util */
         $utilService = $this->get('util');
         $utilService->setupController();
-        $em = $this->getDoctrine()->getManager();
 
         $tournament = $utilService->getTournament();
 
@@ -51,6 +50,7 @@ class AnnonymousController extends Controller
             $user->setRole(User::$CLUB);
             $user->setCid(0);
             $user->setPid(0);
+            $em = $this->getDoctrine()->getManager();
             $em->persist($user);
             $em->flush();
 
@@ -99,9 +99,9 @@ class AnnonymousController extends Controller
             if ($user->getPassword() == null || trim($user->getPassword()) == '') {
                 $form->addError(new FormError($this->get('translator')->trans('FORM.USER.NOPASSWORD', array(), 'admin')));
             }
-            $em = $this->getDoctrine()->getManager();
-            $usr = $em->getRepository('ICup\Bundle\PublicSiteBundle\Entity\Doctrine\User')
-                    ->findOneBy(array('username' => $user->getUsername()));
+        }
+        if ($form->isValid()) {
+            $usr = $this->get('logic')->getUserByName($user->getUsername());
             if ($usr != null) {
                 $form->addError(new FormError($this->get('translator')->trans('FORM.USER.NAMEEXIST', array(), 'admin')));
             }
@@ -110,8 +110,7 @@ class AnnonymousController extends Controller
             if ($utilService->generatePassword($user, $user->getPassword()) === FALSE) {
                 $form->addError(new FormError($this->get('translator')->trans('FORM.USER.BADPASSWORD', array(), 'admin')));
             }
-            return $form->isValid();
         }
-        return false;
+        return $form->isValid();
     }
 }

@@ -5,6 +5,7 @@ namespace ICup\Bundle\PublicSiteBundle\Services;
 use ICup\Bundle\PublicSiteBundle\Entity\Doctrine\Tournament;
 use ICup\Bundle\PublicSiteBundle\Entity\Doctrine\User;
 use ICup\Bundle\PublicSiteBundle\Services\Doctrine\Entity;
+use ICup\Bundle\PublicSiteBundle\Services\Doctrine\BusinessLogic;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Session;
 use Symfony\Component\Yaml\Exception\ParseException;
@@ -12,6 +13,7 @@ use ICup\Bundle\PublicSiteBundle\Exceptions\ValidationException;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 use Doctrine\ORM\EntityManager;
 use Monolog\Logger;
+use Symfony\Component\HttpFoundation\RedirectResponse;
 
 class Util
 {
@@ -23,12 +25,15 @@ class Util
     protected $logger;
    /* @var $entity Entity */
     protected $entity;
+   /* @var $entity BusinessLogic */
+    protected $logic;
 
-    public function __construct(ContainerInterface $container, Entity $entity, EntityManager $em, Logger $logger)
+    public function __construct(ContainerInterface $container, Logger $logger)
     {
         $this->container = $container;
-        $this->entity = $entity;
-        $this->em = $em;
+        $this->entity = $container->get('entity');
+        $this->logic = $container->get('logic');
+        $this->em = $container->get('doctrine')->getManager();
         $this->logger = $logger;
     }
 
@@ -41,7 +46,9 @@ class Util
         if ($tournament == '_') {
             $tournament = $session->get('Tournament', '_');
         }
-        $session->set('Tournament', $tournament);
+        else {
+            $session->set('Tournament', $tournament);
+        }
 
         $this->switchLanguage();
         if ($session->get('Countries') == null) {
@@ -110,7 +117,13 @@ class Util
      */
     public function getTournament() {
         $tournamentKey = $this->getTournamentKey();
-        return $this->entity->getTournamentRepo()->findOneBy(array('key' => $tournamentKey));
+        if ($tournamentKey == '_') {
+            $rexp = new RedirectException();
+            $url = $this->container->get('router')->generate('_tournament_select');
+            $rexp->setResponse(new RedirectResponse($url));
+            throw $rexp;
+        }
+        return $this->logic->getTournamentByKey($tournamentKey);
     }
 
     public function getTournamentId() {
@@ -147,6 +160,26 @@ class Util
         $thisuser = $this->container->get('security.context')->getToken()->getUser();
         if ($thisuser == null) {
             throw new RuntimeException("This controller is not available for anonymous users");
+        }
+        if (!($thisuser instanceof User)) {
+            // Logged in with default admin - prepare an admin user
+            $username = $thisuser->getUsername();
+            $admin = $this->logic->getUserByName($username);
+            if ($admin == null) {
+                $admin = new User();
+                $admin->setName($username);
+                $admin->setUsername($username);
+                $admin->setRole(User::$ADMIN);
+                $admin->setStatus(User::$SYSTEM);
+                $admin->setEmail('');
+                $admin->setPid(0);
+                $admin->setCid(0);
+                $this->generatePassword($admin, $username);
+                $this->em->persist($admin);
+                $this->em->flush();
+                $this->logger->addNotice("Default admin created: " . $admin->getUsername() . ":" . $admin->getId());
+            }
+            $thisuser = $admin;
         }
         return $thisuser;
     }

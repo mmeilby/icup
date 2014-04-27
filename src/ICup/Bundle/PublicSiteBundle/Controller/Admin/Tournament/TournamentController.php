@@ -22,7 +22,7 @@ class TournamentController extends Controller
         /* @var $utilService Util */
         $utilService = $this->get('util');
         $utilService->setupController();
-        $em = $this->getDoctrine()->getManager();
+        $returnUrl = $utilService->getReferer();
 
         /* @var $user User */
         $user = $utilService->getCurrentUser();
@@ -35,12 +35,18 @@ class TournamentController extends Controller
         $request = $this->getRequest();
         $form->handleRequest($request);
         if ($form->get('cancel')->isClicked()) {
-            return $this->redirect($this->getReturnPath($user));
+            return $this->redirect($returnUrl);
         }
-        if ($form->isValid()) {
-            $em->persist($tournament);
-            $em->flush();
-            return $this->redirect($this->getReturnPath($user));
+        if ($this->checkForm($form, $tournament)) {
+            if ($this->get('logic')->getTournamentByKey($tournament->getKey())) {
+                $form->addError(new FormError($this->get('translator')->trans('FORM.TOURNAMENT.KEYEXIST', array(), 'admin')));
+            }
+            else {
+                $em = $this->getDoctrine()->getManager();
+                $em->persist($tournament);
+                $em->flush();
+                return $this->redirect($returnUrl);
+            }
         }
         return array('form' => $form->createView(), 'action' => 'add', 'tournament' => $tournament, 'error' => null);
     }
@@ -54,7 +60,7 @@ class TournamentController extends Controller
         /* @var $utilService Util */
         $utilService = $this->get('util');
         $utilService->setupController();
-        $em = $this->getDoctrine()->getManager();
+        $returnUrl = $utilService->getReferer();
 
         /* @var $user User */
         $user = $utilService->getCurrentUser();
@@ -66,12 +72,19 @@ class TournamentController extends Controller
         $request = $this->getRequest();
         $form->handleRequest($request);
         if ($form->get('cancel')->isClicked()) {
-            return $this->redirect($this->getReturnPath($user));
+            return $this->redirect($returnUrl);
         }
-        if ($form->isValid()) {
-            $em->persist($tournament);
-            $em->flush();
-            return $this->redirect($this->getReturnPath($user));
+        if ($this->checkForm($form, $tournament)) {
+            $otherTmnt = $this->get('logic')->getTournamentByKey($tournament->getKey());
+            if ($otherTmnt != null && $otherTmnt->getId() != $tournament->getId()) {
+                $form->addError(new FormError($this->get('translator')->trans('FORM.TOURNAMENT.CANTCHANGEKEY', array(), 'admin')));
+            }
+            else {
+                $em = $this->getDoctrine()->getManager();
+                $em->persist($tournament);
+                $em->flush();
+                return $this->redirect($returnUrl);
+            }
         }
         return array('form' => $form->createView(), 'action' => 'chg', 'tournament' => $tournament, 'error' => null);
     }
@@ -85,7 +98,7 @@ class TournamentController extends Controller
         /* @var $utilService Util */
         $utilService = $this->get('util');
         $utilService->setupController();
-        $em = $this->getDoctrine()->getManager();
+        $returnUrl = $utilService->getReferer();
 
         /* @var $user User */
         $user = $utilService->getCurrentUser();
@@ -97,12 +110,21 @@ class TournamentController extends Controller
         $request = $this->getRequest();
         $form->handleRequest($request);
         if ($form->get('cancel')->isClicked()) {
-            return $this->redirect($this->getReturnPath($user));
+            return $this->redirect($returnUrl);
         }
         if ($form->isValid()) {
-            $em->remove($tournament);
-            $em->flush();
-            return $this->redirect($this->getReturnPath($user));
+            if ($this->get('logic')->listSites($tournament->getId()) != null) {
+                $form->addError(new FormError($this->get('translator')->trans('FORM.TOURNAMENT.SITESEXIST', array(), 'admin')));
+            }
+            elseif ($this->get('logic')->listCategories($tournament->getId()) != null) {
+                $form->addError(new FormError($this->get('translator')->trans('FORM.TOURNAMENT.CATEGORIESEXIST', array(), 'admin')));
+            }
+            else {
+                $em = $this->getDoctrine()->getManager();
+                $em->remove($tournament);
+                $em->flush();
+                return $this->redirect($returnUrl);
+            }
         }
         return array('form' => $form->createView(), 'action' => 'del', 'tournament' => $tournament, 'error' => null);
     }
@@ -118,12 +140,22 @@ class TournamentController extends Controller
         return $formDef->getForm();
     }
     
-    private function getReturnPath(User $user) {
-        if ($this->get('util')->isAdminUser($user)) {
-            return $this->generateUrl('_edit_host_list');
+    private function checkForm($form, Tournament $tournament) {
+        if ($form->isValid()) {
+            if ($tournament->getName() == null || trim($tournament->getName()) == '') {
+                $form->addError(new FormError($this->get('translator')->trans('FORM.TOURNAMENT.NONAME', array(), 'admin')));
+                return false;
+            }
+            if ($tournament->getKey() == null || trim($tournament->getKey()) == '') {
+                $form->addError(new FormError($this->get('translator')->trans('FORM.TOURNAMENT.NOKEY', array(), 'admin')));
+                return false;
+            }
+            if ($tournament->getEdition() == null || trim($tournament->getEdition()) == '') {
+                $form->addError(new FormError($this->get('translator')->trans('FORM.TOURNAMENT.NOEDITION', array(), 'admin')));
+                return false;
+            }
+            return true;
         }
-        else {
-            return $this->generateUrl('_host_list_tournaments');
-        }
+        return false;
     }
 }

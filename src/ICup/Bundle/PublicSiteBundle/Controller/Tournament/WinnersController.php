@@ -14,17 +14,10 @@ class WinnersController extends Controller
     public function listAction($tournament)
     {
         $this->get('util')->setupController($tournament);
-        $tournamentId = $this->get('util')->getTournamentId();
-        $em = $this->getDoctrine()->getManager();
-
-        $tournament = $em->getRepository('ICup\Bundle\PublicSiteBundle\Entity\Doctrine\Tournament')
-                            ->find($tournamentId);
-        if ($tournament == null) {
-            return $this->redirect($this->generateUrl('_icup'));
-        }
-
+        $tournament = $this->get('util')->getTournament();
         $championList = array();
 
+        $em = $this->getDoctrine()->getManager();
         $qb = $em->createQuery("select c.id as catid,c.name as category,c.gender,c.classification as class,g.id,g.classification ".
                                "from ICup\Bundle\PublicSiteBundle\Entity\Doctrine\Category c, ".
                                     "ICup\Bundle\PublicSiteBundle\Entity\Doctrine\Group g ".
@@ -58,15 +51,9 @@ class WinnersController extends Controller
     public function listCountriesAction($tournament)
     {
         $this->get('util')->setupController($tournament);
-        $tournamentId = $this->get('util')->getTournamentId();
+        $tournament = $this->get('util')->getTournament();
+
         $em = $this->getDoctrine()->getManager();
-
-        $tournament = $em->getRepository('ICup\Bundle\PublicSiteBundle\Entity\Doctrine\Tournament')
-                            ->find($tournamentId);
-        if ($tournament == null) {
-            return $this->redirect($this->generateUrl('_icup'));
-        }
-
         $qb = $em->createQuery("select c.id as catid,c.name as category,c.gender,c.classification as class,g.id,g.classification ".
                                "from ICup\Bundle\PublicSiteBundle\Entity\Doctrine\Category c, ".
                                     "ICup\Bundle\PublicSiteBundle\Entity\Doctrine\Group g ".
@@ -138,15 +125,9 @@ class WinnersController extends Controller
     public function listClubsAction($tournament)
     {
         $this->get('util')->setupController($tournament);
-        $tournamentId = $this->get('util')->getTournamentId();
+        $tournament = $this->get('util')->getTournament();
+
         $em = $this->getDoctrine()->getManager();
-
-        $tournament = $em->getRepository('ICup\Bundle\PublicSiteBundle\Entity\Doctrine\Tournament')
-                            ->find($tournamentId);
-        if ($tournament == null) {
-            return $this->redirect($this->generateUrl('_icup'));
-        }
-
         $qb = $em->createQuery("select c.id as catid,c.name as category,c.gender,c.classification as class,g.id,g.classification ".
                                "from ICup\Bundle\PublicSiteBundle\Entity\Doctrine\Category c, ".
                                     "ICup\Bundle\PublicSiteBundle\Entity\Doctrine\Group g ".

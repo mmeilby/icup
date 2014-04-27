@@ -22,6 +22,9 @@ FORM:
     PASSWORD: Kodeord
     LOGIN: Log på
   HOST:
+    NONAME: Et navn på turneringsværten skal angives.
+    TOURNAMENTSEXIST: Der er knyttet turneringer til denne vært. Turneringsværten kan ikke fjernes.
+    EDITORSEXIST: Der er knyttet redaktører til denne vært. Turneringsværten kan ikke fjernes.
     TITLE:
       ADD: Tilføj ny turneringsvært
       CHG: Rediger turneringsvært
@@ -40,6 +43,13 @@ FORM:
       CHG: Fortryd ændringer
       DEL: Fortryd slet
   TOURNAMENT:
+    NONAME: Et navn på turneringen skal angives.
+    NOKEY: Identifikation på turneringen skal angives.
+    NOEDITION: Et udgave skal angives.
+    CANTCHANGEKEY: Der findes allerede en anden turnering med samme identifikation.
+    KEYEXIST: Der findes allerede en anden turnering med samme identifikation.
+    CATEGORIESEXIST: Der er planlagt kampe til denne bane. Banen kan ikke fjernes.
+    SITESEXIST: Der er planlagt kampe til denne bane. Banen kan ikke fjernes.
     TITLE:
       ADD: Tilføj ny turnering
       CHG: Rediger turnering
@@ -66,6 +76,8 @@ FORM:
     NOSITE: Tilføj ny lokalitet
     NOPLAYGROUND: Tilføj ny bane
   SITE:
+    NONAME: Et navn på lokaliteten skal angives.
+    PLAYGROUNDSEXIST: Der er knyttet baner til denne lokalitet. Lokaliteten kan ikke fjernes.
     TITLE:
       ADD: Tilføj ny lokalitet
       CHG: Rediger lokalitet
@@ -84,6 +96,9 @@ FORM:
       CHG: Fortryd ændringer
       DEL: Fortryd slet
   PLAYGROUND:
+    NONAME: Et navn på banen skal angives.
+    NONO: Et banenr. skal angives.
+    MATCHESEXIST: Der er planlagt kampe til denne bane. Banen kan ikke fjernes.
     TITLE:
       ADD: Tilføj ny bane
       CHG: Rediger bane
@@ -109,6 +124,11 @@ FORM:
     NOGROUP: Tilføj ny pulje
   CATEGORY:
     DEFAULT: Vælg...
+    NONAME: Et gruppenavn skal angives.
+    NOGENDER: Gruppens forudsætning for køn for de tilmeldte hold skal angives.
+    NOCLASSIFICATION: Alderskategori for gruppen skal angives.
+    GROUPSEXIST: Der er knyttet puljer til denne gruppe. Gruppen kan ikke fjernes.
+    ENROLLEDEXIST: Der er tilmeldt hold til denne gruppe. Gruppen kan ikke fjernes.
     TITLE:
       ADD: Tilføj ny gruppe
       CHG: Rediger gruppe
@@ -116,13 +136,13 @@ FORM:
     PROMPT:
       ADD: Indtast oplysninger på gruppen.
       CHG: Ret oplysninger på gruppen.
-      DEL: Følgende gruppe vil bliver slettet. Alle kampresultater samt turneringsoplysninger knyttet til gruppen vil også blive fjernet. Det er ikke muligt at fortryde når gruppen er fjernet.
+      DEL: Følgende gruppe vil bliver slettet. Det er ikke muligt at fortryde når gruppen er fjernet.
     NAME: Navn
     GENDER: Køn
     SEX:
       FEMALE: Kvinder
       MALE: Mænd
-    CLASSIFICATION: Klasse
+    CLASSIFICATION: Alderskategori
     CLASS:
       U12: Under 12
       U14: Under 14
@@ -141,6 +161,10 @@ FORM:
       DEL: Fortryd slet
   GROUP:
     DEFAULT: Vælg...
+    NONAME: Et puljenavn skal angives.
+    NOCLASSIFICATION: Type for gruppen skal angives.
+    ORDEREXIST: Der er knyttet hold til denne pulje. Puljen kan ikke fjernes.
+    MATCHESEXIST: Der er planlagt kampe til denne pulje. Puljen kan ikke fjernes.
     TITLE:
       ADD: Tilføj ny pulje
       CHG: Rediger pulje
@@ -148,7 +172,7 @@ FORM:
     PROMPT:
       ADD: Indtast oplysninger om puljen.
       CHG: Ret oplysninger om puljen.
-      DEL: Følgende pulje vil bliver slettet. Alle kampresultater samt oplysninger knyttet til puljen vil også blive fjernet. Det er ikke muligt at fortryde når puljen er fjernet.
+      DEL: Følgende pulje vil bliver slettet. Det er ikke muligt at fortryde når puljen er fjernet.
     NAME: Navn
     TIME: Spilletid (min.)
     CLASSIFICATION: Puljetype

@@ -23,30 +23,12 @@ class PlaygroundController extends Controller
     public function listAction($tournament, $playgroundid, $groupid)
     {
         $this->get('util')->setupController($tournament);
-        $tournamentId = $this->get('util')->getTournamentId();
+        $tournament = $this->get('util')->getTournament();
+        $playground = $this->get('entity')->getPlaygroundById($playgroundid);
+        $group = $this->get('entity')->getGroupById($groupid);
+        $category = $this->get('entity')->getCategoryById($group->getPid());
+        
         $em = $this->getDoctrine()->getManager();
-
-        $tournament = $em->getRepository('ICup\Bundle\PublicSiteBundle\Entity\Doctrine\Tournament')
-                            ->find($tournamentId);
-        if ($tournament == null) {
-            return $this->redirect($this->generateUrl('_icup'));
-        }
-        
-        $playground = $em->getRepository('ICup\Bundle\PublicSiteBundle\Entity\Doctrine\Playground')
-                            ->find($playgroundid);
-        if ($playground == null) {
-            return $this->redirect($this->generateUrl('_icup'));
-        }
-
-        $group = $em->getRepository('ICup\Bundle\PublicSiteBundle\Entity\Doctrine\Group')
-                            ->find($groupid);
-        if ($group == null) {
-            return $this->redirect($this->generateUrl('_icup'));
-        }
-
-        $category = $em->getRepository('ICup\Bundle\PublicSiteBundle\Entity\Doctrine\Category')
-                            ->find($group->getPid());
-        
         $qb = $em->createQuery("select m.matchno,m.date,m.time,r.awayteam,r.scorevalid,r.score,r.points,t.id,t.name as team,t.division,c.country ".
                                "from ICup\Bundle\PublicSiteBundle\Entity\Doctrine\MatchRelation r, ".
                                     "ICup\Bundle\PublicSiteBundle\Entity\Doctrine\Match m, ".
@@ -138,21 +120,10 @@ class PlaygroundController extends Controller
     public function listAllAction($tournament, $playgroundid)
     {
         $this->get('util')->setupController($tournament);
-        $tournamentId = $this->get('util')->getTournamentId();
+        $tournament = $this->get('util')->getTournament();
+        $playground = $this->get('entity')->getPlaygroundById($playgroundid);
+
         $em = $this->getDoctrine()->getManager();
-
-        $tournament = $em->getRepository('ICup\Bundle\PublicSiteBundle\Entity\Doctrine\Tournament')
-                            ->find($tournamentId);
-        if ($tournament == null) {
-            return $this->redirect($this->generateUrl('_icup'));
-        }
-        
-        $playground = $em->getRepository('ICup\Bundle\PublicSiteBundle\Entity\Doctrine\Playground')
-                            ->find($playgroundid);
-        if ($playground == null) {
-            return $this->redirect($this->generateUrl('_icup'));
-        }
-
         $qb = $em->createQuery("select m.matchno,m.date,m.time,g.id as gid,g.name as grp,cat.name as category,r.awayteam,r.scorevalid,r.score,r.points,t.id,t.name as team,t.division,c.country ".
                                "from ICup\Bundle\PublicSiteBundle\Entity\Doctrine\MatchRelation r, ".
                                     "ICup\Bundle\PublicSiteBundle\Entity\Doctrine\Match m, ".

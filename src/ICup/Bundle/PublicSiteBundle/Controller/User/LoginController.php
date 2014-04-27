@@ -37,12 +37,7 @@ class LoginController extends Controller
             $twig = 'ICupPublicSiteBundle:User:ausr_login.html.twig';
         }
 
-        $formDef = $this->createFormBuilder(array('username' => $request->getSession()->get(SecurityContext::LAST_USERNAME)));
-        $formDef->setAction($this->generateUrl('_security_check'));
-        $formDef->add('username', 'text', array('label' => 'FORM.LOGIN.USERNAME', 'translation_domain' => 'admin', 'required' => false));
-        $formDef->add('password', 'password', array('label' => 'FORM.LOGIN.PASSWORD', 'translation_domain' => 'admin', 'required' => false));
-        $formDef->add('login', 'submit', array('label' => 'FORM.LOGIN.LOGIN', 'translation_domain' => 'admin'));
-        $form = $formDef->getForm();
+        $form = $this->makeLoginForm();
         $form->handleRequest($request);
 
         $tournament = $utilService->getTournament();
@@ -53,6 +48,16 @@ class LoginController extends Controller
         ));
     }
 
+    private function makeLoginForm() {
+        $request = $this->getRequest();
+        $formDef = $this->createFormBuilder(array('username' => $request->getSession()->get(SecurityContext::LAST_USERNAME)));
+        $formDef->setAction($this->generateUrl('_security_check'));
+        $formDef->add('username', 'text', array('label' => 'FORM.LOGIN.USERNAME', 'translation_domain' => 'admin', 'required' => false));
+        $formDef->add('password', 'password', array('label' => 'FORM.LOGIN.PASSWORD', 'translation_domain' => 'admin', 'required' => false));
+        $formDef->add('login', 'submit', array('label' => 'FORM.LOGIN.LOGIN', 'translation_domain' => 'admin'));
+        return $formDef->getForm();
+    }
+    
     /**
      * @Route("/login_check", name="_security_check")
      */

@@ -41,8 +41,34 @@ class ListClubController extends Controller
     }
     
     /**
+     * List the clubs available for a country matching the pattern given
+     * Arguments:
+     *   country: countrycode
+     *   pattern: stringpattern with % for wildcard
+     * @Route("/rest/club/list", name="_rest_list_clubs")
+     */
+    public function restListClubsAction()
+    {
+        /* @var $utilService Util */
+        $utilService = $this->get('util');
+        $utilService->setupController();
+        // Validate that user is logged in...
+        $utilService->getCurrentUser();
+        $request = $this->getRequest();
+        $pattern = $request->get('pattern', '%');
+        $countryCode = $request->get('country', '');
+        $clubs = $this->get('logic')->listClubsByPattern($pattern, $countryCode);
+        $result = array();
+        foreach ($clubs as $club) {
+            $country = $this->get('translator')->trans($club->getCountry(), array(), 'lang');
+            $result[] = array('id' => $club->getId(), 'name' => $club->getname(), 'country' => $country);
+        }
+        return new Response(json_encode(array_slice($result, 0, 3)));
+    }
+    
+    /**
      * List the clubs enrolled for a tournament
-     * @Route("/edit/list/clubs/{tournamentid}", name="_host_list_clubs")
+     * @Route("/edit/club/list/{tournamentid}", name="_host_list_clubs")
      * @Method("GET")
      * @Template("ICupPublicSiteBundle:Host:listclubs.html.twig")
      */

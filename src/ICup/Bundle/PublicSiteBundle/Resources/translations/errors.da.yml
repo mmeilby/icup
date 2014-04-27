@@ -57,6 +57,9 @@ ERROR:
   MUSTBEADMIN:
     TITLE: Du er ikke administrator
     SOLUTION: For at udføre den funktion du har valgt skal du være administrator.
+  NOTCLUBUSER:
+    TITLE: Du skal være klubbruger
+    SOLUTION: For at udføre den funktion du har valgt skal du være klubbruger.
   NOTCLUBADMIN:
     TITLE: Du er ikke klubansvarlig for denne klub
     SOLUTION: For at udføre den funktion du har valgt skal du være klubansvarlig for klubben. Du har ikke mulighed for at administrere denne klub.

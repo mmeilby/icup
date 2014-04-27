@@ -14,15 +14,8 @@ class StatisticsController extends Controller
     public function listAction($tournament)
     {
         $this->get('util')->setupController($tournament);
-        $tournamentId = $this->get('util')->getTournamentId();
+        $tournament = $this->get('util')->getTournament();
         $em = $this->getDoctrine()->getManager();
-
-        $tournament = $em->getRepository('ICup\Bundle\PublicSiteBundle\Entity\Doctrine\Tournament')
-                            ->find($tournamentId);
-        if ($tournament == null) {
-            return $this->redirect($this->generateUrl('_icup'));
-        }
-
         $qb = $em->createQuery("select count(distinct t.id) as teams, ".
                                       "count(distinct c.id) as clubs, ".
                                       "count(distinct c.country) as countries, ".
@@ -48,7 +41,7 @@ class StatisticsController extends Controller
                                      "ICup\Bundle\PublicSiteBundle\Entity\Doctrine\Playground p ".
                                 "where s.pid=:tournament and ".
                                       "p.pid=s.id");
-        $qbp->setParameter('tournament', $tournamentId);
+        $qbp->setParameter('tournament', $tournament->getId());
         $playgroundCount = $qbp->getResult();
 
         $qbt = $em->createQuery("select count(distinct t.id) as femaleteams ".

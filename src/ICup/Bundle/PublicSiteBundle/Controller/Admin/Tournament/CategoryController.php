@@ -21,7 +21,7 @@ class CategoryController extends Controller
         /* @var $utilService Util */
         $utilService = $this->get('util');
         $utilService->setupController();
-        $em = $this->getDoctrine()->getManager();
+        $returnUrl = $utilService->getReferer();
 
         /* @var $user User */
         $user = $utilService->getCurrentUser();
@@ -34,12 +34,13 @@ class CategoryController extends Controller
         $request = $this->getRequest();
         $form->handleRequest($request);
         if ($form->get('cancel')->isClicked()) {
-            return $this->redirect($this->getReturnPath($user, $tournament->getId()));
+            return $this->redirect($returnUrl);
         }
-        if ($form->isValid()) {
+        if ($this->checkForm($form, $category)) {
+            $em = $this->getDoctrine()->getManager();
             $em->persist($category);
             $em->flush();
-            return $this->redirect($this->getReturnPath($user, $tournament->getId()));
+            return $this->redirect($returnUrl);
         }
         return array('form' => $form->createView(), 'action' => 'add', 'category' => $category, 'error' => null);
     }
@@ -53,7 +54,7 @@ class CategoryController extends Controller
         /* @var $utilService Util */
         $utilService = $this->get('util');
         $utilService->setupController();
-        $em = $this->getDoctrine()->getManager();
+        $returnUrl = $utilService->getReferer();
 
         /* @var $user User */
         $user = $utilService->getCurrentUser();
@@ -65,12 +66,13 @@ class CategoryController extends Controller
         $request = $this->getRequest();
         $form->handleRequest($request);
         if ($form->get('cancel')->isClicked()) {
-            return $this->redirect($this->getReturnPath($user, $tournament->getId()));
+            return $this->redirect($returnUrl);
         }
-        if ($form->isValid()) {
+        if ($this->checkForm($form, $category)) {
+            $em = $this->getDoctrine()->getManager();
             $em->persist($category);
             $em->flush();
-            return $this->redirect($this->getReturnPath($user, $tournament->getId()));
+            return $this->redirect($returnUrl);
         }
         return array('form' => $form->createView(), 'action' => 'chg', 'category' => $category, 'error' => null);
     }
@@ -84,7 +86,7 @@ class CategoryController extends Controller
         /* @var $utilService Util */
         $utilService = $this->get('util');
         $utilService->setupController();
-        $em = $this->getDoctrine()->getManager();
+        $returnUrl = $utilService->getReferer();
 
         /* @var $user User */
         $user = $utilService->getCurrentUser();
@@ -96,12 +98,21 @@ class CategoryController extends Controller
         $request = $this->getRequest();
         $form->handleRequest($request);
         if ($form->get('cancel')->isClicked()) {
-            return $this->redirect($this->getReturnPath($user, $tournament->getId()));
+            return $this->redirect($returnUrl);
         }
         if ($form->isValid()) {
-            $em->remove($category);
-            $em->flush();
-            return $this->redirect($this->getReturnPath($user, $tournament->getId()));
+            if ($this->get('logic')->listGroupsByCategory($category->getId()) != null) {
+                $form->addError(new FormError($this->get('translator')->trans('FORM.CATEGORY.GROUPSEXIST', array(), 'admin')));
+            }
+            elseif ($this->get('logic')->listEnrolledByCategory($category->getId()) != null) {
+                $form->addError(new FormError($this->get('translator')->trans('FORM.CATEGORY.ENROLLEDEXIST', array(), 'admin')));
+            }
+            else {
+                $em = $this->getDoctrine()->getManager();
+                $em->remove($category);
+                $em->flush();
+                return $this->redirect($returnUrl);
+            }
         }
         return array('form' => $form->createView(), 'action' => 'del', 'category' => $category, 'error' => null);
     }
@@ -120,13 +131,23 @@ class CategoryController extends Controller
         $formDef->add('save', 'submit', array('label' => 'FORM.CATEGORY.SUBMIT.'.strtoupper($action), 'translation_domain' => 'admin'));
         return $formDef->getForm();
     }
-     
-    private function getReturnPath(User $user, $tournamentid) {
-        if ($this->get('util')->isAdminUser($user)) {
-            return $this->generateUrl('_edit_category_list', array('tournamentid' => $tournamentid));
+    
+    private function checkForm($form, Category $category) {
+        if ($form->isValid()) {
+            if ($category->getName() == null || trim($category->getName()) == '') {
+                $form->addError(new FormError($this->get('translator')->trans('FORM.CATEGORY.NONAME', array(), 'admin')));
+                return false;
+            }
+            if ($category->getGender() == null) {
+                $form->addError(new FormError($this->get('translator')->trans('FORM.CATEGORY.NOGENDER', array(), 'admin')));
+                return false;
+            }
+            if ($category->getClassification() == null) {
+                $form->addError(new FormError($this->get('translator')->trans('FORM.CATEGORY.NOCLASSIFICATION', array(), 'admin')));
+                return false;
+            }
+            return true;
         }
-        else {
-            return $this->generateUrl('_edit_category_list', array('tournamentid' => $tournamentid));
-        }
+        return false;
     }
 }

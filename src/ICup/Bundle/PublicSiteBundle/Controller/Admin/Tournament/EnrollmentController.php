@@ -8,6 +8,7 @@ use ICup\Bundle\PublicSiteBundle\Exceptions\ValidationException;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
+use ICup\Bundle\PublicSiteBundle\Services\Util;
 
 /**
  * List the categories and groups available
@@ -27,18 +28,7 @@ class EnrollmentController extends Controller
 
         /* @var $user User */
         $user = $utilService->getCurrentUser();
-        if ($utilService->isAdmin($user)) {
-            // Controller is called by admin - switch to select club view
-            return $this->redirect($this->generateUrl('_edit_club_list'));
-        }
-        if (!$user->isClub()) {
-            // Controller is called by editor - switch to select club view
-            return $this->redirect($this->generateUrl('_edit_club_list'));
-        }
-        if (!$user->isRelated()) {
-            // User is not related to a club yet - explain the problem...
-            throw new ValidationException("NEEDTOBERELATED", "userid=".$user->getId());
-        }
+        $utilService->validateClubUser($user);
         /* @var $category Category */
         $category = $this->get('entity')->getCategoryById($categoryid);
         $club = $this->get('entity')->getClubById($user->getCid());
@@ -84,18 +74,7 @@ class EnrollmentController extends Controller
 
         /* @var $user User */
         $user = $utilService->getCurrentUser();
-        if ($utilService->isAdmin($user)) {
-            // Controller is called by admin - switch to select club view
-            return $this->redirect($this->generateUrl('_edit_club_list'));
-        }
-        if (!$user->isClub()) {
-            // Controller is called by editor - switch to select club view
-            return $this->redirect($this->generateUrl('_edit_club_list'));
-        }
-        if (!$user->isRelated()) {
-            // User is not related to a club yet - explain the problem...
-            throw new ValidationException("NEEDTOBERELATED", "userid=".$user->getId());
-        }
+        $utilService->validateClubUser($user);
         /* @var $category Category */
         $category = $this->get('entity')->getCategoryById($categoryid);
         $club = $this->get('entity')->getClubById($user->getCid());

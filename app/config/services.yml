@@ -84,8 +84,6 @@ services:
         class: "ICup\\Bundle\\PublicSiteBundle\\Services\\Util"
         arguments:
           - "@service_container"
-          - "@entity"
-          - "@doctrine.orm.entity_manager"
           - "@logger"
 
     orderTeams:

@@ -24,26 +24,20 @@ class HostController extends Controller
         /* @var $utilService Util */
         $utilService = $this->get('util');
         $utilService->setupController();
-        $em = $this->getDoctrine()->getManager();
-
-        /* @var $user User */
-        $user = $utilService->getCurrentUser();
-        if (!$utilService->isAdminUser($user)) {
-            // Controller is called by a non admin user - fail...
-            throw new ValidationException("MUSTBEADMIN", "userid=".$user->getId());
-        }
+        $returnUrl = $utilService->getReferer();
 
         $host = new Host();
         $form = $this->makeHostForm($host, 'add');
         $request = $this->getRequest();
         $form->handleRequest($request);
         if ($form->get('cancel')->isClicked()) {
-            return $this->redirect($this->getReturnPath($user));
+            return $this->redirect($returnUrl);
         }
-        if ($form->isValid()) {
+        if ($this->checkForm($form, $host)) {
+            $em = $this->getDoctrine()->getManager();
             $em->persist($host);
             $em->flush();
-            return $this->redirect($this->getReturnPath($user));
+            return $this->redirect($returnUrl);
         }
         return array('form' => $form->createView(), 'action' => 'add', 'host' => $host, 'error' => null);
     }
@@ -57,7 +51,7 @@ class HostController extends Controller
         /* @var $utilService Util */
         $utilService = $this->get('util');
         $utilService->setupController();
-        $em = $this->getDoctrine()->getManager();
+        $returnUrl = $utilService->getReferer();
 
         /* @var $user User */
         $user = $utilService->getCurrentUser();
@@ -68,12 +62,13 @@ class HostController extends Controller
         $request = $this->getRequest();
         $form->handleRequest($request);
         if ($form->get('cancel')->isClicked()) {
-            return $this->redirect($this->getReturnPath($user));
+            return $this->redirect($returnUrl);
         }
-        if ($form->isValid()) {
+        if ($this->checkForm($form, $host)) {
+            $em = $this->getDoctrine()->getManager();
             $em->persist($host);
             $em->flush();
-            return $this->redirect($this->getReturnPath($user));
+            return $this->redirect($returnUrl);
         }
         return array('form' => $form->createView(), 'action' => 'chg', 'host' => $host, 'error' => null);
     }
@@ -88,23 +83,28 @@ class HostController extends Controller
         /* @var $utilService Util */
         $utilService = $this->get('util');
         $utilService->setupController();
-        $em = $this->getDoctrine()->getManager();
+        $returnUrl = $utilService->getReferer();
 
-        /* @var $user User */
-        $user = $utilService->getCurrentUser();
         $host = $this->get('entity')->getHostById($hostid);
-        $utilService->validateEditorAdminUser($user, $hostid);
-
         $form = $this->makeHostForm($host, 'del');
         $request = $this->getRequest();
         $form->handleRequest($request);
         if ($form->get('cancel')->isClicked()) {
-            return $this->redirect($this->getReturnPath($user));
+            return $this->redirect($returnUrl);
         }
         if ($form->isValid()) {
-            $em->remove($host);
-            $em->flush();
-            return $this->redirect($this->getReturnPath($user));
+            if ($this->get('logic')->listTournaments($host->getId()) != null) {
+                $form->addError(new FormError($this->get('translator')->trans('FORM.HOST.TOURNAMENTSEXIST', array(), 'admin')));
+            }
+            elseif ($this->get('logic')->listUsersByHost($host->getId()) != null) {
+                $form->addError(new FormError($this->get('translator')->trans('FORM.HOST.EDITORSEXIST', array(), 'admin')));
+            }
+            else {
+                $em = $this->getDoctrine()->getManager();
+                $em->remove($host);
+                $em->flush();
+                return $this->redirect($returnUrl);
+            }
         }
         return array('form' => $form->createView(), 'action' => 'del', 'host' => $host, 'error' => null);
     }
@@ -117,12 +117,14 @@ class HostController extends Controller
         return $formDef->getForm();
     }
 
-    private function getReturnPath(User $user) {
-        if ($this->get('util')->isAdminUser($user)) {
-            return $this->generateUrl('_edit_host_list');
+    private function checkForm($form, Host $host) {
+        if ($form->isValid()) {
+            if ($host->getName() == null || trim($host->getName()) == '') {
+                $form->addError(new FormError($this->get('translator')->trans('FORM.HOST.NONAME', array(), 'admin')));
+                return false;
+            }
+            return true;
         }
-        else {
-            return $this->generateUrl('_host_list_tournaments');
-        }
+        return false;
     }
 }

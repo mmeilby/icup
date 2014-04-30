@@ -4,7 +4,6 @@ namespace ICup\Bundle\PublicSiteBundle\Controller\User;
 use ICup\Bundle\PublicSiteBundle\Services\Util;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
-use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\Security\Core\SecurityContext;
 
@@ -40,7 +39,13 @@ class LoginController extends Controller
         $form = $this->makeLoginForm();
         $form->handleRequest($request);
 
-        $tournament = $utilService->getTournament();
+        $tournamentKey = $utilService->getTournamentKey();
+        if ($tournamentKey != '_') {
+            $tournament = $this->get('logic')->getTournamentByKey($tournamentKey);
+        }
+        else {
+            $tournament = null;
+        }
         return $this->render($twig, array(
             'form'          => $form->createView(),
             'tournament'    => $tournament,

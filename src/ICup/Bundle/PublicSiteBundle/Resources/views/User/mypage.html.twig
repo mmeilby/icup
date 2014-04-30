@@ -18,7 +18,7 @@
 <br />
 {{ club.name }}
 &nbsp;
-<img src="{{ imagepath }}/flags/{{ flags[club.country] }}" alt="{{ club.country|trans({},'lang') }}" title="{{ club.country|trans({},'lang') }}">
+<img src="{{ imagepath }}/flags/{{ countries[club.country].flag }}" alt="{{ club.country|trans({},'lang') }}" title="{{ club.country|trans({},'lang') }}">
 </p>
 {% if currentuser.status == 3 %}
 <p>Velkommen til klubben.<br/>Klubbens administrator skal godkende din ansøgning om tilknytning.

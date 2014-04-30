@@ -52,15 +52,13 @@ class Util
         }
 
         $this->switchLanguage();
-        if ($session->get('Countries') == null) {
-            $session->set('Countries', $this->getCountries());
-        }
     }
     
-    public function switchLanguage()
+    private function switchLanguage()
     {
-        // List of supported locales - first locale is preferred default if user requests unsupported locale
-        $supported_locales = array('en', 'da', 'it', 'fr', 'de', 'es', 'po');
+        $globals = $this->container->get('twig')->getGlobals();
+        // Get list of supported locales - first locale is preferred default if user requests unsupported locale
+        $supported_locales = array_keys($globals['supported_locales']);
         /* @var $request Request */
         $request = $this->container->get('request');
         /* @var $session Session */
@@ -74,19 +72,14 @@ class Util
         }
     }
 
+    /**
+     * Get list of country codes available for the application
+     * @return array
+     */
     public function getCountries()
     {
-        try {
-            $dbConfig = file_get_contents(dirname(__DIR__) . '/Services/countries.xml');
-        } catch (ParseException $e) {
-            throw new ParseException('Could not parse the query form config file: ' . $e->getMessage());
-        }
-        $xml = simplexml_load_string($dbConfig, null, LIBXML_NOWARNING);
-        $countries = array();
-        foreach ($xml as $country) {
-            $countries[(String)$country->ccode] = (String)$country->cflag;
-        }
-        return $countries;
+        $globals = $this->container->get('twig')->getGlobals();
+        return array_keys($globals['countries']);
     }
     
     public function getReferer() {
@@ -142,7 +135,7 @@ class Util
         $user->setPassword($password);
         $pwValid = $encoder->isPasswordValid($password, $secret, $user->getSalt());
         if (!$pwValid) {
-            $this->logger->addNotice("Password is not valid: " . $user->getName() . ": " . $secret . " -> " . $password);
+            $this->logger->addInfo("Password is not valid: " . $user->getName() . ": " . $secret . " -> " . $password);
         }
         return $pwValid ? $secret : FALSE;
     }

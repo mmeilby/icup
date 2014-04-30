@@ -9,7 +9,7 @@ namespace ICup\Bundle\PublicSiteBundle\EventListener;
 
 use Symfony\Component\DependencyInjection\ContainerAware;
 use Symfony\Component\HttpKernel\Event\GetResponseForExceptionEvent;
-use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\HttpFoundation\RedirectResponse;
 use ICup\Bundle\PublicSiteBundle\Exceptions\ValidationException;
 use ICup\Bundle\PublicSiteBundle\Exceptions\RedirectException;
 use Symfony\Bundle\TwigBundle\TwigEngine;
@@ -45,11 +45,14 @@ class ExceptionListener extends ContainerAware
             $event->setResponse(
                         $this->templating->renderResponse(
                             'ICupPublicSiteBundle:Errors:'.strtolower($exception->getMessage()).'.html.twig',
-                            array('redirect' => $this->router->generate('_user_my_page'))));
+                            array('redirect' => $this->router->generate('_icup'))));
             $this->logger->addError("ValidationException ".$exception->getMessage().": ".$exception->getDebugInfo().' - '.$exception->getFile().':'.$exception->getLine());
         }
         elseif ($exception instanceof RedirectException) {
-            $event->setResponse($exception->getResponse());
+            $this->logger->addDebug("Handling RedirectException");
+            $response = $exception->getResponse();
+            $response->setStatusCode(200);
+            $event->setResponse($response);
         }
     }
 }

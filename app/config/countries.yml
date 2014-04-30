@@ -1,0 +1,260 @@
+# Twig Configuration - flag database
+twig:
+    globals:
+        countries: 
+            ABW: { name: 'Aruba', flag: 'aw.png' }
+            AFG: { name: 'Afghanistan', flag: 'af.png' }
+            AGO: { name: 'Angola', flag: 'ao.png' }
+            AIA: { name: 'Anguilla', flag: 'ai.png' }
+            ALA: { name: 'Ålandsøerne', flag: 'ax.png' }
+            ALB: { name: 'Albanien', flag: 'al.png' }
+            AND: { name: 'Andorra', flag: 'ad.png' }
+            ARE: { name: 'Forenede Arabiske Emirater', flag: 'ae.png' }
+            ARG: { name: 'Argentina', flag: 'ar.png' }
+            ARM: { name: 'Armenien', flag: 'am.png' }
+            ASM: { name: 'Amerikansk Samoa', flag: 'as.png' }
+#           ATA: { name: 'Antarktis Antarktika', flag: 'aq.png' }
+            ATF: { name: 'Franske Sydterritorier', flag: 'tf.png' }
+            ATG: { name: 'Antigua og Barbuda', flag: 'ag.png' }
+            AUS: { name: 'Australien', flag: 'au.png' }
+            AUT: { name: 'Østrig', flag: 'at.png' }
+            AZE: { name: 'Aserbajdsjan', flag: 'az.png' }
+            BDI: { name: 'Burundi', flag: 'bi.png' }
+            BEL: { name: 'Belgien', flag: 'be.png' }
+            BEN: { name: 'Benin', flag: 'bj.png' }
+            BES: { name: 'Nederlandske Antiller', flag: 'an.png' }
+            BFA: { name: 'Burkina Faso', flag: 'bf.png' }
+            BGD: { name: 'Bangladesh', flag: 'bd.png' }
+            BGR: { name: 'Bulgarien', flag: 'bg.png' }
+            BHR: { name: 'Bahrain', flag: 'bh.png' }
+            BHS: { name: 'Bahamas', flag: 'bs.png' }
+            BIH: { name: 'Bosnien-Hercegovina', flag: 'ba.png' }
+#           BLM: { name: 'San Bartolomé', flag: 'bx.png' }
+            BLR: { name: 'Hviderusland', flag: 'by.png' }
+            BLZ: { name: 'Belize', flag: 'bz.png' }
+            BMU: { name: 'Bermuda', flag: 'bm.png' }
+            BOL: { name: 'Bolivia', flag: 'bo.png' }
+            BRA: { name: 'Brasilien', flag: 'br.png' }
+            BRB: { name: 'Barbados', flag: 'bb.png' }
+            BRN: { name: 'Brunei', flag: 'bn.png' }
+            BTN: { name: 'Bhutan', flag: 'bt.png' }
+            BVT: { name: 'Bouvetøen', flag: 'bv.png' }
+            BWA: { name: 'Botswana', flag: 'bw.png' }
+            CAF: { name: 'Centralafrikanske Republik', flag: 'cf.png' }
+            CAN: { name: 'Canada', flag: 'ca.png' }
+            CCK: { name: 'Cocosøerne', flag: 'cc.png' }
+            CHE: { name: 'Schweiz', flag: 'ch.png' }
+            CHL: { name: 'Chile', flag: 'cl.png' }
+            CHN: { name: 'Kina', flag: 'cn.png' }
+            CIV: { name: 'Elfenbenskysten', flag: 'ci.png' }
+            CMR: { name: 'Cameroun', flag: 'cm.png' }
+            COD: { name: 'Demokratiske Republik Congo', flag: 'cd.png' }
+            COG: { name: 'Congo', flag: 'cg.png' }
+            COK: { name: 'Cookøerne', flag: 'ck.png' }
+            COL: { name: 'Colombia', flag: 'co.png' }
+            COM: { name: 'Comorerne', flag: 'km.png' }
+            CPV: { name: 'Kap Verde', flag: 'cv.png' }
+            CRI: { name: 'Costa Rica', flag: 'cr.png' }
+            CUB: { name: 'Cuba', flag: 'cu.png' }
+#           CUW: { name: 'Curaçao', flag: 'cw.png' }
+            CXR: { name: 'Juleøen', flag: 'cx.png' }
+            CYM: { name: 'Caymanøerne', flag: 'ky.png' }
+            CYP: { name: 'Cypern', flag: 'cy.png' }
+            CZE: { name: 'Tjekkiet', flag: 'cz.png' }
+            DEU: { name: 'Tyskland', flag: 'de.png' }
+            DJI: { name: 'Djibouti', flag: 'dj.png' }
+            DMA: { name: 'Dominica', flag: 'dm.png' }
+            DNK: { name: 'Danmark', flag: 'dk.png' }
+            DOM: { name: 'Dominikanske Republik', flag: 'do.png' }
+            DZA: { name: 'Algeriet', flag: 'dz.png' }
+            ECU: { name: 'Ecuador', flag: 'ec.png' }
+            EGY: { name: 'Egypten', flag: 'eg.png' }
+            ERI: { name: 'Eritrea', flag: 'er.png' }
+            ESH: { name: 'Vestsahara', flag: 'eh.png' }
+            ESP: { name: 'Spanien', flag: 'es.png' }
+            EST: { name: 'Estland', flag: 'ee.png' }
+            ETH: { name: 'Etiopien', flag: 'et.png' }
+            FIN: { name: 'Finland', flag: 'fi.png' }
+            FJI: { name: 'Fiji', flag: 'fj.png' }
+            FLK: { name: 'Falklandsøerne', flag: 'fk.png' }
+            FRA: { name: 'Frankrig', flag: 'fr.png' }
+            FRO: { name: 'Færøerne', flag: 'fo.png' }
+            FSM: { name: 'Mikronesien', flag: 'fm.png' }
+            GAB: { name: 'Gabon', flag: 'ga.png' }
+            GBR: { name: 'Storbritannien', flag: 'gb.png' }
+            GEO: { name: 'Georgien', flag: 'ge.png' }
+#           GGY: { name: 'Guernsey', flag: 'gx.png' }
+            GHA: { name: 'Ghana', flag: 'gh.png' }
+            GIB: { name: 'Gibraltar', flag: 'gi.png' }
+            GIN: { name: 'Guinea', flag: 'gn.png' }
+            GLP: { name: 'Guadeloupe', flag: 'gp.png' }
+            GMB: { name: 'Gambia', flag: 'gm.png' }
+            GNB: { name: 'Guinea-Bissau', flag: 'gw.png' }
+            GNQ: { name: 'Ækvatorialguinea', flag: 'gq.png' }
+            GRC: { name: 'Grækenland', flag: 'gr.png' }
+            GRD: { name: 'Grenada', flag: 'gd.png' }
+            GRL: { name: 'Grønland', flag: 'gl.png' }
+            GTM: { name: 'Guatemala', flag: 'gt.png' }
+            GUF: { name: 'Fransk Guiana', flag: 'gf.png' }
+            GUM: { name: 'Guam', flag: 'gu.png' }
+            GUY: { name: 'Guyana', flag: 'gy.png' }
+            HKG: { name: 'Hongkong', flag: 'hk.png' }
+            HMD: { name: 'Heard-øen og McDonald-øerne', flag: 'hm.png' }
+            HND: { name: 'Honduras', flag: 'hn.png' }
+            HRV: { name: 'Kroatien', flag: 'hr.png' }
+            HTI: { name: 'Haiti', flag: 'ht.png' }
+            HUN: { name: 'Ungarn', flag: 'hu.png' }
+            IDN: { name: 'Indonesien', flag: 'id.png' }
+#           IMN: { name: 'Øen Man', flag: 'gx.png' }
+            IND: { name: 'Indien', flag: 'in.png' }
+            IOT: { name: 'British Indian Ocean Territory', flag: 'io.png' }
+            IRL: { name: 'Irland', flag: 'ie.png' }
+            IRN: { name: 'Iran', flag: 'ir.png' }
+            IRQ: { name: 'Irak', flag: 'iq.png' }
+            ISL: { name: 'Island', flag: 'is.png' }
+            ISR: { name: 'Israel', flag: 'il.png' }
+            ITA: { name: 'Italien', flag: 'it.png' }
+            JAM: { name: 'Jamaica', flag: 'jm.png' }
+#           JEY: { name: 'Jersey', flag: 'gx.png' }
+            JOR: { name: 'Jordan', flag: 'jo.png' }
+            JPN: { name: 'Japan', flag: 'jp.png' }
+            KAZ: { name: 'Kasakhstan', flag: 'kz.png' }
+            KEN: { name: 'Kenya', flag: 'ke.png' }
+            KGZ: { name: 'Kirgisistan', flag: 'kg.png' }
+            KHM: { name: 'Cambodja', flag: 'kh.png' }
+            KIR: { name: 'Kiribati', flag: 'ki.png' }
+            KNA: { name: 'Saint Kitts og Nevis', flag: 'kn.png' }
+            KOR: { name: 'Sydkorea', flag: 'kr.png' }
+            KWT: { name: 'Kuwait', flag: 'kw.png' }
+            LAO: { name: 'Laos', flag: 'la.png' }
+            LBN: { name: 'Libanon', flag: 'lb.png' }
+            LBR: { name: 'Liberia', flag: 'lr.png' }
+            LBY: { name: 'Libyen', flag: 'ly.png' }
+            LCA: { name: 'Saint Lucia', flag: 'lc.png' }
+            LIE: { name: 'Liechtenstein', flag: 'li.png' }
+            LKA: { name: 'Sri Lanka', flag: 'lk.png' }
+            LSO: { name: 'Lesotho', flag: 'ls.png' }
+            LTU: { name: 'Litauen', flag: 'lt.png' }
+            LUX: { name: 'Luxembourg', flag: 'lu.png' }
+            LVA: { name: 'Letland', flag: 'lv.png' }
+            MAC: { name: 'Macao', flag: 'mo.png' }
+#           MAF: { name: 'San Martin', flag: 'gx.png' }
+            MAR: { name: 'Marokko', flag: 'ma.png' }
+            MCO: { name: 'Monaco', flag: 'mc.png' }
+            MDA: { name: 'Moldova', flag: 'md.png' }
+            MDG: { name: 'Madagaskar', flag: 'mg.png' }
+            MDV: { name: 'Maldiverne', flag: 'mv.png' }
+            MEX: { name: 'Mexico', flag: 'mx.png' }
+            MHL: { name: 'Marshalløerne', flag: 'mh.png' }
+            MKD: { name: 'Makedonien', flag: 'mk.png' }
+            MLI: { name: 'Mali', flag: 'ml.png' }
+            MLT: { name: 'Malta', flag: 'mt.png' }
+            MMR: { name: 'Burma', flag: 'mm.png' }
+            MNE: { name: 'Montenegro', flag: 'me.png' }
+            MNG: { name: 'Mongoliet', flag: 'mn.png' }
+            MNP: { name: 'Nordmarianerne', flag: 'mp.png' }
+            MOZ: { name: 'Mozambique', flag: 'mz.png' }
+            MRT: { name: 'Mauretanien', flag: 'mr.png' }
+            MSR: { name: 'Montserrat', flag: 'ms.png' }
+            MTQ: { name: 'Martinique', flag: 'mq.png' }
+            MUS: { name: 'Mauritius', flag: 'mu.png' }
+            MWI: { name: 'Malawi', flag: 'mw.png' }
+            MYS: { name: 'Malaysia', flag: 'my.png' }
+            MYT: { name: 'Mayotte', flag: 'yt.png' }
+            NAM: { name: 'Namibia', flag: 'na.png' }
+            NCL: { name: 'Ny Kaledonien', flag: 'nc.png' }
+            NER: { name: 'Niger', flag: 'ne.png' }
+            NFK: { name: 'Norfolk Island', flag: 'nf.png' }
+            NGA: { name: 'Nigeria', flag: 'ng.png' }
+            NIC: { name: 'Nicaragua', flag: 'ni.png' }
+            NIU: { name: 'Niue', flag: 'nu.png' }
+            NLD: { name: 'Holland', flag: 'nl.png' }
+            NOR: { name: 'Norge', flag: 'no.png' }
+            NPL: { name: 'Nepal', flag: 'np.png' }
+            NRU: { name: 'Nauru', flag: 'nr.png' }
+            NZL: { name: 'New Zealand', flag: 'nz.png' }
+            OMN: { name: 'Oman', flag: 'om.png' }
+            PAK: { name: 'Pakistan', flag: 'pk.png' }
+            PAN: { name: 'Panama', flag: 'pa.png' }
+            PCN: { name: 'Pitcairn', flag: 'pn.png' }
+            PER: { name: 'Peru', flag: 'pe.png' }
+            PHL: { name: 'Filippinerne', flag: 'ph.png' }
+            PLW: { name: 'Palau', flag: 'pw.png' }
+            PNG: { name: 'Papua Ny Guinea', flag: 'pg.png' }
+            POL: { name: 'Polen', flag: 'pl.png' }
+            PRI: { name: 'Puerto Rico', flag: 'pr.png' }
+            PRK: { name: 'Nordkorea', flag: 'kp.png' }
+            PRT: { name: 'Portugal', flag: 'pt.png' }
+            PRY: { name: 'Paraguay', flag: 'py.png' }
+            PSE: { name: 'Palæstina', flag: 'ps.png' }
+            PYF: { name: 'Fransk Polynesien', flag: 'pf.png' }
+            QAT: { name: 'Qatar', flag: 'qa.png' }
+            REU: { name: 'Réunion', flag: 're.png' }
+            ROU: { name: 'Rumænien', flag: 'ro.png' }
+            RUS: { name: 'Rusland', flag: 'ru.png' }
+            RWA: { name: 'Rwanda', flag: 'rw.png' }
+            SAU: { name: 'Saudi-Arabien', flag: 'sa.png' }
+            SDN: { name: 'Sudan', flag: 'sd.png' }
+            SEN: { name: 'Senegal', flag: 'sn.png' }
+            SGP: { name: 'Singapore', flag: 'sg.png' }
+            SGS: { name: 'South Georgia og South Sandwich Islands', flag: 'gs.png' }
+            SHN: { name: 'Sankt Helena', flag: 'sh.png' }
+            SJM: { name: 'Norge Svalbard og Jan Mayen', flag: 'sj.png' }
+            SLB: { name: 'Salomonøerne', flag: 'sb.png' }
+            SLE: { name: 'Sierra Leone', flag: 'sl.png' }
+            SLV: { name: 'El Salvador', flag: 'sv.png' }
+            SMR: { name: 'San Marino', flag: 'sm.png' }
+            SOM: { name: 'Somalia', flag: 'so.png' }
+            SPM: { name: 'Saint-Pierre og Miquelon', flag: 'pm.png' }
+            SRB: { name: 'Serbien', flag: 'rs.png' }
+#           SSD: { name: 'Sydsudan', flag: 'gx.png' }
+            STP: { name: 'Sao Tome og Principe', flag: 'st.png' }
+            SUR: { name: 'Surinam', flag: 'sr.png' }
+            SVK: { name: 'Slovakiet', flag: 'sk.png' }
+            SVN: { name: 'Slovenien', flag: 'si.png' }
+            SWE: { name: 'Sverige', flag: 'se.png' }
+            SWZ: { name: 'Swaziland', flag: 'sz.png' }
+#           SXM: { name: 'Sint Maarten', flag: 'sx.png' }
+            SYC: { name: 'Seychellerne', flag: 'sc.png' }
+            SYR: { name: 'Syrien', flag: 'sy.png' }
+            TCA: { name: 'Turks- og Caicosøerne', flag: 'tc.png' }
+            TCD: { name: 'Tchad', flag: 'td.png' }
+            TGO: { name: 'Togo', flag: 'tg.png' }
+            THA: { name: 'Thailand', flag: 'th.png' }
+            TJK: { name: 'Tadsjikistan', flag: 'tj.png' }
+            TKL: { name: 'Tokelau', flag: 'tk.png' }
+            TKM: { name: 'Turkmenistan', flag: 'tm.png' }
+            TLS: { name: 'Østtimor', flag: 'tl.png' }
+            TON: { name: 'Tonga', flag: 'to.png' }
+            TTO: { name: 'Trinidad og Tobago', flag: 'tt.png' }
+            TUN: { name: 'Tunesien', flag: 'tn.png' }
+            TUR: { name: 'Tyrkiet', flag: 'tr.png' }
+            TUV: { name: 'Tuvalu', flag: 'tv.png' }
+            TWN: { name: 'Republikken Kina Taiwan', flag: 'tw.png' }
+            TZA: { name: 'Tanzania', flag: 'tz.png' }
+            UGA: { name: 'Uganda', flag: 'ug.png' }
+            UKR: { name: 'Ukraine', flag: 'ua.png' }
+            UMI: { name: 'United States Minor Outlying Islands', flag: 'um.png' }
+            URY: { name: 'Uruguay', flag: 'uy.png' }
+            USA: { name: 'USA', flag: 'us.png' }
+            UZB: { name: 'Usbekistan', flag: 'uz.png' }
+            VAT: { name: 'Vatikanstaten', flag: 'va.png' }
+            VCT: { name: 'Saint Vincent og Grenadinerne', flag: 'vc.png' }
+            VEN: { name: 'Venezuela', flag: 've.png' }
+            VGB: { name: 'Britiske Jomfruøer', flag: 'vg.png' }
+            VIR: { name: 'Amerikanske Jomfruøer', flag: 'vi.png' }
+            VNM: { name: 'Vietnam', flag: 'vn.png' }
+            VUT: { name: 'Vanuatu', flag: 'vu.png' }
+            WLF: { name: 'Wallis og Futuna', flag: 'wf.png' }
+            WSM: { name: 'Samoa', flag: 'ws.png' }
+            YEM: { name: 'Yemen', flag: 'ye.png' }
+            ZAF: { name: 'Sydafrika', flag: 'za.png' }
+            ZMB: { name: 'Zambia', flag: 'zm.png' }
+            ZWE: { name: 'Zimbabwe', flag: 'zw.png' }
+#scotland.png
+#europeanunion.png
+#catalonia.png
+#england.png
+#wales.png
+#fam.png
+#cs.png

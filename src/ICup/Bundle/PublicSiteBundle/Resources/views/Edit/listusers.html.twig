@@ -7,7 +7,7 @@
 <p class="subtitle">
 <a href="{{ path('_edit_club_list') }}">{{ club.name }}</a>
 &nbsp;
-<img src="{{ imagepath }}/flags/{{ flags[club.country] }}" alt="{{ club.country|trans({},'lang') }}" title="{{ club.country|trans({},'lang') }}">
+<img src="{{ imagepath }}/flags/{{ countries[club.country].flag }}" alt="{{ club.country|trans({},'lang') }}" title="{{ club.country|trans({},'lang') }}">
 </p>
 <table>
     <caption>{% trans %}FORM.LISTUSERS.CAPTION{% endtrans %}</caption>

@@ -37,9 +37,9 @@
                 <td class="time">{{ match.schedule|date('H.i') }}</td>
                 <td class="no">{{ match.category }}</td>
                 <td class="no">{{ match.group }}</td>
-                <td class="flag"><img src="{{ imagepath }}/flags/{{ flags[match.countryA] }}" alt="{{ match.countryA|trans }}" title="{{ match.countryA|trans }}"></td>
+                <td class="flag"><img src="{{ imagepath }}/flags/{{ countries[match.countryA].flag }}" alt="{{ match.countryA|trans }}" title="{{ match.countryA|trans }}"></td>
                 <td class="team"><a href="{{ path('_showteam', { 'tournament': tournament.key, 'teamid': match.idA, 'groupid': match.gid }) }}">{{ match.teamA }}</a></td>
-                <td class="flag"><img src="{{ imagepath }}/flags/{{ flags[match.countryB] }}" alt="{{ match.countryB|trans }}" title="{{ match.countryB|trans }}"></td>
+                <td class="flag"><img src="{{ imagepath }}/flags/{{ countries[match.countryB].flag }}" alt="{{ match.countryB|trans }}" title="{{ match.countryB|trans }}"></td>
                 <td class="team"><a href="{{ path('_showteam', { 'tournament': tournament.key, 'teamid': match.idB, 'groupid': match.gid }) }}">{{ match.teamB }}</a></td>
                 <td class="match">
                     <input type="text" name="score_{{ match.ridA }}" size="1" value="{{ match.scoreA }}" />

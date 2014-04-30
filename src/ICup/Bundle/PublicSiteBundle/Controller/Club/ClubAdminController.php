@@ -131,7 +131,7 @@ class ClubAdminController extends Controller
 
     private function makeClubForm($club, $action) {
         $countries = array();
-        foreach (array_keys($this->get('util')->getCountries()) as $ccode) {
+        foreach ($this->get('util')->getCountries() as $ccode) {
             $country = $this->get('translator')->trans($ccode, array(), 'lang');
             $countries[$ccode] = $country;
         }

@@ -22,14 +22,19 @@ class MyPageController extends Controller
     {
         $this->get('util')->setupController();
         $user = $this->get('util')->getCurrentUser();
-        // If user is an admin user throw RedirectException and redirect to admin myPage
-        $this->redirectMyAdminPage($user);
-        // If user is an editor user throw RedirectException and redirect to editor myPage
-        $this->redirectMyEditorPage($user);
-        // If user is an unrelated user throw RedirectException and redirect to myPage for unrelated users
-        $this->redirectMyUserPage($user);
-        // At this point - user is a related club user/admin
-        return $this->getMyClubUserPage($user);
+        try {
+            // If user is an admin user throw RedirectException and redirect to admin myPage
+            $this->redirectMyAdminPage($user);
+            // If user is an editor user throw RedirectException and redirect to editor myPage
+            $this->redirectMyEditorPage($user);
+            // If user is an unrelated user throw RedirectException and redirect to myPage for unrelated users
+            $this->redirectMyUserPage($user);
+            // At this point - user is a related club user/admin
+            return $this->getMyClubUserPage($user);
+        }
+        catch (RedirectException $e) {
+            return $e->getResponse();
+        }
     }
 
     /**

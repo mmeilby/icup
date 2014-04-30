@@ -23,7 +23,7 @@
     {% for ranks in championlist %}
         {% set country = ranks.country %}
         <tr class="{{ cycle(['even','odd'],loop.index) }}">
-            <td class="winner_flag"><img src="{{ imagepath }}/flags/{{ flags[country] }}" alt="{{ country|trans({},'lang') }}" title="{{ country|trans({},'lang') }}"></td>
+            <td class="winner_flag"><img src="{{ imagepath }}/flags/{{ countries[country].flag }}" alt="{{ country|trans({},'lang') }}" title="{{ country|trans({},'lang') }}"></td>
             <td class="winner_team">{{ country|trans({},'lang') }}</td>
             <td class="winners_country">
                 {{ ranks.first }}

@@ -2,6 +2,7 @@ imports:
     - { resource: local/parameters.yml }
     - { resource: security.yml }
     - { resource: services.yml }
+    - { resource: countries.yml }
 
 framework:
     #esi:             ~
@@ -37,6 +38,8 @@ twig:
     strict_variables: %kernel.debug%
     globals:
         imagepath: /icup/web/bundles/icuppublicsite/images
+        # List of supported locales - first locale is preferred default if user requests unsupported locale
+        supported_locales: { en: 'GBR', it: 'ITA', fr: 'FRA', de: 'DEU', es: 'ESP', po: 'POL', da: 'DNK' }
         
 # Assetic Configuration
 assetic:

@@ -1,14 +1,20 @@
 {% extends "ICupPublicSiteBundle:Masters:base.html.twig" %}
 
-{% set flags = app.session.get('Countries') %}
 {% set tmnt = app.session.get('Tournament') %}
+{% if tmnt is null %}
+    {% set tmnt = '_' %}
+{% endif %}
 
 {% block header %}
     <div class="menu">
         <div class="menu_header">
             <ul>
 {% if app.user == null %}
+    {% if tmnt != '_' %}
                 <li><a href="{{ path('_tournament_overview', {'tournament': tmnt}) }}">{{ 'MENU.TOURNAMENT.OVERVIEW'|trans }}</a></li>
+    {% else %}
+                <li><a href="{{ path('_tournament_select') }}">{% trans %}MENU.TOURNAMENT.SELECT{% endtrans %}</a></li>
+    {% endif %}
 {% else %}
                 <li><a href="{{ path('_user_my_page') }}">{% trans %}MENU.ENROLLMENT.MYPAGE{% endtrans %}</a></li>
 {% endif %}
@@ -16,12 +22,12 @@
         </div>
         <div class="menu_header">
             <ul>
-                <li><a href="{{ path('_tournament_overview', {'tournament': tmnt}) }}">{{ 'MENU.INFO.ABOUT'|trans }}</a></li>
+                <li><a href="{{ path('_icup') }}">{{ 'MENU.INFO.ABOUT'|trans }}</a></li>
             </ul>
         </div>
         <div class="menu_header">
             <ul>
-                <li><a href="{{ path('_tournament_overview', {'tournament': tmnt}) }}">{{ 'MENU.INFO.FAQ'|trans }}</a></li>
+                <li><a href="{{ path('_icup') }}">{{ 'MENU.INFO.FAQ'|trans }}</a></li>
             </ul>
         </div>
         <div class="menu_header last">
@@ -48,8 +54,8 @@
         <div class="menu_footer">
             <h3>{% trans %}MENU.LANGCHOICE.TITLE{% endtrans %}</h3>
             <ul>
-                {% for local in ['en','it','fr','de','es','po','da'] %}
-                    {% set flag = flags[cycle(['GBR','ITA','FRA','DEU','ESP','POL','DNK'], loop.index0)] %}
+                {% for local in supported_locales|keys %}
+                    {% set flag = countries[supported_locales[local]].flag %}
                     {% set lang = ['LANG.',local|upper]|join|trans({}, 'common') %}
                 <li>
                     <a href="{{ path('_switch', { 'locale': local }) }}">

@@ -27,8 +27,6 @@ class AnnonymousController extends Controller
         $utilService = $this->get('util');
         $utilService->setupController();
 
-        $tournament = $utilService->getTournament();
-
         /* @var $user User */
         $user = $this->getUser();
         if ($user != null) {
@@ -61,6 +59,14 @@ class AnnonymousController extends Controller
                     new AuthenticationEvent($token));
 
             return $this->redirect($this->generateUrl('_user_my_page'));
+        }
+        
+        $tournamentKey = $utilService->getTournamentKey();
+        if ($tournamentKey != '_') {
+            $tournament = $this->get('logic')->getTournamentByKey($tournamentKey);
+        }
+        else {
+            $tournament = null;
         }
         return array('form' => $form->createView(), 'action' => 'add', 'user' => $user, 'tournament' => $tournament);
     }

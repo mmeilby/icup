@@ -28,7 +28,7 @@
             <tboby>
         {% for team in group.teams %}
                 <tr class="{{ cycle(['even','odd'],loop.index) }}">
-                    <td class="flag"><img src="{{ imagepath }}/flags/{{ flags[team.country] }}" alt="{{ team.country|trans({},'lang') }}" title="{{ team.country|trans({},'lang') }}"></td>
+                    <td class="flag"><img src="{{ imagepath }}/flags/{{ countries[team.country].flag }}" alt="{{ team.country|trans({},'lang') }}" title="{{ team.country|trans({},'lang') }}"></td>
                     <td class="team"><a href="{{ path('_host_assign_del', { 'teamid': team.id, 'groupid': group.group.id }) }}">{{ team.name }}</a></td>
                 </tr>
         {% endfor %}
@@ -60,7 +60,7 @@
             <tboby>
     {% for team in unassigned %}
                 <tr class="{{ cycle(['even','odd'],loop.index) }}">
-                    <td class="flag"><img src="{{ imagepath }}/flags/{{ flags[team.country] }}" alt="{{ team.country|trans({},'lang') }}" title="{{ team.country|trans({},'lang') }}"></td>
+                    <td class="flag"><img src="{{ imagepath }}/flags/{{ countries[team.country].flag }}" alt="{{ team.country|trans({},'lang') }}" title="{{ team.country|trans({},'lang') }}"></td>
                     <td class="team"><a href="{{ path('_host_assign_add', { 'teamid': team.id, 'groupid': selectedgroup.id }) }}">{{ team.name }}</a></td>
                 </tr>
     {% endfor %}

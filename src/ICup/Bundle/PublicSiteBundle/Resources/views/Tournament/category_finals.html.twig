@@ -6,7 +6,7 @@
     {% if team is not null %}
         <table>
             <tr>
-                <td class="flag"><img src="{{ context.imagepath }}/flags/{{ context.flags[team.country] }}" alt="{{ team.country|trans({},'lang') }}" title="{{ team.country|trans({},'lang') }}"></td>
+                <td class="flag"><img src="{{ context.imagepath }}/flags/{{ context.countries[team.country].flag }}" alt="{{ team.country|trans({},'lang') }}" title="{{ team.country|trans({},'lang') }}"></td>
                 <td class="team"><a href="{{ path('_showteam', { 'tournament': context.tournament.key, 'teamid': team.id, 'groupid': team.group }) }}">{{ team.name }}</a></td>
                 <td class="score">{{ team.score }}</td>
             </tr>

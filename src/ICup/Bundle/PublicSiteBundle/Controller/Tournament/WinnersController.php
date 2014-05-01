@@ -13,7 +13,7 @@ class WinnersController extends Controller
      */
     public function listAction($tournament)
     {
-        $this->get('util')->setupController($tournament);
+        $this->get('util')->setTournamentKey($tournament);
         $tournament = $this->get('util')->getTournament();
         $championList = array();
         $groups = $this->get('tmnt')->listChampionsByTournament($tournament->getId());
@@ -40,7 +40,7 @@ class WinnersController extends Controller
      */
     public function listCountriesAction($tournament)
     {
-        $this->get('util')->setupController($tournament);
+        $this->get('util')->setTournamentKey($tournament);
         $tournament = $this->get('util')->getTournament();
         $groups = $this->get('tmnt')->listChampionsByTournament($tournament->getId());
         $countryList = array();
@@ -104,7 +104,7 @@ class WinnersController extends Controller
      */
     public function listClubsAction($tournament)
     {
-        $this->get('util')->setupController($tournament);
+        $this->get('util')->setTournamentKey($tournament);
         $tournament = $this->get('util')->getTournament();
         $groups = $this->get('tmnt')->listChampionsByTournament($tournament->getId());
         $countryList = array();

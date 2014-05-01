@@ -6,14 +6,21 @@ use Symfony\Component\HttpFoundation\Session\Session;
 use Symfony\Component\Security\Http\Event\InteractiveLoginEvent;
 use Symfony\Component\HttpKernel\Event\GetResponseEvent;
 use Symfony\Component\HttpKernel\HttpKernelInterface;
+use Symfony\Bundle\TwigBundle\TwigEngine;
+use Monolog\Logger;
 
 class LanguageListener
 {
-    private $session;
+    protected $supported_locales;
+    /* @var $logger Logger */
+    protected $logger;
 
-    public function setSession(Session $session)
+    public function __construct($templating, Logger $logger)
     {
-        $this->session = $session;
+        $globals = $templating->getGlobals();
+        // Get list of supported locales - first locale is preferred default if user requests unsupported locale
+        $this->supported_locales = array_keys($globals['supported_locales']);
+        $this->logger = $logger;
     }
 
     /**
@@ -28,13 +35,17 @@ class LanguageListener
         if (HttpKernelInterface::MASTER_REQUEST !== $event->getRequestType()) {
             return;
         }
+
+        /* @var $request Request */
         $request = $event->getRequest();
-        if ('undefined' == $request->getLocale()) {
-            if ($locale = $request->getSession()->get('_locale')) {
-                $request->setLocale($locale);
-            } else {
-                $request->setLocale($request->getPreferredLanguage());
-            }
+        /* @var $session Session */
+        $session = $request->getSession();
+        $language = $session->get('locale', $request->getPreferredLanguage($this->supported_locales));
+        if (!array_search($language, $this->supported_locales)) {
+            $request->setLocale($this->supported_locales[0]);
+        }
+        else {
+            $request->setLocale($language);
         }
     }
 

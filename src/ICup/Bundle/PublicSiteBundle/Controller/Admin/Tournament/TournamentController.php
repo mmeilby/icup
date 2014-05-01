@@ -21,7 +21,7 @@ class TournamentController extends Controller
     public function addTournamentAction($hostid) {
         /* @var $utilService Util */
         $utilService = $this->get('util');
-        $utilService->setupController();
+        
         $returnUrl = $utilService->getReferer();
 
         /* @var $user User */
@@ -59,7 +59,7 @@ class TournamentController extends Controller
     public function chgTournamentAction($tournamentid) {
         /* @var $utilService Util */
         $utilService = $this->get('util');
-        $utilService->setupController();
+        
         $returnUrl = $utilService->getReferer();
 
         /* @var $user User */
@@ -97,7 +97,7 @@ class TournamentController extends Controller
     public function delTournamentAction($tournamentid) {
         /* @var $utilService Util */
         $utilService = $this->get('util');
-        $utilService->setupController();
+        
         $returnUrl = $utilService->getReferer();
 
         /* @var $user User */

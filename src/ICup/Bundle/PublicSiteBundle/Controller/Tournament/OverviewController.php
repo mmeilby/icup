@@ -13,7 +13,7 @@ class OverviewController extends Controller
      */
     public function overviewAction($tournament)
     {
-        $this->get('util')->setupController($tournament);
+        $this->get('util')->setTournamentKey($tournament);
         $tournament = $this->get('util')->getTournament();
         $newsStream = array(
 /*            

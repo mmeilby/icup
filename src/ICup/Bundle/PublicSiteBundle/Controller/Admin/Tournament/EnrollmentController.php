@@ -23,7 +23,7 @@ class EnrollmentController extends Controller
     public function addEnrollAction($categoryid) {
         /* @var $utilService Util */
         $utilService = $this->get('util');
-        $utilService->setupController();
+        
         $returnUrl = $utilService->getReferer();
 
         /* @var $user User */
@@ -44,7 +44,7 @@ class EnrollmentController extends Controller
     public function addEnrollActionHost($categoryid, $clubid) {
         /* @var $utilService Util */
         $utilService = $this->get('util');
-        $utilService->setupController();
+        
         $returnUrl = $utilService->getReferer();
 
         /* @var $user User */
@@ -69,7 +69,7 @@ class EnrollmentController extends Controller
     public function delEnrollAction($categoryid) {
         /* @var $utilService Util */
         $utilService = $this->get('util');
-        $utilService->setupController();
+        
         $returnUrl = $utilService->getReferer();
 
         /* @var $user User */
@@ -90,7 +90,7 @@ class EnrollmentController extends Controller
     public function delEnrollActionHost($categoryid, $clubid) {
         /* @var $utilService Util */
         $utilService = $this->get('util');
-        $utilService->setupController();
+        
         $returnUrl = $utilService->getReferer();
 
         /* @var $user User */

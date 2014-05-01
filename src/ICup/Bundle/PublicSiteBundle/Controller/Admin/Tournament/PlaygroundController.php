@@ -21,7 +21,7 @@ class PlaygroundController extends Controller
     public function addPlaygroundAction($siteid) {
         /* @var $utilService Util */
         $utilService = $this->get('util');
-        $utilService->setupController();
+        
         $returnUrl = $utilService->getReferer();
 
         /* @var $user User */
@@ -55,7 +55,7 @@ class PlaygroundController extends Controller
     public function chgPlaygroundAction($playgroundid) {
         /* @var $utilService Util */
         $utilService = $this->get('util');
-        $utilService->setupController();
+        
         $returnUrl = $utilService->getReferer();
 
         /* @var $user User */
@@ -88,7 +88,7 @@ class PlaygroundController extends Controller
     public function delPlaygroundAction($playgroundid) {
         /* @var $utilService Util */
         $utilService = $this->get('util');
-        $utilService->setupController();
+        
         $returnUrl = $utilService->getReferer();
 
         /* @var $user User */

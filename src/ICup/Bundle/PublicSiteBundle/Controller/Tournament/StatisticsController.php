@@ -13,7 +13,7 @@ class StatisticsController extends Controller
      */
     public function listAction($tournament)
     {
-        $this->get('util')->setupController($tournament);
+        $this->get('util')->setTournamentKey($tournament);
         $tournament = $this->get('util')->getTournament();
         $counts = $this->get('tmnt')->getStatTournamentCounts($tournament->getId());
         $playgroundCounts = $this->get('tmnt')->getStatPlaygroundCounts($tournament->getId());

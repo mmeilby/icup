@@ -16,13 +16,12 @@ class ClubController extends Controller
      * @Template("ICupPublicSiteBundle:Edit:editclub.html.twig")
      */
     public function addAction() {
-        $this->get('util')->setupController();
         $returnUrl = $this->get('util')->getReferer();
         
         $country = $this->getRequest()->get('country');
         if ($country == null) {
-            $map = array('en'=>'GBR', 'da'=>'DNK', 'it'=>'ITA', 'fr'=>'FRA', 'de'=>'DEU', 'es'=>'ESP', 'po'=>'POL');
-            $country = $map[$this->getRequest()->getLocale()];
+            $globals = $this->get('twig')->getGlobals();
+            $country = $globals['countries'][$this->getRequest()->getLocale()];
         }
 
         $club = new Club();
@@ -55,7 +54,6 @@ class ClubController extends Controller
      * @Template("ICupPublicSiteBundle:Edit:editclub.html.twig")
      */
     public function chgAction($clubid) {
-        $this->get('util')->setupController();
         $returnUrl = $this->get('util')->getReferer();
 
         /* @var $club Club */
@@ -87,7 +85,6 @@ class ClubController extends Controller
      * @Template("ICupPublicSiteBundle:Edit:editclub.html.twig")
      */
     public function delAction($clubid) {
-        $this->get('util')->setupController();
         $returnUrl = $this->get('util')->getReferer();
 
         /* @var $club Club */

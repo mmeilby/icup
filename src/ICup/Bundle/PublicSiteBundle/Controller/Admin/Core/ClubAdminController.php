@@ -23,7 +23,6 @@ class ClubAdminController extends Controller
     {
         /* @var $utilService Util */
         $utilService = $this->get('util');
-        $utilService->setupController();
 
         /* @var $user User */
         $user = $this->get('entity')->getUserById($userid);
@@ -53,7 +52,6 @@ class ClubAdminController extends Controller
     {
         /* @var $utilService Util */
         $utilService = $this->get('util');
-        $utilService->setupController();
 
         /* @var $user User */
         $user = $this->get('entity')->getUserById($userid);
@@ -86,7 +84,7 @@ class ClubAdminController extends Controller
     {
         /* @var $utilService Util */
         $utilService = $this->get('util');
-        $utilService->setupController();
+        
 
         /* @var $user User */
         $user = $this->get('entity')->getUserById($userid);
@@ -114,7 +112,7 @@ class ClubAdminController extends Controller
     {
         /* @var $utilService Util */
         $utilService = $this->get('util');
-        $utilService->setupController();
+        
 
         $clubid = $this->getRequest()->get('clubid', '');
         /* @var $user User */
@@ -150,7 +148,7 @@ class ClubAdminController extends Controller
     {
         /* @var $utilService Util */
         $utilService = $this->get('util');
-        $utilService->setupController();
+        
 
         /* @var $user User */
         $user = $utilService->getCurrentUser();

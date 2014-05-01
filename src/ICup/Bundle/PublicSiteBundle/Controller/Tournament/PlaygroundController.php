@@ -22,7 +22,7 @@ class PlaygroundController extends Controller
      */
     public function listAction($tournament, $playgroundid, $groupid)
     {
-        $this->get('util')->setupController($tournament);
+        $this->get('util')->setTournamentKey($tournament);
         $tournament = $this->get('util')->getTournament();
         $playground = $this->get('entity')->getPlaygroundById($playgroundid);
         $group = $this->get('entity')->getGroupById($groupid);
@@ -104,7 +104,7 @@ class PlaygroundController extends Controller
      */
     public function listAllAction($tournament, $playgroundid)
     {
-        $this->get('util')->setupController($tournament);
+        $this->get('util')->setTournamentKey($tournament);
         $tournament = $this->get('util')->getTournament();
         $playground = $this->get('entity')->getPlaygroundById($playgroundid);
 

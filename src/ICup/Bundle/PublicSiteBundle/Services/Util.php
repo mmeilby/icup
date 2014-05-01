@@ -8,7 +8,6 @@ use ICup\Bundle\PublicSiteBundle\Services\Doctrine\Entity;
 use ICup\Bundle\PublicSiteBundle\Services\Doctrine\BusinessLogic;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Session;
-use Symfony\Component\Yaml\Exception\ParseException;
 use ICup\Bundle\PublicSiteBundle\Exceptions\ValidationException;
 use ICup\Bundle\PublicSiteBundle\Exceptions\RedirectException;
 use Symfony\Component\DependencyInjection\ContainerInterface;
@@ -36,40 +35,6 @@ class Util
         $this->logic = $container->get('logic');
         $this->em = $container->get('doctrine')->getManager();
         $this->logger = $logger;
-    }
-
-    public function setupController($tournament = '_')
-    {
-        /* @var $request Request */
-        $request = $this->container->get('request');
-        /* @var $session Session */
-        $session = $request->getSession();
-        if ($tournament == '_') {
-            $tournament = $session->get('Tournament', '_');
-        }
-        else {
-            $session->set('Tournament', $tournament);
-        }
-
-        $this->switchLanguage();
-    }
-    
-    private function switchLanguage()
-    {
-        $globals = $this->container->get('twig')->getGlobals();
-        // Get list of supported locales - first locale is preferred default if user requests unsupported locale
-        $supported_locales = array_keys($globals['supported_locales']);
-        /* @var $request Request */
-        $request = $this->container->get('request');
-        /* @var $session Session */
-        $session = $request->getSession();
-        $language = $session->get('locale', $request->getPreferredLanguage($supported_locales));
-        if (!array_search($language, $supported_locales)) {
-            $request->setLocale($supported_locales[0]);
-        }
-        else {
-            $request->setLocale($language);
-        }
     }
 
     /**
@@ -103,6 +68,15 @@ class Util
         /* @var $session Session */
         $session = $request->getSession();
         return $session->get('Tournament', '_');
+    }
+
+    public function setTournamentKey($tournament)
+    {
+        /* @var $request Request */
+        $request = $this->container->get('request');
+        /* @var $session Session */
+        $session = $request->getSession();
+        $session->set('Tournament', $tournament);
     }
 
     /**

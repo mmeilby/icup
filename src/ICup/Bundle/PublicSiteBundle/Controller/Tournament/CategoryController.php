@@ -13,7 +13,7 @@ class CategoryController extends Controller
      */
     public function listAction($tournament, $categoryid)
     {
-        $this->get('util')->setupController($tournament);
+        $this->get('util')->setTournamentKey($tournament);
         $tournament = $this->get('util')->getTournament();
         $category = $this->get('entity')->getCategoryById($categoryid);
         $groups = $this->get('logic')->listGroups($categoryid);
@@ -31,7 +31,7 @@ class CategoryController extends Controller
      */
     public function listClassAction($tournament, $categoryid)
     {
-        $this->get('util')->setupController($tournament);
+        $this->get('util')->setTournamentKey($tournament);
         $tournament = $this->get('util')->getTournament();
         $category = $this->get('entity')->getCategoryById($categoryid);
         $groups = $this->get('logic')->listGroupsClassification($categoryid);
@@ -49,7 +49,7 @@ class CategoryController extends Controller
      */
     public function listFinalsAction($tournament, $categoryid)
     {
-        $this->get('util')->setupController($tournament);
+        $this->get('util')->setTournamentKey($tournament);
         $tournament = $this->get('util')->getTournament();
         $category = $this->get('entity')->getCategoryById($categoryid);
         $groups = $this->get('logic')->listGroupsFinals($categoryid);

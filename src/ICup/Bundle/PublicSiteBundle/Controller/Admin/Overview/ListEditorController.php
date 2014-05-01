@@ -20,7 +20,7 @@ class ListEditorController extends Controller
     {
         /* @var $utilService Util */
         $utilService = $this->get('util');
-        $utilService->setupController();
+        
 
         /* @var $user User */
         $user = $utilService->getCurrentUser();
@@ -44,7 +44,7 @@ class ListEditorController extends Controller
     {
         /* @var $utilService Util */
         $utilService = $this->get('util');
-        $utilService->setupController();
+        
 
         $host = $this->get('entity')->getHostById($hostid);
         $users = $this->get('entity')->getUserRepo()->findBy(array('pid' => $hostid));

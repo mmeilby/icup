@@ -20,7 +20,7 @@ class GroupController extends Controller
     public function addGroupAction($categoryid) {
         /* @var $utilService Util */
         $utilService = $this->get('util');
-        $utilService->setupController();
+        
         $returnUrl = $utilService->getReferer();
 
         /* @var $user User */
@@ -54,7 +54,7 @@ class GroupController extends Controller
     public function chgGroupAction($groupid) {
         /* @var $utilService Util */
         $utilService = $this->get('util');
-        $utilService->setupController();
+        
         $returnUrl = $utilService->getReferer();
 
         /* @var $user User */
@@ -87,7 +87,7 @@ class GroupController extends Controller
     public function delGroupAction($groupid) {
         /* @var $utilService Util */
         $utilService = $this->get('util');
-        $utilService->setupController();
+        
         $returnUrl = $utilService->getReferer();
 
         /* @var $user User */

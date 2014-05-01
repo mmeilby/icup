@@ -21,7 +21,7 @@ class SiteController extends Controller
     public function addAction($tournamentid) {
         /* @var $utilService Util */
         $utilService = $this->get('util');
-        $utilService->setupController();
+        
         $returnUrl = $utilService->getReferer();
 
         /* @var $user User */
@@ -54,7 +54,7 @@ class SiteController extends Controller
     public function chgAction($siteid) {
         /* @var $utilService Util */
         $utilService = $this->get('util');
-        $utilService->setupController();
+        
         $returnUrl = $utilService->getReferer();
 
         /* @var $user User */
@@ -86,7 +86,7 @@ class SiteController extends Controller
     public function delAction($siteid) {
         /* @var $utilService Util */
         $utilService = $this->get('util');
-        $utilService->setupController();
+        
         $returnUrl = $utilService->getReferer();
 
         /* @var $user User */

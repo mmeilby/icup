@@ -21,7 +21,7 @@ class ChangePasswordController extends Controller
     public function passAction() {
         /* @var $utilService Util */
         $utilService = $this->get('util');
-        $utilService->setupController();
+        
 
         /* @var $user User */
         $user = $utilService->getCurrentUser();

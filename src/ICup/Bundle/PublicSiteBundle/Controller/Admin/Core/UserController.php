@@ -16,7 +16,7 @@ class UserController extends Controller
      * @Template("ICupPublicSiteBundle:Edit:edituser.html.twig")
      */
     public function addAction($clubid) {
-        $this->get('util')->setupController();
+        
         $returnUrl = $this->get('util')->getReferer();
 
         $club = $this->get('entity')->getClubById($clubid);
@@ -54,7 +54,7 @@ class UserController extends Controller
      * @Template("ICupPublicSiteBundle:Edit:edituser.html.twig")
      */
     public function addHostAction($hostid) {
-        $this->get('util')->setupController();
+        
         $returnUrl = $this->get('util')->getReferer();
 
         /* @var $thisuser User */
@@ -94,7 +94,7 @@ class UserController extends Controller
      * @Template("ICupPublicSiteBundle:Edit:edituser.html.twig")
      */
     public function addSystemAction() {
-        $this->get('util')->setupController();
+        
         $returnUrl = $this->get('util')->getReferer();
 
         $user = new User();
@@ -129,7 +129,7 @@ class UserController extends Controller
      * @Template("ICupPublicSiteBundle:Edit:edituser.html.twig")
      */
     public function chgAction($userid) {
-        $this->get('util')->setupController();
+        
         $returnUrl = $this->get('util')->getReferer();
 
         /* @var $user User */
@@ -178,7 +178,7 @@ class UserController extends Controller
      * @Template("ICupPublicSiteBundle:Edit:edituser.html.twig")
      */
     public function delAction($userid) {
-        $this->get('util')->setupController();
+        
         $returnUrl = $this->get('util')->getReferer();
 
         /* @var $user User */
@@ -286,7 +286,7 @@ class UserController extends Controller
      * @Template("ICupPublicSiteBundle:Edit:edituser.html.twig")
      */
     public function passAction($userid) {
-        $this->get('util')->setupController();
+        
         $returnUrl = $this->get('util')->getReferer();
         
         /* @var $user User */

@@ -23,7 +23,7 @@ class HostController extends Controller
     public function addAction() {
         /* @var $utilService Util */
         $utilService = $this->get('util');
-        $utilService->setupController();
+        
         $returnUrl = $utilService->getReferer();
 
         $host = new Host();
@@ -50,7 +50,7 @@ class HostController extends Controller
     public function chgAction($hostid) {
         /* @var $utilService Util */
         $utilService = $this->get('util');
-        $utilService->setupController();
+        
         $returnUrl = $utilService->getReferer();
 
         /* @var $user User */
@@ -82,7 +82,7 @@ class HostController extends Controller
     public function delAction($hostid) {
         /* @var $utilService Util */
         $utilService = $this->get('util');
-        $utilService->setupController();
+        
         $returnUrl = $utilService->getReferer();
 
         $host = $this->get('entity')->getHostById($hostid);

@@ -4,6 +4,7 @@ namespace ICup\Bundle\PublicSiteBundle\Controller\Admin\Overview;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
+use Symfony\Component\HttpFoundation\Response;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 
 class ListClubController extends Controller
@@ -16,7 +17,7 @@ class ListClubController extends Controller
      */
     public function listClubsAction()
     {
-        $this->get('util')->setupController();
+        
 
         $clubs = $this->get('logic')->listClubs();
         $teamList = array();
@@ -51,7 +52,7 @@ class ListClubController extends Controller
     {
         /* @var $utilService Util */
         $utilService = $this->get('util');
-        $utilService->setupController();
+        
         // Validate that user is logged in...
         $utilService->getCurrentUser();
         $request = $this->getRequest();
@@ -62,8 +63,9 @@ class ListClubController extends Controller
         foreach ($clubs as $club) {
             $country = $this->get('translator')->trans($club->getCountry(), array(), 'lang');
             $result[] = array('id' => $club->getId(), 'name' => $club->getname(), 'country' => $country);
+            if (count($result) > 3) break;
         }
-        return new Response(json_encode(array_slice($result, 0, 3)));
+        return new Response(json_encode($result));
     }
     
     /**
@@ -75,7 +77,7 @@ class ListClubController extends Controller
     public function listClubsActionEditor($tournamentid) {
         /* @var $utilService Util */
         $utilService = $this->get('util');
-        $utilService->setupController();
+        
 
         /* @var $user User */
         $user = $utilService->getCurrentUser();

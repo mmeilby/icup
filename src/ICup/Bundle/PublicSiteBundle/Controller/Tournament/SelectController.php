@@ -13,7 +13,7 @@ class SelectController extends Controller
      */
     public function selectAction()
     {
-        $this->get('util')->setupController();
+        
         $tournaments = $this->get('logic')->listAvailableTournaments();
         $tournamentList = array();
         foreach ($tournaments as $tournament) {

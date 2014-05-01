@@ -25,7 +25,7 @@ class AnnonymousController extends Controller
     {
         /* @var $utilService Util */
         $utilService = $this->get('util');
-        $utilService->setupController();
+        
 
         /* @var $user User */
         $user = $this->getUser();

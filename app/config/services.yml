@@ -11,7 +11,15 @@ services:
             - "@logger"
         tags:
             - { name: kernel.event_listener, event: kernel.exception, method: onKernelException }
-    
+
+    icup.language.kernel_request_listener:
+        class: "ICup\\Bundle\\PublicSiteBundle\\EventListener\\LanguageListener"
+        arguments:
+            - "@twig"
+            - "@logger"
+        tags:
+            - { name: kernel.event_listener, event: kernel.request, method: setLocaleForUnauthenticatedUser }
+            
 # REGISTER TWIG EXTENSIONS
     custom.twig.sandbox.policy:
         class: Twig_Sandbox_SecurityPolicy

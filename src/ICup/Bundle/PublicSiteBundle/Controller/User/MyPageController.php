@@ -20,7 +20,7 @@ class MyPageController extends Controller
      */
     public function myPageAction()
     {
-        $this->get('util')->setupController();
+        
         $user = $this->get('util')->getCurrentUser();
         try {
             // If user is an admin user throw RedirectException and redirect to admin myPage
@@ -44,7 +44,7 @@ class MyPageController extends Controller
      */
     public function myPageUsersAction()
     {
-        $this->get('util')->setupController();
+        
         $user = $this->get('util')->getCurrentUser();
         $clubid = $user->getCid();
         $this->get('util')->validateClubAdminUser($user, $clubid);

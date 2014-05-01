@@ -20,7 +20,7 @@ class EditMatchController extends Controller
      * @Template("ICupPublicSiteBundle:Edit:editmatch.html.twig")
      */
     public function newAction($tournament, $categoryId) {
-        $this->get('util')->setupController($tournament);
+        $this->get('util')->setTournamentKey($tournament);
         $tournamentId = $this->get('util')->getTournamentId();
         $em = $this->getDoctrine()->getManager();
 
@@ -42,7 +42,7 @@ class EditMatchController extends Controller
      * @Template("ICupPublicSiteBundle:Edit:editmatch.html.twig")
      */
     public function newPostAction($tournament, $categoryId) {
-        $this->get('util')->setupController($tournament);
+        $this->get('util')->setTournamentKey($tournament);
         $tournamentId = $this->get('util')->getTournamentId();
         $em = $this->getDoctrine()->getManager();
 

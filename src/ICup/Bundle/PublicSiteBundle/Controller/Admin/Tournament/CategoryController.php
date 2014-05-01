@@ -20,7 +20,7 @@ class CategoryController extends Controller
     public function addAction($tournamentid) {
         /* @var $utilService Util */
         $utilService = $this->get('util');
-        $utilService->setupController();
+        
         $returnUrl = $utilService->getReferer();
 
         /* @var $user User */
@@ -53,7 +53,7 @@ class CategoryController extends Controller
     public function chgAction($categoryid) {
         /* @var $utilService Util */
         $utilService = $this->get('util');
-        $utilService->setupController();
+        
         $returnUrl = $utilService->getReferer();
 
         /* @var $user User */
@@ -85,7 +85,7 @@ class CategoryController extends Controller
     public function delAction($categoryid) {
         /* @var $utilService Util */
         $utilService = $this->get('util');
-        $utilService->setupController();
+        
         $returnUrl = $utilService->getReferer();
 
         /* @var $user User */

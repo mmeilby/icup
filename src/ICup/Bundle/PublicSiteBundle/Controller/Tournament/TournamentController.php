@@ -13,7 +13,7 @@ class TournamentController extends Controller
      */
     public function listCategoriesAction($tournament)
     {
-        $this->get('util')->setupController($tournament);
+        $this->get('util')->setTournamentKey($tournament);
         $tournament = $this->get('util')->getTournament();
         $categories = $this->get('logic')->listCategories($tournament->getId());
         $classMap = array();
@@ -32,7 +32,7 @@ class TournamentController extends Controller
      */
     public function listPlaygroundsAction($tournament)
     {
-        $this->get('util')->setupController($tournament);
+        $this->get('util')->setTournamentKey($tournament);
         $tournament = $this->get('util')->getTournament();
         $playgrounds = $this->get('tmnt')->listPlaygroundsByTournament($tournament->getId());
         $playgroundList = array();
@@ -49,7 +49,7 @@ class TournamentController extends Controller
      */
     public function listClubsAction($tournament)
     {
-        $this->get('util')->setupController($tournament);
+        $this->get('util')->setTournamentKey($tournament);
         $tournament = $this->get('util')->getTournament();
         $clubs = $this->get('logic')->listClubsByTournament($tournament->getId());
         $teamList = array();
@@ -80,7 +80,7 @@ class TournamentController extends Controller
      */
     public function listTeamsAction($tournament, $clubId)
     {
-        $this->get('util')->setupController($tournament);
+        $this->get('util')->setTournamentKey($tournament);
         $tournament = $this->get('util')->getTournament();
         $categories = $this->get('logic')->listCategories($tournament->getId());
         $categoryList = array();

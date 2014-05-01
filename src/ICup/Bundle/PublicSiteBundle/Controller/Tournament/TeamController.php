@@ -22,7 +22,7 @@ class TeamController extends Controller
      */
     public function listAction($tournament, $teamid, $groupid)
     {
-        $this->get('util')->setupController($tournament);
+        $this->get('util')->setTournamentKey($tournament);
         $tournament = $this->get('util')->getTournament();
         $team = $this->get('entity')->getTeamById($teamid);
         $name = $team->getName();

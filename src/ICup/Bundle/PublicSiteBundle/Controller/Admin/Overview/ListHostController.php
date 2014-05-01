@@ -22,7 +22,7 @@ class ListHostController extends Controller
     public function listAction() {
         /* @var $utilService Util */
         $utilService = $this->get('util');
-        $utilService->setupController();
+        
 
         // If user is not admin redirect to editor view
         if (!$this->get('security.context')->isGranted('ROLE_ADMIN')) {
@@ -47,7 +47,7 @@ class ListHostController extends Controller
     public function listActionAsEditor() {
         /* @var $utilService Util */
         $utilService = $this->get('util');
-        $utilService->setupController();
+        
 
         /* @var $user User */
         $user = $utilService->getCurrentUser();

@@ -24,7 +24,7 @@ class ListEnrollmentController extends Controller
     public function listAction($tournament) {
         /* @var $utilService Util */
         $utilService = $this->get('util');
-        $utilService->setupController();
+        
 
         /* @var $user User */
         $user = $utilService->getCurrentUser();
@@ -41,7 +41,7 @@ class ListEnrollmentController extends Controller
      * @Method("GET")
      */
     public function checkAction() {
-        $this->get('util')->setupController();
+        
         $tmnt = $this->get('util')->getTournament();
         if ($tmnt == null) {
             return $this->render('ICupPublicSiteBundle:Errors:needatournament.html.twig');
@@ -58,7 +58,7 @@ class ListEnrollmentController extends Controller
     public function listActionHost($tournament, $club) {
         /* @var $utilService Util */
         $utilService = $this->get('util');
-        $utilService->setupController();
+        
 
         /* @var $user User */
         $user = $utilService->getCurrentUser();

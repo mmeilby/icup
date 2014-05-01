@@ -27,7 +27,7 @@ class ClubAdminController extends Controller
     {
         /* @var $utilService Util */
         $utilService = $this->get('util');
-        $utilService->setupController();
+        
 
         /* @var $user User */
         $user = $utilService->getCurrentUser();
@@ -40,8 +40,6 @@ class ClubAdminController extends Controller
             // Controller is called by user assigned to a club - switch to my page
             return $this->redirect($this->generateUrl('_user_my_page'));
         }
-        // Get tournament if defined
-        $tournament = $utilService->getTournament();
         // Prepare default data for form
         $clubFormData = $this->getClubDefaults();
         $form = $this->makeClubForm($clubFormData, 'sel');
@@ -70,6 +68,14 @@ class ClubAdminController extends Controller
             $em->flush();
             return $this->redirect($this->generateUrl('_user_my_page'));
         }
+        // Get tournament if defined
+        $tournamentKey = $utilService->getTournamentKey();
+        if ($tournamentKey != '_') {
+            $tournament = $this->get('logic')->getTournamentByKey($tournamentKey);
+        }
+        else {
+            $tournament = null;
+        }
         return array('form' => $form->createView(), 'action' => 'add', 'user' => $user, 'tournament' => $tournament);
     }
 
@@ -83,7 +89,7 @@ class ClubAdminController extends Controller
     {
         /* @var $utilService Util */
         $utilService = $this->get('util');
-        $utilService->setupController();
+        
 
         /* @var $user User */
         $user = $utilService->getCurrentUser();

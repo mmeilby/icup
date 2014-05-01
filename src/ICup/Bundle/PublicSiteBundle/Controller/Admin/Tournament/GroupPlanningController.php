@@ -20,7 +20,7 @@ class GroupPlanningController extends Controller
     {
         /* @var $utilService Util */
         $utilService = $this->get('util');
-        $utilService->setupController();
+        
 
         /* @var $user User */
         $user = $utilService->getCurrentUser();
@@ -77,7 +77,7 @@ class GroupPlanningController extends Controller
     public function selectAssignAction($groupid) {
         /* @var $utilService Util */
         $utilService = $this->get('util');
-        $utilService->setupController();
+        
         $returnUrl = $utilService->getReferer();
         /* @var $user User */
         $user = $utilService->getCurrentUser();
@@ -100,7 +100,7 @@ class GroupPlanningController extends Controller
     public function addAssignAction($teamid, $groupid) {
         /* @var $utilService Util */
         $utilService = $this->get('util');
-        $utilService->setupController();
+        
         $returnUrl = $utilService->getReferer();
         /* @var $user User */
         $user = $utilService->getCurrentUser();
@@ -123,7 +123,7 @@ class GroupPlanningController extends Controller
     public function delAssignAction($teamid, $groupid) {
         /* @var $utilService Util */
         $utilService = $this->get('util');
-        $utilService->setupController();
+        
         $returnUrl = $utilService->getReferer();
         /* @var $user User */
         $user = $utilService->getCurrentUser();

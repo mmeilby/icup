@@ -18,7 +18,7 @@ class LoginController extends Controller
     {
         /* @var $utilService Util */
         $utilService = $this->get('util');
-        $utilService->setupController();
+        
 
         $request = $this->getRequest();
         $session = $request->getSession();

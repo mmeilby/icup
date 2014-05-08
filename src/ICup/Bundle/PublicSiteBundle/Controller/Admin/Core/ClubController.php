@@ -20,8 +20,7 @@ class ClubController extends Controller
         
         $country = $this->getRequest()->get('country');
         if ($country == null) {
-            $globals = $this->get('twig')->getGlobals();
-            $country = $globals['countries'][$this->getRequest()->getLocale()];
+            $country = $this->get('util')->getCountryByLocale($this->getRequest()->getLocale());
         }
 
         $club = new Club();

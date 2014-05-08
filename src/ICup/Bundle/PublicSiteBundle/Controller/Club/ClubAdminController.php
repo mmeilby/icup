@@ -125,8 +125,7 @@ class ClubAdminController extends Controller
         // Prepare current language selection for preset of country
         $country = $this->getRequest()->get('country');
         if ($country == null) {
-            $map = array('en'=>'GBR', 'da'=>'DNK', 'it'=>'ITA', 'fr'=>'FRA', 'de'=>'DEU', 'es'=>'ESP', 'po'=>'POL');
-            $country = $map[$this->getRequest()->getLocale()];
+            $country = $this->get('util')->getCountryByLocale($this->getRequest()->getLocale());
         }
 
         $clubFormData = new NewClub();

@@ -358,6 +358,7 @@ class BusinessLogic
             $teamInfo->name = $this->getTeamName($team['name'], $team['division']);
             $teamInfo->club = $team['club'];
             $teamInfo->country = $team['country'];
+            $teamInfo->group = $groupid;
             $teamsList[] = $teamInfo;
         }
         return $teamsList;

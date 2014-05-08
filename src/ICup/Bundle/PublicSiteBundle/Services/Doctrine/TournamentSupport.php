@@ -222,7 +222,7 @@ class TournamentSupport
         
     public function getStatTeams($tournamentid) {
         $qb = $this->em->createQuery(
-                "select t.id,t.name,t.division,c.name as club,c.country ".
+                "select t.id,t.name,t.division,c.name as club,c.country,g.id as grp ".
                 "from ".$this->entity->getRepositoryPath('Category')." cat, ".
                         $this->entity->getRepositoryPath('Group')." g, ".
                         $this->entity->getRepositoryPath('GroupOrder')." o, ".
@@ -243,6 +243,7 @@ class TournamentSupport
             $teamInfo->name = $this->logic->getTeamName($team['name'], $team['division']);
             $teamInfo->club = $team['club'];
             $teamInfo->country = $team['country'];
+            $teamInfo->group = $team['grp'];
             $teamsList[] = $teamInfo;
         }
         return $teamsList;

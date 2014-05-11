@@ -1,3 +1,5 @@
+{% trans_default_domain "tournament" %}
+
 <img src="{{ imagepath }}/IWC/bg.jpg" class="overviewImageBackground" />
 <div class="overview">
     <div>
@@ -8,10 +10,10 @@
             <div class="overviewNews">
         {% if newsstream|length > 0 %}
                 <table>
-                    <caption>{% trans %}NEWS{% endtrans %}</caption>
+                    <caption>{% trans %}FORM.NEWS.TITLE{% endtrans %}</caption>
                     <thead>
                         <tr>
-                            <td>{% trans %}DATE{% endtrans %}</td>
+                            <td>{% trans %}FORM.NEWS.DATE{% endtrans %}</td>
                             <td></td>
                         </tr>
                     </thead>

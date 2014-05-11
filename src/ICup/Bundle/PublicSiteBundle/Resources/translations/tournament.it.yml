@@ -1,0 +1,133 @@
+RESULTS: Risultati
+CATEGORY: Categoria
+GROUP: Girone
+TEAM: Squadra
+FIELD: Campo
+CATEGORIES: Categorie
+PLAYGROUNDS: Campi
+CLUBS: Clubs
+TOWNANDNO: Town and place
+CLUBSBYCOUNTRY: Ordered by country
+TEAMSBYCLUB: Teams enrolled by the club
+WINNERS: The champions
+WINNING_COUNTRIES: Medals by country
+WINNING_CLUBS: Medals by club
+
+PRELIMINARY: Preliminary round
+CLASSIFICATION: Playoff rounds
+STANDING: Classifica finale
+FINALS: Finale
+SEMIFINALS: Semifinale
+BRONZEMATCH: Bronze medal game
+FIRST: 1˚ posto
+SECOND: 2˚ posto
+THIRD: 3˚ posto
+FORTH: 4˚ posto
+
+GROUPCLASS:
+  0: Preliminary round
+  1: Playoff
+  6: 1/8 finale
+  7: 1/4 finale
+  8: Semifinale
+  9: Bronze medal game
+  10: Finale
+    
+LEGEND:
+  NO: Gara
+  TIME: Orario
+  MATCHES: G
+  WON: V
+  TIE: P
+  LOST: S
+  GOALS:
+    WON: R.F.
+    LOST: R.S.
+    DIFF: D.R.
+  POINTS: P
+  RESULT: Risultato
+
+CLASS: Classificazione
+FEMALE: Femminile
+MALE: Maschile
+
+MU12: Maschile
+MU14: Maschile
+MU16: Maschile
+MU18: Maschile
+MU21: Maschile
+MU30: Maschile
+MU30/U21: Maschile
+FU12: Femminile
+FU14: Femminile
+FU16: Femminile
+FU18: Femminile
+FU21: Femminile
+FU30: Femminile
+FU30/U21: Femminile
+
+U12: under 12
+U14: under 14
+U16: under 16
+U18: under 18
+U21: under 21
+U30: under 30
+U30/U21: under 30/21
+
+FORM:
+    SEL_TMNT:
+      TITLE: iCup Turneringsvalg
+      SUBTITLE: Vælg turnering du ønsker at arbejde med
+      DESCRIPTION: For at se resultater og stilling vælger du turneringen du gerne vil følge. Herunder kan du vælge en turnering fra listen ved at klikke på turneringsnavnet.
+      CAPTION: Turneringer
+      LEGEND:
+          NAME: Turneringsnavn
+          EDITION: Udgave
+          DESCRIPTION: Beskrivelse
+
+# Statistics page translations
+    STATISTICS:
+      TITLE: This tournament in numbers
+      LEGEND:
+        KEY: The facts...
+        FIGURE: Numbers
+      KEY:
+        COUNTRIES: Different countries participating the tournament
+        CLUBS: Clubs enrolled
+        TEAMS: Teams attending the preliminary round
+        FEMALETEAMS: -- female teams
+        MALETEAMS: -- male teams
+        ADULTTEAMS: -- teams over 18
+        CHILDTEAMS:	-- teams under 18
+        CATEGORIES:	Categories available in the tournament
+        GROUPS:	Groups in the preliminary round
+        SITES: Sites used in the tournament
+        PLAYGROUNDS: Playgrounds used during the tournament
+        MATCHES: Matches played in total
+        GOALS: Goals scored in all matches
+        MOSTGOALS: Most goals scored by a team in one match
+        MOSTTROPHYS: Most trophies won by a country
+        DAYS: The length of the tournament in days
+      GROUP:
+        TEAMS: Facts about the teams
+        TOURNAMENT: Facts about the tournament
+        TOP: Top achievements in the tournament
+
+    TEASER:
+      TOURNAMENT:
+        GROUPS:
+          TITLE: Category results
+          DESC: Watch the composition of categories or search the results for a team by the category.
+        PLAYGROUNDS:
+          TITLE: Playground overview
+          DESC: Follow the matches on specific playgrounds.
+        TEAMS:
+          TITLE: Enrolled teams
+          DESC: Find teams participating the tournament and see the results.
+        WINNERS:
+          TITLE: The winners
+          DESC: Discover the winners from all categories of this tournament.
+        STATISTICS:
+          TITLE: Team statistics
+          DESC: See the hall of fame and other interesting figures from the tournament.
+

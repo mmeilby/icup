@@ -1,0 +1,26 @@
+WEEK:
+  MON: lundi
+  TUE: mardi
+  WED: mercredi
+  THU: jeudi
+  FRI: vendredi
+  SAT: samedi
+  SUN: dimanche
+
+MONTH:
+  JAN: janvier
+  FEB: février
+  MAR: mars
+  APR: d'avril
+  MAY: peut
+  JUN: juin
+  JUL: juillet
+  AUG: août
+  SEP: septembre
+  OCT: octobre
+  NOV: novembre
+  DEC: décembre
+  
+FORMAT:
+  DATE: j-n-Y
+  TIME: G:i

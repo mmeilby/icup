@@ -1,193 +1,26 @@
-CATEGORY: Category
-GROUP: Group
-TEAM: Team
-FIELD: Playground
-CATEGORIES: Categories
-PLAYGROUNDS: Playgrounds
-CLUBS: Clubs
-TOWNANDNO: Town and place
-CLUBSBYCOUNTRY: Ordered by country
-TEAMSBYCLUB: Teams enrolled by the club
-WINNERS: The champions
-WINNING_COUNTRIES: Medals by country
-WINNING_CLUBS: Medals by club
-
-RESULTS: Results for
-EDITRESULTS: Edit results
-USERNAME: Username
-PASSWORD: Password
-CHOOSELANG: Choose language
-
-ADMIN: Administration
-NEWCATEGORY: Add new category
-NEWGROUP: Add new group
-ADDTEAM: Add team to group
-NEWMATCH: Add match
-
-EDITCATEGORY: Update category
-EDITGROUP: Update group
-EDITGROUPORDER: Add team to group
-EDITMATCH: Add match
-SAVE: Save information
-
-# Statistics page translations
-STATISTICS:
-  TITLE: This tournament in numbers
-  LEGEND:
-    KEY: The facts...
-    FIGURE: Numbers
-  KEY:
-    COUNTRIES: Different countries participating the tournament
-    CLUBS: Clubs enrolled
-    TEAMS: Teams attending the preliminary round
-    FEMALETEAMS: -- female teams
-    MALETEAMS: -- male teams
-    ADULTTEAMS: -- teams over 18
-    CHILDTEAMS:	-- teams under 18
-    CATEGORIES:	Categories available in the tournament
-    GROUPS:	Groups in the preliminary round
-    SITES: Sites used in the tournament
-    PLAYGROUNDS: Playgrounds used during the tournament
-    MATCHES: Matches played in total
-    GOALS: Goals scored in all matches
-    MOSTGOALS: Most goals scored by a team in one match
-    MOSTTROPHYS: Most trophies won by a country
-    DAYS: The length of the tournament in days
-  GROUP:
-    TEAMS: Facts about the teams
-    TOURNAMENT: Facts about the tournament
-    TOP: Top achievements in the tournament
-
-MENU:
-  LANGCHOICE:
-    TITLE: Language
-  TOURNAMENT:
-    TITLE: Tournament
-    OVERVIEW: Overview
-    GROUPS: Categories
-    PLAYGROUNDS: Playgrounds
-    TEAMS: Clubs
-    WINNERS: Winners
-    STATISTICS: Statistics
-  ENROLLMENT:
-    TITLE: Enrollment
-    CLUBS: Clubs
-    TEAMS: Teams
-    REFEREES: Referees
-  ADMIN:
-    TITLE: Administration
-    RESULTS: Results
-    TOURNAMENT: Tournament
-    TEAMS: Teams
-    PLAYERS: Players
-    REFEREES: Referees
-  INFO:
-    TITLE: Information
-    ABOUT: About
-    PRICES: Prices
-    FAQ: FAQ
-  LOGIN: Customer Login
-  LOGOUT: logout
-  EXIT: Exit impersonation
-  
-TEASER:
-  TOURNAMENT:
-    GROUPS:
-      TITLE: Category results
-      DESC: Watch the composition of categories or search the results for a team by the category.
-    PLAYGROUNDS:
-      TITLE: Playground overview
-      DESC: Follow the matches on specific playgrounds.
-    TEAMS:
-      TITLE: Enrolled teams
-      DESC: Find teams participating the tournament and see the results.
-    WINNERS:
-      TITLE: The winners
-      DESC: Discover the winners from all categories of this tournament.
-    STATISTICS:
-      TITLE: Team statistics
-      DESC: See the hall of fame and other interesting figures from the tournament.
-
-PRELIMINARY: Preliminary round
-CLASSIFICATION: Playoff rounds
-STANDING: Final standing
-FINALS: Finals
-SEMIFINALS: Semifinals
-BRONZEMATCH: Bronze medal game
-FIRST: Winner
-SECOND: 2nd
-THIRD: 3rd
-FORTH: 4th
-
-GROUPCLASS:
-  0: Preliminary round
-  1: Playoff
-  6: 1/8 final
-  7: 1/4 final
-  8: Semi final
-  9: Bronze medal game
-  10: Final
-    
-LEGEND:
-  NO: No.
-  TIME: Time
-  MATCHES: MP
-  WON: W
-  TIE: T
-  LOST: L
-  GOALS:
-    WON: GF
-    LOST: GA
-    DIFF: GD
-  POINTS: Pts
-  RESULT: Result
-
-CLASS: Class
-FEMALE: Female
-MALE: Male
-
-MU12: Male
-MU14: Male
-MU16: Male
-MU18: Male
-MU21: Male
-MU30: Male
-MU30/U21: Male
-FU12: Female
-FU14: Female
-FU16: Female
-FU18: Female
-FU21: Female
-FU30: Female
-FU30/U21: Female
-
-U12: under 12
-U14: under 14
-U16: under 16
-U18: under 18
-U21: under 21
-U30: under 30
-U30/U21: under 30/21
-
 WEEK:
-  MON: Monday
-  TUE: Tuesday
-  WED: Wednesday
-  THU: Thursday
-  FRI: Friday
-  SAT: Saturday
-  SUN: Sunday
+  MON: monday
+  TUE: tuesday
+  WED: wednesday
+  THU: thursday
+  FRI: friday
+  SAT: saturday
+  SUN: sunday
 
 MONTH:
-  JAN: January
-  FEB: February
-  MAR: March
-  APR: April
-  MAY: May
-  JUN: June
-  JUL: July
-  AUG: August
-  SEP: September
-  OCT: October
-  NOV: November
-  DEC: December
+  JAN: january
+  FEB: february
+  MAR: march
+  APR: april
+  MAY: may
+  JUN: june
+  JUL: july
+  AUG: august
+  SEP: september
+  OCT: october
+  NOV: november
+  DEC: december
+  
+FORMAT:
+  DATE: j/n/Y
+  TIME: g:ia

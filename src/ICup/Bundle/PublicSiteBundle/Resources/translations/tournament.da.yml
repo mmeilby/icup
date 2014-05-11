@@ -1,14 +1,4 @@
-FORM:
-  SEL_TMNT:
-    TITLE: iCup Turneringsvalg
-    SUBTITLE: Vælg turnering du ønsker at arbejde med
-    DESCRIPTION: For at se resultater og stilling vælger du turneringen du gerne vil følge. Herunder kan du vælge en turnering fra listen ved at klikke på turneringsnavnet.
-    CAPTION: Turneringer
-    LEGEND:
-        NAME: Turneringsnavn
-        EDITION: Udgave
-        DESCRIPTION: Beskrivelse
-
+RESULTS: Resultater for
 CATEGORY: Gruppe
 GROUP: Pulje
 TEAM: Hold
@@ -22,68 +12,6 @@ TEAMSBYCLUB: Hold tilknyttet klubben
 WINNERS: Turneringens vindere
 WINNING_COUNTRIES: Vindende lande
 WINNING_CLUBS: Vindende klubber
-
-RESULTS: Resultater for
-EDITRESULTS: Rediger resultater
-CHOOSELANG: Vælg sprog
-
-ADMIN: Administration
-NEWCATEGORY: Opret ny gruppe
-NEWGROUP: Opret ny pulje
-ADDTEAM: Tilknyt hold til pulje
-NEWMATCH: Opret kamp
-
-EDITCATEGORY: Administrer gruppe
-EDITGROUP: Administrer pulje
-EDITGROUPORDER: Administrer hold i pulje
-EDITMATCH: Administrer kamp
-SAVE: Gem oplysninger
-
-# Statistics page translations
-STATISTICS:
-  TITLE: Turneringsstatistik
-  LEGEND:
-    KEY: Så mange...
-    FIGURE: Antal
-  KEY:
-    COUNTRIES: Forskellige lande der deltager i turneringen
-    CLUBS: Klubber der er tilmeldt
-    TEAMS: Hold der deltager i grundspillet
-    FEMALETEAMS: Heraf er pigehold
-    MALETEAMS: Heraf er drengehold
-    ADULTTEAMS: Heraf er voksenhold
-    CHILDTEAMS:	Heraf er ungdomshold
-    CATEGORIES:	Grupper der danner ramme for turneringen
-    GROUPS:	Puljer der er i grundspillet
-    SITES: Spillesteder der anvendes
-    PLAYGROUNDS: Baner i brug under hele turneringen
-    MATCHES: Kampe der spilles i turneringen
-    GOALS: Mål scoret samlet i hele turneringen
-    MOSTGOALS: Flest mål scoret af et hold i en enkelt kamp
-    MOSTTROPHYS: Flest vundne pokaler af et enkelt land
-    DAYS: Dage turneringen afvikles over
-  GROUP:
-    TEAMS: Lidt statistik om holdene der deltager
-    TOURNAMENT: Fakta om turneringen
-    TOP: Størst i turneringen
-
-TEASER:
-  TOURNAMENT:
-    GROUPS:
-      TITLE: Gruppe resultater
-      DESC: Se sammensætningen af puljerne i en gruppe eller følg et hold fra gruppen.
-    PLAYGROUNDS:
-      TITLE: Bane oversigt
-      DESC: Se resultater fra banerne eller få overblik over kampplanen.
-    TEAMS:
-      TITLE: Deltagende hold
-      DESC: Find hold der deltager i turneringen og se deres resultater.
-    WINNERS:
-      TITLE: Vindere
-      DESC: Se alle vinderne fra denne turnering.
-    STATISTICS:
-      TITLE: Hold statistik
-      DESC: Hvilket hold klarede sig bedst? Se hvem og mange andre spændende informationer om turneringen.
 
 PRELIMINARY: Grundspil
 CLASSIFICATION: Klassifikation
@@ -104,7 +32,7 @@ GROUPCLASS:
   8: Semifinale
   9: Bronzekamp
   10: Finale
-    
+
 LEGEND:
   NO: Nr.
   TIME: Tid
@@ -146,25 +74,59 @@ U21: Under 21
 U30: Under 30
 U30/U21: Under 30/21
 
-WEEK:
-  MON: mandag
-  TUE: tirsdag
-  WED: onsdag
-  THU: torsdag
-  FRI: fredag
-  SAT: lørdag
-  SUN: søndag
+FORM:
+    SEL_TMNT:
+      TITLE: iCup Turneringsvalg
+      SUBTITLE: Vælg turnering du ønsker at arbejde med
+      DESCRIPTION: For at se resultater og stilling vælger du turneringen du gerne vil følge. Herunder kan du vælge en turnering fra listen ved at klikke på turneringsnavnet.
+      CAPTION: Turneringer
+      LEGEND:
+          NAME: Turneringsnavn
+          EDITION: Udgave
+          DESCRIPTION: Beskrivelse
 
-MONTH:
-  JAN: januar
-  FEB: februar
-  MAR: marts
-  APR: april
-  MAY: maj
-  JUN: juni
-  JUL: juli
-  AUG: august
-  SEP: september
-  OCT: oktober
-  NOV: november
-  DEC: december
+# Statistics page translations
+    STATISTICS:
+      TITLE: Turneringsstatistik
+      LEGEND:
+        KEY: Så mange...
+        FIGURE: Antal
+      KEY:
+        COUNTRIES: Forskellige lande der deltager i turneringen
+        CLUBS: Klubber der er tilmeldt
+        TEAMS: Hold der deltager i grundspillet
+        FEMALETEAMS: Heraf er pigehold
+        MALETEAMS: Heraf er drengehold
+        ADULTTEAMS: Heraf er voksenhold
+        CHILDTEAMS:	Heraf er ungdomshold
+        CATEGORIES:	Grupper der danner ramme for turneringen
+        GROUPS:	Puljer der er i grundspillet
+        SITES: Spillesteder der anvendes
+        PLAYGROUNDS: Baner i brug under hele turneringen
+        MATCHES: Kampe der spilles i turneringen
+        GOALS: Mål scoret samlet i hele turneringen
+        MOSTGOALS: Flest mål scoret af et hold i en enkelt kamp
+        MOSTTROPHYS: Flest vundne pokaler af et enkelt land
+        DAYS: Dage turneringen afvikles over
+      GROUP:
+        TEAMS: Lidt statistik om holdene der deltager
+        TOURNAMENT: Fakta om turneringen
+        TOP: Størst i turneringen
+
+    TEASER:
+      TOURNAMENT:
+        GROUPS:
+          TITLE: Gruppe resultater
+          DESC: Se sammensætningen af puljerne i en gruppe eller følg et hold fra gruppen.
+        PLAYGROUNDS:
+          TITLE: Bane oversigt
+          DESC: Se resultater fra banerne eller få overblik over kampplanen.
+        TEAMS:
+          TITLE: Deltagende hold
+          DESC: Find hold der deltager i turneringen og se deres resultater.
+        WINNERS:
+          TITLE: Vindere
+          DESC: Se alle vinderne fra denne turnering.
+        STATISTICS:
+          TITLE: Hold statistik
+          DESC: Hvilket hold klarede sig bedst? Se hvem og mange andre spændende informationer om turneringen.

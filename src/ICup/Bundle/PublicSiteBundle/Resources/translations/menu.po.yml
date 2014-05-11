@@ -1,0 +1,32 @@
+MENU: 
+  LANGCHOICE: 
+    TITLE: Język 
+    CHOOSELANG: Zmień język 
+  TOURNAMENT: 
+    TITLE: Turniej 
+    OVERVIEW: Przegląd 
+    GROUPS: Kategoier 
+    PLAYGROUNDS: Boiska
+    TEAMS: Kluby 
+    WINNERS: Winners
+    STATISTICS: Statistics
+  ENROLLMENT: 
+    TITLE: Rejestracja
+    CLUBS: Kluby 
+    TEAMS: Drużyny 
+    REFEREES: Sędziowie 
+  ADMIN: 
+    TITLE: Administracja
+    RESULTS: Rezultaty 
+    TOURNAMENT: Turnieje 
+    TEAMS: Drużyny 
+    PLAYERS: Gracze
+    REFEREES: Sędziowie 
+  INFO: 
+    TITLE: Informacje
+    ABOUT: O nas 
+    PRICES: Ceny 
+    FAQ: FAQ 
+  LOGIN: Customer Login
+  LOGOUT: logout
+  EXIT: Exit impersonation

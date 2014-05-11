@@ -1,0 +1,32 @@
+MENU:
+  LANGCHOICE:
+    TITLE: Language
+    CHOOSELANG: Selezionare la lingua
+  TOURNAMENT:
+    TITLE: Tournament
+    OVERVIEW: Overview
+    GROUPS: Categories
+    PLAYGROUNDS: Playgrounds
+    TEAMS: Clubs
+    WINNERS: Winners
+    STATISTICS: Statistics
+  ENROLLMENT:
+    TITLE: Enrollment
+    CLUBS: Clubs
+    TEAMS: Teams
+    REFEREES: Referees
+  ADMIN:
+    TITLE: Administration
+    RESULTS: Results
+    TOURNAMENT: Tournament
+    TEAMS: Teams
+    PLAYERS: Players
+    REFEREES: Referees
+  INFO:
+    TITLE: Information
+    ABOUT: About
+    PRICES: Prices
+    FAQ: FAQ
+  LOGIN: Customer Login
+  LOGOUT: logout
+  EXIT: Exit impersonation

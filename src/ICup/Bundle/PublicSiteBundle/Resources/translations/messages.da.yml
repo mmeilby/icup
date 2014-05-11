@@ -203,3 +203,7 @@ MONTH:
   OCT: oktober
   NOV: november
   DEC: december
+
+FORMAT:
+  DATE: j-n-Y
+  TIME: G.i

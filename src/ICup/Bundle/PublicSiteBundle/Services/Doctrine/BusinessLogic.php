@@ -249,6 +249,17 @@ class BusinessLogic
         return $this->entity->getSiteRepo()->findBy(array('pid' => $tournamentid));
     }
 
+    public function getPlaygroundByNo($tournamentid, $no) {
+        $qb = $this->em->createQuery(
+                "select p ".
+                "from ".$this->entity->getRepositoryPath('Playground')." p, ".
+                        $this->entity->getRepositoryPath('Site')." s ".
+                "where s.pid=:tournament and p.pid=s.id and p.no=:no");
+        $qb->setParameter('tournament', $tournamentid);
+        $qb->setParameter('no', $no);
+        return $qb->getOneOrNullResult();
+    }
+
     public function listPlaygrounds($siteid) {
         return $this->entity->getPlaygroundRepo()->findBy(array('pid' => $siteid));
     }
@@ -297,7 +308,22 @@ class BusinessLogic
         $qb->setParameter('tournament', $tournamentid);
         return $qb->getResult();
     }
-    
+
+    public function getGroupByCategory($tournamentid, $category, $group) {
+        $qb = $this->em->createQuery(
+                "select g ".
+                "from ".$this->entity->getRepositoryPath('Group')." g, ".
+                        $this->entity->getRepositoryPath('Category')." c ".
+                "where c.pid=:tournament and ".
+                      "c.name=:category and ".
+                      "g.pid=c.id and ".
+                      "g.name=:group");
+        $qb->setParameter('tournament', $tournamentid);
+        $qb->setParameter('category', $category);
+        $qb->setParameter('group', $group);
+        return $qb->getOneOrNullResult();
+    }
+
     public function listGroupsByCategory($categoryid) {
         return $this->entity->getGroupRepo()->findBy(array('pid' => $categoryid));
     }
@@ -338,6 +364,33 @@ class BusinessLogic
     
     public function listMatchesByPlayground($playgroundid) {
         return $this->entity->getMatchRepo()->findBy(array('playground' => $playgroundid));
+    }
+    
+    public function getTeamByGroup($groupid, $name, $division) {
+        $qb = $this->em->createQuery(
+                "select t.id,t.name,t.division,c.name as club,c.country ".
+                "from ".$this->entity->getRepositoryPath('GroupOrder')." o, ".
+                        $this->entity->getRepositoryPath('Team')." t, ".
+                        $this->entity->getRepositoryPath('Club')." c ".
+                "where o.pid=:group and ".
+                      "o.cid=t.id and ".
+                      "t.pid=c.id and ".
+                      "t.name=:name and ".
+                      "t.division=:division");
+        $qb->setParameter('group', $groupid);
+        $qb->setParameter('name', $name);
+        $qb->setParameter('division', $division);
+        $teamsList = array();
+        foreach ($qb->getResult() as $team) {
+            $teamInfo = new TeamInfo();
+            $teamInfo->id = $team['id'];
+            $teamInfo->name = $this->getTeamName($team['name'], $team['division']);
+            $teamInfo->club = $team['club'];
+            $teamInfo->country = $team['country'];
+            $teamInfo->group = $groupid;
+            $teamsList[] = $teamInfo;
+        }
+        return $teamsList;
     }
     
     public function listTeamsByGroup($groupid) {

@@ -290,3 +290,12 @@ FORM:
       ADD: Fortryd oprettelse
       CHG: Fortryd ændringer
       DEL: Fortryd slet
+  MATCHIMPORT: 
+    NODATE: En kampdato skal angives
+    BADDATE: Den angivne kampdato er ikke gyldig
+    TITLE: Indlæs kampplan
+    PROMPT: Indtast kampplan for en dag
+    DATE: Dato
+    IMPORT: Kampplan
+    SUBMIT: Indlæs
+    CANCEL: Fortryd indlæsning  

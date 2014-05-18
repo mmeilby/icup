@@ -1,4 +1,5 @@
 {% extends "ICupPublicSiteBundle:Masters:base.html.twig" %}
+{% trans_default_domain "menu" %}
 
 {% set tmnt = app.session.get('Tournament') %}
 {% if tmnt is null %}
@@ -61,8 +62,8 @@
                     <a href="{{ path('_switch', { 'locale': local }) }}">
                         <img src="{{ imagepath }}/flags/{{ flag }}"
                              alt="{{ lang }}"
-                             title="{% trans %}MENU.LANGCHOICE.CHOOSELANG{% endtrans %}: {{ lang }}" />
-                        &nbsp;{{ lang }}
+                             title="{% trans %}MENU.LANGCHOICE.CHOOSELANG{% endtrans %}: {{ lang }}"
+                        />&nbsp;{{ lang }}
                     </a>
                 </li>
                 {% endfor %}
@@ -91,18 +92,18 @@
         </div>
         <!-- Enrollment/registration section -->
         <div class="menu_footer">
-            <h3>{% trans %}MENU.NEWUSER.TITLE{% endtrans %}</h3>
+            <h3>{% trans %}MENU.REGISTER.TITLE{% endtrans %}</h3>
             <ul>
-                <li><a href="{{ path('_ausr_new_user') }}">{% trans %}MENU.NEWUSER.REGISTER{% endtrans %}</a></li>
+                <li><a href="{{ path('_ausr_new_user') }}">{% trans %}MENU.REGISTER.USER{% endtrans %}</a></li>
     {% if tmnt != '_' %}
-                <li><a href="{{ path('_club_enroll_check') }}">{% trans %}MENU.NEWUSER.ENROLL{% endtrans %}</a></li>
+                <li><a href="{{ path('_club_enroll_check') }}">{% trans %}MENU.REGISTER.ENROLL{% endtrans %}</a></li>
     {% endif %}
             </ul>
         </div>
 <!-- REGISTRATED USER -->
 {% else %}
-    {% if not is_granted('ROLE_ADMIN') %}
-        <!-- Enrollment/registration section -->
+    {% if not is_granted('ROLE_EDITOR') %}
+        <!-- Enrollment section -->
         <div class="menu_footer">
             <h3>{% trans %}MENU.ENROLLMENT.TITLE{% endtrans %}</h3>
             <ul>
@@ -114,13 +115,19 @@
             {% elseif app.user.status < 3 %}
                 <li><a href="{{ path('_club_new') }}">{% trans %}MENU.NONREL.ENROLL{% endtrans %}</a></li>
             {% endif %}
-        {% elseif is_granted('ROLE_EDITOR') %}
-            {% if is_granted('ROLE_EDITOR_ADMIN') %}
+        {% endif %}
+            </ul>
+        </div>
+    {% else %}
+        <!-- Registration section -->
+        <div class="menu_footer">
+            <h3>{% trans %}MENU.REGISTER.TITLE{% endtrans %}</h3>
+            <ul>
+        {% if is_granted('ROLE_EDITOR_ADMIN') %}
                 <li><a href="{{ path('_club_enroll_check') }}">TBD:{% trans %}MENU.ENROLLMENT.CLUBS{% endtrans %}</a></li>
-            {% endif %}
-            {% if tmnt != '_' %}
-                    <li><a href="{{ path('_tournament_playgrounds', {'tournament': tmnt}) }}">TBD:{% trans %}MENU.ADMIN.RESULTS{% endtrans %}</a></li>
-            {% endif %}
+        {% endif %}
+        {% if tmnt != '_' %}
+                <li><a href="{{ path('_edit_list_matches') }}">{% trans %}MENU.ADMIN.RESULTS{% endtrans %}</a></li>
         {% endif %}
             </ul>
         </div>
@@ -133,8 +140,8 @@
     {% if is_granted('ROLE_ADMIN') %}
                 <li><a href="{{ path('_edit_host_list') }}">{% trans %}MENU.ADMIN.TOURNAMENT{% endtrans %}</a></li>
                 <li><a href="{{ path('_edit_club_list') }}">{% trans %}MENU.ADMIN.TEAMS{% endtrans %}</a></li>
-                <li><a href="{{ path('_edit_host_list') }}">{% trans %}MENU.ADMIN.PLAYERS{% endtrans %}</a></li>
-                <li><a href="{{ path('_edit_host_list') }}">{% trans %}MENU.ADMIN.REFEREES{% endtrans %}</a></li>
+<!--                <li><a href="{{ path('_edit_host_list') }}">{% trans %}MENU.ADMIN.PLAYERS{% endtrans %}</a></li>
+                <li><a href="{{ path('_edit_host_list') }}">{% trans %}MENU.ADMIN.REFEREES{% endtrans %}</a></li> -->
     {% elseif is_granted('ROLE_EDITOR_ADMIN') %}
                 <li><a href="{{ path('_host_list_tournaments') }}">{% trans %}MENU.ADMIN.TOURNAMENT{% endtrans %}</a></li>
                 <li><a href="{{ path('_edit_editors_list') }}">{% trans %}MENU.ADMIN.EDITORS{% endtrans %}</a></li>

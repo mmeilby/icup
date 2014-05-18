@@ -12,6 +12,7 @@ TEAMSBYCLUB: Drużyna zapisana przez klub
 WINNERS: The champions
 WINNING_COUNTRIES: Medals by country
 WINNING_CLUBS: Medals by club
+EDITRESULTS: Edytuj rezultaty 
 
 PRELIMINARY: Preliminary round
 CLASSIFICATION: Playoff rounds
@@ -36,6 +37,11 @@ GROUPCLASS:
 LEGEND: 
   NO: Nr. 
   TIME: Czas 
+  CATEGORY: Kategoria
+  GROUP: Grupa
+  PLAYGROUND: Boisko
+  HOMETEAM: Drużyna A
+  AWAYTEAM: Drużyna B
   MATCHES: MP ?
   WON: W ?
   TIE: T ?

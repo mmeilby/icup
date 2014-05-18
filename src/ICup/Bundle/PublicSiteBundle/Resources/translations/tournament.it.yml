@@ -5,15 +5,16 @@ TEAM: Squadra
 FIELD: Campo
 CATEGORIES: Categorie
 PLAYGROUNDS: Campi
-CLUBS: Clubs
-TOWNANDNO: Town and place
-CLUBSBYCOUNTRY: Ordered by country
+CLUBS: Squadre
+TOWNANDNO: Città e campo
+CLUBSBYCOUNTRY: Ordinati per paese
 TEAMSBYCLUB: Teams enrolled by the club
-WINNERS: The champions
-WINNING_COUNTRIES: Medals by country
-WINNING_CLUBS: Medals by club
+WINNERS: I campioni
+WINNING_COUNTRIES: Medaglie per paese
+WINNING_CLUBS: Medaglie di squadra
+EDITRESULTS: Aggiornamento dei risultati
 
-PRELIMINARY: Preliminary round
+PRELIMINARY: Turno preliminare
 CLASSIFICATION: Playoff rounds
 STANDING: Classifica finale
 FINALS: Finale
@@ -36,6 +37,11 @@ GROUPCLASS:
 LEGEND:
   NO: Gara
   TIME: Orario
+  CATEGORY: Categoria
+  GROUP: Girone
+  PLAYGROUND: Campo
+  HOMETEAM: Squadra A
+  AWAYTEAM: Squadra B
   MATCHES: G
   WON: V
   TIE: P

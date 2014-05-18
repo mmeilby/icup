@@ -1,0 +1,110 @@
+{% extends "ICupPublicSiteBundle:Masters:edit.html.twig" %}
+{% trans_default_domain "tournament" %}
+
+{% block adminbody %}
+<h1>{% trans %}EDITRESULTS{% endtrans %}</h1>
+<h2 class="category">{{ tournament.name }}</h2>
+<p class="subcategory">
+    {% trans %}RESULTS{% endtrans %} {{ tournament.edition }}<br />
+</p>
+<p>
+    <select id="form_playground">
+{% for field in playgrounds %}
+        <option value="{{field.id}}"
+{% if field.id == playground.id %}
+                selected
+{% endif %}
+                >{{field.name}}</option>
+{% endfor %}                
+    </select>
+    &nbsp;
+    <select id="form_matchdate">
+{% for mdate in dates %}
+        <option value="{{mdate|date('d-m-Y')}}"
+{% if mdate == matchdate %}
+                selected
+{% endif %}
+                >{{mdate|date('FORMAT.DATE'|trans([],'messages'))}}</option>
+{% endfor %}                
+    </select>
+</p>
+<p>
+    <form action="{{ path('_edit_match_score_post') }}" method="post">
+    <table>
+        <caption>
+            {{playground.name}}
+            -
+            {{ ['WEEK.',matchdate|date('D')|upper]|join|trans([],'messages')|capitalize }}
+            {{ matchdate|date(' j. ') }}
+            {{ ['MONTH.',matchdate|date('M')|upper]|join|trans([],'messages') }}
+            {{ matchdate|date(' Y') }}
+        </caption>
+        <thead>
+            <tr>
+                <td class="flag"></td>
+                <td class="no">{% trans %}LEGEND.NO{% endtrans %}</td>
+                <td class="time">{% trans %}LEGEND.TIME{% endtrans %}</td>
+                <td class="no">{% trans %}LEGEND.CATEGORY{% endtrans %}</td>
+                <td class="no">{% trans %}LEGEND.GROUP{% endtrans %}</td>
+                <td class="flag"></td>
+                <td class="team">{% trans %}LEGEND.HOMETEAM{% endtrans %}</td>
+                <td class="flag"></td>
+                <td class="team">{% trans %}LEGEND.AWAYTEAM{% endtrans %}</td>
+                <td class="match" colspan="2">{% trans %}LEGEND.RESULT{% endtrans %}</td>
+            </tr>
+        </thead>
+        <tboby>
+{% for match in matchlist %}
+            <tr class="{{ cycle(['even','odd'],loop.index) }}">
+                <td class="flag"></td>
+                <td class="no">{{ match.matchno }}</td>
+                <td class="time">{{ match.schedule|date('H.i') }}</td>
+                <td class="no"><a href="{{ path('_showcategory', { 'tournament': tournament.key, 'categoryid': match.category.id }) }}">{{ match.category.name }}</a></td>
+                <td class="no"><a href="{{ path('_showcategory', { 'tournament': tournament.key, 'categoryid': match.category.id }) }}">{{ match.group.name }}</a></td>
+                <td class="flag"><img src="{{ imagepath }}/flags/{{ countries[match.home.country].flag }}" alt="{{ match.home.country|trans({},'lang') }}" title="{{ match.home.country|trans({},'lang') }}"></td>
+                <td class="team"><a href="{{ path('_showteam', { 'tournament': tournament.key, 'teamid': match.home.id, 'groupid': match.group.id }) }}">{{ match.home.team }}</a></td>
+                <td class="flag"><img src="{{ imagepath }}/flags/{{ countries[match.away.country].flag }}" alt="{{ match.away.country|trans({},'lang') }}" title="{{ match.away.country|trans({},'lang') }}"></td>
+                <td class="team"><a href="{{ path('_showteam', { 'tournament': tournament.key, 'teamid': match.away.id, 'groupid': match.group.id }) }}">{{ match.away.team }}</a></td>
+                <td class="match">
+                    <input class="match" type="text" name="score_{{ match.home.rid }}" size="1" value="{{ match.home.score }}" />
+                </td>
+                <td class="match">
+                    <input class="match" type="text" name="score_{{ match.away.rid }}" size="1" value="{{ match.away.score }}" />
+                </td>
+            </tr>
+{% endfor %}
+        </tboby>
+        <tfoot>
+            <tr>
+                <td colspan="11"></td>
+            </tr>
+        </tfoot>
+    </table>
+    <div class="form_button">
+        <button id="form_cancel" name="form[cancel]" type="submit">{% trans from 'admin' %}FORM.MATCHRESULT.CANCEL{% endtrans %}</button>
+        <button id="form_save" name="form[save]" type="submit">{% trans from 'admin' %}FORM.MATCHRESULT.SUBMIT{% endtrans %}</button>
+    </div>
+    </form>
+</p>
+{% endblock %}
+{% block javascripts %}
+    {% javascripts '@ICupPublicSiteBundle/Resources/public/js/jquery-1.8.0.min.js' output="bundles/icuppublicsite/js/jquery.min.js" %}
+    <script type="text/javascript" src="{{ asset_url }}"></script>
+    {% endjavascripts  %}
+
+    <script type="text/javascript">
+        $(function onLoad() {
+            $('select#form_playground').change(OnChangePlayground);
+            $('select#form_matchdate').change(OnChangePlayground);
+        });
+        function OnChangePlayground() {
+            plid = $('select#form_playground').val();
+            mdate = $('select#form_matchdate').val();
+            if (plid !== null && mdate !== null) {
+                var url = "{{ path('_edit_match_score', { 'playgroundid': 'plid', 'date': 'mdate' }) }}";
+                url = url.replace('plid', plid).replace('mdate', mdate);
+                $(location).attr('href', url);
+            }
+        };
+    </script>
+{% endblock %}

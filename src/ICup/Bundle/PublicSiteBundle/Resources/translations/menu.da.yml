@@ -11,12 +11,12 @@ MENU:
     TEAMS: Klubber
     WINNERS: Vindere
     STATISTICS: Statistik
-  NEWUSER:
+  REGISTER:
     TITLE: Registrer
     TEAM: Ny klub
     REFEREE: Ny dommer
     ENROLL: Tilmelding
-    REGISTER: Ny profil
+    USER: Ny profil
   NONREL:
     ENROLL: Klubvalg
   ENROLLMENT:

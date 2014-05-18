@@ -12,6 +12,7 @@ TEAMSBYCLUB: Hold tilknyttet klubben
 WINNERS: Turneringens vindere
 WINNING_COUNTRIES: Vindende lande
 WINNING_CLUBS: Vindende klubber
+EDITRESULTS: Rediger resultater
 
 PRELIMINARY: Grundspil
 CLASSIFICATION: Klassifikation
@@ -36,6 +37,11 @@ GROUPCLASS:
 LEGEND:
   NO: Nr.
   TIME: Tid
+  CATEGORY: Gruppe
+  GROUP: Pulje
+  PLAYGROUND: Bane
+  HOMETEAM: Hjemmehold
+  AWAYTEAM: Udehold
   MATCHES: K
   WON: V
   TIE: U

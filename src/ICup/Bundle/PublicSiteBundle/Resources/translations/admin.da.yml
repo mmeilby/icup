@@ -298,12 +298,42 @@ FORM:
     DATE: Dato
     IMPORT: Kampplan
     SUBMIT: Indlæs
-    CANCEL: Fortryd indlæsning  
-  EDITRESULTS: Rediger resultater
-  ITEDITRESULTS: Aggiornamento dei risultati
-  ENEDITRESULTS: Edit results
-  POEDITRESULTS: Edytuj rezultaty 
-
-
-
-
+    CANCEL: Fortryd indlæsning
+  MATCH:
+    DEFAULT: Vælg...
+    NONO: Et officielt kampnr. skal angives.
+    NODATE: En dato for afvikling af kampen skal angives.
+    BADDATE: Dato for afvikling af kampen er ikke gyldig.
+    NOTIME: Kamptidspunkt skal angives.
+    BADTIME: Kamptidspunktet er ikke gyldigt.
+    NOPLAYGROUND: Der skal vælges en bane for afvikling af kampen.
+    NOHOMETEAM: Hjemmehold skal angives.
+    NOAWAYTEAM: Udehold skal angives.
+    NOEXIST: En anden kamp har allerede dette kampnr.
+    CANTCHANGENO: En anden kamp er allerede oprettet med samme kampnr. Vælg et andet kampnr.
+    SAMETEAM: Det samme hold er valgt som hjemmehold og udehold. Det er ikke muligt.
+    TITLE:
+      ADD: Tilføj ny kamp
+      CHG: Rediger kampinformationer
+      DEL: FJERN KAMP
+    PROMPT:
+      ADD: Indtast oplysninger om den nye kamp.
+      CHG: Ret kampinformationer.
+      DEL: Følgende kamp vil bliver slettet. Det er ikke muligt at fortryde når kampen er fjernet.
+    NO: Kampnr.
+    DATE: Dato for afvikling af kampen
+    TIME: Tidspunkt
+    PLAYGROUND: Bane
+    HOME: Hjemmehold
+    AWAY: Udehold
+    SUBMIT:
+      ADD: Tilføj ny kamp
+      CHG: Gem oplysninger
+      DEL: FJERN KAMP
+    CANCEL:
+      ADD: Fortryd oprettelse
+      CHG: Fortryd ændringer
+      DEL: Fortryd
+  MATCHRESULT:
+    SUBMIT: Gem resultater
+    CANCEL: Fortryd indtastning

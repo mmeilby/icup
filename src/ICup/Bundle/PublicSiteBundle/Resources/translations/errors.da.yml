@@ -87,3 +87,9 @@ ERROR:
   TEAMISACTIVE:
     TITLE: Du kan ikke fjerne holdet fra gruppen
     SOLUTION: Holdet har planlagte/spillede kampe i denne gruppe. Disse kampe skal aflyses før holdet kan fjernes fra gruppen.
+  NOTOURNAMENTDATA:
+    TITLE: Der mangler vigtige oplysninger for denne turnering
+    SOLUTION: Denne turnering er ikke klar. Der mangler vigtige oplysninger som er nødvendige for at kunne følge kampe og resultater. Kontakt turneringsledelsen eller vent til senere.
+  INVALIDDATE:
+    TITLE: Den angivne dato er ikke anvendelig
+    SOLUTION: Dato angivet til denne funktion er ikke korrekt eller har forkert format.

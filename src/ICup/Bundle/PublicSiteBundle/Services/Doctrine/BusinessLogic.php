@@ -179,7 +179,7 @@ class BusinessLogic
         return $groupOrder;
     }
 
-    private function isTeamActive($groupid, $teamid) {
+    public function isTeamActive($groupid, $teamid) {
         $qb = $this->em->createQuery(
                 "select count(r) as results ".
                 "from ".$this->entity->getRepositoryPath('MatchRelation')." r, ".
@@ -364,6 +364,21 @@ class BusinessLogic
     
     public function listMatchesByPlayground($playgroundid) {
         return $this->entity->getMatchRepo()->findBy(array('playground' => $playgroundid));
+    }
+    
+    public function getMatchByNo($tournamentid, $matchno) {
+        $qb = $this->em->createQuery(
+                "select m ".
+                "from ".$this->entity->getRepositoryPath('Match')." m, ".
+                        $this->entity->getRepositoryPath('Group')." g, ".
+                        $this->entity->getRepositoryPath('Category')." c ".
+                "where m.pid=g.id and ".
+                      "m.matchno=:matchno and ".
+                      "g.pid=c.id and ".
+                      "c.pid=:tournament");
+        $qb->setParameter('tournament', $tournamentid);
+        $qb->setParameter('matchno', $matchno);
+        return $qb->getOneOrNullResult();
     }
     
     public function getTeamByGroup($groupid, $name, $division) {

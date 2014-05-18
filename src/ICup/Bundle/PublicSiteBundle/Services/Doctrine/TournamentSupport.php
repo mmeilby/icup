@@ -8,6 +8,7 @@ use Monolog\Logger;
 use ICup\Bundle\PublicSiteBundle\Services\Doctrine\Entity;
 use ICup\Bundle\PublicSiteBundle\Services\Doctrine\BusinessLogic;
 use ICup\Bundle\PublicSiteBundle\Entity\TeamInfo;
+use DateTime;
 
 class TournamentSupport
 {
@@ -47,6 +48,187 @@ class TournamentSupport
         $qb->setParameter('group', $groupid);
         $qb->setParameter('playground', $playgroundid);
         return $qb->getResult();
+    }
+
+    public function isMatchResultValid($matchid) {
+        $qb = $this->em->createQuery(
+                "select count(r) as results ".
+                "from ".$this->entity->getRepositoryPath('MatchRelation')." r ".
+                "where r.pid=:match and r.scorevalid='Y'");
+        $qb->setParameter('match', $matchid);
+        $results = $qb->getOneOrNullResult();
+        return $results != null ? $results['results'] == 2 : false;
+    }
+ 
+    public function getMatchRelationByMatch($matchid, $away) {
+        $qb = $this->em->createQuery(
+                "select r ".
+                "from ".$this->entity->getRepositoryPath('MatchRelation')." r ".
+                "where r.pid=:match and r.awayteam=:away");
+        $qb->setParameter('match', $matchid);
+        $qb->setParameter('away', $away ? 'Y' : 'N');
+        return $qb->getOneOrNullResult();
+    }
+     
+    public function getMatchHomeTeam($matchid) {
+        $matchRel = $this->getMatchRelationByMatch($matchid, false);
+        return $matchRel != null ? $matchRel->getCid() : 0;
+    }
+    
+    public function getMatchAwayTeam($matchid) {
+        $matchRel = $this->getMatchRelationByMatch($matchid, true);
+        return $matchRel != null ? $matchRel->getCid() : 0;
+    }
+
+    public function listMatchCalendar($tournamentid) {
+        $qb = $this->em->createQuery(
+                "select distinct m.date ".
+                "from ".$this->entity->getRepositoryPath('Category')." cat, ".
+                        $this->entity->getRepositoryPath('Group')." g, ".
+                        $this->entity->getRepositoryPath('MatchRelation')." r, ".
+                        $this->entity->getRepositoryPath('Match')." m ".
+                "where cat.pid=:tournament and ".
+                        "r.pid=m.id and ".
+                        "m.pid=g.id and ".
+                        "g.pid=cat.id");
+        $qb->setParameter('tournament', $tournamentid);
+        $matchList = array();
+        foreach ($qb->getResult() as $date) {
+            $matchdate = date_create_from_format("d/m/Y", $date['date']);
+            $matchList[] = $matchdate;
+        }
+        return $matchList;
+    }
+        
+    public function listMatchesByPlaygroundDate($playgroundid, $date) {
+        $matchdate = date_format($date, "d/m/Y");
+        $qb = $this->em->createQuery(
+                "select m.id as mid,m.matchno,m.date,m.time,".
+                       "g.id as gid,g.name as grp,".
+                       "cat.id as cid,cat.name as category,".
+                       "r.id as rid,r.awayteam,r.scorevalid,r.score,r.points,".
+                       "t.id,t.name as team,t.division,c.country ".
+                "from ".$this->entity->getRepositoryPath('MatchRelation')." r, ".
+                        $this->entity->getRepositoryPath('Match')." m, ".
+                        $this->entity->getRepositoryPath('Group')." g, ".
+                        $this->entity->getRepositoryPath('Category')." cat, ".
+                        $this->entity->getRepositoryPath('Team')." t, ".
+                        $this->entity->getRepositoryPath('Club')." c ".
+                "where m.playground=:playground and ".
+                      "m.pid=g.id and ".
+                      "m.date=:date and ".
+                      "g.pid=cat.id and ".
+                      "r.pid=m.id and ".
+                      "t.id=r.cid and ".
+                      "c.id=t.pid ".
+                "order by m.id");
+        $qb->setParameter('playground', $playgroundid);
+        $qb->setParameter('date', $matchdate);
+        // Collect match relations as matches
+        $matchList = array();
+        foreach ($qb->getResult() as $match) {
+            $matchList[$match['matchno']][$match['awayteam']=='Y'?'A':'H'] = $match;
+        }
+        // Prepare match list for output
+        $matches = array();
+        foreach ($matchList as $matchRelList) {
+            // There must be two relations for each match - otherwise ignore the match
+            if (count($matchRelList) == 2) {
+                $matches[] = $this->prepareMatchListWithCategory($matchRelList);
+            }
+        }
+        // Sort the matches based on schedule
+        usort($matches, array("ICup\Bundle\PublicSiteBundle\Services\Doctrine\TournamentSupport", "reorderMatch"));
+        return $matches;
+    }
+    
+    public function listMatchesByGroup($groupid) {
+        $qb = $this->em->createQuery(
+                "select m.id as mid,m.matchno,m.date,m.time,".
+                       "p.no,".
+                       "r.id as rid,r.awayteam,r.scorevalid,r.score,r.points,".
+                       "t.id,t.name as team,t.division,c.country ".
+                "from ".$this->entity->getRepositoryPath('MatchRelation')." r, ".
+                        $this->entity->getRepositoryPath('Match')." m, ".
+                        $this->entity->getRepositoryPath('Playground')." p, ".
+                        $this->entity->getRepositoryPath('Team')." t, ".
+                        $this->entity->getRepositoryPath('Club')." c ".
+                "where m.pid=:group and ".
+                      "p.id=m.playground and ".
+                      "r.pid=m.id and ".
+                      "t.id=r.cid and ".
+                      "c.id=t.pid ".
+                "order by m.id");
+        $qb->setParameter('group', $groupid);
+        // Collect match relations as matches
+        $matchList = array();
+        foreach ($qb->getResult() as $match) {
+            $matchList[$match['matchno']][$match['awayteam']=='Y'?'A':'H'] = $match;
+        }
+        // Prepare match list for output
+        $matches = array();
+        foreach ($matchList as $matchRelList) {
+            // There must be two relations for each match - otherwise ignore the match
+            if (count($matchRelList) == 2) {
+                $matches[] = $this->prepareMatchList($matchRelList);
+            }
+        }
+        // Sort the matches based on schedule
+        usort($matches, array("ICup\Bundle\PublicSiteBundle\Services\Doctrine\TournamentSupport", "reorderMatch"));
+        return $matches;
+    }
+
+    private function prepareMatchList($matchRelList) {
+        $match = $matchRelList['H'];
+        return array(
+            'id' => $match['mid'],
+            'matchno' => $match['matchno'],
+            'schedule' => DateTime::createFromFormat('d/m/Y-H:i', $match['date'].'-'.str_replace(".", ":", $match['time'])),
+            'playground' => $match['no'],
+            'home' => $this->samplePart($matchRelList['H']),
+            'away' => $this->samplePart($matchRelList['A'])
+        );
+    }
+
+    private function prepareMatchListWithCategory($matchRelList) {
+        $match = $matchRelList['H'];
+        return array(
+            'id' => $match['mid'],
+            'matchno' => $match['matchno'],
+            'schedule' => DateTime::createFromFormat('d/m/Y-H:i', $match['date'].'-'.str_replace(".", ":", $match['time'])),
+            'category' => array('name' => $match['category'], 'id' => $match['cid']),
+            'group' => array('name' => $match['grp'], 'id' => $match['gid']),
+            'home' => $this->samplePart($matchRelList['H']),
+            'away' => $this->samplePart($matchRelList['A'])
+        );
+    }
+    
+    private function samplePart($rel) {
+        $name = $rel['team'];
+        if ($rel['division'] != '') {
+            $name.= ' "'.$rel['division'].'"';
+        }
+        $valid = $rel['scorevalid'] == 'Y';
+        return array(
+            'rid' => $rel['rid'],
+            'id' => $rel['id'],
+            'team' => $name,
+            'country' => $rel['country'],
+            'score' => $valid ? $rel['score'] : '',
+            'points' => $valid ? $rel['points'] : '',
+        );
+    }
+    
+    static function reorderMatch($match1, $match2) {
+        if ($match1['schedule'] == $match2['schedule']) {
+            return 0;
+        }
+        elseif ($match1['schedule'] > $match2['schedule']) {
+            return 1;
+        }
+        else {
+            return -1;
+        }
     }
 
     public function listMatchesByGroupTeam($groupid, $teamid) {

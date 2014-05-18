@@ -492,6 +492,9 @@ TD.match {
     width: 50px;
     text-align: center;
 }
+INPUT.match {
+    width: 40px;
+}
 TD.category {
     width: 300px;
 }

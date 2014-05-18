@@ -18,8 +18,8 @@
             <tr>
 {% for column in teams %}
                 <td class="clubs">
-    {% for countries in column %}
-    {% for country,teamlist in countries %}
+    {% for countrylist in column %}
+    {% for country,teamlist in countrylist %}
                     <p>
                         <img src="{{ imagepath }}/flags/{{ countries[country].flag }}" alt="{{ country|trans({},'lang') }}" title="{{ country|trans({},'lang') }}">
                         <b>{{ country|trans({},'lang') }}</b><br />

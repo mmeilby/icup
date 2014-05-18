@@ -76,7 +76,11 @@
                 </a>    
             </td>
             <td></td>
-            <td></td>
+            <td>
+                <a href="{{ path('_edit_group_list_matches', { 'groupid': group.id }) }}">
+                M
+                </a>    
+            </td>
         </tr>
             {% endfor %}
         {% else %}

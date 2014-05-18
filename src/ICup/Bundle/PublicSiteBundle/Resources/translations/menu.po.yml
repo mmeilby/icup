@@ -4,14 +4,25 @@ MENU:
     CHOOSELANG: Zmień język 
   TOURNAMENT: 
     TITLE: Turniej 
+    SELECT: Zmień turniej
     OVERVIEW: Przegląd 
     GROUPS: Kategoier 
     PLAYGROUNDS: Boiska
     TEAMS: Kluby 
     WINNERS: Winners
     STATISTICS: Statistics
+  REGISTER:
+    TITLE: Rejestracja
+    TEAM: Ny klub
+    REFEREE: Ny dommer
+    ENROLL: Tilmelding
+    USER: Ny bruger
+  NONREL:
+    ENROLL: Klubvalg
   ENROLLMENT: 
     TITLE: Rejestracja
+    MYPAGE: Mit iCup
+    MYPAGE_USERS: Klubbrugere
     CLUBS: Kluby 
     TEAMS: Drużyny 
     REFEREES: Sędziowie 
@@ -22,6 +33,9 @@ MENU:
     TEAMS: Drużyny 
     PLAYERS: Gracze
     REFEREES: Sędziowie 
+    EDITORS: Redaktører
+  INFORMATION:
+    TITLE: Informacje
   INFO: 
     TITLE: Informacje
     ABOUT: O nas 

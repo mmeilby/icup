@@ -20,7 +20,10 @@
                     <tboby>
                 {% for news in newsstream %}
                         <tr class="{{ cycle(['even','odd'],loop.index) }}">
-                            <td class="dates">{{ news.date|date(' j. ') }}{{ ['MONTH.',news.date|date('M')|upper]|join|trans }}</td>
+                            <td class="dates">
+                                {{ news.date|date(' j. ') }}
+                                {{ ['MONTH.',news.date|date('M')|upper]|join|trans([],'messages') }}
+                            </td>
                             <td class="news">
                                 <a href="{{ news.path }}">{{ news.text }}</a>
                             </td>

@@ -93,3 +93,10 @@ ERROR:
   INVALIDDATE:
     TITLE: Den angivne dato er ikke anvendelig
     SOLUTION: Dato angivet til denne funktion er ikke korrekt eller har forkert format.
+  CANNOTDELETESELF:
+    TITLE: Du kan ikke fjerne din egen brugerprofil
+    SOLUTION: For at udføre denne funktion skal du få en anden ansvarlig til at fjerne din profil.
+  INVALIDROLECHANGE:
+    TITLE: Det er ikke muligt at ændre brugerprofilen
+    SOLUTION: Den ønskede ændring af brugerprofilen skifter brugerens rolle, hvilket ikke er muligt.
+      

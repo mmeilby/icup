@@ -20,8 +20,6 @@ class ListEditorController extends Controller
     {
         /* @var $utilService Util */
         $utilService = $this->get('util');
-        
-
         /* @var $user User */
         $user = $utilService->getCurrentUser();
         // Validate current user - is it an editor?
@@ -31,7 +29,7 @@ class ListEditorController extends Controller
         $host = $this->get('entity')->getHostById($hostid);
         $users = $this->get('entity')->getUserRepo()->findBy(array('pid' => $hostid));
 
-        return array('host' => $host, 'users' => $users);
+        return array('host' => $host, 'users' => $users, 'currentuser' => $user);
     }
     
     /**
@@ -42,13 +40,11 @@ class ListEditorController extends Controller
      */
     public function listUsersAction($hostid)
     {
-        /* @var $utilService Util */
-        $utilService = $this->get('util');
-        
-
+        /* @var $user User */
+        $user = $this->get('util')->getCurrentUser();
         $host = $this->get('entity')->getHostById($hostid);
         $users = $this->get('entity')->getUserRepo()->findBy(array('pid' => $hostid));
 
-        return array('host' => $host, 'users' => $users);
+        return array('host' => $host, 'users' => $users, 'currentuser' => $user);
     }
 }

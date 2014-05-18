@@ -7,6 +7,7 @@ use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\Form\FormError;
+use ICup\Bundle\PublicSiteBundle\Exceptions\ValidationException;
 
 class UserController extends Controller
 {
@@ -134,6 +135,7 @@ class UserController extends Controller
 
         /* @var $user User */
         $user = $this->get('entity')->getUserById($userid);
+        $previousUserRole = $user->getRole();
 
         /* @var $thisuser User */
         $thisuser = $this->get('util')->getCurrentUser();
@@ -158,6 +160,7 @@ class UserController extends Controller
                 $form->addError(new FormError($this->get('translator')->trans('FORM.USER.CANTCHANGENAME', array(), 'admin')));
             }
             else {
+                $this->validateUserRole($user->getRole(), $previousUserRole);
                 $em = $this->getDoctrine()->getManager();
                 $em->flush();
                 return $this->redirect($returnUrl);
@@ -194,7 +197,10 @@ class UserController extends Controller
             $hostid = -1;
         }
         $this->get('util')->validateEditorAdminUser($thisuser, $hostid);
-        
+        // Check for "self destruction" - current user is not allowed to remove own profile 
+        if ($thisuser->getId() == $user->getId()) {
+            throw new ValidationException("CANNOTDELETESELF", "Attempt to remove current user: user=".$thisuser->getId());
+        }
         $form = $this->makeUserForm($user, 'del');
         $request = $this->getRequest();
         $form->handleRequest($request);
@@ -247,7 +253,11 @@ class UserController extends Controller
         $formDef->add('email', 'text', array('label' => 'FORM.USER.EMAIL', 'required' => false, 'disabled' => $action == 'del', 'translation_domain' => 'admin'));
         $formDef->add('username', 'text', array('label' => 'FORM.USER.USERNAME', 'required' => false, 'disabled' => $action == 'del', 'translation_domain' => 'admin'));
         if (!$user->isAdmin()) {
-            $formDef->add('role', 'choice', array('label' => 'FORM.USER.ROLE', 'required' => false, 'choices' => $roles, 'empty_value' => 'FORM.USER.DEFAULT', 'disabled' => $action == 'del', 'translation_domain' => 'admin'));
+            /* @var $thisuser User */
+            $thisuser = $this->get('util')->getCurrentUser();
+            $formDef->add('role', 'choice', array('label' => 'FORM.USER.ROLE', 'required' => false, 'choices' => $roles, 'empty_value' => 'FORM.USER.DEFAULT',
+                                                  'disabled' => $action == 'del' || ($action == 'chg' && $thisuser->getId() == $user->getId()),
+                                                  'translation_domain' => 'admin'));
         }
         if ($user->isClub()) {
             $formDef->add('status', 'choice', array('label' => 'FORM.USER.STATUS', 'required' => false, 'choices' => $status, 'empty_value' => 'FORM.USER.DEFAULT', 'disabled' => $action == 'del', 'translation_domain' => 'admin'));
@@ -278,6 +288,21 @@ class UserController extends Controller
             return true;
         }
         return false;
+    }
+    
+    private function validateUserRole($userRole, $previousUserRole) {
+        $roleMap = array(
+            User::$CLUB => 1,
+            User::$CLUB_ADMIN => 1,
+            User::$EDITOR => 2,
+            User::$EDITOR_ADMIN => 2,
+            User::$ADMIN => 3
+        );
+        if ($roleMap[$userRole] != $roleMap[$previousUserRole]) {
+            /* @var $thisuser User */
+            $thisuser = $this->get('util')->getCurrentUser();
+            throw new ValidationException("INVALIDROLECHANGE", "Attempt to upgrade user role: user=".$thisuser->getId());
+        }
     }
     
    /**

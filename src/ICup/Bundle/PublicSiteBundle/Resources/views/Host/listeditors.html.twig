@@ -12,6 +12,7 @@
     <thead>
         <tr>
             <td></td>
+            <td class="user"></td>
             <td class="role"></td>
             <td class="operand"></td>
             <td class="operand"></td>
@@ -26,11 +27,18 @@
             <td class="user">
         {% if is_granted('ROLE_ADMIN') %}
                 <a href="{{ path('_user_my_page', {'_switch_user': user.username }) }}">
-                {{ user.name|upper }}
+                {{ user.username|upper }}
                 </a>    
         {% else %}
-                {{ user.name|upper }}
+            {% if user.id == currentuser.id %}
+                <b>{{ user.username|upper }}</b>
+            {% else %}
+                {{ user.username|upper }}
+            {% endif %}
         {% endif %}
+            </td>
+            <td class="user">
+                {{ user.name }}
             </td>
             <td class="role">
     {% if user.role == 3 %}
@@ -50,9 +58,11 @@
                 </a>    
             </td>
             <td class="operand">
+    {% if user.id != currentuser.id %}
                 <a href="{{ path('_edit_user_del', { 'userid': user.id }) }}">
                 -
                 </a>    
+    {% endif %}
             </td>
             <td class="operand">
                 <a href="{{ path('_edit_user_chg_pass', { 'userid': user.id }) }}">
@@ -63,7 +73,7 @@
     {% endfor %}
 {% else %}
         <tr class="odd">
-            <td class="user">
+            <td class="user" colspan="2">
                 <a href="{{ path('_edit_user_add_host', { 'hostid': host.id }) }}">
                 {{'FORM.LISTEDITORS.NOUSER'|trans|upper}}
                 </a>    
@@ -81,7 +91,7 @@
     </tboby>
     <tfoot>
         <tr>
-            <td colspan="6"></td>
+            <td colspan="7"></td>
         </tr>
     </tfoot>
 </table>

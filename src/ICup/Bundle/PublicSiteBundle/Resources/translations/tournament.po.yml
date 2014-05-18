@@ -5,14 +5,15 @@ TEAM: Drużyna
 FIELD: Boisko 
 CATEGORIES: Kategorie
 PLAYGROUNDS: Boiska 
-CLUBS: Kluby 
-TOWNANDNO: Miasto i miejsce
+CLUBS: Kluby uczestniczące
+TOWNANDNO: Miasto i boiska
 CLUBSBYCOUNTRY: Sortuj wg krajów 
 TEAMSBYCLUB: Drużyna zapisana przez klub
 WINNERS: The champions
 WINNING_COUNTRIES: Medals by country
 WINNING_CLUBS: Medals by club
 EDITRESULTS: Edytuj rezultaty 
+UNASSIGNED: Unassigned teams
 
 PRELIMINARY: Preliminary round
 CLASSIFICATION: Playoff rounds

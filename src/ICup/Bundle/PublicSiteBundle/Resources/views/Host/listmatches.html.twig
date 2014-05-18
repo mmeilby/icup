@@ -1,24 +1,31 @@
-{% extends "ICupPublicSiteBundle:Masters:standard.html.twig" %}
+{% extends "ICupPublicSiteBundle:Masters:edit.html.twig" %}
 {% trans_default_domain "tournament" %}
 
-{% block body %}
-<h1 class="category">{{ tournament.name }}</h1>
-<p class="subcategory">
-    {% trans %}RESULTS{% endtrans %} {{ tournament.edition }}<br />
-</p>
-<a href="{{ path('_showcategory', { 'tournament': tournament.key, 'categoryid': category.id }) }}">
-    <h1 class="category">{% trans %}CATEGORY{% endtrans %} {{ category.name }}</h1>
-</a>
-<p class="subcategory">
-    {{ [category.gender,category.classification]|join|trans }}
-    {{ category.classification|trans }}
-</p>
-<a href="{{ path('_showcategory', { 'tournament': tournament.key, 'categoryid': category.id }) }}">
-    <h2 class="group">{% trans %}GROUP{% endtrans %} {{ group.name }}</h2>
-</a>
+{% block adminbody %}
+<h1>{% trans from "admin" %}FORM.ADMIN{% endtrans %}</h1>
+<table>
+    <tr>
+        <td>
+            <h2 class="category">{{ tournament.name }}</h2>
+            <p class="subcategory">
+                {% trans %}RESULTS{% endtrans %} {{ tournament.edition }}<br />
+            </p>
+        </td>
+        <td class="indent"></td>
+        <td>
+            <a href="{{ path('_showcategory', { 'tournament': tournament.key, 'categoryid': category.id }) }}">
+                <h2 class="category">{% trans %}CATEGORY{% endtrans %} {{ category.name }}</h2>
+            </a>
+            <p class="subcategory">
+                {{ [category.gender,category.classification]|join|trans }}
+                {{ category.classification|trans }}
+            </p>
+        </td>
+    </tr>
+</table>
 <p>
     <table>
-        <caption>XX</caption>
+        <caption>{% trans %}GROUP{% endtrans %} {{ group.name }}</caption>
         <thead>
             <tr>
                 <td class="flag"></td>

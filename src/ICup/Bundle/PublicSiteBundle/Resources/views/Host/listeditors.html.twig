@@ -4,9 +4,10 @@
 {% block adminbody %}
 <h1>{% trans %}FORM.ADMIN{% endtrans %}</h1>
 <p class="subtitle">{% trans %}FORM.LISTEDITORS.TITLE{% endtrans %}</p>
-<p class="subtitle">
-<a href="{{ path('_edit_host_list') }}">{{ host.name }}</a>
-</p>
+<a href="{{ path('_edit_host_list') }}">
+<h2 class="category">{{ host.name|upper }}</h2>
+</a>
+<p>
 <table>
     <caption>{% trans %}FORM.LISTEDITORS.CAPTION{% endtrans %}</caption>
     <thead>
@@ -95,4 +96,5 @@
         </tr>
     </tfoot>
 </table>
+</p>
 {% endblock %}

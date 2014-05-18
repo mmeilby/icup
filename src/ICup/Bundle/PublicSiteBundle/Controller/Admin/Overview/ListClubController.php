@@ -17,8 +17,6 @@ class ListClubController extends Controller
      */
     public function listClubsAction()
     {
-        
-
         $clubs = $this->get('logic')->listClubs();
         $teamList = array();
         foreach ($clubs as $club) {

@@ -4,7 +4,8 @@
 {% block adminbody %}
 <h1>{% trans %}FORM.ADMIN{% endtrans %}</h1>
 <p class="subtitle">{% trans %}FORM.LISTHOSTS.TITLE{% endtrans %}</p>
-<p class="subtitle">{{ host.name|upper }}</p>
+<h2 class="category">{{ host.name|upper }}</h2>
+<p>
 <table>
     <caption>{% trans %}FORM.LISTHOSTS.CAPTION_TNMT{% endtrans %}</caption>
     <thead>
@@ -84,4 +85,5 @@
         </tr>
     </tfoot>
 </table>
+</p>
 {% endblock %}

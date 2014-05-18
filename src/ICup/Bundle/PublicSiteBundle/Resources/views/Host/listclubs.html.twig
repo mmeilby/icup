@@ -4,8 +4,10 @@
 {% block adminbody %}
 <h1>{% trans %}FORM.ADMIN{% endtrans %}</h1>
 <p class="subtitle">{% trans %}FORM.LISTCLUBS.TITLE{% endtrans %}</p>
-<p class="subtitle"><a href="{{ path('_host_list_tournaments') }}">{{ host.name|upper }}</a></p>
-<div>
+<a href="{{ path('_edit_host_list') }}">
+<h2 class="category">{{ host.name|upper }}</h2>
+</a>
+<p>
     <table>
         <caption>{{ tournament.name }}</caption>
         <thead>
@@ -18,8 +20,8 @@
             <tr>
 {% for column in teams %}
                 <td class="column">
-    {% for countries in column %}
-    {% for country,teamlist in countries %}
+    {% for countrylist in column %}
+    {% for country,teamlist in countrylist %}
     <table>
         <tr>
             <td class="country country_spacer">
@@ -72,5 +74,5 @@
         </tfoot>
     </table>
     <a href="{{ path('_host_club_new', {'tournamentid': tournament.id }) }}">+</a>
-</div>
+</p>
 {% endblock %}

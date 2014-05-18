@@ -5,7 +5,7 @@ TEAM: Squadra
 FIELD: Campo
 CATEGORIES: Categorie
 PLAYGROUNDS: Campi
-CLUBS: Squadre
+CLUBS: Squadre partecipanti
 TOWNANDNO: Città e campo
 CLUBSBYCOUNTRY: Ordinati per paese
 TEAMSBYCLUB: Teams enrolled by the club
@@ -13,6 +13,7 @@ WINNERS: I campioni
 WINNING_COUNTRIES: Medaglie per paese
 WINNING_CLUBS: Medaglie di squadra
 EDITRESULTS: Aggiornamento dei risultati
+UNASSIGNED: Unassigned teams
 
 PRELIMINARY: Turno preliminare
 CLASSIFICATION: Playoff rounds

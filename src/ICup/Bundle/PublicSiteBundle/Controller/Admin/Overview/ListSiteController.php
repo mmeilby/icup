@@ -21,13 +21,12 @@ class ListSiteController extends Controller
     public function listAction($tournamentid) {
         /* @var $utilService Util */
         $utilService = $this->get('util');
-        
-
         /* @var $user User */
         $user = $utilService->getCurrentUser();
         $tournament = $this->get('entity')->getTournamentById($tournamentid);
         $utilService->validateEditorAdminUser($user, $tournament->getPid());
 
+        $host = $this->get('entity')->getHostById($tournament->getPid());
         $sites = $this->get('logic')->listSites($tournamentid);
         $playgrounds = $this->get('logic')->listPlaygroundsByTournament($tournamentid);
 
@@ -36,6 +35,6 @@ class ListSiteController extends Controller
             $siteList[$playground->getPid()][] = $playground;
         }
 
-        return array('tournament' => $tournament, 'playgrounds' => $siteList, 'sites' => $sites);
+        return array('host' => $host, 'tournament' => $tournament, 'playgrounds' => $siteList, 'sites' => $sites);
     }
 }

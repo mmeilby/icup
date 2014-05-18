@@ -15,6 +15,7 @@
             <td class="operand"></td>
             <td class="operand"></td>
             <td class="operand"></td>
+            <td class="operand"></td>
         </tr>
     </thead>
     <tboby>
@@ -41,15 +42,12 @@
                 </a>    
             </td>
             <td class="operand">
-                <a href="{{ path('_edit_club_list', { 'hostid': host.id }) }}">
-                C
-                </a>    
-            </td>
-            <td class="operand">
                 <a href="{{ path('_edit_editor_list', { 'hostid': host.id }) }}">
                 U
                 </a>    
             </td>
+            <td class="operand"></td>
+            <td class="operand"></td>
         </tr>
         {% if host.id in tournaments|keys %}
 {% for tournament in tournaments[host.id] %}
@@ -85,6 +83,11 @@
                 C
                 </a>
             </td>
+            <td class="operand">
+                <a href="{{ path('_host_list_clubs', { 'tournamentid': tournament.id }) }}">
+                T
+                </a>    
+            </td>
         </tr>
 {% endfor %}
         {% else %}
@@ -100,13 +103,14 @@
             <td></td>
             <td></td>
             <td></td>
+            <td></td>
         </tr>
         {% endif %}
 {% endfor %}
     </tboby>
     <tfoot>
         <tr>
-            <td colspan="7"></td>
+            <td colspan="8"></td>
         </tr>
     </tfoot>
 </table>

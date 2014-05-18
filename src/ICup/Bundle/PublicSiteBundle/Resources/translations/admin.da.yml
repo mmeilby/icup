@@ -159,6 +159,8 @@ FORM:
       ADD: Fortryd oprettelse
       CHG: Fortryd ændringer
       DEL: Fortryd slet
+  LISTGROUPS:
+    TITLE: Placering af hold
   GROUP:
     DEFAULT: Vælg...
     NONAME: Et puljenavn skal angives.

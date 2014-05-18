@@ -4,14 +4,15 @@
 {% block adminbody %}
 <h1>{% trans %}FORM.ADMIN{% endtrans %}</h1>
 <p class="subtitle">{% trans %}FORM.LISTCATEGORIES.TITLE{% endtrans %}</p>
-<p class="subtitle"><a href="{{ path('_edit_host_list') }}">{{ host.name|upper }}</a></p>
-<p class="subtitle">{{ tournament.name }}</p>
+<a href="{{ path('_edit_host_list') }}">
+<h2 class="category">{{ host.name|upper }}</h2>
+</a>
+<p>
 <table>
-    <caption>{% trans %}FORM.LISTCATEGORIES.CAPTION{% endtrans %}</caption>
+    <caption>{{ tournament.name }}</caption>
     <thead>
         <tr>
-            <td class="indent"></td>
-            <td></td>
+            <td colspan="2">{% trans %}FORM.LISTCATEGORIES.CAPTION{% endtrans %}</td>
             <td class="operand"></td>
             <td class="operand"></td>
             <td class="operand"></td>
@@ -26,7 +27,7 @@
         <tr class="{{ cycle(['even','odd'],loopindex) }}">
             <td class="host_solo" colspan="2">
                 <a href="{{ path('_edit_category_chg', { 'categoryid': category.id }) }}">
-                {% trans from "messages" %}CATEGORY{% endtrans %} {{ category.name|upper }}
+                {% trans from "tournament" %}CATEGORY{% endtrans %} {{ category.name|upper }}
                 </a>    
             </td>
             <td class="operand">
@@ -58,8 +59,8 @@
         {% if category.id in groups|keys %}
             {% for group in groups[category.id] %}
         <tr class="{{ cycle(['even','odd'],loopindex+loop.index) }}">
-            <td></td>
-            <td><a href="{{ path('_edit_group_chg', { 'groupid': group.id }) }}">{% trans from "messages" %}GROUP{% endtrans %} {{ group.name }}</a></td>
+            <td class="indent"></td>
+            <td><a href="{{ path('_edit_group_chg', { 'groupid': group.id }) }}">{% trans from "tournament" %}GROUP{% endtrans %} {{ group.name }}</a></td>
             <td class="operand">
                 <a href="{{ path('_edit_group_add', { 'categoryid': category.id }) }}">
                 +
@@ -75,8 +76,8 @@
                 -
                 </a>    
             </td>
-            <td></td>
-            <td>
+            <td class="operand"></td>
+            <td class="operand">
                 <a href="{{ path('_edit_group_list_matches', { 'groupid': group.id }) }}">
                 M
                 </a>    
@@ -124,4 +125,5 @@
         </tr>
     </tfoot>
 </table>
+</p>
 {% endblock %}

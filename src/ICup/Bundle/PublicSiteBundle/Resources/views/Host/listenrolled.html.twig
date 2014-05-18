@@ -10,9 +10,9 @@
     <caption>{% trans %}FORM.LISTENROLLED.CAPTION{% endtrans %}</caption>
     <thead>
         <tr>
-            <td>{% trans from "messages" %}CLASS{% endtrans %}</td>
-            <td colspan="4">{% trans from "messages" %}FEMALE{% endtrans %}</td>
-            <td colspan="4">{% trans from "messages" %}MALE{% endtrans %}</td>
+            <td>{% trans from "tournament" %}CLASS{% endtrans %}</td>
+            <td colspan="4">{% trans from "tournament" %}FEMALE{% endtrans %}</td>
+            <td colspan="4">{% trans from "tournament" %}MALE{% endtrans %}</td>
         </tr>
     </thead>
     <tboby>
@@ -31,10 +31,10 @@
         {% if femalecategorylist[i] is defined %}
                 <td class="categories">
                     <a href="{{ path('_showcategory', { 'tournament': tournament.key, 'categoryid': femalecategorylist[i].id }) }}">
-                        <b>{% trans from "messages" %}CATEGORY{% endtrans %} {{ femalecategorylist[i].name }}</b>
+                        <b>{% trans from "tournament" %}CATEGORY{% endtrans %} {{ femalecategorylist[i].name }}</b>
                     </a><br />
-                        {{ [femalecategorylist[i].gender,femalecategorylist[i].classification]|join|trans({},'messages') }}
-                        {{ femalecategorylist[i].classification|trans({},'messages')|lower }}
+                        {{ [femalecategorylist[i].gender,femalecategorylist[i].classification]|join|trans({},'tournament') }}
+                        {{ femalecategorylist[i].classification|trans({},'tournament')|lower }}
                 </td>
                 <td>
             {% if enrolled[femalecategorylist[i].id] is defined %}
@@ -61,10 +61,10 @@
         {% if malecategorylist[i] is defined %}
                 <td class="categories">
                     <a href="{{ path('_showcategory', { 'tournament': tournament.key, 'categoryid': malecategorylist[i].id }) }}">
-                        <b>{% trans from "messages" %}CATEGORY{% endtrans %} {{ malecategorylist[i].name }}</b>
+                        <b>{% trans from "tournament" %}CATEGORY{% endtrans %} {{ malecategorylist[i].name }}</b>
                     </a><br />
-                        {{ [malecategorylist[i].gender,malecategorylist[i].classification]|join|trans({},'messages') }}
-                        {{ malecategorylist[i].classification|trans({},'messages')|lower }}
+                        {{ [malecategorylist[i].gender,malecategorylist[i].classification]|join|trans({},'tournament') }}
+                        {{ malecategorylist[i].classification|trans({},'tournament')|lower }}
                 </td>
                 <td>
             {% if enrolled[malecategorylist[i].id] is defined %}

@@ -124,7 +124,9 @@
             <h3>{% trans %}MENU.REGISTER.TITLE{% endtrans %}</h3>
             <ul>
         {% if is_granted('ROLE_EDITOR_ADMIN') %}
+<!--            
                 <li><a href="{{ path('_club_enroll_check') }}">TBD:{% trans %}MENU.ENROLLMENT.CLUBS{% endtrans %}</a></li>
+-->
         {% endif %}
         {% if tmnt != '_' %}
                 <li><a href="{{ path('_edit_list_matches') }}">{% trans %}MENU.ADMIN.RESULTS{% endtrans %}</a></li>

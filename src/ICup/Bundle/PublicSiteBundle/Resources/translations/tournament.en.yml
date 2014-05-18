@@ -5,14 +5,15 @@ TEAM: Team
 FIELD: Playground
 CATEGORIES: Categories
 PLAYGROUNDS: Playgrounds
-CLUBS: Clubs
-TOWNANDNO: Town and place
+CLUBS: Participating clubs
+TOWNANDNO: Town and field
 CLUBSBYCOUNTRY: Ordered by country
 TEAMSBYCLUB: Teams enrolled by the club
 WINNERS: The champions
 WINNING_COUNTRIES: Medals by country
 WINNING_CLUBS: Medals by club
 EDITRESULTS: Edit results
+UNASSIGNED: Unassigned teams
 
 PRELIMINARY: Preliminary round
 CLASSIFICATION: Playoff rounds

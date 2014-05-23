@@ -44,12 +44,16 @@ class Group
 
     /**
      * @var integer $classification
-     *
+     *   0: Grundspil
+     *   1: Playoff
+     *   6: 1/8 finale
+     *   7: 1/4 finale
+     *   8: Semifinale
+     *   9: Bronzekamp
+     *  10: Finale
      * @ORM\Column(name="classification", type="integer", nullable=false)
      */
     private $classification;
-
-
 
     /**
      * Get id

@@ -4,8 +4,15 @@
 {% block body %}
 <h1>{% trans %}FORM.TITLE{% endtrans %}</h1>
 <p class="subtitle">{% trans %}FORM.LISTENROLLED.TITLE{% endtrans %}</p>
-<p class="subtitle"><a href="{{ path('_host_list_tournaments') }}">{{ host.name|upper }} - {{ tournament.name|upper }}</a></p>
-<p class="subtitle"><a href="{{ path('_host_list_clubs', { 'tournamentid': tournament.id }) }}">{{ club.name }}</a></p>
+<a href="{{ path('_edit_host_list') }}">
+<h2 class="category">{{ host.name|upper }} - {{ tournament.name|upper }}</h2>
+</a>
+<p class="subtitle">
+    <a href="{{ path('_host_list_clubs', { 'tournamentid': tournament.id }) }}">
+        <img src="{{ imagepath }}/flags/{{ countries[club.country].flag }}" alt="{{ club.country|trans({},'lang') }}" title="{{ club.country|trans({},'lang') }}">
+        {{ club.name }}
+    </a></p>
+<p>
 <table>
     <caption>{% trans %}FORM.LISTENROLLED.CAPTION{% endtrans %}</caption>
     <thead>
@@ -98,4 +105,5 @@
         </tr>
     </tfoot>
 </table>
+</p>
 {% endblock %}

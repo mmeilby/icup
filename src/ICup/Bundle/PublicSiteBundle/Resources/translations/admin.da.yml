@@ -161,6 +161,7 @@ FORM:
       DEL: Fortryd slet
   LISTGROUPS:
     TITLE: Placering af hold
+    NOGROUP: Ingen puljer
   GROUP:
     DEFAULT: Vælg...
     NONAME: Et puljenavn skal angives.

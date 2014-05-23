@@ -39,7 +39,7 @@ class MatchResultController extends Controller
         $session->set('icup.matchedit.playground', $playgroundid);
             
         $host = $this->get('entity')->getHostById($tournament->getPid());
-        $matchList = $this->get('tmnt')->listMatchesByPlaygroundDate($playgroundid, $matchDate);
+        $matchList = $this->get('match')->listMatchesByPlaygroundDate($playgroundid, $matchDate);
 
         $playgrounds = $this->get('logic')->listPlaygroundsByTournament($tournament->getId());
         $playgroundsList = array();
@@ -51,7 +51,7 @@ class MatchResultController extends Controller
                      'tournament' => $tournament,
                      'playgrounds' => $playgroundsList,
                      'playground' => $playgroundsList[$playgroundid],
-                     'dates' => $this->get('tmnt')->listMatchCalendar($tournament->getId()),
+                     'dates' => $this->get('match')->listMatchCalendar($tournament->getId()),
                      'matchdate' => $matchDate,
                      'matchlist' => $matchList
                 );

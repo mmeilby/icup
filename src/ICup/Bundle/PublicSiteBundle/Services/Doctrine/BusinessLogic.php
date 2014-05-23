@@ -358,29 +358,6 @@ class BusinessLogic
         return $this->entity->getGroupOrderRepo()->findBy(array('pid' => $groupid));
     }
     
-    public function listMatches($groupid) {
-        return $this->entity->getMatchRepo()->findBy(array('pid' => $groupid));
-    }
-    
-    public function listMatchesByPlayground($playgroundid) {
-        return $this->entity->getMatchRepo()->findBy(array('playground' => $playgroundid));
-    }
-    
-    public function getMatchByNo($tournamentid, $matchno) {
-        $qb = $this->em->createQuery(
-                "select m ".
-                "from ".$this->entity->getRepositoryPath('Match')." m, ".
-                        $this->entity->getRepositoryPath('Group')." g, ".
-                        $this->entity->getRepositoryPath('Category')." c ".
-                "where m.pid=g.id and ".
-                      "m.matchno=:matchno and ".
-                      "g.pid=c.id and ".
-                      "c.pid=:tournament");
-        $qb->setParameter('tournament', $tournamentid);
-        $qb->setParameter('matchno', $matchno);
-        return $qb->getOneOrNullResult();
-    }
-    
     public function getTeamByGroup($groupid, $name, $division) {
         $qb = $this->em->createQuery(
                 "select t.id,t.name,t.division,c.name as club,c.country ".

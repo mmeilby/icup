@@ -7,6 +7,7 @@ use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use ICup\Bundle\PublicSiteBundle\Services\Util;
+use Symfony\Component\Form\FormError;
 
 /**
  * Maintain playgrounds for a tournament
@@ -105,7 +106,7 @@ class PlaygroundController extends Controller
             return $this->redirect($returnUrl);
         }
         if ($form->isValid()) {
-            if ($this->get('logic')->listMatchesByPlayground($playground->getId()) != null) {
+            if (count($this->get('match')->listMatchesByPlayground($playground->getId())) > 0) {
                 $form->addError(new FormError($this->get('translator')->trans('FORM.PLAYGROUND.MATCHESEXIST', array(), 'admin')));
             }
             else {

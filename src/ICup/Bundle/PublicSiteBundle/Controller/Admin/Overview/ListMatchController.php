@@ -31,7 +31,7 @@ class ListMatchController extends Controller
         $utilService->validateEditorAdminUser($user, $tournament->getPid());
 
         $host = $this->get('entity')->getHostById($tournament->getPid());
-        $matches = $this->get('tmnt')->listMatchesByGroup($groupid);
+        $matches = $this->get('match')->listMatchesByGroup($groupid);
 
         return array('host' => $host,
                      'tournament' => $tournament,
@@ -68,7 +68,7 @@ class ListMatchController extends Controller
         $session = $request->getSession();
         $date = $session->get('icup.matchedit.date');
         if ($date == null) {
-            $dates = $this->get('tmnt')->listMatchCalendar($tournamentid);
+            $dates = $this->get('match')->listMatchCalendar($tournamentid);
             if ($dates != null && count($dates) > 0) {
                 $date = $dates[0];
             }

@@ -41,7 +41,7 @@ class MatchController extends Controller
             return $this->redirect($returnUrl);
         }
         if ($this->checkForm($form, $matchForm)) {
-            $otherMatch = $this->get('logic')->getMatchByNo($tournament->getId(), $matchForm->getMatchno());
+            $otherMatch = $this->get('match')->getMatchByNo($tournament->getId(), $matchForm->getMatchno());
             if ($otherMatch != null) {
                 $form->addError(new FormError($this->get('translator')->trans('FORM.MATCH.NOEXISTS', array(), 'admin')));
             }
@@ -80,7 +80,7 @@ class MatchController extends Controller
             return $this->redirect($returnUrl);
         }
         if ($this->checkForm($form, $matchForm)) {
-            $otherMatch = $this->get('logic')->getMatchByNo($tournament->getId(), $matchForm->getMatchno());
+            $otherMatch = $this->get('match')->getMatchByNo($tournament->getId(), $matchForm->getMatchno());
             if ($otherMatch != null && $otherMatch->getId() != $matchForm->getId()) {
                 $form->addError(new FormError($this->get('translator')->trans('FORM.MATCH.CANTCHANGENO', array(), 'admin')));
             }
@@ -154,9 +154,9 @@ class MatchController extends Controller
     
     private function chgMatch(MatchForm $matchForm, Match &$match) {
         $this->updateMatch($matchForm, $match);
-        $homeRel = $this->get('tmnt')->getMatchRelationByMatch($match->getId(), false);
+        $homeRel = $this->get('match')->getMatchRelationByMatch($match->getId(), false);
         $homeRel->setCid($matchForm->getTeamA());
-        $awayRel = $this->get('tmnt')->getMatchRelationByMatch($match->getId(), true);
+        $awayRel = $this->get('match')->getMatchRelationByMatch($match->getId(), true);
         $awayRel->setCid($matchForm->getTeamB());
         $em = $this->getDoctrine()->getManager();
         $em->flush();
@@ -164,11 +164,11 @@ class MatchController extends Controller
 
     private function delMatch(Match $match) {
         $em = $this->getDoctrine()->getManager();
-        $homeRel = $this->get('tmnt')->getMatchRelationByMatch($match->getId(), false);
+        $homeRel = $this->get('match')->getMatchRelationByMatch($match->getId(), false);
         if ($homeRel != null) {
             $em->remove($homeRel);
         }
-        $awayRel = $this->get('tmnt')->getMatchRelationByMatch($match->getId(), true);
+        $awayRel = $this->get('match')->getMatchRelationByMatch($match->getId(), true);
         if ($awayRel != null) {
             $em->remove($awayRel);
         }
@@ -199,8 +199,8 @@ class MatchController extends Controller
         $matchtime = date_create_from_format("G.i", $match->getTime());
         $matchForm->setTime(date_format($matchtime, $timeformat));
         $matchForm->setPlayground($match->getPlayground());
-        $matchForm->setTeamA($this->get('tmnt')->getMatchHomeTeam($match->getId()));
-        $matchForm->setTeamB($this->get('tmnt')->getMatchAwayTeam($match->getId()));
+        $matchForm->setTeamA($this->get('match')->getMatchHomeTeam($match->getId()));
+        $matchForm->setTeamB($this->get('match')->getMatchAwayTeam($match->getId()));
         return $matchForm;
     }
 
@@ -218,7 +218,7 @@ class MatchController extends Controller
         }
 
         $show = $action != 'del';
-        $extshow = $show && !$this->get('tmnt')->isMatchResultValid($matchForm->getId());
+        $extshow = $show && !$this->get('match')->isMatchResultValid($matchForm->getId());
         
         $formDef = $this->createFormBuilder($matchForm);
         $formDef->add('matchno', 'text', array('label' => 'FORM.MATCH.NO',

@@ -6,6 +6,7 @@ use ICup\Bundle\PublicSiteBundle\Entity\Doctrine\User;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
+use Symfony\Component\Form\FormError;
 
 /**
  * List the categories and groups available
@@ -107,7 +108,7 @@ class GroupController extends Controller
             if ($this->get('logic')->listGroupOrders($group->getId()) != null) {
                 $form->addError(new FormError($this->get('translator')->trans('FORM.GROUP.ORDEREXIST', array(), 'admin')));
             }
-            elseif ($this->get('logic')->listMatches($group->getId()) != null) {
+            elseif (count($this->get('match')->listMatchesByGroup($group->getId())) > 0) {
                 $form->addError(new FormError($this->get('translator')->trans('FORM.GROUP.MATCHESEXIST', array(), 'admin')));
             }
             else {
@@ -140,7 +141,7 @@ class GroupController extends Controller
                 $form->addError(new FormError($this->get('translator')->trans('FORM.GROUP.NONAME', array(), 'admin')));
                 return false;
             }
-            if ($group->getClassification() == null) {
+            if ($group->getClassification() === null) {
                 $form->addError(new FormError($this->get('translator')->trans('FORM.GROUP.NOCLASSIFICATION', array(), 'admin')));
                 return false;
             }

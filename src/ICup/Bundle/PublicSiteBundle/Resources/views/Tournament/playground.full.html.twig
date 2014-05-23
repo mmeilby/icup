@@ -40,13 +40,13 @@
                 <td class="flag"></td>
                 <td class="no">{{ match.matchno }}</td>
                 <td class="time">{{ match.schedule|date('H.i') }}</td>
-                <td class="no">{{ match.category }}</td>
-                <td class="no">{{ match.group }}</td>
-                <td class="flag"><img src="{{ imagepath }}/flags/{{ countries[match.countryA].flag }}" alt="{{ match.countryA|trans({},'lang') }}" title="{{ match.countryA|trans({},'lang') }}"></td>
-                <td class="team"><a href="{{ path('_showteam', { 'tournament': tournament.key, 'teamid': match.idA, 'groupid': match.gid }) }}">{{ match.teamA }}</a></td>
-                <td class="flag"><img src="{{ imagepath }}/flags/{{ countries[match.countryB].flag }}" alt="{{ match.countryB|trans({},'lang') }}" title="{{ match.countryB|trans({},'lang') }}"></td>
-                <td class="team"><a href="{{ path('_showteam', { 'tournament': tournament.key, 'teamid': match.idB, 'groupid': match.gid }) }}">{{ match.teamB }}</a></td>
-                <td class="match">{{ match.scoreA }}-{{ match.scoreB }}</td>
+                <td class="no"><a href="{{ path('_showcategory', { 'tournament': tournament.key, 'categoryid': match.category.id }) }}">{{ match.category.name }}</a></td>
+                <td class="no"><a href="{{ path('_showcategory', { 'tournament': tournament.key, 'categoryid': match.category.id }) }}">{{ match.group.name }}</a></td>
+                <td class="flag"><img src="{{ imagepath }}/flags/{{ countries[match.home.country].flag }}" alt="{{ match.home.country|trans({},'lang') }}" title="{{ match.home.country|trans({},'lang') }}"></td>
+                <td class="team"><a href="{{ path('_showteam', { 'tournament': tournament.key, 'teamid': match.home.id, 'groupid': match.group.id }) }}">{{ match.home.team }}</a></td>
+                <td class="flag"><img src="{{ imagepath }}/flags/{{ countries[match.away.country].flag }}" alt="{{ match.away.country|trans({},'lang') }}" title="{{ match.away.country|trans({},'lang') }}"></td>
+                <td class="team"><a href="{{ path('_showteam', { 'tournament': tournament.key, 'teamid': match.away.id, 'groupid': match.group.id }) }}">{{ match.away.team }}</a></td>
+                <td class="match">{{ match.home.score }}-{{ match.away.score }}</td>
             </tr>
 {% endfor %}
         </tboby>

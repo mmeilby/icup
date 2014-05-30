@@ -31,8 +31,8 @@ FORM:
     TITLE: Mit iCup
     USERS:
       TITLE: Mit iCup klubbrugere
-    EDITOR: Turneringsansvarlig redaktør
-    EDITOR_ADMIN: Turneringsansvarlig administrator
+    EDITOR: Redaktør
+    EDITOR_ADMIN: Turneringsansvarlig
     ADMIN: Administrator
     DEFAULT_ADMIN: Standard administrator
     CLUBUSER: Klubbruger
@@ -41,6 +41,8 @@ FORM:
     CAPTION: Klubbrugere tilknyttet denne klub
     ATTACHED: Tilknyttet
     PROSPECT: Ansøgt om tilknytning
+    PROSPECTS:
+      AVAILABLE: Der er ansøgere til klubben - vis listen...
     DEFADM:
       WARNING: <b>Skift kodeord for administrator</b><br />Standard administrator er ikke en sikker bruger. Benyt følgende link til at vælge et nyt kodeord til administrator brugeren.
       LINK: Vælg nyt kodeord til administrator
@@ -55,6 +57,7 @@ FORM:
   NEWPASS: 
     NOPASSWORD: Et kodeord skal angives.
     BADPASSWORD: Det valgte kodeord er ikke gyldigt.
+    NOTEQUAL: Kodeordet er ikke gentaget korrekt - de indtastede kodeord er ikke ens.
     TITLE: Skift kodeord
     PROMPT: Et kodeord bør indeholde ...
     PASSWORD: Kodeord

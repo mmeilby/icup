@@ -1,0 +1,19 @@
+{% extends "ICupPublicSiteBundle:Masters:edit.html.twig" %}
+
+{% form_theme form 'ICupPublicSiteBundle:Default:layout.script.html.twig' %}
+{% trans_default_domain "admin" %}
+
+{% block adminbody %}
+    <h1>{% trans %}FORM.ADMIN{% endtrans %}</h1>
+    <p class="subtitle">{{ ['FORM.MATCH.TITLE.',action]|join|upper|trans }}</p>
+    <p>{{ ['FORM.MATCH.PROMPT.',action]|join|upper|trans }}</p>
+    <p>{{ match.matchno }} -
+       {{ 'FORMAT.LONGDATE'|transchoice(match.schedule|date('j'), {
+                        '%week%': ['WEEK.',match.schedule|date('D')|upper]|join|trans([],'messages')|capitalize,
+                        '%day%': match.schedule|date('j'),
+                        '%month%': ['MONTH.',match.schedule|date('M')|upper]|join|trans([],'messages'),
+                        '%year%': match.schedule|date('Y')}, 'messages') }} -
+       {{ match.schedule|date('FORMAT.TIME'|trans([],'messages')) }} - 
+       {{ playground.name }}</p>
+    {{ form(form) }}
+{% endblock %}

@@ -1,0 +1,89 @@
+{% extends "ICupPublicSiteBundle:Masters:edit.html.twig" %}
+{% trans_default_domain "admin" %}
+
+{% block adminbody %}
+<h1>{% trans %}FORM.ADMIN{% endtrans %}</h1>
+<p class="subtitle">{% trans %}FORM.LISTHOSTS.TITLE{% endtrans %}</p>
+<h2 class="category">{{ host.name|upper }}</h2>
+<p>
+<table>
+    <caption>{% trans %}FORM.LISTHOSTS.CAPTION_TNMT{% endtrans %}</caption>
+    <thead>
+        <tr>
+            <td></td>
+            <td></td>
+            <td class="operand"></td>
+            <td class="operand"></td>
+            <td class="operand"></td>
+            <td class="operand"></td>
+            <td class="operand"></td>
+            <td class="operand"></td>
+        </tr>
+    </thead>
+    <tboby>
+{% if tournaments|length > 0 %}
+    {% for tournament in tournaments %}
+        <tr class="{{ cycle(['even','odd'],loop.index) }}">
+            <td>
+                <a href="{{ path('_edit_tournament_chg', { 'tournamentid': tournament.id }) }}">
+                {{ tournament.name }}
+                </a>
+            </td>
+            <td></td>
+            <td class="operand">
+                <a href="{{ path('_edit_tournament_add', { 'hostid': host.id }) }}">
+                +
+                </a>    
+            </td>
+            <td class="operand">
+                <a href="{{ path('_edit_tournament_chg', { 'tournamentid': tournament.id }) }}">
+                E
+                </a>    
+            </td>
+            <td class="operand">
+                <a href="{{ path('_edit_tournament_del', { 'tournamentid': tournament.id }) }}">
+                -
+                </a>    
+            </td>
+            <td class="operand">
+                <a href="{{ path('_edit_site_list', { 'tournamentid': tournament.id }) }}">
+                P
+                </a>
+            </td>
+            <td class="operand">
+                <a href="{{ path('_edit_category_list', { 'tournamentid': tournament.id }) }}">
+                C
+                </a>
+            </td>
+            <td class="operand">
+                <a href="{{ path('_host_list_clubs', { 'tournamentid': tournament.id }) }}">
+                T
+                </a>
+            </td>
+        </tr>
+    {% endfor %}
+{% else %}
+        <tr class="even">
+            <td><a href="{{ path('_edit_tournament_add', { 'hostid': host.id }) }}">{{'FORM.LISTHOSTS.NOTOURNAMENT'|trans|upper}}</a></td>
+            <td></td>
+            <td class="operand">
+                <a href="{{ path('_edit_tournament_add', { 'hostid': host.id }) }}">
+                +
+                </a>    
+            </td>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td></td>
+        </tr>
+{% endif %}
+    </tboby>
+    <tfoot>
+        <tr>
+            <td colspan="8"></td>
+        </tr>
+    </tfoot>
+</table>
+</p>
+{% endblock %}

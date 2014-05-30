@@ -12,12 +12,39 @@ ERROR:
   INVALIDCATEGORY:
     TITLE: Der er problemer med den valgte gruppe
     SOLUTION: Den valgte gruppe findes ikke. Benyt det følgende link for at kunne vælge en gruppe der findes.
+  INVALIDGROUP:
+    TITLE: Der er problemer med den valgte pulje
+    SOLUTION: Den valgte pulje findes ikke. Benyt det følgende link for at kunne vælge en pulje der findes.
+  INVALIDGROUPORDER:
+    TITLE: Der er et teknisk problem med den valgte pulje
+    SOLUTION: Problemet er optaget til analyse. Benyt det følgende link for at komme videre.
   INVALIDCLUB:
     TITLE: Der er problemer med den valgte klub
     SOLUTION: Den valgte klub findes ikke. Benyt det følgende link for at kunne vælge en klub der findes.
+  INVALIDTEAM:
+    TITLE: Der er problemer med det valgte hold
+    SOLUTION: Det valgte hold findes ikke. Benyt det følgende link for at kunne vælge et hold der findes.
+  INVALIDENROLLMENT:
+    TITLE: Der er et teknisk problem med det valgte hold
+    SOLUTION: Problemet er optaget til analyse. Benyt det følgende link for at komme videre.
+  INVALIDMATCH:
+    TITLE: Der er et teknisk problem med den valgte kamp
+    SOLUTION: Problemet er optaget til analyse. Benyt det følgende link for at komme videre.
+  INVALIDMATCHRELATION:
+    TITLE: Der er et teknisk problem med den valgte kamp
+    SOLUTION: Problemet er optaget til analyse. Benyt det følgende link for at komme videre.
+  INVALIDSITE:
+    TITLE: Der er problemer med den valgte lokation
+    SOLUTION: Den valgte lokation findes ikke. Benyt det følgende link for at kunne vælge en lokation der findes.
+  INVALIDPLAYGROUND:
+    TITLE: Der er problemer med den valgte bane
+    SOLUTION: Den valgte bane findes ikke. Benyt det følgende link for at kunne vælge en bane der findes.
   INVALIDHOST:
     TITLE: Der er problemer med den valgte turneringsvært
     SOLUTION: Den valgte turneringsvært findes ikke. Benyt det følgende link for at kunne vælge en turneringsvært der findes.
+  INVALIDTOURNAMENT:
+    TITLE: Der er problemer med den valgte turnering
+    SOLUTION: Den valgte turnering findes ikke. Benyt det følgende link for at kunne vælge en turnering der findes.
   INVALIDUSER:
     TITLE: Der er problemer med den valgte bruger
     SOLUTION: Den valgte bruger findes ikke. Benyt det følgende link for at kunne vælge en bruger der findes.
@@ -27,13 +54,49 @@ ERROR:
   NOMORETEAMS:
     TITLE: Der er ikke plads til flere hold i gruppen
     SOLUTION: Klubben har tilmeldt det største antal hold det er muligt at deltage med i denne gruppe.
+  MUSTBEADMIN:
+    TITLE: Du er ikke administrator
+    SOLUTION: For at udføre den funktion du har valgt skal du være administrator.
+  NOTCLUBUSER:
+    TITLE: Du skal være klubbruger
+    SOLUTION: For at udføre den funktion du har valgt skal du være klubbruger.
   NOTCLUBADMIN:
     TITLE: Du er ikke klubansvarlig for denne klub
     SOLUTION: For at udføre den funktion du har valgt skal du være klubansvarlig for klubben. Du har ikke mulighed for at administrere denne klub.
+  NOTEDITORADMIN:
+    TITLE: Du er ikke turneringsansvarlig for denne turnering
+    SOLUTION: For at udføre den funktion du har valgt skal du være turneringsansvarlig for turneringen. Du har ikke mulighed for at administrere denne turnering.
+  NEEDTOBEEDITOR:
+    TITLE: Du er ikke redaktør for en turnering
+    SOLUTION: For at udføre den funktion du har valgt skal du være redaktør for en turnering.
   NEEDTOBERELATED:
     TITLE: Du er ikke knyttet til en klub
-    SOLUTION: For at udføre den funktion du har valgt skal du være knyttet til en klub. Du har ikke mulighed for at tilmelde hold uden denne relation.
+    SOLUTION: For at udføre den funktion du har valgt skal du være knyttet til en klub.
   CANNOTBERELATED:
     TITLE: Du må ikke være knyttet til en klub
     SOLUTION: For at udføre den funktion du har valgt må du ikke være knyttet til en klub.
+  NOLOCALADMIN:
+    TITLE: Du kan ikke bruge lokal administrator
+    SOLUTION: For at udføre den funktion du har valgt kan du ikke være lokal administrator. Udvid dine rettigheder som lokal administrator.
+  TEAMASSIGNED:
+    TITLE: Du kan ikke fordele holdet til gruppen
+    SOLUTION: Holdet er allerede fordelt til en anden gruppe i puljen og kan ikke fordeles til denne gruppe.
+  TEAMISNOTASSIGNED:
+    TITLE: Du kan ikke fjerne holdet fra gruppen
+    SOLUTION: Holdet er ikke fordelt til denne gruppe i puljen.
+  TEAMISACTIVE:
+    TITLE: Du kan ikke fjerne holdet fra gruppen
+    SOLUTION: Holdet har planlagte/spillede kampe i denne gruppe. Disse kampe skal aflyses før holdet kan fjernes fra gruppen.
+  NOTOURNAMENTDATA:
+    TITLE: Der mangler vigtige oplysninger for denne turnering
+    SOLUTION: Denne turnering er ikke klar. Der mangler vigtige oplysninger som er nødvendige for at kunne følge kampe og resultater. Kontakt turneringsledelsen eller vent til senere.
+  INVALIDDATE:
+    TITLE: Den angivne dato er ikke anvendelig
+    SOLUTION: Dato angivet til denne funktion er ikke korrekt eller har forkert format.
+  CANNOTDELETESELF:
+    TITLE: Du kan ikke fjerne din egen brugerprofil
+    SOLUTION: For at udføre denne funktion skal du få en anden ansvarlig til at fjerne din profil.
+  INVALIDROLECHANGE:
+    TITLE: Det er ikke muligt at ændre brugerprofilen
+    SOLUTION: Den ønskede ændring af brugerprofilen skifter brugerens rolle, hvilket ikke er muligt.
       

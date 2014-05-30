@@ -1,0 +1,46 @@
+MENU: 
+  LANGCHOICE: 
+    TITLE: Język 
+    CHOOSELANG: Zmień język 
+  TOURNAMENT: 
+    TITLE: Turniej 
+    SELECT: Zmień turniej
+    OVERVIEW: Przegląd 
+    GROUPS: Kategoier 
+    PLAYGROUNDS: Boiska
+    TEAMS: Kluby 
+    WINNERS: Winners
+    STATISTICS: Statistics
+  REGISTER:
+    TITLE: Rejestracja
+    TEAM: Ny klub
+    REFEREE: Ny dommer
+    ENROLL: Tilmelding
+    USER: Ny bruger
+  NONREL:
+    ENROLL: Klubvalg
+  ENROLLMENT: 
+    TITLE: Rejestracja
+    MYPAGE: Mit iCup
+    MYPAGE_USERS: Klubbrugere
+    CLUBS: Kluby 
+    TEAMS: Drużyny 
+    REFEREES: Sędziowie 
+  ADMIN: 
+    TITLE: Administracja
+    RESULTS: Rezultaty 
+    TOURNAMENT: Turnieje 
+    TEAMS: Drużyny 
+    PLAYERS: Gracze
+    REFEREES: Sędziowie 
+    EDITORS: Redaktører
+  INFORMATION:
+    TITLE: Informacje
+  INFO: 
+    TITLE: Informacje
+    ABOUT: O nas 
+    PRICES: Ceny 
+    FAQ: FAQ 
+  LOGIN: Customer Login
+  LOGOUT: logout
+  EXIT: Exit impersonation

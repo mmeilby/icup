@@ -1,4 +1,5 @@
 {% extends "ICupPublicSiteBundle:Masters:standard.html.twig" %}
+{% trans_default_domain "tournament" %}
 
 {% block body %}
 <h1 class="category">{{ tournament.name }}</h1>
@@ -12,7 +13,7 @@
             <tr>
                 <td colspan="2">
                     <a href="{{ path('_tournament_clubs', { 'tournament': tournament.key }) }}">
-                        <img src="{{ imagepath }}/flags/{{ flags[club.country] }}" alt="{{ club.country|trans({},'lang') }}" title="{{ club.country|trans({},'lang') }}">
+                        <img src="{{ imagepath }}/flags/{{ countries[club.country].flag }}" alt="{{ club.country|trans({},'lang') }}" title="{{ club.country|trans({},'lang') }}">
                         {{ club.name }} - {{ club.country|trans({},'lang') }}
                     </a>
                 </td>

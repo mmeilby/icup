@@ -1,0 +1,108 @@
+{% extends "ICupPublicSiteBundle:Masters:edit.html.twig" %}
+{% trans_default_domain "admin" %}
+
+{% block adminbody %}
+<h1>{% trans %}FORM.ADMIN{% endtrans %}</h1>
+<p class="subtitle">{% trans %}FORM.LISTGROUPS.TITLE{% endtrans %}</p>
+<a href="{{ path('_edit_host_list') }}">
+<h2 class="category">{{ host.name|upper }} - {{ tournament.name|upper }}</h2>
+</a>
+<a href="{{ path('_edit_category_list', {'tournamentid': tournament.id }) }}">
+<h2 class="category">{% trans from 'tournament' %}CATEGORY{% endtrans %} {{ category.name }}</h2>
+</a>
+<p class="subcategory">
+    {{ [category.gender,category.classification]|join|trans({},'tournament') }}
+    {{ category.classification|trans({},'tournament')|lower }}
+</p>
+<div style="float:left;margin-right: 5px;">
+{% if grouplist|length > 0 %}
+{% for group in grouplist %}
+    {% if selectedgroup.id == group.group.id %}
+        <table>
+            <caption>{% trans from 'tournament' %}GROUP{% endtrans %} {{ group.group.name }}</caption>
+            <thead>
+                <tr>
+                    <td class="flag"></td>
+                    <td class="team">{% trans from 'tournament' %}TEAM{% endtrans %}</td>
+                </tr>
+            </thead>
+            <tboby>
+        {% for team in group.teams %}
+                <tr class="{{ cycle(['even','odd'],loop.index) }}">
+                    <td class="flag"><img src="{{ imagepath }}/flags/{{ countries[team.country].flag }}" alt="{{ team.country|trans({},'lang') }}" title="{{ team.country|trans({},'lang') }}"></td>
+                    <td class="team"><a href="{{ path('_host_assign_del', { 'teamid': team.id, 'groupid': group.group.id }) }}">{{ team.name }}</a></td>
+                </tr>
+        {% endfor %}
+            </tboby>
+            <tfoot>
+                <tr>
+                    <td colspan="2"></td>
+                </tr>
+            </tfoot>
+        </table>
+    {% else %}
+        <div class="caption">
+            <a href="{{ path('_host_assign_select_group', { 'groupid': group.group.id }) }}">
+            {% trans from 'tournament' %}GROUP{% endtrans %} {{ group.group.name }}
+            </a>
+        </div>
+    {% endif %}
+{% endfor %}
+{% else %}
+        <table>
+            <caption>{% trans %}FORM.LISTGROUPS.NOGROUP{% endtrans %}</caption>
+            <thead>
+                <tr>
+                    <td class="flag"></td>
+                    <td class="team">{% trans from 'tournament' %}TEAM{% endtrans %}</td>
+                </tr>
+            </thead>
+            <tboby>
+                <tr>
+                    <td colspan="2">
+                        <a href="{{ path('_edit_group_add', { 'categoryid': category.id }) }}">
+                        {% trans %}FORM.LISTCATEGORIES.NOGROUP{% endtrans %}
+                        </a>
+                    </td>
+                </tr>
+            </tboby>
+            <tfoot>
+                <tr>
+                    <td colspan="2"></td>
+                </tr>
+            </tfoot>
+        </table>
+{% endif %}
+</div>
+<div style="float:left;">
+        <table>
+            <caption>{% trans %}FORM.LISTGROUPS.UNASSIGNED{% endtrans %}</caption>
+            <thead>
+                <tr>
+                    <td class="flag"></td>
+                    <td class="team">{% trans from 'tournament' %}TEAM{% endtrans %}</td>
+                </tr>
+            </thead>
+            <tboby>
+    {% for team in unassigned %}
+                <tr class="{{ cycle(['even','odd'],loop.index) }}">
+                    <td class="flag"><img src="{{ imagepath }}/flags/{{ countries[team.country].flag }}" alt="{{ team.country|trans({},'lang') }}" title="{{ team.country|trans({},'lang') }}"></td>
+                    <td class="team">
+        {% if not selectedgroup is null %}
+                        <a href="{{ path('_host_assign_add', { 'teamid': team.id, 'groupid': selectedgroup.id }) }}">{{ team.name }}</a>
+        {% else %}
+                        {{ team.name }}
+        {% endif %}
+                    </td>
+                </tr>
+    {% endfor %}
+            </tboby>
+            <tfoot>
+                <tr>
+                    <td colspan="2"></td>
+                </tr>
+            </tfoot>
+        </table>
+</div>
+<div style="clear:both;"></div>
+{% endblock %}

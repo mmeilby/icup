@@ -1,0 +1,181 @@
+{% extends "ICupPublicSiteBundle:Masters:edit.html.twig" %}
+{% trans_default_domain "tournament" %}
+
+{% import _self as formatter %}
+
+{% macro club(team, context) %}
+    {% if team.id > 0 %}
+                <td class="flag">
+                    <img src="{{ context.imagepath }}/flags/{{ context.countries[team.country].flag }}"
+                         alt="{{ team.country|trans({},'lang') }}"
+                         title="{{ team.country|trans({},'lang') }}">
+                </td>
+                <td class="team">
+    {% if team.rank != '' %}
+                    <div class="rank">{{ team.rank }}</div>
+    {% endif %}
+                    <a href="{{ path('_showteam', { 'tournament': context.tournament.key,
+                                                    'teamid': team.id,
+                                                    'groupid': context.group.id }) }}">{{ team.name }}</a>
+                </td>
+    {% else %}
+                <td class="flag"></td>
+                <td class="team">{{ team.rank }}</td>
+    {% endif %}
+{% endmacro %}
+        
+{% block adminbody %}
+<h1>{% trans from "admin" %}FORM.ADMIN{% endtrans %}</h1>
+<p class="subcategory">
+    {% trans from "admin" %}FORM.LISTMATCHES.TITLE{% endtrans %}
+</p>
+<table>
+    <tr>
+        <td>
+            <h2 class="category">{{ tournament.name }}</h2>
+            <p class="subcategory">
+                {% trans %}RESULTS{% endtrans %} {{ tournament.edition }}<br />
+            </p>
+        </td>
+        <td class="indent"></td>
+        <td>
+            <a href="{{ path('_showcategory', { 'tournament': tournament.key, 'categoryid': category.id }) }}">
+                <h2 class="category">{% trans %}CATEGORY{% endtrans %} {{ category.name }}</h2>
+            </a>
+            <p class="subcategory">
+                {{ [category.gender,category.classification]|join|trans }}
+                {{ category.classification|trans }}
+            </p>
+        </td>
+    </tr>
+</table>
+<p>
+    <table>
+        <caption>{% trans %}GROUP{% endtrans %} {{ group.name }} - {{ ['GROUPCLASS.',group.classification]|join|trans }} - {{ group.playingtime }} {% trans %}MINUTES{% endtrans %}</caption>
+        <thead>
+            <tr>
+                <td class="flag"></td>
+                <td class="no">{% trans %}LEGEND.NO{% endtrans %}</td>
+                <td class="time">{% trans %}LEGEND.TIME{% endtrans %}</td>
+                <td class="no">{% trans %}LEGEND.PLAYGROUND{% endtrans %}</td>
+                <td class="flag"></td>
+                <td class="team">{% trans %}LEGEND.HOMETEAM{% endtrans %}</td>
+                <td class="flag"></td>
+                <td class="team">{% trans %}LEGEND.AWAYTEAM{% endtrans %}</td>
+                <td class="match">{% trans %}LEGEND.RESULT{% endtrans %}</td>
+                <td class="operand"></td>
+                <td class="operand"></td>
+                <td class="operand"></td>
+                <td class="operand"></td>
+                <td class="operand"></td>
+                <td class="operand"></td>
+                <td class="operand"></td>
+            </tr>
+        </thead>
+        <tboby>
+{% if matchlist|length > 0 %}            
+    {% for matches in matchlist %}
+        <tr class="{{ cycle(['even','odd'],loop.index) }}">
+            <td class="date_solo" colspan="16">
+                {{ 'FORMAT.LONGDATE'|transchoice(matches[0].schedule|date('j'), {
+                        '%week%': ['WEEK.',matches[0].schedule|date('D')|upper]|join|trans([],'messages')|capitalize,
+                        '%day%': matches[0].schedule|date('j'),
+                        '%month%': ['MONTH.',matches[0].schedule|date('M')|upper]|join|trans([],'messages'),
+                        '%year%': matches[0].schedule|date('Y')}, 'messages') }}
+            </td>
+        </tr>
+        {% for match in matches %}
+{% if match.home.id > 0 or match.away.id > 0 %}
+            <tr class="{{ cycle(['even','odd'],loop.index) }}">
+{% else %}
+            <tr class="markup">
+{% endif %}
+                <td class="flag"></td>
+                <td class="no">{{ match.matchno }}</td>
+                <td class="time">{{ match.schedule|date('FORMAT.TIME'|trans([],'messages')) }}</td>
+                <td class="no">{{ match.playground.no }}</td>
+{% if match.home.id > 0 or match.away.id > 0 %}
+                {{ formatter.club(match.home, _context) }}
+                {{ formatter.club(match.away, _context) }}
+                <td class="match">{{ match.home.score }}-{{ match.away.score }}</td>
+{% else %}
+                <td colspan="5">
+                </td>
+{% endif %}
+                <td class="operand">
+                    <a href="{{ path('_edit_match_add', { 'groupid': group.id }) }}">
+                    +
+                    </a>    
+                </td>
+                <td class="operand">
+                    <a href="{{ path('_edit_match_chg', { 'matchid': match.id }) }}">
+                    E
+                    </a>    
+                </td>
+                <td class="operand">
+                    <a href="{{ path('_edit_match_del', { 'matchid': match.id }) }}">
+                    -
+                    </a>    
+                </td>
+{% if match.home.id > 0 or match.away.id > 0 %}
+                <td class="operand">
+                    <a href="{{ path('_edit_matchrel_chg', { 'matchid': match.id }) }}">
+                    U
+                    </a>    
+                </td>
+                <td class="operand">
+                    <a href="{{ path('_edit_matchrel_del', { 'matchid': match.id }) }}">
+                    -
+                    </a>    
+                </td>
+                <td class="operand">
+                    <a href="{{ path('_edit_qmatchrel_chg', { 'matchid': match.id }) }}">
+                    U
+                    </a>    
+                </td>
+                <td class="operand">
+                    <a href="{{ path('_edit_qmatchrel_del', { 'matchid': match.id }) }}">
+                    -
+                    </a>    
+                </td>
+{% else %}
+                <td class="operand">
+                    <a href="{{ path('_edit_matchrel_chg', { 'matchid': match.id }) }}">
+                    +
+                    </a>    
+                </td>
+                <td class="operand"></td>
+                <td class="operand">
+                    <a href="{{ path('_edit_qmatchrel_chg', { 'matchid': match.id }) }}">
+                    +
+                    </a>    
+                </td>
+                <td class="operand"></td>
+{% endif %}
+        {% endfor %}
+            </tr>
+    {% endfor %}
+{% else %}
+        <tr class="odd">
+            <td class="date_solo" colspan="9">
+                <a href="{{ path('_edit_match_add', { 'groupid': group.id }) }}">
+                {{'FORM.LISTMATCHES.NOMATCH'|trans({},'admin')|upper}}
+                </a>    
+            </td>
+            <td class="operand">
+                <a href="{{ path('_edit_match_add', { 'groupid': group.id }) }}">
+                +
+                </a>    
+            </td>
+            <td colspan="6"></td>
+        </tr>
+{% endif %}                    
+        </tboby>
+        <tfoot>
+            <tr>
+                <td colspan="16"></td>
+            </tr>
+        </tfoot>
+    </table>
+</p>
+{% endblock %}

@@ -49,6 +49,12 @@ class Tournament
      */
     private $edition;
 
+    /**
+     * @var string $description
+     * Tournament description in short format
+     * @ORM\Column(name="description", type="string", length=250, nullable=false)
+     */
+    private $description;
 
     /**
      * Get id
@@ -150,5 +156,28 @@ class Tournament
     public function getEdition()
     {
         return $this->edition;
+    }
+    
+    /**
+     * Set description
+     *
+     * @param string $description
+     * @return Tournament
+     */
+    public function setDescription($description)
+    {
+        $this->description = $description;
+    
+        return $this;
+    }
+
+    /**
+     * Get description
+     *
+     * @return string 
+     */
+    public function getDescription()
+    {
+        return $this->description;
     }
 }

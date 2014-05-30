@@ -25,7 +25,7 @@ class DefaultController extends Controller
      */
     public function rootAction()
     {
-        $tmnt = $this->get('util')->getTournamentKey($this);
+        $tmnt = $this->get('util')->getTournamentKey();
         if ($tmnt != '_') {
             return $this->redirect($this->generateUrl('_tournament_overview', array('tournament' => $tmnt)));
         }

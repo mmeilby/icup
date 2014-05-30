@@ -1,5 +1,29 @@
 {% extends "ICupPublicSiteBundle:Masters:standard.html.twig" %}
+{% trans_default_domain "tournament" %}
 
+{% import _self as formatter %}
+
+{% macro club(team, context) %}
+    {% if team.id > 0 %}
+                <td class="flag">
+                    <img src="{{ context.imagepath }}/flags/{{ context.countries[team.country].flag }}"
+                         alt="{{ team.country|trans({},'lang') }}"
+                         title="{{ team.country|trans({},'lang') }}">
+                </td>
+                <td class="team">
+    {% if team.rank != '' %}
+                    <div class="rank">{{ team.rank }}</div>
+    {% endif %}
+                    <a href="{{ path('_showteam', { 'tournament': context.tournament.key,
+                                                    'teamid': team.id,
+                                                    'groupid': context.group.id }) }}">{{ team.name }}</a>
+                </td>
+    {% else %}
+                <td class="flag"></td>
+                <td class="team">{{ team.rank }}</td>
+    {% endif %}
+{% endmacro %}
+        
 {% block body %}
 <h1 class="category">{{ tournament.name }}</h1>
 <p class="subcategory">
@@ -21,17 +45,17 @@
 </a>
 <p>
     <table>
-        <caption>{{ team.name }}</caption>
+        <caption>{{ teamname }}</caption>
         <thead>
             <tr>
                 <td class="flag"></td>
                 <td class="no">{% trans %}LEGEND.NO{% endtrans %}</td>
                 <td class="time">{% trans %}LEGEND.TIME{% endtrans %}</td>
-                <td class="no">{% trans %}FIELD{% endtrans %}</td>
+                <td class="no">{% trans %}LEGEND.PLAYGROUND{% endtrans %}</td>
                 <td class="flag"></td>
-                <td class="team">{% trans %}TEAM{% endtrans %} A</td>
+                <td class="team">{% trans %}LEGEND.HOMETEAM{% endtrans %}</td>
                 <td class="flag"></td>
-                <td class="team">{% trans %}TEAM{% endtrans %} B</td>
+                <td class="team">{% trans %}LEGEND.AWAYTEAM{% endtrans %}</td>
                 <td class="match">{% trans %}LEGEND.RESULT{% endtrans %}</td>
             </tr>
         </thead>
@@ -41,7 +65,11 @@
     {% if match.schedule|date('d-M-Y') != catdate %}
             <tr class="{{ cycle(['even','odd'],loop.index) }}">
                 <td class="date_solo" colspan="9">
-                    {{ ['WEEK.',match.schedule|date('D')|upper]|join|trans|capitalize }}{{ match.schedule|date(' j. ') }}{{ ['MONTH.',match.schedule|date('M')|upper]|join|trans }}
+                    {{ 'FORMAT.LONGDATE'|transchoice(match.schedule|date('j'), {
+                            '%week%': ['WEEK.',match.schedule|date('D')|upper]|join|trans([],'messages')|capitalize,
+                            '%day%': match.schedule|date('j'),
+                            '%month%': ['MONTH.',match.schedule|date('M')|upper]|join|trans([],'messages'),
+                            '%year%': match.schedule|date('Y')}, 'messages') }}
                 </td>
             </tr>
         {% set catdate = match.schedule|date('d-M-Y') %}
@@ -49,13 +77,11 @@
             <tr class="{{ cycle(['even','odd'],loop.index) }}">
                 <td class="flag"></td>
                 <td class="no">{{ match.matchno }}</td>
-                <td class="time">{{ match.schedule|date('H.i') }}</td>
-                <td class="no"><a href="{{ path('_showplayground', { 'tournament': tournament.key, 'playgroundid': match.playgroundid, 'groupid': group.id }) }}" title="{{ match.playground }}">{{ match.playgroundno }}</a></td>
-                <td class="flag"><img src="{{ imagepath }}/flags/{{ flags[match.countryA] }}" alt="{{ match.countryA|trans({},'lang') }}" title="{{ match.countryA|trans({},'lang') }}"></td>
-                <td class="team"><a href="{{ path('_showteam', { 'tournament': tournament.key, 'teamid': match.idA, 'groupid': group.id }) }}">{{ match.teamA }}</a></td>
-                <td class="flag"><img src="{{ imagepath }}/flags/{{ flags[match.countryB] }}" alt="{{ match.countryB|trans({},'lang') }}" title="{{ match.countryB|trans({},'lang') }}"></td>
-                <td class="team"><a href="{{ path('_showteam', { 'tournament': tournament.key, 'teamid': match.idB, 'groupid': group.id }) }}">{{ match.teamB }}</a></td>
-                <td class="match">{{ match.scoreA }}-{{ match.scoreB }}</td>
+                <td class="time">{{ match.schedule|date('FORMAT.TIME'|trans([],'messages')) }}</td>
+                <td class="no"><a href="{{ path('_showplayground', { 'tournament': tournament.key, 'playgroundid': match.playground.id, 'groupid': group.id }) }}" title="{{ match.playground.name }}">{{ match.playground.no }}</a></td>
+                {{ formatter.club(match.home, _context) }}
+                {{ formatter.club(match.away, _context) }}
+                <td class="match">{{ match.home.score }}-{{ match.away.score }}</td>
             </tr>
 {% endfor %}
         </tboby>

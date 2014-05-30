@@ -9,9 +9,11 @@ FORM:
     BADPLAYGROUND: Den valgte bane findes ikke.
     BADCATEGORY: Den valgte gruppe findes ikke.
     BADGROUP: Den valgte pulje findes ikke.
+    NOTOURNAMENT: Turnering er ikke valgt
   LISTHOSTS:
     TITLE: Vedligehold turneringer og værter
     CAPTION: Værter og turneringer
+    CAPTION_TNMT: Turneringer
     NOTOURNAMENT: Tilføj ny turnering
   LOGIN:
     TITLE: Log på
@@ -20,6 +22,9 @@ FORM:
     PASSWORD: Kodeord
     LOGIN: Log på
   HOST:
+    NONAME: Et navn på turneringsværten skal angives.
+    TOURNAMENTSEXIST: Der er knyttet turneringer til denne vært. Turneringsværten kan ikke fjernes.
+    EDITORSEXIST: Der er knyttet redaktører til denne vært. Turneringsværten kan ikke fjernes.
     TITLE:
       ADD: Tilføj ny turneringsvært
       CHG: Rediger turneringsvært
@@ -38,6 +43,13 @@ FORM:
       CHG: Fortryd ændringer
       DEL: Fortryd slet
   TOURNAMENT:
+    NONAME: Et navn på turneringen skal angives.
+    NOKEY: Identifikation på turneringen skal angives.
+    NOEDITION: Et udgave skal angives.
+    CANTCHANGEKEY: Der findes allerede en anden turnering med samme identifikation.
+    KEYEXIST: Der findes allerede en anden turnering med samme identifikation.
+    CATEGORIESEXIST: Der er planlagt kampe til denne bane. Banen kan ikke fjernes.
+    SITESEXIST: Der er planlagt kampe til denne bane. Banen kan ikke fjernes.
     TITLE:
       ADD: Tilføj ny turnering
       CHG: Rediger turnering
@@ -49,6 +61,7 @@ FORM:
     NAME: Navn
     KEY: Identifikation
     EDITION: Udgave
+    DESC: Beskrivelse
     SUBMIT:
       ADD: Tilføj ny turnering
       CHG: Gem turnering
@@ -63,6 +76,8 @@ FORM:
     NOSITE: Tilføj ny lokalitet
     NOPLAYGROUND: Tilføj ny bane
   SITE:
+    NONAME: Et navn på lokaliteten skal angives.
+    PLAYGROUNDSEXIST: Der er knyttet baner til denne lokalitet. Lokaliteten kan ikke fjernes.
     TITLE:
       ADD: Tilføj ny lokalitet
       CHG: Rediger lokalitet
@@ -81,6 +96,9 @@ FORM:
       CHG: Fortryd ændringer
       DEL: Fortryd slet
   PLAYGROUND:
+    NONAME: Et navn på banen skal angives.
+    NONO: Et banenr. skal angives.
+    MATCHESEXIST: Der er planlagt kampe til denne bane. Banen kan ikke fjernes.
     TITLE:
       ADD: Tilføj ny bane
       CHG: Rediger bane
@@ -106,6 +124,11 @@ FORM:
     NOGROUP: Tilføj ny pulje
   CATEGORY:
     DEFAULT: Vælg...
+    NONAME: Et gruppenavn skal angives.
+    NOGENDER: Gruppens forudsætning for køn for de tilmeldte hold skal angives.
+    NOCLASSIFICATION: Alderskategori for gruppen skal angives.
+    GROUPSEXIST: Der er knyttet puljer til denne gruppe. Gruppen kan ikke fjernes.
+    ENROLLEDEXIST: Der er tilmeldt hold til denne gruppe. Gruppen kan ikke fjernes.
     TITLE:
       ADD: Tilføj ny gruppe
       CHG: Rediger gruppe
@@ -113,13 +136,13 @@ FORM:
     PROMPT:
       ADD: Indtast oplysninger på gruppen.
       CHG: Ret oplysninger på gruppen.
-      DEL: Følgende gruppe vil bliver slettet. Alle kampresultater samt turneringsoplysninger knyttet til gruppen vil også blive fjernet. Det er ikke muligt at fortryde når gruppen er fjernet.
+      DEL: Følgende gruppe vil bliver slettet. Det er ikke muligt at fortryde når gruppen er fjernet.
     NAME: Navn
     GENDER: Køn
     SEX:
       FEMALE: Kvinder
       MALE: Mænd
-    CLASSIFICATION: Klasse
+    CLASSIFICATION: Alderskategori
     CLASS:
       U12: Under 12
       U14: Under 14
@@ -136,8 +159,16 @@ FORM:
       ADD: Fortryd oprettelse
       CHG: Fortryd ændringer
       DEL: Fortryd slet
+  LISTGROUPS:
+    TITLE: Placering af hold
+    NOGROUP: Ingen puljer
+    UNASSIGNED: Ikke placerede hold
   GROUP:
     DEFAULT: Vælg...
+    NONAME: Et puljenavn skal angives.
+    NOCLASSIFICATION: Type for gruppen skal angives.
+    ORDEREXIST: Der er knyttet hold til denne pulje. Puljen kan ikke fjernes.
+    MATCHESEXIST: Der er planlagt kampe til denne pulje. Puljen kan ikke fjernes.
     TITLE:
       ADD: Tilføj ny pulje
       CHG: Rediger pulje
@@ -145,7 +176,7 @@ FORM:
     PROMPT:
       ADD: Indtast oplysninger om puljen.
       CHG: Ret oplysninger om puljen.
-      DEL: Følgende pulje vil bliver slettet. Alle kampresultater samt oplysninger knyttet til puljen vil også blive fjernet. Det er ikke muligt at fortryde når puljen er fjernet.
+      DEL: Følgende pulje vil bliver slettet. Det er ikke muligt at fortryde når puljen er fjernet.
     NAME: Navn
     TIME: Spilletid (min.)
     CLASSIFICATION: Puljetype
@@ -169,6 +200,10 @@ FORM:
       ADD: Fortryd oprettelse
       CHG: Fortryd ændringer
       DEL: Fortryd slet
+  LISTEDITORS:
+    TITLE: Vedligehold redaktører
+    CAPTION: Redaktører og turneringsansvarlige
+    NOUSER: Tilføj ny redaktør
   LISTCLUBS:
     TITLE: Vedligehold klubber
     CAPTION: Klubliste på tværs af alle turneringer
@@ -180,6 +215,7 @@ FORM:
     NOCOUNTRY: Klubbens hjemland skal angives.
     NAMEEXIST: En anden klub er allerede oprettet med samme navn og land. Er oplysningerne korrekte, så ret i stedet kluboplysningerne.
     CANTCHANGENAME: En anden klub er allerede oprettet med samme navn og land. Vælg et andet navn til klubben.
+    TEAMSEXIST: Der er tilmeldt hold i en turnering for denne klub. Klubben kan ikke fjernes.
     TITLE:
       ADD: Tilføj ny klub
       CHG: Rediger klubinformationer
@@ -188,7 +224,7 @@ FORM:
     PROMPT:
       ADD: Indtast oplysninger om klubben.
       CHG: Ret klubinformationer.
-      DEL: Følgende klub vil bliver slettet. Alle hold og brugere knyttet til klubben vil også blive fjernet. Det er ikke muligt at fortryde når klubben er fjernet.
+      DEL: Følgende klub vil bliver slettet. Alle brugere knyttet til klubben vil blive klubløse. Det er ikke muligt at fortryde når klubben er fjernet.
       SEL: Vælg klub du vil forbinde til
     NAME: Klubnavn
     COUNTRY: Hjemland
@@ -202,6 +238,13 @@ FORM:
       CHG: Fortryd ændringer
       DEL: Fortryd slet
       SEL: Fortryd tilknytning
+  NEWCLUB:
+    CAPTION: Resultat af søgning
+    TITLE: Tilmelding af klub og hold kan ske med en aktiv profil. Log ind med dit brugernavn hvis du har en profil. Ellers opret en ny profil.
+    LEGEND: Klubber
+    NOCLUBS: Ingen klubber passer til det søgte
+    MORECLUBS: Mange klubber passer til det søgte (et udvalg er vist her) - fortsæt indtastning eller vælg en af klubberne
+    INFO: Hvis du vil vælge en klub der står i listen, skal du klikke på klubbens navn.
   LISTUSERS:
     TITLE: Vedligehold brugere
     CAPTION: Brugere
@@ -212,7 +255,10 @@ FORM:
     NOUSERNAME: Et brugernavn skal angives.
     NOEMAIL: E-mail skal angives.
     NOPASSWORD: Et kodeord skal angives.
-    NAMEEXIST: En anden bruger er allerede oprettet med samme brugernavn. Er oplysningerne korrekte, så forsøg at logge på.
+    NOSTATUS: Klubstatus skal angives.
+    NOROLE: Brugerrolle skal angives.
+    NAMEEXIST: En anden bruger er allerede oprettet med samme brugernavn.
+    CANTCHANGENAME: En anden bruger er allerede oprettet med samme brugernavn. Vælg et andet brugernavn.
     BADPASSWORD: Det valgte kodeord er ikke gyldigt.
     CHOICE:
       ROLE:
@@ -248,3 +294,61 @@ FORM:
       ADD: Fortryd oprettelse
       CHG: Fortryd ændringer
       DEL: Fortryd slet
+  MATCHIMPORT: 
+    NODATE: En kampdato skal angives
+    BADDATE: Den angivne kampdato er ikke gyldig
+    TITLE: Indlæs kampplan
+    PROMPT: Indtast kampplan for en dag
+    DATE: Dato
+    IMPORT: Kampplan
+    SUBMIT: Indlæs
+    CANCEL: Fortryd indlæsning
+  MATCH:
+    DEFAULT: Vælg...
+    NONO: Et officielt kampnr. skal angives.
+    NODATE: En dato for afvikling af kampen skal angives.
+    BADDATE: Dato for afvikling af kampen er ikke gyldig.
+    NOTIME: Kamptidspunkt skal angives.
+    BADTIME: Kamptidspunktet er ikke gyldigt.
+    NOPLAYGROUND: Der skal vælges en bane for afvikling af kampen.
+    NOHOMETEAM: Hjemmehold skal angives.
+    NOHOMEGROUP: Pulje for hjemmehold skal angives.
+    NOHOMERANK: Placering for hjemmehold skal angives.
+    NOAWAYTEAM: Udehold skal angives.
+    NOAWAYGROUP: Pulje for udehold skal angives.
+    NOAWAYRANK: Placering for udehold skal angives.
+    NOEXISTS: En anden kamp har allerede dette kampnr.
+    CANTCHANGENO: En anden kamp er allerede oprettet med samme kampnr. Vælg et andet kampnr.
+    SAMETEAM: Det samme hold er valgt som hjemmehold og udehold. Det er ikke muligt.
+    CANTDELETE: Denne kamp er spillet og registreret med resultat. Det er ikke muligt at fjerne den her.
+    TITLE:
+      ADD: Tilføj ny kamp
+      CHG: Rediger kampinformationer
+      DEL: FJERN KAMP
+    PROMPT:
+      ADD: Indtast oplysninger om den nye kamp.
+      CHG: Ret kampinformationer.
+      DEL: Følgende kamp vil bliver slettet. Det er ikke muligt at fortryde når kampen er fjernet.
+    NO: Kampnr.
+    DATE: Dato for afvikling af kampen
+    TIME: Tidspunkt
+    PLAYGROUND: Bane
+    HOME: Hjemmehold
+    QHOME:
+      GROUP: Pulje (hjemmehold)
+      RANK: Placering
+    AWAY: Udehold
+    QAWAY:
+      GROUP: Pulje (udehold)
+      RANK: Placering
+    SUBMIT:
+      ADD: Tilføj ny kamp
+      CHG: Gem oplysninger
+      DEL: FJERN KAMP
+    CANCEL:
+      ADD: Fortryd oprettelse
+      CHG: Fortryd ændringer
+      DEL: Fortryd
+  LISTMATCHES:
+    TITLE: Vedligehold kampplan
+    NOMATCH: Opret kamp i kampplan    

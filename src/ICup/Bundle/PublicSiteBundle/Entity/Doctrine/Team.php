@@ -75,7 +75,7 @@ class Team
     }
 
     /**
-     * Get parent id - related tournament
+     * Get parent id - related club
      *
      * @return integer 
      */

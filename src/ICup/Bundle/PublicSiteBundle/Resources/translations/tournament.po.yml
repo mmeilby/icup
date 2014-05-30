@@ -1,0 +1,160 @@
+RESULTS: Rezultaty z
+CATEGORY: Kategoria 
+GROUP: Grupa 
+TEAM: Drużyna 
+FIELD: Boisko 
+CATEGORIES: Kategorie
+PLAYGROUNDS: Boiska 
+CLUBS: Kluby uczestniczące
+TOWNANDNO: Miasto i boiska
+CLUBSBYCOUNTRY: Sortuj wg krajów 
+TEAMSBYCLUB: Drużyna zapisana przez klub
+WINNERS: The champions
+WINNING_COUNTRIES: Medals by country
+WINNING_CLUBS: Medals by club
+
+MINUTES: min.
+PRELIMINARY: Preliminary round
+CLASSIFICATION: Playoff rounds
+STANDING: Klasyfikacja końcowa
+FINALS: Finals
+SEMIFINALS: Semifinals
+BRONZEMATCH: Bronze medal game
+FIRST: Zwycięzca 
+SECOND: Drugie miejsce 
+THIRD: Trzecie miejsce 
+FORTH: Czwarte miejsce 
+RANK: "{1} Zwycięzca grupa %group% | ]1,Inf[ Nr. %rank% grupa %group%"
+
+GROUPCLASS:
+  0: Preliminary round
+  1: Playoff
+  6: 1/8 finału
+  7: 1/4 finału
+  8: Półfinał
+  9: 3/4 finału 
+  10: Finał 
+    
+LEGEND: 
+  NO: Nr. 
+  TIME: Czas 
+  CATEGORY: Kategoria
+  GROUP: Grupa
+  PLAYGROUND: Boisko
+  HOMETEAM: Drużyna A
+  AWAYTEAM: Drużyna B
+  MATCHES: MP ?
+  WON: W ?
+  TIE: T ?
+  LOST: L ?
+  GOALS: 
+    WON: GF ?
+    LOST: GA ?
+    DIFF: GD ?
+  POINTS: Pkt 
+  RESULT: Wynik 
+
+CLASS: Klasa 
+FEMALE: Kobiety
+MALE: Mężczyźni
+
+MU12: Mężczyźni
+MU14: Mężczyźni
+MU16: Mężczyźni
+MU18: Mężczyźni
+MU21: Mężczyźni
+MU30: Mężczyźni
+MU30/U21: Mężczyźni
+FU12: Kobiety
+FU14: Kobiety
+FU16: Kobiety
+FU18: Kobiety
+FU21: Kobiety
+FU30: Kobiety
+FU30/U21: Kobiety
+
+U12: poniżej 12 
+U14: poniżej 14 
+U16: poniżej 16 
+U18: poniżej 18 
+U21: poniżej 21 
+U30: poniżej 30 
+U30/U21: poniżej 30/21 
+
+FORM:
+    SEL_TMNT:
+      TITLE: iCup Turneringsvalg
+      SUBTITLE: Vælg turnering du ønsker at arbejde med
+      DESCRIPTION: For at se resultater og stilling vælger du turneringen du gerne vil følge. Herunder kan du vælge en turnering fra listen ved at klikke på turneringsnavnet.
+      CAPTION: Turneringer
+      LEGEND:
+          NAME: Turneringsnavn
+          EDITION: Udgave
+          DESCRIPTION: Beskrivelse
+
+# Statistics page translations
+    STATISTICS:
+      TITLE: This tournament in numbers
+      LEGEND:
+        KEY: The facts...
+        FIGURE: Numbers
+      KEY:
+        COUNTRIES: Different countries participating the tournament
+        CLUBS: Clubs enrolled
+        TEAMS: Teams attending the preliminary round
+        FEMALETEAMS: -- female teams
+        MALETEAMS: -- male teams
+        ADULTTEAMS: -- teams over 18
+        CHILDTEAMS:	-- teams under 18
+        CATEGORIES:	Categories available in the tournament
+        GROUPS:	Groups in the preliminary round
+        SITES: Sites used in the tournament
+        PLAYGROUNDS: Playgrounds used during the tournament
+        MATCHES: Matches played in total
+        GOALS: Goals scored in all matches
+        MOSTGOALS: Most goals scored by a team in one match
+        MOSTTROPHYS: Most trophies won by a country
+        DAYS: The length of the tournament in days
+      GROUP:
+        TEAMS: Facts about the teams
+        TOURNAMENT: Facts about the tournament
+        TOP: Top achievements in the tournament
+
+    TEASER:
+      TOURNAMENT:
+        GROUPS:
+          TITLE: Category results
+          DESC: Watch the composition of categories or search the results for a team by the category.
+        PLAYGROUNDS:
+          TITLE: Playground overview
+          DESC: Follow the matches on specific playgrounds.
+        TEAMS:
+          TITLE: Enrolled teams
+          DESC: Find teams participating the tournament and see the results.
+        WINNERS:
+          TITLE: The winners
+          DESC: Discover the winners from all categories of this tournament.
+        STATISTICS:
+          TITLE: Team statistics
+          DESC: See the hall of fame and other interesting figures from the tournament.
+
+    EDITRESULTS:
+        TITLE: Edytuj rezultaty
+        SUBMIT: Gem resultater
+        CANCEL: Fortryd indtastning
+
+# Old translations
+LOGIN: Zaloguj się 
+USERNAME: Nazwa użytkownika 
+PASSWORD: Hasło 
+
+ADMIN: Administracja 
+NEWCATEGORY: Dodaj nową kategorię
+NEWGROUP: Dodaj nową grupę 
+ADDTEAM: Dodaj drużynę do grupy 
+NEWMATCH: Dodaj mecz 
+
+EDITCATEGORY: Edytuj kategorię
+EDITGROUP: Zmień grupę 
+EDITGROUPORDER: Dodaj drużynę do grupy
+EDITMATCH: Dodaj mecz 

@@ -13,11 +13,8 @@ class SelectController extends Controller
      */
     public function selectAction()
     {
-        $this->get('util')->setupController($this);
-        $em = $this->getDoctrine()->getManager();
         
-        $tournaments = $em->getRepository('ICup\Bundle\PublicSiteBundle\Entity\Doctrine\Tournament')
-                            ->findAll();
+        $tournaments = $this->get('logic')->listAvailableTournaments();
         $tournamentList = array();
         foreach ($tournaments as $tournament) {
             $tournamentList[$tournament->getId()] = array('tournament' => $tournament, 'enrolled' => 0);

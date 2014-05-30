@@ -13,12 +13,8 @@ class OverviewController extends Controller
      */
     public function overviewAction($tournament)
     {
-        $this->get('util')->setupController($this, $tournament);
-        $tournament = $this->get('util')->getTournament($this);
-        if ($tournament == null) {
-            return $this->redirect($this->generateUrl('_icup'));
-        }
-        
+        $this->get('util')->setTournamentKey($tournament);
+        $tournament = $this->get('util')->getTournament();
         $newsStream = array(
 /*            
             array(
@@ -35,28 +31,28 @@ class OverviewController extends Controller
         );
         $teaserList = array(
             array(
-                'titletext' => 'TEASER.TOURNAMENT.GROUPS.TITLE',
-                'text' => 'TEASER.TOURNAMENT.GROUPS.DESC',
+                'titletext' => 'FORM.TEASER.TOURNAMENT.GROUPS.TITLE',
+                'text' => 'FORM.TEASER.TOURNAMENT.GROUPS.DESC',
                 'path' => $this->generateUrl('_tournament_categories', array('tournament' => $tournament->getKey()))
             ),
             array(
-                'titletext' => 'TEASER.TOURNAMENT.PLAYGROUNDS.TITLE',
-                'text' => 'TEASER.TOURNAMENT.PLAYGROUNDS.DESC',
+                'titletext' => 'FORM.TEASER.TOURNAMENT.PLAYGROUNDS.TITLE',
+                'text' => 'FORM.TEASER.TOURNAMENT.PLAYGROUNDS.DESC',
                 'path' => $this->generateUrl('_tournament_playgrounds', array('tournament' => $tournament->getKey()))
             ),
             array(
-                'titletext' => 'TEASER.TOURNAMENT.TEAMS.TITLE',
-                'text' => 'TEASER.TOURNAMENT.TEAMS.DESC',
+                'titletext' => 'FORM.TEASER.TOURNAMENT.TEAMS.TITLE',
+                'text' => 'FORM.TEASER.TOURNAMENT.TEAMS.DESC',
                 'path' => $this->generateUrl('_tournament_clubs', array('tournament' => $tournament->getKey()))
             ),
             array(
-                'titletext' => 'TEASER.TOURNAMENT.WINNERS.TITLE',
-                'text' => 'TEASER.TOURNAMENT.WINNERS.DESC',
+                'titletext' => 'FORM.TEASER.TOURNAMENT.WINNERS.TITLE',
+                'text' => 'FORM.TEASER.TOURNAMENT.WINNERS.DESC',
                 'path' => $this->generateUrl('_tournament_winners', array('tournament' => $tournament->getKey()))
             ),
             array(
-                'titletext' => 'TEASER.TOURNAMENT.STATISTICS.TITLE',
-                'text' => 'TEASER.TOURNAMENT.STATISTICS.DESC',
+                'titletext' => 'FORM.TEASER.TOURNAMENT.STATISTICS.TITLE',
+                'text' => 'FORM.TEASER.TOURNAMENT.STATISTICS.DESC',
                 'path' => $this->generateUrl('_tournament_statistics', array('tournament' => $tournament->getKey()))
             )
         );

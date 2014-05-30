@@ -1,7 +1,7 @@
 <?php
 namespace ICup\Bundle\PublicSiteBundle\Services;
 
-use Doctrine\ORM\EntityManager;
+use ICup\Bundle\PublicSiteBundle\Services\Doctrine\Entity;
 use Symfony\Bridge\Monolog\Logger;
 use Twig_Error_Loader;
 use Twig_ExistsLoaderInterface;
@@ -14,14 +14,14 @@ use Twig_LoaderInterface;
  */
 class DatabaseTwigLoader implements Twig_LoaderInterface, Twig_ExistsLoaderInterface
 {
-    /* @var $em EntityManager */
-    protected $em;
+    /* @var $entity Entity */
+    protected $entity;
     /* @var $logger Logger */
     protected $logger;
 
-    public function __construct(EntityManager $em, Logger $logger)
+    public function __construct(Entity $entity, Logger $logger)
     {
-        $this->em = $em;
+        $this->entity = $entity;
         $this->logger = $logger;
     }
 
@@ -72,7 +72,7 @@ class DatabaseTwigLoader implements Twig_LoaderInterface, Twig_ExistsLoaderInter
         $tournamentId = $tags[1];
         
         /* @var $template Template */
-        $template = $this->em->getRepository('ICup\Bundle\PublicSiteBundle\Entity\Doctrine\Template')
+        $template = $this->entity->getRepository('Template')
                             ->findOneBy(array('pid' => $tournamentId));
         if ($template != null) {
             $this->logger->addDebug("Matched template - template=".var_export($template, true));

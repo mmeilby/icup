@@ -4,7 +4,11 @@
 {% block adminbody %}
 <h1>{% trans %}FORM.ADMIN{% endtrans %}</h1>
 <p class="subtitle">{% trans %}FORM.LISTUSERS.TITLE{% endtrans %}</p>
-<p class="subtitle"><a href="{{ path('_edit_club_list') }}">{{ club.name }}</a></p>
+<p class="subtitle">
+<a href="{{ path('_edit_club_list') }}">{{ club.name }}</a>
+&nbsp;
+<img src="{{ imagepath }}/flags/{{ countries[club.country].flag }}" alt="{{ club.country|trans({},'lang') }}" title="{{ club.country|trans({},'lang') }}">
+</p>
 <table>
     <caption>{% trans %}FORM.LISTUSERS.CAPTION{% endtrans %}</caption>
     <thead>
@@ -22,16 +26,24 @@
     {% for user in users %}
         <tr class="{{ cycle(['even','odd'],loop.index) }}">
             <td class="user">
+        {% if is_granted('ROLE_ADMIN') %}
                 <a href="{{ path('_user_my_page', {'_switch_user': user.username }) }}">
                 {{ user.name|upper }}
                 </a>    
+        {% else %}
+                {{ user.name|upper }}
+        {% endif %}
             </td>
             <td class="role">
+{% if user.status == 3 %}
+                {{ 'FORM.MYPAGE.PROSPECT'|trans({},'club') }}
+{% else %}
     {% if user.role == 1 %}
                 {{ 'FORM.MYPAGE.CLUBUSER'|trans({},'club') }}
     {% else %}
                 {{ 'FORM.MYPAGE.CLUBADMIN'|trans({},'club') }}
     {% endif %}
+{% endif %}
             </td>
             <td class="operand">
                 <a href="{{ path('_edit_user_add', { 'clubid': club.id }) }}">

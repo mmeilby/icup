@@ -19,7 +19,7 @@ TABLE {
     border-collapse: collapse
 }
 TD {
-    padding-right: 5px;
+    padding: 5px;
 }
 A {
     color: #454545;
@@ -175,6 +175,16 @@ DIV.header {
     text-align: left;
     background: #313131;
 }
+DIV.caption {
+    font-weight: bold;
+    text-transform: uppercase;
+    padding-top: 5px;
+    padding-bottom: 5px;
+    background-color: whitesmoke;
+    color: #313131;
+    width: 100%;
+    text-align: center;
+}
 DIV.menu_header {
     vertical-align: bottom;
     padding: 15px 30px 5px 0px;
@@ -305,7 +315,11 @@ DIV.active {
     background-color: #2080f0;
     color: whitesmoke;
 }
-
+DIV.rank {
+    font-size: 10px;
+    font-weight: bold;    
+    color: #313131;
+}
 /*
  *  Category finals
  */
@@ -438,6 +452,9 @@ TR.odd {
 }
 TR.even {
 }
+TR.markup {
+    background: yellow;
+}
 TD.flag {
     width: 20px;
 }
@@ -482,6 +499,9 @@ TD.playground {
 TD.match {
     width: 50px;
     text-align: center;
+}
+INPUT.match {
+    width: 40px;
 }
 TD.category {
     width: 300px;
@@ -566,6 +586,16 @@ TD.statistics {
     width: 100px;
     text-align: right;
 }
+TD.tournament {
+    padding-left: 5px;
+    width: 250px;
+}
+TD.edition {
+}
+TD.description {
+    width: 350px;
+}
+
 DIV.admin H1 {
     color: #6666ff;
 }

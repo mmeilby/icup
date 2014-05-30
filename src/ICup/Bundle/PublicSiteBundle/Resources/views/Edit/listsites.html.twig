@@ -4,13 +4,15 @@
 {% block adminbody %}
 <h1>{% trans %}FORM.ADMIN{% endtrans %}</h1>
 <p class="subtitle">{% trans %}FORM.LISTTOURNAMENTS.TITLE{% endtrans %}</p>
-<p class="subtitle"><a href="{{ path('_edit_host_list') }}">{{ tournament.name }}</a></p>
+<a href="{{ path('_edit_host_list') }}">
+<h2 class="category">{{ host.name|upper }}</h2>
+</a>
+<p>
 <table>
-    <caption>{% trans %}FORM.LISTTOURNAMENTS.CAPTION{% endtrans %}</caption>
+    <caption>{{ tournament.name }}</caption>
     <thead>
         <tr>
-            <td class="indent"></td>
-            <td></td>
+            <td colspan="2">{% trans %}FORM.LISTTOURNAMENTS.CAPTION{% endtrans %}</td>
             <td class="operand"></td>
             <td class="operand"></td>
             <td class="operand"></td>
@@ -20,7 +22,7 @@
 {% if sites|length > 0 %}
     {% for site in sites %}
         <tr class="{{ cycle(['even','odd'],loop.index) }}">
-            <td class="host_solo" colspan="2">
+            <td class="sites" colspan="2">
                 <a href="{{ path('_edit_site_chg', { 'siteid': site.id }) }}">
                 {{ site.name|upper }}
                 </a>    
@@ -44,8 +46,8 @@
         {% if site.id in playgrounds|keys %}
             {% for playground in playgrounds[site.id] %}
         <tr class="{{ cycle(['even','odd'],loop.index) }}">
-            <td></td>
-            <td><a href="{{ path('_edit_playground_chg', { 'playgroundid': playground.id }) }}">{{ playground.name }}</a></td>
+            <td class="indent"></td>
+            <td class="playgrounds"><a href="{{ path('_edit_playground_chg', { 'playgroundid': playground.id }) }}">{{ playground.name }}</a></td>
             <td class="operand">
                 <a href="{{ path('_edit_playground_add', { 'siteid': site.id }) }}">
                 +
@@ -104,4 +106,5 @@
         </tr>
     </tfoot>
 </table>
+</p>
 {% endblock %}

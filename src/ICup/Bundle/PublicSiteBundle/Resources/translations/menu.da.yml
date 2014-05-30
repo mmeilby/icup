@@ -1,0 +1,46 @@
+MENU:
+  LANGCHOICE:
+    TITLE: Sprogvalg
+    CHOOSELANG: Vælg sprog
+  TOURNAMENT:
+    TITLE: Turnering
+    SELECT: Vælg turnering
+    OVERVIEW: Oversigt
+    GROUPS: Grupper
+    PLAYGROUNDS: Baner
+    TEAMS: Klubber
+    WINNERS: Vindere
+    STATISTICS: Statistik
+  REGISTER:
+    TITLE: Registrer
+    TEAM: Ny klub
+    REFEREE: Ny dommer
+    ENROLL: Tilmelding
+    USER: Ny profil
+  NONREL:
+    ENROLL: Klubvalg
+  ENROLLMENT:
+    TITLE: Tilmelding
+    MYPAGE: Mit iCup
+    MYPAGE_USERS: Klubbrugere
+    CLUBS: Klubber
+    TEAMS: Hold
+    REFEREES: Dommere
+  ADMIN:
+    TITLE: Administration
+    RESULTS: Resultater
+    TOURNAMENT: Turnering
+    TEAMS: Hold
+    PLAYERS: Spiller
+    REFEREES: Dommer
+    EDITORS: Redaktører
+  INFORMATION:
+    TITLE: Information
+  INFO:
+    TITLE: Information
+    ABOUT: Om turneringen
+    PRICES: Priser
+    FAQ: FAQ
+  LOGIN: Bruger Login
+  LOGOUT: log af
+  EXIT: Skift bruger

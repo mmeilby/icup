@@ -1,30 +1,40 @@
 {% extends "ICupPublicSiteBundle:Masters:standard.html.twig" %}
+{% trans_default_domain "tournament" %}
 
 {% block body %}
-<h1 class="category">{% trans %}RESULTS{% endtrans %}</h1>
+<h1 class="category">{% trans %}FORM.SEL_TMNT.TITLE{% endtrans %}</h1>
 <p class="subcategory">
-    {% trans %}RESULTS{% endtrans %}<br />
+    {% trans %}FORM.SEL_TMNT.SUBTITLE{% endtrans %}<br />
 </p>
+<p>{% trans %}FORM.SEL_TMNT.DESCRIPTION{% endtrans %}</p>
 <table>
-    <caption>{% trans %}STATISTICS.TITLE{% endtrans %}</caption>
+    <caption>{% trans %}FORM.SEL_TMNT.CAPTION{% endtrans %}</caption>
     <thead>
         <tr>
-            <td class="statistics">{% trans %}STATISTICS.LEGEND.FIGURE{% endtrans %}</td>
+            <td class="tournament">{% trans %}FORM.SEL_TMNT.LEGEND.NAME{% endtrans %}</td>
+            <td class="edition">{% trans %}FORM.SEL_TMNT.LEGEND.EDITION{% endtrans %}</td>
+            <td class="description">{% trans %}FORM.SEL_TMNT.LEGEND.DESCRIPTION{% endtrans %}</td>
         </tr>
     </thead>
     <tboby>
 {% for tmnt in tournaments %}
     {% set tournament = tmnt.tournament %}
         <tr class="{{ cycle(['even','odd'],loop.index0) }}">
-            <td class="title" colspan="1">
+            <td class="tournament">
                 <a href="{{ path('_tournament_overview', { 'tournament': tournament.key }) }}">{{ tournament.name }}</a>
+            </td>
+            <td class="edition">
+                {{ tournament.edition }}
+            </td>
+            <td class="description">
+                {{ tournament.description }}
             </td>
         </tr>
 {% endfor %}
     </tboby>
     <tfoot>
         <tr>
-            <td colspan="1"></td>
+            <td colspan="3"></td>
         </tr>
     </tfoot>
 </table>

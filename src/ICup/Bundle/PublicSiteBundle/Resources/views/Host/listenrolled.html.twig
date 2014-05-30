@@ -1,0 +1,109 @@
+{% extends "ICupPublicSiteBundle:Masters:edit.html.twig" %}
+{% trans_default_domain "club" %}
+
+{% block body %}
+<h1>{% trans %}FORM.TITLE{% endtrans %}</h1>
+<p class="subtitle">{% trans %}FORM.LISTENROLLED.TITLE{% endtrans %}</p>
+<a href="{{ path('_edit_host_list') }}">
+<h2 class="category">{{ host.name|upper }} - {{ tournament.name|upper }}</h2>
+</a>
+<p class="subtitle">
+    <a href="{{ path('_host_list_clubs', { 'tournamentid': tournament.id }) }}">
+        <img src="{{ imagepath }}/flags/{{ countries[club.country].flag }}" alt="{{ club.country|trans({},'lang') }}" title="{{ club.country|trans({},'lang') }}">
+        {{ club.name }}
+    </a></p>
+<p>
+<table>
+    <caption>{% trans %}FORM.LISTENROLLED.CAPTION{% endtrans %}</caption>
+    <thead>
+        <tr>
+            <td>{% trans from "tournament" %}CLASS{% endtrans %}</td>
+            <td colspan="4">{% trans from "tournament" %}FEMALE{% endtrans %}</td>
+            <td colspan="4">{% trans from "tournament" %}MALE{% endtrans %}</td>
+        </tr>
+    </thead>
+    <tboby>
+{% for categorykey in classifications %}
+    {% set colorclass = cycle(['even','odd'],loop.index) %}
+    {% set femalekey = ['F',categorykey]|join %}
+    {% set malekey = ['M',categorykey]|join %}
+    {% set femalecategorylist = femalekey in categories|keys ? categories[femalekey] : {} %}
+    {% set malecategorylist = malekey in categories|keys ? categories[malekey] : {} %}
+    {% set size = femalecategorylist|length > malecategorylist|length ? femalecategorylist|length : malecategorylist|length %}
+    {% for i in 0..size-1 %}
+            <tr class="{{ colorclass }}">
+        {% if i == 0 %}
+                <td class="classification" rowspan="{{ size }}">{{ categorykey }}</td>
+        {% endif %}
+        {% if femalecategorylist[i] is defined %}
+                <td class="categories">
+                    <a href="{{ path('_showcategory', { 'tournament': tournament.key, 'categoryid': femalecategorylist[i].id }) }}">
+                        <b>{% trans from "tournament" %}CATEGORY{% endtrans %} {{ femalecategorylist[i].name }}</b>
+                    </a><br />
+                        {{ [femalecategorylist[i].gender,femalecategorylist[i].classification]|join|trans({},'tournament') }}
+                        {{ femalecategorylist[i].classification|trans({},'tournament')|lower }}
+                </td>
+                <td>
+            {% if enrolled[femalecategorylist[i].id] is defined %}
+                    {{ enrolled[femalecategorylist[i].id]|length }}
+            {% else %}
+                    -
+            {% endif %}
+                </td>
+                <td class="operand">
+                    <a href="{{ path('_club_enroll_add_admin', { 'categoryid': femalecategorylist[i].id, 'clubid': club.id }) }}">
+                    +
+                    </a>    
+                </td>
+                <td class="operand">
+            {% if enrolled[femalecategorylist[i].id] is defined %}
+                    <a href="{{ path('_club_enroll_del_admin', { 'categoryid': femalecategorylist[i].id, 'clubid': club.id }) }}">
+                    -
+                    </a>    
+            {% endif %}
+                </td>
+        {% else %}
+                <td colspan="4" class="categories"></td>
+        {% endif %}
+        {% if malecategorylist[i] is defined %}
+                <td class="categories">
+                    <a href="{{ path('_showcategory', { 'tournament': tournament.key, 'categoryid': malecategorylist[i].id }) }}">
+                        <b>{% trans from "tournament" %}CATEGORY{% endtrans %} {{ malecategorylist[i].name }}</b>
+                    </a><br />
+                        {{ [malecategorylist[i].gender,malecategorylist[i].classification]|join|trans({},'tournament') }}
+                        {{ malecategorylist[i].classification|trans({},'tournament')|lower }}
+                </td>
+                <td>
+            {% if enrolled[malecategorylist[i].id] is defined %}
+                    {{ enrolled[malecategorylist[i].id]|length }}
+            {% else %}
+                    -
+            {% endif %}
+                </td>
+                <td class="operand">
+                    <a href="{{ path('_club_enroll_add_admin', { 'categoryid': malecategorylist[i].id, 'clubid': club.id }) }}">
+                    +
+                    </a>    
+                </td>
+                <td class="operand">
+            {% if enrolled[malecategorylist[i].id] is defined %}
+                    <a href="{{ path('_club_enroll_del_admin', { 'categoryid': malecategorylist[i].id, 'clubid': club.id }) }}">
+                    -
+                    </a>    
+            {% endif %}
+                </td>
+        {% else %}
+                <td colspan="4" class="categories"></td>
+        {% endif %}
+            </tr>
+    {% endfor %}
+{% endfor %}
+    </tboby>
+    <tfoot>
+        <tr>
+            <td colspan="9"></td>
+        </tr>
+    </tfoot>
+</table>
+</p>
+{% endblock %}

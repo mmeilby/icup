@@ -1,0 +1,46 @@
+MENU:
+  LANGCHOICE:
+    TITLE: Lingua
+    CHOOSELANG: Selezionare la lingua
+  TOURNAMENT:
+    TITLE: Tournament
+    SELECT: Select tournament
+    OVERVIEW: Overview
+    GROUPS: Categories
+    PLAYGROUNDS: Playgrounds
+    TEAMS: Clubs
+    WINNERS: Winners
+    STATISTICS: Statistics
+  REGISTER:
+    TITLE: Register
+    TEAM: New club
+    REFEREE: New referee
+    ENROLL: Enroll
+    USER: New user
+  NONREL:
+    ENROLL: Engagement
+  ENROLLMENT:
+    TITLE: Enrollment
+    MYPAGE: My iCup
+    MYPAGE_USERS: Officials
+    CLUBS: Clubs
+    TEAMS: Teams
+    REFEREES: Referees
+  ADMIN:
+    TITLE: Administration
+    RESULTS: Results
+    TOURNAMENT: Tournament
+    TEAMS: Teams
+    PLAYERS: Players
+    REFEREES: Referees
+    EDITORS: Editors
+  INFORMATION:
+    TITLE: Information
+  INFO:
+    TITLE: Information
+    ABOUT: About
+    PRICES: Prices
+    FAQ: FAQ
+  LOGIN: Customer Login
+  LOGOUT: logout
+  EXIT: Exit impersonation

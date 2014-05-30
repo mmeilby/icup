@@ -5,6 +5,12 @@ namespace ICup\Bundle\PublicSiteBundle\Entity;
 class Match
 {
     /**
+     * @var integer $id
+     * Id for this match
+     */
+    private $id;
+
+    /**
      * @var integer $pid
      * Relation to group - pid=group.id
      */
@@ -45,6 +51,19 @@ class Match
      * Relation to away team
      */
     private $teamB;
+
+    /**
+     * Set id
+     *
+     * @param integer $id
+     * @return Match
+     */
+    public function setId($id)
+    {
+        $this->id = $id;
+    
+        return $this;
+    }
 
     /**
      * Get id

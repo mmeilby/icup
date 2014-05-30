@@ -1,0 +1,17 @@
+{% extends "ICupPublicSiteBundle:Masters:standard.html.twig" %}
+
+{% trans_default_domain "errors" %}
+
+{% block body %}
+<h1 class="category">{% trans %}ERROR.INVALIDGROUPORDER.TITLE{% endtrans %}</h1>
+<p class="subcategory">
+    {% trans %}ERROR.INVALIDGROUPORDER.SOLUTION{% endtrans %}
+</p>
+<p>
+{% if redirect is defined %}
+    <a href="{{ redirect }}">{% trans %}ERROR.CLICKFORMORE{% endtrans %}</a>
+{% else %}
+    <a href="{{ path('_icup') }}">{% trans %}ERROR.CLICKFORMORE{% endtrans %}</a>
+{% endif %}
+</p>
+{% endblock %}

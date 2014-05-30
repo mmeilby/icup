@@ -162,6 +162,7 @@ FORM:
   LISTGROUPS:
     TITLE: Placering af hold
     NOGROUP: Ingen puljer
+    UNASSIGNED: Ikke placerede hold
   GROUP:
     DEFAULT: Vælg...
     NONAME: Et puljenavn skal angives.
@@ -311,10 +312,15 @@ FORM:
     BADTIME: Kamptidspunktet er ikke gyldigt.
     NOPLAYGROUND: Der skal vælges en bane for afvikling af kampen.
     NOHOMETEAM: Hjemmehold skal angives.
+    NOHOMEGROUP: Pulje for hjemmehold skal angives.
+    NOHOMERANK: Placering for hjemmehold skal angives.
     NOAWAYTEAM: Udehold skal angives.
-    NOEXIST: En anden kamp har allerede dette kampnr.
+    NOAWAYGROUP: Pulje for udehold skal angives.
+    NOAWAYRANK: Placering for udehold skal angives.
+    NOEXISTS: En anden kamp har allerede dette kampnr.
     CANTCHANGENO: En anden kamp er allerede oprettet med samme kampnr. Vælg et andet kampnr.
     SAMETEAM: Det samme hold er valgt som hjemmehold og udehold. Det er ikke muligt.
+    CANTDELETE: Denne kamp er spillet og registreret med resultat. Det er ikke muligt at fjerne den her.
     TITLE:
       ADD: Tilføj ny kamp
       CHG: Rediger kampinformationer
@@ -328,7 +334,13 @@ FORM:
     TIME: Tidspunkt
     PLAYGROUND: Bane
     HOME: Hjemmehold
+    QHOME:
+      GROUP: Pulje (hjemmehold)
+      RANK: Placering
     AWAY: Udehold
+    QAWAY:
+      GROUP: Pulje (udehold)
+      RANK: Placering
     SUBMIT:
       ADD: Tilføj ny kamp
       CHG: Gem oplysninger
@@ -337,6 +349,6 @@ FORM:
       ADD: Fortryd oprettelse
       CHG: Fortryd ændringer
       DEL: Fortryd
-  MATCHRESULT:
-    SUBMIT: Gem resultater
-    CANCEL: Fortryd indtastning
+  LISTMATCHES:
+    TITLE: Vedligehold kampplan
+    NOMATCH: Opret kamp i kampplan    

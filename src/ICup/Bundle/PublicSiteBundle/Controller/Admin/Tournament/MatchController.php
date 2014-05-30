@@ -131,33 +131,10 @@ class MatchController extends Controller
         $em = $this->getDoctrine()->getManager();
         $em->persist($match);
         $em->flush();
-        
-        $homeRel = new MatchRelation();
-        $homeRel->setPid($match->getId());
-        $homeRel->setAwayteam(false);
-        $homeRel->setScorevalid(false);
-        $homeRel->setCid($matchForm->getTeamA());
-        $homeRel->setPoints(0);
-        $homeRel->setScore(0);
-        $em->persist($homeRel);
-
-        $awayRel = new MatchRelation();
-        $awayRel->setPid($match->getId());
-        $awayRel->setAwayteam(true);
-        $awayRel->setScorevalid(false);
-        $awayRel->setCid($matchForm->getTeamB());
-        $awayRel->setPoints(0);
-        $awayRel->setScore(0);
-        $em->persist($awayRel);
-        $em->flush();
     }
     
     private function chgMatch(MatchForm $matchForm, Match &$match) {
         $this->updateMatch($matchForm, $match);
-        $homeRel = $this->get('match')->getMatchRelationByMatch($match->getId(), false);
-        $homeRel->setCid($matchForm->getTeamA());
-        $awayRel = $this->get('match')->getMatchRelationByMatch($match->getId(), true);
-        $awayRel->setCid($matchForm->getTeamB());
         $em = $this->getDoctrine()->getManager();
         $em->flush();
     }
@@ -171,6 +148,14 @@ class MatchController extends Controller
         $awayRel = $this->get('match')->getMatchRelationByMatch($match->getId(), true);
         if ($awayRel != null) {
             $em->remove($awayRel);
+        }
+        $qhomeRel = $this->get('match')->getQMatchRelationByMatch($match->getId(), false);
+        if ($homeRel != null) {
+            $em->remove($qhomeRel);
+        }
+        $qawayRel = $this->get('match')->getQMatchRelationByMatch($match->getId(), true);
+        if ($awayRel != null) {
+            $em->remove($qawayRel);
         }
         $em->remove($match);
         $em->flush();
@@ -199,8 +184,6 @@ class MatchController extends Controller
         $matchtime = date_create_from_format("G.i", $match->getTime());
         $matchForm->setTime(date_format($matchtime, $timeformat));
         $matchForm->setPlayground($match->getPlayground());
-        $matchForm->setTeamA($this->get('match')->getMatchHomeTeam($match->getId()));
-        $matchForm->setTeamB($this->get('match')->getMatchAwayTeam($match->getId()));
         return $matchForm;
     }
 
@@ -211,14 +194,7 @@ class MatchController extends Controller
             $playgroundnames[$playground->getId()] = $playground->getName();
         }
 
-        $teams = $this->get('logic')->listTeamsByGroup($matchForm->getPid());
-        $teamnames = array();
-        foreach ($teams as $team) {
-            $teamnames[$team->id] = $team->name;
-        }
-
         $show = $action != 'del';
-        $extshow = $show && !$this->get('match')->isMatchResultValid($matchForm->getId());
         
         $formDef = $this->createFormBuilder($matchForm);
         $formDef->add('matchno', 'text', array('label' => 'FORM.MATCH.NO',
@@ -230,12 +206,6 @@ class MatchController extends Controller
         $formDef->add('playground', 'choice', array('label' => 'FORM.MATCH.PLAYGROUND',
             'choices' => $playgroundnames, 'empty_value' => 'FORM.MATCH.DEFAULT',
             'required' => false, 'disabled' => !$show, 'translation_domain' => 'admin'));
-        $formDef->add('teamA', 'choice', array('label' => 'FORM.MATCH.HOME',
-            'choices' => $teamnames, 'empty_value' => 'FORM.MATCH.DEFAULT',
-            'required' => false, 'disabled' => !$extshow, 'translation_domain' => 'admin'));
-        $formDef->add('teamB', 'choice', array('label' => 'FORM.MATCH.AWAY',
-            'choices' => $teamnames, 'empty_value' => 'FORM.MATCH.DEFAULT',
-            'required' => false, 'disabled' => !$extshow, 'translation_domain' => 'admin'));
         $formDef->add('cancel', 'submit', array('label' => 'FORM.MATCH.CANCEL.'.strtoupper($action), 'translation_domain' => 'admin'));
         $formDef->add('save', 'submit', array('label' => 'FORM.MATCH.SUBMIT.'.strtoupper($action), 'translation_domain' => 'admin'));
         return $formDef->getForm();
@@ -270,15 +240,6 @@ class MatchController extends Controller
         }
         if ($matchForm->getPlayground() == null) {
             $form->addError(new FormError($this->get('translator')->trans('FORM.MATCH.NOPLAYGROUND', array(), 'admin')));
-        }
-        if ($matchForm->getTeamA() == null) {
-            $form->addError(new FormError($this->get('translator')->trans('FORM.MATCH.NOHOMETEAM', array(), 'admin')));
-        }
-        if ($matchForm->getTeamB() == null) {
-            $form->addError(new FormError($this->get('translator')->trans('FORM.MATCH.NOAWAYTEAM', array(), 'admin')));
-        }
-        elseif ($matchForm->getTeamA() == $matchForm->getTeamB()) {
-            $form->addError(new FormError($this->get('translator')->trans('FORM.MATCH.SAMETEAM', array(), 'admin')));
         }
         return $form->isValid();
     }

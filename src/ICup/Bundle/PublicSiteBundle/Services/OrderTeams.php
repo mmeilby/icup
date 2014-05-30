@@ -25,7 +25,6 @@ class OrderTeams
     /**
      * Order teams in group by match results
      * @param Integer $groupid The group to sort
-     * @param Class $orderClass The ordering class. If none is supplied ordering will be done by points.
      * @return array A list of TeamStat objects ordered by match results and ordering
      */
     public function sortGroup($groupid) {
@@ -66,20 +65,20 @@ class OrderTeams
         $relationMap = array();
         foreach ($teamResults as $matchRelation) {
             if (array_key_exists($matchRelation->getCid(), $teamMap)) {
-                $relationMap[$matchRelation->getPid()][] = $matchRelation;
+                $relationMap[$matchRelation->getPid()][$matchRelation->getAwayteam()?'A':'H'] = $matchRelation;
             }
         }
         foreach ($relationMap as $matchResults) {
-            // We need to match results for a match to judge
+            // We need two match results for a match to judge
             if (count($matchResults) != 2) {
                 // This condition will occour for results from teams outside the (tie) group - ignore
                 continue;
             }
             // Knowing that we got both match results - check that we have a registration for both
-            if ($this->isScoreValid($matchResults[0], $matchResults[1])) {
+            if ($this->isScoreValid($matchResults['H'], $matchResults['A'])) {
                 // Update team status for both teams in the match
-                $this->updateTeamStat($teamMap, $matchResults[0], $matchResults[1]);
-                $this->updateTeamStat($teamMap, $matchResults[1], $matchResults[0]);
+                $this->updateTeamStat($teamMap, $matchResults['H'], $matchResults['A']);
+                $this->updateTeamStat($teamMap, $matchResults['A'], $matchResults['H']);
             }
         }
     }

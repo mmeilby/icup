@@ -31,8 +31,14 @@ class ListMatchController extends Controller
         $utilService->validateEditorAdminUser($user, $tournament->getPid());
 
         $host = $this->get('entity')->getHostById($tournament->getPid());
-        $matches = $this->get('match')->listMatchesByGroup($groupid);
-
+        $mmatches = $this->get('match')->listMatchesByGroup($groupid);
+        $umatches = $this->get('match')->listMatchesUnfinished($groupid);
+        $sortedMatches = array_merge($umatches, $mmatches);
+        usort($sortedMatches, array("ICup\Bundle\PublicSiteBundle\Services\Doctrine\MatchSupport", "reorderMatch"));
+        $matches = array();
+        foreach ($sortedMatches as $match) {
+            $matches[date_format($match['schedule'], "Y/m/d")][] = $match;
+        }
         return array('host' => $host,
                      'tournament' => $tournament,
                      'category' => $category,

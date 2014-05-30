@@ -251,6 +251,7 @@ twig:
             ZAF: { name: 'Sydafrika', flag: 'za.png' }
             ZMB: { name: 'Zambia', flag: 'zm.png' }
             ZWE: { name: 'Zimbabwe', flag: 'zw.png' }
+            EUR: { name: 'EU', flag: 'europeanunion.png' }
 #scotland.png
 #europeanunion.png
 #catalonia.png

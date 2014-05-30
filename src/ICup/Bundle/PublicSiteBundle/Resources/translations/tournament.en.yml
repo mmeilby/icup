@@ -12,9 +12,8 @@ TEAMSBYCLUB: Teams enrolled by the club
 WINNERS: The champions
 WINNING_COUNTRIES: Medals by country
 WINNING_CLUBS: Medals by club
-EDITRESULTS: Edit results
-UNASSIGNED: Unassigned teams
 
+MINUTES: min.
 PRELIMINARY: Preliminary round
 CLASSIFICATION: Playoff rounds
 STANDING: Final standing
@@ -25,6 +24,7 @@ FIRST: Winner
 SECOND: 2nd
 THIRD: 3rd
 FORTH: 4th
+RANK: "{1} Winner of group %group% | {2} 2nd in group %group% | {3} 3rd in group %group% ]3,Inf[ %rank%th in group %group%"
 
 GROUPCLASS:
   0: Preliminary round
@@ -137,6 +137,11 @@ FORM:
         STATISTICS:
           TITLE: Team statistics
           DESC: See the hall of fame and other interesting figures from the tournament.
+          
+    EDITRESULTS:
+        TITLE: Edit results
+        SUBMIT: Save results
+        CANCEL: Cancel changes
 
 # Old translations
 USERNAME: Username
@@ -152,4 +157,3 @@ EDITCATEGORY: Update category
 EDITGROUP: Update group
 EDITGROUPORDER: Add team to group
 EDITMATCH: Add match
-SAVE: Save information

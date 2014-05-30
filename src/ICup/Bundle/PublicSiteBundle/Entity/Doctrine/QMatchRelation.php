@@ -50,13 +50,6 @@ class QMatchRelation
     private $awayteam;
 
     /**
-     * @var string $assigned
-     * Indicates that the MatchRelation table holds an assigned team for this position - Y=Yes, N=No
-     * @ORM\Column(name="assigned", type="string", length=1, nullable=false)
-     */
-    private $assigned;
-
-    /**
      * Get id
      *
      * @return integer 
@@ -156,28 +149,5 @@ class QMatchRelation
     public function getAwayteam()
     {
         return $this->awayteam == 'Y';
-    }
-
-    /**
-     * Set assigned
-     *
-     * @param boolean $assigned
-     * @return MatchRelation
-     */
-    public function setAssigned($assigned)
-    {
-        $this->assigned = $assigned ? 'Y' : 'N';
-    
-        return $this;
-    }
-
-    /**
-     * Get assigned
-     *
-     * @return boolean 
-     */
-    public function getAssigned()
-    {
-        return $this->assigned == 'Y';
     }
 }

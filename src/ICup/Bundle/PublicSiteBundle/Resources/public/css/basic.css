@@ -315,6 +315,11 @@ DIV.active {
     background-color: #2080f0;
     color: whitesmoke;
 }
+DIV.rank {
+    font-size: 10px;
+    font-weight: bold;    
+    color: #313131;
+}
 /*
  *  Category finals
  */
@@ -446,6 +451,9 @@ TR.odd {
     background: whiteSmoke;
 }
 TR.even {
+}
+TR.markup {
+    background: yellow;
 }
 TD.flag {
     width: 20px;

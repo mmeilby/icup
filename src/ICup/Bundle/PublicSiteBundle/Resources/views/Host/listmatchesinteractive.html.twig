@@ -1,8 +1,41 @@
 {% extends "ICupPublicSiteBundle:Masters:edit.html.twig" %}
 {% trans_default_domain "tournament" %}
 
+{% import _self as formatter %}
+
+{% macro club(team, group, context) %}
+    {% if team.id > 0 %}
+                <td class="flag">
+                    <img src="{{ context.imagepath }}/flags/{{ context.countries[team.country].flag }}"
+                         alt="{{ team.country|trans({},'lang') }}"
+                         title="{{ team.country|trans({},'lang') }}">
+                </td>
+                <td class="team">
+    {% if team.rank != '' %}
+                    <div class="rank">{{ team.rank }}</div>
+    {% endif %}
+                    <a href="{{ path('_showteam', { 'tournament': context.tournament.key,
+                                                    'teamid': team.id,
+                                                    'groupid': group.id }) }}">{{ team.name }}</a>
+                </td>
+    {% else %}
+                <td class="flag"></td>
+                <td class="team">{{ team.rank }}</td>
+    {% endif %}
+{% endmacro %}
+        
+{% macro scoreinput(match, context) %}
+                <td class="match">
+    {% if match.rid != '' %}
+                    <input class="match" type="text" name="score_{{ match.rid }}" size="1" value="{{ match.score }}" />
+    {% else %}
+                    ?
+    {% endif %}
+                </td>
+{% endmacro %}
+
 {% block adminbody %}
-<h1>{% trans %}EDITRESULTS{% endtrans %}</h1>
+<h1>{% trans %}FORM.EDITRESULTS.TITLE{% endtrans %}</h1>
 <h2 class="category">{{ tournament.name }}</h2>
 <p class="subcategory">
     {% trans %}RESULTS{% endtrans %} {{ tournament.edition }}<br />
@@ -34,10 +67,11 @@
         <caption>
             {{playground.name}}
             -
-            {{ ['WEEK.',matchdate|date('D')|upper]|join|trans([],'messages')|capitalize }}
-            {{ matchdate|date(' j. ') }}
-            {{ ['MONTH.',matchdate|date('M')|upper]|join|trans([],'messages') }}
-            {{ matchdate|date(' Y') }}
+            {{ 'FORMAT.LONGDATE'|transchoice(matchdate|date('j'), {
+                    '%week%': ['WEEK.',matchdate|date('D')|upper]|join|trans([],'messages')|capitalize,
+                    '%day%': matchdate|date('j'),
+                    '%month%': ['MONTH.',matchdate|date('M')|upper]|join|trans([],'messages'),
+                    '%year%': matchdate|date('Y')}, 'messages') }}
         </caption>
         <thead>
             <tr>
@@ -58,19 +92,13 @@
             <tr class="{{ cycle(['even','odd'],loop.index) }}">
                 <td class="flag"></td>
                 <td class="no">{{ match.matchno }}</td>
-                <td class="time">{{ match.schedule|date('H.i') }}</td>
+                <td class="time">{{ match.schedule|date('FORMAT.TIME'|trans([],'messages')) }}</td>
                 <td class="no"><a href="{{ path('_showcategory', { 'tournament': tournament.key, 'categoryid': match.category.id }) }}">{{ match.category.name }}</a></td>
                 <td class="no"><a href="{{ path('_showcategory', { 'tournament': tournament.key, 'categoryid': match.category.id }) }}">{{ match.group.name }}</a></td>
-                <td class="flag"><img src="{{ imagepath }}/flags/{{ countries[match.home.country].flag }}" alt="{{ match.home.country|trans({},'lang') }}" title="{{ match.home.country|trans({},'lang') }}"></td>
-                <td class="team"><a href="{{ path('_showteam', { 'tournament': tournament.key, 'teamid': match.home.id, 'groupid': match.group.id }) }}">{{ match.home.team }}</a></td>
-                <td class="flag"><img src="{{ imagepath }}/flags/{{ countries[match.away.country].flag }}" alt="{{ match.away.country|trans({},'lang') }}" title="{{ match.away.country|trans({},'lang') }}"></td>
-                <td class="team"><a href="{{ path('_showteam', { 'tournament': tournament.key, 'teamid': match.away.id, 'groupid': match.group.id }) }}">{{ match.away.team }}</a></td>
-                <td class="match">
-                    <input class="match" type="text" name="score_{{ match.home.rid }}" size="1" value="{{ match.home.score }}" />
-                </td>
-                <td class="match">
-                    <input class="match" type="text" name="score_{{ match.away.rid }}" size="1" value="{{ match.away.score }}" />
-                </td>
+                {{ formatter.club(match.home, match.group, _context) }}
+                {{ formatter.club(match.away, match.group, _context) }}
+                {{ formatter.scoreinput(match.home, _context) }}
+                {{ formatter.scoreinput(match.away, _context) }}
             </tr>
 {% endfor %}
         </tboby>
@@ -81,8 +109,8 @@
         </tfoot>
     </table>
     <div class="form_button">
-        <button id="form_cancel" name="form[cancel]" type="submit">{% trans from 'admin' %}FORM.MATCHRESULT.CANCEL{% endtrans %}</button>
-        <button id="form_save" name="form[save]" type="submit">{% trans from 'admin' %}FORM.MATCHRESULT.SUBMIT{% endtrans %}</button>
+        <button id="form_cancel" name="form[cancel]" type="submit">{% trans %}FORM.EDITRESULTS.CANCEL{% endtrans %}</button>
+        <button id="form_save" name="form[save]" type="submit">{% trans %}FORM.EDITRESULTS.SUBMIT{% endtrans %}</button>
     </div>
     </form>
 </p>

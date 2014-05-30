@@ -12,9 +12,8 @@ TEAMSBYCLUB: Hold tilknyttet klubben
 WINNERS: Turneringens vindere
 WINNING_COUNTRIES: Vindende lande
 WINNING_CLUBS: Vindende klubber
-EDITRESULTS: Rediger resultater
-UNASSIGNED: Ikke placerede hold
 
+MINUTES: min.
 PRELIMINARY: Grundspil
 CLASSIFICATION: Klassifikation
 STANDING: Gruppe resultat
@@ -25,6 +24,7 @@ FIRST: Vinder
 SECOND: 2. plads
 THIRD: 3. plads
 FORTH: 4. plads
+RANK: "{1} Vinder af pulje %group% | ]1,Inf[ %rank%. plads i pulje %group%"
 
 GROUPCLASS:
   0: Grundspil
@@ -137,3 +137,8 @@ FORM:
         STATISTICS:
           TITLE: Hold statistik
           DESC: Hvilket hold klarede sig bedst? Se hvem og mange andre spændende informationer om turneringen.
+          
+    EDITRESULTS:
+        TITLE: Rediger resultater
+        SUBMIT: Gem resultater
+        CANCEL: Fortryd indtastning

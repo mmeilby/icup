@@ -1,63 +1,81 @@
 <?php
 
-namespace ICup\Bundle\PublicSiteBundle\Entity\Doctrine;
+namespace ICup\Bundle\PublicSiteBundle\Entity;
 
-use Doctrine\ORM\Mapping as ORM;
-use DateTime;
-
-/**
- * ICup\Bundle\PublicSiteBundle\Entity\Doctrine\Match
- *
- * @ORM\Table(name="matches",uniqueConstraints={@ORM\UniqueConstraint(name="IdxByGroup", columns={"pid", "id"})})
- * @ORM\Entity
- */
-class Match
+class QMatch
 {
     /**
      * @var integer $id
-     *
-     * @ORM\Column(name="id", type="integer", nullable=false)
-     * @ORM\Id
-     * @ORM\GeneratedValue(strategy="IDENTITY")
+     * Id for this match
      */
     private $id;
 
     /**
      * @var integer $pid
      * Relation to group - pid=group.id
-     * @ORM\Column(name="pid", type="integer", nullable=false)
      */
     private $pid;
 
     /**
      * @var integer $playground
      * Relation to playground - playground=playground.id
-     * @ORM\Column(name="playground", type="integer", nullable=false)
      */
     private $playground;
     
     /**
      * @var string $time
      * Match start time - HH:MM
-     * @ORM\Column(name="time", type="string", length=5, nullable=false)
      */
     private $time;
 
     /**
      * @var string $date
      * Match start date - DD/MM/YYYY
-     * @ORM\Column(name="date", type="string", length=10, nullable=false)
      */
     private $date;
 
     /**
      * @var integer $matchno
      * Official match no
-     * @ORM\Column(name="matchno", type="integer", nullable=false)
      */
     private $matchno;
 
+    /**
+     * @var integer $groupA
+     * Relation to home group
+     */
+    private $groupA;
+    
+    /**
+     * @var integer $groupB
+     * Relation to away group
+     */
+    private $groupB;
 
+    /**
+     * @var integer $rankA
+     * Relation to home rank
+     */
+    private $rankA;
+    
+    /**
+     * @var integer $rankB
+     * Relation to away rank
+     */
+    private $rankB;
+
+    /**
+     * Set id
+     *
+     * @param integer $id
+     * @return Match
+     */
+    public function setId($id)
+    {
+        $this->id = $id;
+    
+        return $this;
+    }
 
     /**
      * Get id
@@ -183,12 +201,96 @@ class Match
     {
         return $this->matchno;
     }
+
+    /**
+     * Set home team
+     *
+     * @param integer $groupA
+     * @return Match
+     */
+    public function setGroupA($groupA)
+    {
+        $this->groupA = $groupA;
+    
+        return $this;
+    }
+
+    /**
+     * Get home team
+     *
+     * @return integer 
+     */
+    public function getGroupA()
+    {
+        return $this->groupA;
+    }
+
+    /**
+     * Set away team
+     *
+     * @param integer $groupB
+     * @return Match
+     */
+    public function setGroupB($groupB)
+    {
+        $this->groupB = $groupB;
+    
+        return $this;
+    }
+
+    /**
+     * Get away team
+     *
+     * @return integer 
+     */
+    public function getGroupB()
+    {
+        return $this->groupB;
+    }
     
     /**
-     * Get match schedule as DateTime object
-     * @return DateTime - match schedule defined by date and time
+     * Set home team
+     *
+     * @param integer $rankA
+     * @return Match
      */
-    public function getSchedule() {
-        return DateTime::createFromFormat('d/m/Y-H:i', $this->date.'-'.str_replace(".", ":", $this->time));
+    public function setRankA($rankA)
+    {
+        $this->rankA = $rankA;
+    
+        return $this;
+    }
+
+    /**
+     * Get home team
+     *
+     * @return integer 
+     */
+    public function getRankA()
+    {
+        return $this->rankA;
+    }
+
+    /**
+     * Set away team
+     *
+     * @param integer $rankB
+     * @return Match
+     */
+    public function setRankB($rankB)
+    {
+        $this->rankB = $rankB;
+    
+        return $this;
+    }
+
+    /**
+     * Get away team
+     *
+     * @return integer 
+     */
+    public function getRankB()
+    {
+        return $this->rankB;
     }
 }

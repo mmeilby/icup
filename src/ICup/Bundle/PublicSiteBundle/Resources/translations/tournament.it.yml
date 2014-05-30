@@ -12,9 +12,8 @@ TEAMSBYCLUB: Teams enrolled by the club
 WINNERS: I campioni
 WINNING_COUNTRIES: Medaglie per paese
 WINNING_CLUBS: Medaglie di squadra
-EDITRESULTS: Aggiornamento dei risultati
-UNASSIGNED: Unassigned teams
 
+MINUTES: min.
 PRELIMINARY: Turno preliminare
 CLASSIFICATION: Playoff rounds
 STANDING: Classifica finale
@@ -25,6 +24,7 @@ FIRST: 1˚ posto
 SECOND: 2˚ posto
 THIRD: 3˚ posto
 FORTH: 4˚ posto
+RANK: "{1} Vincitore di girone %group% | ]1,Inf[ %rank%˚ posto di girone %group%"
 
 GROUPCLASS:
   0: Preliminary round
@@ -138,3 +138,7 @@ FORM:
           TITLE: Team statistics
           DESC: See the hall of fame and other interesting figures from the tournament.
 
+    EDITRESULTS:
+        TITLE: Aggiornamento dei risultati
+        SUBMIT: Gem resultater
+        CANCEL: Fortryd indtastning

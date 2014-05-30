@@ -14,10 +14,7 @@
     {{ [category.gender,category.classification]|join|trans({},'tournament') }}
     {{ category.classification|trans({},'tournament')|lower }}
 </p>
-<div class="tab active">{{ 'PRELIMINARY'|trans({},'tournament')|upper }}</div>
-<div class="tab" onclick="location.href='{{ path('_host_list_playoff', {'categoryid': category.id }) }}'">{{ 'CLASSIFICATION'|trans({},'tournament')|upper }}</div>
-<div class="tab" onclick="location.href='{{ path('_host_list_finals', {'categoryid': category.id }) }}'">{{ 'FINALS'|trans({},'tournament')|upper }}</div>
-    <div style="float:left;margin-right: 5px;">
+<div style="float:left;margin-right: 5px;">
 {% if grouplist|length > 0 %}
 {% for group in grouplist %}
     {% if selectedgroup.id == group.group.id %}
@@ -76,10 +73,10 @@
             </tfoot>
         </table>
 {% endif %}
-    </div>
-    <div style="float:left;">
+</div>
+<div style="float:left;">
         <table>
-            <caption>{% trans from 'tournament' %}UNASSIGNED{% endtrans %}</caption>
+            <caption>{% trans %}FORM.LISTGROUPS.UNASSIGNED{% endtrans %}</caption>
             <thead>
                 <tr>
                     <td class="flag"></td>
@@ -106,6 +103,6 @@
                 </tr>
             </tfoot>
         </table>
-    </div>
-    <div style="clear:both;"></div>
+</div>
+<div style="clear:both;"></div>
 {% endblock %}

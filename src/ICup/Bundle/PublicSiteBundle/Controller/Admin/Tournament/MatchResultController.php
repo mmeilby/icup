@@ -2,7 +2,6 @@
 namespace ICup\Bundle\PublicSiteBundle\Controller\Admin\Tournament;
 
 use DateTime;
-use JMS\SecurityExtraBundle\Annotation\Secure;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
@@ -149,8 +148,8 @@ class MatchResultController extends Controller
     
     private function makeResultForm() {
         $formDef = $this->createFormBuilder();
-        $formDef->add('cancel', 'submit', array('label' => 'FORM.MATCHRESULT.CANCEL', 'translation_domain' => 'admin'));
-        $formDef->add('save', 'submit', array('label' => 'FORM.MATCHRESULT.SUBMIT', 'translation_domain' => 'admin'));
+        $formDef->add('cancel', 'submit', array('label' => 'FORM.EDITRESULTS.CANCEL', 'translation_domain' => 'tournament'));
+        $formDef->add('save', 'submit', array('label' => 'FORM.EDITRESULTS.SUBMIT', 'translation_domain' => 'tournament'));
         return $formDef->getForm();
     }
 }

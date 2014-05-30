@@ -21,8 +21,11 @@
                 {% for news in newsstream %}
                         <tr class="{{ cycle(['even','odd'],loop.index) }}">
                             <td class="dates">
-                                {{ news.date|date(' j. ') }}
-                                {{ ['MONTH.',news.date|date('M')|upper]|join|trans([],'messages') }}
+                                {{ 'FORMAT.LONGDATE'|transchoice(news.date|date('j'), {
+                                        '%week%': ['WEEK.',news.date|date('D')|upper]|join|trans([],'messages')|capitalize,
+                                        '%day%': news.date|date('j'),
+                                        '%month%': ['MONTH.',news.date|date('M')|upper]|join|trans([],'messages'),
+                                        '%year%': ''}, 'messages') }}
                             </td>
                             <td class="news">
                                 <a href="{{ news.path }}">{{ news.text }}</a>

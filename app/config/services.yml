@@ -25,9 +25,9 @@ services:
         class: Twig_Sandbox_SecurityPolicy
         arguments:
           # tags
-          - [ if, for, trans ]
+          - [ if, for, trans, transchoice ]
           # filters
-          - [ upper, trans, join, lower, date, escape, length ]
+          - [ upper, capitalize, trans, transchoice, join, lower, date, escape, length ]
           # methods
           - { %tournament_table%: [getName, getEdition], %club_table%: [getName] }
           # properties

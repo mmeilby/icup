@@ -6,6 +6,9 @@ MENU:
     TITLE: Turnering
     SELECT: Vælg turnering
     OVERVIEW: Oversigt
+    RESULT:
+        GROUPS: Grupperesultater
+        PLAYGROUNDS: Kampplan
     GROUPS: Grupper
     PLAYGROUNDS: Baner
     TEAMS: Klubber

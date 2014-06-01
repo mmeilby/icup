@@ -133,10 +133,10 @@ FORM:
           DESC: Find hold der deltager i turneringen og se deres resultater.
         WINNERS:
           TITLE: Vindere
-          DESC: Se alle vinderne fra denne turnering.
+          DESC: Se alle vinderne fra denne turnering. Hvilket hold klarede sig bedst?
         STATISTICS:
           TITLE: Hold statistik
-          DESC: Hvilket hold klarede sig bedst? Se hvem og mange andre spændende informationer om turneringen.
+          DESC: Find mange spændende informationer om turneringen.
           
     EDITRESULTS:
         TITLE: Rediger resultater

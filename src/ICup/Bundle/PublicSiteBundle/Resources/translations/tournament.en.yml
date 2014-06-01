@@ -133,27 +133,12 @@ FORM:
           DESC: Find teams participating the tournament and see the results.
         WINNERS:
           TITLE: The winners
-          DESC: Discover the winners from all categories of this tournament.
+          DESC: Discover the winners from all categories of this tournament and visit the hall of fame.
         STATISTICS:
           TITLE: Team statistics
-          DESC: See the hall of fame and other interesting figures from the tournament.
+          DESC:  Look up some interesting figures from the tournament.
           
     EDITRESULTS:
         TITLE: Edit results
         SUBMIT: Save results
         CANCEL: Cancel changes
-
-# Old translations
-USERNAME: Username
-PASSWORD: Password
-
-ADMIN: Administration
-NEWCATEGORY: Add new category
-NEWGROUP: Add new group
-ADDTEAM: Add team to group
-NEWMATCH: Add match
-
-EDITCATEGORY: Update category
-EDITGROUP: Update group
-EDITGROUPORDER: Add team to group
-EDITMATCH: Add match

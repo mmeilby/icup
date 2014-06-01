@@ -141,15 +141,31 @@ class OrderTeams
     }
     
     private function updateTieScore($teamsList, $teamMap) {
+/*        
         // Sort local tie group using normal sort order
         usort($teamMap, $this->normal_sort_order);
         // Now - first team is winner and should get the highest tie score
         $tiescore = count($teamMap);
+        // Build a sub tie list of teams with equal score
+        $tieList = array();
+        foreach ($teamMap as $stat) {
+            $tieList[$stat->points][$stat->id] = $stat;
+        }
+        // Iterate the tie list and update the tie score
+        foreach ($tieList as $tieTeamList) {
+            // update teams with equal score with same tie score
+            foreach ($tieTeamList as $stat) {
+                $oStat = $teamsList[$stat->id];
+                $oStat->tiepoints = $tiescore;
+            }
+            $tiescore--;
+        }
+ * 
+ */
         foreach ($teamMap as $stat) {
             $oStat = $teamsList[$stat->id];
             // Might be so that some teams score equal in the tie group - however this is ignored
-            $oStat->tiepoints = $tiescore;
-            $tiescore--;
+            $oStat->tiepoints = $stat->points;
         }
     }
 }

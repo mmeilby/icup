@@ -21,6 +21,19 @@
 {% endif %}
             </ul>
         </div>
+{% if tmnt != '_' %}
+        <div class="menu_header">
+            <ul>
+                <li><a href="{{ path('_tournament_categories', {'tournament': tmnt}) }}">{% trans %}MENU.TOURNAMENT.RESULT.GROUPS{% endtrans %}</a></li>
+            </ul>
+        </div>
+        <div class="menu_header">
+            <ul>
+                <li><a href="{{ path('_tournament_playgrounds', {'tournament': tmnt}) }}">{% trans %}MENU.TOURNAMENT.RESULT.PLAYGROUNDS{% endtrans %}</a></li>
+            </ul>
+        </div>
+{% endif %}
+<!--            
         <div class="menu_header">
             <ul>
                 <li><a href="{{ path('_icup') }}">{{ 'MENU.INFO.ABOUT'|trans }}</a></li>
@@ -31,6 +44,7 @@
                 <li><a href="{{ path('_icup') }}">{{ 'MENU.INFO.FAQ'|trans }}</a></li>
             </ul>
         </div>
+-->
         <div class="menu_header last">
             <ul>
                 <li>
@@ -93,12 +107,14 @@
         <!-- Enrollment/registration section -->
         <div class="menu_footer">
             <h3>{% trans %}MENU.REGISTER.TITLE{% endtrans %}</h3>
+<!--            
             <ul>
                 <li><a href="{{ path('_ausr_new_user') }}">{% trans %}MENU.REGISTER.USER{% endtrans %}</a></li>
     {% if tmnt != '_' %}
                 <li><a href="{{ path('_club_enroll_check') }}">{% trans %}MENU.REGISTER.ENROLL{% endtrans %}</a></li>
     {% endif %}
             </ul>
+-->
         </div>
 <!-- REGISTRATED USER -->
 {% else %}

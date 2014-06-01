@@ -6,6 +6,9 @@ MENU:
     TITLE: Tournament
     SELECT: Select tournament
     OVERVIEW: Overview
+    RESULT:
+        GROUPS: Standings by category
+        PLAYGROUNDS: Match plan
     GROUPS: Categories
     PLAYGROUNDS: Playgrounds
     TEAMS: Clubs

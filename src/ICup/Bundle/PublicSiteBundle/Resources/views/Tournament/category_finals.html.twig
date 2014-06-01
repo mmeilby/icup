@@ -30,6 +30,7 @@
 <div class="tab" onclick="location.href='{{ path('_showcategory', {'tournament': tournament.key, 'categoryid': category.id }) }}'">{{ 'PRELIMINARY'|trans|upper }}</div>
 <div class="tab" onclick="location.href='{{ path('_showcategory_classification', {'tournament': tournament.key, 'categoryid': category.id }) }}'">{{ 'CLASSIFICATION'|trans|upper }}</div>
 <div class="tab active" onclick="location.href='{{ path('_showcategory_finals', {'tournament': tournament.key, 'categoryid': category.id }) }}'">{{ 'FINALS'|trans|upper }}</div>
+{% if champions.SA is not null or champions.SC is not null or champions.FA is not null or champions.FC is not null %}
 <table>
     <caption>{% trans %}STANDING{% endtrans %}</caption>
     {% if champions.SA is null and champions.SC is null %}
@@ -74,4 +75,5 @@
     </tbody>
     {% endif %}
 </table>
+{% endif %}
 {% endblock %}

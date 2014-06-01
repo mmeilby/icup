@@ -27,7 +27,7 @@ FORTH: 4˚ posto
 RANK: "{1} Vincitore di girone %group% | ]1,Inf[ %rank%˚ posto di girone %group%"
 
 GROUPCLASS:
-  0: Preliminary round
+  0: Turno preliminare
   1: Playoff
   6: 1/8 finale
   7: 1/4 finale

@@ -85,7 +85,7 @@
             </td>
         </tr>
         {% for match in matches %}
-{% if match.home.id > 0 or match.away.id > 0 %}
+{% if match.home.id > 0 or match.away.id > 0 or match.home.rank != '' or match.away.rank != ''%}
             <tr class="{{ cycle(['even','odd'],loop.index) }}">
 {% else %}
             <tr class="markup">
@@ -94,7 +94,7 @@
                 <td class="no">{{ match.matchno }}</td>
                 <td class="time">{{ match.schedule|date('FORMAT.TIME'|trans([],'messages')) }}</td>
                 <td class="no">{{ match.playground.no }}</td>
-{% if match.home.id > 0 or match.away.id > 0 %}
+{% if match.home.id > 0 or match.away.id > 0 or match.home.rank != '' or match.away.rank != ''%}
                 {{ formatter.club(match.home, _context) }}
                 {{ formatter.club(match.away, _context) }}
                 <td class="match">{{ match.home.score }}-{{ match.away.score }}</td>
@@ -117,7 +117,7 @@
                     -
                     </a>    
                 </td>
-{% if match.home.id > 0 or match.away.id > 0 %}
+{% if match.home.id > 0 or match.away.id > 0 or match.home.rank != '' or match.away.rank != ''%}
                 <td class="operand">
                     <a href="{{ path('_edit_matchrel_chg', { 'matchid': match.id }) }}">
                     U

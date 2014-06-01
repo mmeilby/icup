@@ -6,6 +6,9 @@ MENU:
     TITLE: Turniej 
     SELECT: Zmień turniej
     OVERVIEW: Przegląd 
+    RESULT:
+        GROUPS: Rezultaty kategoier
+        PLAYGROUNDS: Match plan
     GROUPS: Kategoier 
     PLAYGROUNDS: Boiska
     TEAMS: Kluby 

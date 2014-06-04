@@ -24,7 +24,7 @@ FIRST: 1˚ posto
 SECOND: 2˚ posto
 THIRD: 3˚ posto
 FORTH: 4˚ posto
-RANK: "{1} Vincitore di girone %group% | ]1,Inf[ %rank%˚ posto di girone %group%"
+RANK: "{1} Vincitore di %group% | ]1,Inf[ %rank%˚ posto di %group%"
 
 GROUPCLASS:
   0: Turno preliminare
@@ -83,14 +83,14 @@ U30/U21: under 30/21
 
 FORM:
     SEL_TMNT:
-      TITLE: iCup Turneringsvalg
-      SUBTITLE: Vælg turnering du ønsker at arbejde med
-      DESCRIPTION: For at se resultater og stilling vælger du turneringen du gerne vil følge. Herunder kan du vælge en turnering fra listen ved at klikke på turneringsnavnet.
-      CAPTION: Turneringer
+      TITLE: iCup Tournament Selection
+      SUBTITLE: Choose the tournament you want to review
+      DESCRIPTION: If you would like to review results and standings then select a tournament from the list. Just click on the name of the tournament you want to review.
+      CAPTION: Tournaments
       LEGEND:
-          NAME: Turneringsnavn
-          EDITION: Udgave
-          DESCRIPTION: Beskrivelse
+          NAME: Name of tournament
+          EDITION: Edition
+          DESCRIPTION: Description
 
 # Statistics page translations
     STATISTICS:
@@ -105,8 +105,8 @@ FORM:
         FEMALETEAMS: -- female teams
         MALETEAMS: -- male teams
         ADULTTEAMS: -- teams over 18
-        CHILDTEAMS:	-- teams under 18
-        CATEGORIES:	Categories available in the tournament
+        CHILDTEAMS: -- teams under 18
+        CATEGORIES: Categories available in the tournament
         GROUPS:	Groups in the preliminary round
         SITES: Sites used in the tournament
         PLAYGROUNDS: Playgrounds used during the tournament
@@ -133,12 +133,12 @@ FORM:
           DESC: Find teams participating the tournament and see the results.
         WINNERS:
           TITLE: The winners
-          DESC: Discover the winners from all categories of this tournament.
+          DESC: Discover the winners from all categories of this tournament and visit the hall of fame.
         STATISTICS:
           TITLE: Team statistics
-          DESC: See the hall of fame and other interesting figures from the tournament.
-
+          DESC:  Look up some interesting figures from the tournament.
+          
     EDITRESULTS:
         TITLE: Aggiornamento dei risultati
-        SUBMIT: Gem resultater
-        CANCEL: Fortryd indtastning
+        SUBMIT: Save results
+        CANCEL: Cancel changes

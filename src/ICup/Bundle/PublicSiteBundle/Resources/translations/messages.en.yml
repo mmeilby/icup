@@ -24,4 +24,4 @@ MONTH:
 FORMAT:
   DATE: j/n/Y
   TIME: g:ia
-  LONGDATE: "{1,21,31} %week% %month% %day%st %year% | {2,22} %week% %month% %day%nd %year% | {3,23} %week% %month% %day%rd %year% | [4,20] %week% %month% %day%th %year% | [24,30] %week% %month% %day%th %year%"
+  LONGDATE: "{1,21,31} %week%, %month% %day%st %year% | {2,22} %week%, %month% %day%nd %year% | {3,23} %week%, %month% %day%rd %year% | [4,20] %week%, %month% %day%th %year% | [24,30] %week%, %month% %day%th %year%"

@@ -3,16 +3,56 @@
 
 {% import _self as formatter %}
 
-{% macro club(team, context) %}
-    {% if team is not null %}
-        <table>
+{% macro club(team, group, tag, context) %}
             <tr>
-                <td class="flag"><img src="{{ context.imagepath }}/flags/{{ context.countries[team.country].flag }}" alt="{{ team.country|trans({},'lang') }}" title="{{ team.country|trans({},'lang') }}"></td>
-                <td class="team"><a href="{{ path('_showteam', { 'tournament': context.tournament.key, 'teamid': team.id, 'groupid': team.group }) }}">{{ team.name }}</a></td>
-                <td class="score">{{ team.score }}</td>
-            </tr>
-        </table>
+    {% if team.id > 0 %}
+                <td class="flag">
+                    <img src="{{ context.imagepath }}/flags/{{ context.countries[team.country].flag }}"
+                         alt="{{ team.country|trans({},'lang') }}"
+                         title="{{ team.country|trans({},'lang') }}">
+                </td>
+                <td class="team{{ tag }}">
+    {% if team.rank != '' %}
+                    <div class="rank">{{ team.rank }}</div>
     {% endif %}
+                    <a href="{{ path('_showteam', { 'tournament': context.tournament.key,
+                                                    'teamid': team.id,
+                                                    'groupid': group.id }) }}">{{ team.name }}</a>
+                </td>
+                <td class="score{{ tag }}">{{ team.score }}</td>
+    {% else %}
+                <td class="flag"></td>
+                <td class="team">{{ team.rank }}</td>
+                <td class="score"></td>
+    {% endif %}
+            </tr>
+{% endmacro %}
+
+{% macro match(match, context) %}
+        <table>
+            {{ context.formatter.club(match.home, match.group, match.home.score > match.away.score ? ' winner' : '', context) }}
+            <tr>
+                <td class="flag"></td>
+                <td class="team">
+                    <div class="rank">
+                        {% trans %}LEGEND.NO{% endtrans %}: {{ match.matchno }} - 
+                        {{ ['GROUPCLASS.',match.group.classification]|join|trans([],'tournament') }}
+{% if match.group.classification == 8 %}
+                        {{ match.group.name }}
+{% endif %}                        
+                        <br/>
+                        {{ 'FORMAT.LONGDATE'|transchoice(match.schedule|date('j'), {
+                            '%week%': ['WEEK.',match.schedule|date('D')|upper]|join|trans([],'messages')|capitalize,
+                            '%day%': match.schedule|date('j'),
+                            '%month%': ['MONTH.',match.schedule|date('M')|upper]|join|trans([],'messages'),
+                            '%year%': match.schedule|date('Y')}, 'messages') }}<br/>
+                        {% trans %}LEGEND.TIME{% endtrans %}: {{ match.schedule|date('FORMAT.TIME'|trans([],'messages')) }}
+                    </div>
+                </td>
+                <td class="score"></td>
+            </tr>
+            {{ context.formatter.club(match.away, match.group, match.away.score > match.home.score ? ' winner' : '', context) }}
+        </table>
 {% endmacro %}
         
 {% block body %}
@@ -30,47 +70,65 @@
 <div class="tab" onclick="location.href='{{ path('_showcategory', {'tournament': tournament.key, 'categoryid': category.id }) }}'">{{ 'PRELIMINARY'|trans|upper }}</div>
 <div class="tab" onclick="location.href='{{ path('_showcategory_classification', {'tournament': tournament.key, 'categoryid': category.id }) }}'">{{ 'CLASSIFICATION'|trans|upper }}</div>
 <div class="tab active" onclick="location.href='{{ path('_showcategory_finals', {'tournament': tournament.key, 'categoryid': category.id }) }}'">{{ 'FINALS'|trans|upper }}</div>
-{% if champions.SA is not null or champions.SC is not null or champions.FA is not null or champions.FC is not null %}
+{% if champions|length > 0 %}
 <table>
     <caption>{% trans %}STANDING{% endtrans %}</caption>
-    {% if champions.SA is null and champions.SC is null %}
+    {% if not 'S' in champions|keys %}
     <thead>
         <tr><td>{{ 'FINALS'|trans|upper }}</td></tr>
     </thead>
     <tbody>
         <tr><td class="spacer"></td></tr>
-    {% if champions.FA is not null %}
-        <tr><td class="finalsA{{ champions.FA.score > champions.FB.score ? ' winner' : '' }}">{{ formatter.club(champions.FA, _context) }}</td></tr>
-        <tr><td class="finalsB{{ champions.FB.score > champions.FA.score ? ' winner' : '' }}">{{ formatter.club(champions.FB, _context) }}</td></tr>
+    {% if 'F' in champions|keys %}
+        <tr><td rowspan="2" class="finals">
+                {{ formatter.match(champions.F[0], _context) }}
+            </td>
+        </tr>
+        <tr><td></td></tr>
     {% endif %}
-    {% if champions.FC is not null %}
+    {% if 'B' in champions|keys %}
         <tr><td class="spacer">{% trans %}BRONZEMATCH{% endtrans %}</td></tr>
-        <tr><td class="finalsA{{ champions.FC.score > champions.FD.score ? ' winner' : '' }}">{{ formatter.club(champions.FC, _context) }}</td></tr>
-        <tr><td class="finalsB{{ champions.FD.score > champions.FC.score ? ' winner' : '' }}">{{ formatter.club(champions.FD, _context) }}</td></tr>
+         <tr><td rowspan="2" class="finals">
+                {{ formatter.match(champions.B[0], _context) }}
+            </td>
+        </tr>
+        <tr><td></td></tr>
     {% endif %}
     </tbody>
     {% else %}
     <thead>
-        <tr><td>{{ 'SEMIFINALS'|trans|upper }}</td><td></td><td></td><td>{{ 'FINALS'|trans|upper }}</td></tr>
+        <tr><td>{{ 'SEMIFINALS'|trans|upper }}</td><td colspan="2"></td><td>{{ 'FINALS'|trans|upper }}</td></tr>
     </thead>
     <tbody>
-        <tr><td></td><td></td><td></td><td class="spacer"></td></tr>
-    {% if champions.SA is not null %}
-        <tr><td class="finalsA{{ champions.SA.score > champions.SB.score ? ' winner' : '' }}">{{ formatter.club(champions.SA, _context) }}</td><td></td><td></td><td></td></tr>
-        <tr><td class="finalsB{{ champions.SB.score > champions.SA.score ? ' winner' : '' }}">{{ formatter.club(champions.SB, _context) }}</td><td class="lineED"></td><td></td><td></td></tr>
+        <tr><td/><td/><td/><td class="spacer"></td></tr>
+    {% if 'S' in champions|keys %}
+        <tr><td rowspan="2" class="finals">
+                {{ formatter.match(champions.S[0], _context) }}
+            </td><td class="filler"></td><td/><td/></td>
+        </tr>
+        <tr><td class="lineED"></td><td/><td/></tr>
     {% endif %}
-    {% if champions.FA is not null %}
-        <tr><td></td><td></td><td class="lineSD"></td><td class="finalsA{{ champions.FA.score > champions.FB.score ? ' winner' : '' }}">{{ formatter.club(champions.FA, _context) }}</td></tr>
-        <tr><td></td><td></td><td class="lineSU"></td><td class="finalsB{{ champions.FB.score > champions.FA.score ? ' winner' : '' }}">{{ formatter.club(champions.FB, _context) }}</td></tr>
+    {% if 'F' in champions|keys %}
+        <tr><td/><td/><td class="lineSD filler"></td><td rowspan="2" class="finals">
+                {{ formatter.match(champions.F[0], _context) }}
+            </td>
+        </tr>
+        <tr><td/><td/><td class="lineSU"></td></tr>
     {% endif %}
-    {% if champions.SC is not null %}
-        <tr><td class="finalsA{{ champions.SC.score > champions.SD.score ? ' winner' : '' }}">{{ formatter.club(champions.SC, _context) }}</td><td class="lineEU"></td><td></td><td></td></tr>
-        <tr><td class="finalsB{{ champions.SD.score > champions.SC.score ? ' winner' : '' }}">{{ formatter.club(champions.SD, _context) }}</td><td></td><td></td><td></td></tr>
+    {% if 'S' in champions|keys %}
+        <tr><td rowspan="2" class="finals">
+                {{ formatter.match(champions.S[1], _context) }}
+            </td><td class="lineEU filler"></td><td/><td/>
+        </tr>
+        <tr><td/><td/><td/></tr>
     {% endif %}
-    {% if champions.FC is not null %}
-        <tr><td></td><td></td><td></td><td class="spacer">{% trans %}BRONZEMATCH{% endtrans %}</td></tr>
-        <tr><td></td><td></td><td></td><td class="finalsA{{ champions.FC.score > champions.FD.score ? ' winner' : '' }}">{{ formatter.club(champions.FC, _context) }}</td></tr>
-        <tr><td></td><td></td><td></td><td class="finalsB{{ champions.FD.score > champions.FC.score ? ' winner' : '' }}">{{ formatter.club(champions.FD, _context) }}</td></tr>
+    {% if 'B' in champions|keys %}
+        <tr><td/><td/><td/><td class="spacer">{% trans %}BRONZEMATCH{% endtrans %}</td></tr>
+        <tr><td/><td/><td/><td rowspan="2" class="finals">
+                {{ formatter.match(champions.B[0], _context) }}
+            </td>
+        </tr>
+        <tr><td/><td/><td/></tr>
     {% endif %}
     </tbody>
     {% endif %}

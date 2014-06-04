@@ -88,11 +88,17 @@ class MatchSupport
         $matchRec = array();
         if (array_key_exists('Q', $matchList)) {
             $qmatch = $matchList['Q'];
-            $matchRec = array_merge($matchRec, $qmatch); 
+            $matchRec = array_merge($matchRec, $qmatch);
+            if ($qmatch['classification'] > 0) {
+                $groupname = $this->container->get('translator')->trans('GROUPCLASS.'.$qmatch['classification'], array(), 'tournament');
+            }
+            else {
+                $groupname = $this->container->get('translator')->trans('GROUP', array(), 'tournament');
+            }
             $rankTxt = $this->container->get('translator')->
                             transChoice('RANK', $qmatch['rank'],
                                     array('%rank%' => $qmatch['rank'],
-                                          '%group%' => $qmatch['gname']), 'tournament');
+                                          '%group%' => strtolower($groupname).' '.$qmatch['gname']), 'tournament');
             $matchRec['rank'] = $rankTxt;
             $matchRec['team'] = '';
             $matchRec['division'] = '';
@@ -235,7 +241,7 @@ class MatchSupport
     private function queryQMatchListWithGroupPlayground($groupid, $playgroundid) {
         $qb = $this->em->createQuery(
                 "select m.id as mid,m.matchno,m.date,m.time,".
-                       "q.id as rid,q.awayteam,q.rank,g.id as rgrp,g.name as gname ".
+                       "q.id as rid,q.awayteam,q.rank,g.id as rgrp,g.name as gname,g.classification ".
                 "from ".$this->entity->getRepositoryPath('QMatchRelation')." q, ".
                         $this->entity->getRepositoryPath('Match')." m, ".
                         $this->entity->getRepositoryPath('Group')." g ".
@@ -280,7 +286,7 @@ class MatchSupport
         $qb = $this->em->createQuery(
                 "select m.id as mid,m.matchno,m.date,m.time,".
                        "p.id as pid,p.no,p.name as playground,".
-                       "q.id as rid,q.awayteam,q.rank,g.id as rgrp,g.name as gname ".
+                       "q.id as rid,q.awayteam,q.rank,g.id as rgrp,g.name as gname,g.classification ".
                 "from ".$this->entity->getRepositoryPath('QMatchRelation')." q, ".
                         $this->entity->getRepositoryPath('Match')." m, ".
                         $this->entity->getRepositoryPath('Playground')." p, ".
@@ -332,7 +338,7 @@ class MatchSupport
                 "select m.id as mid,m.matchno,m.date,m.time,".
                        "g.id as gid,g.name as grp,".
                        "cat.id as cid,cat.name as category,".
-                       "q.id as rid,q.awayteam,q.rank,gq.id as rgrp,gq.name as gname ".
+                       "q.id as rid,q.awayteam,q.rank,gq.id as rgrp,gq.name as gname,gq.classification ".
                 "from ".$this->entity->getRepositoryPath('QMatchRelation')." q, ".
                         $this->entity->getRepositoryPath('Match')." m, ".
                         $this->entity->getRepositoryPath('Group')." g, ".
@@ -388,7 +394,7 @@ class MatchSupport
         $qb = $this->em->createQuery(
                 "select m.id as mid,m.matchno,m.date,m.time,".
                        "p.id as pid,p.no,p.name as playground,".
-                       "q.awayteam,q.rank,g.id as rgrp,g.name as gname ".
+                       "q.awayteam,q.rank,g.id as rgrp,g.name as gname,g.classification ".
                 "from ".$this->entity->getRepositoryPath('QMatchRelation')." q, ".
                         $this->entity->getRepositoryPath('Match')." m, ".
                         $this->entity->getRepositoryPath('Playground')." p, ".
@@ -442,7 +448,7 @@ class MatchSupport
                 "select m.id as mid,m.matchno,m.date,m.time,".
                        "g.id as gid,g.name as grp,".
                        "cat.id as cid,cat.name as category,".
-                       "q.id as rid,q.awayteam,q.rank,gq.id as rgrp,gq.name as gname ".
+                       "q.id as rid,q.awayteam,q.rank,gq.id as rgrp,gq.name as gname,gq.classification ".
                 "from ".$this->entity->getRepositoryPath('QMatchRelation')." q, ".
                         $this->entity->getRepositoryPath('Match')." m, ".
                         $this->entity->getRepositoryPath('Group')." g, ".

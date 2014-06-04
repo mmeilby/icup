@@ -53,22 +53,35 @@ class CategoryController extends Controller
         $tournament = $this->get('util')->getTournament();
         $category = $this->get('entity')->getCategoryById($categoryid);
         $groups = $this->get('logic')->listGroupsFinals($categoryid);
-        $champions = array('SA'=>null,'SB'=>null,'SC'=>null,'SD'=>null,'FA'=>null,'FB'=>null,'FC'=>null,'FD'=>null);
+        $classes = array(10 => 'F', 9 => 'B', 8 => 'S');
+        $champions = array();
         foreach ($groups as $group) {
+            $matchList = $this->get('Match')->listMatchesByGroup($group->getId());
+            foreach ($matchList as &$match) {
+                $match['group'] = $group;
+            }
+            $key = $classes[$group->getClassification()];
+            if (array_key_exists($key, $champions)) {
+                $champions[$key] = array_merge($champions[$key], $matchList);
+            }
+            else {
+                $champions[$key] = $matchList;
+            }
+/*            
             $teamsList = $this->get('orderTeams')->sortGroup($group->getId());
             foreach ($teamsList as $team) {
                 $keys = array();
                 switch ($group->getClassification()) {
                     case 10:
-                        /* finals */
+                        // finals
                         $keys = array('FA', 'FB');
                         break;
                     case 9:
-                        /* 3/4 position */
+                        // 3/4 position
                         $keys = array('FC', 'FD');
                         break;
                     case 8:
-                        /* semifinals */
+                        // semifinals
                         $keys = array('SA', 'SB', 'SC', 'SD');
                         break;
                 }
@@ -79,6 +92,8 @@ class CategoryController extends Controller
                     }
                 }
             }
+ * 
+ */
         }
         return array('tournament' => $tournament, 'category' => $category, 'champions' => $champions);
     }

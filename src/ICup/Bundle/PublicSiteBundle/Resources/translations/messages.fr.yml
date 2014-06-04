@@ -22,5 +22,6 @@ MONTH:
   DEC: décembre
   
 FORMAT:
-  DATE: j-n-Y
+  DATE: j/n/Y
   TIME: G:i
+  LONGDATE: "[1,Inf[ %week% %day% %month% %year%"

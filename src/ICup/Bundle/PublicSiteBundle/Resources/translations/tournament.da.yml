@@ -24,7 +24,7 @@ FIRST: Vinder
 SECOND: 2. plads
 THIRD: 3. plads
 FORTH: 4. plads
-RANK: "{1} Vinder af pulje %group% | ]1,Inf[ %rank%. plads i pulje %group%"
+RANK: "{1} Vinder af %group% | ]1,Inf[ %rank%. plads i %group%"
 
 GROUPCLASS:
   0: Grundspil

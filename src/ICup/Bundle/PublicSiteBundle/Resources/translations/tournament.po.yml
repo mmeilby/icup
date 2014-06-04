@@ -24,7 +24,7 @@ FIRST: Zwycięzca
 SECOND: Drugie miejsce 
 THIRD: Trzecie miejsce 
 FORTH: Czwarte miejsce 
-RANK: "{1} Zwycięzca grupa %group% | ]1,Inf[ Nr. %rank% grupa %group%"
+RANK: "{1} Zwycięzca %group% | ]1,Inf[ Nr. %rank% %group%"
 
 GROUPCLASS:
   0: Preliminary round

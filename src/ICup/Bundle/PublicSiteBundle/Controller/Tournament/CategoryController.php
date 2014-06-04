@@ -67,33 +67,6 @@ class CategoryController extends Controller
             else {
                 $champions[$key] = $matchList;
             }
-/*            
-            $teamsList = $this->get('orderTeams')->sortGroup($group->getId());
-            foreach ($teamsList as $team) {
-                $keys = array();
-                switch ($group->getClassification()) {
-                    case 10:
-                        // finals
-                        $keys = array('FA', 'FB');
-                        break;
-                    case 9:
-                        // 3/4 position
-                        $keys = array('FC', 'FD');
-                        break;
-                    case 8:
-                        // semifinals
-                        $keys = array('SA', 'SB', 'SC', 'SD');
-                        break;
-                }
-                foreach ($keys as $key) {
-                    if ($champions[$key] == null) {
-                        $champions[$key] = $team;
-                        break;
-                    }
-                }
-            }
- * 
- */
         }
         return array('tournament' => $tournament, 'category' => $category, 'champions' => $champions);
     }

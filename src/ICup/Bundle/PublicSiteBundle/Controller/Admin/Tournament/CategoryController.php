@@ -120,7 +120,7 @@ class CategoryController extends Controller
     private function makeCategoryForm($category, $action) {
         $gender = array( 'M' => 'FORM.CATEGORY.SEX.MALE', 'F' => 'FORM.CATEGORY.SEX.FEMALE' );
         $classifications = array();
-        foreach (array('U12','U14','U16','U18','U21','U30','U30/U21') as $id) {
+        foreach (array('U12','U14','U16','U18','U21','U30','U30/U21','O18') as $id) {
             $classifications[$id] = 'FORM.CATEGORY.CLASS.'.$id;
         }
         $formDef = $this->createFormBuilder($category);

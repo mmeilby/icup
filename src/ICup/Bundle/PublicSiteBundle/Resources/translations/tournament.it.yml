@@ -62,6 +62,7 @@ MU12: Maschile
 MU14: Maschile
 MU16: Maschile
 MU18: Maschile
+MO18: Maschile
 MU21: Maschile
 MU30: Maschile
 MU30/U21: Maschile
@@ -69,6 +70,7 @@ FU12: Femminile
 FU14: Femminile
 FU16: Femminile
 FU18: Femminile
+FO18: Femminile
 FU21: Femminile
 FU30: Femminile
 FU30/U21: Femminile
@@ -77,6 +79,7 @@ U12: under 12
 U14: under 14
 U16: under 16
 U18: under 18
+O18: over 18
 U21: under 21
 U30: under 30
 U30/U21: under 30/21

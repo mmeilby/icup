@@ -151,6 +151,7 @@ FORM:
       U21: Under 21
       U30: Under 30
       U30/U21: Under 30/21
+      O18: Senior
     SUBMIT:
       ADD: Tilføj ny gruppe
       CHG: Gem gruppe

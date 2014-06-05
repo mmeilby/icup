@@ -62,21 +62,24 @@ MU12: Drenge
 MU14: Drenge
 MU16: Drenge
 MU18: Drenge
-MU21: Mænd
-MU30: Mænd
-MU30/U21: Mænd
+MO18: Herre
+MU21: Herrer
+MU30: Herrer
+MU30/U21: Herrer
 FU12: Piger
 FU14: Piger
 FU16: Piger
 FU18: Piger
+FO18: Dame
 FU21: Piger
-FU30: Kvinder
-FU30/U21: Kvinder
+FU30: Damer
+FU30/U21: Damer
 
 U12: Under 12
 U14: Under 14
 U16: Under 16
 U18: Under 18
+O18: Senior
 U21: Under 21
 U30: Under 30
 U30/U21: Under 30/21

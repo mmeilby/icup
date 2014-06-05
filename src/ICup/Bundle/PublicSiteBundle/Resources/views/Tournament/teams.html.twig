@@ -26,8 +26,9 @@
                     <a href="{{ path('_showcategory', { 'tournament': tournament.key, 'categoryid': categories[catid].id }) }}">
                         <b>{% trans %}CATEGORY{% endtrans %} {{ categories[catid].name }}</b>
                     </a><br />
-                        {{ [categories[catid].gender,categories[catid].classification]|join|trans }}
-                        {{ categories[catid].classification|trans }}
+                        {{ ['GENDER.',
+                            categories[catid].gender,
+                            categories[catid].classification]|join|transchoice(categories[catid].age, { '%age%': categories[catid].age },'tournament') }}
                 </td>
                 <td class="teams">
     {% for team in category %}

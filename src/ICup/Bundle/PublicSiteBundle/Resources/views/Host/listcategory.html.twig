@@ -11,8 +11,9 @@
 <h2 class="category">{% trans from 'tournament' %}CATEGORY{% endtrans %} {{ category.name }}</h2>
 </a>
 <p class="subcategory">
-    {{ [category.gender,category.classification]|join|trans({},'tournament') }}
-    {{ category.classification|trans({},'tournament')|lower }}
+    {{ ['GENDER.',
+        category.gender,
+        category.classification]|join|transchoice(category.age, { '%age%': category.age },'tournament') }}
 </p>
 <div style="float:left;margin-right: 5px;">
 {% if grouplist|length > 0 %}

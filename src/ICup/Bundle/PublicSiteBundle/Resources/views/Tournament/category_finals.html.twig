@@ -64,8 +64,9 @@
     <h1 class="category">{% trans %}CATEGORY{% endtrans %} {{ category.name }}</h1>
 </a>
 <p class="subcategory">
-    {{ [category.gender,category.classification]|join|trans }}
-    {{ category.classification|trans|lower }}
+    {{ ['GENDER.',
+        category.gender,
+        category.classification]|join|transchoice(category.age, { '%age%': category.age },'tournament') }}
 </p>
 <div class="tab" onclick="location.href='{{ path('_showcategory', {'tournament': tournament.key, 'categoryid': category.id }) }}'">{{ 'PRELIMINARY'|trans|upper }}</div>
 <div class="tab" onclick="location.href='{{ path('_showcategory_classification', {'tournament': tournament.key, 'categoryid': category.id }) }}'">{{ 'CLASSIFICATION'|trans|upper }}</div>

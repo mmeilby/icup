@@ -34,8 +34,9 @@
                     <a href="{{ path('_showcategory', { 'tournament': tournament.key, 'categoryid': femalecategorylist[i].id }) }}">
                         <b>{% trans %}CATEGORY{% endtrans %} {{ femalecategorylist[i].name }}</b>
                     </a><br />
-                        {{ [femalecategorylist[i].gender,femalecategorylist[i].classification]|join|trans }}
-                        {{ femalecategorylist[i].classification|trans|lower }}
+                        {{ ['GENDER.',
+                            femalecategorylist[i].gender,
+                            femalecategorylist[i].classification]|join|transchoice(femalecategorylist[i].age, { '%age%': femalecategorylist[i].age },'tournament') }}
                 </td>
         {% else %}
                 <td class="categories"></td>
@@ -45,8 +46,9 @@
                     <a href="{{ path('_showcategory', { 'tournament': tournament.key, 'categoryid': malecategorylist[i].id }) }}">
                         <b>{% trans %}CATEGORY{% endtrans %} {{ malecategorylist[i].name }}</b>
                     </a><br />
-                        {{ [malecategorylist[i].gender,malecategorylist[i].classification]|join|trans }}
-                        {{ malecategorylist[i].classification|trans|lower }}
+                        {{ ['GENDER.',
+                            malecategorylist[i].gender,
+                            malecategorylist[i].classification]|join|transchoice(malecategorylist[i].age, { '%age%': malecategorylist[i].age },'tournament') }}
                 </td>
             </tr>
         {% else %}

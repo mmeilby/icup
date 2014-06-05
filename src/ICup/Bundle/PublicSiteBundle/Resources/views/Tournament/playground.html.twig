@@ -33,8 +33,9 @@
     <h1 class="category">{% trans %}CATEGORY{% endtrans %} {{ category.name }}</h1>
 </a>
 <p class="subcategory">
-    {{ [category.gender,category.classification]|join|trans }}
-    {{ category.classification|trans }}
+    {{ ['GENDER.',
+        category.gender,
+        category.classification]|join|transchoice(category.age, { '%age%': category.age },'tournament') }}
 </p>
 <a href="{{ path('_showcategory', { 'tournament': tournament.key, 'categoryid': category.id }) }}">
     <h2 class="group">{% trans %}GROUP{% endtrans %} {{ group.name }}</h2>

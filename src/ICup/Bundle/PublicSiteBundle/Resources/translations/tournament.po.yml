@@ -57,32 +57,11 @@ LEGEND:
 CLASS: Klasa 
 FEMALE: Kobiety
 MALE: Mężczyźni
-
-MU12: Mężczyźni
-MU14: Mężczyźni
-MU16: Mężczyźni
-MU18: Mężczyźni
-MO18: Mężczyźni
-MU21: Mężczyźni
-MU30: Mężczyźni
-MU30/U21: Mężczyźni
-FU12: Kobiety
-FU14: Kobiety
-FU16: Kobiety
-FU18: Kobiety
-FO18: Kobiety
-FU21: Kobiety
-FU30: Kobiety
-FU30/U21: Kobiety
-
-U12: poniżej 12 
-U14: poniżej 14 
-U16: poniżej 16 
-U18: poniżej 18 
-O18: over 18 
-U21: poniżej 21 
-U30: poniżej 30 
-U30/U21: poniżej 30/21 
+GENDER:
+  FU: "[1,Inf[ Kobiety poniżej %age%"
+  FO: "[1,Inf[ Kobiety over %age%"
+  MU: "[1,Inf[ Mężczyźni poniżej %age%"
+  MO: "[1,Inf[ Mężczyźni over %age%"
 
 FORM:
     SEL_TMNT:

@@ -43,15 +43,18 @@
                 <h2 class="category">{% trans %}CATEGORY{% endtrans %} {{ category.name }}</h2>
             </a>
             <p class="subcategory">
-                {{ [category.gender,category.classification]|join|trans }}
-                {{ category.classification|trans }}
+                {{ ['GENDER.',
+                    category.gender,
+                    category.classification]|join|transchoice(category.age, { '%age%': category.age },'tournament') }}
             </p>
         </td>
     </tr>
 </table>
 <p>
     <table>
-        <caption>{% trans %}GROUP{% endtrans %} {{ group.name }} - {{ ['GROUPCLASS.',group.classification]|join|trans }} - {{ group.playingtime }} {% trans %}MINUTES{% endtrans %}</caption>
+        <caption>{% trans %}GROUP{% endtrans %} {{ group.name }} - 
+            {{ ['GROUPCLASS.',group.classification]|join|trans }} - 
+            {{ group.playingtime }} {% trans %}MINUTES{% endtrans %}</caption>
         <thead>
             <tr>
                 <td class="flag"></td>

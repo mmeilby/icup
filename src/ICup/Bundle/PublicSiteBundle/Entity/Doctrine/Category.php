@@ -49,7 +49,12 @@ class Category
      */
     private $classification;
 
-
+    /**
+     * @var string $age
+     *
+     * @ORM\Column(name="age", type="string", length=10, nullable=false)
+     */
+    private $age;
 
     /**
      * Get id
@@ -151,5 +156,28 @@ class Category
     public function getClassification()
     {
         return $this->classification;
+    }
+    
+    /**
+     * Set age limit
+     *
+     * @param string $age
+     * @return Category
+     */
+    public function setAge($age)
+    {
+        $this->age = $age;
+    
+        return $this;
+    }
+
+    /**
+     * Get age limit
+     *
+     * @return string 
+     */
+    public function getAge()
+    {
+        return $this->age;
     }
 }

@@ -127,6 +127,7 @@ FORM:
     NONAME: Et gruppenavn skal angives.
     NOGENDER: Gruppens forudsætning for køn for de tilmeldte hold skal angives.
     NOCLASSIFICATION: Alderskategori for gruppen skal angives.
+    NOAGE: Aldersgrænse skal angives (i antal år).
     GROUPSEXIST: Der er knyttet puljer til denne gruppe. Gruppen kan ikke fjernes.
     ENROLLEDEXIST: Der er tilmeldt hold til denne gruppe. Gruppen kan ikke fjernes.
     TITLE:
@@ -144,14 +145,9 @@ FORM:
       MALE: Mænd
     CLASSIFICATION: Alderskategori
     CLASS:
-      U12: Under 12
-      U14: Under 14
-      U16: Under 16
-      U18: Under 18
-      U21: Under 21
-      U30: Under 30
-      U30/U21: Under 30/21
-      O18: Senior
+      UNDER: Alder højest (U)
+      OVER: Alder mindst (O)
+    AGE: Aldersgrænse
     SUBMIT:
       ADD: Tilføj ny gruppe
       CHG: Gem gruppe

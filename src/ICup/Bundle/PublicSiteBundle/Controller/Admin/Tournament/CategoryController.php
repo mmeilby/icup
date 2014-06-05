@@ -119,14 +119,12 @@ class CategoryController extends Controller
     
     private function makeCategoryForm($category, $action) {
         $gender = array( 'M' => 'FORM.CATEGORY.SEX.MALE', 'F' => 'FORM.CATEGORY.SEX.FEMALE' );
-        $classifications = array();
-        foreach (array('U12','U14','U16','U18','U21','U30','U30/U21','O18') as $id) {
-            $classifications[$id] = 'FORM.CATEGORY.CLASS.'.$id;
-        }
+        $classifications = array( 'U' => 'FORM.CATEGORY.CLASS.UNDER', 'O' => 'FORM.CATEGORY.CLASS.OVER' );
         $formDef = $this->createFormBuilder($category);
         $formDef->add('name', 'text', array('label' => 'FORM.CATEGORY.NAME', 'required' => false, 'disabled' => $action == 'del', 'translation_domain' => 'admin'));
         $formDef->add('gender', 'choice', array('label' => 'FORM.CATEGORY.GENDER', 'required' => false, 'choices' => $gender, 'empty_value' => 'FORM.CATEGORY.DEFAULT', 'disabled' => $action == 'del', 'translation_domain' => 'admin'));
         $formDef->add('classification', 'choice', array('label' => 'FORM.CATEGORY.CLASSIFICATION', 'required' => false, 'choices' => $classifications, 'empty_value' => 'FORM.CATEGORY.DEFAULT', 'disabled' => $action == 'del', 'translation_domain' => 'admin'));
+        $formDef->add('age', 'text', array('label' => 'FORM.CATEGORY.AGE', 'required' => false, 'disabled' => $action == 'del', 'translation_domain' => 'admin'));
         $formDef->add('cancel', 'submit', array('label' => 'FORM.CATEGORY.CANCEL.'.strtoupper($action), 'translation_domain' => 'admin'));
         $formDef->add('save', 'submit', array('label' => 'FORM.CATEGORY.SUBMIT.'.strtoupper($action), 'translation_domain' => 'admin'));
         return $formDef->getForm();
@@ -136,18 +134,17 @@ class CategoryController extends Controller
         if ($form->isValid()) {
             if ($category->getName() == null || trim($category->getName()) == '') {
                 $form->addError(new FormError($this->get('translator')->trans('FORM.CATEGORY.NONAME', array(), 'admin')));
-                return false;
             }
             if ($category->getGender() == null) {
                 $form->addError(new FormError($this->get('translator')->trans('FORM.CATEGORY.NOGENDER', array(), 'admin')));
-                return false;
             }
             if ($category->getClassification() == null) {
                 $form->addError(new FormError($this->get('translator')->trans('FORM.CATEGORY.NOCLASSIFICATION', array(), 'admin')));
-                return false;
             }
-            return true;
+            if ($category->getAge() == null || trim($category->getAge()) == '') {
+                $form->addError(new FormError($this->get('translator')->trans('FORM.CATEGORY.NOAGE', array(), 'admin')));
+            }
         }
-        return false;
+        return $form->isValid();
     }
 }

@@ -7,20 +7,20 @@ FORM:
       CHG: Change informations
       DEL: REMOVE CLUB FROM iCup
     PROMPT:
-      ADD: Klubben bliver registreret i iCup kluboversigt og får mulighed for at tilmelde hold til de åbne turneringer.
-      CHG: Ret klubinformationer. Ændring af login oplysninger skal foretages ved at følge linket.
-      DEL: Klubben fjernes fra kluboversigten og alle hold og kampe knyttet til klubbens aktiviteter slettes. Det er ikke muligt at fortryde når klubben er fjernet.
+      ADD: The club is registered in the iCup list of clubs and is allowed to enroll teams for the open tournaments.
+      CHG: Change club information. Change of log in information should be conducted using the link.
+      DEL: The club is removed from the list of clubs and all teams related are removed as well. You can not undo this action.
   NEWUSER:
-    TITLE: Du har valgt at oprette et ny profil. Indtast følgende oplysninger til brug for profilen.
+    TITLE: You have decided to register a new profile. Enter the following information.
     SECTION:
-      HEADER: Første gang?
-      TEXT: Er din klub ikke på iCup kan du oprette en klubprofil om lidt.<br /><br />Start med at oprette din personlige profil.
+      HEADER: First time?
+      TEXT: If you can not find your club on iCup then create your own club profile in a moment.<br /><br />Start register your personal profile.
   NEWCLUB:
-    CAPTION: Resultat af søgning
-    LEGEND: Klubber
-    NOCLUBS: Ingen klubber passer til det søgte
-    MORECLUBS: Mange klubber passer til det søgte (et udvalg er vist her) - fortsæt indtastning eller vælg en af klubberne
-    INFO: Hvis du vil knyttes til en klub der står i listen, skal du klikke på klubbens navn.
+    CAPTION: Search result
+    LEGEND: Clubs
+    NOCLUBS: No clubs matches the pattern
+    MORECLUBS: There are clubs not shown here that match the pattern. Select one from the list or continue narrow the search.
+    INFO: If you want to connect to a club from the list then click on the name of the club
   LOGIN:
     TITLE: Registration of club and teams must be conducted using an active profile. Log in with your username if you got a profile. Otherwise register a new profile.
     SECTION:
@@ -32,43 +32,43 @@ FORM:
     USERS:
       TITLE: My iCup users
     EDITOR: Editor
-    EDITOR_ADMIN: Editor admin
+    EDITOR_ADMIN: Editor administrator
     ADMIN: Administrator
     DEFAULT_ADMIN: Standard administrator
     CLUBUSER: Club user
-    CLUBADMIN: Ckub admin
-    ATTACHEDTO: Attached to
-    CAPTION: Users attached to this club
-    ATTACHED: Attached
+    CLUBADMIN: Club administrator
+    ATTACHEDTO: Affiliated to
+    CAPTION: Users affiliated to this club
+    ATTACHED: Affiliated
     PROSPECT: Requested for membership
     PROSPECTS:
       AVAILABLE: Requests for membership are pending - show the list...
     DEFADM:
-      WARNING: <b>Skift kodeord for administrator</b><br />Standard administrator er ikke en sikker bruger. Benyt følgende link til at vælge et nyt kodeord til administrator brugeren.
-      LINK: Vælg nyt kodeord til administrator
+      WARNING: <b>Change password for administrator</b><br />Standard administrator is not a safe administrator. Please use the following link to change the password.
+      LINK: Add new password to administrator
     TOURNAMENTS:
-      CAPTION: Turneringer - åbne for tilmelding
-      TOURNAMENT: Turnering
-      TEAMS: Tilmeldte hold
+      CAPTION: Tournaments - open for enrollment
+      TOURNAMENT: Tournament
+      TEAMS: Enrolled teams
     NONREL:
-      TITLE: Vælg en klub
-      TEXT: Din profil er ikke forbundet med en klub. Det er tid til at forbinde med en eksisterende klub. Du kan også vælge at oprette en ny klubprofil. Klik på det følgende link for at forbinde med en ny eller eksisterende klub.
-      LINK: Forbind til klub
+      TITLE: Connect to a club
+      TEXT: Your profile is not connected to a club. It is time to affiliate with an existing club. Or you can create your own club profile to connect to. Follow the link to connect to or create a club.
+      LINK: Connect to a club
   NEWPASS: 
-    NOPASSWORD: Et kodeord skal angives.
-    BADPASSWORD: Det valgte kodeord er ikke gyldigt.
-    NOTEQUAL: Kodeordet er ikke gentaget korrekt - de indtastede kodeord er ikke ens.
-    TITLE: Skift kodeord
-    PROMPT: Et kodeord bør indeholde ...
-    PASSWORD: Kodeord
-    PASSWORD2: Gentag kodeord
-    SUBMIT: Skift kodeord
-    CANCEL: Fortryd ændringer
+    NOPASSWORD: You must enter a password.
+    BADPASSWORD: The password is not valid.
+    NOTEQUAL: Please retype the password properly. The typed passwords are not equal.
+    TITLE: Change password
+    PROMPT: A password should contain ...
+    PASSWORD: Password
+    PASSWORD2: Retype password
+    SUBMIT: Change password
+    CANCEL: Cancel
   LISTENROLLED:
-    TITLE: Vis tilmeldte hold til turneringen
-    CAPTION: Antal tilmeldte hold per gruppe
+    TITLE: Show enrolled teams for the tournament
+    CAPTION: No. of enrolled teams per category
   ERROR:
     BACK: Back...
-    NAMEEXIST: Klubnavn er allerede anvendt (tilknytning til eksisterende klub foretages af klubadministrator).
-    CANTCHANGENAME: Klubnavn er allerede anvendt. Dette navn kan ikke bruges.
+    NAMEEXIST: The name of the club is in use by another club. Please connect or find a different name.
+    CANTCHANGENAME: The name of the club is in use by another club. You can not change the name.
     NOTOURNAMENT: No tournament has been selected.

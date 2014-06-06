@@ -1,0 +1,102 @@
+ERROR:
+  CLICKFORMORE: Click here to return...
+  NOTOURNAMENT:
+    TITLE: Select a tournament
+    SOLUTION: You are required to choose a tournament in order to view tournament related pages.
+  NOHOST:
+    TITLE: A host is missing
+    SOLUTION: A host must be specified to show the host properties.
+  NOCLUB:
+    TITLE: A club is missing
+    SOLUTION: A club must be specified to show the club properties.
+  INVALIDCATEGORY:
+    TITLE: The category is not valid
+    SOLUTION: The specified category does not exist.
+  INVALIDGROUP:
+    TITLE: The group is not valid
+    SOLUTION: The specified group does not exist.
+  INVALIDGROUPORDER:
+    TITLE: There is a technical problem with the group order
+    SOLUTION: A non existing group was referenced.
+  INVALIDCLUB:
+    TITLE: The club is not valid
+    SOLUTION: The specified club does not exist.
+  INVALIDTEAM:
+    TITLE: The team is not valid
+    SOLUTION: The specified team does not exist.
+  INVALIDENROLLMENT:
+    TITLE: There is a technical problem with the enrollment list
+    SOLUTION: A non existing team enrollment was referenced.
+  INVALIDMATCH:
+    TITLE: There is a technical problem with a match
+    SOLUTION: A non existing match was referenced.
+  INVALIDMATCHRELATION:
+    TITLE: There is a technical pronlem with a match result
+    SOLUTION: A non existing match result was referenced.
+  INVALIDSITE:
+    TITLE: The site is not valid
+    SOLUTION: The specified site does not exist.
+  INVALIDPLAYGROUND:
+    TITLE: The playground is not valid
+    SOLUTION: The specified playground does not exist.
+  INVALIDHOST:
+    TITLE: The host is not valid
+    SOLUTION: The specified host does not exist.
+  INVALIDTOURNAMENT:
+    TITLE: The tournament is not valid
+    SOLUTION: The specified tournament does not exist.
+  INVALIDUSER:
+    TITLE: The user is not valid
+    SOLUTION: The specified user does not exist.
+  NOTEAMS:
+    TITLE: No teams are enrolled this category
+    SOLUTION: It is not possible to cancel enrollment - this club has no enrolled teams in the category
+  NOMORETEAMS:
+    TITLE: No more teams are allowed to enroll this category
+    SOLUTION: The capacity for this category has been reached and no more teams are allowed to enroll.
+  MUSTBEADMIN:
+    TITLE: You are not an administrator
+    SOLUTION: In order to continue this task you must be an administrator.
+  NOTCLUBUSER:
+    TITLE: You must be a club user
+    SOLUTION: In order to continue this task you must be a club user.
+  NOTCLUBADMIN:
+    TITLE: You are not a club administrator for this club
+    SOLUTION: In order to continue this task you must be a club administrator for this club.
+  NOTEDITORADMIN:
+    TITLE: You are not responsible for this tournament
+    SOLUTION: In order to continue this task you must be an editor administrator for this tournament.
+  NEEDTOBEEDITOR:
+    TITLE: You are not an editor
+    SOLUTION: In order to continue this task you must be at least an editor for this tournament.
+  NEEDTOBERELATED:
+    TITLE: You are not affiliated with a club
+    SOLUTION: In order to continue this task you must be affiliated with the club.
+  CANNOTBERELATED:
+    TITLE: You are affiliated with a club
+    SOLUTION: In order to continue this task you can not be affiliated with a club.
+  NOLOCALADMIN:
+    TITLE: Local administrator is not allowed here
+    SOLUTION: In order to continue this task you can not be local administrator. Please upgrade to full administrator.
+  TEAMASSIGNED:
+    TITLE: The team can not be assigned
+    SOLUTION: This team is assigned to another group and can not be reassigned this way.
+  TEAMISNOTASSIGNED:
+    TITLE: The team can not be unassigned
+    SOLUTION: This team is not assigned.
+  TEAMISACTIVE:
+    TITLE: The team can not be unassigned
+    SOLUTION: Matches - planned or completed - are scheduled for this team. You can not unassign it this way.
+  NOTOURNAMENTDATA:
+    TITLE: Required information is missing for the tournament
+    SOLUTION: This tournament needs more information in order to show match schedules, standings and results. Contact the tournament administration or wait a while.
+  INVALIDDATE:
+    TITLE: The specified date is invalid
+    SOLUTION: The date specified for this task is either missing or in a wrong format.
+  CANNOTDELETESELF:
+    TITLE: You can not remove your own profile
+    SOLUTION: To complete this task you need another administrator to remove your profile.
+  INVALIDROLECHANGE:
+    TITLE: Changing the user profile is not allowed
+    SOLUTION: You are about to change the user role, which is not allowed. 
+      

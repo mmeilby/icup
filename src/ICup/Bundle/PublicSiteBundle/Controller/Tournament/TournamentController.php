@@ -19,8 +19,9 @@ class TournamentController extends Controller
         $classMap = array();
         $categoryMap = array();
         foreach ($categories as $category) {
-            $classMap[$category->getClassification()] = $category->getClassification();
-            $cls = $category->getGender() . $category->getClassification();
+            $classification = $category->getClassification() . $category->getAge();
+            $classMap[$classification] = $classification;
+            $cls = $category->getGender() . $classification;
             $categoryMap[$cls][] = $category;
         }
         return array('tournament' => $tournament, 'classifications' => $classMap, 'categories' => $categoryMap);

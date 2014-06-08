@@ -8,6 +8,7 @@ use Monolog\Logger;
 use ICup\Bundle\PublicSiteBundle\Services\Doctrine\Entity;
 use ICup\Bundle\PublicSiteBundle\Services\Doctrine\BusinessLogic;
 use ICup\Bundle\PublicSiteBundle\Entity\TeamInfo;
+use ICup\Bundle\PublicSiteBundle\Entity\Doctrine\Event;
 
 class TournamentSupport
 {
@@ -29,6 +30,101 @@ class TournamentSupport
         $this->logic = $container->get('logic');
         $this->em = $container->get('doctrine')->getManager();
         $this->logger = $logger;
+    }
+    
+    public function listEventsByTournament($tournamentid) {
+        $qb = $this->em->createQuery(
+                "select e.id,e.date,e.event ".
+                "from ".$this->entity->getRepositoryPath('Event')." e ".
+                "where e.pid=:tournament ".
+                "order by e.date asc");
+        $qb->setParameter('tournament', $tournamentid);
+        $eventList = array();
+        foreach ($qb->getResult() as $event) {
+            $eventdate = date_create_from_format("d/m/Y", $event['date']);
+            $event['date'] = $eventdate;
+            $eventList[] = $event;
+        }
+        return $eventList;
+    }
+
+    public function isEnrollmentAllowed($tournamentid, $date) {
+        $qb = $this->em->createQuery(
+                "select e.id,e.date,e.event ".
+                "from ".$this->entity->getRepositoryPath('Event')." e ".
+                "where e.pid=:tournament and ".
+                      "e.event in (1,2) ".
+                "order by e.event asc");
+        $qb->setParameter('tournament', $tournamentid);
+        $status = false;
+        foreach ($qb->getResult() as $event) {
+            $eventdate = date_create_from_format("d/m/Y", $event['date']);
+            if ($event['event'] == Event::$ENROLL_START && $date < $eventdate) {
+                $status = false;
+                break;
+            }
+            else {
+                $status = true;
+            }
+            if ($event['event'] == Event::$ENROLL_STOP && $date < $eventdate) {
+                $status = true;
+            }
+            else {
+                $status = false;
+                break;
+            }
+        }
+        return $status;
+    }
+
+    /* Tournament is open for team enrollment */
+    public static $TMNT_ENROLL = 1;
+    /* Tournament is in progress */
+    public static $TMNT_GOING = 2;
+    /* Tournament is over - hall of fame is visual */
+    public static $TMNT_DONE = 3;
+    
+    public function getTournamentStatus($tournamentid, $date) {
+        $qb = $this->em->createQuery(
+                "select e.id,e.date,e.event ".
+                "from ".$this->entity->getRepositoryPath('Event')." e ".
+                "where e.pid=:tournament and ".
+                      "e.event in (3,4) ".
+                "order by e.event asc");
+        $qb->setParameter('tournament', $tournamentid);
+        $status = TournamentSupport::$TMNT_GOING;
+        foreach ($qb->getResult() as $event) {
+            $eventdate = date_create_from_format("d/m/Y", $event['date']);
+            if ($event['event'] == Event::$MATCH_START && $date < $eventdate) {
+                $status = TournamentSupport::$TMNT_ENROLL;
+            }
+            if ($event['event'] == Event::$MATCH_STOP && $date >= $eventdate) {
+                $status = TournamentSupport::$TMNT_DONE;
+            }
+        }
+        return $status;
+    }
+
+    public function isTournamentArchived($tournamentid, $date) {
+        $qb = $this->em->createQuery(
+                "select e.id,e.date,e.event ".
+                "from ".$this->entity->getRepositoryPath('Event')." e ".
+                "where e.pid=:tournament and e.event=9");
+        $qb->setParameter('tournament', $tournamentid);
+        $event = $qb->getOneOrNullResult();
+        if ($event != null) {
+            $eventdate = date_create_from_format("d/m/Y", $event['date']);
+            if ($date < $eventdate) {
+                $status = false;
+            }
+            else {
+                $status = true;
+            }
+        }
+        else {
+            $status = false;
+        }
+        return $status;
     }
     
     public function listPlaygroundsByTournament($tournamentid) {

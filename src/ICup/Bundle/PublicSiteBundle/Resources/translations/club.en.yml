@@ -54,6 +54,19 @@ FORM:
       TITLE: Connect to a club
       TEXT: Your profile is not connected to a club. It is time to affiliate with an existing club. Or you can create your own club profile to connect to. Follow the link to connect to or create a club.
       LINK: Connect to a club
+    SECTION:
+      EDITOR:
+        CAPTION: Tournaments
+        LEGEND:
+          NAME: Name of tournament
+          EDITION: Edition
+          DESCRIPTION: Description
+          STATUS: State
+        STATUS:
+          1: Enroll
+          2: Started
+          3: Finished
+        NOTOURNAMENT: Add new tournament
   NEWPASS: 
     NOPASSWORD: You must enter a password.
     BADPASSWORD: The password is not valid.

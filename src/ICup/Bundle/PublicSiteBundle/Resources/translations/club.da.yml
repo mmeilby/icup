@@ -54,6 +54,19 @@ FORM:
       TITLE: Vælg en klub
       TEXT: Din profil er ikke forbundet med en klub. Det er tid til at forbinde med en eksisterende klub. Du kan også vælge at oprette en ny klubprofil. Klik på det følgende link for at forbinde med en ny eller eksisterende klub.
       LINK: Forbind til klub
+    SECTION:
+      EDITOR:
+        CAPTION: Turneringer
+        LEGEND:
+          NAME: Turneringsnavn
+          EDITION: Udgave
+          DESCRIPTION: Beskrivelse
+          STATUS: Tilstand
+        STATUS:
+          1: Tilmelding
+          2: Afvikles
+          3: Afsluttet
+        NOTOURNAMENT: Tilføj ny turnering
   NEWPASS: 
     NOPASSWORD: Et kodeord skal angives.
     BADPASSWORD: Det valgte kodeord er ikke gyldigt.

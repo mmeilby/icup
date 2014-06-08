@@ -199,7 +199,7 @@ FORM:
       DEL: Cancel
   LISTEDITORS:
     TITLE: Editor administration
-    CAPTION: Editors and editor admins
+    CAPTION: Editors and editor administrators
     NOUSER: Add new editor
   LISTCLUBS:
     TITLE: Club administration
@@ -278,7 +278,7 @@ FORM:
       DEL: The following user will be removed. You can not undo this action.
     NAME: Name
     EMAIL: E-mail
-    ROLE: Usee role
+    ROLE: User role
     STATUS: Status of affiliation
     USERNAME: User name
     PASSWORD: Password

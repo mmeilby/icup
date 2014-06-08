@@ -7,6 +7,7 @@ use ICup\Bundle\PublicSiteBundle\Exceptions\RedirectException;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
+use DateTime;
 
 /**
  * myPage - myICup - user's home page with context dependent content
@@ -79,10 +80,20 @@ class MyPageController extends Controller
             /* @var $host Host */
             $host = $this->get('entity')->getHostById($user->getPid());
             $users = $this->get('logic')->listUsersByHost($host->getId());
+            $tournaments = $this->get('logic')->listTournaments($host->getId());
+            $tstat = array();
+            $today = new DateTime();
+            foreach ($tournaments as $tournament) {
+                $tstat[$tournament->getId()] = $this->get('tmnt')->getTournamentStatus($tournament->getId(), $today);
+            }
             // Editors should get a different view
             $rexp = new RedirectException();
             $rexp->setResponse($this->render('ICupPublicSiteBundle:User:mypage_editor.html.twig',
-                                             array('host' => $host, 'users' => $users, 'currentuser' => $user)));
+                                             array('host' => $host,
+                                                   'tournaments' => $tournaments,
+                                                   'tstat' => $tstat,
+                                                   'users' => $users,
+                                                   'currentuser' => $user)));
             throw $rexp;
         }
     }

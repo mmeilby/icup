@@ -159,6 +159,14 @@ class Entity
     }
     
     /**
+     * Get the Event entity repository
+     * @return \Doctrine\ORM\EntityRepository
+     */
+    public function getEventRepo() {
+        return $this->getRepository('Event');
+    }
+    
+    /**
      * Test if user is referring to the local admin - default user object
      * @param $user User object
      * @return boolean True if user is local admin - of type Symfony\Component\Security\Core\User\User. 
@@ -364,4 +372,20 @@ class Entity
         }
         return $enrollment;
     }
+    
+    /**
+     * Get the event from the event id
+     * @param $eventid
+     * @return Event
+     * @throws ValidationException
+     */
+    public function getEventById($eventid) {
+        /* @var $event Event */
+        $event = $this->getEventRepo()->find($eventid);
+        if ($event == null) {
+            throw new ValidationException("BADEVENT", "Unknown eventid=".$eventid);
+        }
+        return $event;
+    }
+    
 }

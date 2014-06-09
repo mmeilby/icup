@@ -8,14 +8,13 @@ use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 class CategoryController extends Controller
 {
     /**
-     * @Route("/tmnt/{tournament}/ctgr/{categoryid}/prm", name="_showcategory")
+     * @Route("/tmnt/ctgr/{categoryid}/prm", name="_showcategory")
      * @Template("ICupPublicSiteBundle:Tournament:category.html.twig")
      */
-    public function listAction($tournament, $categoryid)
+    public function listAction($categoryid)
     {
-        $this->get('util')->setTournamentKey($tournament);
-        $tournament = $this->get('util')->getTournament();
         $category = $this->get('entity')->getCategoryById($categoryid);
+        $tournament = $this->get('entity')->getTournamentById($category->getPid());
         $groups = $this->get('logic')->listGroups($categoryid);
         $groupList = array();
         foreach ($groups as $group) {
@@ -26,14 +25,13 @@ class CategoryController extends Controller
     }
     
     /**
-     * @Route("/tmnt/{tournament}/ctgr/{categoryid}/clss", name="_showcategory_classification")
+     * @Route("/tmnt/ctgr/{categoryid}/clss", name="_showcategory_classification")
      * @Template("ICupPublicSiteBundle:Tournament:category_class.html.twig")
      */
-    public function listClassAction($tournament, $categoryid)
+    public function listClassAction($categoryid)
     {
-        $this->get('util')->setTournamentKey($tournament);
-        $tournament = $this->get('util')->getTournament();
         $category = $this->get('entity')->getCategoryById($categoryid);
+        $tournament = $this->get('entity')->getTournamentById($category->getPid());
         $groups = $this->get('logic')->listGroupsClassification($categoryid);
         $groupList = array();
         foreach ($groups as $group) {
@@ -44,14 +42,13 @@ class CategoryController extends Controller
     }
     
     /**
-     * @Route("/tmnt/{tournament}/ctgr/{categoryid}/fnls", name="_showcategory_finals")
+     * @Route("/tmnt/ctgr/{categoryid}/fnls", name="_showcategory_finals")
      * @Template("ICupPublicSiteBundle:Tournament:category_finals.html.twig")
      */
-    public function listFinalsAction($tournament, $categoryid)
+    public function listFinalsAction($categoryid)
     {
-        $this->get('util')->setTournamentKey($tournament);
-        $tournament = $this->get('util')->getTournament();
         $category = $this->get('entity')->getCategoryById($categoryid);
+        $tournament = $this->get('entity')->getTournamentById($category->getPid());
         $groups = $this->get('logic')->listGroupsFinals($categoryid);
         $classes = array(10 => 'F', 9 => 'B', 8 => 'S');
         $champions = array();

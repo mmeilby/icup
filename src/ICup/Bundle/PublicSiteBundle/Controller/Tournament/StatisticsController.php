@@ -8,13 +8,16 @@ use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 class StatisticsController extends Controller
 {
     /**
-     * @Route("/tmnt/{tournament}/stt", name="_tournament_statistics")
+     * @Route("/tmnt/stt/{tournament}", name="_tournament_statistics")
      * @Template("ICupPublicSiteBundle:Tournament:statistics.html.twig")
      */
     public function listAction($tournament)
     {
         $this->get('util')->setTournamentKey($tournament);
         $tournament = $this->get('util')->getTournament();
+        if ($tournament == null) {
+            return $this->redirect($this->generateUrl('_tournament_select'));
+        }
         $counts = $this->get('tmnt')->getStatTournamentCounts($tournament->getId());
         $playgroundCounts = $this->get('tmnt')->getStatPlaygroundCounts($tournament->getId());
         $teamCounts = $this->get('tmnt')->getStatTeamCounts($tournament->getId());

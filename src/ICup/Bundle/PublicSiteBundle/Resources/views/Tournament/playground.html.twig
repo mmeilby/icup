@@ -14,8 +14,7 @@
     {% if team.rank != '' %}
                     <div class="rank">{{ team.rank }}</div>
     {% endif %}
-                    <a href="{{ path('_showteam', { 'tournament': context.tournament.key,
-                                                    'teamid': team.id,
+                    <a href="{{ path('_showteam', { 'teamid': team.id,
                                                     'groupid': context.group.id }) }}">{{ team.name }}</a>
                 </td>
     {% else %}
@@ -29,7 +28,7 @@
 <p class="subcategory">
     {% trans %}RESULTS{% endtrans %} {{ tournament.edition }}<br />
 </p>
-<a href="{{ path('_showcategory', { 'tournament': tournament.key, 'categoryid': category.id }) }}">
+<a href="{{ path('_showcategory', { 'categoryid': category.id }) }}">
     <h1 class="category">{% trans %}CATEGORY{% endtrans %} {{ category.name }}</h1>
 </a>
 <p class="subcategory">
@@ -37,7 +36,7 @@
         category.gender,
         category.classification]|join|transchoice(category.age, { '%age%': category.age },'tournament') }}
 </p>
-<a href="{{ path('_showcategory', { 'tournament': tournament.key, 'categoryid': category.id }) }}">
+<a href="{{ path('_showcategory', { 'categoryid': category.id }) }}">
     <h2 class="group">{% trans %}GROUP{% endtrans %} {{ group.name }}</h2>
 </a>
 <p>

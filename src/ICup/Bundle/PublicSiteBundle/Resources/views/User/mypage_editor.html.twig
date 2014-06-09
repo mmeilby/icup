@@ -47,7 +47,13 @@
                 {{ tournament.description }}
             </td>
             <td class="status">
+    {% if currentuser.role == 4 %}
+                <a href="{{ path('_edit_event_list', { 'tournamentid': tournament.id }) }}">
                 <b>{{ ['FORM.MYPAGE.SECTION.EDITOR.STATUS.',tstat[tournament.id]]|join|trans }}</b>
+                </a>
+    {% else %}
+                <b>{{ ['FORM.MYPAGE.SECTION.EDITOR.STATUS.',tstat[tournament.id]]|join|trans }}</b>
+    {% endif %}
             </td>
         </tr>
     {% endfor %}

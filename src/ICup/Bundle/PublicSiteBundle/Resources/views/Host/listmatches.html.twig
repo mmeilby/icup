@@ -14,8 +14,7 @@
     {% if team.rank != '' %}
                     <div class="rank">{{ team.rank }}</div>
     {% endif %}
-                    <a href="{{ path('_showteam', { 'tournament': context.tournament.key,
-                                                    'teamid': team.id,
+                    <a href="{{ path('_showteam', { 'teamid': team.id,
                                                     'groupid': context.group.id }) }}">{{ team.name }}</a>
                 </td>
     {% else %}
@@ -39,7 +38,7 @@
         </td>
         <td class="indent"></td>
         <td>
-            <a href="{{ path('_showcategory', { 'tournament': tournament.key, 'categoryid': category.id }) }}">
+            <a href="{{ path('_showcategory', { 'categoryid': category.id }) }}">
                 <h2 class="category">{% trans %}CATEGORY{% endtrans %} {{ category.name }}</h2>
             </a>
             <p class="subcategory">

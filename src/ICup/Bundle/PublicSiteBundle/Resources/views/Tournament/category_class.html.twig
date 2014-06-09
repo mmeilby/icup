@@ -14,9 +14,9 @@
         category.gender,
         category.classification]|join|transchoice(category.age, { '%age%': category.age },'tournament') }}
 </p>
-<div class="tab" onclick="location.href='{{ path('_showcategory', {'tournament': tournament.key, 'categoryid': category.id }) }}'">{{ 'PRELIMINARY'|trans|upper }}</div>
-<div class="tab active" onclick="location.href='{{ path('_showcategory_classification', {'tournament': tournament.key, 'categoryid': category.id }) }}'">{{ 'CLASSIFICATION'|trans|upper }}</div>
-<div class="tab" onclick="location.href='{{ path('_showcategory_finals', {'tournament': tournament.key, 'categoryid': category.id }) }}'">{{ 'FINALS'|trans|upper }}</div>
+<div class="tab" onclick="location.href='{{ path('_showcategory', { 'categoryid': category.id }) }}'">{{ 'PRELIMINARY'|trans|upper }}</div>
+<div class="tab active" onclick="location.href='{{ path('_showcategory_classification', { 'categoryid': category.id }) }}'">{{ 'CLASSIFICATION'|trans|upper }}</div>
+<div class="tab" onclick="location.href='{{ path('_showcategory_finals', { 'categoryid': category.id }) }}'">{{ 'FINALS'|trans|upper }}</div>
 {% for group in grouplist %}
     <p>
         <table>
@@ -36,7 +36,7 @@
     {% for team in group.teams %}
                 <tr class="{{ cycle(['even','odd'],loop.index) }}">
                     <td class="flag"><img src="{{ imagepath }}/flags/{{ countries[team.country].flag }}" alt="{{ team.country|trans({},'lang') }}" title="{{ team.country|trans({},'lang') }}"></td>
-                    <td class="team"><a href="{{ path('_showteam', { 'tournament': tournament.key, 'teamid': team.id, 'groupid': group.group.id }) }}">{{ team.name }}</a></td>
+                    <td class="team"><a href="{{ path('_showteam', { 'teamid': team.id, 'groupid': group.group.id }) }}">{{ team.name }}</a></td>
                     <td class="matches">{{ team.matches }}</td>
                     <td class="score">{{ team.score }}</td>
                     <td class="goals">{{ team.goals }}</td>

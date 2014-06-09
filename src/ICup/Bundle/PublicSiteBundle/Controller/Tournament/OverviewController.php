@@ -8,13 +8,16 @@ use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 class OverviewController extends Controller
 {
     /**
-     * @Route("/tmnt/{tournament}/vw", name="_tournament_overview")
+     * @Route("/tmnt/vw/{tournament}", name="_tournament_overview")
      * @Template("ICupPublicSiteBundle:Tournament:overview.html.twig")
      */
     public function overviewAction($tournament)
     {
         $this->get('util')->setTournamentKey($tournament);
         $tournament = $this->get('util')->getTournament();
+        if ($tournament == null) {
+            return $this->redirect($this->generateUrl('_tournament_select'));
+        }
         $newsStream = array(
 /*            
             array(

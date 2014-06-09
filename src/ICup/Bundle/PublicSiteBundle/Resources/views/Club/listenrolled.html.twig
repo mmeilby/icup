@@ -30,7 +30,7 @@
         {% endif %}
         {% if femalecategorylist[i] is defined %}
                 <td class="categories">
-                    <a href="{{ path('_showcategory', { 'tournament': tournament.key, 'categoryid': femalecategorylist[i].id }) }}">
+                    <a href="{{ path('_showcategory', { 'categoryid': femalecategorylist[i].id }) }}">
                         <b>{% trans from "messages" %}CATEGORY{% endtrans %} {{ femalecategorylist[i].name }}</b>
                     </a><br />
                         {{ ['GENDER.',
@@ -61,7 +61,7 @@
         {% endif %}
         {% if malecategorylist[i] is defined %}
                 <td class="categories">
-                    <a href="{{ path('_showcategory', { 'tournament': tournament.key, 'categoryid': malecategorylist[i].id }) }}">
+                    <a href="{{ path('_showcategory', { 'categoryid': malecategorylist[i].id }) }}">
                         <b>{% trans from "messages" %}CATEGORY{% endtrans %} {{ malecategorylist[i].name }}</b>
                     </a><br />
                          {{ ['GENDER.',

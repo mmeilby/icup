@@ -349,3 +349,37 @@ FORM:
   LISTMATCHES:
     TITLE: Match planning
     NOMATCH: Add match to plan
+  EVENT:
+    DEFAULT: Please select...
+    NOEVENT: An event type is mandatory.
+    NODATE: The date of event is mandatory.
+    BADDATE: The event date is not a valid date.
+    EVENTEXISTS: This event is in use. Please correct the event type.
+    CANTCHANGEEVENT: This event is in use. You can not change the event.
+    TITLE:
+      ADD: Add new event
+      CHG: Modify event
+      DEL: REMOVE EVENT
+    PROMPT:
+      ADD: Please enter information about the new event.
+      CHG: Change information for this event.
+      DEL: The following event will be removed. You can not undo this action.
+    EVENT: Event
+    DATE: Date of event
+    EVENTS:
+      1: Enrollment open
+      2: Enrollment closed
+      3: Tournament start
+      4: Tournament finished
+      9: Tournament archived
+    SUBMIT:
+      ADD: Add event
+      CHG: Save information
+      DEL: REMOVE EVENT
+    CANCEL:
+      ADD: Cancel
+      CHG: Cancel changes
+      DEL: Cancel
+  LISTEVENTS:
+    TITLE: Event calendar
+    NOEVENT: Add event to calendar

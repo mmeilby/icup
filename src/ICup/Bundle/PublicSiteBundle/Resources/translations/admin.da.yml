@@ -348,4 +348,38 @@ FORM:
       DEL: Fortryd
   LISTMATCHES:
     TITLE: Vedligehold kampplan
-    NOMATCH: Opret kamp i kampplan    
+    NOMATCH: Opret kamp i kampplan
+  EVENT:
+    DEFAULT: Vælg...
+    NOEVENT: En hændelse skal vælges.
+    NODATE: Dato for hændelsen skal angives.
+    BADDATE: Dato for hændelsen er ikke gyldig.
+    EVENTEXISTS: Denne hændelse er allerede angivet. Vælg venligst en anden hændelse.
+    CANTCHANGEEVENT: Den valgte hændelse er allerede i brug. Hændelsen kan ikke rettes.
+    TITLE:
+      ADD: Tilføj ny hændelse
+      CHG: Rediger informationer om hændelsen
+      DEL: FJERN HÆNDELSE
+    PROMPT:
+      ADD: Indtast oplysninger om den nye hændelse.
+      CHG: Ret informationer om hændelsen.
+      DEL: Følgende hændelse vil bliver slettet. Det er ikke muligt at fortryde når hændelsen er fjernet.
+    EVENT: Hændelse
+    DATE: Dato for hændelse
+    EVENTS:
+      1: Tilmelding åben
+      2: Tilmelding lukket
+      3: Turneringsstart
+      4: Turnering afsluttet
+      9: Turnering arkiveret
+    SUBMIT:
+      ADD: Tilføj ny hændelse
+      CHG: Gem oplysninger
+      DEL: FJERN HÆNDELSE
+    CANCEL:
+      ADD: Fortryd oprettelse
+      CHG: Fortryd ændringer
+      DEL: Fortryd
+  LISTEVENTS:
+    TITLE: Turneringskalender
+    NOEVENT: Tilføj hændelse til kalender

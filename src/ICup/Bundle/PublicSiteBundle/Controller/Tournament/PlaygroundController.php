@@ -8,16 +8,15 @@ use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 class PlaygroundController extends Controller
 {
     /**
-     * @Route("/tmnt/{tournament}/pgrnd/{playgroundid}/{groupid}", name="_showplayground")
+     * @Route("/tmnt/pgrnd/{playgroundid}/{groupid}", name="_showplayground")
      * @Template("ICupPublicSiteBundle:Tournament:playground.html.twig")
      */
-    public function listAction($tournament, $playgroundid, $groupid)
+    public function listAction($playgroundid, $groupid)
     {
-        $this->get('util')->setTournamentKey($tournament);
-        $tournament = $this->get('util')->getTournament();
         $playground = $this->get('entity')->getPlaygroundById($playgroundid);
         $group = $this->get('entity')->getGroupById($groupid);
         $category = $this->get('entity')->getCategoryById($group->getPid());
+        $tournament = $this->get('entity')->getTournamentById($category->getPid());
         
         $matchList = $this->get('match')->listMatchesByGroupPlayground($groupid, $playgroundid);
         return array('tournament' => $tournament,
@@ -28,14 +27,14 @@ class PlaygroundController extends Controller
     }
     
     /**
-     * @Route("/tmnt/{tournament}/pgrnd/{playgroundid}", name="_showplayground_full")
+     * @Route("/tmnt/pgrnd/{playgroundid}", name="_showplayground_full")
      * @Template("ICupPublicSiteBundle:Tournament:playground.full.html.twig")
      */
-    public function listAllAction($tournament, $playgroundid)
+    public function listAllAction($playgroundid)
     {
-        $this->get('util')->setTournamentKey($tournament);
-        $tournament = $this->get('util')->getTournament();
         $playground = $this->get('entity')->getPlaygroundById($playgroundid);
+        $site = $this->get('entity')->getSiteById($playground->getPid());
+        $tournament = $this->get('entity')->getTournamentById($site->getPid());
 
         $matchList = $this->get('match')->listMatchesByPlayground($playgroundid);
         return array('tournament' => $tournament,

@@ -1,0 +1,115 @@
+Name                          Method Scheme Host Path
+_icup                         ANY    ANY    ANY  /
+_tournament_select_this       ANY    ANY    ANY  /_{tournamentkey}
+
+ROLE_ADMIN
+_edit_club_add                ANY    ANY    ANY  /admin/club/add
+_edit_club_chg                ANY    ANY    ANY  /admin/club/chg/{clubid}
+_edit_club_del                ANY    ANY    ANY  /admin/club/del/{clubid}
+_edit_user_add                ANY    ANY    ANY  /admin/add/club/{clubid}
+_edit_user_add_system         ANY    ANY    ANY  /admin/user/add/system
+_edit_club_list               GET    ANY    ANY  /admin/club/list
+_edit_editor_list             GET    ANY    ANY  /admin/user/list/host/{hostid}
+_edit_user_list               GET    ANY    ANY  /admin/list/club/{clubid}
+_edit_host_add                ANY    ANY    ANY  /admin/host/add
+_edit_host_del                ANY    ANY    ANY  /admin/host/del/{hostid}
+
+ROLE_EDITOR_ADMIN
+_edit_user_add_host           ANY    ANY    ANY  /edit/user/add/host/{hostid}
+_edit_user_chg                ANY    ANY    ANY  /edit/chg/{userid}
+_edit_user_del                ANY    ANY    ANY  /edit/del/{userid}
+_edit_user_chg_pass           ANY    ANY    ANY  /edit/chg/pass/{userid}
+_edit_category_list           GET    ANY    ANY  /edit/category/list/{tournamentid}
+_host_list_clubs              GET    ANY    ANY  /edit/club/list/{tournamentid}
+_edit_editors_list            GET    ANY    ANY  /edit/user/list/host
+_club_enroll_list_admin       GET    ANY    ANY  /edit/enroll/list/{tournament}/{club}
+_host_select_club             GET    ANY    ANY  /edit/enroll/list/check
+_edit_event_list              GET    ANY    ANY  /edit/event/list/{tournamentid}
+_edit_host_list               GET    ANY    ANY  /edit/host/list
+_host_list_tournaments        GET    ANY    ANY  /edit/host/list/tournaments
+_edit_group_list_matches      GET    ANY    ANY  /edit/group/list/matches/{groupid}
+_edit_site_list               GET    ANY    ANY  /edit/site/list/{tournamentid}
+_edit_category_add            ANY    ANY    ANY  /edit/category/add/{tournamentid}
+_edit_category_chg            ANY    ANY    ANY  /edit/category/chg/{categoryid}
+_edit_category_del            ANY    ANY    ANY  /edit/category/del/{categoryid}
+_club_enroll_add_admin        GET    ANY    ANY  /edit/enroll/add/{categoryid}/{clubid}
+_club_enroll_del_admin        GET    ANY    ANY  /edit/enroll/del/{categoryid}/{clubid}
+_edit_event_add               ANY    ANY    ANY  /edit/event/add/{tournamentid}
+_edit_event_chg               ANY    ANY    ANY  /edit/event/chg/{eventid}
+_edit_event_del               ANY    ANY    ANY  /edit/event/del/{eventid}
+_edit_group_add               ANY    ANY    ANY  /edit/group/add/{categoryid}
+_edit_group_chg               ANY    ANY    ANY  /edit/group/chg/{groupid}
+_edit_group_del               ANY    ANY    ANY  /edit/group/del/{groupid}
+_host_list_groups             ANY    ANY    ANY  /edit/list/grps/{categoryid}
+_host_assign_select_group     GET    ANY    ANY  /edit/assign/select/{groupid}
+_host_assign_add              GET    ANY    ANY  /edit/assign/add/{teamid}/{groupid}
+_host_assign_del              GET    ANY    ANY  /edit/assign/del/{teamid}/{groupid}
+_edit_host_chg                ANY    ANY    ANY  /edit/host/chg/{hostid}
+_edit_match_add               ANY    ANY    ANY  /edit/match/add/{groupid}
+_edit_match_chg               ANY    ANY    ANY  /edit/match/chg/{matchid}
+_edit_match_del               ANY    ANY    ANY  /edit/match/del/{matchid}
+_edit_import_match            ANY    ANY    ANY  /edit/import/match/{tournamentid}
+_edit_matchrel_chg            ANY    ANY    ANY  /edit/matchrel/chg/{matchid}
+_edit_matchrel_del            ANY    ANY    ANY  /edit/matchrel/del/{matchid}
+_edit_playground_add          ANY    ANY    ANY  /edit/playground/add/{siteid}
+_edit_playground_chg          ANY    ANY    ANY  /edit/playground/chg/{playgroundid}
+_edit_playground_del          ANY    ANY    ANY  /edit/playground/del/{playgroundid}
+_edit_qmatchrel_chg           ANY    ANY    ANY  /edit/qmatchrel/chg/{matchid}
+_edit_qmatchrel_del           ANY    ANY    ANY  /edit/qmatchrel/del/{matchid}
+_edit_site_add                ANY    ANY    ANY  /edit/site/add/{tournamentid}
+_edit_site_chg                ANY    ANY    ANY  /edit/site/chg/{siteid}
+_edit_site_del                ANY    ANY    ANY  /edit/site/del/{siteid}
+_edit_tournament_add          ANY    ANY    ANY  /edit/tournament/add/{hostid}
+_edit_tournament_chg          ANY    ANY    ANY  /edit/tournament/chg/{tournamentid}
+_edit_tournament_del          ANY    ANY    ANY  /edit/tournament/del/{tournamentid}
+_host_club_new                ANY    ANY    ANY  /edit/club/new/{tournamentid}
+
+ROLE_EDITOR
+_edit_list_matches            GET    ANY    ANY  /host/list/matches
+_edit_match_score             GET    ANY    ANY  /host/edit/match/score/{playgroundid}/{date}
+_edit_match_score_post        POST   ANY    ANY  /host/edit/match/score
+
+ROLE_CLUB_ADMIN
+_club_user_disconnect         GET    ANY    ANY  /club/disc/{userid}
+_club_user_connect            GET    ANY    ANY  /club/connect/{clubid}/{userid}
+_club_user_chg_role           GET    ANY    ANY  /club/chgrole/{userid}
+_club_enroll_list             GET    ANY    ANY  /club/enroll/list/{tournament}
+_club_enroll_check            GET    ANY    ANY  /club/enroll/check
+_user_my_page_users           GET    ANY    ANY  /club/mypage/users
+_club_enroll_add              GET    ANY    ANY  /club/enroll/add/{categoryid}
+_club_enroll_del              GET    ANY    ANY  /club/enroll/del/{categoryid}
+
+ROLE_USER
+_club_user_request            GET    ANY    ANY  /user/request
+_club_user_refuse             GET    ANY    ANY  /user/refuse
+_user_chg_pass                ANY    ANY    ANY  /user/chg/pass
+_user_my_page                 GET    ANY    ANY  /user/mypage
+_club_new                     ANY    ANY    ANY  /user/club/new
+
+_tournament_select            ANY    ANY    ANY  /tmnts
+_tournament_overview          ANY    ANY    ANY  /tmnt/vw/{tournament}
+_tournament_categories        ANY    ANY    ANY  /tmnt/ctgr/{tournament}
+_showcategory                 ANY    ANY    ANY  /tmnt/ctgr/{categoryid}/prm
+_showcategory_classification  ANY    ANY    ANY  /tmnt/ctgr/{categoryid}/clss
+_showcategory_finals          ANY    ANY    ANY  /tmnt/ctgr/{categoryid}/fnls
+_tournament_playgrounds       ANY    ANY    ANY  /tmnt/pgrnd/{tournament}
+_showplayground               ANY    ANY    ANY  /tmnt/pgrnd/{playgroundid}/{groupid}
+_showplayground_full          ANY    ANY    ANY  /tmnt/pgrnd/{playgroundid}
+_tournament_clubs             ANY    ANY    ANY  /tmnt/clb/{tournament}
+_tournament_teams             ANY    ANY    ANY  /tmnt/tms/{tournament}/{clubId}
+_showteam                     ANY    ANY    ANY  /tmnt/tm/{teamid}/{groupid}
+_tournament_winners           ANY    ANY    ANY  /tmnt/wn/{tournament}
+_tournament_winners_countries ANY    ANY    ANY  /tmnt/cwn/{tournament}
+_tournament_winners_clubs     ANY    ANY    ANY  /tmnt/clbwn/{tournament}
+_tournament_statistics        ANY    ANY    ANY  /tmnt/stt/{tournament}
+
+_ausr_new_user                ANY    ANY    ANY  /new/user
+_ausr_new_referee             ANY    ANY    ANY  /new/referee
+
+_admin_login                  GET    ANY    ANY  /login
+_security_check               ANY    ANY    ANY  /login_check
+_admin_logout                 ANY    ANY    ANY  /logout
+
+_switch                       ANY    ANY    ANY  /switch/{locale}
+
+_rest_list_clubs              ANY    ANY    ANY  /rest/club/list

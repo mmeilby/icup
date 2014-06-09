@@ -14,8 +14,7 @@
     {% if team.rank != '' %}
                     <div class="rank">{{ team.rank }}</div>
     {% endif %}
-                    <a href="{{ path('_showteam', { 'tournament': context.tournament.key,
-                                                    'teamid': team.id,
+                    <a href="{{ path('_showteam', { 'teamid': team.id,
                                                     'groupid': group.id }) }}">{{ team.name }}</a>
                 </td>
     {% else %}
@@ -93,8 +92,8 @@
                 <td class="flag"></td>
                 <td class="no">{{ match.matchno }}</td>
                 <td class="time">{{ match.schedule|date('FORMAT.TIME'|trans([],'messages')) }}</td>
-                <td class="no"><a href="{{ path('_showcategory', { 'tournament': tournament.key, 'categoryid': match.category.id }) }}">{{ match.category.name }}</a></td>
-                <td class="no"><a href="{{ path('_showcategory', { 'tournament': tournament.key, 'categoryid': match.category.id }) }}">{{ match.group.name }}</a></td>
+                <td class="no"><a href="{{ path('_showcategory', { 'categoryid': match.category.id }) }}">{{ match.category.name }}</a></td>
+                <td class="no"><a href="{{ path('_showcategory', { 'categoryid': match.category.id }) }}">{{ match.group.name }}</a></td>
                 {{ formatter.club(match.home, match.group, _context) }}
                 {{ formatter.club(match.away, match.group, _context) }}
                 {{ formatter.scoreinput(match.home, _context) }}

@@ -15,8 +15,7 @@
     {% if team.rank != '' %}
                     <div class="rank">{{ team.rank }}</div>
     {% endif %}
-                    <a href="{{ path('_showteam', { 'tournament': context.tournament.key,
-                                                    'teamid': team.id,
+                    <a href="{{ path('_showteam', { 'teamid': team.id,
                                                     'groupid': group.id }) }}">{{ team.name }}</a>
                 </td>
                 <td class="score{{ tag }}">{{ team.score }}</td>
@@ -68,9 +67,9 @@
         category.gender,
         category.classification]|join|transchoice(category.age, { '%age%': category.age },'tournament') }}
 </p>
-<div class="tab" onclick="location.href='{{ path('_showcategory', {'tournament': tournament.key, 'categoryid': category.id }) }}'">{{ 'PRELIMINARY'|trans|upper }}</div>
-<div class="tab" onclick="location.href='{{ path('_showcategory_classification', {'tournament': tournament.key, 'categoryid': category.id }) }}'">{{ 'CLASSIFICATION'|trans|upper }}</div>
-<div class="tab active" onclick="location.href='{{ path('_showcategory_finals', {'tournament': tournament.key, 'categoryid': category.id }) }}'">{{ 'FINALS'|trans|upper }}</div>
+<div class="tab" onclick="location.href='{{ path('_showcategory', { 'categoryid': category.id }) }}'">{{ 'PRELIMINARY'|trans|upper }}</div>
+<div class="tab" onclick="location.href='{{ path('_showcategory_classification', { 'categoryid': category.id }) }}'">{{ 'CLASSIFICATION'|trans|upper }}</div>
+<div class="tab active" onclick="location.href='{{ path('_showcategory_finals', { 'categoryid': category.id }) }}'">{{ 'FINALS'|trans|upper }}</div>
 {% if champions|length > 0 %}
 <table>
     <caption>{% trans %}STANDING{% endtrans %}</caption>

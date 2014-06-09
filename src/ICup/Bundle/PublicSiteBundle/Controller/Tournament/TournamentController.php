@@ -8,13 +8,16 @@ use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 class TournamentController extends Controller
 {
     /**
-     * @Route("/tmnt/{tournament}/ctgr", name="_tournament_categories")
+     * @Route("/tmnt/ctgr/{tournament}", name="_tournament_categories")
      * @Template("ICupPublicSiteBundle:Tournament:categories.html.twig")
      */
     public function listCategoriesAction($tournament)
     {
         $this->get('util')->setTournamentKey($tournament);
         $tournament = $this->get('util')->getTournament();
+        if ($tournament == null) {
+            return $this->redirect($this->generateUrl('_tournament_select'));
+        }
         $categories = $this->get('logic')->listCategories($tournament->getId());
         $classMap = array();
         $categoryMap = array();
@@ -28,13 +31,16 @@ class TournamentController extends Controller
     }
 
     /**
-     * @Route("/tmnt/{tournament}/pgrnd", name="_tournament_playgrounds")
+     * @Route("/tmnt/pgrnd/{tournament}", name="_tournament_playgrounds")
      * @Template("ICupPublicSiteBundle:Tournament:playgrounds.html.twig")
      */
     public function listPlaygroundsAction($tournament)
     {
         $this->get('util')->setTournamentKey($tournament);
         $tournament = $this->get('util')->getTournament();
+        if ($tournament == null) {
+            return $this->redirect($this->generateUrl('_tournament_select'));
+        }
         $playgrounds = $this->get('tmnt')->listPlaygroundsByTournament($tournament->getId());
         $playgroundList = array();
         foreach ($playgrounds as $playground) {
@@ -45,13 +51,16 @@ class TournamentController extends Controller
     }
 
     /**
-     * @Route("/tmnt/{tournament}/clb", name="_tournament_clubs")
+     * @Route("/tmnt/clb/{tournament}", name="_tournament_clubs")
      * @Template("ICupPublicSiteBundle:Tournament:clubs.html.twig")
      */
     public function listClubsAction($tournament)
     {
         $this->get('util')->setTournamentKey($tournament);
         $tournament = $this->get('util')->getTournament();
+        if ($tournament == null) {
+            return $this->redirect($this->generateUrl('_tournament_select'));
+        }
         $clubs = $this->get('logic')->listClubsByTournament($tournament->getId());
         $teamList = array();
         foreach ($clubs as $club) {
@@ -76,13 +85,16 @@ class TournamentController extends Controller
     }
     
     /**
-     * @Route("/tmnt/{tournament}/tms/{clubId}", name="_tournament_teams")
+     * @Route("/tmnt/tms/{tournament}/{clubId}", name="_tournament_teams")
      * @Template("ICupPublicSiteBundle:Tournament:teams.html.twig")
      */
     public function listTeamsAction($tournament, $clubId)
     {
         $this->get('util')->setTournamentKey($tournament);
         $tournament = $this->get('util')->getTournament();
+        if ($tournament == null) {
+            return $this->redirect($this->generateUrl('_tournament_select'));
+        }
         $categories = $this->get('logic')->listCategories($tournament->getId());
         $categoryList = array();
         foreach ($categories as $category) {

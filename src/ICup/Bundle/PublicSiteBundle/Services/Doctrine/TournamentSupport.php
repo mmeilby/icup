@@ -48,6 +48,17 @@ class TournamentSupport
         return $eventList;
     }
 
+    public function getEventByEvent($tournamentid, $event) {
+         $qb = $this->em->createQuery(
+                "select e ".
+                "from ".$this->entity->getRepositoryPath('Event')." e ".
+                "where e.pid=:tournament and ".
+                      "e.event=:event");
+        $qb->setParameter('tournament', $tournamentid);
+        $qb->setParameter('event', $event);
+        return $qb->getOneOrNullResult();
+    }
+    
     public function isEnrollmentAllowed($tournamentid, $date) {
         $qb = $this->em->createQuery(
                 "select e.id,e.date,e.event ".

@@ -8,13 +8,16 @@ use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 class WinnersController extends Controller
 {
     /**
-     * @Route("/tmnt/{tournament}/wn", name="_tournament_winners")
+     * @Route("/tmnt/wn/{tournament}", name="_tournament_winners")
      * @Template("ICupPublicSiteBundle:Tournament:winners.html.twig")
      */
     public function listAction($tournament)
     {
         $this->get('util')->setTournamentKey($tournament);
         $tournament = $this->get('util')->getTournament();
+        if ($tournament == null) {
+            return $this->redirect($this->generateUrl('_tournament_select'));
+        }
         $championList = array();
         $groups = $this->get('tmnt')->listChampionsByTournament($tournament->getId());
         foreach ($groups as $group) {
@@ -35,13 +38,16 @@ class WinnersController extends Controller
     }
 
     /**
-     * @Route("/tmnt/{tournament}/cwn", name="_tournament_winners_countries")
+     * @Route("/tmnt/cwn/{tournament}", name="_tournament_winners_countries")
      * @Template("ICupPublicSiteBundle:Tournament:winners_countries.html.twig")
      */
     public function listCountriesAction($tournament)
     {
         $this->get('util')->setTournamentKey($tournament);
         $tournament = $this->get('util')->getTournament();
+        if ($tournament == null) {
+            return $this->redirect($this->generateUrl('_tournament_select'));
+        }
         $groups = $this->get('tmnt')->listChampionsByTournament($tournament->getId());
         $countryList = array();
         foreach ($groups as $group) {
@@ -99,13 +105,16 @@ class WinnersController extends Controller
     }
     
     /**
-     * @Route("/tmnt/{tournament}/clbwn", name="_tournament_winners_clubs")
+     * @Route("/tmnt/clbwn/{tournament}", name="_tournament_winners_clubs")
      * @Template("ICupPublicSiteBundle:Tournament:winners_clubs.html.twig")
      */
     public function listClubsAction($tournament)
     {
         $this->get('util')->setTournamentKey($tournament);
         $tournament = $this->get('util')->getTournament();
+        if ($tournament == null) {
+            return $this->redirect($this->generateUrl('_tournament_select'));
+        }
         $groups = $this->get('tmnt')->listChampionsByTournament($tournament->getId());
         $countryList = array();
         foreach ($groups as $group) {

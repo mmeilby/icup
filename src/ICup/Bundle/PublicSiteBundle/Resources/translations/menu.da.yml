@@ -31,6 +31,7 @@ MENU:
     REFEREES: Dommere
   ADMIN:
     TITLE: Administration
+    CHANGEPWD: Skift kodeord
     RESULTS: Resultater
     TOURNAMENT: Turnering
     TEAMS: Hold

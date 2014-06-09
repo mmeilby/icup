@@ -155,6 +155,7 @@
             <h3>{% trans %}MENU.ADMIN.TITLE{% endtrans %}</h3>
             <ul>
                 <li><a href="{{ path('_user_my_page') }}">{% trans %}MENU.ENROLLMENT.MYPAGE{% endtrans %}</a></li>
+                <li><a href="{{ path('_user_chg_pass') }}">{% trans %}MENU.ADMIN.CHANGEPWD{% endtrans %}</a></li>
     {% if is_granted('ROLE_ADMIN') %}
                 <li><a href="{{ path('_edit_host_list') }}">{% trans %}MENU.ADMIN.TOURNAMENT{% endtrans %}</a></li>
                 <li><a href="{{ path('_edit_club_list') }}">{% trans %}MENU.ADMIN.TEAMS{% endtrans %}</a></li>

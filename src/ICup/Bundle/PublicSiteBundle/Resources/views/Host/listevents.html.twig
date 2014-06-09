@@ -27,7 +27,11 @@
         <tr class="{{ cycle(['even','odd'],loop.index) }}">
             <td class="date">
                 <a href="{{ path('_edit_event_chg', { 'eventid': event.id }) }}">
-                {{ event.date|date('FORMAT.DATE'|trans([],'messages')) }}
+                {{ 'FORMAT.LONGDATE'|transchoice(event.schedule|date('j'), {
+                        '%week%': ['WEEK.',event.schedule|date('D')|upper]|join|trans([],'messages')|capitalize,
+                        '%day%': event.schedule|date('j'),
+                        '%month%': ['MONTH.',event.schedule|date('M')|upper]|join|trans([],'messages'),
+                        '%year%': event.schedule|date('Y')}, 'messages') }}
                 </a>    
             </td>
             <td class="event">

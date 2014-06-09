@@ -42,7 +42,7 @@ class TournamentSupport
         $eventList = array();
         foreach ($qb->getResult() as $event) {
             $eventdate = date_create_from_format("d/m/Y", $event['date']);
-            $event['date'] = $eventdate;
+            $event['schedule'] = $eventdate;
             $eventList[] = $event;
         }
         return $eventList;

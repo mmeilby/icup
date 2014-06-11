@@ -84,8 +84,7 @@ services:
     logic:
         class: "ICup\\Bundle\\PublicSiteBundle\\Services\\Doctrine\\BusinessLogic"
         arguments:
-          - "@entity"
-          - "@doctrine.orm.entity_manager"
+          - "@service_container"
           - "@logger"
 
     tmnt:

@@ -18,26 +18,31 @@ use ICup\Bundle\PublicSiteBundle\Entity\Doctrine\Tournament;
 use ICup\Bundle\PublicSiteBundle\Entity\Doctrine\User;
 use ICup\Bundle\PublicSiteBundle\Entity\TeamInfo;
 use ICup\Bundle\PublicSiteBundle\Exceptions\ValidationException;
+use Symfony\Component\DependencyInjection\ContainerInterface;
 use Doctrine\ORM\EntityManager;
 use Monolog\Logger;
+use ICup\Bundle\PublicSiteBundle\Services\Doctrine\Entity;
 use DateTime;
 
 class BusinessLogic
 {
-   /* @var $entity Entity */
-    protected $entity;
+    /* @var $container ContainerInterface */
+    protected $container;
     /* @var $em EntityManager */
     protected $em;
-     /* @var $logger Logger */
+    /* @var $logger Logger */
     protected $logger;
+   /* @var $entity Entity */
+    protected $entity;
 
-    public function __construct(Entity $entity, EntityManager $em, Logger $logger)
+    public function __construct(ContainerInterface $container, Logger $logger)
     {
-        $this->entity = $entity;
-        $this->em = $em;
+        $this->container = $container;
+        $this->entity = $container->get('entity');
+        $this->em = $container->get('doctrine')->getManager();
         $this->logger = $logger;
     }
-
+    
     public function addEnrolled(Category $category, Club $club, User $user) {
         $qb = $this->em->createQuery(
                 "select e ".
@@ -78,7 +83,7 @@ class BusinessLogic
         $enroll->setCid($team->getId());
         $enroll->setPid($category->getId());
         $enroll->setUid($user->getId());
-        $enroll->setDate($today->format('d/m/Y'));
+        $enroll->setDate($today->format($this->container->getParameter('db_date_format')));
         $this->em->persist($enroll);
         $this->em->flush();
 

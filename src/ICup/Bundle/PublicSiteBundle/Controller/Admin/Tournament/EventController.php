@@ -130,7 +130,7 @@ class EventController extends Controller
         $event->setEvent($eventForm->getEvent());
         $dateformat = $this->get('translator')->trans('FORMAT.DATE');
         $eventdate = date_create_from_format($dateformat, $eventForm->getDate());
-        $event->setDate(date_format($eventdate, "d/m/Y"));
+        $event->setDate(date_format($eventdate, $this->container->getParameter('db_date_format')));
     }
     
     private function copyEventForm(Event $event) {
@@ -139,7 +139,7 @@ class EventController extends Controller
         $eventForm->setPid($event->getPId());
         $eventForm->setEvent($event->getEvent());
         $dateformat = $this->get('translator')->trans('FORMAT.DATE');
-        $eventdate = date_create_from_format("d/m/Y", $event->getDate());
+        $eventdate = date_create_from_format($this->container->getParameter('db_date_format'), $event->getDate());
         $eventForm->setDate(date_format($eventdate, $dateformat));
         return $eventForm;
     }

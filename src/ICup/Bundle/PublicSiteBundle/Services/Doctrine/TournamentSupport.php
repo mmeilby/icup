@@ -41,7 +41,7 @@ class TournamentSupport
         $qb->setParameter('tournament', $tournamentid);
         $eventList = array();
         foreach ($qb->getResult() as $event) {
-            $eventdate = date_create_from_format("d/m/Y", $event['date']);
+            $eventdate = date_create_from_format($this->container->getParameter('db_date_format'), $event['date']);
             $event['schedule'] = $eventdate;
             $eventList[] = $event;
         }
@@ -69,7 +69,7 @@ class TournamentSupport
         $qb->setParameter('tournament', $tournamentid);
         $status = false;
         foreach ($qb->getResult() as $event) {
-            $eventdate = date_create_from_format("d/m/Y", $event['date']);
+            $eventdate = date_create_from_format($this->container->getParameter('db_date_format'), $event['date']);
             if ($event['event'] == Event::$ENROLL_START && $date < $eventdate) {
                 $status = false;
                 break;
@@ -105,7 +105,7 @@ class TournamentSupport
         $qb->setParameter('tournament', $tournamentid);
         $status = TournamentSupport::$TMNT_GOING;
         foreach ($qb->getResult() as $event) {
-            $eventdate = date_create_from_format("d/m/Y", $event['date']);
+            $eventdate = date_create_from_format($this->container->getParameter('db_date_format'), $event['date']);
             if ($event['event'] == Event::$MATCH_START && $date < $eventdate) {
                 $status = TournamentSupport::$TMNT_ENROLL;
             }
@@ -124,7 +124,7 @@ class TournamentSupport
         $qb->setParameter('tournament', $tournamentid);
         $event = $qb->getOneOrNullResult();
         if ($event != null) {
-            $eventdate = date_create_from_format("d/m/Y", $event['date']);
+            $eventdate = date_create_from_format($this->container->getParameter('db_date_format'), $event['date']);
             if ($date < $eventdate) {
                 $status = false;
             }

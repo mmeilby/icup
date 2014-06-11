@@ -134,10 +134,10 @@ class QMatchRelationController extends Controller
         $matchForm->setPid($match->getPId());
         $matchForm->setMatchno($match->getMatchno());
         $dateformat = $this->get('translator')->trans('FORMAT.DATE');
-        $matchdate = date_create_from_format("d/m/Y", $match->getDate());
+        $matchdate = date_create_from_format($this->container->getParameter('db_date_format'), $match->getDate());
         $matchForm->setDate(date_format($matchdate, $dateformat));
         $timeformat = $this->get('translator')->trans('FORMAT.TIME');
-        $matchtime = date_create_from_format("G.i", $match->getTime());
+        $matchtime = date_create_from_format($this->container->getParameter('db_time_format'), $match->getTime());
         $matchForm->setTime(date_format($matchtime, $timeformat));
         $matchForm->setPlayground($match->getPlayground());
         $homeRel = $this->get('match')->getQMatchRelationByMatch($match->getId(), false);

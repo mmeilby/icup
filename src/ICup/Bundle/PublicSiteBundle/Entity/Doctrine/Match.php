@@ -183,12 +183,4 @@ class Match
     {
         return $this->matchno;
     }
-    
-    /**
-     * Get match schedule as DateTime object
-     * @return DateTime - match schedule defined by date and time
-     */
-    public function getSchedule() {
-        return DateTime::createFromFormat('d/m/Y-H:i', $this->date.'-'.str_replace(".", ":", $this->time));
-    }
 }

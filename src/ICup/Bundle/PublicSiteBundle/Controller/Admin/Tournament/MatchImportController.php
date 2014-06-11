@@ -197,8 +197,8 @@ class MatchImportController extends Controller
         
         $matchrec = new Match();
         $matchrec->setMatchno($parseObj['id']);
-        $matchrec->setDate(date_format($matchdate, "d/m/Y"));
-        $matchrec->setTime(date_format($matchtime, "G.i"));
+        $matchrec->setDate(date_format($matchdate, $this->container->getParameter('db_date_format')));
+        $matchrec->setTime(date_format($matchtime, $this->container->getParameter('db_time_format')));
         $matchrec->setPid($parseObj['groupid']);
         $matchrec->setPlayground($parseObj['playgroundid']);
 

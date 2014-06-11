@@ -71,7 +71,11 @@ class MatchSupport
         return array(
             'id' => $this->getValue($homeMatch, 'mid'),
             'matchno' => $homeMatch['matchno'],
-            'schedule' => DateTime::createFromFormat('d/m/Y-H:i', $homeMatch['date'].'-'.str_replace(".", ":", $homeMatch['time'])),
+            'schedule' => DateTime::createFromFormat(
+                    $this->container->getParameter('db_date_format').
+                    '-'.
+                    $this->container->getParameter('db_time_format'),
+                    $homeMatch['date'].'-'.$homeMatch['time']),
             'playground' => array('no' => $this->getValue($homeMatch, 'no'),
                                   'name' => $this->getValue($homeMatch, 'playground'),
                                   'id' => $this->getValue($homeMatch, 'pid')),
@@ -206,7 +210,7 @@ class MatchSupport
         $qb->setParameter('tournament', $tournamentid);
         $matchList = array();
         foreach ($qb->getResult() as $date) {
-            $matchdate = date_create_from_format("d/m/Y", $date['date']);
+            $matchdate = date_create_from_format($this->container->getParameter('db_date_format'), $date['date']);
             $matchList[] = $matchdate;
         }
         return $matchList;
@@ -301,7 +305,7 @@ class MatchSupport
     }
     
     public function listMatchesByPlaygroundDate($playgroundid, $date) {
-        $matchdate = date_format($date, "d/m/Y");
+        $matchdate = date_format($date, $this->container->getParameter('db_date_format'));
         $matchList = $this->queryMatchListWithCategory($playgroundid, $matchdate);
         $qmatchList = $this->queryQMatchListWithCategory($playgroundid, $matchdate);
         return $this->prepareAndSort($matchList, $qmatchList);
@@ -499,7 +503,11 @@ class MatchSupport
         return array(
             'id' => $this->getValue($match, 'mid'),
             'matchno' => $match['matchno'],
-            'schedule' => DateTime::createFromFormat('d/m/Y-H:i', $match['date'].'-'.str_replace(".", ":", $match['time'])),
+            'schedule' => DateTime::createFromFormat(
+                    $this->container->getParameter('db_date_format').
+                    '-'.
+                    $this->container->getParameter('db_time_format'),
+                    $match['date'].'-'.$match['time']),
             'playground' => array('no' => $this->getValue($match, 'no'),
                                   'name' => $this->getValue($match, 'playground'),
                                   'id' => $this->getValue($match, 'pid')),

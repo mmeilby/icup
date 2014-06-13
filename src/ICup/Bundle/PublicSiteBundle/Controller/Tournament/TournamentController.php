@@ -31,7 +31,7 @@ class TournamentController extends Controller
     }
 
     /**
-     * @Route("/tmnt/pgrnd/{tournament}", name="_tournament_playgrounds")
+     * @Route("/tmnt/pgrnds/{tournament}", name="_tournament_playgrounds")
      * @Template("ICupPublicSiteBundle:Tournament:playgrounds.html.twig")
      */
     public function listPlaygroundsAction($tournament)

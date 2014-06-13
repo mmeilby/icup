@@ -300,7 +300,7 @@ class BusinessLogic
     public function listCategories($tournamentid) {
         return $this->entity->getCategoryRepo()
                 ->findBy(array('pid' => $tournamentid),
-                         array('classification' => 'asc', 'gender' => 'asc'));
+                         array('classification' => 'desc', 'age' => 'desc', 'gender' => 'asc'));
     }
 
     public function listGroupsByTournament($tournamentid) {

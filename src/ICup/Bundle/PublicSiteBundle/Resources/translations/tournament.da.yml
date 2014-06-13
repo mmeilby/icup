@@ -24,6 +24,7 @@ FIRST: Vinder
 SECOND: 2. plads
 THIRD: 3. plads
 FORTH: 4. plads
+NOWINNERS: Der er endnu ikke fundet en vinder
 RANK: "{1} Vinder af %group% | ]1,Inf[ %rank%. plads i %group%"
 
 GROUPCLASS:

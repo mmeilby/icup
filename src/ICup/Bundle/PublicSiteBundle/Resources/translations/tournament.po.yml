@@ -24,6 +24,7 @@ FIRST: Zwycięzca
 SECOND: Drugie miejsce 
 THIRD: Trzecie miejsce 
 FORTH: Czwarte miejsce 
+NOWINNERS: No winner has been found yet
 RANK: "{1} Zwycięzca %group% | ]1,Inf[ Nr. %rank% %group%"
 
 GROUPCLASS:

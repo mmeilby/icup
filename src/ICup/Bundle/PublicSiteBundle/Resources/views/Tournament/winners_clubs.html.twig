@@ -9,6 +9,7 @@
 <div class="tab" onclick="location.href='{{ path('_tournament_winners', {'tournament': tournament.key }) }}'">{{ 'WINNERS'|trans|upper }}</div>
 <div class="tab" onclick="location.href='{{ path('_tournament_winners_countries', {'tournament': tournament.key }) }}'">{{ 'WINNING_COUNTRIES'|trans|upper }}</div>
 <div class="tab active" onclick="location.href='{{ path('_tournament_winners_clubs', {'tournament': tournament.key }) }}'">{{ 'WINNING_CLUBS'|trans|upper }}</div>
+{% if championlist|length > 0 %}
 <table>
     <caption>{% trans %}WINNING_CLUBS{% endtrans %}</caption>
     <thead>
@@ -47,4 +48,7 @@
         </tr>
     </tfoot>
 </table>
+{% else %}
+<h2 class="category">{% trans %}NOWINNERS{% endtrans %}</h2>
+{% endif %}
 {% endblock %}

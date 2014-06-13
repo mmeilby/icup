@@ -24,6 +24,7 @@ FIRST: Winner
 SECOND: 2nd
 THIRD: 3rd
 FORTH: 4th
+NOWINNERS: No winner has been found yet
 RANK: "{1} Winner of %group% | {2} 2nd in %group% | {3} 3rd in %group% | ]3,Inf[ %rank%th in %group%"
 
 GROUPCLASS:

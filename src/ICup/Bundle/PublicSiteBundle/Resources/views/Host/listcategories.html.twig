@@ -27,7 +27,10 @@
         <tr class="{{ cycle(['even','odd'],loopindex) }}">
             <td class="host_solo" colspan="2">
                 <a href="{{ path('_edit_category_chg', { 'categoryid': category.id }) }}">
-                {% trans from "tournament" %}CATEGORY{% endtrans %} {{ category.name|upper }}
+                {% trans from "tournament" %}CATEGORY{% endtrans %} {{ category.name|upper }} -
+                {{ ['GENDER.',
+                    category.gender,
+                    category.classification]|join|transchoice(category.age, { '%age%': category.age },'tournament') }}
                 </a>    
             </td>
             <td class="operand">

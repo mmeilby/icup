@@ -22,16 +22,18 @@ class WinnersController extends Controller
         $groups = $this->get('tmnt')->listChampionsByTournament($tournament->getId());
         foreach ($groups as $group) {
             $teamsList = $this->get('orderTeams')->sortGroup($group['id']);
-            if ($group['classification'] == 10) {
-                $championList[$group['catid']]['group'] = $group;
-                $championList[$group['catid']]['first'][] = $teamsList[0];
-                $championList[$group['catid']]['second'][] = $teamsList[1];
-                $championList[$group['catid']]['third'] = array();
-                $championList[$group['catid']]['forth'] = array();
-            }
-            else {
-                $championList[$group['catid']]['third'][] = $teamsList[0];
-                $championList[$group['catid']]['forth'][] = $teamsList[1];
+            if (count($teamsList) == 2) {
+                if ($group['classification'] == 10) {
+                    $championList[$group['catid']]['group'] = $group;
+                    $championList[$group['catid']]['first'][] = $teamsList[0];
+                    $championList[$group['catid']]['second'][] = $teamsList[1];
+                    $championList[$group['catid']]['third'] = array();
+                    $championList[$group['catid']]['forth'] = array();
+                }
+                else {
+                    $championList[$group['catid']]['third'][] = $teamsList[0];
+                    $championList[$group['catid']]['forth'][] = $teamsList[1];
+                }
             }
         }
         return array('tournament' => $tournament, 'championlist' => $championList);
@@ -52,24 +54,26 @@ class WinnersController extends Controller
         $countryList = array();
         foreach ($groups as $group) {
             $teamsList = $this->get('orderTeams')->sortGroup($group['id']);
-            if (key_exists($teamsList[0]->country, $countryList))
-                $winner_country = $countryList[$teamsList[0]->country];
-            else
-                $winner_country = array('country' => $teamsList[0]->country, 'first' => 0, 'second' => 0, 'third' => 0, 'forth' => 0);
-            if (key_exists($teamsList[1]->country, $countryList))
-                $looser_country = $countryList[$teamsList[1]->country];
-            else
-                $looser_country = array('country' => $teamsList[1]->country, 'first' => 0, 'second' => 0, 'third' => 0, 'forth' => 0);
-            if ($group['classification'] == 10) {
-                $winner_country['first']++;
-                $looser_country['second']++;
+            if (count($teamsList) == 2) {
+                if (key_exists($teamsList[0]->country, $countryList))
+                    $winner_country = $countryList[$teamsList[0]->country];
+                else
+                    $winner_country = array('country' => $teamsList[0]->country, 'first' => 0, 'second' => 0, 'third' => 0, 'forth' => 0);
+                if (key_exists($teamsList[1]->country, $countryList))
+                    $looser_country = $countryList[$teamsList[1]->country];
+                else
+                    $looser_country = array('country' => $teamsList[1]->country, 'first' => 0, 'second' => 0, 'third' => 0, 'forth' => 0);
+                if ($group['classification'] == 10) {
+                    $winner_country['first']++;
+                    $looser_country['second']++;
+                }
+                else {
+                    $winner_country['third']++;
+                    $looser_country['forth']++;
+                }
+                $countryList[$teamsList[0]->country] = $winner_country;
+                $countryList[$teamsList[1]->country] = $looser_country;
             }
-            else {
-                $winner_country['third']++;
-                $looser_country['forth']++;
-            }
-            $countryList[$teamsList[0]->country] = $winner_country;
-            $countryList[$teamsList[1]->country] = $looser_country;
         }
         $championList = array();
         foreach ($countryList as $rank) {
@@ -119,24 +123,26 @@ class WinnersController extends Controller
         $countryList = array();
         foreach ($groups as $group) {
             $teamsList = $this->get('orderTeams')->sortGroup($group['id']);
-            if (key_exists($teamsList[0]->club, $countryList))
-                $winner_country = $countryList[$teamsList[0]->club];
-            else
-                $winner_country = array('club' => $teamsList[0]->club, 'country' => $teamsList[0]->country, 'first' => 0, 'second' => 0, 'third' => 0, 'forth' => 0);
-            if (key_exists($teamsList[1]->club, $countryList))
-                $looser_country = $countryList[$teamsList[1]->club];
-            else
-                $looser_country = array('club' => $teamsList[1]->club, 'country' => $teamsList[1]->country, 'first' => 0, 'second' => 0, 'third' => 0, 'forth' => 0);
-            if ($group['classification'] == 10) {
-                $winner_country['first']++;
-                $looser_country['second']++;
+            if (count($teamsList) == 2) {
+                if (key_exists($teamsList[0]->club, $countryList))
+                    $winner_country = $countryList[$teamsList[0]->club];
+                else
+                    $winner_country = array('club' => $teamsList[0]->club, 'country' => $teamsList[0]->country, 'first' => 0, 'second' => 0, 'third' => 0, 'forth' => 0);
+                if (key_exists($teamsList[1]->club, $countryList))
+                    $looser_country = $countryList[$teamsList[1]->club];
+                else
+                    $looser_country = array('club' => $teamsList[1]->club, 'country' => $teamsList[1]->country, 'first' => 0, 'second' => 0, 'third' => 0, 'forth' => 0);
+                if ($group['classification'] == 10) {
+                    $winner_country['first']++;
+                    $looser_country['second']++;
+                }
+                else {
+                    $winner_country['third']++;
+                    $looser_country['forth']++;
+                }
+                $countryList[$teamsList[0]->club] = $winner_country;
+                $countryList[$teamsList[1]->club] = $looser_country;
             }
-            else {
-                $winner_country['third']++;
-                $looser_country['forth']++;
-            }
-            $countryList[$teamsList[0]->club] = $winner_country;
-            $countryList[$teamsList[1]->club] = $looser_country;
         }
         $championList = array();
         foreach ($countryList as $rank) {

@@ -7,6 +7,7 @@
     {% trans %}RESULTS{% endtrans %} {{ tournament.edition }}<br />
 </p>
 <div>
+{% if teams|length > 0 %}
     <table>
         <caption>{% trans %}CLUBS{% endtrans %}</caption>
         <thead>
@@ -39,5 +40,8 @@
             </tr>
         </tfoot>
     </table>
+{% else %}
+<h2 class="category">{% trans %}TOURNAMENTNOTREADY{% endtrans %}</h2>
+{% endif %}
 </div>
 {% endblock %}

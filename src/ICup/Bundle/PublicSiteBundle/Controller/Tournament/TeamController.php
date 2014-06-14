@@ -19,12 +19,17 @@ class TeamController extends Controller
         $category = $this->get('entity')->getCategoryById($group->getPid());
         $tournament = $this->get('entity')->getTournamentById($category->getPid());
         $matchList = $this->get('match')->listMatchesByGroupTeam($groupid, $teamid);
+
+        $matches = array();
+        foreach ($matchList as $match) {
+            $matches[date_format($match['schedule'], "Y/m/d")][] = $match;
+        }
         
         return array('tournament' => $tournament,
                      'category' => $category,
                      'group' => $group,
                      'team' => $team,
                      'teamname' => $name,
-                     'matchlist' => $matchList);
+                     'matchlist' => $matches);
     }
 }

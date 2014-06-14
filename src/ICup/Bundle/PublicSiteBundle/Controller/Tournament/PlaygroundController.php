@@ -17,13 +17,18 @@ class PlaygroundController extends Controller
         $group = $this->get('entity')->getGroupById($groupid);
         $category = $this->get('entity')->getCategoryById($group->getPid());
         $tournament = $this->get('entity')->getTournamentById($category->getPid());
-        
         $matchList = $this->get('match')->listMatchesByGroupPlayground($groupid, $playgroundid);
+
+        $matches = array();
+        foreach ($matchList as $match) {
+            $matches[date_format($match['schedule'], "Y/m/d")][] = $match;
+        }
+        
         return array('tournament' => $tournament,
                      'category' => $category,
                      'group' => $group,
                      'playground' => $playground,
-                     'matchlist' => $matchList);
+                     'matchlist' => $matches);
     }
     
     /**
@@ -35,10 +40,15 @@ class PlaygroundController extends Controller
         $playground = $this->get('entity')->getPlaygroundById($playgroundid);
         $site = $this->get('entity')->getSiteById($playground->getPid());
         $tournament = $this->get('entity')->getTournamentById($site->getPid());
-
         $matchList = $this->get('match')->listMatchesByPlayground($playgroundid);
+
+        $matches = array();
+        foreach ($matchList as $match) {
+            $matches[date_format($match['schedule'], "Y/m/d")][] = $match;
+        }
+        
         return array('tournament' => $tournament,
                      'playground' => $playground,
-                     'matchlist' => $matchList);
+                     'matchlist' => $matches);
     }
 }

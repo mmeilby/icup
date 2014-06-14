@@ -55,20 +55,18 @@
             </tr>
         </thead>
         <tboby>
-{% set catdate = '' %}
-{% for match in matchlist %}
-    {% if match.schedule|date('d-M-Y') != catdate %}
+{% if matchlist|length > 0 %}
+    {% for matches in matchlist %}
             <tr class="{{ cycle(['even','odd'],loop.index) }}">
                 <td class="date_solo" colspan="8">
-                    {{ 'FORMAT.LONGDATE'|transchoice(match.schedule|date('j'), {
-                            '%week%': ['WEEK.',match.schedule|date('D')|upper]|join|trans([],'messages')|capitalize,
-                            '%day%': match.schedule|date('j'),
-                            '%month%': ['MONTH.',match.schedule|date('M')|upper]|join|trans([],'messages'),
-                            '%year%': match.schedule|date('Y')}, 'messages') }}
+                    {{ 'FORMAT.LONGDATE'|transchoice(matches[0].schedule|date('j'), {
+                            '%week%': ['WEEK.',matches[0].schedule|date('D')|upper]|join|trans([],'messages')|capitalize,
+                            '%day%': matches[0].schedule|date('j'),
+                            '%month%': ['MONTH.',matches[0].schedule|date('M')|upper]|join|trans([],'messages'),
+                            '%year%': matches[0].schedule|date('Y')}, 'messages') }}
                 </td>
             </tr>
-        {% set catdate = match.schedule|date('d-M-Y') %}
-    {% endif %}
+        {% for match in matches %}
             <tr class="{{ cycle(['even','odd'],loop.index) }}">
                 <td class="flag"></td>
                 <td class="no">{{ match.matchno }}</td>
@@ -77,7 +75,15 @@
                 {{ formatter.club(match.away, _context) }}
                 <td class="match">{{ match.home.score }}-{{ match.away.score }}</td>
             </tr>
-{% endfor %}
+        {% endfor %}
+    {% endfor %}
+{% else %}
+            <tr class="even">
+                <td class="date_solo" colspan="8">
+                    <h2 class="category">{% trans %}TOURNAMENTNOTREADY{% endtrans %}</h2>
+                </td>
+            </tr>
+{% endif %}
         </tboby>
         <tfoot>
             <tr>

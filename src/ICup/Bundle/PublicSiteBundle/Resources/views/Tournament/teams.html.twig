@@ -20,7 +20,8 @@
             </tr>
         </thead>
         <tboby>
-{% for catid,category in teams %}
+{% if teams|length > 0 %}
+    {% for catid,category in teams %}
             <tr class="{{ cycle(['even','odd'],loop.index) }}">
                 <td class="categories">
                     <a href="{{ path('_showcategory', { 'categoryid': categories[catid].id }) }}">
@@ -31,13 +32,20 @@
                             categories[catid].classification]|join|transchoice(categories[catid].age, { '%age%': categories[catid].age },'tournament') }}
                 </td>
                 <td class="teams">
-    {% for team in category %}
+        {% for team in category %}
                         <a href="{{ path('_showteam', { 'teamid': team.id, 'groupid': team.groupid }) }}"><b>{{ team.name }}</b></a><br />
                         {% trans %}GROUP{% endtrans %} {{ team.grp }}<br />
-    {% endfor %}
+        {% endfor %}
                 </td>
-{% endfor %}
             </tr>
+    {% endfor %}
+{% else %}
+            <tr class="even">
+                <td class="date_solo" colspan="2">
+                    <h2 class="category">{% trans %}TOURNAMENTNOTREADY{% endtrans %}</h2>
+                </td>
+            </tr>
+{% endif %}
         </tboby>
         <tfoot>
             <tr>

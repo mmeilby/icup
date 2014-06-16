@@ -43,21 +43,22 @@ class BusinessLogic
         $this->logger = $logger;
     }
     
-    public function addEnrolled(Category $category, Club $club, User $user) {
+    public function addEnrolled($categoryid, $clubid, $userid) {
+        $club = $this->get('entity')->getClubById($clubid);
         $qb = $this->em->createQuery(
                 "select e ".
                 "from ".$this->entity->getRepositoryPath('Enrollment')." e, ".
                         $this->entity->getRepositoryPath('Team')." t ".
                 "where e.pid=:category and e.cid=t.id and t.pid=:club ".
                 "order by e.pid");
-        $qb->setParameter('category', $category->getId());
-        $qb->setParameter('club', $club->getId());
+        $qb->setParameter('category', $categoryid);
+        $qb->setParameter('club', $clubid);
         $enrolled = $qb->getResult();
  
         $noTeams = count($enrolled);
         if ($noTeams >= 26) {
             // Can not add more than 26 teams to same category - Team A -> Team Z
-            throw new ValidationException("NOMORETEAMS", "More than 26 enrolled - club=".$club->getId().", category=".$category->getId());
+            throw new ValidationException("NOMORETEAMS", "More than 26 enrolled - club=".$clubid.", category=".$categoryid);
         }
         else if ($noTeams == 0) {
             $division = '';
@@ -70,24 +71,8 @@ class BusinessLogic
             $division = chr($noTeams + 65);
         }
         
-        $team = new Team();
-        $team->setPid($club->getId());
-        $team->setName($club->getName());
-        $team->setColor('');
-        $team->setDivision($division);
-        $this->em->persist($team);
-        $this->em->flush();
-        
-        $today = new DateTime();
-        $enroll = new Enrollment();
-        $enroll->setCid($team->getId());
-        $enroll->setPid($category->getId());
-        $enroll->setUid($user->getId());
-        $enroll->setDate($today->format($this->container->getParameter('db_date_format')));
-        $this->em->persist($enroll);
-        $this->em->flush();
-
-        return $enroll;
+        return $this->enrollTeam($categoryid, $userid,
+                                 $clubid, $club->getName(), $division);
     }
     
     public function deleteEnrolled($categoryid, $clubid) {
@@ -128,7 +113,7 @@ class BusinessLogic
         return $enroll;
     }
     
-    private function isTeamAssigned($categoryid, $teamid) {
+    public function isTeamAssigned($categoryid, $teamid) {
         $qbt = $this->em->createQuery(
                 "select count(o) as teams ".
                 "from ".$this->entity->getRepositoryPath('Group')." g, ".
@@ -140,6 +125,26 @@ class BusinessLogic
         $qbt->setParameter('team', $teamid);
         $teamsAssigned = $qbt->getOneOrNullResult();
         return $teamsAssigned != null ? $teamsAssigned['teams'] > 0 : false;
+    }
+    
+    public function enrollTeam($categoryid, $userid, $clubid, $name, $division) {
+        $team = new Team();
+        $team->setPid($clubid);
+        $team->setName($name);
+        $team->setColor('');
+        $team->setDivision($division);
+        $this->em->persist($team);
+        $this->em->flush();
+        
+        $today = new DateTime();
+        $enroll = new Enrollment();
+        $enroll->setCid($team->getId());
+        $enroll->setPid($categoryid);
+        $enroll->setUid($userid);
+        $enroll->setDate($today->format($this->container->getParameter('db_date_format')));
+        $this->em->persist($enroll);
+        $this->em->flush();
+        return $enroll;
     }
     
     private function updateDivision(Enrollment $enroll, $division) {
@@ -303,6 +308,17 @@ class BusinessLogic
                          array('classification' => 'desc', 'age' => 'desc', 'gender' => 'asc'));
     }
 
+    public function getCategoryByName($tournamentid, $category) {
+        $qb = $this->em->createQuery(
+                "select c ".
+                "from ".$this->entity->getRepositoryPath('Category')." c ".
+                "where c.pid=:tournament and ".
+                      "c.name=:category");
+        $qb->setParameter('tournament', $tournamentid);
+        $qb->setParameter('category', $category);
+        return $qb->getOneOrNullResult();
+    }
+
     public function listGroupsByTournament($tournamentid) {
         $qb = $this->em->createQuery(
                 "select g ".
@@ -361,6 +377,32 @@ class BusinessLogic
     
     public function listGroupOrders($groupid) {
         return $this->entity->getGroupOrderRepo()->findBy(array('pid' => $groupid));
+    }
+    
+    public function getTeamByCategory($categoryid, $name, $division) {
+        $qb = $this->em->createQuery(
+                "select t.id,t.name,t.division,c.name as club,c.country ".
+                "from ".$this->entity->getRepositoryPath('Enrollment')." e, ".
+                        $this->entity->getRepositoryPath('Team')." t, ".
+                        $this->entity->getRepositoryPath('Club')." c ".
+                "where e.pid=:category and ".
+                      "e.cid=t.id and ".
+                      "t.pid=c.id and ".
+                      "t.name=:name and ".
+                      "t.division=:division");
+        $qb->setParameter('category', $categoryid);
+        $qb->setParameter('name', $name);
+        $qb->setParameter('division', $division);
+        $teamsList = array();
+        foreach ($qb->getResult() as $team) {
+            $teamInfo = new TeamInfo();
+            $teamInfo->id = $team['id'];
+            $teamInfo->name = $this->getTeamName($team['name'], $team['division']);
+            $teamInfo->club = $team['club'];
+            $teamInfo->country = $team['country'];
+            $teamsList[] = $teamInfo;
+        }
+        return $teamsList;
     }
     
     public function getTeamByGroup($groupid, $name, $division) {

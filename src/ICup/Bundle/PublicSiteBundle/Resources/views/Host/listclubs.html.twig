@@ -59,10 +59,10 @@
 {% else %}
         <tr>
             <td class="clubname">
-                        <b><a href="{{ path('_edit_club_add') }}">{{'FORM.LISTCLUBS.NOCLUB'|trans|upper}}</a></b>
+                        <b><a href="{{ path('_host_club_new', {'tournamentid': tournament.id }) }}">{{'FORM.LISTCLUBS.NOCLUB'|trans|upper}}</a></b>
             </td>
             <td class="operand">
-                        <a href="{{ path('_edit_club_add') }}">+</a>
+                        <a href="{{ path('_host_club_new', {'tournamentid': tournament.id }) }}">+</a>
             </td>
         </tr>
 {% endif %}

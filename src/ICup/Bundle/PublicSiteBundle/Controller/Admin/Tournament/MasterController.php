@@ -19,7 +19,7 @@ class MasterController extends Controller
         // Validate tournament id
         $this->get('entity')->getTournamentById($tournamentid);
         // Only if tournament has not been started we are allowed to wipe the teams
-        if (getTournamentStatus($tournamentid, new DateTime()) == TournamentSupport::$TMNT_ENROLL) {
+        if ($this->get('tmnt')->getTournamentStatus($tournamentid, new DateTime()) == TournamentSupport::$TMNT_ENROLL) {
             $this->get('tmnt')->wipeTeams($tournamentid);
         }
         

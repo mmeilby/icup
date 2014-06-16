@@ -136,15 +136,6 @@ class TeamImportController extends Controller
                                  $parseObj['team']['name'],
                                  $parseObj['team']['division'],
                                  $parseObj['team']['country']);
-        if ($teamid == 0) {
-            $club = $this->get('logic')->getClubByName($parseObj['team']['name'], $parseObj['team']['country']);
-            if ($club != null) {
-                $parseObj['clubid'] = $club->getId();
-            }
-            else {
-                $parseObj['clubid'] = 0;
-            }
-        }
         $parseObj['categoryid'] = $category->getId();
         $parseObj['groupid'] = $group->getId();
         $parseObj['teamid'] = $teamid;
@@ -173,15 +164,15 @@ class TeamImportController extends Controller
         $categoryid = $parseObj['categoryid'];
         $teamid = $parseObj['teamid'];
         if ($teamid == 0) {
-            $clubid = $parseObj['clubid'];
-            if ($clubid == 0) {
+            $club = $this->get('logic')->getClubByName($parseObj['team']['name'], $parseObj['team']['country']);
+            if ($club == null) {
                 $club = new Club();
                 $club->setName($parseObj['team']['name']);
                 $club->setCountry($parseObj['team']['country']);
                 $em->persist($club);
                 $em->flush();
-                $clubid = $club->getId();
             }
+            $clubid = $club->getId();
             $enroll = $this->get('logic')->enrollTeam($categoryid, $userid,
                                                       $clubid,
                                                       $parseObj['team']['name'],

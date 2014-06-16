@@ -76,5 +76,9 @@
     <a href="{{ path('_host_club_new', {'tournamentid': tournament.id }) }}">+</a>
     &nbsp;
     <a href="{{ path('_edit_import_team', {'tournamentid': tournament.id }) }}">I</a>
+{% if is_granted('ROLE_ADMIN') %}
+    &nbsp;
+    <a href="{{ path('_admin_wipe_teams', {'tournamentid': tournament.id }) }}">W</a>
+{% endif %}    
 </p>
 {% endblock %}

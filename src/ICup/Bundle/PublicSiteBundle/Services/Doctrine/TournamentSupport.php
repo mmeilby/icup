@@ -311,4 +311,45 @@ class TournamentSupport
         $qb->setParameter('tournament', $tournamentid);
         return $qb->getResult();
     }
+    
+    public function wipeTeams($tournamentid) {
+        // wipe clubs
+        $qbc = $this->em->createQuery(
+                "delete from ".$this->entity->getRepositoryPath('Club')." clb ".
+                "where clb.id in (select t.pid ".
+                                "from ".$this->entity->getRepositoryPath('Category')." c, ".
+                                        $this->entity->getRepositoryPath('Group')." g, ".
+                                        $this->entity->getRepositoryPath('GroupOrder')." o, ".
+                                        $this->entity->getRepositoryPath('Team')." t ".
+                                "where c.pid=:tournament and g.pid=c.id and o.pid=g.id and o.cid=t.id)");
+        $qbc->setParameter('tournament', $tournamentid);
+        $qbc->getResult();
+        // wipe teams
+        $qbt = $this->em->createQuery(
+                "delete from ".$this->entity->getRepositoryPath('Team')." t ".
+                "where t.id in (select o.cid ".
+                                "from ".$this->entity->getRepositoryPath('Category')." c, ".
+                                        $this->entity->getRepositoryPath('Group')." g, ".
+                                        $this->entity->getRepositoryPath('GroupOrder')." o ".
+                                "where c.pid=:tournament and g.pid=c.id and o.pid=g.id)");
+        $qbt->setParameter('tournament', $tournamentid);
+        $qbt->getResult();
+        // wipe group orders
+        $qbo = $this->em->createQuery(
+                "delete from ".$this->entity->getRepositoryPath('GroupOrder')." o ".
+                "where o.pid in (select g.id ".
+                                "from ".$this->entity->getRepositoryPath('Category')." c, ".
+                                        $this->entity->getRepositoryPath('Group')." g ".
+                                "where c.pid=:tournament and g.pid=c.id)");
+        $qbo->setParameter('tournament', $tournamentid);
+        $qbo->getResult();
+        // wipe enrollments
+        $qbe = $this->em->createQuery(
+                "delete from ".$this->entity->getRepositoryPath('Enrollment')." e ".
+                "where e.pid in (select c.id ".
+                                "from ".$this->entity->getRepositoryPath('Category')." c ".
+                                "where c.pid=:tournament)");
+        $qbe->setParameter('tournament', $tournamentid);
+        $qbe->getResult();
+    }
 }

@@ -1,0 +1,11 @@
+{% extends "ICupPublicSiteBundle:Masters:edit.html.twig" %}
+
+{% form_theme form 'ICupPublicSiteBundle:Default:layout.script.html.twig' %}
+{% trans_default_domain "admin" %}
+
+{% block adminbody %}
+    <h1>{% trans %}FORM.ADMIN{% endtrans %}</h1>
+    <p class="subtitle">{% trans %}FORM.TEAMIMPORT.TITLE{% endtrans %}</p>
+    <p>{% trans %}FORM.TEAMIMPORT.PROMPT{% endtrans %}</p>
+    {{ form(form) }}
+{% endblock %}

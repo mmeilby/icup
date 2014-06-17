@@ -19,7 +19,7 @@ class TeamImportController extends Controller
     /**
      * Import match for tournament
      * @Route("/edit/import/team/{tournamentid}", name="_edit_import_team")
-     * @Template("ICupPublicSiteBundle:Host:matchimport.html.twig")
+     * @Template("ICupPublicSiteBundle:Host:teamimport.html.twig")
      */
     public function teamImportAction($tournamentid) {
         /* @var $utilService Util */
@@ -51,9 +51,9 @@ class TeamImportController extends Controller
     
     private function makeImportForm($matchImport) {
         $formDef = $this->createFormBuilder($matchImport);
-        $formDef->add('import', 'textarea', array('label' => 'FORM.MATCHIMPORT.IMPORT', 'required' => false, 'translation_domain' => 'admin'));
-        $formDef->add('cancel', 'submit', array('label' => 'FORM.MATCHIMPORT.CANCEL', 'translation_domain' => 'admin'));
-        $formDef->add('save', 'submit', array('label' => 'FORM.MATCHIMPORT.SUBMIT', 'translation_domain' => 'admin'));
+        $formDef->add('import', 'textarea', array('label' => 'FORM.TEAMIMPORT.IMPORT', 'required' => false, 'translation_domain' => 'admin'));
+        $formDef->add('cancel', 'submit', array('label' => 'FORM.TEAMIMPORT.CANCEL', 'translation_domain' => 'admin'));
+        $formDef->add('save', 'submit', array('label' => 'FORM.TEAMIMPORT.SUBMIT', 'translation_domain' => 'admin'));
         return $formDef->getForm();
     }
     
@@ -163,20 +163,21 @@ class TeamImportController extends Controller
         $em = $this->getDoctrine()->getManager();
         $categoryid = $parseObj['categoryid'];
         $teamid = $parseObj['teamid'];
+        $name = $parseObj['team']['name'];
+        $division = $parseObj['team']['division'];
+        $country = $parseObj['team']['country'];
         if ($teamid == 0) {
-            $club = $this->get('logic')->getClubByName($parseObj['team']['name'], $parseObj['team']['country']);
+            $club = $this->get('logic')->getClubByName($name, $country);
             if ($club == null) {
                 $club = new Club();
-                $club->setName($parseObj['team']['name']);
-                $club->setCountry($parseObj['team']['country']);
+                $club->setName($name);
+                $club->setCountry($country);
                 $em->persist($club);
                 $em->flush();
             }
             $clubid = $club->getId();
             $enroll = $this->get('logic')->enrollTeam($categoryid, $userid,
-                                                      $clubid,
-                                                      $parseObj['team']['name'],
-                                                      $parseObj['team']['division']);
+                                                      $clubid, $name, $division);
             $teamid = $enroll->getCid();
         }
 

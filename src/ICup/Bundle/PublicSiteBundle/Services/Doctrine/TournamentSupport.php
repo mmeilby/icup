@@ -240,10 +240,11 @@ class TournamentSupport
                         $this->entity->getRepositoryPath('GroupOrder')." o, ".
                         $this->entity->getRepositoryPath('Team')." t ".
                 "where cat.pid=:tournament and ".
-                        "cat.classification<'U19' and ".
-                        "g.pid=cat.id and ".
-                        "o.pid=g.id and ".
-                        "o.cid=t.id");
+                      "cat.classification='U' and ".
+                      "cat.age<=18 and ".
+                      "g.pid=cat.id and ".
+                      "o.pid=g.id and ".
+                      "o.cid=t.id");
         $qb->setParameter('tournament', $tournamentid);
         return $qb->getResult();
     }

@@ -300,6 +300,12 @@ FORM:
     IMPORT: Match plan
     SUBMIT: Import
     CANCEL: Cancel
+  TEAMIMPORT:
+    TITLE: Import team list
+    PROMPT: Enter teams to be enrolled for this tournament
+    IMPORT: Team list
+    SUBMIT: Import
+    CANCEL: Cancel
   MATCH:
     DEFAULT: Please select...
     NONO: An official match no. is mandatory.

@@ -300,6 +300,12 @@ FORM:
     IMPORT: Kampplan
     SUBMIT: Indlæs
     CANCEL: Fortryd indlæsning
+  TEAMIMPORT:
+    TITLE: Indlæs holdliste
+    PROMPT: Indtast hold der skal tilmeldes denne turnering
+    IMPORT: Holdliste
+    SUBMIT: Indlæs
+    CANCEL: Fortryd indlæsning
   MATCH:
     DEFAULT: Vælg...
     NONO: Et officielt kampnr. skal angives.

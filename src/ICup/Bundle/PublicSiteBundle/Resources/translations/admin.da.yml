@@ -3,12 +3,13 @@ FORM:
   ADMIN: iCup Turnerings Administration
   ERROR:
     BACK: Videre...
-    BADHOST: Den valgte turneringsvært findes ikke.
-    BADTOURNAMENT: Den valgte turnering findes ikke.
-    BADSITE: Den valgte lokalitet findes ikke.
-    BADPLAYGROUND: Den valgte bane findes ikke.
-    BADCATEGORY: Den valgte gruppe findes ikke.
-    BADGROUP: Den valgte pulje findes ikke.
+    BADHOST: Den valgte turneringsvært findes ikke
+    BADTOURNAMENT: Den valgte turnering findes ikke
+    BADSITE: Den valgte lokalitet findes ikke
+    BADPLAYGROUND: Den valgte bane findes ikke
+    BADCATEGORY: Den valgte gruppe findes ikke
+    BADGROUP: Den valgte pulje findes ikke
+    BADTEAM: Holdet er ikke gyldigt
     NOTOURNAMENT: Turnering er ikke valgt
   LISTHOSTS:
     TITLE: Vedligehold turneringer og værter

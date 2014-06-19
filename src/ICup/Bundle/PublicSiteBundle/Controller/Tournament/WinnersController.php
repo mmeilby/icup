@@ -18,21 +18,25 @@ class WinnersController extends Controller
         if ($tournament == null) {
             return $this->redirect($this->generateUrl('_tournament_select'));
         }
+        $grpclass = array(9 => array('third', 'forth'), 10 => array('first', 'second'));
         $championList = array();
         $groups = $this->get('tmnt')->listChampionsByTournament($tournament->getId());
         foreach ($groups as $group) {
+            $categoryid = $group['catid'];
+            if (!array_key_exists($categoryid, $championList)) {
+                $championList[$categoryid] = array(
+                    'group' => $group,
+                    'first' => array(),
+                    'second' => array(),
+                    'third' => array(),
+                    'forth' => array()
+                );
+            }
             $teamsList = $this->get('orderTeams')->sortGroup($group['id']);
-            if (count($teamsList) == 2) {
-                if ($group['classification'] == 10) {
-                    $championList[$group['catid']]['group'] = $group;
-                    $championList[$group['catid']]['first'][] = $teamsList[0];
-                    $championList[$group['catid']]['second'][] = $teamsList[1];
-                    $championList[$group['catid']]['third'] = array();
-                    $championList[$group['catid']]['forth'] = array();
-                }
-                else {
-                    $championList[$group['catid']]['third'][] = $teamsList[0];
-                    $championList[$group['catid']]['forth'][] = $teamsList[1];
+            $plcList = $grpclass[$group['classification']];
+            foreach ($teamsList as $i => $team) {
+                if ($i < 2) {
+                    $championList[$categoryid][$plcList[$i]][] = $team;
                 }
             }
         }

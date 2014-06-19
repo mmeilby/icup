@@ -50,8 +50,9 @@
                 </a>
             </td>
             <td class="winner_subcategory">
-                {{ [group.gender,group.class]|join|trans }}
-                {{ group.class|trans|lower }}
+                {{ ['GENDER.',
+                    group.gender,
+                    group.class]|join|transchoice(group.age, { '%age%': group.age },'tournament') }}
             </td>
         </tr>
         <tr class="{{ cycle(['even','odd'],loop.index) }}">

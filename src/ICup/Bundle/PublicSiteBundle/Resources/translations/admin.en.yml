@@ -3,12 +3,13 @@ FORM:
   ADMIN: iCup Tournament Administration
   ERROR:
     BACK: Back...
-    BADHOST: The host does not exist.
-    BADTOURNAMENT: The tournament does not exist.
-    BADSITE: The site does not exist.
-    BADPLAYGROUND: Playground does not exist.
-    BADCATEGORY: The category does not exist.
-    BADGROUP: The group does not exist.
+    BADHOST: The host does not exist
+    BADTOURNAMENT: The tournament does not exist
+    BADSITE: The site does not exist
+    BADPLAYGROUND: Playground does not exist
+    BADCATEGORY: The category does not exist
+    BADGROUP: The group does not exist
+    BADTEAM: The team is not valid
     NOTOURNAMENT: No tournament selected
   LISTHOSTS:
     TITLE: Hosts and tournaments administration

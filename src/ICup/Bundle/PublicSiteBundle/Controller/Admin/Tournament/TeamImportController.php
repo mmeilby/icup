@@ -4,15 +4,11 @@ namespace ICup\Bundle\PublicSiteBundle\Controller\Admin\Tournament;
 use ICup\Bundle\PublicSiteBundle\Entity\MatchImport;
 use ICup\Bundle\PublicSiteBundle\Entity\Doctrine\Tournament;
 use ICup\Bundle\PublicSiteBundle\Entity\Doctrine\Club;
-use ICup\Bundle\PublicSiteBundle\Entity\Doctrine\Team;
-use ICup\Bundle\PublicSiteBundle\Entity\Doctrine\Enrollment;
-use ICup\Bundle\PublicSiteBundle\Entity\Doctrine\GroupOrder;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
 use Symfony\Component\Form\FormError;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use ICup\Bundle\PublicSiteBundle\Exceptions\ValidationException;
-use DateTime;
 
 class TeamImportController extends Controller
 {
@@ -43,7 +39,7 @@ class TeamImportController extends Controller
                 $this->import($tournament, $matchImport, $user->getId());
                 return $this->redirect($returnUrl);
             } catch (ValidationException $exc) {
-                $form->addError(new FormError($this->get('translator')->trans('FORM.ERROR.'.$exc->getMessage(), array(), 'admin')));
+                $form->addError(new FormError($this->get('translator')->trans('FORM.ERROR.'.$exc->getMessage(), array(), 'admin')." [".$exc->getDebugInfo()."]"));
             }
         }
         return array('form' => $form->createView(), 'tournament' => $tournament, 'matchimport' => $matchImport);
@@ -60,7 +56,6 @@ class TeamImportController extends Controller
     /**
      * Import match plan from text string
      * @param Tournament $tournament Import related to tournament
-     * @param String $date Date of match
      * @param String $importStr Category plan - must follow this syntax:
      *                          - Category name
      *                          - Group name
@@ -126,11 +121,11 @@ class TeamImportController extends Controller
     private function validateData($tournament, &$parseObj) {
         $category = $this->get('logic')->getCategoryByName($tournament->getId(), $parseObj['category']);
         if ($category == null) {
-            throw new ValidationException("BADCATEGORY", "tournament=".$tournament->getId()." category=".$parseObj['category']);
+            throw new ValidationException("BADCATEGORY", $parseObj['category']);
         }
         $group = $this->get('logic')->getGroupByCategory($tournament->getId(), $parseObj['category'], $parseObj['group']);
         if ($group == null) {
-            throw new ValidationException("BADGROUP", "tournament=".$tournament->getId()." category=".$parseObj['category']." group=".$parseObj['group']);
+            throw new ValidationException("BADGROUP", $parseObj['category'].":".$parseObj['group']);
         }
         $teamid = $this->getTeam($category->getId(),
                                  $parseObj['team']['name'],
@@ -152,11 +147,12 @@ class TeamImportController extends Controller
                     return $team->id;
                 }
             }
-            throw new ValidationException("BADTEAM", "category=".$categoryid." team=".$name." '".$division."' (".$country.")");
         }
-        else {
-            return 0;
+        $countries = $this->get('util')->getCountries();
+        if (!array_search($country, $countries)) {
+            throw new ValidationException("BADTEAM", $name." '".$division."' (".$country.")");
         }
+        return 0;
     }
 
     private function commitImport($parseObj, $userid) {

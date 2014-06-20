@@ -381,7 +381,7 @@ TD.winners_country {
     text-align: center;
 }
 TD.winners {
-    width: 33%;
+    width: 20%;
 }
 TD.winner_first {
     padding: 5px;
@@ -419,9 +419,13 @@ TD.winner_flag {
 }
 TD.winner_team {
     padding: 2px;
-    width: 300px;
+    width: 200px;
 }
-
+TD.winner_team_small {
+    padding: 2px;
+    width: 200px;
+    font-size: 11px;
+}
 /*
     TABLE STYLES
 */

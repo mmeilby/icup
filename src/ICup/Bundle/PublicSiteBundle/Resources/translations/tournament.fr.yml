@@ -1,0 +1,127 @@
+RESULTS: Résultats
+CATEGORY: Categorie
+GROUP: Poule
+TEAM: Equipe
+FIELD: Terrain
+CATEGORIES: Catégories
+PLAYGROUNDS: Terrains
+CLUBS: Equipes Participantes
+TOWNANDNO: Ville et Terrain
+CLUBSBYCOUNTRY: Equipes par pays
+TEAMSBYCLUB: Equipes incrites par club
+WINNERS: Vainqueurs
+WINNING_COUNTRIES: Vainqueurs par pays
+WINNING_CLUBS: Equipes Gagnantes
+TOURNAMENTNOTREADY: The tournament is not defined yet
+MINUTES: min.
+PRELIMINARY: Tour Préliminaire
+CLASSIFICATION: Classement provisoire
+STANDING: Classement final
+FINALS: Finales
+SEMIFINALS: Demi-Finales
+BRONZEMATCH: Finale 3/4 Place
+FIRST: 1ère Place
+SECOND: 2ème Place
+THIRD: 3ème Place
+FORTH: 4ème Place
+NOWINNERS: No winner has been found yet
+RANK: "{1} Vainqueur du %groupe% | ]1,Inf[ %rank%˚ place de %group%"
+
+GROUPCLASS:
+  0: Tour préliminaire
+  1: Playoff
+  6: 1/8 finale
+  7: 1/4 finale
+  8: Demi-finale
+  9: Finale 3/4 Place
+  10: Finale
+    
+LEGEND:
+  NO: Match
+  TIME: Heure
+  CATEGORY: Categorie
+  GROUP: Poule
+  PLAYGROUND: Terrain
+  HOMETEAM: Equipe A
+  AWAYTEAM: Equipe B
+  MATCHES: G
+  WON: V
+  TIE: P
+  LOST: S
+  GOALS:
+    WON: R.F.
+    LOST: R.S.
+    DIFF: D.R.
+  POINTS: P
+  RESULT: Résultats
+
+CLASS: Classement
+FEMALE: Feminines
+MALE: Masculins
+GENDER:
+  FU: "[1,Inf[ Feminines under %age%"
+  FO: "[1,Inf[ Feminines over %age%"
+  MU: "[1,Inf[ Masculins under %age%"
+  MO: "[1,Inf[ Masculins over %age%"
+
+FORM:
+    SEL_TMNT:
+      TITLE: iCup Selection du Tournoi
+      SUBTITLE: Choisi
+      DESCRIPTION: Résultats et statistiques du Tournoi. 1 clic sur le tournoi que vous désirez visualiser.
+      CAPTION: Tournois
+      LEGEND:
+          NAME: Tournoi
+          EDITION: Edition
+          DESCRIPTION: Description
+
+# Statistics page translations
+    STATISTICS:
+      TITLE: Le tournoi en chiffres
+      LEGEND:
+        KEY: En évidence...
+        FIGURE: Numéros
+      KEY:
+        COUNTRIES: Pays participants
+        CLUBS: Equipes incrites
+        TEAMS: Equipes inscrites à la phase préliminaire
+        FEMALETEAMS: -- Equipes Féminines
+        MALETEAMS: -- Equipes Masculines
+        ADULTTEAMS: -- Equipes +de 18
+        CHILDTEAMS: -- Equipes -de 18
+        CATEGORIES: Categories
+        GROUPS:	Poules de la phase éliminatoire
+        SITES: Sites utilisés pendant le tournoi
+        PLAYGROUNDS: Terrains
+        MATCHES: Matches joués
+        GOALS: Buts marqués
+        MOSTGOALS: Plus grand nombre de buts marqués par une équipe pendant un match
+        MOSTTROPHYS: Plus grand nombre de victoires par pays
+        DAYS: Durée du tournoi
+      GROUP:
+        TEAMS: Infos sur les équipes
+        TOURNAMENT: Infos sur le tournoi
+        TOP: Les meilleurs résultats du tournoi
+
+    TEASER:
+      TOURNAMENT:
+        GROUPS:
+          TITLE: Résultats
+          DESC: Composition des catégories et résultats par équipes et par catégories.
+        PLAYGROUNDS:
+          TITLE: Terrains de jeu
+          DESC: Suivre les rencontres sur les terrains.
+        TEAMS:
+          TITLE: Equipes inscrites
+          DESC: Trouve les équipes victorieuses et visualise les résulats.
+        WINNERS:
+          TITLE: Les champions
+          DESC: Découvre les vainqueurs des éditions précédantes.
+        STATISTICS:
+          TITLE: Statistiques
+          DESC:  Quelques informations importantes concernant le tournoi.
+          
+    EDITRESULTS:
+        TITLE: Modification des résultats
+        SUBMIT: Sauvegarder les résulats
+        CANCEL: Effacer les modifications

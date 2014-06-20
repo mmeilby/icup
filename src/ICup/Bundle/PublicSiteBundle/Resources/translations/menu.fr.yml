@@ -1,0 +1,50 @@
+MENU:
+  LANGCHOICE:
+    TITLE: Langue
+    CHOOSELANG: Selectionner la langue
+  TOURNAMENT:
+    TITLE: Tournoi
+    SELECT: Selectionner le tournoi
+    OVERVIEW: 
+    RESULT:
+        GROUPS: Groupes par catégories
+        PLAYGROUNDS: Calendrier des Matches
+    GROUPS: Catégorie
+    PLAYGROUNDS: Terrain de jeux
+    TEAMS: Equipes
+    WINNERS: Vainqueur
+    STATISTICS: Statistiques
+  REGISTER:
+    TITLE: Enregistrement
+    TEAM: Nouvelle Equipe
+    REFEREE: Arbitre
+    ENROLL: Inscription
+    USER: Nouvel Utilisateur
+  NONREL:
+    ENROLL: Fonction
+  ENROLLMENT:
+    TITLE: Inscription
+    MYPAGE: Ma Page
+    MYPAGE_USERS: Officiels
+    CLUBS: Clubs
+    TEAMS: Equipes
+    REFEREES: Arbitres
+  ADMIN:
+    TITLE: Administration
+    CHANGEPWD: Change password
+    RESULTS: Résultats
+    TOURNAMENT: Tournoi
+    TEAMS: Equipes
+    PLAYERS: Joueurs
+    REFEREES: Arbitres
+    EDITORS: Editeurs
+  INFORMATION:
+    TITLE: Informations
+  INFO:
+    TITLE: Informations
+    ABOUT: Concernant
+    PRICES: Récompenses
+    FAQ: Questions
+  LOGIN: Connexion
+  LOGOUT: Déconnection
+  EXIT: Sortie Exit

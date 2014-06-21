@@ -12,7 +12,7 @@ TEAMSBYCLUB: Squadre inscritte per club
 WINNERS: I vincitori
 WINNING_COUNTRIES: Vincitori per paese
 WINNING_CLUBS: Squadre vincitrici
-TOURNAMENTNOTREADY: The tournament is not defined yet
+TOURNAMENTNOTREADY: Il torneo non è ancora iniziato
 MINUTES: min.
 PRELIMINARY: Turno preliminare
 CLASSIFICATION: Classifica parziale
@@ -24,7 +24,7 @@ FIRST: 1˚ posto
 SECOND: 2˚ posto
 THIRD: 3˚ posto
 FORTH: 4˚ posto
-NOWINNERS: No winner has been found yet
+NOWINNERS: Nessun vincitore si sia ancora trovata
 RANK: "{1} Vincitore di %group% | ]1,Inf[ %rank%˚ posto di %group%"
 
 GROUPCLASS:

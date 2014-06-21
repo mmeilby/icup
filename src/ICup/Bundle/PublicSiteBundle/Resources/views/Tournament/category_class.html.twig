@@ -16,7 +16,9 @@
 </p>
 <div class="tab" onclick="location.href='{{ path('_showcategory', { 'categoryid': category.id }) }}'">{{ 'PRELIMINARY'|trans|upper }}</div>
 <div class="tab active" onclick="location.href='{{ path('_showcategory_classification', { 'categoryid': category.id }) }}'">{{ 'CLASSIFICATION'|trans|upper }}</div>
+{% if finals > 0 %}
 <div class="tab" onclick="location.href='{{ path('_showcategory_finals', { 'categoryid': category.id }) }}'">{{ 'FINALS'|trans|upper }}</div>
+{% endif %}
 {% if grouplist|length > 0 %}
 {% for group in grouplist %}
     <p>

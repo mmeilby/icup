@@ -68,7 +68,9 @@
         category.classification]|join|transchoice(category.age, { '%age%': category.age },'tournament') }}
 </p>
 <div class="tab" onclick="location.href='{{ path('_showcategory', { 'categoryid': category.id }) }}'">{{ 'PRELIMINARY'|trans|upper }}</div>
+{% if classifications > 0 %}
 <div class="tab" onclick="location.href='{{ path('_showcategory_classification', { 'categoryid': category.id }) }}'">{{ 'CLASSIFICATION'|trans|upper }}</div>
+{% endif %}
 <div class="tab active" onclick="location.href='{{ path('_showcategory_finals', { 'categoryid': category.id }) }}'">{{ 'FINALS'|trans|upper }}</div>
 {% if champions|length > 0 %}
 <table>

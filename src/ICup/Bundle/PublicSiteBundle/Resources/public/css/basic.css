@@ -302,6 +302,8 @@ P.language {
 DIV.tab {
     background-color: whitesmoke;
     color: #313131;
+    font-size: 11pt;
+    font-weight: bold;    
     width: 30%;
     border-radius: 10px;
     -moz-border-radius: 10px;

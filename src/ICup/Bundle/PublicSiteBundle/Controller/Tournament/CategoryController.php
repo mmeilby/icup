@@ -21,7 +21,14 @@ class CategoryController extends Controller
             $teamsList = $this->get('orderTeams')->sortGroup($group->getId());
             $groupList[$group->getName()] = array('group' => $group, 'teams' => $teamsList);
         }
-        return array('tournament' => $tournament, 'category' => $category, 'grouplist' => $groupList);
+        $grpc = $this->get('logic')->listGroupsClassification($categoryid);
+        $grpf = $this->get('logic')->listGroupsFinals($categoryid);
+        return array(
+            'tournament' => $tournament,
+            'category' => $category,
+            'grouplist' => $groupList,
+            'classifications' => count($grpc),
+            'finals' => count($grpf));
     }
     
     /**
@@ -38,7 +45,12 @@ class CategoryController extends Controller
             $teamsList = $this->get('orderTeams')->sortGroup($group->getId());
             $groupList[$group->getId()] = array('group' => $group, 'teams' => $teamsList);
         }
-        return array('tournament' => $tournament, 'category' => $category, 'grouplist' => $groupList);
+        $grpf = $this->get('logic')->listGroupsFinals($categoryid);
+        return array(
+            'tournament' => $tournament,
+            'category' => $category,
+            'grouplist' => $groupList,
+            'finals' => count($grpf));
     }
     
     /**
@@ -65,6 +77,11 @@ class CategoryController extends Controller
                 $champions[$key] = $matchList;
             }
         }
-        return array('tournament' => $tournament, 'category' => $category, 'champions' => $champions);
+        $grpc = $this->get('logic')->listGroupsClassification($categoryid);
+        return array(
+            'tournament' => $tournament,
+            'category' => $category,
+            'champions' => $champions,
+            'classifications' => count($grpc));
     }
 }

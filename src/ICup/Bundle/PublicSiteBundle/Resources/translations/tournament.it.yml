@@ -4,22 +4,22 @@ GROUP: Girone
 TEAM: Squadra
 FIELD: Campo
 CATEGORIES: Categorie
-PLAYGROUNDS: Campi di gioco
+PLAYGROUNDS: Campi
 CLUBS: Squadre partecipanti
 TOWNANDNO: Città e campo
 CLUBSBYCOUNTRY: Ordinati per paese
-TEAMSBYCLUB: Teams enrolled by the club
-WINNERS: I campioni
-WINNING_COUNTRIES: Medaglie per paese
-WINNING_CLUBS: Medaglie di squadra
+TEAMSBYCLUB: Squadre inscritte per club
+WINNERS: I vincitori
+WINNING_COUNTRIES: Vincitori per paese
+WINNING_CLUBS: Squadre vincitrici
 TOURNAMENTNOTREADY: The tournament is not defined yet
 MINUTES: min.
 PRELIMINARY: Turno preliminare
-CLASSIFICATION: Playoff rounds
+CLASSIFICATION: Classifica parziale
 STANDING: Classifica finale
-FINALS: Finale
-SEMIFINALS: Semifinale
-BRONZEMATCH: Bronze medal game
+FINALS: Finali
+SEMIFINALS: Semifinali
+BRONZEMATCH: Finale 3/4 posto
 FIRST: 1˚ posto
 SECOND: 2˚ posto
 THIRD: 3˚ posto
@@ -33,7 +33,7 @@ GROUPCLASS:
   6: 1/8 finale
   7: 1/4 finale
   8: Semifinale
-  9: Bronze medal game
+  9: Finale 3/4 posto
   10: Finale
     
 LEGEND:
@@ -55,7 +55,7 @@ LEGEND:
   POINTS: P
   RESULT: Risultato
 
-CLASS: Classificazione
+CLASS: Classifica
 FEMALE: Femminile
 MALE: Maschile
 GENDER:
@@ -66,62 +66,62 @@ GENDER:
 
 FORM:
     SEL_TMNT:
-      TITLE: iCup Tournament Selection
-      SUBTITLE: Choose the tournament you want to review
-      DESCRIPTION: If you would like to review results and standings then select a tournament from the list. Just click on the name of the tournament you want to review.
-      CAPTION: Tournaments
+      TITLE: iCup Selezione torneo
+      SUBTITLE: Scegli il torneo da visualizzare
+      DESCRIPTION: Guarda i risultati e lo statoi del torneo. Basta un click sul nome del torneo che desideri visualizzare.
+      CAPTION: Tornei
       LEGEND:
-          NAME: Name of tournament
-          EDITION: Edition
-          DESCRIPTION: Description
+          NAME: Torneo
+          EDITION: Edizione
+          DESCRIPTION: Descrizione
 
 # Statistics page translations
     STATISTICS:
-      TITLE: This tournament in numbers
+      TITLE: Il torneo in numeri
       LEGEND:
-        KEY: The facts...
-        FIGURE: Numbers
+        KEY: In evidenza...
+        FIGURE: Numeri
       KEY:
-        COUNTRIES: Different countries participating the tournament
-        CLUBS: Clubs enrolled
-        TEAMS: Teams attending the preliminary round
-        FEMALETEAMS: -- female teams
-        MALETEAMS: -- male teams
-        ADULTTEAMS: -- teams over 18
-        CHILDTEAMS: -- teams under 18
-        CATEGORIES: Categories available in the tournament
-        GROUPS:	Groups in the preliminary round
-        SITES: Sites used in the tournament
-        PLAYGROUNDS: Playgrounds used during the tournament
-        MATCHES: Matches played in total
-        GOALS: Goals scored in all matches
-        MOSTGOALS: Most goals scored by a team in one match
-        MOSTTROPHYS: Most trophies won by a country
-        DAYS: The length of the tournament in days
+        COUNTRIES: Paesi partecipanti
+        CLUBS: Squadre inscritte
+        TEAMS: Squadre partecipanti alla fase preliminare
+        FEMALETEAMS: -- squadre femminili
+        MALETEAMS: -- squadre maschili
+        ADULTTEAMS: -- squadre over 18
+        CHILDTEAMS: -- squadre under 18
+        CATEGORIES: Categorie disponibili
+        GROUPS:	Gironi della fase eliminatoria
+        SITES: Aree usate nel torneo
+        PLAYGROUNDS: Campi
+        MATCHES: Partite giocate
+        GOALS: Reti segnate
+        MOSTGOALS: Maggior numero di reti segnate per squadra in una gara
+        MOSTTROPHYS: Maggior numero di trofei vinti per paese
+        DAYS: Lunghezza del torneo in giorni
       GROUP:
-        TEAMS: Facts about the teams
-        TOURNAMENT: Facts about the tournament
-        TOP: Top achievements in the tournament
+        TEAMS: Dati sulle squadre
+        TOURNAMENT: Dati del torneo
+        TOP: I migliori risultati del torneo
 
     TEASER:
       TOURNAMENT:
         GROUPS:
-          TITLE: Category results
-          DESC: Watch the composition of categories or search the results for a team by the category.
+          TITLE: Risultati
+          DESC: Guarda la composizione delle categorie o ricerca i risultati per squadra e categoria.
         PLAYGROUNDS:
-          TITLE: Playground overview
-          DESC: Follow the matches on specific playgrounds.
+          TITLE: Campi di gioco
+          DESC: Segui gli incontri sui campi.
         TEAMS:
-          TITLE: Enrolled teams
-          DESC: Find teams participating the tournament and see the results.
+          TITLE: Squadre inscritte
+          DESC: Trova le squadre partecipanti e visualizza i risultati.
         WINNERS:
-          TITLE: The winners
-          DESC: Discover the winners from all categories of this tournament and visit the hall of fame.
+          TITLE: I campioni
+          DESC: Scopri i vincitori delle categorie e guarda l'albo d'oro.
         STATISTICS:
-          TITLE: Team statistics
-          DESC:  Look up some interesting figures from the tournament.
+          TITLE: Statistiche
+          DESC:  Alcuni dati interessanti sul torneo.
           
     EDITRESULTS:
         TITLE: Aggiornamento dei risultati
-        SUBMIT: Save results
-        CANCEL: Cancel changes
+        SUBMIT: Salva i risultati
+        CANCEL: Cancella le modifiche

@@ -3,48 +3,48 @@ MENU:
     TITLE: Lingua
     CHOOSELANG: Selezionare la lingua
   TOURNAMENT:
-    TITLE: Tournament
-    SELECT: Select tournament
-    OVERVIEW: Overview
+    TITLE: Torneo
+    SELECT: Seleziona il torneo
+    OVERVIEW: Quadro generale
     RESULT:
-        GROUPS: Standing by category
-        PLAYGROUNDS: Match plan
-    GROUPS: Categories
-    PLAYGROUNDS: Playgrounds
-    TEAMS: Clubs
-    WINNERS: Winners
-    STATISTICS: Statistics
+        GROUPS: Gruppi per categoria
+        PLAYGROUNDS: Programma delle gare
+    GROUPS: Categorie
+    PLAYGROUNDS: Campi di gioco
+    TEAMS: Squadre
+    WINNERS: Vincitori
+    STATISTICS: Statistiche
   REGISTER:
-    TITLE: Register
-    TEAM: New club
-    REFEREE: New referee
-    ENROLL: Enroll
-    USER: New user
+    TITLE: Registrazione
+    TEAM: Nuova squadra
+    REFEREE: Nuovo arbitro
+    ENROLL: Iscrizione
+    USER: Nuovo utente
   NONREL:
-    ENROLL: Engagement
+    ENROLL: Impegno
   ENROLLMENT:
-    TITLE: Enrollment
+    TITLE: Iscrizione
     MYPAGE: My iCup
     MYPAGE_USERS: Officials
     CLUBS: Clubs
-    TEAMS: Teams
-    REFEREES: Referees
+    TEAMS: Squadre
+    REFEREES: Arbitri
   ADMIN:
-    TITLE: Administration
-    CHANGEPWD: Change password
-    RESULTS: Results
-    TOURNAMENT: Tournament
-    TEAMS: Teams
-    PLAYERS: Players
-    REFEREES: Referees
+    TITLE: Amministrazione
+    CHANGEPWD: Modifica password
+    RESULTS: Risultati
+    TOURNAMENT: Torneo
+    TEAMS: Squadre
+    PLAYERS: Giocatori
+    REFEREES: Arbitri
     EDITORS: Editors
   INFORMATION:
-    TITLE: Information
+    TITLE: Informazioni
   INFO:
-    TITLE: Information
+    TITLE: Informazioni
     ABOUT: About
-    PRICES: Prices
+    PRICES: Prezzi
     FAQ: FAQ
-  LOGIN: Customer Login
+  LOGIN: Login
   LOGOUT: logout
   EXIT: Exit impersonation

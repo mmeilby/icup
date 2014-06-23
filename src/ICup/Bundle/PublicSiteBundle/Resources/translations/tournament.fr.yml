@@ -6,12 +6,12 @@ FIELD: Terrain
 CATEGORIES: Catégories
 PLAYGROUNDS: Terrains
 CLUBS: Equipes Participantes
-TOWNANDNO: Ville et Terrain
+TOWNANDNO: Villes et Terrains
 CLUBSBYCOUNTRY: Equipes par pays
 TEAMSBYCLUB: Equipes incrites par club
 WINNERS: Vainqueurs
 WINNING_COUNTRIES: Vainqueurs par pays
-WINNING_CLUBS: Equipes Gagnantes
+WINNING_CLUBS: Vainqueurs
 TOURNAMENTNOTREADY: Le tournoi n'est pas encore commencé
 MINUTES: min.
 PRELIMINARY: Tour Préliminaire
@@ -116,7 +116,7 @@ FORM:
           DESC: Trouve les équipes victorieuses et visualise les résulats.
         WINNERS:
           TITLE: Les champions
-          DESC: Découvre les vainqueurs des éditions précédantes.
+          DESC: Découvre les vainqueurs des éditions précédentes.
         STATISTICS:
           TITLE: Statistiques
           DESC:  Quelques informations importantes concernant le tournoi.

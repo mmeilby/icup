@@ -1,18 +1,18 @@
 MENU:
   LANGCHOICE:
     TITLE: Langue
-    CHOOSELANG: Selectionner la langue
+    CHOOSELANG: Sélectionner la langue
   TOURNAMENT:
     TITLE: Tournoi
-    SELECT: Selectionner le tournoi
+    SELECT: Sélectionner le tournoi
     OVERVIEW: Présentation
     RESULT:
         GROUPS: Groupes par catégories
         PLAYGROUNDS: Calendrier des Matches
-    GROUPS: Catégorie
-    PLAYGROUNDS: Terrain de jeux
+    GROUPS: Catégories
+    PLAYGROUNDS: Terrains de jeux
     TEAMS: Equipes
-    WINNERS: Vainqueur
+    WINNERS: Equipes Victorieuses
     STATISTICS: Statistiques
   REGISTER:
     TITLE: Enregistrement
@@ -48,3 +48,4 @@ MENU:
   LOGIN: Connexion
   LOGOUT: Déconnection
   EXIT: Sortie Exit
+

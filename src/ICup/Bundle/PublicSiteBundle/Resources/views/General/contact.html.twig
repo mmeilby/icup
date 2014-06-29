@@ -1,0 +1,46 @@
+{% extends "ICupPublicSiteBundle:Masters:standard.html.twig" %}
+{% trans_default_domain "tournament" %}
+
+{% block body %}
+<h1 class="category">{% trans %}FORM.CONTACT.TITLE{% endtrans %}</h1>
+<p class="subcategory">
+    {% trans %}FORM.CONTACT.SUBTITLE{% endtrans %}<br />
+</p>
+<p>{% trans %}FORM.CONTACT.DESCRIPTION{% endtrans %}</p>
+<table>
+    <caption>{% trans %}FORM.CONTACT.CAPTION{% endtrans %}</caption>
+    <thead>
+        <tr>
+            <td class="tournament">{% trans %}FORM.CONTACT.LEGEND.NAME{% endtrans %}</td>
+            <td class="edition">{% trans %}FORM.CONTACT.LEGEND.EDITION{% endtrans %}</td>
+        </tr>
+    </thead>
+    <tboby>
+        <tr class="even">
+            <td class="tournament">{% trans %}FORM.CONTACT.DATA.PROGRAM{% endtrans %}</td>
+            <td class="edition">Morten Meilby</td>
+        </tr>
+        <tr class="odd">
+            <td class="tournament">{% trans %}FORM.CONTACT.DATA.TRANSLATION.ITA{% endtrans %}</td>
+            <td class="edition">Fabrizio Quaranta</td>
+        </tr>
+        <tr class="even">
+            <td class="tournament">{% trans %}FORM.CONTACT.DATA.TRANSLATION.FRA{% endtrans %}</td>
+            <td class="edition">George Cantarutti</td>
+        </tr>
+        <tr class="odd">
+            <td class="tournament">{% trans %}FORM.CONTACT.DATA.TRANSLATION.ENG{% endtrans %}</td>
+            <td class="edition">Morten Meilby</td>
+        </tr>
+        <tr class="even">
+            <td class="tournament">{% trans %}FORM.CONTACT.DATA.TRANSLATION.DAN{% endtrans %}</td>
+            <td class="edition">Morten Meilby</td>
+        </tr>
+    </tboby>
+    <tfoot>
+        <tr>
+            <td colspan="2"></td>
+        </tr>
+    </tfoot>
+</table>
+{% endblock %}

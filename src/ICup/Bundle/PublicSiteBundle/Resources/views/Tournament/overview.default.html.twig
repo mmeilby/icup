@@ -2,57 +2,51 @@
 
 <img src="{{ imagepath }}/IWC/bg.jpg" class="overviewImageBackground" />
 <div class="overview">
-    <div>
         <img src="{{ imagepath }}/IWC/logo.png" alt="{{ tournament.name }} logo" />
-        <div class="overviewHeader">
-            <h1>{{ tournament.edition }}</h1>
+        <p>
+            <h1 class="category">{{ tournament.edition }}</h1>
             <b>{{ tournament.name }}</b>
-            <div class="overviewNews">
-        {% if newsstream|length > 0 %}
-                <table>
-                    <caption>{% trans %}FORM.NEWS.TITLE{% endtrans %}</caption>
-                    <thead>
-                        <tr>
-                            <td>{% trans %}FORM.NEWS.DATE{% endtrans %}</td>
-                            <td></td>
-                        </tr>
-                    </thead>
-                    <tboby>
-                {% for news in newsstream %}
-                        <tr class="{{ cycle(['even','odd'],loop.index) }}">
-                            <td class="dates">
-                                {{ 'FORMAT.LONGDATE'|transchoice(news.date|date('j'), {
-                                        '%week%': ['WEEK.',news.date|date('D')|upper]|join|trans([],'messages')|capitalize,
-                                        '%day%': news.date|date('j'),
-                                        '%month%': ['MONTH.',news.date|date('M')|upper]|join|trans([],'messages'),
-                                        '%year%': ''}, 'messages') }}
-                            </td>
-                            <td class="news">
-                                <a href="{{ news.path }}">{{ news.text }}</a>
-                            </td>
-                        </tr>
-                {% endfor %}
-                    </tboby>
-                    <tfoot>
-                        <tr>
-                            <td colspan="2"></td>
-                        </tr>
-                    </tfoot>
-                </table>
-        {% endif %}
-            </div>
-        </div>
-        <div class="overviewMenu">
-            <div class="overviewMenuBackground">
-                <div class="overviewMenuContent">
-            {% for teaser in teaserlist %}
-                    <div class="teaserBlock" onclick="location.href='{{ teaser.path }}'">
-                        <div class="teaserTitle">{{ teaser.titletext|trans }}</div>
-                        <div class="teaser">{{ teaser.text|trans }}</div>
-                    </div>
+        </p>
+    {% if newsstream|length > 0 %}
+        <div class="list-group">
+            <table>
+                <caption>{% trans %}FORM.NEWS.TITLE{% endtrans %}</caption>
+                <thead>
+                    <tr>
+                        <td>{% trans %}FORM.NEWS.DATE{% endtrans %}</td>
+                        <td></td>
+                    </tr>
+                </thead>
+                <tboby>
+            {% for news in newsstream %}
+                    <tr class="{{ cycle(['even','odd'],loop.index) }}">
+                        <td class="dates">
+                            {{ 'FORMAT.LONGDATE'|transchoice(news.date|date('j'), {
+                                    '%week%': ['WEEK.',news.date|date('D')|upper]|join|trans([],'messages')|capitalize,
+                                    '%day%': news.date|date('j'),
+                                    '%month%': ['MONTH.',news.date|date('M')|upper]|join|trans([],'messages'),
+                                    '%year%': ''}, 'messages') }}
+                        </td>
+                        <td class="news">
+                            <a href="{{ news.path }}">{{ news.text }}</a>
+                        </td>
+                    </tr>
             {% endfor %}
-                </div>
-            </div>
+                </tboby>
+                <tfoot>
+                    <tr>
+                        <td colspan="2"></td>
+                    </tr>
+                </tfoot>
+            </table>
         </div>
-    </div>
+    {% endif %}
+        <div class="list-group">
+        {% for teaser in teaserlist %}
+            <a class="list-group-item" href="{{ teaser.path }}">
+                <h4 class="list-group-item-heading">{{ teaser.titletext|trans }}</h4>
+                <p class="list-group-item-text">{{ teaser.text|trans }}</p>
+            </a>
+        {% endfor %}
+        </div>
 </div>

@@ -1,50 +1,49 @@
 MENU: 
-  LANGCHOICE: 
-    TITLE: Język 
-    CHOOSELANG: Zmień język 
+  LANGCHOICE:
+    TITLE: Język
+    CHOOSELANG: Wybierz język
   TOURNAMENT: 
-    TITLE: Turniej 
-    SELECT: Zmień turniej
-    OVERVIEW: Przegląd 
-    RESULT:
-        GROUPS: Rezultaty kategoier
-        PLAYGROUNDS: Match plan
-    GROUPS: Kategoier 
+    TITLE: Turniej
+    SELECT: Wybierz Turniej 
+    OVERVIEW: Widok ogólny
+    RESULT: Wynik
+    GROUPS: Grupy wg kategorii 
+    PLAYGROUNDS: Program meczów
+    GROUPS: Kategorie
     PLAYGROUNDS: Boiska
-    TEAMS: Kluby 
-    WINNERS: Winners
-    STATISTICS: Statistics
+    TEAMS:  Drużyny
+    WINNERS: Zwycięscy
+    STATISTICS: Statystyki
   REGISTER:
     TITLE: Rejestracja
-    TEAM: Ny klub
-    REFEREE: Ny dommer
-    ENROLL: Tilmelding
-    USER: Ny bruger
+    TEAM: Nowa Drużyna
+    REFEREE: Nowy sędzia
+    ENROLL: Wpis  
+    USER: Nowy u¯ytkownik
   NONREL:
-    ENROLL: Klubvalg
-  ENROLLMENT: 
-    TITLE: Rejestracja
-    MYPAGE: Mit iCup
-    MYPAGE_USERS: Klubbrugere
-    CLUBS: Kluby 
-    TEAMS: Drużyny 
-    REFEREES: Sędziowie 
-  ADMIN: 
-    TITLE: Administracja
-    CHANGEPWD: Change password
-    RESULTS: Rezultaty 
-    TOURNAMENT: Turnieje 
-    TEAMS: Drużyny 
-    PLAYERS: Gracze
-    REFEREES: Sędziowie 
-    EDITORS: Redaktører
+    ENROLL: Zobowizanie
+  ENROLLMENT:
+    TITLE: Wpis
+    MYPAGE: My iCup
+    MYPAGE_USERS: Oficjalny   
+    CLUBS: Kluby
+    TEAMS: Drużyny  
+    REFEREES: Sêdziowie
+  ADMIN:
+    TITLE: Moderator 
+    RESULTS: Resultaty  
+    TOURNAMENT: Turniej 
+    TEAMS: Drużyny  
+    PLAYERS: PI£KARZE
+    REFEREES: Sêdziowie
+    EDITORS: Edytorzy
   INFORMATION:
     TITLE: Informacje
-  INFO: 
+  INFO:
     TITLE: Informacje
-    ABOUT: O nas 
-    PRICES: Ceny 
-    FAQ: FAQ 
-  LOGIN: Customer Login
-  LOGOUT: logout
-  EXIT: Exit impersonation
+    ABOUT: O
+    PRICES: Ceny  
+    FAQ: FAQ
+  LOGIN: Zaloguj
+  LOGOUT: Wyloguj
+  EXIT: Exit

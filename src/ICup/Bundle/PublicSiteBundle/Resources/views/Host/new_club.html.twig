@@ -32,10 +32,6 @@
 {% endblock %}
 
 {% block javascripts %}
-    {% javascripts '@ICupPublicSiteBundle/Resources/public/js/jquery-1.8.0.min.js' output="bundles/icuppublicsite/js/jquery.min.js" %}
-    <script type="text/javascript" src="{{ asset_url }}"></script>
-    {% endjavascripts  %}
-
     <script type="text/javascript">
         $(function onLoad() {
             $('input#form_name').keyup(OnKeyUp);

@@ -15,18 +15,26 @@
         category.classification]|join|transchoice(category.age, { '%age%': category.age },'tournament') }}
 </p>
 {% if classifications > 0 or finals > 0 %}
-<div class="tab active" onclick="location.href='{{ path('_showcategory', { 'categoryid': category.id }) }}'">{{ 'PRELIMINARY'|trans|upper }}</div>
+<ul class="nav nav-tabs" role="tablist">
+<li class="active">
+    <a href="{{ path('_showcategory', { 'categoryid': category.id }) }}">{{ 'PRELIMINARY'|trans|upper }}</a>
+</li>
     {% if classifications > 0 %}
-<div class="tab" onclick="location.href='{{ path('_showcategory_classification', { 'categoryid': category.id }) }}'">{{ 'CLASSIFICATION'|trans|upper }}</div>
+<li>
+    <a href="{{ path('_showcategory_classification', { 'categoryid': category.id }) }}">{{ 'CLASSIFICATION'|trans|upper }}</a>
+</li>
     {% endif %}
     {% if finals > 0 %}
-<div class="tab" onclick="location.href='{{ path('_showcategory_finals', { 'categoryid': category.id }) }}'">{{ 'FINALS'|trans|upper }}</div>
+<li>
+    <a href="{{ path('_showcategory_finals', { 'categoryid': category.id }) }}">{{ 'FINALS'|trans|upper }}</a>
+</li>
     {% endif %}
 {% endif %}
+</ul>
 {% if grouplist|length > 0 %}
 {% for group in grouplist %}
     <p>
-        <table>
+        <table class="table table-striped">
             <caption>{% trans %}GROUP{% endtrans %} {{ group.group.name }}</caption>
             <thead>
                 <tr>
@@ -41,7 +49,7 @@
             </thead>
             <tboby>
     {% for team in group.teams %}
-                <tr class="{{ cycle(['even','odd'],loop.index) }}">
+                <tr>
                     <td class="flag"><img src="{{ imagepath }}/flags/{{ countries[team.country].flag }}" alt="{{ team.country|trans({},'lang') }}" title="{{ team.country|trans({},'lang') }}"></td>
                     <td class="team"><a href="{{ path('_showteam', { 'teamid': team.id, 'groupid': group.group.id }) }}">{{ team.name }}</a></td>
                     <td class="matches">{{ team.matches }}</td>

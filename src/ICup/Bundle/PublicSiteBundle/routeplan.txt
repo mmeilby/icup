@@ -113,3 +113,5 @@ _admin_logout                 ANY    ANY    ANY  /logout
 _switch                       ANY    ANY    ANY  /switch/{locale}
 
 _rest_list_clubs              ANY    ANY    ANY  /rest/club/list
+
+_contact                                         /contact

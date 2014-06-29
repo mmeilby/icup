@@ -8,7 +8,7 @@
 </p>
 <div>
 {% if teams|length > 0 %}
-    <table>
+    <table class="table">
         <caption>{% trans %}CLUBS{% endtrans %}</caption>
         <thead>
             <tr>
@@ -22,7 +22,11 @@
     {% for countrylist in column %}
     {% for country,teamlist in countrylist %}
                     <p>
-                        <img src="{{ imagepath }}/flags/{{ countries[country].flag }}" alt="{{ country|trans({},'lang') }}" title="{{ country|trans({},'lang') }}">
+                        <img src="{{ imagepath }}/flags/{{ countries[country].flag }}"
+                             alt="{{ country|trans({},'lang') }}"
+                             title="{{ country|trans({},'lang') }}"
+                             class="flag"
+                        >
                         <b>{{ country|trans({},'lang') }}</b><br />
         {% for id,team in teamlist %}
                     <a href="{{ path('_tournament_teams', { 'tournament': tournament.key, 'clubId': id }) }}">{{ team }}</a><br />

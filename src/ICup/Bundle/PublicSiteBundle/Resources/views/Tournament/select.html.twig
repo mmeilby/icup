@@ -7,7 +7,7 @@
     {% trans %}FORM.SEL_TMNT.SUBTITLE{% endtrans %}<br />
 </p>
 <p>{% trans %}FORM.SEL_TMNT.DESCRIPTION{% endtrans %}</p>
-<table>
+<table class="table table-striped">
     <caption>{% trans %}FORM.SEL_TMNT.CAPTION{% endtrans %}</caption>
     <thead>
         <tr>
@@ -19,7 +19,7 @@
     <tboby>
 {% for tmnt in tournaments %}
     {% set tournament = tmnt.tournament %}
-        <tr class="{{ cycle(['even','odd'],loop.index0) }}">
+        <tr>
             <td class="tournament">
                 <a href="{{ path('_tournament_overview', { 'tournament': tournament.key }) }}">{{ tournament.name }}</a>
             </td>

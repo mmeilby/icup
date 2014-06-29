@@ -8,7 +8,7 @@
 </p>
 <div>
 {% if playgrounds|length > 0 %}
-    <table>
+    <table class="table table-striped">
         <caption>{% trans %}PLAYGROUNDS{% endtrans %}</caption>
         <thead>
             <tr>
@@ -17,13 +17,13 @@
         </thead>
         <tboby>
     {% for site in playgrounds|keys %}
-            <tr class="{{ cycle(['even','odd'],loop.index) }}">
+            <tr>
                 <td class="sites" colspan="2">
                     {{ site }}
                 </td>
             </tr>
         {% for id,name in playgrounds[site] %}
-            <tr class="{{ cycle(['even','odd'],loop.index) }}">
+            <tr>
                 <td class="sites"></td>
                 <td class="playgrounds">
                     <a href="{{ path('_showplayground_full', { 'playgroundid': id }) }}">

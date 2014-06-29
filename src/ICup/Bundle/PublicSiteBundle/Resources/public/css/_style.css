@@ -1,43 +1,17 @@
 /*
-	Default setup
+   Default setup
+
+@brand-primary: #428bca;
+@brand-success: #5cb85c;
+@brand-info:    #5bc0de;
+@brand-warning: #f0ad4e;
+@brand-danger:  #d9534f;
 */
-BODY {
-    padding: 0px;
-    margin: 0px 0px;
-    background: white;
-    font: 12pt Arial, sans-serif;
-    color: #454545;
-    text-align: center;
-}
-H1 {
-    -webkit-margin-after: 0px;
-}
-H2 {
-    -webkit-margin-after: 0px;
-}
-TABLE {
-    border-collapse: collapse
-}
-TD {
-    padding: 5px;
-}
-A {
-    color: #454545;
-    text-decoration: none;
-}
-A:hover {
-    text-decoration: underline;
-}
-FIELDSET {
-    padding: 10px;
-}
-LEGEND {
-}
 LABEL {
     color: #454545;
 }
 SELECT {
-    font: 12pt Arial, sans-serif;
+    font: 100% Arial, sans-serif;
     color: #454545;
 }
 SELECT[disabled="disabled"] {
@@ -47,7 +21,7 @@ SELECT[disabled="disabled"] {
     -webkit-appearance: inherit;
 }
 INPUT {
-    font: 12pt Arial, sans-serif;
+    font: 100% Arial, sans-serif;
     color: #454545;
     width: 100%;
 }
@@ -62,12 +36,12 @@ DIV.form_row {
     padding-bottom: 10px;
 }
 DIV.form_label {
-    width: 250px;
+    width: 100%;
     margin-right: 20px;
     float: left;
 }
 DIV.form_widget {
-    width: 450px;
+    width: 100%;
     float: left;
 }
 DIV.form_clear {
@@ -76,59 +50,15 @@ DIV.form_clear {
 DIV.form_error {
     color: #d66;
 }
-DIV.form_button {
-    float: left;
+SPAN.form_button {
+    margin-left: 20px;
+}
+P.form_button {
+    width: 100%;
+    text-align: right;
     border-top: 1px solid #454545;
     padding-top: 10px;
     margin-top: 10px;
-    padding-right: 20px;
-}
-DIV.form_button BUTTON {
-    font-size: 12pt;
-    font-weight: bold;
-    padding-left: 10px;
-    padding-right: 10px;
-    border-radius: 5px;
-    -moz-border-radius: 5px;
-    -webkit-border-radius: 5px;
-    color: whitesmoke;
-    background-color: black;
-    background-image: -o-linear-gradient(bottom, black 5%, white 150%);
-    background-image: -moz-linear-gradient(bottom, black 5%, white 150%);
-    background-image: -webkit-gradient(linear, left bottom, left top, color-stop(0.05, black), color-stop(1.50, white));
-    background-image: -webkit-linear-gradient(bottom, black 5%, white 150%);
-    background-image: -ms-linear-gradient(bottom, black 5%, white 150%);
-    background-image: linear-gradient(bottom, black 5%, white 150%);    
-}
-BUTTON#form_cancel {
-    color: #454545;
-    background-color: whitesmoke;
-    background-image: -o-linear-gradient(bottom, black -150%, white 50%);
-    background-image: -moz-linear-gradient(bottom, black -150%, white 50%);
-    background-image: -webkit-gradient(linear, left bottom, left top, color-stop(-1.50, black), color-stop(0.50, white));
-    background-image: -webkit-linear-gradient(bottom, black -150%, white 50%);
-    background-image: -ms-linear-gradient(bottom, black -150%, white 50%);
-    background-image: linear-gradient(bottom, black -150%, white 50%);    
-}
-BUTTON#form_opt1 {
-    color: #454545;
-    background-color: whitesmoke;
-    background-image: -o-linear-gradient(bottom, #6d6 -50%, white 50%);
-    background-image: -moz-linear-gradient(bottom, #6d6 -50%, white 50%);
-    background-image: -webkit-gradient(linear, left bottom, left top, color-stop(-0.5, #6d6), color-stop(0.50, white));
-    background-image: -webkit-linear-gradient(bottom, #6d6 -50%, white 50%);
-    background-image: -ms-linear-gradient(bottom, #6d6 -50%, white 50%);
-    background-image: linear-gradient(bottom, #6d6 -50%, white 50%);    
-}
-BUTTON#form_opt2 {
-    color: #454545;
-    background-color: whitesmoke;
-    background-image: -o-linear-gradient(bottom, cornflowerblue -100%, white 50%);
-    background-image: -moz-linear-gradient(bottom, cornflowerblue -100%, white 50%);
-    background-image: -webkit-gradient(linear, left bottom, left top, color-stop(-1.0, cornflowerblue), color-stop(0.50, white));
-    background-image: -webkit-linear-gradient(bottom, cornflowerblue -100%, white 50%);
-    background-image: -ms-linear-gradient(bottom, cornflowerblue -100%, white 50%);
-    background-image: linear-gradient(bottom, cornflowerblue -100%, white 50%);    
 }
 DIV.new_user {
     font-size: 12pt;
@@ -138,13 +68,13 @@ DIV.new_user {
     -moz-border-radius: 5px;
     -webkit-border-radius: 5px;
     color: #454545;
-    background-color: #6d6;
-    background-image: -o-linear-gradient(bottom, #6d6 5%, white 150%);
-    background-image: -moz-linear-gradient(bottom, #6d6 5%, white 150%);
-    background-image: -webkit-gradient(linear, left bottom, left top, color-stop(0.05, #6d6), color-stop(1.50, white));
-    background-image: -webkit-linear-gradient(bottom, #6d6 5%, white 150%);
-    background-image: -ms-linear-gradient(bottom, #6d6 5%, white 150%);
-    background-image: linear-gradient(bottom, #6d6 5%, white 150%);    
+    background-color: #5cb85c;
+    background-image: -o-linear-gradient(bottom, #5cb85c 5%, white 150%);
+    background-image: -moz-linear-gradient(bottom, #5cb85c 5%, white 150%);
+    background-image: -webkit-gradient(linear, left bottom, left top, color-stop(0.05, #5cb85c), color-stop(1.50, white));
+    background-image: -webkit-linear-gradient(bottom, #5cb85c 5%, white 150%);
+    background-image: -ms-linear-gradient(bottom, #5cb85c 5%, white 150%);
+    background-image: linear-gradient(bottom, #5cb85c 5%, white 150%);    
 }
 DIV.infobox {
     font-size: 12pt;
@@ -154,13 +84,13 @@ DIV.infobox {
     -moz-border-radius: 5px;
     -webkit-border-radius: 5px;
     color: #454545;
-    background-color: cornflowerblue;
-    background-image: -o-linear-gradient(bottom, cornflowerblue 5%, white 150%);
-    background-image: -moz-linear-gradient(bottom, cornflowerblue 5%, white 150%);
-    background-image: -webkit-gradient(linear, left bottom, left top, color-stop(0.05, cornflowerblue), color-stop(1.50, white));
-    background-image: -webkit-linear-gradient(bottom, cornflowerblue 5%, white 150%);
-    background-image: -ms-linear-gradient(bottom, cornflowerblue 5%, white 150%);
-    background-image: linear-gradient(bottom, cornflowerblue 5%, white 150%);    
+    background-color: #5bc0de;
+    background-image: -o-linear-gradient(bottom, #5bc0de 5%, white 150%);
+    background-image: -moz-linear-gradient(bottom, #5bc0de 5%, white 150%);
+    background-image: -webkit-gradient(linear, left bottom, left top, color-stop(0.05, #5bc0de), color-stop(1.50, white));
+    background-image: -webkit-linear-gradient(bottom, #5bc0de 5%, white 150%);
+    background-image: -ms-linear-gradient(bottom, #5bc0de 5%, white 150%);
+    background-image: linear-gradient(bottom, #5bc0de 5%, white 150%);    
 }
 DIV.searchresult {
     font-size: 12pt;
@@ -208,7 +138,7 @@ DIV.menu_header UL LI A {
 }
 DIV.menu_header UL LI A:hover {
     font-weight: bolder;
-    color: tomato;
+    color: #f0ad4e;
     text-decoration: none;
 }
 DIV.menu {
@@ -230,7 +160,7 @@ DIV.footer {
     margin-top: 30px;
 }
 DIV.menu_footer {
-    width: 170px;
+    width: 160px;
     vertical-align: top;
     padding-bottom: 20px;
     display: inline-table;
@@ -247,7 +177,8 @@ DIV.menu_footer UL LI A {
     color: #D1D1D1;
 }
 DIV.menu_footer UL LI A:hover {
-    color: #D1D1D1;
+    color: #f0ad4e;
+    text-decoration: none;
 }
 DIV.menu_footer H3 {
     color: white;
@@ -314,7 +245,7 @@ DIV.tab {
     float: left;
 }
 DIV.active {
-    background-color: #2080f0;
+    background-color: #428bca;
     color: whitesmoke;
 }
 DIV.rank {
@@ -417,6 +348,13 @@ TD.winner_third {
     background-image: linear-gradient(bottom, burlywood 5%, white 95%);    
 }
 TD.winner_flag {
+    position: relative;
+    top: -3px;
+    padding: 2px;
+}
+TD.winner_flag_small {
+    position: relative;
+    top: -2px;
     padding: 2px;
 }
 TD.winner_team {
@@ -436,8 +374,8 @@ CAPTION {
     text-transform: uppercase;
     padding-top: 5px;
     padding-bottom: 5px;
-    color: #D1D1D1;
-    background: #313131;
+    color: white;
+    background: #428bca;
 }
 THEAD TR TD {
     padding: 5px;
@@ -456,10 +394,17 @@ TR.odd {
 TR.even {
 }
 TR.markup {
-    background: yellow;
+    background: white;
+    border-bottom: 1px solid #D1D1D1;
 }
 TD.flag {
+    position: relative;
+    top: -3px;
     width: 20px;
+}
+IMG.flag {
+    position: relative;
+    top: -3px;
 }
 TD.team {
     width: 300px;
@@ -487,6 +432,7 @@ TD.points {
 TD.no {
     width: 20px;
     text-align: center;
+    vertical-align: middle;
 }
 TD.date {
     font-weight: bold;
@@ -495,6 +441,7 @@ TD.time {
     width: 20px;
     text-align: center;
     font-weight: bold;
+    vertical-align: middle;
 }
 TD.playground {
     font-weight: bold;
@@ -502,6 +449,7 @@ TD.playground {
 TD.match {
     width: 50px;
     text-align: center;
+    vertical-align: middle;
 }
 INPUT.match {
     width: 40px;
@@ -514,7 +462,6 @@ TD.date_solo {
     font-size: 18px;
     padding-top: 5px;
     padding-left: 5px;
-    text-decoration: underline;
 }
 TD.column {
     vertical-align: top;
@@ -541,7 +488,6 @@ TD.sites {
     font-size: 18px;
     padding-top: 5px;
     padding-left: 5px;
-    text-decoration: underline;
     width: 10px;
 }
 TD.playgrounds {
@@ -551,6 +497,7 @@ TD.classification {
     padding: 5px;
     font-weight: bold;
     width: 200px;
+    vertical-align: middle;
 }
 TD.categories {
     padding: 5px;
@@ -560,7 +507,6 @@ TD.placement {
     font-weight: bold;
     font-size: 18px;
     padding-top: 5px;
-    text-decoration: underline;
 }
 TD.host_solo {
     font-weight: bold;
@@ -600,7 +546,7 @@ TD.description {
 }
 
 DIV.admin H1 {
-    color: #6666ff;
+    color: #5cb85c;
 }
 TR.info {
     border-top: 1px solid black;
@@ -628,6 +574,7 @@ IMG.overviewImageBackground {
     width: 100%;
 }
 DIV.overview {
+    width: 100%;
     padding: 20px;
     position: absolute;
     top: 0;

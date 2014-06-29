@@ -7,6 +7,7 @@ use ICup\Bundle\PublicSiteBundle\Services\Util;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
+use Symfony\Component\Form\FormError;
 
 /**
  * General user account functions

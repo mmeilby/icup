@@ -125,3 +125,19 @@ FORM:
         TITLE: Edit results
         SUBMIT: Save results
         CANCEL: Cancel changes
+
+    CONTACT:
+        DATA:
+            PROGRAM: Development and design
+            TRANSLATION:
+                ITA: Italian translation
+                FRA: French translation
+                ENG: Text in english
+                DAN: Danish translation
+        TITLE: iCup Contact
+        SUBTITLE: Maintenance and development
+        DESCRIPTION: Contact:<p>icup.dk<br />Morten Meilby<br />mm@iserve.dk</p>
+        CAPTION: To be mentioned...
+        LEGEND:
+            NAME: Area
+            EDITION: Name

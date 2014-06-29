@@ -125,3 +125,20 @@ FORM:
         TITLE: Rediger resultater
         SUBMIT: Gem resultater
         CANCEL: Fortryd indtastning
+
+    CONTACT:
+        DATA:
+            PROGRAM: Udvikling og design
+            TRANSLATION:
+                ITA: Italiensk oversættelse
+                FRA: Fransk oversættelse
+                ENG: Engelsk oversættelse
+                DAN: Danske tekster
+        TITLE: iCup Kontakt
+        SUBTITLE: Driftsansvar og udviklingsteam
+        DESCRIPTION: Kontakt:<p>icup.dk<br />Morten Meilby<br />mm@iserve.dk</p>
+        CAPTION: Tak til...
+        LEGEND:
+            NAME: Område
+            EDITION: Navn
+        

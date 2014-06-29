@@ -4,21 +4,58 @@
         <div class="form_label">
             {{ form_label(form) }}:
         </div>
+        {{ form_errors(form) }}
         <div class="form_widget">
             {{ form_widget(form) }}
-            <div class="form_error">
-                {{ form_errors(form) }}
-            </div>
         </div>
         <div class="form_clear"></div>
     </div>
 {% endspaceless %}
 {% endblock form_row %}
 
+{% block form_errors %}
+{% spaceless %}
+    {% if errors|length > 0 %}
+    <div class="alert alert-danger" role="alert">
+        <ul>
+            {% for error in errors %}
+                <li>{{ error.message }}</li>
+            {% endfor %}
+        </ul>
+    </div>
+    {% endif %}
+{% endspaceless %}
+{% endblock form_errors %}
+
 {% block button_row %}
 {% spaceless %}
-    <div class="form_button">
-        {{ form_widget(form) }}
-    </div>
+    <span class="form_button">
+    {% if form.vars.id=='form_cancel' %}
+        {{ form_widget(form, { 'attr': {'class': 'btn btn-default'}}) }}
+    {% elseif form.vars.id=='form_opt1' %}
+        {{ form_widget(form, { 'attr': {'class': 'btn btn-success'}}) }}
+    {% elseif form.vars.id=='form_opt2' %}
+        {{ form_widget(form, { 'attr': {'class': 'btn btn-info'}}) }}
+    {% else %}
+        {{ form_widget(form, { 'attr': {'class': 'btn btn-primary'}}) }}
+    {% endif %}
+    </span>
 {% endspaceless %}
 {% endblock button_row %}
+
+{% block form_rows %}
+{% spaceless %}
+    {% for child in form %}
+        {% if child.vars.block_prefixes[0] == 'form' %}
+        {{ form_row(child) }}
+        {% endif %}
+    {% endfor %}
+    <p class="form_button">
+    {% for child in form %}
+        {% if child.vars.block_prefixes[0] == 'button' %}
+        {{ form_row(child) }}
+        {% endif %}
+    {% endfor %}
+    </p>
+{% endspaceless %}
+{% endblock form_rows %}

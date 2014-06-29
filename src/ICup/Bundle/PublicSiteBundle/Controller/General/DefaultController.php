@@ -1,6 +1,6 @@
 <?php
 
-namespace ICup\Bundle\PublicSiteBundle\Controller;
+namespace ICup\Bundle\PublicSiteBundle\Controller\General;
 
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;

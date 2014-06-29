@@ -6,7 +6,7 @@
 <p class="subcategory">
     {% trans %}RESULTS{% endtrans %} {{ tournament.edition }}<br />
 </p>
-<table>
+<table class="table table-striped">
     <caption>{% trans %}FORM.STATISTICS.TITLE{% endtrans %}</caption>
     <thead>
         <tr>
@@ -16,11 +16,11 @@
     </thead>
     <tboby>
 {% for group,grouporder in order %}
-        <tr class="odd">
+        <tr class="markup">
             <td class="title" colspan="3">{{ ['FORM.STATISTICS.GROUP.',group]|join()|upper|trans }}</td>
         </tr>
     {% for key in grouporder %}
-        <tr class="{{ cycle(['even','odd'],loop.index0) }}">
+        <tr>
             <td class="indent"></td>
             <td>{{ ['FORM.STATISTICS.KEY.',key]|join()|upper|trans }}</td>
             <td class="statistics">{{ statistics[key] }}</td>

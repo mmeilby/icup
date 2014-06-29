@@ -6,6 +6,9 @@
 {% macro club(team, group, context) %}
     {% if team.id > 0 %}
                 <td class="flag">
+        {% if team.rank != '' %}
+                    <div class="rank">&nbsp;</div>
+        {% endif %}
                     <img src="{{ context.imagepath }}/flags/{{ context.countries[team.country].flag }}"
                          alt="{{ team.country|trans({},'lang') }}"
                          title="{{ team.country|trans({},'lang') }}">
@@ -62,7 +65,7 @@
 </p>
 <p>
     <form action="{{ path('_edit_match_score_post') }}" method="post">
-    <table>
+    <table class="table table-striped">
         <caption>
             {{playground.name}}
             -
@@ -88,7 +91,7 @@
         </thead>
         <tboby>
 {% for match in matchlist %}
-            <tr class="{{ cycle(['even','odd'],loop.index) }}">
+            <tr>
                 <td class="flag"></td>
                 <td class="no">{{ match.matchno }}</td>
                 <td class="time">{{ match.schedule|date('FORMAT.TIME'|trans([],'messages')) }}</td>
@@ -107,18 +110,14 @@
             </tr>
         </tfoot>
     </table>
-    <div class="form_button">
-        <button id="form_cancel" name="form[cancel]" type="submit">{% trans %}FORM.EDITRESULTS.CANCEL{% endtrans %}</button>
-        <button id="form_save" name="form[save]" type="submit">{% trans %}FORM.EDITRESULTS.SUBMIT{% endtrans %}</button>
-    </div>
+    <p class="form_button">
+        <button class="btn btn-default" id="form_cancel" name="form[cancel]" type="submit">{% trans %}FORM.EDITRESULTS.CANCEL{% endtrans %}</button>
+        <button class="btn btn-primary" id="form_save" name="form[save]" type="submit">{% trans %}FORM.EDITRESULTS.SUBMIT{% endtrans %}</button>
+    </p>
     </form>
 </p>
 {% endblock %}
 {% block javascripts %}
-    {% javascripts '@ICupPublicSiteBundle/Resources/public/js/jquery-1.8.0.min.js' output="bundles/icuppublicsite/js/jquery.min.js" %}
-    <script type="text/javascript" src="{{ asset_url }}"></script>
-    {% endjavascripts  %}
-
     <script type="text/javascript">
         $(function onLoad() {
             $('select#form_playground').change(OnChangePlayground);

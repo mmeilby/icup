@@ -6,14 +6,17 @@
 {% macro club(team, context) %}
     {% if team.id > 0 %}
                 <td class="flag">
+        {% if team.rank != '' %}
+                    <div class="rank">&nbsp;</div>
+        {% endif %}
                     <img src="{{ context.imagepath }}/flags/{{ context.countries[team.country].flag }}"
                          alt="{{ team.country|trans({},'lang') }}"
                          title="{{ team.country|trans({},'lang') }}">
                 </td>
                 <td class="team">
-    {% if team.rank != '' %}
+        {% if team.rank != '' %}
                     <div class="rank">{{ team.rank }}</div>
-    {% endif %}
+        {% endif %}
                     <a href="{{ path('_showteam', { 'teamid': team.id,
                                                     'groupid': context.group.id }) }}">{{ team.name }}</a>
                 </td>
@@ -40,7 +43,7 @@
     <h2 class="group">{% trans %}GROUP{% endtrans %} {{ group.name }}</h2>
 </a>
 <p>
-    <table>
+    <table class="table table-striped">
         <caption>{{ playground.name }}</caption>
         <thead>
             <tr>
@@ -57,7 +60,7 @@
         <tboby>
 {% if matchlist|length > 0 %}
     {% for matches in matchlist %}
-            <tr class="{{ cycle(['even','odd'],loop.index) }}">
+            <tr class="markup">
                 <td class="date_solo" colspan="8">
                     {{ 'FORMAT.LONGDATE'|transchoice(matches[0].schedule|date('j'), {
                             '%week%': ['WEEK.',matches[0].schedule|date('D')|upper]|join|trans([],'messages')|capitalize,
@@ -67,7 +70,7 @@
                 </td>
             </tr>
         {% for match in matches %}
-            <tr class="{{ cycle(['even','odd'],loop.index) }}">
+            <tr>
                 <td class="flag"></td>
                 <td class="no">{{ match.matchno }}</td>
                 <td class="time">{{ match.schedule|date('FORMAT.TIME'|trans([],'messages')) }}</td>
@@ -78,7 +81,7 @@
         {% endfor %}
     {% endfor %}
 {% else %}
-            <tr class="even">
+            <tr>
                 <td class="title" colspan="8">
                     <p>{% trans %}TOURNAMENTNOTREADY{% endtrans %}</p>
                 </td>

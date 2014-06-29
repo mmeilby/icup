@@ -22,7 +22,11 @@
     <table>
         <tr>
             <td class="country country_spacer">
-                        <img src="{{ imagepath }}/flags/{{ countries[country].flag }}" alt="{{ country|trans({},'lang') }}" title="{{ country|trans({},'lang') }}">
+                        <img src="{{ imagepath }}/flags/{{ countries[country].flag }}" 
+                             alt="{{ country|trans({},'lang') }}" 
+                             title="{{ country|trans({},'lang') }}"
+                             class="flag"
+                        >
                         <b>{{ country|trans({},'lang') }}</b>
             </td>
             <td class="operand country_spacer">

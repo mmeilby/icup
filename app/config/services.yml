@@ -20,6 +20,11 @@ services:
         tags:
             - { name: kernel.event_listener, event: kernel.request, method: setLocaleForUnauthenticatedUser }
             
+    form.type_extension.help_message:
+        class: "ICup\\Bundle\\PublicSiteBundle\\Form\\Extension\\HelpMessageTypeExtension"
+        tags:
+          - { name: "form.type_extension", alias: "form" }
+
 # REGISTER TWIG EXTENSIONS
     custom.twig.sandbox.policy:
         class: Twig_Sandbox_SecurityPolicy

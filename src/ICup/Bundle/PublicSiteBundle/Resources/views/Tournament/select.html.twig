@@ -2,11 +2,13 @@
 {% trans_default_domain "tournament" %}
 
 {% block body %}
-<h1 class="category">{% trans %}FORM.SEL_TMNT.TITLE{% endtrans %}</h1>
-<p class="subcategory">
+<div class="jumbotron">
+<h1>{% trans %}FORM.SEL_TMNT.TITLE{% endtrans %}</h1>
+<p class="lead">
     {% trans %}FORM.SEL_TMNT.SUBTITLE{% endtrans %}<br />
 </p>
-<p>{% trans %}FORM.SEL_TMNT.DESCRIPTION{% endtrans %}</p>
+<p class="lead">{% trans %}FORM.SEL_TMNT.DESCRIPTION{% endtrans %}</p>
+</div>
 <table class="table table-striped">
     <caption>{% trans %}FORM.SEL_TMNT.CAPTION{% endtrans %}</caption>
     <thead>

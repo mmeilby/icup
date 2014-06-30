@@ -7,28 +7,6 @@
 @brand-warning: #f0ad4e;
 @brand-danger:  #d9534f;
 */
-LABEL {
-    color: #454545;
-}
-SELECT {
-    font: 100% Arial, sans-serif;
-    color: #454545;
-}
-SELECT[disabled="disabled"] {
-    border: none;
-    font-weight: bold;
-    margin-left: 0px;
-    -webkit-appearance: inherit;
-}
-INPUT {
-    font: 100% Arial, sans-serif;
-    color: #454545;
-    width: 100%;
-}
-INPUT[disabled="disabled"] {
-    border: none;
-    font-weight: bold;
-}
 /*
     Form setup
 */
@@ -51,12 +29,10 @@ DIV.form_error {
     color: #d66;
 }
 SPAN.form_button {
-    margin-left: 20px;
+    margin-right: 20px;
 }
 P.form_button {
     width: 100%;
-    text-align: right;
-    border-top: 1px solid #454545;
     padding-top: 10px;
     margin-top: 10px;
 }
@@ -398,9 +374,11 @@ TR.markup {
     border-bottom: 1px solid #D1D1D1;
 }
 TD.flag {
+    width: 20px;
+}
+TD.flag IMG {
     position: relative;
     top: -3px;
-    width: 20px;
 }
 IMG.flag {
     position: relative;
@@ -567,17 +545,15 @@ SPAN.link:hover {
 /*
     OVERVIEW STYLES
 */
-DIV.overviewBlock {
-    position: relative;
-}
-IMG.overviewImageBackground {
-    width: 100%;
+DIV.overviewImage {
+    position: absolute;
+    left: 0px;
+    top: 40px;
+    z-index: -1000;
 }
 DIV.overview {
     width: 100%;
     padding: 20px;
-    position: absolute;
-    top: 0;
 }
 DIV.overviewHeader {
     float: left;

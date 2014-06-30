@@ -19,17 +19,11 @@
         {% endjavascripts  %}
     </head>
     <body role="document">
-        <div class="container" role="main">
-            <div class="header">
-                {% block header %}{% endblock %}
-            </div>
-            <div class="centerpage">
-                {% block body %}{% endblock %}
-            </div>
-            <div class="footer">
-                {% block footer %}{% endblock %}
-            </div>
+        {% block header %}{% endblock %}
+        <div class="container-fluid" role="main">
+        {% block body %}{% endblock %}
         </div>
+        {% block footer %}{% endblock %}
         {% block javascripts %}{% endblock %}
     </body>
 </html>

@@ -2,10 +2,8 @@
 {% trans_default_domain "tournament" %}
 
 {% block body %}
-<div class="overviewBlock">
     {% set tournamentid = tournament.id %}
     {% sandbox %}
         {% include [['@db', tournamentid]|join(':'), 'ICupPublicSiteBundle:Tournament:overview.default.html.twig'] ignore missing %}
     {% endsandbox %}
-</div>
 {% endblock %}

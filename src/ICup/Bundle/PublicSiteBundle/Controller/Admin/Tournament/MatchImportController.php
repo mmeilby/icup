@@ -40,7 +40,7 @@ class MatchImportController extends Controller
                 $this->import($tournament, $matchImport);
                 return $this->redirect($returnUrl);
             } catch (ValidationException $exc) {
-                $form->addError(new FormError($this->get('translator')->trans('FORM.ERROR.'.$exc->getMessage(), array(), 'admin')));
+                $form->addError(new FormError($this->get('translator')->trans('FORM.ERROR.'.$exc->getMessage(), array(), 'admin')." [".$exc->getDebugInfo()."]"));
             }
         }
         return array('form' => $form->createView(), 'tournament' => $tournament, 'matchimport' => $matchImport);
@@ -49,7 +49,12 @@ class MatchImportController extends Controller
     private function makeImportForm($matchImport) {
         $formDef = $this->createFormBuilder($matchImport);
         $formDef->add('date', 'text', array('label' => 'FORM.MATCHIMPORT.DATE', 'required' => false, 'translation_domain' => 'admin'));
-        $formDef->add('import', 'textarea', array('label' => 'FORM.MATCHIMPORT.IMPORT', 'required' => false, 'translation_domain' => 'admin'));
+        $formDef->add('import', 'textarea', array(
+            'label' => 'FORM.MATCHIMPORT.IMPORT',
+            'help' => 'MATCHNO FIELD TIME CAT GRP [TEAM A (ITA)] [TEAM B "DIV" (DNK)]',
+            'required' => false,
+            'translation_domain' => 'admin',
+            'attr' => array('rows' => '10')));
         $formDef->add('cancel', 'submit', array('label' => 'FORM.MATCHIMPORT.CANCEL', 'translation_domain' => 'admin'));
         $formDef->add('save', 'submit', array('label' => 'FORM.MATCHIMPORT.SUBMIT', 'translation_domain' => 'admin'));
         return $formDef->getForm();

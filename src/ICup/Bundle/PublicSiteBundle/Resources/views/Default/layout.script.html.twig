@@ -1,14 +1,13 @@
 {% block form_row %}
 {% spaceless %}
-    <div class="form_row">
-        <div class="form_label">
-            {{ form_label(form) }}:
-        </div>
+    {% if form.vars.errors|length > 0 %}
+    <div class="form-group has-error has-feedback">
+    {% else %}
+    <div class="form-group">
+    {% endif %}
+        {{ form_label(form) }}
         {{ form_errors(form) }}
-        <div class="form_widget">
-            {{ form_widget(form) }}
-        </div>
-        <div class="form_clear"></div>
+        {{ form_widget(form, { 'attr': {'class': 'form-control', 'placeholder': form.vars.help}}) }}
     </div>
 {% endspaceless %}
 {% endblock form_row %}

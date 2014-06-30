@@ -47,7 +47,12 @@ class TeamImportController extends Controller
     
     private function makeImportForm($matchImport) {
         $formDef = $this->createFormBuilder($matchImport);
-        $formDef->add('import', 'textarea', array('label' => 'FORM.TEAMIMPORT.IMPORT', 'required' => false, 'translation_domain' => 'admin'));
+        $formDef->add('import', 'textarea', array(
+            'label' => 'FORM.TEAMIMPORT.IMPORT',
+            'help' => 'CAT GRP [TEAM "DIV" (DNK)]',
+            'required' => false,
+            'translation_domain' => 'admin',
+            'attr' => array('rows' => '10')));
         $formDef->add('cancel', 'submit', array('label' => 'FORM.TEAMIMPORT.CANCEL', 'translation_domain' => 'admin'));
         $formDef->add('save', 'submit', array('label' => 'FORM.TEAMIMPORT.SUBMIT', 'translation_domain' => 'admin'));
         return $formDef->getForm();

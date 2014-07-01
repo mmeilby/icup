@@ -17,7 +17,13 @@
         <span class="icon-bar"></span>
         <span class="icon-bar"></span>
       </button>
-      <a class="navbar-brand" href="#">iCup</a>
+      <a class="navbar-brand" href="{{ path('_tournament_select') }}">
+{% if tournament is defined %}
+        {{ tournament.name }}
+{% else %}
+        iCup
+{% endif %}
+      </a>
     </div>
 
     <!-- Collect the nav links, forms, and other content for toggling -->
@@ -55,23 +61,25 @@
         <!-- ANNONOMOUS USER -->
 {% if app.user == null %}
         <!-- Information section -->
+<!--            
         <li class="dropdown">
           <a href="#" class="dropdown-toggle" data-toggle="dropdown">{% trans %}MENU.INFORMATION.TITLE{% endtrans %} <span class="caret"></span></a>
           <ul class="dropdown-menu" role="menu">
           </ul>
         </li>
+-->
         <!-- Enrollment/registration section -->
+<!--            
         <li class="dropdown">
           <a href="#" class="dropdown-toggle" data-toggle="dropdown">{% trans %}MENU.REGISTER.TITLE{% endtrans %} <span class="caret"></span></a>
           <ul class="dropdown-menu" role="menu">
-<!--            
             <li><a href="{{ path('_ausr_new_user') }}">{% trans %}MENU.REGISTER.USER{% endtrans %}</a></li>
     {% if tmnt != '_' %}
             <li><a href="{{ path('_club_enroll_check') }}">{% trans %}MENU.REGISTER.ENROLL{% endtrans %}</a></li>
     {% endif %}
--->
           </ul>
         </li>
+-->
         <!-- REGISTRATED USER -->
 {% else %}
     {% if not is_granted('ROLE_EDITOR') %}

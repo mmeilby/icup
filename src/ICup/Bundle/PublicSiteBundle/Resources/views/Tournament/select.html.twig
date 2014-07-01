@@ -2,42 +2,30 @@
 {% trans_default_domain "tournament" %}
 
 {% block body %}
-<div class="jumbotron">
-<h1>{% trans %}FORM.SEL_TMNT.TITLE{% endtrans %}</h1>
-<p class="lead">
-    {% trans %}FORM.SEL_TMNT.SUBTITLE{% endtrans %}<br />
-</p>
-<p class="lead">{% trans %}FORM.SEL_TMNT.DESCRIPTION{% endtrans %}</p>
+<div class="row">
+    <div class="col-lg-6">
+        <div class="jumbotron">
+            <h1>{% trans %}FORM.SEL_TMNT.TITLE{% endtrans %}</h1>
+            <h3>
+                {% trans %}FORM.SEL_TMNT.SUBTITLE{% endtrans %}<br />
+            </h3>
+            <p class="lead">{% trans %}FORM.SEL_TMNT.DESCRIPTION{% endtrans %}</p>
+        </div>
+    </div>
+    <div class="col-lg-6">
+        <div class="list-group">
+        {% for tmnt in tournaments %}
+            {% set tournament = tmnt.tournament %}
+            <a class="list-group-item" href="{{ path('_tournament_overview', { 'tournament': tournament.key }) }}">
+                <h3 class="list-group-item-heading">{{ tournament.name }}</h3>
+                <p class="list-group-item-text">
+                    {{ ['FORM.SEL_TMNT.STATUS.',tmnt.status]|join|trans }}
+                </p>
+                <h4 class="list-group-item-text">{% trans %}FORM.SEL_TMNT.LEGEND.EDITION{% endtrans %}: {{ tournament.edition }}</h4>
+                <p class="list-group-item-text">{{ tournament.description }}</p>
+            </a>
+        {% endfor %}
+        </div>
+    </div>
 </div>
-<table class="table table-striped">
-    <caption>{% trans %}FORM.SEL_TMNT.CAPTION{% endtrans %}</caption>
-    <thead>
-        <tr>
-            <td class="tournament">{% trans %}FORM.SEL_TMNT.LEGEND.NAME{% endtrans %}</td>
-            <td class="edition">{% trans %}FORM.SEL_TMNT.LEGEND.EDITION{% endtrans %}</td>
-            <td class="description">{% trans %}FORM.SEL_TMNT.LEGEND.DESCRIPTION{% endtrans %}</td>
-        </tr>
-    </thead>
-    <tboby>
-{% for tmnt in tournaments %}
-    {% set tournament = tmnt.tournament %}
-        <tr>
-            <td class="tournament">
-                <a href="{{ path('_tournament_overview', { 'tournament': tournament.key }) }}">{{ tournament.name }}</a>
-            </td>
-            <td class="edition">
-                {{ tournament.edition }}
-            </td>
-            <td class="description">
-                {{ tournament.description }}
-            </td>
-        </tr>
-{% endfor %}
-    </tboby>
-    <tfoot>
-        <tr>
-            <td colspan="3"></td>
-        </tr>
-    </tfoot>
-</table>
 {% endblock %}

@@ -27,28 +27,35 @@
 {% endmacro %}
         
 {% block body %}
-<h1 class="category">{{ tournament.name }}</h1>
-<p class="subcategory">
-    {% trans %}RESULTS{% endtrans %} {{ tournament.edition }}<br />
+<p class="lead">
+    {% trans %}RESULTS{% endtrans %} {{ tournament.edition }}
 </p>
-<a href="{{ path('_showcategory', { 'categoryid': category.id }) }}">
-    <h1 class="category">{% trans %}CATEGORY{% endtrans %} {{ category.name }}</h1>
-</a>
-<p class="subcategory">
-    {{ ['GENDER.',
-        category.gender,
-        category.classification]|join|transchoice(category.age, { '%age%': category.age },'tournament') }}
-</p>
-<a href="{{ path('_showcategory', { 'categoryid': category.id }) }}">
-    {% if group.classification == 0 %}
-    <h2 class="group">{% trans %}GROUP{% endtrans %} {{ group.name }}</h2>
-    {% else %}
-    <h2 class="group">{{ ['GROUPCLASS.',group.classification]|join|trans }}</h2>
-    {% endif %}
-</a>
-<p>
+<div class="row">
+    <div class="col-sm-2">
+        <p class="lead">
+            <a href="{{ path('_showcategory', { 'categoryid': category.id }) }}">
+                {% trans %}CATEGORY{% endtrans %} {{ category.name }}
+            </a><br />
+            {{ ['GENDER.',
+                category.gender,
+                category.classification]|join|transchoice(category.age, { '%age%': category.age },'tournament') }}
+        </p>
+    </div>
+    <div class="col-sm-4">
+        <p class="lead">
+            <a href="{{ path('_showcategory', { 'categoryid': category.id }) }}">
+            {% if group.classification == 0 %}
+                {% trans %}GROUP{% endtrans %} {{ group.name }}
+            {% else %}
+                {{ ['GROUPCLASS.',group.classification]|join|trans }}
+            {% endif %}
+            </a><br />
+            {{ teamname }}
+        </p>
+    </div>
+</div>
+<p class="lead">
     <table class="table table-striped">
-        <caption>{{ teamname }}</caption>
         <thead>
             <tr>
                 <td class="flag"></td>

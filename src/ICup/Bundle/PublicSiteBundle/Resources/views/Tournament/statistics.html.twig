@@ -2,36 +2,37 @@
 {% trans_default_domain "tournament" %}
 
 {% block body %}
-<h1 class="category">{{ tournament.name }}</h1>
-<p class="subcategory">
-    {% trans %}RESULTS{% endtrans %} {{ tournament.edition }}<br />
+<p class="lead">
+    {% trans %}RESULTS{% endtrans %} {{ tournament.edition }}
 </p>
-<table class="table table-striped">
-    <caption>{% trans %}FORM.STATISTICS.TITLE{% endtrans %}</caption>
-    <thead>
-        <tr>
-            <td colspan="2">{% trans %}FORM.STATISTICS.LEGEND.KEY{% endtrans %}</td>
-            <td class="statistics">{% trans %}FORM.STATISTICS.LEGEND.FIGURE{% endtrans %}</td>
-        </tr>
-    </thead>
-    <tboby>
+<p class="lead">
+    {% trans %}FORM.STATISTICS.TITLE{% endtrans %}
+</p>
+<div class="row">
 {% for group,grouporder in order %}
-        <tr class="markup">
-            <td class="title" colspan="3">{{ ['FORM.STATISTICS.GROUP.',group]|join()|upper|trans }}</td>
-        </tr>
+    <div class="col-sm-4">
+        <table class="table table-striped">
+            <thead>
+                <tr>
+                    <td>{{ ['FORM.STATISTICS.GROUP.',group]|join()|upper|trans }}</td>
+                    <td class="statistics">{% trans %}FORM.STATISTICS.LEGEND.FIGURE{% endtrans %}</td>
+                </tr>
+            </thead>
+            <tboby>
     {% for key in grouporder %}
-        <tr>
-            <td class="indent"></td>
-            <td>{{ ['FORM.STATISTICS.KEY.',key]|join()|upper|trans }}</td>
-            <td class="statistics">{{ statistics[key] }}</td>
-        </tr>
+                <tr>
+                    <td>{{ ['FORM.STATISTICS.KEY.',key]|join()|upper|trans }}</td>
+                    <td class="statistics">{{ statistics[key] }}</td>
+                </tr>
     {% endfor %}
+            </tboby>
+            <tfoot>
+                <tr>
+                    <td colspan="2"></td>
+                </tr>
+            </tfoot>
+        </table>
+    </div>
 {% endfor %}
-    </tboby>
-    <tfoot>
-        <tr>
-            <td colspan="3"></td>
-        </tr>
-    </tfoot>
-</table>
+</div>
 {% endblock %}

@@ -2,50 +2,32 @@
 {% trans_default_domain "tournament" %}
 
 {% block body %}
-<h1 class="category">{{ tournament.name }}</h1>
-<p class="subcategory">
-    {% trans %}RESULTS{% endtrans %} {{ tournament.edition }}<br />
+<p class="lead">
+    {% trans %}CLUBS{% endtrans %}
 </p>
-<div>
 {% if teams|length > 0 %}
-    <table class="table">
-        <caption>{% trans %}CLUBS{% endtrans %}</caption>
-        <thead>
-            <tr>
-                <td colspan="3">{% trans %}CLUBSBYCOUNTRY{% endtrans %}</td>
-            </tr>
-        </thead>
-        <tboby>
-            <tr>
+<div class="row">
 {% for column in teams %}
-                <td class="clubs">
+    <div class="col-sm-3">
     {% for countrylist in column %}
     {% for country,teamlist in countrylist %}
-                    <p>
-                        <img src="{{ imagepath }}/flags/{{ countries[country].flag }}"
-                             alt="{{ country|trans({},'lang') }}"
-                             title="{{ country|trans({},'lang') }}"
-                             class="flag"
-                        >
-                        <b>{{ country|trans({},'lang') }}</b><br />
+        <p class="lead">
+            <img src="{{ imagepath }}/flags/{{ countries[country].flag }}"
+                 alt="{{ country|trans({},'lang') }}"
+                 title="{{ country|trans({},'lang') }}"
+                 class="flag"
+            >
+            <b>{{ country|trans({},'lang') }}</b><br />
         {% for id,team in teamlist %}
-                    <a href="{{ path('_tournament_teams', { 'tournament': tournament.key, 'clubId': id }) }}">{{ team }}</a><br />
+            <a href="{{ path('_tournament_teams', { 'tournament': tournament.key, 'clubId': id }) }}">{{ team }}</a><br />
         {% endfor %}
-                    </p>
+        </p>
     {% endfor %}
     {% endfor %}
-                </td>
+    </div>
 {% endfor %}
-            </tr>
-        </tboby>
-        <tfoot>
-            <tr>
-                <td colspan="3"></td>
-            </tr>
-        </tfoot>
-    </table>
+</div>
 {% else %}
 <h2 class="category">{% trans %}TOURNAMENTNOTREADY{% endtrans %}</h2>
 {% endif %}
-</div>
 {% endblock %}

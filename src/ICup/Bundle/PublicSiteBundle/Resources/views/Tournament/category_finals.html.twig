@@ -61,35 +61,33 @@
 {% endmacro %}
         
 {% block body %}
-<h1 class="category">{{ tournament.name }}</h1>
-<p class="subcategory">
-    {% trans %}RESULTS{% endtrans %} {{ tournament.edition }}<br />
+<p class="lead">
+    {% trans %}RESULTS{% endtrans %} {{ tournament.edition }}
 </p>
-<a href="{{ path('_tournament_categories', {'tournament': tournament.key }) }}">
-    <h1 class="category">{% trans %}CATEGORY{% endtrans %} {{ category.name }}</h1>
-</a>
-<p class="subcategory">
+<p class="lead">
+    <a href="{{ path('_tournament_categories', {'tournament': tournament.key }) }}">
+        {% trans %}CATEGORY{% endtrans %} {{ category.name }}
+    </a><br />
     {{ ['GENDER.',
         category.gender,
         category.classification]|join|transchoice(category.age, { '%age%': category.age },'tournament') }}
 </p>
 <ul class="nav nav-tabs" role="tablist">
-<li>
-    <a href="{{ path('_showcategory', { 'categoryid': category.id }) }}">{{ 'PRELIMINARY'|trans|upper }}</a>
-</li>
-{% if classifications > 0 %}
-<li>
-    <a href="{{ path('_showcategory_classification', { 'categoryid': category.id }) }}">{{ 'CLASSIFICATION'|trans|upper }}</a>
-</li>
-{% endif %}
-<li class="active">
-    <a href="{{ path('_showcategory_finals', { 'categoryid': category.id }) }}">{{ 'FINALS'|trans|upper }}</a>
-</li>
+    <li>
+        <a href="{{ path('_showcategory', { 'categoryid': category.id }) }}">{{ 'PRELIMINARY'|trans|upper }}</a>
+    </li>
+    {% if classifications > 0 %}
+    <li>
+        <a href="{{ path('_showcategory_classification', { 'categoryid': category.id }) }}">{{ 'CLASSIFICATION'|trans|upper }}</a>
+    </li>
+    {% endif %}
+    <li class="active">
+        <a href="{{ path('_showcategory_finals', { 'categoryid': category.id }) }}">{{ 'FINALS'|trans|upper }}</a>
+    </li>
 </ul>
 {% if champions|length > 0 %}
-<p>
+<p class="lead">
 <table>
-    <caption>{% trans %}STANDING{% endtrans %}</caption>
     {% if not 'S' in champions|keys %}
     <thead>
         <tr><td>{{ 'FINALS'|trans|upper }}</td></tr>
@@ -114,7 +112,7 @@
     </tbody>
     {% else %}
     <thead>
-        <tr><td>{{ 'SEMIFINALS'|trans|upper }}</td><td colspan="2"></td><td>{{ 'FINALS'|trans|upper }}</td></tr>
+        <tr><td>{{ 'SEMIFINALS'|trans|upper }}</td><td colspan="2" style="padding: 20px;"></td><td>{{ 'FINALS'|trans|upper }}</td></tr>
     </thead>
     <tbody>
         <tr><td/><td/><td/><td class="spacer"></td></tr>

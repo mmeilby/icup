@@ -2,67 +2,55 @@
 {% trans_default_domain "tournament" %}
 
 {% block body %}
-<h1 class="category">{{ tournament.name }}</h1>
-<p class="subcategory">
-    {% trans %}RESULTS{% endtrans %} {{ tournament.edition }}<br />
+<p class="lead">
+    {% trans %}CATEGORIES{% endtrans %}
 </p>
-<div>
 {% if classifications|length > 0 %}
-    <table class="table table-striped">
-        <caption>{% trans %}CATEGORIES{% endtrans %}</caption>
-        <thead>
-            <tr>
-                <td>{% trans %}CLASS{% endtrans %}</td>
-                <td>{% trans %}FEMALE{% endtrans %}</td>
-                <td>{% trans %}MALE{% endtrans %}</td>
-            </tr>
-        </thead>
-        <tboby>
 {% for categorykey in classifications %}
     {% set femalekey = ['F',categorykey]|join %}
     {% set malekey = ['M',categorykey]|join %}
     {% set femalecategorylist = femalekey in categories|keys ? categories[femalekey] : {} %}
     {% set malecategorylist = malekey in categories|keys ? categories[malekey] : {} %}
     {% set size = femalecategorylist|length > malecategorylist|length ? femalecategorylist|length : malecategorylist|length %}
+            <div class="row">
+                <div class="col-sm-3">
+                    <div class="list-group">
     {% for i in 0..size-1 %}
-            <tr>
-        {% if i == 0 %}
-                <td class="classification" rowspan="{{ size }}">{{ categorykey }}</td>
-        {% endif %}
         {% if femalecategorylist[i] is defined %}
-                <td class="categories">
-                    <a href="{{ path('_showcategory', { 'categoryid': femalecategorylist[i].id }) }}">
-                        <b>{% trans %}CATEGORY{% endtrans %} {{ femalecategorylist[i].name }}</b>
-                    </a><br />
-                        {{ ['GENDER.',
-                            femalecategorylist[i].gender,
-                            femalecategorylist[i].classification]|join|transchoice(femalecategorylist[i].age, { '%age%': femalecategorylist[i].age },'tournament') }}
-                </td>
-        {% else %}
-                <td class="categories"></td>
-        {% endif %}
-        {% if malecategorylist[i] is defined %}
-                <td class="categories">
-                    <a href="{{ path('_showcategory', { 'categoryid': malecategorylist[i].id }) }}">
-                        <b>{% trans %}CATEGORY{% endtrans %} {{ malecategorylist[i].name }}</b>
-                    </a><br />
-                        {{ ['GENDER.',
-                            malecategorylist[i].gender,
-                            malecategorylist[i].classification]|join|transchoice(malecategorylist[i].age, { '%age%': malecategorylist[i].age },'tournament') }}
-                </td>
-            </tr>
-        {% else %}
-                <td class="categories"></td>
+                        <a class="list-group-item" href="{{ path('_showcategory', { 'categoryid': femalecategorylist[i].id }) }}">
+                            <h4 class="list-group-item-heading">
+                                {% trans %}CATEGORY{% endtrans %} {{ femalecategorylist[i].name }}
+                            </h4>
+                            <p class="list-group-item-text">
+                                {{ ['GENDER.',
+                                femalecategorylist[i].gender,
+                                femalecategorylist[i].classification]|join|transchoice(femalecategorylist[i].age, { '%age%': femalecategorylist[i].age },'tournament') }}
+                            </p>
+                        </a>
         {% endif %}
     {% endfor %}
+                    </div>
+                </div>
+                <div class="col-sm-3">
+                    <div class="list-group">
+    {% for i in 0..size-1 %}
+        {% if malecategorylist[i] is defined %}
+                        <a class="list-group-item" href="{{ path('_showcategory', { 'categoryid': malecategorylist[i].id }) }}">
+                            <h4 class="list-group-item-heading">
+                                {% trans %}CATEGORY{% endtrans %} {{ malecategorylist[i].name }}
+                            </h4>
+                            <p class="list-group-item-text">
+                                {{ ['GENDER.',
+                                malecategorylist[i].gender,
+                                malecategorylist[i].classification]|join|transchoice(malecategorylist[i].age, { '%age%': malecategorylist[i].age },'tournament') }}
+                            </p>
+                        </a>
+        {% endif %}
+    {% endfor %}
+                    </div>
+                </div>
+            </div>
 {% endfor %}
-        </tboby>
-        <tfoot>
-            <tr>
-                <td colspan="3"></td>
-            </tr>
-        </tfoot>
-    </table>
 {% else %}
 <h2 class="category">{% trans %}TOURNAMENTNOTREADY{% endtrans %}</h2>
 {% endif %}

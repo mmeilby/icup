@@ -27,13 +27,14 @@
 {% endmacro %}
         
 {% block body %}
-<h1 class="category">{{ tournament.name }}</h1>
-<p class="subcategory">
-    {% trans %}RESULTS{% endtrans %} {{ tournament.edition }}<br />
+<p class="lead">
+    {% trans %}RESULTS{% endtrans %} {{ tournament.edition }}
+</p>
+<p class="lead">
+    {{ playground.name }}
 </p>
 <p>
     <table class="table table-striped">
-        <caption>{{ playground.name }}</caption>
         <thead>
             <tr>
                 <td class="flag"></td>

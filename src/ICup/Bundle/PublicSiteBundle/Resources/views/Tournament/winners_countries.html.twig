@@ -2,25 +2,23 @@
 {% trans_default_domain "tournament" %}
 
 {% block body %}
-<h1 class="category">{{ tournament.name }}</h1>
-<p class="subcategory">
-    {% trans %}RESULTS{% endtrans %} {{ tournament.edition }}<br />
+<p class="lead">
+    {% trans %}RESULTS{% endtrans %} {{ tournament.edition }}
 </p>
 <ul class="nav nav-tabs" role="tablist">
-<li>
-    <a href="{{ path('_tournament_winners', {'tournament': tournament.key }) }}">{{ 'WINNERS'|trans|upper }}</a>
-</li>
-<li class="active">
-    <a href="{{ path('_tournament_winners_countries', {'tournament': tournament.key }) }}">{{ 'WINNING_COUNTRIES'|trans|upper }}</a>
-</li>
-<li>
-    <a href="{{ path('_tournament_winners_clubs', {'tournament': tournament.key }) }}">{{ 'WINNING_CLUBS'|trans|upper }}</a>
-</li>
+    <li>
+        <a href="{{ path('_tournament_winners', {'tournament': tournament.key }) }}">{{ 'WINNERS'|trans|upper }}</a>
+    </li>
+    <li class="active">
+        <a href="{{ path('_tournament_winners_countries', {'tournament': tournament.key }) }}">{{ 'WINNING_COUNTRIES'|trans|upper }}</a>
+    </li>
+    <li>
+        <a href="{{ path('_tournament_winners_clubs', {'tournament': tournament.key }) }}">{{ 'WINNING_CLUBS'|trans|upper }}</a>
+    </li>
 </ul>
 {% if championlist|length > 0 %}
-<p>
+<p class="lead">
 <table class="table table-striped">
-    <caption>{% trans %}WINNING_COUNTRIES{% endtrans %}</caption>
     <thead>
         <tr>
             <td></td>

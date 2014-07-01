@@ -8,40 +8,38 @@
     {% for team in teams %}
         <tr>
         {% if team.matches > 0 %}
-            <td class="winner_flag_small"><img src="{{ context.imagepath }}/flags/{{ context.countries[team.country].flag }}" alt="{{ team.country|trans({},'lang') }}" title="{{ team.country|trans({},'lang') }}"></td>
-            <td class="winner_team_small"><a href="{{ path('_showteam', { 'teamid': team.id, 'groupid': team.group }) }}"><b>{{ team.name }}</b></a></td>
+            <td class="flag"><img src="{{ context.imagepath }}/flags/{{ context.countries[team.country].flag }}" alt="{{ team.country|trans({},'lang') }}" title="{{ team.country|trans({},'lang') }}"></td>
+            <td class="winner_team"><a href="{{ path('_showteam', { 'teamid': team.id, 'groupid': team.group }) }}">{{ team.name }}</a></td>
         {% endif %}
         </tr>
     {% endfor %}
     {% if teams|length == 0 %}
         <tr>
-            <td class="winner_flag_small">&nbsp;</td>
-            <td class="winner_team_small">&nbsp;</td>
+            <td class="flag">&nbsp;</td>
+            <td class="winner_team">&nbsp;</td>
         </tr>
     {% endif %}
     </table>
 {% endmacro %}
         
 {% block body %}
-<h1 class="category">{{ tournament.name }}</h1>
-<p class="subcategory">
-    {% trans %}RESULTS{% endtrans %} {{ tournament.edition }}<br />
+<p class="lead">
+    {% trans %}RESULTS{% endtrans %} {{ tournament.edition }}
 </p>
 <ul class="nav nav-tabs" role="tablist">
-<li class="active">
-    <a href="{{ path('_tournament_winners', {'tournament': tournament.key }) }}">{{ 'WINNERS'|trans|upper }}</a>
-</li>
-<li>
-    <a href="{{ path('_tournament_winners_countries', {'tournament': tournament.key }) }}">{{ 'WINNING_COUNTRIES'|trans|upper }}</a>
-</li>
-<li>
-    <a href="{{ path('_tournament_winners_clubs', {'tournament': tournament.key }) }}">{{ 'WINNING_CLUBS'|trans|upper }}</a>
-</li>
+    <li class="active">
+        <a href="{{ path('_tournament_winners', {'tournament': tournament.key }) }}">{{ 'WINNERS'|trans|upper }}</a>
+    </li>
+    <li>
+        <a href="{{ path('_tournament_winners_countries', {'tournament': tournament.key }) }}">{{ 'WINNING_COUNTRIES'|trans|upper }}</a>
+    </li>
+    <li>
+        <a href="{{ path('_tournament_winners_clubs', {'tournament': tournament.key }) }}">{{ 'WINNING_CLUBS'|trans|upper }}</a>
+    </li>
 </ul>
 {% if championlist|length > 0 %}
-<p>
+<p class="lead">
 <table class="table table-striped">
-    <caption>{% trans %}WINNERS{% endtrans %}</caption>
     <thead>
         <tr>
             <td>{% trans %}CATEGORY{% endtrans %}</td>
@@ -55,7 +53,7 @@
     {% for category in championlist %}
         {% set group = category.group %}
         <tr>
-            <td class="classification">
+            <td>
                 <a href="{{ path('_showcategory_finals', {'tournament': tournament.key, 'categoryid': group.catid }) }}"
                    title="{{ ['GENDER.',
                     group.gender,
@@ -63,10 +61,10 @@
                     <b>{{ group.category }}</b>
                 </a>
             </td>
-            <td class="classification">{{ formatter.club(category.first, _context) }}</td>
-            <td class="classification">{{ formatter.club(category.second, _context) }}</td>
-            <td class="classification">{{ formatter.club(category.third, _context) }}</td>
-            <td class="classification">{{ formatter.club(category.forth, _context) }}</td>
+            <td>{{ formatter.club(category.first, _context) }}</td>
+            <td>{{ formatter.club(category.second, _context) }}</td>
+            <td>{{ formatter.club(category.third, _context) }}</td>
+            <td>{{ formatter.club(category.forth, _context) }}</td>
         </tr>
     {% endfor %}
     </tboby>

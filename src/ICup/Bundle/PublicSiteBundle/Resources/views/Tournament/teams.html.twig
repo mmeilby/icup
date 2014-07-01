@@ -2,60 +2,44 @@
 {% trans_default_domain "tournament" %}
 
 {% block body %}
-<h1 class="category">{{ tournament.name }}</h1>
-<p class="subcategory">
-    {% trans %}RESULTS{% endtrans %} {{ tournament.edition }}<br />
+<p class="lead">
+    {% trans %}RESULTS{% endtrans %} {{ tournament.edition }}
 </p>
-<div>
-    <table>
-        <caption>{% trans %}TEAMSBYCLUB{% endtrans %}</caption>
-        <thead>
-            <tr>
-                <td colspan="2">
-                    <a href="{{ path('_tournament_clubs', { 'tournament': tournament.key }) }}">
-                        <img src="{{ imagepath }}/flags/{{ countries[club.country].flag }}"
-                             alt="{{ club.country|trans({},'lang') }}"
-                             title="{{ club.country|trans({},'lang') }}"
-                             class="flag"
-                        >
-                        {{ club.name }} - {{ club.country|trans({},'lang') }}
-                    </a>
-                </td>
-            </tr>
-        </thead>
-        <tboby>
+<p class="lead">
+    {% trans %}TEAMSBYCLUB{% endtrans %}<br />
+    <a href="{{ path('_tournament_clubs', { 'tournament': tournament.key }) }}">
+        <img src="{{ imagepath }}/flags/{{ countries[club.country].flag }}"
+             alt="{{ club.country|trans({},'lang') }}"
+             title="{{ club.country|trans({},'lang') }}"
+             class="flag"
+        >
+        {{ club.name }} - {{ club.country|trans({},'lang') }}
+    </a>
+</p>
+<div class="row">
 {% if teams|length > 0 %}
     {% for catid,category in teams %}
-            <tr class="{{ cycle(['even','odd'],loop.index) }}">
-                <td class="categories">
-                    <a href="{{ path('_showcategory', { 'categoryid': categories[catid].id }) }}">
-                        <b>{% trans %}CATEGORY{% endtrans %} {{ categories[catid].name }}</b>
-                    </a><br />
-                        {{ ['GENDER.',
-                            categories[catid].gender,
-                            categories[catid].classification]|join|transchoice(categories[catid].age, { '%age%': categories[catid].age },'tournament') }}
-                </td>
-                <td class="teams">
+        <div class="col-sm-4">
+            <p class="lead">
+                <a href="{{ path('_showcategory', { 'categoryid': categories[catid].id }) }}">
+                    <b>{% trans %}CATEGORY{% endtrans %} {{ categories[catid].name }}</b>
+                </a><br />
+                {{ ['GENDER.',
+                    categories[catid].gender,
+                    categories[catid].classification]|join|transchoice(categories[catid].age, { '%age%': categories[catid].age },'tournament') }}
+            </p>
+            <div class="list-group">
         {% for team in category %}
-                        <a href="{{ path('_showteam', { 'teamid': team.id, 'groupid': team.groupid }) }}"><b>{{ team.name }}</b></a><br />
-                        {% trans %}GROUP{% endtrans %} {{ team.grp }}<br />
+                <a class="list-group-item" href="{{ path('_showteam', { 'teamid': team.id, 'groupid': team.groupid }) }}">
+                    <h4 class="list-group-item-heading">{% trans %}GROUP{% endtrans %} {{ team.grp }}</h4>
+                    <p class="list-group-item-text">{{ team.name }}</p>
+                </a>
         {% endfor %}
-                </td>
-            </tr>
+            </div>
+        </div>
     {% endfor %}
 {% else %}
-            <tr class="even">
-                <td class="date_solo" colspan="2">
-                    <h2 class="category">{% trans %}TOURNAMENTNOTREADY{% endtrans %}</h2>
-                </td>
-            </tr>
+<h2 class="category">{% trans %}TOURNAMENTNOTREADY{% endtrans %}</h2>
 {% endif %}
-        </tboby>
-        <tfoot>
-            <tr>
-                <td colspan="2"></td>
-            </tr>
-        </tfoot>
-    </table>
 </div>
 {% endblock %}

@@ -4,6 +4,7 @@ namespace ICup\Bundle\PublicSiteBundle\Controller\Tournament;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
+use DateTime;
 
 class SelectController extends Controller
 {
@@ -15,10 +16,11 @@ class SelectController extends Controller
     {
         $tournaments = $this->get('logic')->listAvailableTournaments();
         $tournamentList = array();
+        $today = new DateTime();
         foreach ($tournaments as $tournament) {
-            $tournamentList[$tournament->getId()] = array('tournament' => $tournament, 'enrolled' => 0);
+            $stat = $this->get('tmnt')->getTournamentStatus($tournament->getId(), $today);
+            $tournamentList[$tournament->getId()] = array('tournament' => $tournament, 'status' => $stat);
         }
-
         return array('tournaments' => $tournamentList);
     }
     

@@ -2,44 +2,44 @@
 {% trans_default_domain "tournament" %}
 
 {% block body %}
-<h1 class="category">{{ tournament.name }}</h1>
-<p class="subcategory">
-    {% trans %}RESULTS{% endtrans %} {{ tournament.edition }}<br />
+<p class="lead">
+    {% trans %}RESULTS{% endtrans %} {{ tournament.edition }}
 </p>
-<a href="{{ path('_tournament_categories', {'tournament': tournament.key }) }}">
-    <h1 class="category">{% trans %}CATEGORY{% endtrans %} {{ category.name }}</h1>
-</a>
-<p class="subcategory">
+<p class="lead">
+    <a href="{{ path('_tournament_categories', {'tournament': tournament.key }) }}">
+        {% trans %}CATEGORY{% endtrans %} {{ category.name }}
+    </a><br />
     {{ ['GENDER.',
         category.gender,
         category.classification]|join|transchoice(category.age, { '%age%': category.age },'tournament') }}
 </p>
 {% if classifications > 0 or finals > 0 %}
 <ul class="nav nav-tabs" role="tablist">
-<li class="active">
-    <a href="{{ path('_showcategory', { 'categoryid': category.id }) }}">{{ 'PRELIMINARY'|trans|upper }}</a>
-</li>
+    <li class="active">
+        <a href="{{ path('_showcategory', { 'categoryid': category.id }) }}">{{ 'PRELIMINARY'|trans|upper }}</a>
+    </li>
     {% if classifications > 0 %}
-<li>
-    <a href="{{ path('_showcategory_classification', { 'categoryid': category.id }) }}">{{ 'CLASSIFICATION'|trans|upper }}</a>
-</li>
+    <li>
+        <a href="{{ path('_showcategory_classification', { 'categoryid': category.id }) }}">{{ 'CLASSIFICATION'|trans|upper }}</a>
+    </li>
     {% endif %}
     {% if finals > 0 %}
-<li>
-    <a href="{{ path('_showcategory_finals', { 'categoryid': category.id }) }}">{{ 'FINALS'|trans|upper }}</a>
-</li>
+    <li>
+        <a href="{{ path('_showcategory_finals', { 'categoryid': category.id }) }}">{{ 'FINALS'|trans|upper }}</a>
+    </li>
     {% endif %}
-{% endif %}
 </ul>
+{% endif %}
 {% if grouplist|length > 0 %}
+<p class="lead" />
+<div class="row">
 {% for group in grouplist %}
-    <p>
-        <table class="table table-striped">
-            <caption>{% trans %}GROUP{% endtrans %} {{ group.group.name }}</caption>
+    <div class="col-md-6">
+        <table class="table">
             <thead>
                 <tr>
                     <td class="flag"></td>
-                    <td class="team">{% trans %}TEAM{% endtrans %}</td>
+                    <td class="team">{{ 'GROUP'|trans|upper }} {{ group.group.name|upper }}</td>
                     <td class="matches">{% trans %}LEGEND.MATCHES{% endtrans %}</td>
                     <td class="score">{% trans %}LEGEND.GOALS.WON{% endtrans %}</td>
                     <td class="goals">{% trans %}LEGEND.GOALS.LOST{% endtrans %}</td>
@@ -66,8 +66,9 @@
                 </tr>
             </tfoot>
         </table>
-    </p>
+    </div>
 {% endfor %}
+</div>
 {% else %}
 <h2 class="category">{% trans %}TOURNAMENTNOTREADY{% endtrans %}</h2>
 {% endif %}

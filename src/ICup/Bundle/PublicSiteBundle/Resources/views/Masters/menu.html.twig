@@ -80,6 +80,7 @@
           </ul>
         </li>
 -->
+        <li><a href="{{ path('_contact') }}">{% trans %}MENU.INFO.ABOUT{% endtrans %}</a></li>
         <!-- REGISTRATED USER -->
 {% else %}
     {% if not is_granted('ROLE_EDITOR') %}

@@ -75,8 +75,9 @@ class ListMatchController extends Controller
         $session = $request->getSession();
         $date = $session->get('icup.matchedit.date');
         $dates = $this->get('match')->listMatchCalendar($tournamentid);
+        $checkdate = date_format($date, "d-m-Y");
         foreach ($dates as $dd) {
-            if (date_format($dd, "d-m-Y") == date_format($date, "d-m-Y")) {
+            if (date_format($dd, "d-m-Y") == $checkdate) {
                 return $dd;
             }
         }

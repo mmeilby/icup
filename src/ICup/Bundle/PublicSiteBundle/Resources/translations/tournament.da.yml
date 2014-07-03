@@ -135,10 +135,10 @@ FORM:
                 ENG: Engelsk oversættelse
                 POL: Polsk oversættelse
                 DAN: Danske tekster
-        TITLE: iCup Kontakt
+        TITLE: Kontakt
         SUBTITLE: Driftsansvar og udviklingsteam
-        DESCRIPTION: Kontakt:<p>icup.dk<br />Morten Meilby<br />mm@iserve.dk</p>
-        CAPTION: Tak til...
+        DESCRIPTION: Kontakt
+        CAPTION: Særlig tak til...
         LEGEND:
             NAME: Område
             EDITION: Navn

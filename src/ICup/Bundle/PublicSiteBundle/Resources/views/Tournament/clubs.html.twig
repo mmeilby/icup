@@ -11,17 +11,29 @@
     <div class="col-sm-3">
     {% for countrylist in column %}
     {% for country,teamlist in countrylist %}
-        <p class="lead">
-            <img src="{{ imagepath }}/flags/{{ countries[country].flag }}"
-                 alt="{{ country|trans({},'lang') }}"
-                 title="{{ country|trans({},'lang') }}"
-                 class="flag"
-            >
-            <b>{{ country|trans({},'lang') }}</b><br />
+        <div class="panel panel-default">
+            <div class="panel-heading">
+                <img src="{{ imagepath }}/flags/{{ countries[country].flag }}"
+                     alt="{{ country|trans({},'lang') }}"
+                     title="{{ country|trans({},'lang') }}"
+                     class="flag"
+                >
+                <b>{{ country|trans({},'lang') }}</b>
+            </div>
+            <div class="panel-body">
+                <table>
         {% for id,team in teamlist %}
-            <a href="{{ path('_tournament_teams', { 'tournament': tournament.key, 'clubId': id }) }}">{{ team }}</a><br />
+                    <tr>
+                        <td>
+                            <a href="{{ path('_tournament_teams', { 'tournament': tournament.key, 'clubId': id }) }}">
+                                {{ team }}
+                            </a>
+                        </td>
+                    </tr>
         {% endfor %}
-        </p>
+                </table>
+            </div>
+        </div>
     {% endfor %}
     {% endfor %}
     </div>

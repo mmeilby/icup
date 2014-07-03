@@ -139,10 +139,10 @@ FORM:
                 ENG: Text in english
                 POL: Polish translation
                 DAN: Danish translation
-        TITLE: iCup Contact
+        TITLE: Contact
         SUBTITLE: Maintenance and development
-        DESCRIPTION: Contact:<p>icup.dk<br />Morten Meilby<br />mm@iserve.dk</p>
-        CAPTION: To be mentioned...
+        DESCRIPTION: Contact
+        CAPTION: Special thanks to...
         LEGEND:
             NAME: Area
             EDITION: Name

@@ -11,27 +11,25 @@
 <div class="row">
 {% for group,grouporder in order %}
     <div class="col-sm-4">
-        <table class="table table-striped">
-            <thead>
-                <tr>
-                    <td>{{ ['FORM.STATISTICS.GROUP.',group]|join()|upper|trans }}</td>
-                    <td class="statistics">{% trans %}FORM.STATISTICS.LEGEND.FIGURE{% endtrans %}</td>
-                </tr>
-            </thead>
-            <tboby>
+        <div class="panel panel-default">
+            <div class="panel-heading"><b>{{ ['FORM.STATISTICS.GROUP.',group]|join()|upper|trans }}</b></div>
+            <table class="table table-striped">
+                <thead>
+                    <tr>
+                        <td></td>
+                        <td class="statistics">{% trans %}FORM.STATISTICS.LEGEND.FIGURE{% endtrans %}</td>
+                    </tr>
+                </thead>
+                <tboby>
     {% for key in grouporder %}
-                <tr>
-                    <td>{{ ['FORM.STATISTICS.KEY.',key]|join()|upper|trans }}</td>
-                    <td class="statistics">{{ statistics[key] }}</td>
-                </tr>
+                    <tr>
+                        <td>{{ ['FORM.STATISTICS.KEY.',key]|join()|upper|trans }}</td>
+                        <td class="statistics">{{ statistics[key] }}</td>
+                    </tr>
     {% endfor %}
-            </tboby>
-            <tfoot>
-                <tr>
-                    <td colspan="2"></td>
-                </tr>
-            </tfoot>
-        </table>
+                </tboby>
+            </table>
+        </div>
     </div>
 {% endfor %}
 </div>

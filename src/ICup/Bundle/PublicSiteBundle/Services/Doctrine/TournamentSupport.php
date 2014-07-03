@@ -359,4 +359,26 @@ class TournamentSupport
         $qbe->setParameter('tournament', $tournamentid);
         $qbe->getResult();
     }
+    
+    public function wipeMatches($tournamentid) {
+        // wipe match relations
+        $qbr = $this->em->createQuery(
+                "delete from ".$this->entity->getRepositoryPath('MatchRelation')." r ".
+                "where r.pid in (select m.id ".
+                                "from ".$this->entity->getRepositoryPath('Category')." c, ".
+                                        $this->entity->getRepositoryPath('Group')." g, ".
+                                        $this->entity->getRepositoryPath('Match')." m ".
+                                "where c.pid=:tournament and g.pid=c.id and m.pid=g.id)");
+        $qbr->setParameter('tournament', $tournamentid);
+        $qbr->getResult();
+        // wipe matches
+        $qbm = $this->em->createQuery(
+                "delete from ".$this->entity->getRepositoryPath('Match')." m ".
+                "where m.pid in (select g.id ".
+                                "from ".$this->entity->getRepositoryPath('Category')." c, ".
+                                        $this->entity->getRepositoryPath('Group')." g ".
+                                "where c.pid=:tournament and g.pid=c.id)");
+        $qbm->setParameter('tournament', $tournamentid);
+        $qbm->getResult();
+    }
 }

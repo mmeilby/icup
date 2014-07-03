@@ -9,15 +9,15 @@
 {% if playgrounds|length > 0 %}
     {% for site in playgrounds|keys %}
         <div class="col-sm-4">
-            <p class="lead">
-                {{ site }}
-            </p>
-            <div class="list-group">
+            <div class="panel panel-default">
+                <div class="panel-heading"><b>{{ site }}</b></div>
+                <div class="list-group">
         {% for id,name in playgrounds[site] %}
-                <a class="list-group-item" href="{{ path('_showplayground_full', { 'playgroundid': id }) }}">
-                    <h4 class="list-group-item-heading">{{ name }}</h4>
-                </a>
+                    <a class="list-group-item" href="{{ path('_showplayground_full', { 'playgroundid': id }) }}">
+                        <p class="list-group-item-text">{{ name }}</p>
+                    </a>
         {% endfor %}
+                </div>
             </div>
         </div>
     {% endfor %}

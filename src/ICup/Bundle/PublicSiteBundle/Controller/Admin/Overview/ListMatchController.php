@@ -74,16 +74,19 @@ class ListMatchController extends Controller
         $request = $this->getRequest();
         $session = $request->getSession();
         $date = $session->get('icup.matchedit.date');
-        if ($date == null) {
-            $dates = $this->get('match')->listMatchCalendar($tournamentid);
-            if ($dates != null && count($dates) > 0) {
-                $date = $dates[0];
+        $dates = $this->get('match')->listMatchCalendar($tournamentid);
+        foreach ($dates as $dd) {
+            if (date_format($dd, "d-m-Y") == date_format($date, "d-m-Y")) {
+                return $dd;
             }
-            else {
-                throw new ValidationException("NOTOURNAMENTDATA", "Match date missing: tournamentid=".$tournamentid);
-            }
-            $session->set('icup.matchedit.date', $date);
         }
+        if (count($dates) > 0) {
+            $date = $dates[0];
+        }
+        else {
+            throw new ValidationException("NOTOURNAMENTDATA", "Match date missing: tournamentid=".$tournamentid);
+        }
+        $session->set('icup.matchedit.date', $date);
         return $date;
     }
     
@@ -92,16 +95,19 @@ class ListMatchController extends Controller
         $request = $this->getRequest();
         $session = $request->getSession();
         $playgroundid = $session->get('icup.matchedit.playground');
-        if ($playgroundid == null) {
-            $playgrounds = $this->get('logic')->listPlaygroundsByTournament($tournamentid);
-            if (count($playgrounds) > 0) {
-                $playgroundid = $playgrounds[0]->getId();
+        $playgrounds = $this->get('logic')->listPlaygroundsByTournament($tournamentid);
+        foreach ($playgrounds as $playground) {
+            if ($playground->getId() == $playgroundid) {
+                return $playground->getId();
             }
-            else {
-                throw new ValidationException("NOTOURNAMENTDATA", "Match playground missing: tournamentid=".$tournamentid);
-            }
-            $session->set('icup.matchedit.playground', $playgroundid);
         }
+        if (count($playgrounds) > 0) {
+            $playgroundid = $playgrounds[0]->getId();
+        }
+        else {
+            throw new ValidationException("NOTOURNAMENTDATA", "Match playground missing: tournamentid=".$tournamentid);
+        }
+        $session->set('icup.matchedit.playground', $playgroundid);
         return $playgroundid;
     }
 }

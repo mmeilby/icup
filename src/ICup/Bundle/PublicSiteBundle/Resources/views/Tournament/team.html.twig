@@ -140,9 +140,10 @@
         <thead>
             <tr>
                 <td class="no">{% trans %}LEGEND.NO{% endtrans %}</td>
-                <td class="time">{% trans %}LEGEND.TIME{% endtrans %}</td>
-                <td class="no">{% trans %}LEGEND.PLAYGROUND{% endtrans %}</td>
-                <td>{% trans %}TEAM{% endtrans %}</td>
+                <td class="time">{% trans %}LEGEND.TIME{% endtrans %}<br />
+                                 {% trans %}LEGEND.PLAYGROUND{% endtrans %}</td>
+                <td>{% trans %}LEGEND.HOMETEAM{% endtrans %}<br />
+                    {% trans %}LEGEND.AWAYTEAM{% endtrans %}</td>
                 <td class="match">{% trans %}LEGEND.RESULT{% endtrans %}</td>
             </tr>
         </thead>
@@ -150,7 +151,7 @@
 {% if matchlist|length > 0 %}
     {% for matches in matchlist %}
             <tr class="markup">
-                <td class="date_solo" colspan="5">
+                <td class="date_solo" colspan="4">
                     {{ 'FORMAT.LONGDATE'|transchoice(matches[0].schedule|date('j'), {
                             '%week%': ['WEEK.',matches[0].schedule|date('D')|upper]|join|trans([],'messages')|capitalize,
                             '%day%': matches[0].schedule|date('j'),
@@ -161,8 +162,8 @@
         {% for match in matches %}
             <tr>
                 <td class="no">{{ match.matchno }}</td>
-                <td class="time">{{ match.schedule|date('FORMAT.TIME'|trans([],'messages')) }}</td>
-                <td class="no"><a href="{{ path('_showplayground', { 'playgroundid': match.playground.id, 'groupid': group.id }) }}" title="{{ match.playground.name }}">{{ match.playground.no }}</a></td>
+                <td class="time">{{ match.schedule|date('FORMAT.TIME'|trans([],'messages')) }}<br />
+                                 <a href="{{ path('_showplayground', { 'playgroundid': match.playground.id, 'groupid': group.id }) }}" title="{{ match.playground.name }}">{{ match.playground.no }}</a></td>
                 <td>
                 {{ formatter.clubxs(match.home, match.away, _context) }}
                 </td>
@@ -172,7 +173,7 @@
     {% endfor %}
 {% else %}
             <tr class="even">
-                <td class="date_solo" colspan="5">
+                <td class="date_solo" colspan="4">
                     <h2 class="category">{% trans %}TOURNAMENTNOTREADY{% endtrans %}</h2>
                 </td>
             </tr>

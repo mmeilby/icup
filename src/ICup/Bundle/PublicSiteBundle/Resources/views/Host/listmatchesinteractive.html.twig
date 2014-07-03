@@ -37,83 +37,86 @@
 {% endmacro %}
 
 {% block adminbody %}
-<h1>{% trans %}FORM.EDITRESULTS.TITLE{% endtrans %}</h1>
-<h2 class="category">{{ tournament.name }}</h2>
-<p class="subcategory">
+<p class="lead">
     {% trans %}RESULTS{% endtrans %} {{ tournament.edition }}<br />
 </p>
 <p>
-    <select id="form_playground">
-{% for field in playgrounds %}
-        <option value="{{field.id}}"
-{% if field.id == playground.id %}
-                selected
-{% endif %}
-                >{{field.name}}</option>
-{% endfor %}                
-    </select>
-    &nbsp;
-    <select id="form_matchdate">
-{% for mdate in dates %}
-        <option value="{{mdate|date('d-m-Y')}}"
-{% if mdate == matchdate %}
-                selected
-{% endif %}
-                >{{mdate|date('FORMAT.DATE'|trans([],'messages'))}}</option>
-{% endfor %}                
-    </select>
-</p>
-<p>
     <form action="{{ path('_edit_match_score_post') }}" method="post">
-    <table class="table table-striped">
-        <caption>
-            {{playground.name}}
-            -
-            {{ 'FORMAT.LONGDATE'|transchoice(matchdate|date('j'), {
-                    '%week%': ['WEEK.',matchdate|date('D')|upper]|join|trans([],'messages')|capitalize,
-                    '%day%': matchdate|date('j'),
-                    '%month%': ['MONTH.',matchdate|date('M')|upper]|join|trans([],'messages'),
-                    '%year%': matchdate|date('Y')}, 'messages') }}
-        </caption>
-        <thead>
-            <tr>
-                <td class="flag"></td>
-                <td class="no">{% trans %}LEGEND.NO{% endtrans %}</td>
-                <td class="time">{% trans %}LEGEND.TIME{% endtrans %}</td>
-                <td class="no">{% trans %}LEGEND.CATEGORY{% endtrans %}</td>
-                <td class="no">{% trans %}LEGEND.GROUP{% endtrans %}</td>
-                <td class="flag"></td>
-                <td class="team">{% trans %}LEGEND.HOMETEAM{% endtrans %}</td>
-                <td class="flag"></td>
-                <td class="team">{% trans %}LEGEND.AWAYTEAM{% endtrans %}</td>
-                <td class="match" colspan="2">{% trans %}LEGEND.RESULT{% endtrans %}</td>
-            </tr>
-        </thead>
-        <tboby>
-{% for match in matchlist %}
-            <tr>
-                <td class="flag"></td>
-                <td class="no">{{ match.matchno }}</td>
-                <td class="time">{{ match.schedule|date('FORMAT.TIME'|trans([],'messages')) }}</td>
-                <td class="no"><a href="{{ path('_showcategory', { 'categoryid': match.category.id }) }}">{{ match.category.name }}</a></td>
-                <td class="no"><a href="{{ path('_showcategory', { 'categoryid': match.category.id }) }}">{{ match.group.name }}</a></td>
-                {{ formatter.club(match.home, match.group, _context) }}
-                {{ formatter.club(match.away, match.group, _context) }}
-                {{ formatter.scoreinput(match.home, _context) }}
-                {{ formatter.scoreinput(match.away, _context) }}
-            </tr>
-{% endfor %}
-        </tboby>
-        <tfoot>
-            <tr>
-                <td colspan="11"></td>
-            </tr>
-        </tfoot>
-    </table>
-    <p class="form_button">
-        <button class="btn btn-default" id="form_cancel" name="form[cancel]" type="submit">{% trans %}FORM.EDITRESULTS.CANCEL{% endtrans %}</button>
-        <button class="btn btn-primary" id="form_save" name="form[save]" type="submit">{% trans %}FORM.EDITRESULTS.SUBMIT{% endtrans %}</button>
-    </p>
+        <div class="panel panel-info">
+            <div class="panel-heading">
+                <b>{{ 'FORM.EDITRESULTS.TITLE'|trans|upper }}</b>
+            </div>
+            <div class="panel-body">
+                <div class="row">
+                    <div class="col-sm-6">
+                        <select id="form_playground"  class="form-control">
+                    {% for field in playgrounds %}
+                            <option value="{{field.id}}"
+                    {% if field.id == playground.id %}
+                                    selected
+                    {% endif %}
+                                    >{{field.name}}</option>
+                    {% endfor %}                
+                        </select>
+                    </div>
+                    <div class="col-sm-6">
+                        <select id="form_matchdate" class="form-control">
+                    {% for mdate in dates %}
+                            <option value="{{mdate|date('d-m-Y')}}"
+                    {% if mdate == matchdate %}
+                                    selected
+                    {% endif %}
+                                    >
+                        {{ 'FORMAT.LONGDATE'|transchoice(mdate|date('j'), {
+                            '%week%': ['WEEK.',mdate|date('D')|upper]|join|trans([],'messages')|capitalize,
+                            '%day%': mdate|date('j'),
+                            '%month%': ['MONTH.',mdate|date('M')|upper]|join|trans([],'messages'),
+                            '%year%': mdate|date('Y')}, 'messages') }}
+                            </option>
+                    {% endfor %}                
+                        </select>
+                    </div>
+                </div>
+                <p></p>
+                <div class="row">
+                    <div class="col-sm-6">
+                        <button class="btn btn-default" id="form_cancel" name="form[cancel]" type="submit">{% trans %}FORM.EDITRESULTS.CANCEL{% endtrans %}</button>
+                        <button class="btn btn-primary" id="form_save" name="form[save]" type="submit">{% trans %}FORM.EDITRESULTS.SUBMIT{% endtrans %}</button>
+                    </div>
+                </div>
+            </div>
+            <table class="table table-striped">
+                <thead>
+                    <tr>
+                        <td class="flag"></td>
+                        <td class="no">{% trans %}LEGEND.NO{% endtrans %}</td>
+                        <td class="time">{% trans %}LEGEND.TIME{% endtrans %}</td>
+                        <td class="no">{% trans %}LEGEND.CATEGORY{% endtrans %}</td>
+                        <td class="no">{% trans %}LEGEND.GROUP{% endtrans %}</td>
+                        <td class="flag"></td>
+                        <td class="team">{% trans %}LEGEND.HOMETEAM{% endtrans %}</td>
+                        <td class="flag"></td>
+                        <td class="team">{% trans %}LEGEND.AWAYTEAM{% endtrans %}</td>
+                        <td class="match" colspan="2">{% trans %}LEGEND.RESULT{% endtrans %}</td>
+                    </tr>
+                </thead>
+                <tboby>
+        {% for match in matchlist %}
+                    <tr>
+                        <td class="flag"></td>
+                        <td class="no">{{ match.matchno }}</td>
+                        <td class="time">{{ match.schedule|date('FORMAT.TIME'|trans([],'messages')) }}</td>
+                        <td class="no"><a href="{{ path('_showcategory', { 'categoryid': match.category.id }) }}">{{ match.category.name }}</a></td>
+                        <td class="no"><a href="{{ path('_showcategory', { 'categoryid': match.category.id }) }}">{{ match.group.name }}</a></td>
+                        {{ formatter.club(match.home, match.group, _context) }}
+                        {{ formatter.club(match.away, match.group, _context) }}
+                        {{ formatter.scoreinput(match.home, _context) }}
+                        {{ formatter.scoreinput(match.away, _context) }}
+                    </tr>
+        {% endfor %}
+                </tboby>
+            </table>
+        </div>
     </form>
 </p>
 {% endblock %}

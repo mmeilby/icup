@@ -26,6 +26,38 @@
     {% endif %}
 {% endmacro %}
         
+{% macro clubxs(hteam, ateam, group, context) %}
+    {% if hteam.id > 0 %}
+        {% if hteam.rank != '' %}
+            <div class="rank">{{ hteam.rank }}</div>
+        {% endif %}
+            <img src="{{ context.imagepath }}/flags/{{ context.countries[hteam.country].flag }}"
+                 alt="{{ hteam.country|trans({},'lang') }}"
+                 title="{{ hteam.country|trans({},'lang') }}"
+                 class="flag"
+                 >
+            <a href="{{ path('_showteam', { 'teamid': hteam.id,
+                                            'groupid': group.id }) }}">{{ hteam.name }}</a>
+    {% else %}
+            {{ hteam.rank }}
+    {% endif %}
+            <br />
+    {% if ateam.id > 0 %}
+        {% if ateam.rank != '' %}
+            <div class="rank">{{ ateam.rank }}</div>
+        {% endif %}
+            <img src="{{ context.imagepath }}/flags/{{ context.countries[ateam.country].flag }}"
+                 alt="{{ ateam.country|trans({},'lang') }}"
+                 title="{{ ateam.country|trans({},'lang') }}"
+                 class="flag"
+                 >
+            <a href="{{ path('_showteam', { 'teamid': ateam.id,
+                                            'groupid': group.id }) }}">{{ ateam.name }}</a>
+    {% else %}
+            {{ ateam.rank }}
+    {% endif %}
+{% endmacro %}
+        
 {% block body %}
 <p class="lead">
     {% trans %}RESULTS{% endtrans %} {{ tournament.edition }}
@@ -33,19 +65,66 @@
 <p class="lead">
     {{ playground.name }}
 </p>
-<p>
+<div class="hidden-xs">
     <table class="table table-striped">
         <thead>
             <tr>
-                <td class="flag hidden-xs"></td>
-                <td class="no hidden-xs">{% trans %}LEGEND.NO{% endtrans %}</td>
+                <td class="flag"></td>
+                <td class="no">{% trans %}LEGEND.NO{% endtrans %}</td>
                 <td class="time">{% trans %}LEGEND.TIME{% endtrans %}</td>
-                <td class="no hidden-xs">{% trans %}LEGEND.CATEGORY{% endtrans %}</td>
-                <td class="no hidden-xs">{% trans %}LEGEND.GROUP{% endtrans %}</td>
+                <td class="no">{% trans %}LEGEND.CATEGORY{% endtrans %}</td>
+                <td class="no">{% trans %}LEGEND.GROUP{% endtrans %}</td>
                 <td class="flag"></td>
                 <td class="team">{% trans %}LEGEND.HOMETEAM{% endtrans %}</td>
                 <td class="flag"></td>
                 <td class="team">{% trans %}LEGEND.AWAYTEAM{% endtrans %}</td>
+                <td class="match">{% trans %}LEGEND.RESULT{% endtrans %}</td>
+            </tr>
+        </thead>
+        <tboby>
+{% if matchlist|length > 0 %}
+    {% for matches in matchlist %}
+            <tr class="markup">
+                <td class="date_solo" colspan="10">
+                    {{ 'FORMAT.LONGDATE'|transchoice(matches[0].schedule|date('j'), {
+                            '%week%': ['WEEK.',matches[0].schedule|date('D')|upper]|join|trans([],'messages')|capitalize,
+                            '%day%': matches[0].schedule|date('j'),
+                            '%month%': ['MONTH.',matches[0].schedule|date('M')|upper]|join|trans([],'messages'),
+                            '%year%': matches[0].schedule|date('Y')}, 'messages') }}
+                </td>
+            </tr>
+        {% for match in matches %}
+            <tr>
+                <td class="flag"></td>
+                <td class="no">{{ match.matchno }}</td>
+                <td class="time">{{ match.schedule|date('FORMAT.TIME'|trans([],'messages')) }}</td>
+                <td class="no"><a href="{{ path('_showcategory', { 'categoryid': match.category.id }) }}">{{ match.category.name }}</a></td>
+                <td class="no"><a href="{{ path('_showcategory', { 'categoryid': match.category.id }) }}">{{ match.group.name }}</a></td>
+                {{ formatter.club(match.home, match.group, _context) }}
+                {{ formatter.club(match.away, match.group, _context) }}
+                <td class="match">{{ match.home.score }}-{{ match.away.score }}</td>
+            </tr>
+        {% endfor %}
+    {% endfor %}
+{% else %}
+            <tr>
+                <td class="title" colspan="10">
+                    <p>{% trans %}TOURNAMENTNOTREADY{% endtrans %}</p>
+                </td>
+            </tr>
+{% endif %}
+        </tboby>
+    </table>
+</div>
+<div class="visible-xs-block">
+    <table class="table table-striped">
+        <thead>
+            <tr>
+                <td class="no">{% trans %}LEGEND.NO{% endtrans %}</td>
+                <td class="time">{% trans %}LEGEND.TIME{% endtrans %}</td>
+                <td class="no">{% trans %}LEGEND.CATEGORY{% endtrans %}</td>
+                <td class="no">{% trans %}LEGEND.GROUP{% endtrans %}</td>
+                <td>{% trans %}TEAM{% endtrans %}</td>
                 <td class="match">{% trans %}LEGEND.RESULT{% endtrans %}</td>
             </tr>
         </thead>
@@ -60,17 +139,16 @@
                             '%month%': ['MONTH.',matches[0].schedule|date('M')|upper]|join|trans([],'messages'),
                             '%year%': matches[0].schedule|date('Y')}, 'messages') }}
                 </td>
-                <td class="hidden-xs" colspan="4"></td>
             </tr>
         {% for match in matches %}
             <tr>
-                <td class="flag hidden-xs"></td>
-                <td class="no hidden-xs">{{ match.matchno }}</td>
+                <td class="no">{{ match.matchno }}</td>
                 <td class="time">{{ match.schedule|date('FORMAT.TIME'|trans([],'messages')) }}</td>
-                <td class="no hidden-xs"><a href="{{ path('_showcategory', { 'categoryid': match.category.id }) }}">{{ match.category.name }}</a></td>
-                <td class="no hidden-xs"><a href="{{ path('_showcategory', { 'categoryid': match.category.id }) }}">{{ match.group.name }}</a></td>
-                {{ formatter.club(match.home, match.group, _context) }}
-                {{ formatter.club(match.away, match.group, _context) }}
+                <td class="no"><a href="{{ path('_showcategory', { 'categoryid': match.category.id }) }}">{{ match.category.name }}</a></td>
+                <td class="no"><a href="{{ path('_showcategory', { 'categoryid': match.category.id }) }}">{{ match.group.name }}</a></td>
+                <td>
+                {{ formatter.clubxs(match.home, match.away, match.group, _context) }}
+                </td>
                 <td class="match">{{ match.home.score }}-{{ match.away.score }}</td>
             </tr>
         {% endfor %}
@@ -80,16 +158,9 @@
                 <td class="title" colspan="6">
                     <p>{% trans %}TOURNAMENTNOTREADY{% endtrans %}</p>
                 </td>
-                <td class="hidden-xs" colspan="4"></td>
             </tr>
 {% endif %}
         </tboby>
-        <tfoot>
-            <tr>
-                <td colspan="6"></td>
-                <td class="hidden-xs" colspan="4"></td>
-            </tr>
-        </tfoot>
     </table>
-</p>
+</div>
 {% endblock %}

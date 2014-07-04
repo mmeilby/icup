@@ -85,10 +85,10 @@ FORM:
         COUNTRIES: Pays participants
         CLUBS: Equipes incrites
         TEAMS: Equipes inscrites à la phase préliminaire
-        FEMALETEAMS: -- Equipes Féminines
-        MALETEAMS: -- Equipes Masculines
-        ADULTTEAMS: -- Equipes +de 18
-        CHILDTEAMS: -- Equipes -de 18
+        FEMALETEAMS: Equipes Féminines
+        MALETEAMS: Equipes Masculines
+        ADULTTEAMS: Equipes +de 18
+        CHILDTEAMS: Equipes -de 18
         CATEGORIES: Categories
         GROUPS:	Poules de la phase éliminatoire
         SITES: Sites utilisés pendant le tournoi

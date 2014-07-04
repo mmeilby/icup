@@ -1,0 +1,39 @@
+/*
+ *  Category finals
+ */
+TD.winner {
+    font-weight: bold;    
+}
+TD.finals {
+    border-top: 2px solid black;
+    border-left: 2px solid black;
+    border-right: 2px solid black;
+    border-bottom: 2px solid black;
+    padding-top: 5px;
+    padding-left: 5px;
+    padding-right: 5px;
+    padding-bottom: 5px;
+    height: 120px;
+}
+TD.lineED {
+    border-top: 1px solid black;
+    border-right: 1px solid black;
+}
+TD.lineEU {
+    border-bottom: 1px solid black;
+    border-right: 1px solid black;
+}
+TD.lineSD {
+    border-bottom: 1px solid black;
+    border-left: 1px solid black;
+}
+TD.lineSU {
+    border-top: 1px solid black;
+    border-left: 1px solid black;
+}
+TD.spacer {
+    padding-top: 25px;
+}
+TD.filler {
+    padding-top: 60px;
+}

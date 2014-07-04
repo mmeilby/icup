@@ -1,0 +1,50 @@
+MENU: 
+    LANGCHOICE: 
+        TITLE: Idioma 
+        CHOOSELANG: Elija el idioma 
+    TOURNAMENT: 
+        TITLE: Torneo 
+        SELECT: Selecciona el torneo 
+        OVERVIEW: Información general 
+        RESULT: 
+            GROUPS: Clasificación por categoría 
+            PLAYGROUNDS: Plan de ajuste 
+        GROUPS: Categorías 
+        PLAYGROUNDS: Campos de juegos 
+        TEAMS: Clubes 
+        WINNERS: Los ganadores 
+        STATISTICS: Estadísticas 
+    REGISTER: 
+        TITLE: Registrarse 
+        TEAM: Nuevo club 
+        REFEREE: New árbitro 
+        ENROLL: Inscríbase 
+        USER: Nuevo usuario 
+    NONREL: 
+        ENROLL: Engagement 
+    ENROLLMENT: 
+        TITLE: Inscripción 
+        MYPAGE: Mi iCup 
+        MYPAGE_USERS: Funcionarios 
+        CLUBS: Clubes 
+        TEAMS: Equipos 
+        REFEREES: Los árbitros 
+    ADMIN: 
+        TITLE: Administración 
+        CHANGEPWD: Cambio de contraseña 
+        RESULTS: Resultados 
+        TOURNAMENT: Torneo 
+        TEAMS: Equipos 
+        PLAYERS: Jugadores 
+        REFEREES: Los árbitros 
+        EDITORS: Editores
+    INFORMATION:
+        TITLE: Información
+    INFO:
+        TITLE: Información
+        ABOUT: Contacto
+        PRICES: Los precios
+        FAQ: Preguntas más frecuentes 
+    LOGIN: Acceso Clientes 
+    LOGOUT: Cierre de sesión 
+    EXIT: Salir suplantación

@@ -75,10 +75,12 @@ class ListMatchController extends Controller
         $session = $request->getSession();
         $date = $session->get('icup.matchedit.date');
         $dates = $this->get('match')->listMatchCalendar($tournamentid);
-        $checkdate = date_format($date, "d-m-Y");
-        foreach ($dates as $dd) {
-            if (date_format($dd, "d-m-Y") == $checkdate) {
-                return $dd;
+        if ($date != null) {
+            $checkdate = date_format($date, "d-m-Y");
+            foreach ($dates as $dd) {
+                if (date_format($dd, "d-m-Y") == $checkdate) {
+                    return $dd;
+                }
             }
         }
         if (count($dates) > 0) {
@@ -97,9 +99,11 @@ class ListMatchController extends Controller
         $session = $request->getSession();
         $playgroundid = $session->get('icup.matchedit.playground');
         $playgrounds = $this->get('logic')->listPlaygroundsByTournament($tournamentid);
-        foreach ($playgrounds as $playground) {
-            if ($playground->getId() == $playgroundid) {
-                return $playground->getId();
+        if ($playgroundid != null) {
+            foreach ($playgrounds as $playground) {
+                if ($playground->getId() == $playgroundid) {
+                    return $playground->getId();
+                }
             }
         }
         if (count($playgrounds) > 0) {

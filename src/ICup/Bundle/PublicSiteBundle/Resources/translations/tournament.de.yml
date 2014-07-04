@@ -1,0 +1,148 @@
+RESULTS: Ergebnisse für 
+CATEGORY: Kategorie 
+GROUP: Gruppen 
+TEAM: Team 
+FELD: Spielplatz 
+CATEGORIES: Kategorien 
+PLAYGROUNDS: Spielplätze 
+CLUBS: Teilnehmende Vereine 
+TOWNANDNO: Stadt und Feld 
+CLUBSBYCOUNTRY: Nach Land bestellt 
+TEAMSBYCLUB: Teams durch den Verein eingeschrieben 
+WINNERS: Die Sieger 
+WINNING_COUNTRIES: Medaillen nach Ländern 
+WINNING_CLUBS: Medaillen von der Club
+TOURNAMENTNOTREADY: Das Turnier ist noch nicht definiert 
+MINUTES: min. 
+PRELIMINARY: Vorrunde 
+CLASSIFICATION: Playoff rundet 
+STANDING: Final stehend 
+FINALE: Finale 
+SEMIFINALS: Halbfinale 
+BRONZEMATCH: Bronze-Medaille Spiel 
+FIRST: Gewinner 
+SECOND: 2. 
+THIRD: 3. 
+FORTH: 4. 
+NOWINNERS: Kein Sieger noch gefunden 
+RANK: "{1} Gewinner der %group% | ]1, Inf [ %rank%. Platz in %group%" 
+
+GROUPCLASS: 
+    0: Vorrunde 
+    1: Playoff 
+    6: 1/8 Finale 
+    7: 1/4 Finale 
+    8: Halbfinale 
+    9: Bronze-Medaille Spiel 
+    10: Finale 
+
+LEGEND:
+    NO: No.
+    TIME: Zeit 
+    CATEGORY: Kategorie 
+    GROUP: Gruppen 
+    PLAYGROUND: Feld 
+    HOMETEAM: Team A 
+    AWAYTEAM: Team B 
+    MATCHES: SP 
+    WON: G 
+    TIE: T 
+    LOST: V 
+    GOALS: 
+        WON: ZG 
+        LOST: ZV 
+        DIFF: ZD 
+    POINTS: Pkt. 
+    RESULT: Ergebnis 
+
+CLASS: Klasse 
+FEMALE: Weiblich 
+MALE: Männlich 
+GENDER: 
+    FU: "[1, Inf[ Weiblich unter %age%" 
+    FO: "[1, Inf[ Weiblich über %age%" 
+    MU: "[1, Inf[ Männlich unter %age%" 
+    MO: "[1, Inf[ Männlich über %age%" 
+
+FORM: 
+    SEL_TMNT: 
+        TITLE: iCup Turnier Auswahl 
+        SUBTITLE: Wählen Sie das Turnier, das Sie überprüfen möchten 
+        DESCRIPTION: Wenn Sie möchten, um Ergebnisse und Tabellen zu bewerten und wählen Sie dann ein Turnier aus der Liste. Klicken Sie einfach auf den Namen des Turniers, das Sie überprüfen möchten. 
+        CAPTION: Turniere 
+        LEGEND: 
+            NAME: Name des Turniers 
+            EDITION: Edition 
+            DESCRIPTION: Beschreibung 
+        STATUS: 
+            1: Dieses Turnier ist für Anmeldungen geöffnet. Gruppen und Spiele können unvollständig oder fehlt. 
+            2: Dieses Turnier ist live - hier die aktuellen Ergebnisse. 
+            3: Dies ist ein Turnier abgeschlossen. Sie können die Gewinner und Hall of Fame zu bewerten. 
+
+# Statistics page translations
+    STATISTICS:
+        TITLE: Das Turnier in Zahlen 
+        LEGEND: 
+            KEY: Die Fakten ... 
+            FIGURE: Die Zahlen 
+        KEY: 
+            COUNTRIES: Verschiedene Länder, die das Turnier 
+            CLUBS: Vereine eingeschrieben 
+            TEAMS: Teams die Teilnahme an der Vorrunde 
+            FEMALETEAMS: Frauenteams 
+            MALETEAMS: Männlich Teams 
+            ADULTTEAMS: Über 18 Teams 
+            CHILDTEAMS: Unter 18 Teams 
+            CATEGORIES: Kategorien im Turnier verfügbar 
+            GROUPS: Gruppen in der Vorrunde 
+            SITES: Sites in das Turnier verwendet 
+            PLAYGROUNDS: Spielplätze während des Turniers eingesetzt 
+            MATCHES: Spiele insgesamt gespielt 
+            GOALS: Ziele in allen Spielen fällt 
+            MOSTGOALS: Die meisten Tore eines Teams in einem Spiel erzielt 
+            MOSTTROPHYS: Die meisten Trophäen von einem Land gewonnen 
+            DAYS: Die Länge des Turniers in Tagen 
+        GROUP: 
+            TEAMS: Fakten über die Teams 
+            TOURNAMENT: Fakten über das Turnier 
+            TOP: Top Leistungen im Turnier 
+
+    TEASER: 
+        TOURNAMENT: 
+            GROUPS: 
+                TITLE: Kategorie Ergebnisse 
+                DESC: Sehen Sie die Zusammensetzung der Kategorien oder suchen Sie die Ergebnisse für ein Team von der Kategorie. 
+            PLAYGROUNDS: 
+                TITLE: Spielplatz Überblick 
+                DESC: Verfolge die Spiele auf bestimmte Spielplätze. 
+            TEAMS: 
+                TITLE: Eingeschriebene Teams 
+                DESC: Finden Sie teilnehmenden Teams das Turnier und die Ergebnisse sehen. 
+            WINNERS: 
+                TITLE: Die Gewinner 
+                DESC: Entdecken Sie die Gewinner aus allen Kategorien von diesem Turnier und besuchen Sie die Hall of Fame. 
+            STATISTICS: 
+                TITLE: Mannschaftsstatistik 
+                DESC: Schauen Sie sich einige interessante Zahlen aus dem Turnier. 
+
+    EDITRESULTS: 
+        TITLE: Ergebnisse redigeren
+        SUBMIT: Ergebnisse speichern 
+        CANCEL: Änderungen verwerfen 
+
+    CONTACT: 
+        DATA: 
+            PROGRAM: Entwicklung und Design 
+            TRANSLATION: 
+                ITA: Italienisch Übersetzung 
+                FRA: Französisch Übersetzung 
+                ENG: Englisch Übersetzung
+                POL: Polnisch Übersetzung 
+                DAN: Dänisch Übersetzung 
+        TITLE: Kontakt 
+        SUBTITLE: Wartung und Entwicklung 
+        DESCRIPTION: Kontakt 
+        CAPTION: Besonderen Dank an ... 
+        LEGEND: 
+            NAME: Bereich 
+            EDITION: Name

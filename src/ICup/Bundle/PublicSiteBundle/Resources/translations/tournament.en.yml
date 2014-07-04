@@ -89,10 +89,10 @@ FORM:
         COUNTRIES: Different countries participating the tournament
         CLUBS: Clubs enrolled
         TEAMS: Teams attending the preliminary round
-        FEMALETEAMS: -- female teams
-        MALETEAMS: -- male teams
-        ADULTTEAMS: -- teams over 18
-        CHILDTEAMS: -- teams under 18
+        FEMALETEAMS: Female teams
+        MALETEAMS: Male teams
+        ADULTTEAMS: Teams over 18
+        CHILDTEAMS: Teams under 18
         CATEGORIES: Categories available in the tournament
         GROUPS:	Groups in the preliminary round
         SITES: Sites used in the tournament

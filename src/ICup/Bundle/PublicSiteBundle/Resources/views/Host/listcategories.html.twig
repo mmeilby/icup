@@ -122,6 +122,8 @@
     </table>
 {% if is_granted('ROLE_ADMIN') %}
     <a href="{{ path('_admin_wipe_matches', {'tournamentid': tournament.id }) }}">W</a>
+    &nbsp;
+    <a href="{{ path('_admin_wipe_qmatches', {'tournamentid': tournament.id }) }}">Q</a>
 {% endif %}    
 </div>
 {% endblock %}

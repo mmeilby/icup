@@ -2,24 +2,24 @@
 {% trans_default_domain "admin" %}
 
 {% block adminbody %}
-<h1>{% trans %}FORM.ADMIN{% endtrans %}</h1>
-<p class="subtitle">{% trans %}FORM.LISTGROUPS.TITLE{% endtrans %}</p>
-<a href="{{ path('_edit_host_list') }}">
-<h2 class="category">{{ host.name|upper }} - {{ tournament.name|upper }}</h2>
-</a>
-<a href="{{ path('_edit_category_list', {'tournamentid': tournament.id }) }}">
-<h2 class="category">{% trans from 'tournament' %}CATEGORY{% endtrans %} {{ category.name }}</h2>
-</a>
-<p class="subcategory">
-    {{ ['GENDER.',
-        category.gender,
-        category.classification]|join|transchoice(category.age, { '%age%': category.age },'tournament') }}
-</p>
-<div style="float:left;margin-right: 5px;">
+<div class="panel panel-success">
+    <div class="panel-heading"><b>{{ 'FORM.LISTGROUPS.TITLE'|trans|upper }}</b></div>
+    <div class="panel-body lead">
+        <a href="{{ path('_edit_host_list') }}">
+            {{ host.name|upper }} - {{ tournament.name|upper }}
+        </a>
+        <a href="{{ path('_edit_category_list', {'tournamentid': tournament.id }) }}">
+            {% trans from 'tournament' %}CATEGORY{% endtrans %} {{ category.name }}<br />
+            {{ ['GENDER.',
+                category.gender,
+                category.classification]|join|transchoice(category.age, { '%age%': category.age },'tournament') }}
+        </a>
+    </div>
+    <div style="float:left;margin-right: 5px;">
 {% if grouplist|length > 0 %}
 {% for group in grouplist %}
     {% if selectedgroup.id == group.group.id %}
-        <table>
+        <table class="table table-striped">
             <caption>{% trans from 'tournament' %}GROUP{% endtrans %} {{ group.group.name }}</caption>
             <thead>
                 <tr>
@@ -29,28 +29,23 @@
             </thead>
             <tboby>
         {% for team in group.teams %}
-                <tr class="{{ cycle(['even','odd'],loop.index) }}">
+                <tr>
                     <td class="flag"><img src="{{ imagepath }}/flags/{{ countries[team.country].flag }}" alt="{{ team.country|trans({},'lang') }}" title="{{ team.country|trans({},'lang') }}"></td>
                     <td class="team"><a href="{{ path('_host_assign_del', { 'teamid': team.id, 'groupid': group.group.id }) }}">{{ team.name }}</a></td>
                 </tr>
         {% endfor %}
             </tboby>
-            <tfoot>
-                <tr>
-                    <td colspan="2"></td>
-                </tr>
-            </tfoot>
         </table>
     {% else %}
         <div class="caption">
             <a href="{{ path('_host_assign_select_group', { 'groupid': group.group.id }) }}">
-            {% trans from 'tournament' %}GROUP{% endtrans %} {{ group.group.name }}
+                {% trans from 'tournament' %}GROUP{% endtrans %} {{ group.group.name }}
             </a>
         </div>
     {% endif %}
 {% endfor %}
 {% else %}
-        <table>
+        <table class="table table-striped">
             <caption>{% trans %}FORM.LISTGROUPS.NOGROUP{% endtrans %}</caption>
             <thead>
                 <tr>
@@ -67,16 +62,11 @@
                     </td>
                 </tr>
             </tboby>
-            <tfoot>
-                <tr>
-                    <td colspan="2"></td>
-                </tr>
-            </tfoot>
         </table>
 {% endif %}
 </div>
 <div style="float:left;">
-        <table>
+        <table class="table table-striped">
             <caption>{% trans %}FORM.LISTGROUPS.UNASSIGNED{% endtrans %}</caption>
             <thead>
                 <tr>
@@ -86,7 +76,7 @@
             </thead>
             <tboby>
     {% for team in unassigned %}
-                <tr class="{{ cycle(['even','odd'],loop.index) }}">
+                <tr>
                     <td class="flag"><img src="{{ imagepath }}/flags/{{ countries[team.country].flag }}" alt="{{ team.country|trans({},'lang') }}" title="{{ team.country|trans({},'lang') }}"></td>
                     <td class="team">
         {% if not selectedgroup is null %}
@@ -98,12 +88,8 @@
                 </tr>
     {% endfor %}
             </tboby>
-            <tfoot>
-                <tr>
-                    <td colspan="2"></td>
-                </tr>
-            </tfoot>
         </table>
+    </div>
+    <div style="clear:both;"></div>
 </div>
-<div style="clear:both;"></div>
 {% endblock %}

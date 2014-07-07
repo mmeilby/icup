@@ -2,99 +2,84 @@
 {% trans_default_domain "admin" %}
 
 {% block adminbody %}
-<h1>{% trans %}FORM.ADMIN{% endtrans %}</h1>
-<p class="subtitle">{% trans %}FORM.LISTEDITORS.TITLE{% endtrans %}</p>
-<a href="{{ path('_edit_host_list') }}">
-<h2 class="category">{{ host.name|upper }}</h2>
-</a>
-<p>
-<table>
-    <caption>{% trans %}FORM.LISTEDITORS.CAPTION{% endtrans %}</caption>
-    <thead>
-        <tr>
-            <td></td>
-            <td class="user"></td>
-            <td class="role"></td>
-            <td class="operand"></td>
-            <td class="operand"></td>
-            <td class="operand"></td>
-            <td class="operand"></td>
-        </tr>
-    </thead>
-    <tboby>
+<div class="panel panel-success">
+    <div class="panel-heading"><b>{{ 'FORM.LISTEDITORS.TITLE'|trans|upper }}</b></div>
+    <div class="panel-body lead">
+        <a href="{{ path('_edit_host_list') }}">
+            {{ host.name|upper }}
+        </a><br />
+        {% trans %}FORM.LISTEDITORS.CAPTION{% endtrans %}
+    </div>
+    <table class="table table-striped">
+        <tboby>
 {% if users|length > 0 %}
     {% for user in users %}
-        <tr class="{{ cycle(['even','odd'],loop.index) }}">
-            <td class="user">
+            <tr>
+                <td class="user">
         {% if is_granted('ROLE_ADMIN') %}
-                <a href="{{ path('_user_my_page', {'_switch_user': user.username }) }}">
-                {{ user.username|upper }}
-                </a>    
+                    <a href="{{ path('_user_my_page', {'_switch_user': user.username }) }}">
+                    {{ user.username|upper }}
+                    </a>    
         {% else %}
             {% if user.id == currentuser.id %}
-                <b>{{ user.username|upper }}</b>
+                    <b>{{ user.username|upper }}</b>
             {% else %}
-                {{ user.username|upper }}
+                    {{ user.username|upper }}
             {% endif %}
         {% endif %}
-            </td>
-            <td class="user">
-                {{ user.name }}
-            </td>
-            <td class="role">
+                </td>
+                <td class="user">
+                    {{ user.name }}
+                </td>
+                <td class="role">
     {% if user.role == 3 %}
-                {{ 'FORM.MYPAGE.EDITOR'|trans({},'club') }}
+                    {{ 'FORM.MYPAGE.EDITOR'|trans({},'club') }}
     {% else %}
-                {{ 'FORM.MYPAGE.EDITOR_ADMIN'|trans({},'club') }}
+                    {{ 'FORM.MYPAGE.EDITOR_ADMIN'|trans({},'club') }}
     {% endif %}
-            </td>
-            <td class="operand">
-                <a href="{{ path('_edit_user_add_host', { 'hostid': host.id }) }}">
-                +
-                </a>    
-            </td>
-            <td class="operand">
-                <a href="{{ path('_edit_user_chg', { 'userid': user.id }) }}">
-                E
-                </a>    
-            </td>
-            <td class="operand">
+                </td>
+                <td class="operand">
+                    <a href="{{ path('_edit_user_add_host', { 'hostid': host.id }) }}">
+                    +
+                    </a>    
+                </td>
+                <td class="operand">
+                    <a href="{{ path('_edit_user_chg', { 'userid': user.id }) }}">
+                    E
+                    </a>    
+                </td>
+                <td class="operand">
     {% if user.id != currentuser.id %}
-                <a href="{{ path('_edit_user_del', { 'userid': user.id }) }}">
-                -
-                </a>    
+                    <a href="{{ path('_edit_user_del', { 'userid': user.id }) }}">
+                    -
+                    </a>    
     {% endif %}
-            </td>
-            <td class="operand">
-                <a href="{{ path('_edit_user_chg_pass', { 'userid': user.id }) }}">
-                P
-                </a>    
-            </td>
-        </tr>
+                </td>
+                <td class="operand">
+                    <a href="{{ path('_edit_user_chg_pass', { 'userid': user.id }) }}">
+                    P
+                    </a>    
+                </td>
+            </tr>
     {% endfor %}
 {% else %}
-        <tr class="odd">
-            <td class="user" colspan="2">
-                <a href="{{ path('_edit_user_add_host', { 'hostid': host.id }) }}">
-                {{'FORM.LISTEDITORS.NOUSER'|trans|upper}}
-                </a>    
-            </td>
-            <td class="operand">
-                <a href="{{ path('_edit_user_add_host', { 'hostid': host.id }) }}">
-                +
-                </a>    
-            </td>
-            <td></td>
-            <td></td>
-            <td></td>
-        </tr>
+            <tr>
+                <td class="user" colspan="2">
+                    <a href="{{ path('_edit_user_add_host', { 'hostid': host.id }) }}">
+                    {{'FORM.LISTEDITORS.NOUSER'|trans|upper}}
+                    </a>    
+                </td>
+                <td class="operand">
+                    <a href="{{ path('_edit_user_add_host', { 'hostid': host.id }) }}">
+                    +
+                    </a>    
+                </td>
+                <td></td>
+                <td></td>
+                <td></td>
+            </tr>
 {% endif %}
-    </tboby>
-    <tfoot>
-        <tr>
-            <td colspan="7"></td>
-        </tr>
-    </tfoot>
-</table>
-</p>
+        </tboby>
+    </table>
+</div>
 {% endblock %}

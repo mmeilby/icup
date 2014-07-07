@@ -2,30 +2,35 @@
 {% trans_default_domain "club" %}
 
 {% block body %}
-<h1>{% trans %}FORM.MYPAGE.TITLE{% endtrans %}</h1>
-<p class="subtitle">{{ currentuser.name|capitalize }} ({{ currentuser.username|upper }})</p>
-<p><b>
+<div class="panel panel-info">
+    <div class="panel-heading"><b>{{ 'FORM.MYPAGE.TITLE'|trans|upper }}</b></div>
+    <div class="panel-body lead">
+        {{ currentuser.name|capitalize }} ({{ currentuser.username|upper }})
+    </div>
+    <div class="panel-body">
+        {{ club.name }}
+        &nbsp;
+        <img src="{{ imagepath }}/flags/{{ countries[club.country].flag }}" 
+             alt="{{ club.country|trans({},'lang') }}" 
+             title="{{ club.country|trans({},'lang') }}"><br />
+        <b>
 {% if currentuser.status == 3 %}
-{% trans %}FORM.MYPAGE.PROSPECT{% endtrans %}
+            {% trans %}FORM.MYPAGE.PROSPECT{% endtrans %}
 {% else %}
     {% if currentuser.role == 2 %}
-    {% trans %}FORM.MYPAGE.CLUBADMIN{% endtrans %}
+            {% trans %}FORM.MYPAGE.CLUBADMIN{% endtrans %}
     {% else %}
-    {% trans %}FORM.MYPAGE.CLUBUSER{% endtrans %}
+            {% trans %}FORM.MYPAGE.CLUBUSER{% endtrans %}
     {% endif %}
 {% endif %}
-</b>
-<br />
-{{ club.name }}
-&nbsp;
-<img src="{{ imagepath }}/flags/{{ countries[club.country].flag }}" alt="{{ club.country|trans({},'lang') }}" title="{{ club.country|trans({},'lang') }}">
-</p>
+        </b>
+    </div>
 {% if currentuser.status == 3 %}
-<p>Velkommen til klubben.<br/>Klubbens administrator skal godkende din ansøgning om tilknytning.
-    Du kan afvente godkendelse eller du kan trække din ansøgning tilbage.</p>
-<p><a href="{{ path('_club_user_refuse') }}">
-    Træk ansøgning tilbage...
-    </a></p>    
+    <p>Velkommen til klubben.<br/>Klubbens administrator skal godkende din ansøgning om tilknytning.
+        Du kan afvente godkendelse eller du kan trække din ansøgning tilbage.</p>
+    <p><a href="{{ path('_club_user_refuse') }}">
+        Træk ansøgning tilbage...
+        </a></p>    
 {% else %}
     {% if currentuser.role == 2 %}
         {% if prospectors|length > 0 %}

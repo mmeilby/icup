@@ -2,36 +2,35 @@
 {% trans_default_domain "club" %}
 
 {% block body %}
-<h1>{% trans %}FORM.TITLE{% endtrans %}</h1>
-<p class="subtitle">{% trans %}FORM.LISTENROLLED.TITLE{% endtrans %}</p>
-<a href="{{ path('_edit_host_list') }}">
-<h2 class="category">{{ host.name|upper }} - {{ tournament.name|upper }}</h2>
-</a>
-<p class="subtitle">
-    <a href="{{ path('_host_list_clubs', { 'tournamentid': tournament.id }) }}">
-        <img src="{{ imagepath }}/flags/{{ countries[club.country].flag }}" alt="{{ club.country|trans({},'lang') }}" title="{{ club.country|trans({},'lang') }}">
-        {{ club.name }}
-    </a></p>
-<p>
-<table>
-    <caption>{% trans %}FORM.LISTENROLLED.CAPTION{% endtrans %}</caption>
-    <thead>
-        <tr>
-            <td>{% trans from "tournament" %}CLASS{% endtrans %}</td>
-            <td colspan="4">{% trans from "tournament" %}FEMALE{% endtrans %}</td>
-            <td colspan="4">{% trans from "tournament" %}MALE{% endtrans %}</td>
-        </tr>
-    </thead>
-    <tboby>
+<div class="panel panel-success">
+    <div class="panel-heading"><b>{{ 'FORM.LISTENROLLED.TITLE'|trans|upper }}</b></div>
+    <div class="panel-body lead">
+        <a href="{{ path('_edit_host_list') }}">
+            {{ host.name|upper }} - {{ tournament.name|upper }}
+        </a><br />
+        <a href="{{ path('_host_list_clubs', { 'tournamentid': tournament.id }) }}">
+            <img src="{{ imagepath }}/flags/{{ countries[club.country].flag }}" alt="{{ club.country|trans({},'lang') }}" title="{{ club.country|trans({},'lang') }}">
+            {{ club.name }}
+        </a><br />
+        {% trans %}FORM.LISTENROLLED.CAPTION{% endtrans %}
+    </div>
+    <table class="table table-striped">
+        <thead>
+            <tr>
+                <td>{% trans from "tournament" %}CLASS{% endtrans %}</td>
+                <td colspan="4">{% trans from "tournament" %}FEMALE{% endtrans %}</td>
+                <td colspan="4">{% trans from "tournament" %}MALE{% endtrans %}</td>
+            </tr>
+        </thead>
+        <tboby>
 {% for categorykey in classifications %}
-    {% set colorclass = cycle(['even','odd'],loop.index) %}
     {% set femalekey = ['F',categorykey]|join %}
     {% set malekey = ['M',categorykey]|join %}
     {% set femalecategorylist = femalekey in categories|keys ? categories[femalekey] : {} %}
     {% set malecategorylist = malekey in categories|keys ? categories[malekey] : {} %}
     {% set size = femalecategorylist|length > malecategorylist|length ? femalecategorylist|length : malecategorylist|length %}
     {% for i in 0..size-1 %}
-            <tr class="{{ colorclass }}">
+            <tr>
         {% if i == 0 %}
                 <td class="classification" rowspan="{{ size }}">{{ categorykey }}</td>
         {% endif %}
@@ -100,12 +99,7 @@
             </tr>
     {% endfor %}
 {% endfor %}
-    </tboby>
-    <tfoot>
-        <tr>
-            <td colspan="9"></td>
-        </tr>
-    </tfoot>
-</table>
-</p>
+        </tboby>
+    </table>
+</div>
 {% endblock %}

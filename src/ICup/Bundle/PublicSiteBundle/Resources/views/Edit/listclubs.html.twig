@@ -2,11 +2,12 @@
 {% trans_default_domain "admin" %}
 
 {% block adminbody %}
-<h1>{% trans %}FORM.ADMIN{% endtrans %}</h1>
-<p class="subtitle">{% trans %}FORM.LISTCLUBS.TITLE{% endtrans %}</p>
-<div>
-    <table>
-        <caption>{% trans %}FORM.LISTCLUBS.CAPTION{% endtrans %}</caption>
+<div class="panel panel-success">
+    <div class="panel-heading"><b>{{ 'FORM.LISTCLUBS.TITLE'|trans|upper }}</b></div>
+    <div class="panel-body lead">
+        {% trans %}FORM.LISTCLUBS.CAPTION{% endtrans %}
+    </div>
+    <table class="table table-striped">
         <thead>
             <tr>
                 <td colspan="2">{% trans %}FORM.LISTCLUBS.LEGEND{% endtrans %}</td>
@@ -72,11 +73,6 @@
         </tr>
 {% endif %}
         </tboby>
-        <tfoot>
-            <tr>
-                <td colspan="2"></td>
-            </tr>
-        </tfoot>
     </table>
 </div>
 {% endblock %}

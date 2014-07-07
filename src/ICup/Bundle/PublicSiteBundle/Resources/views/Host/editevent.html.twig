@@ -4,8 +4,13 @@
 {% trans_default_domain "admin" %}
 
 {% block adminbody %}
-    <h1>{% trans %}FORM.ADMIN{% endtrans %}</h1>
-    <p class="subtitle">{{ ['FORM.EVENT.TITLE.',action]|join|upper|trans }}</p>
-    <p>{{ ['FORM.EVENT.PROMPT.',action]|join|upper|trans }}</p>
+<div class="panel panel-success">
+    <div class="panel-heading"><b>{{ ['FORM.EVENT.TITLE.',action]|join|upper|trans|upper }}</b></div>
+    <div class="panel-body lead">
+        {{ ['FORM.EVENT.PROMPT.',action]|join|upper|trans }}
+    </div>
+    <div class="panel-body">
     {{ form(form) }}
+    </div>
+</div>
 {% endblock %}

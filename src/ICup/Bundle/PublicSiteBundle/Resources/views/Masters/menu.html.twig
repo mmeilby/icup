@@ -18,7 +18,7 @@
         <span class="icon-bar"></span>
       </button>
       <a class="navbar-brand" href="{{ path('_tournament_select') }}">
-{% if tournament is defined %}
+{% if tournament is defined and tournament %}
         {{ tournament.name }}
 {% else %}
         iCup

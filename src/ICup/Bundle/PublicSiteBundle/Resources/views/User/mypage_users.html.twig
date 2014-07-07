@@ -2,96 +2,88 @@
 {% trans_default_domain "club" %}
 
 {% block body %}
-<h1>{% trans %}FORM.MYPAGE.USERS.TITLE{% endtrans %}</h1>
-<p class="subtitle">{{ currentuser.name|capitalize }} ({{ currentuser.username|upper }})</p>
-<p><b>
+<div class="panel panel-info">
+    <div class="panel-heading"><b>{{ 'FORM.MYPAGE.USERS.TITLE'|trans|upper }}</b></div>
+    <div class="panel-body lead">
+        {{ currentuser.name|capitalize }} ({{ currentuser.username|upper }})
+    </div>
+    <div class="panel-body">
+        {{ club.name }}
+        &nbsp;
+        <img src="{{ imagepath }}/flags/{{ countries[club.country].flag }}" 
+             alt="{{ club.country|trans({},'lang') }}" 
+             title="{{ club.country|trans({},'lang') }}"><br />
+        <b>
 {% if currentuser.role == 2 %}
-{% trans %}FORM.MYPAGE.CLUBADMIN{% endtrans %}
+            {% trans %}FORM.MYPAGE.CLUBADMIN{% endtrans %}
 {% else %}
-{% trans %}FORM.MYPAGE.CLUBUSER{% endtrans %}
+            {% trans %}FORM.MYPAGE.CLUBUSER{% endtrans %}
 {% endif %}
-</b>
-<br />
-{{ club.name }}
-&nbsp;
-<img src="{{ imagepath }}/flags/{{ countries[club.country].flag }}" alt="{{ club.country|trans({},'lang') }}" title="{{ club.country|trans({},'lang') }}">
-</p>
+        </b><br />
+        {% trans %}FORM.MYPAGE.CAPTION{% endtrans %}
+    </div>
 {% if users|length > 0 %}
-<table>
-    <caption>{% trans %}FORM.MYPAGE.CAPTION{% endtrans %}</caption>
-    <thead>
-        <tr>
-            <td></td>
-            <td class="operand"></td>
-            <td class="operand"></td>
-            <td class="role"></td>
-            <td class="operand"></td>
-        </tr>
-    </thead>
-    <tboby>
+    <table class="table table-striped">
+        <tboby>
     {% for user in users %}
-        <tr class="{{ cycle(['even','odd'],loop.index) }}">
-            <td class="user">
+            <tr>
+                <td class="user">
         {% if currentuser != user %}
-                {{ user.name|upper }}
+                    {{ user.name|upper }}
         {% else %}
-                <b>{{ user.name|upper }}</b>
+                    <b>{{ user.name|upper }}</b>
         {% endif %}
-            </td>
-            <td class="operand">
+                </td>
+                <td class="operand">
 {% if user.status != 3 %}
         {% if currentuser != user %}
-                <a href="{{ path('_club_user_disconnect', { 'userid': user.id }) }}">
-                -
-                </a>    
+                    <a href="{{ path('_club_user_disconnect', { 'userid': user.id }) }}">
+                    -
+                    </a>    
         {% endif %}
 {% endif %}
-            </td>
-            <td class="operand">
+                </td>
+                <td class="operand">
         {% if currentuser != user %}
 {% if user.status != 3 %}
-                <a href="{{ path('_club_user_chg_role', { 'userid': user.id }) }}">
+                    <a href="{{ path('_club_user_chg_role', { 'userid': user.id }) }}">
     {% if user.role == 1 %}
-                P
+                    P
     {% else %}
-                D
+                    D
     {% endif %}
-                </a>
+                    </a>
 {% endif %}
         {% endif %}
-            </td>
-            <td class="role">
+                </td>
+                <td class="role">
 {% if user.status == 3 %}
-            {% trans %}FORM.MYPAGE.PROSPECT{% endtrans %}
+                    {% trans %}FORM.MYPAGE.PROSPECT{% endtrans %}
 {% else %}
     {% if user.role == 1 %}
-                {% trans %}FORM.MYPAGE.CLUBUSER{% endtrans %}
+                    {% trans %}FORM.MYPAGE.CLUBUSER{% endtrans %}
     {% else %}
-                {% trans %}FORM.MYPAGE.CLUBADMIN{% endtrans %}
+                    {% trans %}FORM.MYPAGE.CLUBADMIN{% endtrans %}
     {% endif %}
 {% endif %}
-            </td>
-            <td class="operand">
+                </td>
+                <td class="operand">
         {% if currentuser != user %}
     {% if user.status == 3 %}
-                <a href="{{ path('_club_user_connect', { 'clubid': club.id, 'userid': user.id }) }}">
-                +
-                </a>    
+                    <a href="{{ path('_club_user_connect', { 'clubid': club.id, 'userid': user.id }) }}">
+                    +
+                    </a>    
     {% else %}
-                {% trans %}FORM.MYPAGE.ATTACHED{% endtrans %}
+                    {% trans %}FORM.MYPAGE.ATTACHED{% endtrans %}
     {% endif %}
         {% else %}
-                {% trans %}FORM.MYPAGE.ATTACHED{% endtrans %}
+                    {% trans %}FORM.MYPAGE.ATTACHED{% endtrans %}
         {% endif %}
-            </td>
-        </tr>
+                </td>
+            </tr>
     {% endfor %}
-    </tboby>
-    <tfoot>
-        <tr>
-            <td colspan="5"></td>
-        </tr>
-    </tfoot>
-</table>
+        </tboby>
+    </table>
 {% endif %}
+</div>
 {% endblock %}

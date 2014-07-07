@@ -4,12 +4,16 @@
 {% trans_default_domain "club" %}
 
 {% block body %}
-<h1>{% trans %}FORM.MYPAGE.TITLE{% endtrans %}</h1>
-<p class="subtitle">{{ user.name|capitalize }} ({{ user.username|upper }})</p>
-<p><b>{% trans %}FORM.NEWPASS.TITLE{% endtrans %}</b></p>
-<p>{% trans %}FORM.NEWPASS.PROMPT{% endtrans %}</p>
-{% if error is defined and error %}
-    <div class="form_error">{{ error.message }}</div>
-{% endif %}
-{{ form(form) }}
+<div class="panel panel-info">
+    <div class="panel-heading">
+        <b>{% trans %}FORM.NEWPASS.TITLE{% endtrans %}</b>
+    </div>
+    <div class="panel-body lead">
+        <p>{{ user.name|capitalize }} ({{ user.username|upper }})</p>
+        <p>{% trans %}FORM.NEWPASS.PROMPT{% endtrans %}</p>
+    </div>
+    <div class="panel-body">
+    {{ form(form) }}
+    </div>
+</div>
 {% endblock %}

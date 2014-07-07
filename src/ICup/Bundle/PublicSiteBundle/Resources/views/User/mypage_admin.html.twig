@@ -2,9 +2,13 @@
 {% trans_default_domain "club" %}
 
 {% block body %}
-<h1>{% trans %}FORM.MYPAGE.TITLE{% endtrans %}</h1>
-<p class="subtitle">{{ currentuser.name|capitalize }} ({{ currentuser.username|upper }})</p>
-<p><b>
-{% trans %}FORM.MYPAGE.ADMIN{% endtrans %}
-</b></p>
+<div class="panel panel-success">
+    <div class="panel-heading"><b>{{ 'FORM.MYPAGE.TITLE'|trans|upper }}</b></div>
+    <div class="panel-body lead">
+        {{ currentuser.name|capitalize }} ({{ currentuser.username|upper }})<br />
+        {% trans %}FORM.MYPAGE.ADMIN{% endtrans %}
+    </div>
+    <div class="panel-body">
+    </div>
+</div>
 {% endblock %}

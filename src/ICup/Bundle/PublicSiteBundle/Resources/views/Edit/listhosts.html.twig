@@ -7,95 +7,97 @@
     <div class="panel-body lead">
         {% trans %}FORM.LISTHOSTS.CAPTION{% endtrans %}
     </div>
-        <table class="table table-striped">
-            <tboby>
+    <table class="table table-striped">
+        <tboby>
 {% for host in hosts %}
-                <tr>
-                    <td class="host_solo" colspan="2">
-                        <a href="{{ path('_edit_host_chg', { 'hostid': host.id }) }}">
-                        {{ host.name|upper }}
-                        </a>    
-                    </td>
-                    <td class="operand">
-                        <a href="{{ path('_edit_host_add') }}">
-                        <span class="glyphicon glyphicon-file"></span>
-                        </a>    
-                    </td>
-                    <td class="operand">
-                        <a href="{{ path('_edit_host_chg', { 'hostid': host.id }) }}">
-                        <span class="glyphicon glyphicon-edit"></span>
-                        </a>    
-                    </td>
-                    <td class="operand">
-                        <a href="{{ path('_edit_host_del', { 'hostid': host.id }) }}">
-                        <span class="glyphicon glyphicon-remove"></span>
-                        </a>    
-                    </td>
-                    <td class="operand">
-                        <a href="{{ path('_edit_editor_list', { 'hostid': host.id }) }}">
-                        <span class="glyphicon glyphicon-user"></span>
-                        </a>    
-                    </td>
-                    <td class="operand"></td>
-                    <td class="operand"></td>
-                </tr>
-        {% if host.id in tournaments|keys %}
+            <tr>
+                <td class="host_solo" colspan="2">
+                    <a href="{{ path('_edit_host_chg', { 'hostid': host.id }) }}">
+                    {{ host.name|upper }}
+                    </a>    
+                </td>
+                <td class="operand">
+                    <a href="{{ path('_edit_host_add') }}">
+                    <span class="glyphicon glyphicon-file"></span>
+                    </a>    
+                </td>
+                <td class="operand">
+                    <a href="{{ path('_edit_host_chg', { 'hostid': host.id }) }}">
+                    <span class="glyphicon glyphicon-edit"></span>
+                    </a>    
+                </td>
+                <td class="operand">
+                    <a href="{{ path('_edit_host_del', { 'hostid': host.id }) }}">
+                    <span class="glyphicon glyphicon-remove"></span>
+                    </a>    
+                </td>
+                <td class="operand">
+                    <a href="{{ path('_edit_editor_list', { 'hostid': host.id }) }}">
+                    <span class="glyphicon glyphicon-user"></span>
+                    </a>    
+                </td>
+                <td class="operand"></td>
+                <td class="operand"></td>
+            </tr>
+    {% if host.id in tournaments|keys %}
 {% for tournament in tournaments[host.id] %}
-                <tr>
-                    <td></td>
-                    <td>
-                        <a href="{{ path('_edit_tournament_chg', { 'tournamentid': tournament.id }) }}">
-                        {{ tournament.name }}
-                        </a>
-                    </td>
-                    <td class="operand">
-                        <a href="{{ path('_edit_tournament_add', { 'hostid': host.id }) }}">
-                        <span class="glyphicon glyphicon-file"></span>
-                        </a>    
-                    </td>
-                    <td class="operand">
-                        <a href="{{ path('_edit_tournament_chg', { 'tournamentid': tournament.id }) }}">
-                        <span class="glyphicon glyphicon-edit"></span>
-                        </a>    
-                    </td>
-                    <td class="operand">
-                        <a href="{{ path('_edit_tournament_del', { 'tournamentid': tournament.id }) }}">
-                        <span class="glyphicon glyphicon-remove"></span>
-                        </a>    
-                    </td>
-                    <td class="operand">
-                        <a href="{{ path('_edit_site_list', { 'tournamentid': tournament.id }) }}">
-                        <span class="glyphicon glyphicon-tower"></span>
-                        </a>
-                    </td>
-                    <td class="operand">
-                        <a href="{{ path('_edit_category_list', { 'tournamentid': tournament.id }) }}">
-                        <span class="glyphicon glyphicon-tags"></span>
-                        </a>
-                    </td>
-                    <td class="operand">
-                        <a href="{{ path('_host_list_clubs', { 'tournamentid': tournament.id }) }}">
-                        <span class="glyphicon glyphicon-flag"></span>
-                        </a>    
-                    </td>
-                </tr>
+            <tr>
+                <td></td>
+                <td>
+                    <a href="{{ path('_edit_tournament_chg', { 'tournamentid': tournament.id }) }}">
+                    {{ tournament.name }}
+                    </a>
+                </td>
+                <td class="operand">
+                    <a href="{{ path('_edit_tournament_add', { 'hostid': host.id }) }}">
+                    <span class="glyphicon glyphicon-file"></span>
+                    </a>    
+                </td>
+                <td class="operand">
+                    <a href="{{ path('_edit_tournament_chg', { 'tournamentid': tournament.id }) }}">
+                    <span class="glyphicon glyphicon-edit"></span>
+                    </a>    
+                </td>
+                <td class="operand">
+                    <a href="{{ path('_edit_tournament_del', { 'tournamentid': tournament.id }) }}">
+                    <span class="glyphicon glyphicon-remove"></span>
+                    </a>    
+                </td>
+                <td class="operand">
+                    <a href="{{ path('_edit_site_list', { 'tournamentid': tournament.id }) }}">
+                    <span class="glyphicon glyphicon-tower"></span>
+                    </a>
+                </td>
+                <td class="operand">
+                    <a href="{{ path('_edit_category_list', { 'tournamentid': tournament.id }) }}">
+                    <span class="glyphicon glyphicon-tags"></span>
+                    </a>
+                </td>
+                <td class="operand">
+                    <a href="{{ path('_host_list_clubs', { 'tournamentid': tournament.id }) }}">
+                    <span class="glyphicon glyphicon-flag"></span>
+                    </a>    
+                </td>
+            </tr>
 {% endfor %}
         {% else %}
-                <tr>
-                    <td></td>
-                    <td><a href="{{ path('_edit_tournament_add', { 'hostid': host.id }) }}">{{'FORM.LISTHOSTS.NOTOURNAMENT'|trans|upper}}</a></td>
-                    <td class="operand">
-                        <a href="{{ path('_edit_tournament_add', { 'hostid': host.id }) }}">
-                        +
-                        </a>    
-                    </td>
-                    <td></td>
-                    <td></td>
-                    <td></td>
-                    <td></td>
-                    <td></td>
-                </tr>
+            <tr>
+                <td></td>
+                <td><a href="{{ path('_edit_tournament_add', { 'hostid': host.id }) }}">{{'FORM.LISTHOSTS.NOTOURNAMENT'|trans|upper}}</a></td>
+                <td class="operand">
+                    <a href="{{ path('_edit_tournament_add', { 'hostid': host.id }) }}">
+                    +
+                    </a>    
+                </td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+            </tr>
         {% endif %}
 {% endfor %}
+        </tboby>
+    </table>
 </div>
 {% endblock %}

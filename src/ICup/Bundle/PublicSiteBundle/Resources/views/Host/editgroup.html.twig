@@ -4,13 +4,13 @@
 {% trans_default_domain "admin" %}
 
 {% block adminbody %}
-<h1>{% trans %}FORM.ADMIN{% endtrans %}</h1>
-<p class="subtitle">{{ ['FORM.GROUP.TITLE.',action]|join|upper|trans }}</p>
-{% if error %}
-    <p>{{ error|trans }}</p>
-    <p><a href="{{ path('_edit_host_list') }}">{% trans %}FORM.ERROR.BACK{% endtrans %}</a></p>
-{% else %}
-    <p>{{ ['FORM.GROUP.PROMPT.',action]|join|upper|trans }}</p>
+<div class="panel panel-success">
+    <div class="panel-heading"><b>{{ ['FORM.GROUP.TITLE.',action]|join|upper|trans|upper }}</b></div>
+    <div class="panel-body lead">
+        {{ ['FORM.GROUP.PROMPT.',action]|join|upper|trans }}
+    </div>
+    <div class="panel-body">
     {{ form(form) }}
-{% endif %}
+    </div>
+</div>
 {% endblock %}

@@ -52,6 +52,11 @@
                     Q
                     </a>    
                 </td>
+                <td class="operand">
+                    <a href="{{ path('_edit_import_match_unres', { 'tournamentid': tournament.id }) }}">
+                    U
+                    </a>    
+                </td>
             </tr>
         {% if category.id in groups|keys %}
             {% for group in groups[category.id] %}
@@ -74,12 +79,13 @@
                     </a>    
                 </td>
                 <td class="operand"></td>
-                <td class="operand"></td>
                 <td class="operand">
                     <a href="{{ path('_edit_group_list_matches', { 'groupid': group.id }) }}">
                     M
                     </a>    
                 </td>
+                <td class="operand"></td>
+                <td class="operand"></td>
             </tr>
             {% endfor %}
         {% else %}
@@ -91,6 +97,7 @@
                     +
                     </a>    
                 </td>
+                <td></td>
                 <td></td>
                 <td></td>
                 <td></td>
@@ -111,6 +118,7 @@
                     +
                     </a>    
                 </td>
+                <td></td>
                 <td></td>
                 <td></td>
                 <td></td>

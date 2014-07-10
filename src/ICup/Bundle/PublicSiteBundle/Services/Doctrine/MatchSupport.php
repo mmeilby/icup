@@ -216,6 +216,21 @@ class MatchSupport
         return $matchList;
     }
     
+    public function listMatchesUnresolved($tournamentid) {
+        $qb = $this->em->createQuery(
+                "select m ".
+                "from ".$this->entity->getRepositoryPath('Category')." c, ".
+                        $this->entity->getRepositoryPath('Group')." g, ".
+                        $this->entity->getRepositoryPath('Match')." m ".
+                "where c.pid=:tournament and ".
+                      "g.pid=c.id and ".
+                      "m.pid=g.id and ".
+                      "m.id not in (select r.pid ".
+                                   "from ".$this->entity->getRepositoryPath('MatchRelation')." r)");
+        $qb->setParameter('tournament', $tournamentid);
+        return $qb->getResult();
+    }
+    
     public function listMatchesByGroupPlayground($groupid, $playgroundid) {
         $matchList = $this->queryMatchListWithGroupPlayground($groupid, $playgroundid);
         $qmatchList = $this->queryQMatchListWithGroupPlayground($groupid, $playgroundid);

@@ -118,12 +118,20 @@
                     -
                     </a>    
                 </td>
-{% if match.home.id > 0 or match.away.id > 0 or match.home.rank != '' or match.away.rank != ''%}
+{% if match.home.id > 0 or match.away.id > 0 or match.home.rank != '' or match.away.rank != '' %}
+    {% if match.home.rank != '' or match.away.rank != '' %}
+                <td class="operand">
+                    <a href="{{ path('_edit_matchrel_upd', { 'matchid': match.id }) }}">
+                    U
+                    </a>    
+                </td>
+    {% else %}
                 <td class="operand">
                     <a href="{{ path('_edit_matchrel_chg', { 'matchid': match.id }) }}">
                     U
                     </a>    
                 </td>
+    {% endif %}
                 <td class="operand">
                     <a href="{{ path('_edit_matchrel_del', { 'matchid': match.id }) }}">
                     -
@@ -140,11 +148,19 @@
                     </a>    
                 </td>
 {% else %}
+    {% if match.home.rank != '' or match.away.rank != '' %}
+                <td class="operand">
+                    <a href="{{ path('_edit_matchrel_upd', { 'matchid': match.id }) }}">
+                    +
+                    </a>    
+                </td>
+    {% else %}
                 <td class="operand">
                     <a href="{{ path('_edit_matchrel_chg', { 'matchid': match.id }) }}">
                     +
                     </a>    
                 </td>
+    {% endif %}
                 <td class="operand"></td>
                 <td class="operand">
                     <a href="{{ path('_edit_qmatchrel_chg', { 'matchid': match.id }) }}">

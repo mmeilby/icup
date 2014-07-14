@@ -61,33 +61,4 @@ class MasterController extends Controller
         
         return $this->redirect($returnUrl);
     }
-
-    /**
-     * Wipe all qmatches from a tournament
-     * @Route("/admin/matchfix/{tournamentid}", name="_admin_matchfix")
-     */
-    public function matchfix($tournamentid) {
-        /* @var $utilService Util */
-/*        
-        $utilService = $this->get('util');
-        $returnUrl = $utilService->getReferer();
-        // Validate tournament id
-        $this->get('entity')->getTournamentById($tournamentid);
-        
-        $matches = $this->get('match')->listMatchesUnresolved($tournamentid);
-        foreach ($matches as $match) {
-            $qmh = $this->get('match')->getQMatchRelationByMatch($match->getId(), false);
-            $teamList = $this->get('orderTeams')->sortGroup($qmh->getCid());
-            var_dump($qmh);
-            var_dump($teamList[$qmh->getRank()]);
-            $qma = $this->get('match')->getQMatchRelationByMatch($match->getId(), true);
-            $teamList = $this->get('orderTeams')->sortGroup($qma->getCid());
-            var_dump($qma);
-            var_dump($teamList[$qma->getRank()]);
-        }
-        die();
-        return $this->redirect($returnUrl);
- * 
- */
-    }
 }

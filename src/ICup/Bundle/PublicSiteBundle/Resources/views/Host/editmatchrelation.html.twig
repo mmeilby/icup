@@ -11,12 +11,12 @@
     </div>
     <div class="panel-body">
         <p>{{ match.matchno }} -
-           {{ 'FORMAT.LONGDATE'|transchoice(match.schedule|date('j'), {
-                            '%week%': ['WEEK.',match.schedule|date('D')|upper]|join|trans([],'messages')|capitalize,
-                            '%day%': match.schedule|date('j'),
-                            '%month%': ['MONTH.',match.schedule|date('M')|upper]|join|trans([],'messages'),
-                            '%year%': match.schedule|date('Y')}, 'messages') }} -
-           {{ match.schedule|date('FORMAT.TIME'|trans([],'messages')) }} - 
+           {{ 'FORMAT.LONGDATE'|transchoice(schedule|date('j'), {
+                            '%week%': ['WEEK.',schedule|date('D')|upper]|join|trans([],'messages')|capitalize,
+                            '%day%': schedule|date('j'),
+                            '%month%': ['MONTH.',schedule|date('M')|upper]|join|trans([],'messages'),
+                            '%year%': schedule|date('Y')}, 'messages') }} -
+           {{ schedule|date('FORMAT.TIME'|trans([],'messages')) }} - 
            {{ playground.name }}</p>
         {{ form(form) }}
     </div>

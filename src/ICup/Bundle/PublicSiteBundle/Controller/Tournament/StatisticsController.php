@@ -38,11 +38,8 @@ class StatisticsController extends Controller
 
     private function getMostTrophys($tournamentid) {
         $teams = $this->get('tmnt')->getStatTeams($tournamentid);
-        $teamResults = $this->get('tmnt')->getStatTeamResults($tournamentid);
-        $teamsList = $this->get('orderTeams')->generateStat($teams, $teamResults);
-
         $countries = array();
-        foreach ($teamsList as $teamStat) {
+        foreach ($teams as $teamStat) {
             if (key_exists($teamStat->country, $countries)) {
                 $countries[$teamStat->country]--;
             }

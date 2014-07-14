@@ -9,6 +9,7 @@ use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\Form\FormError;
 use ICup\Bundle\PublicSiteBundle\Entity\Match as MatchForm;
+use DateTime;
 
 /**
  * List the categories and groups available
@@ -50,7 +51,12 @@ class MatchRelationController extends Controller
                      'category' => $category,
                      'match' => $match,
                      'playground' => $playground,
-                     'action' => 'chg');
+                     'action' => 'chg',
+                     'schedule' => DateTime::createFromFormat(
+                                        $this->container->getParameter('db_date_format').
+                                        '-'.
+                                        $this->container->getParameter('db_time_format'),
+                                        $match->getDate().'-'.$match->getTime()));
     }
     
     /**
@@ -87,7 +93,54 @@ class MatchRelationController extends Controller
                      'category' => $category,
                      'match' => $match,
                      'playground' => $playground,
-                     'action' => 'del');
+                     'action' => 'del',
+                     'schedule' => DateTime::createFromFormat(
+                                        $this->container->getParameter('db_date_format').
+                                        '-'.
+                                        $this->container->getParameter('db_time_format'),
+                                        $match->getDate().'-'.$match->getTime()));
+    }
+
+    /**
+     * Update information of an existing match with qualifying relations
+     * @Route("/edit/matchrel/upd/{matchid}", name="_edit_matchrel_upd")
+     * @Template("ICupPublicSiteBundle:Host:editmatchrelation.html.twig")
+     */
+    public function matchfix($matchid) {
+        /* @var $utilService Util */
+        $utilService = $this->get('util');
+        $returnUrl = $utilService->getReferer();
+
+        /* @var $user User */
+        $user = $utilService->getCurrentUser();
+        $match = $this->get('entity')->getMatchById($matchid);
+        $group = $this->get('entity')->getGroupById($match->getPid());
+        $category = $this->get('entity')->getCategoryById($group->getPid());
+        $tournament = $this->get('entity')->getTournamentById($category->getPid());
+        $utilService->validateEditorAdminUser($user, $tournament->getPid());
+        
+        $matchForm = $this->copyMatchForm($match);
+        $form = $this->makeUpdMatchForm($matchForm, $match);
+        $request = $this->getRequest();
+        $form->handleRequest($request);
+        if ($form->get('cancel')->isClicked()) {
+            return $this->redirect($returnUrl);
+        }
+        if ($this->checkForm($form, $matchForm)) {
+            $this->chgMatch($matchForm, $match);
+            return $this->redirect($returnUrl);
+        }
+        $playground = $this->get('entity')->getPlaygroundById($match->getPlayground());
+        return array('form' => $form->createView(),
+                     'category' => $category,
+                     'match' => $match,
+                     'playground' => $playground,
+                     'action' => 'chg',
+                     'schedule' => DateTime::createFromFormat(
+                                        $this->container->getParameter('db_date_format').
+                                        '-'.
+                                        $this->container->getParameter('db_time_format'),
+                                        $match->getDate().'-'.$match->getTime()));
     }
 
     private function chgMatch(MatchForm $matchForm, Match &$match) {
@@ -133,7 +186,7 @@ class MatchRelationController extends Controller
     private function copyMatchForm(Match $match) {
         $matchForm = new MatchForm();
         $matchForm->setId($match->getId());
-        $matchForm->setPid($match->getPId());
+        $matchForm->setPid($match->getPid());
         $matchForm->setMatchno($match->getMatchno());
         $dateformat = $this->get('translator')->trans('FORMAT.DATE');
         $matchdate = date_create_from_format($this->container->getParameter('db_date_format'), $match->getDate());
@@ -183,5 +236,39 @@ class MatchRelationController extends Controller
             $form->addError(new FormError($this->get('translator')->trans('FORM.MATCH.SAMETEAM', array(), 'admin')));
         }
         return $form->isValid();
+    }
+    
+    private function makeUpdMatchForm(MatchForm $matchForm, Match $match) {
+        $qmh = $this->get('match')->getQMatchRelationByMatch($match->getId(), false);
+        $teamListA = $this->get('orderTeams')->sortGroup($qmh->getCid());
+        $teamnamesA = array();
+        foreach ($teamListA as $team) {
+            $teamnamesA[$team->id] = $team->name;
+        }
+        $teamA = $teamListA[$qmh->getRank()-1];
+        $matchForm->setTeamA($teamA->id);
+
+        $qma = $this->get('match')->getQMatchRelationByMatch($match->getId(), true);
+        $teamListB = $this->get('orderTeams')->sortGroup($qma->getCid());
+        $teamnamesB = array();
+        foreach ($teamListB as $team) {
+            $teamnamesB[$team->id] = $team->name;
+        }
+        $teamB = $teamListB[$qma->getRank()-1];
+        $matchForm->setTeamB($teamB->id);
+
+        $show = true;
+        $extshow = $show && !$this->get('match')->isMatchResultValid($matchForm->getId());
+        
+        $formDef = $this->createFormBuilder($matchForm);
+        $formDef->add('teamA', 'choice', array('label' => 'FORM.MATCH.HOME',
+            'choices' => $teamnamesA, 'empty_value' => 'FORM.MATCH.DEFAULT',
+            'required' => false, 'disabled' => !$extshow, 'translation_domain' => 'admin'));
+        $formDef->add('teamB', 'choice', array('label' => 'FORM.MATCH.AWAY',
+            'choices' => $teamnamesB, 'empty_value' => 'FORM.MATCH.DEFAULT',
+            'required' => false, 'disabled' => !$extshow, 'translation_domain' => 'admin'));
+        $formDef->add('cancel', 'submit', array('label' => 'FORM.MATCH.CANCEL.CHG', 'translation_domain' => 'admin'));
+        $formDef->add('save', 'submit', array('label' => 'FORM.MATCH.SUBMIT.CHG', 'translation_domain' => 'admin'));
+        return $formDef->getForm();
     }
 }

@@ -41,16 +41,16 @@
                 </table>
             </td>
             <td class="winners_country">
-                {{ ranks.first }}
+                {{ ranks.first|length }}
             </td>
             <td class="winners_country">
-                {{ ranks.second }}
+                {{ ranks.second|length }}
             </td>
             <td class="winners_country">
-                {{ ranks.third }}
+                {{ ranks.third|length }}
             </td>
             <td class="winners_country">
-                {{ ranks.forth }}
+                {{ ranks.forth|length }}
             </td>
         </tr>
     {% endfor %}

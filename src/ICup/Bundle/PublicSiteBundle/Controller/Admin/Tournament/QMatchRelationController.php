@@ -9,6 +9,7 @@ use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\Form\FormError;
 use ICup\Bundle\PublicSiteBundle\Entity\QMatch as MatchForm;
+use DateTime;
 
 /**
  * List the categories and groups available
@@ -50,7 +51,12 @@ class QMatchRelationController extends Controller
                      'category' => $category,
                      'match' => $match,
                      'playground' => $playground,
-                     'action' => 'chg');
+                     'action' => 'chg',
+                     'schedule' => DateTime::createFromFormat(
+                                        $this->container->getParameter('db_date_format').
+                                        '-'.
+                                        $this->container->getParameter('db_time_format'),
+                                        $match->getDate().'-'.$match->getTime()));
     }
     
     /**
@@ -87,7 +93,12 @@ class QMatchRelationController extends Controller
                      'category' => $category,
                      'match' => $match,
                      'playground' => $playground,
-                     'action' => 'del');
+                     'action' => 'del',
+                     'schedule' => DateTime::createFromFormat(
+                                        $this->container->getParameter('db_date_format').
+                                        '-'.
+                                        $this->container->getParameter('db_time_format'),
+                                        $match->getDate().'-'.$match->getTime()));
     }
 
     private function chgMatch(MatchForm $matchForm, Match $match) {

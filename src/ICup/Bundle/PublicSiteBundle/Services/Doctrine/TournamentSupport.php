@@ -277,10 +277,16 @@ class TournamentSupport
                         $this->entity->getRepositoryPath('Club')." c ".
                 "where cat.pid=:tournament and ".
                         "g.pid=cat.id and ".
-                        "g.classification>8 and ".
+                        "g.classification>=9 and ".
                         "o.pid=g.id and ".
                         "o.cid=t.id and ".
-                        "t.pid=c.id ".
+                        "t.pid=c.id and ".
+                        "t.id in (select r.cid ".
+                                 "from ".$this->entity->getRepositoryPath('MatchRelation')." r, ".
+                                         $this->entity->getRepositoryPath('Match')." m ".
+                                 "where r.pid=m.id and ".
+                                       "m.pid=g.id and ".
+                                       "r.scorevalid='Y') ".
                 "order by o.id");
         $qb->setParameter('tournament', $tournamentid);
         $teamsList = array();
@@ -296,23 +302,6 @@ class TournamentSupport
         return $teamsList;
     }
         
-    public function getStatTeamResults($tournamentid) {
-        $qb = $this->em->createQuery(
-                "select r ".
-                "from ".$this->entity->getRepositoryPath('Category')." cat, ".
-                        $this->entity->getRepositoryPath('Group')." g, ".
-                        $this->entity->getRepositoryPath('MatchRelation')." r, ".
-                        $this->entity->getRepositoryPath('Match')." m ".
-                "where cat.pid=:tournament and ".
-                        "r.pid=m.id and ".
-                        "m.pid=g.id and ".
-                        "g.pid=cat.id and ".
-                        "g.classification>8 ".
-                "order by r.pid");
-        $qb->setParameter('tournament', $tournamentid);
-        return $qb->getResult();
-    }
-    
     public function wipeTeams($tournamentid) {
         // wipe clubs
         $qbc = $this->em->createQuery(

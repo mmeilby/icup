@@ -389,4 +389,5 @@ FORM:
       DEL: Cancel
   LISTEVENTS:
     TITLE: Event calendar
+    CAPTION: Events for this tournament
     NOEVENT: Add event to calendar

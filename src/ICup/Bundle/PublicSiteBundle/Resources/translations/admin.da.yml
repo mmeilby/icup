@@ -389,4 +389,5 @@ FORM:
       DEL: Fortryd
   LISTEVENTS:
     TITLE: Turneringskalender
+    CAPTION: Hændelser for denne turnering
     NOEVENT: Tilføj hændelse til kalender

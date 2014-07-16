@@ -64,7 +64,12 @@ class CategoryController extends Controller
         $groups = $this->get('logic')->listGroupsFinals($categoryid);
         $classes = array(10 => 'F', 9 => 'B', 8 => 'S');
         $champions = array();
+        $groupList = array();
         foreach ($groups as $group) {
+            // make list for small devices
+            $teamsList = $this->get('orderTeams')->sortGroup($group->getId());
+            $groupList[$group->getId()] = array('group' => $group, 'teams' => $teamsList);
+            // make list for larger devices
             $matchList = $this->get('Match')->listMatchesByGroup($group->getId());
             foreach ($matchList as &$match) {
                 $match['group'] = $group;
@@ -81,7 +86,8 @@ class CategoryController extends Controller
         return array(
             'tournament' => $tournament,
             'category' => $category,
-            'champions' => $champions,
+            'grouplist' => $groupList,      // list for small devices
+            'champions' => $champions,      // list for larger devices
             'classifications' => count($grpc));
     }
 }

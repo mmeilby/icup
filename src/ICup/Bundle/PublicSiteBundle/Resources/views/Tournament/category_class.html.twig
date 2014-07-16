@@ -32,7 +32,12 @@
 {% for group in grouplist %}
     <div class="col-sm-6">
         <div class="panel panel-default">
-            <div class="panel-heading"><b>{{ ['GROUPCLASS.',group.group.classification]|join|trans|upper }}</b></div>
+            <div class="panel-heading">
+                <b>
+                    {{ ['GROUPCLASS.',group.group.classification]|join|trans|upper }}
+                    {{ group.group.name }}
+                </b>
+            </div>
             <table class="table table-striped">
                 <thead>
                     <tr>

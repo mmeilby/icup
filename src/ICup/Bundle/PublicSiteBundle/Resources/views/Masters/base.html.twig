@@ -5,8 +5,10 @@
         <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
         {% block meta %}{% endblock %}
         <title>{% block title %}{% endblock %}</title>
+        <link href="{{ asset( 'bundles/icuppublicsite/css/bootstrap.min.css' ) }}" rel="stylesheet" type="text/css" />
+        <link href="{{ asset( 'bundles/icuppublicsite/css/bootstrap-theme.min.css' ) }}" rel="stylesheet" type="text/css" />
         {% stylesheets '@ICupPublicSiteBundle/Resources/css/*' output="bundles/icuppublicsite/css/style.css" %}
-            <link rel="stylesheet" href="{{ asset_url }}" />
+            <link href="{{ asset_url }}" rel="stylesheet" type="text/css" />
         {% endstylesheets %}
         <link rel="icon" type="image/x-icon" href="{{ asset('favicon.ico') }}" />
         <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->

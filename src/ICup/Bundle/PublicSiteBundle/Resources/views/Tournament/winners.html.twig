@@ -9,14 +9,14 @@
         <tr>
         {% if team.matches > 0 %}
             <td class="flag"><img src="{{ context.imagepath }}/flags/{{ context.countries[team.country].flag }}" alt="{{ team.country|trans({},'lang') }}" title="{{ team.country|trans({},'lang') }}"></td>
-            <td class="winner_team"><a href="{{ path('_showteam', { 'teamid': team.id, 'groupid': team.group }) }}">{{ team.name }}</a></td>
+            <td><a href="{{ path('_showteam', { 'teamid': team.id, 'groupid': team.group }) }}">{{ team.name }}</a></td>
         {% endif %}
         </tr>
     {% endfor %}
     {% if teams|length == 0 %}
         <tr>
             <td class="flag">&nbsp;</td>
-            <td class="winner_team">&nbsp;</td>
+            <td>&nbsp;</td>
         </tr>
     {% endif %}
     </table>
@@ -26,7 +26,7 @@
 <p class="lead">
     {% trans %}RESULTS{% endtrans %} {{ tournament.edition }}
 </p>
-<ul class="nav nav-tabs" role="tablist">
+<ul class="nav nav-pills" role="tablist">
     <li class="active">
         <a href="{{ path('_tournament_winners', {'tournament': tournament.key }) }}">{{ 'WINNERS'|trans|upper }}</a>
     </li>
@@ -38,7 +38,7 @@
     </li>
 </ul>
 {% if championlist|length > 0 %}
-<p class="lead">
+<p class="lead" />
 <table class="table table-striped">
     <thead>
         <tr>
@@ -68,14 +68,14 @@
         </tr>
     {% endfor %}
     </tboby>
-    <tfoot>
-        <tr>
-            <td colspan="5"></td>
-        </tr>
-    </tfoot>
 </table>
-</p>
 {% else %}
-<h2 class="category">{% trans %}NOWINNERS{% endtrans %}</h2>
+<div class="panel panel-warning">
+    <div class="panel-heading">
+        <b>
+            {% trans %}NOWINNERS{% endtrans %}
+        </b>
+    </div>
+</div>
 {% endif %}
 {% endblock %}

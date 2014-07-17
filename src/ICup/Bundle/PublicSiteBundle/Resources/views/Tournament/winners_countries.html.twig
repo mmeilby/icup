@@ -5,7 +5,7 @@
 <p class="lead">
     {% trans %}RESULTS{% endtrans %} {{ tournament.edition }}
 </p>
-<ul class="nav nav-tabs" role="tablist">
+<ul class="nav nav-pills" role="tablist">
     <li>
         <a href="{{ path('_tournament_winners', {'tournament': tournament.key }) }}">{{ 'WINNERS'|trans|upper }}</a>
     </li>
@@ -17,7 +17,7 @@
     </li>
 </ul>
 {% if championlist|length > 0 %}
-<p class="lead">
+<p class="lead" />
 <table class="table table-striped">
     <thead>
         <tr>
@@ -32,7 +32,7 @@
     {% for ranks in championlist %}
         {% set country = ranks.country %}
         <tr>
-            <td class="winner_team">
+            <td>
                 <table>
                     <tr>
                         <td class="flag"><img src="{{ imagepath }}/flags/{{ countries[country].flag }}" alt="{{ country|trans({},'lang') }}" title="{{ country|trans({},'lang') }}"></td>
@@ -55,14 +55,14 @@
         </tr>
     {% endfor %}
     </tboby>
-    <tfoot>
-        <tr>
-            <td colspan="5"></td>
-        </tr>
-    </tfoot>
 </table>
-</p>
 {% else %}
-<h2 class="category">{% trans %}NOWINNERS{% endtrans %}</h2>
+<div class="panel panel-warning">
+    <div class="panel-heading">
+        <b>
+            {% trans %}NOWINNERS{% endtrans %}
+        </b>
+    </div>
+</div>
 {% endif %}
 {% endblock %}

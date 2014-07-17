@@ -31,7 +31,9 @@
                         <b>{{ country|trans({},'lang') }}</b>
             </td>
             <td class="operand country_spacer">
-                        <a href="{{ path('_edit_club_add', {'country': country }) }}">+</a>
+                <a href="{{ path('_edit_club_add', {'country': country }) }}">
+                    <span class="glyphicon glyphicon-file"></span>
+                </a>
             </td>
             <td class="operand"></td>
             <td class="operand"></td>
@@ -43,16 +45,24 @@
                         {{ club.name|upper }}
             </td>
             <td class="operand">
-                        <a href="{{ path('_edit_club_add', {'country': country }) }}">+</a>
+                <a href="{{ path('_edit_club_add', {'country': country }) }}">
+                    <span class="glyphicon glyphicon-file"></span>
+                </a>
             </td>
             <td class="operand">
-                        <a href="{{ path('_edit_club_chg', {'clubid': club.id }) }}">E</a>
+                <a href="{{ path('_edit_club_chg', {'clubid': club.id }) }}">
+                    <span class="glyphicon glyphicon-edit"></span>
+                </a>
             </td>
             <td class="operand">
-                        <a href="{{ path('_edit_club_del', {'clubid': club.id }) }}">-</a>
+                <a href="{{ path('_edit_club_del', {'clubid': club.id }) }}">
+                    <span class="glyphicon glyphicon-remove"></span>
+                </a>
             </td>
             <td class="operand">
-                        <a href="{{ path('_edit_user_list', {'clubid': club.id }) }}">U</a><br />
+                <a href="{{ path('_edit_user_list', {'clubid': club.id }) }}">
+                    <span class="glyphicon glyphicon-user"></span>
+                </a><br />
             </td>
         </tr>
         {% endfor %}
@@ -68,7 +78,9 @@
                         <b><a href="{{ path('_edit_club_add') }}">{{'FORM.LISTCLUBS.NOCLUB'|trans|upper}}</a></b>
             </td>
             <td class="operand">
-                        <a href="{{ path('_edit_club_add') }}">+</a>
+                <a href="{{ path('_edit_club_add') }}">
+                    <span class="glyphicon glyphicon-file"></span>
+                </a>
             </td>
         </tr>
 {% endif %}

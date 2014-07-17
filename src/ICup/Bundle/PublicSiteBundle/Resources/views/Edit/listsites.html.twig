@@ -23,17 +23,17 @@
                 </td>
                 <td class="operand">
                     <a href="{{ path('_edit_site_add', { 'tournamentid': tournament.id }) }}">
-                    +
+                        <span class="glyphicon glyphicon-file"></span>
                     </a>    
                 </td>
                 <td class="operand">
                     <a href="{{ path('_edit_site_chg', { 'siteid': site.id }) }}">
-                    E
+                        <span class="glyphicon glyphicon-edit"></span>
                     </a>    
                 </td>
                 <td class="operand">
                     <a href="{{ path('_edit_site_del', { 'siteid': site.id }) }}">
-                    -
+                        <span class="glyphicon glyphicon-remove"></span>
                     </a>    
                 </td>
             </tr>
@@ -41,20 +41,20 @@
             {% for playground in playgrounds[site.id] %}
             <tr>
                 <td class="indent"></td>
-                <td class="playgrounds"><a href="{{ path('_edit_playground_chg', { 'playgroundid': playground.id }) }}">{{ playground.name }}</a></td>
+                <td><a href="{{ path('_edit_playground_chg', { 'playgroundid': playground.id }) }}">{{ playground.name }}</a></td>
                 <td class="operand">
                     <a href="{{ path('_edit_playground_add', { 'siteid': site.id }) }}">
-                    +
+                        <span class="glyphicon glyphicon-file"></span>
                     </a>    
                 </td>
                 <td class="operand">
                     <a href="{{ path('_edit_playground_chg', { 'playgroundid': playground.id }) }}">
-                    E
+                        <span class="glyphicon glyphicon-edit"></span>
                     </a>    
                 </td>
                 <td class="operand">
                     <a href="{{ path('_edit_playground_del', { 'playgroundid': playground.id }) }}">
-                    -
+                        <span class="glyphicon glyphicon-remove"></span>
                     </a>    
                 </td>
             </tr>
@@ -65,13 +65,11 @@
                 <td><a href="{{ path('_edit_playground_add', { 'siteid': site.id }) }}">{{'FORM.LISTTOURNAMENTS.NOPLAYGROUND'|trans|upper}}</a></td>
                 <td class="operand">
                     <a href="{{ path('_edit_playground_add', { 'siteid': site.id }) }}">
-                    +
+                        <span class="glyphicon glyphicon-file"></span>
                     </a>    
                 </td>
-                <td>
-                </td>
-                <td>
-                </td>
+                <td></td>
+                <td></td>
             </tr>
         {% endif %}
     {% endfor %}
@@ -84,13 +82,11 @@
                 </td>
                 <td class="operand">
                     <a href="{{ path('_edit_site_add', { 'tournamentid': tournament.id }) }}">
-                    +
+                        <span class="glyphicon glyphicon-file"></span>
                     </a>    
                 </td>
-                <td>
-                </td>
-                <td>
-                </td>
+                <td></td>
+                <td></td>
             </tr>
 {% endif %}
         </tboby>

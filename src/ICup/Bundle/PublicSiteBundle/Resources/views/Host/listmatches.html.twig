@@ -105,66 +105,66 @@
 {% endif %}
                 <td class="operand">
                     <a href="{{ path('_edit_match_add', { 'groupid': group.id }) }}">
-                    +
+                        <span class="glyphicon glyphicon-file"></span>
                     </a>    
                 </td>
                 <td class="operand">
                     <a href="{{ path('_edit_match_chg', { 'matchid': match.id }) }}">
-                    E
+                        <span class="glyphicon glyphicon-edit"></span>
                     </a>    
                 </td>
                 <td class="operand">
                     <a href="{{ path('_edit_match_del', { 'matchid': match.id }) }}">
-                    -
+                        <span class="glyphicon glyphicon-remove"></span>
                     </a>    
                 </td>
 {% if match.home.id > 0 or match.away.id > 0 or match.home.rank != '' or match.away.rank != '' %}
     {% if match.home.rank != '' or match.away.rank != '' %}
                 <td class="operand">
                     <a href="{{ path('_edit_matchrel_upd', { 'matchid': match.id }) }}">
-                    U
+                        <span class="glyphicon glyphicon-edit"></span>
                     </a>    
                 </td>
     {% else %}
                 <td class="operand">
                     <a href="{{ path('_edit_matchrel_chg', { 'matchid': match.id }) }}">
-                    U
+                        <span class="glyphicon glyphicon-edit"></span>
                     </a>    
                 </td>
     {% endif %}
                 <td class="operand">
                     <a href="{{ path('_edit_matchrel_del', { 'matchid': match.id }) }}">
-                    -
+                        <span class="glyphicon glyphicon-remove"></span>
                     </a>    
                 </td>
                 <td class="operand">
                     <a href="{{ path('_edit_qmatchrel_chg', { 'matchid': match.id }) }}">
-                    U
+                        <span class="glyphicon glyphicon-edit"></span>
                     </a>    
                 </td>
                 <td class="operand">
                     <a href="{{ path('_edit_qmatchrel_del', { 'matchid': match.id }) }}">
-                    -
+                        <span class="glyphicon glyphicon-remove"></span>
                     </a>    
                 </td>
 {% else %}
     {% if match.home.rank != '' or match.away.rank != '' %}
                 <td class="operand">
                     <a href="{{ path('_edit_matchrel_upd', { 'matchid': match.id }) }}">
-                    +
+                        <span class="glyphicon glyphicon-file"></span>
                     </a>    
                 </td>
     {% else %}
                 <td class="operand">
                     <a href="{{ path('_edit_matchrel_chg', { 'matchid': match.id }) }}">
-                    +
+                        <span class="glyphicon glyphicon-file"></span>
                     </a>    
                 </td>
     {% endif %}
                 <td class="operand"></td>
                 <td class="operand">
                     <a href="{{ path('_edit_qmatchrel_chg', { 'matchid': match.id }) }}">
-                    +
+                        <span class="glyphicon glyphicon-file"></span>
                     </a>    
                 </td>
                 <td class="operand"></td>
@@ -181,7 +181,7 @@
                 </td>
                 <td class="operand">
                     <a href="{{ path('_edit_match_add', { 'groupid': group.id }) }}">
-                    +
+                        <span class="glyphicon glyphicon-file"></span>
                     </a>    
                 </td>
                 <td colspan="6"></td>

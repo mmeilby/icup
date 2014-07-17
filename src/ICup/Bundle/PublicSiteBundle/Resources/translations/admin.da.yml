@@ -123,6 +123,9 @@ FORM:
     CAPTION: Grupper og puljer
     NOCATEGORY: Tilføj ny gruppe
     NOGROUP: Tilføj ny pulje
+    BUTTON:
+      WIPE: Ryd alle kampe
+      QWIPE: Ryd slutrunde kampe
   CATEGORY:
     DEFAULT: Vælg...
     NONAME: Et gruppenavn skal angives.
@@ -207,6 +210,8 @@ FORM:
     CAPTION: Klubliste på tværs af alle turneringer
     LEGEND: Klubber sorteret efter land
     NOCLUB: Tilføj ny klub
+    BUTTON:
+      WIPE: Ryd alle hold
   CLUB: 
     DEFAULT: Vælg...
     NONAME: Et klubnavn skal angives.
@@ -237,11 +242,12 @@ FORM:
       DEL: Fortryd slet
       SEL: Fortryd tilknytning
   NEWCLUB:
+    TITLE: Tilføj ny klub
     CAPTION: Resultat af søgning
-    TITLE: Tilmelding af klub og hold kan ske med en aktiv profil. Log ind med dit brugernavn hvis du har en profil. Ellers opret en ny profil.
+    PROMPT: Tilmelding af klub og hold kan ske med en aktiv profil. Log ind med dit brugernavn hvis du har en profil. Ellers opret en ny profil.
     LEGEND: Klubber
     NOCLUBS: Ingen klubber passer til det søgte
-    MORECLUBS: Mange klubber passer til det søgte (et udvalg er vist her) - fortsæt indtastning eller vælg en af klubberne
+    MORECLUBS: Mange klubber passer til det søgte (et udvalg er vist her) - fortsæt indtastning eller vælg en af klubberne.
     INFO: Hvis du vil vælge en klub der står i listen, skal du klikke på klubbens navn.
   LISTUSERS:
     TITLE: Vedligehold brugere
@@ -292,6 +298,10 @@ FORM:
       ADD: Fortryd oprettelse
       CHG: Fortryd ændringer
       DEL: Fortryd slet
+  MATCHIMPORTUNRES:
+    TITLE: Påsæt hold til slutrunde
+  QMATCHIMPORT:
+    TITLE: Indlæs kampplan til slutrunde
   MATCHIMPORT: 
     NODATE: En kampdato skal angives
     BADDATE: Den angivne kampdato er ikke gyldig

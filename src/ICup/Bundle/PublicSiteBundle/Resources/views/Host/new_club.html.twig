@@ -3,32 +3,34 @@
 {% trans_default_domain "admin" %}
 
 {% block adminbody %}
-<div style="width: 70%; float: left;">
-    <h1 class="category">{% trans %}FORM.ADMIN{% endtrans %}</h1>
+<div class="col-lg-8">
+    <div class="panel panel-success">
+        <div class="panel-heading"><b>{{ 'FORM.NEWCLUB.TITLE'|trans|upper }}</b></div>
+        <div class="panel-body lead">
 {% if tournament is defined and tournament %}
-    <p class="subcategory">{{ tournament.name }}</p>
+            {{ tournament.name }}
 {% endif %}
-    <p>{% trans %}FORM.NEWCLUB.TITLE{% endtrans %}</p>
-    {% if error is defined and error %}
-        <div class="form_error">{{ error.message }}</div>
-    {% endif %}
-    {{ form(form) }}
+        </div>
+        <div class="panel-body">
+        {{ form(form) }}
+        </div>
     </div>
-    <div class="searchresult" style="width: 25%; float: left;">
-        <table width="100%">
-            <caption>{% trans %}FORM.NEWCLUB.CAPTION{% endtrans %}</caption>
-            <thead>
-                <tr><td>{% trans %}FORM.NEWCLUB.LEGEND{% endtrans %}</td></tr>
-            </thead>
-            <tbody id="form_div">
-                <tr><td class="column">{% trans %}FORM.NEWCLUB.NOCLUBS{% endtrans %}</td></tr>    
-            </tboby>
-            <tfoot>
-                <tr><td></td></tr>
-            </tfoot>
-        </table>
-        <div class="searchresult_info">{% trans %}FORM.NEWCLUB.INFO{% endtrans %}</div>
+</div>
+<div class="col-lg-4">
+    <div class="panel panel-success">
+        <div class="panel-heading"><b>{{ 'FORM.NEWCLUB.CAPTION'|trans|upper }}</b></div>
+        <div class="panel-body">
+            <table>
+                <tbody id="form_div">
+                    <tr><td class="column">{% trans %}FORM.NEWCLUB.NOCLUBS{% endtrans %}</td></tr>    
+                </tboby>
+            </table>
+        </div>
+        <div id="form_footer" class="panel-footer lead">
+            {% trans %}FORM.NEWCLUB.INFO{% endtrans %}
+        </div>
     </div>
+</div>
 {% endblock %}
 
 {% block javascripts %}
@@ -44,11 +46,17 @@
                                'country': $('select#form_country').val()
                            },
                            function readClubs(data, status) {
-                               if (data.length > 0) {
+                                if (data.length > 0) {
                                     $('#form_div').html(buildTable(data));
                                 }
                                 else {
                                     $('#form_div').html(buildDefault());
+                                }
+                                if (data.length > 3) {
+                                    $('#form_footer').html("{% trans %}FORM.NEWCLUB.MORECLUBS{% endtrans %}<br />{% trans %}FORM.NEWCLUB.INFO{% endtrans %}");
+                                }
+                                else {
+                                    $('#form_footer').html("{% trans %}FORM.NEWCLUB.INFO{% endtrans %}");
                                 }
                            }
                          );
@@ -63,9 +71,6 @@
                          opt += "</td></tr>";
                        }
                    });
-           if (data.length > 3) {
-               opt += "<tr class='info'><td class='column'>{% trans %}FORM.NEWCLUB.MORECLUBS{% endtrans %}</td></tr>";
-           }
            return opt;
         };
         function buildDefault() {

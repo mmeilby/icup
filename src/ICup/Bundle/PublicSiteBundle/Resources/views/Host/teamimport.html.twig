@@ -5,9 +5,9 @@
 
 {% block adminbody %}
 <div class="panel panel-success">
-    <div class="panel-heading"><b>{{ ['FORM.TEAMIMPORT.TITLE.',action]|join|upper|trans|upper }}</b></div>
+    <div class="panel-heading"><b>{{ 'FORM.TEAMIMPORT.TITLE'|trans|upper }}</b></div>
     <div class="panel-body lead">
-        {{ ['FORM.TEAMIMPORT.PROMPT.',action]|join|upper|trans }}
+        {{ 'FORM.TEAMIMPORT.PROMPT'|trans }}
     </div>
     <div class="panel-body">
     {{ form(form) }}

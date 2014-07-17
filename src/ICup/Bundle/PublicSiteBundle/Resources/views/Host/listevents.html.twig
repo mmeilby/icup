@@ -41,17 +41,17 @@
                 </td>
                 <td class="operand">
                     <a href="{{ path('_edit_event_add', { 'tournamentid': tournament.id }) }}">
-                    +
+                        <span class="glyphicon glyphicon-file"></span>
                     </a>    
                 </td>
                 <td class="operand">
                     <a href="{{ path('_edit_event_chg', { 'eventid': event.id }) }}">
-                    E
+                        <span class="glyphicon glyphicon-edit"></span>
                     </a>    
                 </td>
                 <td class="operand">
                     <a href="{{ path('_edit_event_del', { 'eventid': event.id }) }}">
-                    -
+                        <span class="glyphicon glyphicon-remove"></span>
                     </a>    
                 </td>
             </tr>
@@ -65,13 +65,11 @@
                 </td>
                 <td class="operand">
                     <a href="{{ path('_edit_event_add', { 'tournamentid': tournament.id }) }}">
-                    +
+                        <span class="glyphicon glyphicon-file"></span>
                     </a>    
                 </td>
-                <td>
-                </td>
-                <td>
-                </td>
+                <td></td>
+                <td></td>
             </tr>
 {% endif %}
         </tboby>

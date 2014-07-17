@@ -123,6 +123,9 @@ FORM:
     CAPTION: Categories and groups
     NOCATEGORY: Add new category
     NOGROUP: Add new group
+    BUTTON:
+      WIPE: Wipe all matches
+      QWIPE: Wipe elimination matches
   CATEGORY:
     DEFAULT: Please select...
     NONAME: The category must be given a name.
@@ -207,6 +210,8 @@ FORM:
     CAPTION: List of clubs by all tournaments
     LEGEND: Clubs sorted by country
     NOCLUB: Add new club
+    BUTTON:
+      WIPE: Wipe all teams
   CLUB: 
     DEFAULT: Please select...
     NONAME: The club must be given a name.
@@ -237,12 +242,13 @@ FORM:
       DEL: Cancel
       SEL: Cancel assignment
   NEWCLUB:
+    TITLE: Add new club
     CAPTION: Search results
-    TITLE: Assign new club using an active profile. Log in with your user name if you got a profile. Otherwise register a new profile for free.
+    PROMPT: Assign new club using an active profile. Log in with your user name if you got a profile. Otherwise register a new profile for free.
     LEGEND: Clubs
     NOCLUBS: No clubs matches the pattern
     MORECLUBS: There are clubs not shown here that match the pattern. Select one from the list or continue narrow the search.
-    INFO: If you want to choose a club from the list then click on the name of the club
+    INFO: If you want to choose a club from the list then click on the name of the club.
   LISTUSERS:
     TITLE: User administration
     CAPTION: Users
@@ -292,6 +298,10 @@ FORM:
       ADD: Cancel
       CHG: Cancel changes
       DEL: Cancel
+  MATCHIMPORTUNRES:
+    TITLE: Assign teams for elimination round
+  QMATCHIMPORT:
+    TITLE: Import match plan for elimination round
   MATCHIMPORT: 
     NODATE: Match schedule is required
     BADDATE: The match schedule is not a valid date

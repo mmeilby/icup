@@ -8,6 +8,7 @@
         <a href="{{ path('_edit_host_list') }}">
             {{ host.name|upper }} - {{ tournament.name|upper }}
         </a>
+        <br />
         <a href="{{ path('_edit_category_list', {'tournamentid': tournament.id }) }}">
             {% trans from 'tournament' %}CATEGORY{% endtrans %} {{ category.name }}<br />
             {{ ['GENDER.',
@@ -15,18 +16,14 @@
                 category.classification]|join|transchoice(category.age, { '%age%': category.age },'tournament') }}
         </a>
     </div>
-    <div style="float:left;margin-right: 5px;">
+</div>
 {% if grouplist|length > 0 %}
-{% for group in grouplist %}
-    {% if selectedgroup.id == group.group.id %}
+    {% for group in grouplist %}
+        {% if selectedgroup.id == group.group.id %}
+<div class="col-md-6">
+    <div class="panel panel-default">
+        <div class="panel-heading"><b>{% trans from 'tournament' %}GROUP{% endtrans %} {{ group.group.name }}</b></div>
         <table class="table table-striped">
-            <caption>{% trans from 'tournament' %}GROUP{% endtrans %} {{ group.group.name }}</caption>
-            <thead>
-                <tr>
-                    <td class="flag"></td>
-                    <td class="team">{% trans from 'tournament' %}TEAM{% endtrans %}</td>
-                </tr>
-            </thead>
             <tboby>
         {% for team in group.teams %}
                 <tr>
@@ -36,44 +33,35 @@
         {% endfor %}
             </tboby>
         </table>
-    {% else %}
-        <div class="caption">
-            <a href="{{ path('_host_assign_select_group', { 'groupid': group.group.id }) }}">
-                {% trans from 'tournament' %}GROUP{% endtrans %} {{ group.group.name }}
-            </a>
-        </div>
-    {% endif %}
-{% endfor %}
+    </div>
+</div>
+        {% endif %}
+    {% endfor %}
 {% else %}
+<div class="col-md-6">
+    <div class="panel panel-default">
+        <div class="panel-heading"><b>{{ 'FORM.LISTCATEGORIES.TITLE'|trans|upper }}</b></div>
+        <div class="panel-body lead">
+            {% trans %}FORM.LISTGROUPS.NOGROUP{% endtrans %}
+        </div>
         <table class="table table-striped">
-            <caption>{% trans %}FORM.LISTGROUPS.NOGROUP{% endtrans %}</caption>
-            <thead>
-                <tr>
-                    <td class="flag"></td>
-                    <td class="team">{% trans from 'tournament' %}TEAM{% endtrans %}</td>
-                </tr>
-            </thead>
             <tboby>
                 <tr>
-                    <td colspan="2">
+                    <td>
                         <a href="{{ path('_edit_group_add', { 'categoryid': category.id }) }}">
-                        {% trans %}FORM.LISTCATEGORIES.NOGROUP{% endtrans %}
+                            {% trans %}FORM.LISTCATEGORIES.NOGROUP{% endtrans %}
                         </a>
                     </td>
                 </tr>
             </tboby>
         </table>
-{% endif %}
+    </div>
 </div>
-<div style="float:left;">
+{% endif %}
+<div class="col-md-6">
+    <div class="panel panel-default">
+        <div class="panel-heading"><b>{{ 'FORM.LISTGROUPS.UNASSIGNED'|trans|upper }}</b></div>
         <table class="table table-striped">
-            <caption>{% trans %}FORM.LISTGROUPS.UNASSIGNED{% endtrans %}</caption>
-            <thead>
-                <tr>
-                    <td class="flag"></td>
-                    <td class="team">{% trans from 'tournament' %}TEAM{% endtrans %}</td>
-                </tr>
-            </thead>
             <tboby>
     {% for team in unassigned %}
                 <tr>
@@ -90,6 +78,20 @@
             </tboby>
         </table>
     </div>
-    <div style="clear:both;"></div>
 </div>
+{% for group in grouplist %}
+    {% if selectedgroup.id != group.group.id %}
+<div class="col-md-6">
+    <div class="panel panel-warning">
+        <div class="panel-heading">
+            <a href="{{ path('_host_assign_select_group', { 'groupid': group.group.id }) }}">
+                <b>
+                    {% trans from 'tournament' %}GROUP{% endtrans %} {{ group.group.name }}
+                </b>
+            </a>
+        </div>
+    </div>
+</div>
+    {% endif %}
+{% endfor %}
 {% endblock %}

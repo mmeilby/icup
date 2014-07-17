@@ -52,13 +52,13 @@
                 </td>
                 <td class="operand">
                     <a href="{{ path('_club_enroll_add_admin', { 'categoryid': femalecategorylist[i].id, 'clubid': club.id }) }}">
-                    +
+                        <span class="glyphicon glyphicon-plus-sign"></span>
                     </a>    
                 </td>
                 <td class="operand">
             {% if enrolled[femalecategorylist[i].id] is defined %}
                     <a href="{{ path('_club_enroll_del_admin', { 'categoryid': femalecategorylist[i].id, 'clubid': club.id }) }}">
-                    -
+                        <span class="glyphicon glyphicon-minus-sign"></span>
                     </a>    
             {% endif %}
                 </td>
@@ -83,13 +83,13 @@
                 </td>
                 <td class="operand">
                     <a href="{{ path('_club_enroll_add_admin', { 'categoryid': malecategorylist[i].id, 'clubid': club.id }) }}">
-                    +
+                        <span class="glyphicon glyphicon-plus-sign"></span>
                     </a>    
                 </td>
                 <td class="operand">
             {% if enrolled[malecategorylist[i].id] is defined %}
                     <a href="{{ path('_club_enroll_del_admin', { 'categoryid': malecategorylist[i].id, 'clubid': club.id }) }}">
-                    -
+                        <span class="glyphicon glyphicon-minus-sign"></span>
                     </a>    
             {% endif %}
                 </td>

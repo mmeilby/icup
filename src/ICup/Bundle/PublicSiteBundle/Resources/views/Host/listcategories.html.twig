@@ -5,9 +5,21 @@
 <div class="panel panel-success">
     <div class="panel-heading"><b>{{ 'FORM.LISTCATEGORIES.TITLE'|trans|upper }}</b></div>
     <div class="panel-body lead">
+        <div class="col-lg-9">
         <a href="{{ path('_edit_host_list') }}">{{ host.name|upper }}</a><br />
         {{ tournament.name }}<br />
         {% trans %}FORM.LISTCATEGORIES.CAPTION{% endtrans %}
+        </div>
+        <div class="col-lg-3">
+{% if is_granted('ROLE_ADMIN') %}
+            <a href="{{ path('_admin_wipe_matches', {'tournamentid': tournament.id }) }}" class="btn btn-danger">
+                {% trans %}FORM.LISTCATEGORIES.BUTTON.WIPE{% endtrans %}
+            </a>
+            <a href="{{ path('_admin_wipe_qmatches', {'tournamentid': tournament.id }) }}" class="btn btn-danger">
+                {% trans %}FORM.LISTCATEGORIES.BUTTON.QWIPE{% endtrans %}
+            </a>
+{% endif %}    
+        </div>
     </div>
     <table class="table table-striped">
         <tboby>
@@ -24,37 +36,37 @@
                 </td>
                 <td class="operand">
                     <a href="{{ path('_edit_category_add', { 'tournamentid': tournament.id }) }}">
-                    +
+                        <span class="glyphicon glyphicon-file" title="{% trans %}FORM.CATEGORY.TITLE.ADD{% endtrans %}"></span>
                     </a>    
                 </td>
                 <td class="operand">
                     <a href="{{ path('_edit_category_chg', { 'categoryid': category.id }) }}">
-                    E
+                        <span class="glyphicon glyphicon-edit" title="{% trans %}FORM.CATEGORY.TITLE.CHG{% endtrans %}"></span>
                     </a>    
                 </td>
                 <td class="operand">
                     <a href="{{ path('_edit_category_del', { 'categoryid': category.id }) }}">
-                    -
+                        <span class="glyphicon glyphicon-remove" title="{% trans %}FORM.CATEGORY.TITLE.DEL{% endtrans %}"></span>
                     </a>    
                 </td>
                 <td class="operand">
                     <a href="{{ path('_host_list_groups', { 'categoryid': category.id }) }}">
-                    A
+                        <span class="glyphicon glyphicon-tasks" title="{% trans %}FORM.LISTGROUPS.TITLE{% endtrans %}"></span>
                     </a>    
                 </td>
                 <td class="operand">
                     <a href="{{ path('_edit_import_match', { 'tournamentid': tournament.id }) }}">
-                    M
+                        <span class="glyphicon glyphicon-download-alt" title="{% trans %}FORM.MATCHIMPORT.TITLE{% endtrans %}"></span>
                     </a>    
                 </td>
                 <td class="operand">
                     <a href="{{ path('_edit_import_qmatch', { 'tournamentid': tournament.id }) }}">
-                    Q
+                        <span class="glyphicon glyphicon-import" title="{% trans %}FORM.QMATCHIMPORT.TITLE{% endtrans %}"></span>
                     </a>    
                 </td>
                 <td class="operand">
                     <a href="{{ path('_edit_import_match_unres', { 'tournamentid': tournament.id }) }}">
-                    U
+                        <span class="glyphicon glyphicon-download" title="{% trans %}FORM.MATCHIMPORTUNRES.TITLE{% endtrans %}"></span>
                     </a>    
                 </td>
             </tr>
@@ -65,23 +77,23 @@
                 <td><a href="{{ path('_edit_group_chg', { 'groupid': group.id }) }}">{% trans from "tournament" %}GROUP{% endtrans %} {{ group.name }}</a></td>
                 <td class="operand">
                     <a href="{{ path('_edit_group_add', { 'categoryid': category.id }) }}">
-                    +
+                        <span class="glyphicon glyphicon-file" title="{% trans %}FORM.GROUP.TITLE.ADD{% endtrans %}"></span>
                     </a>    
                 </td>
                 <td class="operand">
                     <a href="{{ path('_edit_group_chg', { 'groupid': group.id }) }}">
-                    E
+                        <span class="glyphicon glyphicon-edit" title="{% trans %}FORM.GROUP.TITLE.CHG{% endtrans %}"></span>
                     </a>    
                 </td>
                 <td class="operand">
                     <a href="{{ path('_edit_group_del', { 'groupid': group.id }) }}">
-                    -
+                        <span class="glyphicon glyphicon-remove" title="{% trans %}FORM.GROUP.TITLE.DEL{% endtrans %}"></span>
                     </a>    
                 </td>
                 <td class="operand"></td>
                 <td class="operand">
                     <a href="{{ path('_edit_group_list_matches', { 'groupid': group.id }) }}">
-                    M
+                        <span class="glyphicon glyphicon-download-alt" title="{% trans %}FORM.LISTMATCHES.TITLE{% endtrans %}"></span>
                     </a>    
                 </td>
                 <td class="operand"></td>
@@ -94,7 +106,7 @@
                 <td><a href="{{ path('_edit_group_add', { 'categoryid': category.id }) }}">{{'FORM.LISTCATEGORIES.NOGROUP'|trans|upper}}</a></td>
                 <td class="operand">
                     <a href="{{ path('_edit_group_add', { 'categoryid': category.id }) }}">
-                    +
+                        <span class="glyphicon glyphicon-file" title="{% trans %}FORM.GROUP.TITLE.ADD{% endtrans %}"></span>
                     </a>    
                 </td>
                 <td></td>
@@ -115,7 +127,7 @@
                 </td>
                 <td class="operand">
                     <a href="{{ path('_edit_category_add', { 'tournamentid': tournament.id }) }}">
-                    +
+                        <span class="glyphicon glyphicon-file" title="{% trans %}FORM.CATEGORY.TITLE.ADD{% endtrans %}"></span>
                     </a>    
                 </td>
                 <td></td>
@@ -128,10 +140,5 @@
 {% endif %}
         </tboby>
     </table>
-{% if is_granted('ROLE_ADMIN') %}
-    <a href="{{ path('_admin_wipe_matches', {'tournamentid': tournament.id }) }}">W</a>
-    &nbsp;
-    <a href="{{ path('_admin_wipe_qmatches', {'tournamentid': tournament.id }) }}">Q</a>
-{% endif %}    
 </div>
 {% endblock %}

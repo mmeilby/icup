@@ -28,7 +28,6 @@
 
 {% block button_row %}
 {% spaceless %}
-    <span class="form_button">
     {% if form.vars.id=='form_cancel' %}
         {{ form_widget(form, { 'attr': {'class': 'btn btn-default'}}) }}
     {% elseif form.vars.id=='form_opt1' %}
@@ -38,7 +37,6 @@
     {% else %}
         {{ form_widget(form, { 'attr': {'class': 'btn btn-primary'}}) }}
     {% endif %}
-    </span>
 {% endspaceless %}
 {% endblock button_row %}
 
@@ -49,12 +47,12 @@
         {{ form_row(child) }}
         {% endif %}
     {% endfor %}
-    <p class="form_button">
+    <div class="btn-group">
     {% for child in form %}
         {% if child.vars.block_prefixes[0] == 'button' %}
         {{ form_row(child) }}
         {% endif %}
     {% endfor %}
-    </p>
+    </div>
 {% endspaceless %}
 {% endblock form_rows %}

@@ -1,0 +1,52 @@
+/*
+    Form setup
+*/
+DIV.new_user {
+    font-size: 12pt;
+    margin-top: 90px;
+    padding: 10px;
+    border-radius: 5px;
+    -moz-border-radius: 5px;
+    -webkit-border-radius: 5px;
+    color: #454545;
+    background-color: #5cb85c;
+    background-image: -o-linear-gradient(bottom, #5cb85c 5%, white 150%);
+    background-image: -moz-linear-gradient(bottom, #5cb85c 5%, white 150%);
+    background-image: -webkit-gradient(linear, left bottom, left top, color-stop(0.05, #5cb85c), color-stop(1.50, white));
+    background-image: -webkit-linear-gradient(bottom, #5cb85c 5%, white 150%);
+    background-image: -ms-linear-gradient(bottom, #5cb85c 5%, white 150%);
+    background-image: linear-gradient(bottom, #5cb85c 5%, white 150%);    
+}
+DIV.infobox {
+    font-size: 12pt;
+    margin-top: 90px;
+    padding: 10px;
+    border-radius: 5px;
+    -moz-border-radius: 5px;
+    -webkit-border-radius: 5px;
+    color: #454545;
+    background-color: #5bc0de;
+    background-image: -o-linear-gradient(bottom, #5bc0de 5%, white 150%);
+    background-image: -moz-linear-gradient(bottom, #5bc0de 5%, white 150%);
+    background-image: -webkit-gradient(linear, left bottom, left top, color-stop(0.05, #5bc0de), color-stop(1.50, white));
+    background-image: -webkit-linear-gradient(bottom, #5bc0de 5%, white 150%);
+    background-image: -ms-linear-gradient(bottom, #5bc0de 5%, white 150%);
+    background-image: linear-gradient(bottom, #5bc0de 5%, white 150%);    
+}
+DIV.searchresult {
+    font-size: 12pt;
+    margin-top: 90px;
+    color: #454545;
+}
+IMG.flag {
+    position: relative;
+    top: -3px;
+}
+DIV.rank {
+    font-size: 10px;
+    font-weight: bold;    
+    color: #313131;
+}
+INPUT.match {
+    width: 40px;
+}

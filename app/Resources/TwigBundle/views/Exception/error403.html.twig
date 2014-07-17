@@ -1,11 +1,6 @@
-{% extends "ICupPublicSiteBundle:Masters:standard.html.twig" %}
+{% extends "ICupPublicSiteBundle:Masters:edit.html.twig" %}
+{% import 'ICupPublicSiteBundle:Masters:error.html.twig' as error %}
 
-{% trans_default_domain "errors" %}
-
-{% block body %}
-<h1 class="category">{% trans %}ERROR.NOACCESS.TITLE{% endtrans %}</h1>
-<p class="subcategory">
-    {% trans %}ERROR.NOACCESS.SOLUTION{% endtrans %}
-</p>
-<p><a href="{{ path('_icup') }}">{% trans %}ERROR.CLICKFORMORE{% endtrans %}</a></p>
+{% block adminbody %}
+    {{ error.showerror('NOACCESS') }}
 {% endblock %}

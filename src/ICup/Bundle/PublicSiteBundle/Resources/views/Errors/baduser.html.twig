@@ -1,17 +1,6 @@
-{% extends "ICupPublicSiteBundle:Masters:standard.html.twig" %}
+{% extends "ICupPublicSiteBundle:Masters:edit.html.twig" %}
+{% import 'ICupPublicSiteBundle:Masters:error.html.twig' as error %}
 
-{% trans_default_domain "errors" %}
-
-{% block body %}
-<h1 class="category">{% trans %}ERROR.INVALIDUSER.TITLE{% endtrans %}</h1>
-<p class="subcategory">
-    {% trans %}ERROR.INVALIDUSER.SOLUTION{% endtrans %}
-</p>
-<p>
-{% if redirect is defined %}
-    <a href="{{ redirect }}">{% trans %}ERROR.CLICKFORMORE{% endtrans %}</a>
-{% else %}
-    <a href="{{ path('_icup') }}">{% trans %}ERROR.CLICKFORMORE{% endtrans %}</a>
-{% endif %}
-</p>
+{% block adminbody %}
+    {{ error.showerror('INVALIDUSER') }}
 {% endblock %}

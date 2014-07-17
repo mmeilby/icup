@@ -12,9 +12,6 @@
     <h1 class="category">{% trans %}FORM.TITLE{% endtrans %}</h1>
 {% endif %}
 <p>{% trans %}FORM.NEWUSER.TITLE{% endtrans %}</p>
-{% if error is defined and error %}
-    <div class="form_error">{{ error.message }}</div>
-{% endif %}
 {{ form(form) }}
 </div>
 <div class="infobox" style="width: 25%; float: left;">

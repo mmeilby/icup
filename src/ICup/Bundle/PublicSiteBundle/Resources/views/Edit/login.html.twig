@@ -13,9 +13,6 @@
         {{ 'FORM.LOGIN.PROMPT'|trans }}
     </div>
     <div class="panel-body">
-{% if error is defined and error %}
-        <div class="form_error">{{ error.message }}</div>
-{% endif %}
         {{ form(form) }}
     </div>
 </div>

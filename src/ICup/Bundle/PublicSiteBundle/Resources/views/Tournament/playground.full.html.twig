@@ -65,6 +65,7 @@
 <p class="lead">
     {{ playground.name }}
 </p>
+{% if matchlist|length > 0 %}
 <div class="hidden-xs">
     <table class="table table-striped">
         <thead>
@@ -82,10 +83,9 @@
             </tr>
         </thead>
         <tboby>
-{% if matchlist|length > 0 %}
     {% for matches in matchlist %}
-            <tr class="markup">
-                <td class="date_solo" colspan="10">
+            <tr>
+                <td class="markup" colspan="10">
                     {{ 'FORMAT.LONGDATE'|transchoice(matches[0].schedule|date('j'), {
                             '%week%': ['WEEK.',matches[0].schedule|date('D')|upper]|join|trans([],'messages')|capitalize,
                             '%day%': matches[0].schedule|date('j'),
@@ -106,13 +106,6 @@
             </tr>
         {% endfor %}
     {% endfor %}
-{% else %}
-            <tr>
-                <td class="title" colspan="10">
-                    <p>{% trans %}TOURNAMENTNOTREADY{% endtrans %}</p>
-                </td>
-            </tr>
-{% endif %}
         </tboby>
     </table>
 </div>
@@ -130,10 +123,9 @@
             </tr>
         </thead>
         <tboby>
-{% if matchlist|length > 0 %}
     {% for matches in matchlist %}
-            <tr class="markup">
-                <td class="date_solo" colspan="5">
+            <tr>
+                <td class="markup" colspan="5">
                     {{ 'FORMAT.LONGDATE'|transchoice(matches[0].schedule|date('j'), {
                             '%week%': ['WEEK.',matches[0].schedule|date('D')|upper]|join|trans([],'messages')|capitalize,
                             '%day%': matches[0].schedule|date('j'),
@@ -154,14 +146,16 @@
             </tr>
         {% endfor %}
     {% endfor %}
-{% else %}
-            <tr>
-                <td class="title" colspan="5">
-                    <p>{% trans %}TOURNAMENTNOTREADY{% endtrans %}</p>
-                </td>
-            </tr>
-{% endif %}
         </tboby>
     </table>
 </div>
+{% else %}
+<div class="panel panel-warning">
+    <div class="panel-heading">
+        <b>
+            {% trans %}TOURNAMENTNOTREADY{% endtrans %}
+        </b>
+    </div>
+</div>
+{% endif %}
 {% endblock %}

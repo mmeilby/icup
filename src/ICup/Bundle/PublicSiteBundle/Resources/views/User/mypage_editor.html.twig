@@ -21,17 +21,17 @@
     <table class="table table-striped">
         <thead>
             <tr>
-                <td class="tournament">{% trans %}FORM.MYPAGE.SECTION.EDITOR.LEGEND.NAME{% endtrans %}</td>
-                <td class="edition">{% trans %}FORM.MYPAGE.SECTION.EDITOR.LEGEND.EDITION{% endtrans %}</td>
-                <td class="description">{% trans %}FORM.MYPAGE.SECTION.EDITOR.LEGEND.DESCRIPTION{% endtrans %}</td>
-                <td class="status">{% trans %}FORM.MYPAGE.SECTION.EDITOR.LEGEND.STATUS{% endtrans %}</td>
+                <td>{% trans %}FORM.MYPAGE.SECTION.EDITOR.LEGEND.NAME{% endtrans %}</td>
+                <td>{% trans %}FORM.MYPAGE.SECTION.EDITOR.LEGEND.EDITION{% endtrans %}</td>
+                <td>{% trans %}FORM.MYPAGE.SECTION.EDITOR.LEGEND.DESCRIPTION{% endtrans %}</td>
+                <td>{% trans %}FORM.MYPAGE.SECTION.EDITOR.LEGEND.STATUS{% endtrans %}</td>
             </tr>
         </thead>
         <tboby>
     {% if tournaments|length > 0 %}
         {% for tournament in tournaments %}
-            <tr class="{{ cycle(['even','odd'],loop.index) }}">
-                <td class="tournament">
+            <tr>
+                <td>
         {% if currentuser.role == 4 %}
                     <a href="{{ path('_edit_tournament_chg', { 'tournamentid': tournament.id }) }}">
                     {{ tournament.name }}
@@ -40,15 +40,15 @@
                     {{ tournament.name }}
         {% endif %}
                 </td>
-                <td class="edition">
+                <td>
                     <a href="{{ path('_tournament_overview', { 'tournament': tournament.key }) }}">
                     {{ tournament.edition }}
                     </a>
                 </td>
-                <td class="description">
+                <td>
                     {{ tournament.description }}
                 </td>
-                <td class="status">
+                <td>
         {% if currentuser.role == 4 %}
                     <a href="{{ path('_edit_event_list', { 'tournamentid': tournament.id }) }}">
                     <b>{{ ['FORM.MYPAGE.SECTION.EDITOR.STATUS.',tstat[tournament.id]]|join|trans }}</b>
@@ -60,7 +60,7 @@
             </tr>
         {% endfor %}
     {% else %}
-            <tr class="even">
+            <tr>
                 <td colspan="4">
         {% if currentuser.role == 4 %}
                     <a href="{{ path('_edit_tournament_add', { 'hostid': host.id }) }}">

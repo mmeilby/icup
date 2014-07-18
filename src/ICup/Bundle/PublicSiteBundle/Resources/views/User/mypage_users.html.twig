@@ -27,7 +27,7 @@
         <tboby>
     {% for user in users %}
             <tr>
-                <td class="user">
+                <td>
         {% if currentuser != user %}
                     {{ user.name|upper }}
         {% else %}
@@ -56,7 +56,7 @@
 {% endif %}
         {% endif %}
                 </td>
-                <td class="role">
+                <td>
 {% if user.status == 3 %}
                     {% trans %}FORM.MYPAGE.PROSPECT{% endtrans %}
 {% else %}

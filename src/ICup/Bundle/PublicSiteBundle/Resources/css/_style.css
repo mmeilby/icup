@@ -4,10 +4,21 @@
 THEAD TR TD {
     font-weight: bold;
 }
-TR.markup {
-    background: white;
-    border-bottom: 1px solid #D1D1D1;
+TD.justify-right {
+    text-align: right;
 }
+TD.justify-center {
+    text-align: center;
+}
+TD.bold {
+    font-weight: bold;
+}
+TD.markup {
+    font-weight: bold;
+    font-size: 125%;
+}
+
+
 TD.flag {
     width: 20px;
 }
@@ -63,12 +74,6 @@ TD.match {
 TD.category {
     width: 300px;
 }
-TD.date_solo {
-    font-weight: bold;
-    font-size: 18px;
-    padding-top: 5px;
-    padding-left: 5px;
-}
 TD.column {
     vertical-align: top;
 }
@@ -89,16 +94,6 @@ TD.teams {
     min-width: 250px;
     padding: 5px;
 }
-TD.sites {
-    font-weight: bold;
-    font-size: 18px;
-    padding-top: 5px;
-    padding-left: 5px;
-    width: 10px;
-}
-TD.playgrounds {
-    width: 400px;
-}
 TD.classification {
     padding: 5px;
     font-weight: bold;
@@ -109,46 +104,12 @@ TD.categories {
     padding: 5px;
     width: 250px;
 }
-TD.placement {
-    font-weight: bold;
-    font-size: 18px;
-    padding-top: 5px;
-}
-TD.host_solo {
-    font-weight: bold;
-    font-size: 18px;
-    padding-top: 5px;
-    padding-left: 5px;
-}
-TD.title {
-    font-weight: bold;
-    font-size: 18px;
-    padding-top: 5px;
-    padding-left: 5px;
-}
 TD.indent {
     width: 30px;
-}
-TD.role {
-    padding-left: 5px;
-    width: 200px;
 }
 TD.operand {
     width: 20px;
     text-align: center;
-}
-TD.statistics {
-    width: 100px;
-    text-align: right;
-}
-TD.tournament {
-    padding-left: 5px;
-    width: 250px;
-}
-TD.edition {
-}
-TD.description {
-    width: 350px;
 }
 TR.info {
     border-top: 1px solid black;

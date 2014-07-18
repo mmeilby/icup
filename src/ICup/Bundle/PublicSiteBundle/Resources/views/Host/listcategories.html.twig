@@ -26,7 +26,7 @@
 {% if categories|length > 0 %}
     {% for category in categories %}
             <tr>
-                <td class="host_solo" colspan="2">
+                <td class="markup" colspan="2">
                     <a href="{{ path('_edit_category_chg', { 'categoryid': category.id }) }}">
                     {% trans from "tournament" %}CATEGORY{% endtrans %} {{ category.name|upper }} -
                     {{ ['GENDER.',
@@ -120,7 +120,7 @@
     {% endfor %}
 {% else %}
             <tr>
-                <td class="host_solo" colspan="2">
+                <td class="markup" colspan="2">
                     <a href="{{ path('_edit_category_add', { 'tournamentid': tournament.id }) }}">
                     {{'FORM.LISTCATEGORIES.NOCATEGORY'|trans|upper}}
                     </a>    

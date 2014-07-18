@@ -11,7 +11,7 @@
         <tboby>
 {% for host in hosts %}
             <tr>
-                <td class="host_solo" colspan="2">
+                <td class="markup" colspan="2">
                     <a href="{{ path('_edit_host_chg', { 'hostid': host.id }) }}">
                     {{ host.name|upper }}
                     </a>    

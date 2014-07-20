@@ -98,6 +98,7 @@ FORM:
         MOSTGOALS: Flest mål scoret af et hold i en enkelt kamp
         MOSTTROPHYS: Flest vundne pokaler af et enkelt land
         DAYS: Dage turneringen afvikles over
+        MOSTTROPHYSBYCLUB: Flest vundne pokaler af en klub
       GROUP:
         TEAMS: Lidt statistik om holdene der deltager
         TOURNAMENT: Fakta om turneringen

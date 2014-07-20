@@ -83,12 +83,12 @@ FORM:
         FIGURE: Numéros
       KEY:
         COUNTRIES: Pays participants
-        CLUBS: Equipes incrites
-        TEAMS: Equipes inscrites à la phase préliminaire
-        FEMALETEAMS: Equipes Féminines
-        MALETEAMS: Equipes Masculines
-        ADULTTEAMS: Equipes +de 18
-        CHILDTEAMS: Equipes -de 18
+        CLUBS: Équipes incrites
+        TEAMS: Équipes inscrites à la phase préliminaire
+        FEMALETEAMS: Équipes Féminines
+        MALETEAMS: Équipes Masculines
+        ADULTTEAMS: Équipes +de 18
+        CHILDTEAMS: Équipes -de 18
         CATEGORIES: Categories
         GROUPS:	Poules de la phase éliminatoire
         SITES: Sites utilisés pendant le tournoi
@@ -98,6 +98,7 @@ FORM:
         MOSTGOALS: Plus grand nombre de buts marqués par une équipe pendant un match
         MOSTTROPHYS: Plus grand nombre de victoires par pays
         DAYS: Durée du tournoi
+        MOSTTROPHYSBYCLUB: Plus grand nombre de victoires par une équipe
       GROUP:
         TEAMS: Infos sur les équipes
         TOURNAMENT: Infos sur le tournoi

@@ -27,34 +27,82 @@ class StatisticsController extends Controller
 
         $statmap['adultteams'] = $statmap['teams'] - $statmap['childteams'];
         $statmap['maleteams'] = $statmap['teams'] - $statmap['femaleteams'];
+
+        $famemap = array();
         
-        $statmap['mosttrophys'] = $this->getMostTrophys($tournament->getId());
+        $mostTrophysClub = $this->getMostTrophysClub($tournament->getId());
+        $statmap['mosttrophysbyclub'] = $mostTrophysClub['trophys'];
+        if ($mostTrophysClub['country'] != '') {
+            $famemap['mosttrophysbyclub']['country'] = $mostTrophysClub['country'];
+            $famemap['mosttrophysbyclub']['desc'] = $mostTrophysClub['club'];
+        }
+        $mostTrophys = $this->getMostTrophys($tournament->getId());
+        $statmap['mosttrophys'] = $mostTrophys['trophys'];
+        if ($mostTrophys['country'] != '') {
+            $famemap['mosttrophys']['country'] = $mostTrophys['country'];
+            $famemap['mosttrophys']['desc'] = '';
+        }
+        $mostGoals = $this->getMostGoals($tournament->getId());
+        $statmap['mostgoals'] = $mostGoals['goals'];
+        if ($mostGoals['country'] != '') {
+            $famemap['mostgoals']['country'] = $mostGoals['country'];
+            $famemap['mostgoals']['desc'] = $mostGoals['club'];
+        }
         
         return array(
             'tournament' => $tournament,
             'statistics' => $statmap,
+            'halloffame' => $famemap,
             'order' => $this->getOrder());
     }
 
     private function getMostTrophys($tournamentid) {
-        $teams = $this->get('tmnt')->getStatTeams($tournamentid);
-        $countries = array();
-        foreach ($teams as $teamStat) {
-            if (key_exists($teamStat->country, $countries)) {
-                $countries[$teamStat->country]--;
-            }
-            else {
-                $countries[$teamStat->country] = -1;
-            }
+        $trophies = $this->get('tmnt')->getTrophysByCountry($tournamentid);
+        if (count($trophies) > 0) {
+            $trophys = $trophies[0]['trophys'];
+            $country = $trophies[0]['country'];
         }
-        sort($countries);
-        return count($countries) > 0 ? -$countries[0] : '';
+        else {
+            $trophys = '';
+            $country = '';
+        }
+        return array('trophys' => $trophys, 'country' => $country);
+    }
+    
+    private function getMostTrophysClub($tournamentid) {
+        $trophies = $this->get('tmnt')->getTrophysByClub($tournamentid);
+        if (count($trophies) > 0) {
+            $trophys = $trophies[0]['trophys'];
+            $club = $trophies[0]['club'];
+            $country = $trophies[0]['country'];
+        }
+        else {
+            $trophys = '';
+            $club = '';
+            $country = '';
+        }
+        return array('trophys' => $trophys, 'country' => $country, 'club' => $club);
+    }
+    
+    private function getMostGoals($tournamentid) {
+        $trophies = $this->get('tmnt')->getMostGoals($tournamentid);
+        if (count($trophies) > 0) {
+            $goals = $trophies[0]['mostgoals'];
+            $club = $trophies[0]['club'];
+            $country = $trophies[0]['country'];
+        }
+        else {
+            $goals = '';
+            $club = '';
+            $country = '';
+        }
+        return array('goals' => $goals, 'country' => $country, 'club' => $club);
     }
     
     private function getOrder() {
         return array(
                 'teams' => array('countries','clubs','teams','femaleteams','maleteams','adultteams','childteams'),
                 'tournament' => array('categories','groups','sites','playgrounds','matches','days'),
-                'top' => array('goals','mostgoals','mosttrophys'));
+                'top' => array('goals','mostgoals','mosttrophys','mosttrophysbyclub'));
     }
 }

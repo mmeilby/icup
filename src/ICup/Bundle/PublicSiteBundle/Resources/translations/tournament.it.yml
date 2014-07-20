@@ -98,6 +98,7 @@ FORM:
         MOSTGOALS: Maggior numero di reti segnate per squadra in una gara
         MOSTTROPHYS: Maggior numero di trofei vinti per paese
         DAYS: Lunghezza del torneo in giorni
+        MOSTTROPHYSBYCLUB: Maggior numero di trofei vinti per club
       GROUP:
         TEAMS: Dati sulle squadre
         TOURNAMENT: Dati del torneo

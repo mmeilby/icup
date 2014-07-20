@@ -253,7 +253,6 @@ class TournamentSupport
         $qb = $this->em->createQuery(
                 "select count(distinct m.id) as matches, ".
                         "sum(r.score) as goals, ".
-                        "max(r.score) as mostgoals, ".
                         "count(distinct m.date) as days ".
                 "from ".$this->entity->getRepositoryPath('Category')." cat, ".
                         $this->entity->getRepositoryPath('Group')." g, ".
@@ -300,6 +299,80 @@ class TournamentSupport
             $teamsList[] = $teamInfo;
         }
         return $teamsList;
+    }
+        
+    public function getTrophysByCountry($tournamentid) {
+        $qb = $this->em->createQuery(
+                "select c.country, count(t.id) as trophys ".
+                "from ".$this->entity->getRepositoryPath('Category')." cat, ".
+                        $this->entity->getRepositoryPath('Group')." g, ".
+                        $this->entity->getRepositoryPath('GroupOrder')." o, ".
+                        $this->entity->getRepositoryPath('Team')." t, ".
+                        $this->entity->getRepositoryPath('Club')." c ".
+                "where cat.pid=:tournament and ".
+                        "g.pid=cat.id and ".
+                        "g.classification>=9 and ".
+                        "o.pid=g.id and ".
+                        "o.cid=t.id and ".
+                        "t.pid=c.id and ".
+                        "t.id in (select r.cid ".
+                                 "from ".$this->entity->getRepositoryPath('MatchRelation')." r, ".
+                                         $this->entity->getRepositoryPath('Match')." m ".
+                                 "where r.pid=m.id and ".
+                                       "m.pid=g.id and ".
+                                       "r.scorevalid='Y') ".
+                "group by c.country ".
+                "order by trophys desc");
+        $qb->setParameter('tournament', $tournamentid);
+        return $qb->getResult();
+    }
+        
+    public function getTrophysByClub($tournamentid) {
+        $qb = $this->em->createQuery(
+                "select c.name as club, c.country, count(t.id) as trophys ".
+                "from ".$this->entity->getRepositoryPath('Category')." cat, ".
+                        $this->entity->getRepositoryPath('Group')." g, ".
+                        $this->entity->getRepositoryPath('GroupOrder')." o, ".
+                        $this->entity->getRepositoryPath('Team')." t, ".
+                        $this->entity->getRepositoryPath('Club')." c ".
+                "where cat.pid=:tournament and ".
+                        "g.pid=cat.id and ".
+                        "g.classification>=9 and ".
+                        "o.pid=g.id and ".
+                        "o.cid=t.id and ".
+                        "t.pid=c.id and ".
+                        "t.id in (select r.cid ".
+                                 "from ".$this->entity->getRepositoryPath('MatchRelation')." r, ".
+                                         $this->entity->getRepositoryPath('Match')." m ".
+                                 "where r.pid=m.id and ".
+                                       "m.pid=g.id and ".
+                                       "r.scorevalid='Y') ".
+                "group by c.name ".
+                "order by trophys desc");
+        $qb->setParameter('tournament', $tournamentid);
+        return $qb->getResult();
+    }
+        
+    public function getMostGoals($tournamentid) {
+        $qb = $this->em->createQuery(
+                "select c.name as club, c.country, max(r.score) as mostgoals ".
+                "from ".$this->entity->getRepositoryPath('Category')." cat, ".
+                        $this->entity->getRepositoryPath('Group')." g, ".
+                        $this->entity->getRepositoryPath('MatchRelation')." r, ".
+                        $this->entity->getRepositoryPath('Match')." m, ".
+                        $this->entity->getRepositoryPath('Team')." t, ".
+                        $this->entity->getRepositoryPath('Club')." c ".
+                "where cat.pid=:tournament and ".
+                        "r.pid=m.id and ".
+                        "m.pid=g.id and ".
+                        "g.pid=cat.id and ".
+                        "t.pid=c.id and ".
+                        "t.id=r.cid and ".
+                        "r.scorevalid='Y' ".
+                "group by c.name ".
+                "order by mostgoals desc");
+        $qb->setParameter('tournament', $tournamentid);
+        return $qb->getResult();
     }
         
     public function wipeTeams($tournamentid) {

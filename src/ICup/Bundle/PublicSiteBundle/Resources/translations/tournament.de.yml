@@ -102,6 +102,7 @@ FORM:
             MOSTGOALS: Die meisten Tore eines Teams in einem Spiel erzielt 
             MOSTTROPHYS: Die meisten Trophäen von einem Land gewonnen 
             DAYS: Die Länge des Turniers in Tagen 
+            MOSTTROPHYSBYCLUB: Die meisten Trophäen von einem Verein gewonnen
         GROUP: 
             TEAMS: Fakten über die Teams 
             TOURNAMENT: Fakten über das Turnier 

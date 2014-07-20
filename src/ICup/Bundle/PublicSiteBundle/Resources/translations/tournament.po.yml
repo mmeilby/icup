@@ -7,7 +7,7 @@ CATEGORIES: Kategorie
 PLAYGROUNDS: Boiska
 CLUBS: Drużyny Uczestniczące
 TOWNANDNO: Miasto i Boisko
-sCLUBSBYCOUNTRY: Drużyny według kraju
+CLUBSBYCOUNTRY: Drużyny według kraju
 TEAMSBYCLUB: Drużyny Według Nazw Klubów
 WINNERS: Zwycięscy
 WINNING_COUNTRIES: Zwycięscy Według krajów
@@ -98,6 +98,7 @@ FORM:
         MOSTGOALS: Plus grand nombre de buts marqués par une équipe pendant un match
         MOSTTROPHYS: Plus grand nombre de victoires par pays
         DAYS: Długość turnieju w dniach
+        MOSTTROPHYSBYCLUB: Plus grand nombre de victoires par une équipe
       GROUP:
         TEAMS: Drużyny
         TOURNAMENT: Dane drużyn

@@ -20,7 +20,23 @@
                 <tbody>
     {% for key in grouporder %}
                     <tr>
-                        <td>{{ ['FORM.STATISTICS.KEY.',key]|join()|upper|trans }}</td>
+                        <td>
+                            {{ ['FORM.STATISTICS.KEY.',key]|join()|upper|trans }}
+        {% if key in halloffame|keys %}
+                            <br />
+            {% if halloffame[key]['desc'] != '' %}
+                            {{ halloffame[key]['desc'] }}
+            {% endif %}
+            {% if halloffame[key]['country'] in countries|keys %}
+                            <img src="{{ imagepath }}/flags/{{ countries[halloffame[key]['country']].flag }}" 
+                                 alt="{{ halloffame[key]['country']|trans({},'lang') }}" 
+                                 title="{{ halloffame[key]['country']|trans({},'lang') }}"
+                                 class="flag"
+                                 >
+                            {{ halloffame[key]['country']|trans({},'lang') }}
+            {% endif %}
+        {% endif %}
+                        </td>
                         <td class="text-right">{{ statistics[key] }}</td>
                     </tr>
     {% endfor %}

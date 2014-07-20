@@ -22,7 +22,7 @@
                 <td colspan="4">{% trans from "tournament" %}MALE{% endtrans %}</td>
             </tr>
         </thead>
-        <tboby>
+        <tbody>
 {% for categorykey in classifications %}
     {% set femalekey = ['F',categorykey]|join %}
     {% set malekey = ['M',categorykey]|join %}
@@ -32,10 +32,10 @@
     {% for i in 0..size-1 %}
             <tr>
         {% if i == 0 %}
-                <td class="classification" rowspan="{{ size }}">{{ categorykey }}</td>
+            <td rowspan="{{ size }}"><strong>{{ categorykey }}</strong></td>
         {% endif %}
         {% if femalecategorylist[i] is defined %}
-                <td class="categories">
+                <td>
                     <a href="{{ path('_showcategory', { 'categoryid': femalecategorylist[i].id }) }}">
                         <b>{% trans from "tournament" %}CATEGORY{% endtrans %} {{ femalecategorylist[i].name }}</b>
                     </a><br />
@@ -43,19 +43,19 @@
                             femalecategorylist[i].gender,
                             femalecategorylist[i].classification]|join|transchoice(femalecategorylist[i].age, { '%age%': femalecategorylist[i].age },'tournament') }}
                 </td>
-                <td>
+                <td class="narrow-col">
             {% if enrolled[femalecategorylist[i].id] is defined %}
                     {{ enrolled[femalecategorylist[i].id]|length }}
             {% else %}
                     -
             {% endif %}
                 </td>
-                <td class="operand">
+                <td class="narrow-col">
                     <a href="{{ path('_club_enroll_add_admin', { 'categoryid': femalecategorylist[i].id, 'clubid': club.id }) }}">
                         <span class="glyphicon glyphicon-plus-sign"></span>
                     </a>    
                 </td>
-                <td class="operand">
+                <td class="narrow-col">
             {% if enrolled[femalecategorylist[i].id] is defined %}
                     <a href="{{ path('_club_enroll_del_admin', { 'categoryid': femalecategorylist[i].id, 'clubid': club.id }) }}">
                         <span class="glyphicon glyphicon-minus-sign"></span>
@@ -63,10 +63,10 @@
             {% endif %}
                 </td>
         {% else %}
-                <td colspan="4" class="categories"></td>
+                <td colspan="4"></td>
         {% endif %}
         {% if malecategorylist[i] is defined %}
-                <td class="categories">
+                <td>
                     <a href="{{ path('_showcategory', { 'categoryid': malecategorylist[i].id }) }}">
                         <b>{% trans from "tournament" %}CATEGORY{% endtrans %} {{ malecategorylist[i].name }}</b>
                     </a><br />
@@ -74,19 +74,19 @@
                             malecategorylist[i].gender,
                             malecategorylist[i].classification]|join|transchoice(malecategorylist[i].age, { '%age%': malecategorylist[i].age },'tournament') }}
                 </td>
-                <td>
+                <td class="narrow-col">
             {% if enrolled[malecategorylist[i].id] is defined %}
                     {{ enrolled[malecategorylist[i].id]|length }}
             {% else %}
                     -
             {% endif %}
                 </td>
-                <td class="operand">
+                <td class="narrow-col">
                     <a href="{{ path('_club_enroll_add_admin', { 'categoryid': malecategorylist[i].id, 'clubid': club.id }) }}">
                         <span class="glyphicon glyphicon-plus-sign"></span>
                     </a>    
                 </td>
-                <td class="operand">
+                <td class="narrow-col">
             {% if enrolled[malecategorylist[i].id] is defined %}
                     <a href="{{ path('_club_enroll_del_admin', { 'categoryid': malecategorylist[i].id, 'clubid': club.id }) }}">
                         <span class="glyphicon glyphicon-minus-sign"></span>
@@ -94,12 +94,12 @@
             {% endif %}
                 </td>
         {% else %}
-                <td colspan="4" class="categories"></td>
+                <td colspan="4"></td>
         {% endif %}
             </tr>
     {% endfor %}
 {% endfor %}
-        </tboby>
+        </tbody>
     </table>
 </div>
 {% endblock %}

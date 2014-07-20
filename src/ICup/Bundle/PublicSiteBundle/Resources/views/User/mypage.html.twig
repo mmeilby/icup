@@ -38,40 +38,35 @@
         {% endif %}
     {% endif %}
     {% if tournaments|length > 0 %}
-    <table>
+    <table class="table table-striped">
         <caption>{% trans %}FORM.MYPAGE.TOURNAMENTS.CAPTION{% endtrans %}</caption>
         <thead>
             <tr>
                 <td>{% trans %}FORM.MYPAGE.TOURNAMENTS.TOURNAMENT{% endtrans %}</td>
-                <td class="operand"></td>
-                <td class="operand">{% trans %}FORM.MYPAGE.TOURNAMENTS.TEAMS{% endtrans %}</td>
+                <td class="narrow-col"></td>
+                <td class="narrow-col">{% trans %}FORM.MYPAGE.TOURNAMENTS.TEAMS{% endtrans %}</td>
             </tr>
         </thead>
-        <tboby>
+        <tbody>
         {% for tmnt in tournaments %}
             {% set tournament = tmnt.tournament %}
-            <tr class="{{ cycle(['even','odd'],loop.index) }}">
-                <td class="clubname">
+            <tr>
+                <td>
                     <a href="{{ path('_club_enroll_list', { 'tournament': tournament.id }) }}">{{ tournament.name|upper }}</a>
                 </td>
-                <td class="operand">
+                <td class="narrow-col">
                     <a href="{{ path('_club_enroll_list', { 'tournament': tournament.id }) }}">
                     E
                     </a>    
                 </td>
-                <td class="score">
+                <td class="narrow-col">
     {% if tmnt.enrolled > 0 %}
                     {{ tmnt.enrolled }}
     {% endif %}                
                 </td>
             </tr>
         {% endfor %}
-        </tboby>
-        <tfoot>
-            <tr>
-                <td colspan="5"></td>
-            </tr>
-        </tfoot>
+        </tbody>
     </table>
     {% endif %}
 {% endif %}

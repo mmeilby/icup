@@ -22,13 +22,13 @@
     <thead>
         <tr>
             <td></td>
-            <td class="winner_first winners_country">{% trans %}FIRST{% endtrans %}</td>
-            <td class="winner_second winners_country">{% trans %}SECOND{% endtrans %}</td>
-            <td class="winner_third winners_country">{% trans %}THIRD{% endtrans %}</td>
-            <td class="winner_third winners_country">{% trans %}FORTH{% endtrans %}</td>
+            <td class="winner_first text-center">{% trans %}FIRST{% endtrans %}</td>
+            <td class="winner_second text-center">{% trans %}SECOND{% endtrans %}</td>
+            <td class="winner_third text-center">{% trans %}THIRD{% endtrans %}</td>
+            <td class="winner_forth text-center">{% trans %}FORTH{% endtrans %}</td>
         </tr>
     </thead>
-    <tboby>
+    <tbody>
     {% for ranks in championlist %}
         {% set country = ranks.country %}
         <tr>
@@ -40,21 +40,21 @@
                     </tr>
                 </table>
             </td>
-            <td class="winners_country">
+            <td class="text-center">
                 {{ ranks.first|length }}
             </td>
-            <td class="winners_country">
+            <td class="text-center">
                 {{ ranks.second|length }}
             </td>
-            <td class="winners_country">
+            <td class="text-center">
                 {{ ranks.third|length }}
             </td>
-            <td class="winners_country">
+            <td class="text-center">
                 {{ ranks.forth|length }}
             </td>
         </tr>
     {% endfor %}
-    </tboby>
+    </tbody>
 </table>
 {% else %}
 <div class="panel panel-warning">

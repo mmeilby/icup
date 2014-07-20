@@ -14,17 +14,17 @@
                 <thead>
                     <tr>
                         <td></td>
-                        <td class="justify-right">{% trans %}FORM.STATISTICS.LEGEND.FIGURE{% endtrans %}</td>
+                        <td class="text-right">{% trans %}FORM.STATISTICS.LEGEND.FIGURE{% endtrans %}</td>
                     </tr>
                 </thead>
-                <tboby>
+                <tbody>
     {% for key in grouporder %}
                     <tr>
                         <td>{{ ['FORM.STATISTICS.KEY.',key]|join()|upper|trans }}</td>
-                        <td class="justify-right">{{ statistics[key] }}</td>
+                        <td class="text-right">{{ statistics[key] }}</td>
                     </tr>
     {% endfor %}
-                </tboby>
+                </tbody>
             </table>
         </div>
     </div>

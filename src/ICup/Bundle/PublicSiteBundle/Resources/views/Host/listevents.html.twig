@@ -14,42 +14,44 @@
     <table class="table table-striped">
         <thead>
             <tr>
-                <td class="date">{% trans %}FORM.EVENT.DATE{% endtrans %}</td>
-                <td class="event">{% trans %}FORM.EVENT.EVENT{% endtrans %}</td>
-                <td class="operand"></td>
-                <td class="operand"></td>
-                <td class="operand"></td>
+                <td>{% trans %}FORM.EVENT.DATE{% endtrans %}</td>
+                <td>{% trans %}FORM.EVENT.EVENT{% endtrans %}</td>
+                <td class="narrow-col"></td>
+                <td class="narrow-col"></td>
+                <td class="narrow-col"></td>
             </tr>
         </thead>
-        <tboby>
+        <tbody>
 {% if eventlist|length > 0 %}
     {% for event in eventlist %}
             <tr>
-                <td class="date">
+                <td>
                     <a href="{{ path('_edit_event_chg', { 'eventid': event.id }) }}">
-                    {{ 'FORMAT.LONGDATE'|transchoice(event.schedule|date('j'), {
-                            '%week%': ['WEEK.',event.schedule|date('D')|upper]|join|trans([],'messages')|capitalize,
-                            '%day%': event.schedule|date('j'),
-                            '%month%': ['MONTH.',event.schedule|date('M')|upper]|join|trans([],'messages'),
-                            '%year%': event.schedule|date('Y')}, 'messages') }}
+                        <strong>
+                            {{ 'FORMAT.LONGDATE'|transchoice(event.schedule|date('j'), {
+                                    '%week%': ['WEEK.',event.schedule|date('D')|upper]|join|trans([],'messages')|capitalize,
+                                    '%day%': event.schedule|date('j'),
+                                    '%month%': ['MONTH.',event.schedule|date('M')|upper]|join|trans([],'messages'),
+                                    '%year%': event.schedule|date('Y')}, 'messages') }}
+                        </strong>
                     </a>    
                 </td>
-                <td class="event">
+                <td>
                     <a href="{{ path('_edit_event_chg', { 'eventid': event.id }) }}">
                     {{ ['FORM.EVENT.EVENTS.',event.event]|join|trans }}
                     </a>    
                 </td>
-                <td class="operand">
+                <td class="narrow-col">
                     <a href="{{ path('_edit_event_add', { 'tournamentid': tournament.id }) }}">
                         <span class="glyphicon glyphicon-file"></span>
                     </a>    
                 </td>
-                <td class="operand">
+                <td class="narrow-col">
                     <a href="{{ path('_edit_event_chg', { 'eventid': event.id }) }}">
                         <span class="glyphicon glyphicon-edit"></span>
                     </a>    
                 </td>
-                <td class="operand">
+                <td class="narrow-col">
                     <a href="{{ path('_edit_event_del', { 'eventid': event.id }) }}">
                         <span class="glyphicon glyphicon-remove"></span>
                     </a>    
@@ -58,12 +60,12 @@
     {% endfor %}
 {% else %}
             <tr>
-                <td class="markup" colspan="2">
+                <td class="lead" colspan="2">
                     <a href="{{ path('_edit_event_add', { 'tournamentid': tournament.id }) }}">
                     {{'FORM.LISTEVENTS.NOEVENT'|trans|upper}}
                     </a>    
                 </td>
-                <td class="operand">
+                <td class="narrow-col">
                     <a href="{{ path('_edit_event_add', { 'tournamentid': tournament.id }) }}">
                         <span class="glyphicon glyphicon-file"></span>
                     </a>    
@@ -72,7 +74,7 @@
                 <td></td>
             </tr>
 {% endif %}
-        </tboby>
+        </tbody>
     </table>
 </div>
 {% endblock %}

@@ -5,6 +5,7 @@
 <p class="lead">
     {% trans %}TEAMSBYCLUB{% endtrans %}
 </p>
+{% if teams|length > 0 %}
 <div class="panel panel-default">
     <div class="panel-heading">
         <a href="{{ path('_tournament_clubs', { 'tournament': tournament.key }) }}">
@@ -16,33 +17,38 @@
             {{ club.country|trans({},'lang') }} - {{ club.name }}
         </a>
     </div>
-        <div class="panel-body">
-            <div class="row">
-        {% if teams|length > 0 %}
+    <div class="panel-body">
+        <div class="row">
             {% for catid,category in teams %}
-                <div class="col-sm-4">
-                    <p class="lead">
-                        <a href="{{ path('_showcategory', { 'categoryid': categories[catid].id }) }}">
-                            <b>{% trans %}CATEGORY{% endtrans %} {{ categories[catid].name }}</b>
-                        </a><br />
-                        {{ ['GENDER.',
-                            categories[catid].gender,
-                            categories[catid].classification]|join|transchoice(categories[catid].age, { '%age%': categories[catid].age },'tournament') }}
-                    </p>
-                    <div class="list-group">
+            <div class="col-sm-4">
+                <p class="lead">
+                    <a href="{{ path('_showcategory', { 'categoryid': categories[catid].id }) }}">
+                        <b>{% trans %}CATEGORY{% endtrans %} {{ categories[catid].name }}</b>
+                    </a><br />
+                    {{ ['GENDER.',
+                        categories[catid].gender,
+                        categories[catid].classification]|join|transchoice(categories[catid].age, { '%age%': categories[catid].age },'tournament') }}
+                </p>
+                <div class="list-group">
                 {% for team in category %}
-                        <a class="list-group-item" href="{{ path('_showteam', { 'teamid': team.id, 'groupid': team.groupid }) }}">
-                            <h4 class="list-group-item-heading">{% trans %}GROUP{% endtrans %} {{ team.grp }}</h4>
-                            <p class="list-group-item-text">{{ team.name }}</p>
-                        </a>
+                    <a class="list-group-item" href="{{ path('_showteam', { 'teamid': team.id, 'groupid': team.groupid }) }}">
+                        <h4 class="list-group-item-heading">{% trans %}GROUP{% endtrans %} {{ team.grp }}</h4>
+                        <p class="list-group-item-text">{{ team.name }}</p>
+                    </a>
                 {% endfor %}
-                    </div>
                 </div>
-            {% endfor %}
-        {% else %}
-                <h2 class="category">{% trans %}TOURNAMENTNOTREADY{% endtrans %}</h2>
-        {% endif %}
             </div>
+            {% endfor %}
         </div>
+    </div>
 </div>
+{% else %}
+<div class="panel panel-warning">
+    <div class="panel-heading">
+        <b>
+            {% trans %}TOURNAMENTNOTREADY{% endtrans %}
+        </b>
+    </div>
+</div>
+{% endif %}
 {% endblock %}

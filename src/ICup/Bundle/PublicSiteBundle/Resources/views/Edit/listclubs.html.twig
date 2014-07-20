@@ -7,84 +7,74 @@
     <div class="panel-body lead">
         {% trans %}FORM.LISTCLUBS.CAPTION{% endtrans %}
     </div>
-    <table class="table table-striped">
-        <thead>
-            <tr>
-                <td colspan="2">{% trans %}FORM.LISTCLUBS.LEGEND{% endtrans %}</td>
-            </tr>
-        </thead>
-        <tboby>
-{% if teams|length > 0 %}            
-            <tr>
+    <div class="row">
+{% if teams|length > 0 %}
 {% for column in teams %}
-                <td class="column">
+        <div class="col-sm-6">
     {% for countrylist in column %}
     {% for country,teamlist in countrylist %}
-    <table>
-        <tr>
-            <td class="country country_spacer">
-                        <img src="{{ imagepath }}/flags/{{ countries[country].flag }}" 
-                             alt="{{ country|trans({},'lang') }}" 
-                             title="{{ country|trans({},'lang') }}"
-                             class="flag"
-                        >
-                        <b>{{ country|trans({},'lang') }}</b>
-            </td>
-            <td class="operand country_spacer">
-                <a href="{{ path('_edit_club_add', {'country': country }) }}">
-                    <span class="glyphicon glyphicon-file"></span>
-                </a>
-            </td>
-            <td class="operand"></td>
-            <td class="operand"></td>
-            <td class="operand"></td>
-        </tr>
-        {% for id,club in teamlist %}
-        <tr>
-            <td class="clubname">
-                        {{ club.name|upper }}
-            </td>
-            <td class="operand">
-                <a href="{{ path('_edit_club_add', {'country': country }) }}">
-                    <span class="glyphicon glyphicon-file"></span>
-                </a>
-            </td>
-            <td class="operand">
-                <a href="{{ path('_edit_club_chg', {'clubid': club.id }) }}">
-                    <span class="glyphicon glyphicon-edit"></span>
-                </a>
-            </td>
-            <td class="operand">
-                <a href="{{ path('_edit_club_del', {'clubid': club.id }) }}">
-                    <span class="glyphicon glyphicon-remove"></span>
-                </a>
-            </td>
-            <td class="operand">
-                <a href="{{ path('_edit_user_list', {'clubid': club.id }) }}">
-                    <span class="glyphicon glyphicon-user"></span>
-                </a><br />
-            </td>
-        </tr>
+            <div class="panel panel-default">
+                <div class="panel-heading">
+                    <img src="{{ imagepath }}/flags/{{ countries[country].flag }}"
+                         alt="{{ country|trans({},'lang') }}"
+                         title="{{ country|trans({},'lang') }}"
+                         class="flag"
+                    >
+                    <b>{{ country|trans({},'lang') }}</b>
+                </div>
+                <table class="table table-striped">
+            {% for id,club in teamlist %}
+                    <tr>
+                        <td>
+                            {{ club.name|upper }}
+                        </td>
+                        <td class="narrow-col">
+                            <a href="{{ path('_edit_club_add', {'country': country }) }}">
+                                <span class="glyphicon glyphicon-file"></span>
+                            </a>
+                        </td>
+                        <td class="narrow-col">
+                            <a href="{{ path('_edit_club_chg', {'clubid': club.id }) }}">
+                                <span class="glyphicon glyphicon-edit"></span>
+                            </a>
+                        </td>
+                        <td class="narrow-col">
+                            <a href="{{ path('_edit_club_del', {'clubid': club.id }) }}">
+                                <span class="glyphicon glyphicon-remove"></span>
+                            </a>
+                        </td>
+                        <td class="narrow-col">
+                            <a href="{{ path('_edit_user_list', {'clubid': club.id }) }}">
+                                <span class="glyphicon glyphicon-user"></span>
+                            </a><br />
+                        </td>
+                    </tr>
+            {% endfor %}
+                </table>
+            </div>
         {% endfor %}
-    </table>
+        {% endfor %}
+        </div>
     {% endfor %}
-    {% endfor %}
-                </td>
-{% endfor %}
-            </tr>
 {% else %}
-        <tr>
-            <td class="clubname">
+        <div class="panel panel-default">
+            <div class="panel-heading">
+                {{'FORM.LISTCLUBS.NOCLUB'|trans|upper}}
+            </div>
+            <table class="table table-striped">
+                <tr>
+                    <td>
                         <b><a href="{{ path('_edit_club_add') }}">{{'FORM.LISTCLUBS.NOCLUB'|trans|upper}}</a></b>
-            </td>
-            <td class="operand">
-                <a href="{{ path('_edit_club_add') }}">
-                    <span class="glyphicon glyphicon-file"></span>
-                </a>
-            </td>
-        </tr>
+                    </td>
+                    <td class="narrow-col">
+                        <a href="{{ path('_edit_club_add') }}">
+                            <span class="glyphicon glyphicon-file"></span>
+                        </a>
+                    </td>
+                </tr>
+            </table>
+        </div>
 {% endif %}
-        </tboby>
-    </table>
+    </div>
 </div>
 {% endblock %}

@@ -5,24 +5,30 @@
 <p class="lead">
     {% trans %}PLAYGROUNDS{% endtrans %}
 </p>
-<div class="row">
 {% if playgrounds|length > 0 %}
+<div class="row">
     {% for site in playgrounds|keys %}
-        <div class="col-sm-4">
-            <div class="panel panel-default">
-                <div class="panel-heading"><b>{{ site }}</b></div>
-                <div class="list-group">
+    <div class="col-sm-4">
+        <div class="panel panel-default">
+            <div class="panel-heading"><b>{{ site }}</b></div>
+            <div class="list-group">
         {% for id,name in playgrounds[site] %}
-                    <a class="list-group-item" href="{{ path('_showplayground_full', { 'playgroundid': id }) }}">
-                        <p class="list-group-item-text">{{ name }}</p>
-                    </a>
+                <a class="list-group-item" href="{{ path('_showplayground_full', { 'playgroundid': id }) }}">
+                    <p class="list-group-item-text">{{ name }}</p>
+                </a>
         {% endfor %}
-                </div>
             </div>
         </div>
+    </div>
     {% endfor %}
-{% else %}
-<h2 class="category">{% trans %}TOURNAMENTNOTREADY{% endtrans %}</h2>
-{% endif %}
 </div>
+{% else %}
+<div class="panel panel-warning">
+    <div class="panel-heading">
+        <b>
+            {% trans %}TOURNAMENTNOTREADY{% endtrans %}
+        </b>
+    </div>
+</div>
+{% endif %}
 {% endblock %}

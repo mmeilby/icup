@@ -6,7 +6,7 @@
 <p class="subtitle">{% trans %}FORM.LISTENROLLED.TITLE{% endtrans %}</p>
 <p class="subtitle">{{ tournament.name }}</p>
 <p class="subtitle">{{ club.name }}</p>
-<table>
+<table class="table table-striped">
     <caption>{% trans %}FORM.LISTENROLLED.CAPTION{% endtrans %}</caption>
     <thead>
         <tr>
@@ -15,21 +15,20 @@
             <td colspan="4">{% trans from "messages" %}MALE{% endtrans %}</td>
         </tr>
     </thead>
-    <tboby>
+    <tbody>
 {% for categorykey in classifications %}
-    {% set colorclass = cycle(['even','odd'],loop.index) %}
     {% set femalekey = ['F',categorykey]|join %}
     {% set malekey = ['M',categorykey]|join %}
     {% set femalecategorylist = femalekey in categories|keys ? categories[femalekey] : {} %}
     {% set malecategorylist = malekey in categories|keys ? categories[malekey] : {} %}
     {% set size = femalecategorylist|length > malecategorylist|length ? femalecategorylist|length : malecategorylist|length %}
     {% for i in 0..size-1 %}
-            <tr class="{{ colorclass }}">
+            <tr>
         {% if i == 0 %}
-                <td class="classification" rowspan="{{ size }}">{{ categorykey }}</td>
+            <td rowspan="{{ size }}"><strong>{{ categorykey }}</strong></td>
         {% endif %}
         {% if femalecategorylist[i] is defined %}
-                <td class="categories">
+                <td>
                     <a href="{{ path('_showcategory', { 'categoryid': femalecategorylist[i].id }) }}">
                         <b>{% trans from "messages" %}CATEGORY{% endtrans %} {{ femalecategorylist[i].name }}</b>
                     </a><br />
@@ -37,19 +36,19 @@
                             femalecategorylist[i].gender,
                             femalecategorylist[i].classification]|join|transchoice(femalecategorylist[i].age, { '%age%': femalecategorylist[i].age },'tournament') }}
                 </td>
-                <td>
+                <td class="narrow-col">
             {% if enrolled[femalecategorylist[i].id] is defined %}
                     {{ enrolled[femalecategorylist[i].id]|length }}
             {% else %}
                     -
             {% endif %}
                 </td>
-                <td class="operand">
+                <td class="narrow-col">
                     <a href="{{ path('_club_enroll_add', { 'categoryid': femalecategorylist[i].id }) }}">
                     +
                     </a>    
                 </td>
-                <td class="operand">
+                <td class="narrow-col">
             {% if enrolled[femalecategorylist[i].id] is defined %}
                     <a href="{{ path('_club_enroll_del', { 'categoryid': femalecategorylist[i].id }) }}">
                     -
@@ -57,10 +56,10 @@
             {% endif %}
                 </td>
         {% else %}
-                <td colspan="4" class="categories"></td>
+                <td colspan="4"></td>
         {% endif %}
         {% if malecategorylist[i] is defined %}
-                <td class="categories">
+                <td>
                     <a href="{{ path('_showcategory', { 'categoryid': malecategorylist[i].id }) }}">
                         <b>{% trans from "messages" %}CATEGORY{% endtrans %} {{ malecategorylist[i].name }}</b>
                     </a><br />
@@ -68,19 +67,19 @@
                             malecategorylist[i].gender,
                             malecategorylist[i].classification]|join|transchoice(malecategorylist[i].age, { '%age%': malecategorylist[i].age },'tournament') }}
                 </td>
-                <td>
+                <td class="narrow-col">
             {% if enrolled[malecategorylist[i].id] is defined %}
                     {{ enrolled[malecategorylist[i].id]|length }}
             {% else %}
                     -
             {% endif %}
                 </td>
-                <td class="operand">
+                <td class="narrow-col">
                     <a href="{{ path('_club_enroll_add', { 'categoryid': malecategorylist[i].id }) }}">
                     +
                     </a>    
                 </td>
-                <td class="operand">
+                <td class="narrow-col">
             {% if enrolled[malecategorylist[i].id] is defined %}
                     <a href="{{ path('_club_enroll_del', { 'categoryid': malecategorylist[i].id }) }}">
                     -
@@ -88,16 +87,11 @@
             {% endif %}
                 </td>
         {% else %}
-                <td colspan="4" class="categories"></td>
+                <td colspan="4"></td>
         {% endif %}
             </tr>
     {% endfor %}
 {% endfor %}
-    </tboby>
-    <tfoot>
-        <tr>
-            <td colspan="9"></td>
-        </tr>
-    </tfoot>
+    </tbody>
 </table>
 {% endblock %}

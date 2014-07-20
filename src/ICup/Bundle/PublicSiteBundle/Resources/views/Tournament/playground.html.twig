@@ -1,63 +1,8 @@
 {% extends "ICupPublicSiteBundle:Masters:standard.html.twig" %}
 {% trans_default_domain "tournament" %}
 
-{% import _self as formatter %}
+{% import 'ICupPublicSiteBundle:Masters:club.html.twig' as formatter %}
 
-{% macro club(team, context) %}
-    {% if team.id > 0 %}
-                <td class="flag">
-        {% if team.rank != '' %}
-                    <div class="rank">&nbsp;</div>
-        {% endif %}
-                    <img src="{{ context.imagepath }}/flags/{{ context.countries[team.country].flag }}"
-                         alt="{{ team.country|trans({},'lang') }}"
-                         title="{{ team.country|trans({},'lang') }}">
-                </td>
-                <td class="team">
-        {% if team.rank != '' %}
-                    <div class="rank">{{ team.rank }}</div>
-        {% endif %}
-                    <a href="{{ path('_showteam', { 'teamid': team.id,
-                                                    'groupid': context.group.id }) }}">{{ team.name }}</a>
-                </td>
-    {% else %}
-                <td class="flag"></td>
-                <td class="team">{{ team.rank }}</td>
-    {% endif %}
-{% endmacro %}
-        
-{% macro clubxs(hteam, ateam, context) %}
-    {% if hteam.id > 0 %}
-        {% if hteam.rank != '' %}
-            <div class="rank">{{ hteam.rank }}</div>
-        {% endif %}
-            <img src="{{ context.imagepath }}/flags/{{ context.countries[hteam.country].flag }}"
-                 alt="{{ hteam.country|trans({},'lang') }}"
-                 title="{{ hteam.country|trans({},'lang') }}"
-                 class="flag"
-                 >
-            <a href="{{ path('_showteam', { 'teamid': hteam.id,
-                                            'groupid': context.group.id }) }}">{{ hteam.name }}</a>
-    {% else %}
-            {{ hteam.rank }}
-    {% endif %}
-            <br />
-    {% if ateam.id > 0 %}
-        {% if ateam.rank != '' %}
-            <div class="rank">{{ ateam.rank }}</div>
-        {% endif %}
-            <img src="{{ context.imagepath }}/flags/{{ context.countries[ateam.country].flag }}"
-                 alt="{{ ateam.country|trans({},'lang') }}"
-                 title="{{ ateam.country|trans({},'lang') }}"
-                 class="flag"
-                 >
-            <a href="{{ path('_showteam', { 'teamid': ateam.id,
-                                            'groupid': context.group.id }) }}">{{ ateam.name }}</a>
-    {% else %}
-            {{ ateam.rank }}
-    {% endif %}
-{% endmacro %}
-        
 {% block body %}
 <p class="lead">
     {% trans %}RESULTS{% endtrans %} {{ tournament.edition }}
@@ -87,20 +32,20 @@
     <table class="table table-striped">
         <thead>
             <tr>
+                <td class="narrow-col"></td>
+                <td class="narrow-col">{% trans %}LEGEND.NO{% endtrans %}</td>
+                <td class="narrow-col">{% trans %}LEGEND.TIME{% endtrans %}</td>
                 <td class="flag"></td>
-                <td class="no">{% trans %}LEGEND.NO{% endtrans %}</td>
-                <td class="time">{% trans %}LEGEND.TIME{% endtrans %}</td>
+                <td>{% trans %}LEGEND.HOMETEAM{% endtrans %}</td>
                 <td class="flag"></td>
-                <td class="team">{% trans %}LEGEND.HOMETEAM{% endtrans %}</td>
-                <td class="flag"></td>
-                <td class="team">{% trans %}LEGEND.AWAYTEAM{% endtrans %}</td>
-                <td class="match">{% trans %}LEGEND.RESULT{% endtrans %}</td>
+                <td>{% trans %}LEGEND.AWAYTEAM{% endtrans %}</td>
+                <td class="narrow-col">{% trans %}LEGEND.RESULT{% endtrans %}</td>
             </tr>
         </thead>
-        <tboby>
+        <tbody>
     {% for matches in matchlist %}
             <tr>
-                <td class="markup" colspan="8">
+                <td class="lead" colspan="8">
                     {{ 'FORMAT.LONGDATE'|transchoice(matches[0].schedule|date('j'), {
                             '%week%': ['WEEK.',matches[0].schedule|date('D')|upper]|join|trans([],'messages')|capitalize,
                             '%day%': matches[0].schedule|date('j'),
@@ -110,32 +55,32 @@
             </tr>
         {% for match in matches %}
             <tr>
-                <td class="flag"></td>
-                <td class="no">{{ match.matchno }}</td>
-                <td class="time">{{ match.schedule|date('FORMAT.TIME'|trans([],'messages')) }}</td>
-                {{ formatter.club(match.home, _context) }}
-                {{ formatter.club(match.away, _context) }}
-                <td class="match">{{ match.home.score }}-{{ match.away.score }}</td>
+                <td class="narrow-col"></td>
+                <td class="narrow-col">{{ match.matchno }}</td>
+                <td class="narrow-col">{{ match.schedule|date('FORMAT.TIME'|trans([],'messages')) }}</td>
+                {{ formatter.club(match.home, group, _context) }}
+                {{ formatter.club(match.away, group, _context) }}
+                <td class="narrow-col text-nowrap">{{ match.home.score }}-{{ match.away.score }}</td>
             </tr>
         {% endfor %}
     {% endfor %}
-        </tboby>
+        </tbody>
     </table>
 </div>
 <div class="visible-xs-block">
     <table class="table table-striped">
         <thead>
             <tr>
-                <td class="no">{% trans %}LEGEND.NO{% endtrans %}</td>
-                <td class="time">{% trans %}LEGEND.TIME{% endtrans %}</td>
+                <td class="narrow-col">{% trans %}LEGEND.NO{% endtrans %}</td>
+                <td class="narrow-col">{% trans %}LEGEND.TIME{% endtrans %}</td>
                 <td>{% trans %}TEAM{% endtrans %}</td>
-                <td class="match">{% trans %}LEGEND.RESULT{% endtrans %}</td>
+                <td class="narrow-col">{% trans %}LEGEND.RESULT{% endtrans %}</td>
             </tr>
         </thead>
-        <tboby>
+        <tbody>
     {% for matches in matchlist %}
             <tr>
-                <td class="markup" colspan="4">
+                <td class="lead" colspan="4">
                     {{ 'FORMAT.LONGDATE'|transchoice(matches[0].schedule|date('j'), {
                             '%week%': ['WEEK.',matches[0].schedule|date('D')|upper]|join|trans([],'messages')|capitalize,
                             '%day%': matches[0].schedule|date('j'),
@@ -145,16 +90,16 @@
             </tr>
         {% for match in matches %}
             <tr>
-                <td class="no">{{ match.matchno }}</td>
-                <td class="time">{{ match.schedule|date('FORMAT.TIME'|trans([],'messages')) }}</td>
+                <td class="narrow-col">{{ match.matchno }}</td>
+                <td class="narrow-col">{{ match.schedule|date('FORMAT.TIME'|trans([],'messages')) }}</td>
                 <td>
-                {{ formatter.clubxs(match.home, match.away, _context) }}
+                {{ formatter.clubxs(match.home, match.away, group, _context) }}
                 </td>
-                <td class="match">{{ match.home.score }}-{{ match.away.score }}</td>
+                <td class="narrow-col text-nowrap">{{ match.home.score }}-{{ match.away.score }}</td>
             </tr>
         {% endfor %}
     {% endfor %}
-        </tboby>
+        </tbody>
     </table>
 </div>
 {% else %}

@@ -41,33 +41,39 @@
                 <thead>
                     <tr>
                         <td class="flag"></td>
-                        <td class="team">{% trans %}TEAM{% endtrans %}</td>
-                        <td class="matches">{% trans %}LEGEND.MATCHES{% endtrans %}</td>
-                        <td class="score">{% trans %}LEGEND.GOALS.WON{% endtrans %}</td>
-                        <td class="goals">{% trans %}LEGEND.GOALS.LOST{% endtrans %}</td>
-                        <td class="diff hidden-xs">{% trans %}LEGEND.GOALS.DIFF{% endtrans %}</td>
-                        <td class="points">{% trans %}LEGEND.POINTS{% endtrans %}</td>
+                        <td>{% trans %}TEAM{% endtrans %}</td>
+                        <td class="narrow-col">{% trans %}LEGEND.MATCHES{% endtrans %}</td>
+                        <td class="narrow-col">{% trans %}LEGEND.GOALS.WON{% endtrans %}</td>
+                        <td class="narrow-col">{% trans %}LEGEND.GOALS.LOST{% endtrans %}</td>
+                        <td class="narrow-col hidden-xs">{% trans %}LEGEND.GOALS.DIFF{% endtrans %}</td>
+                        <td class="narrow-col">{% trans %}LEGEND.POINTS{% endtrans %}</td>
                     </tr>
                 </thead>
-                <tboby>
+                <tbody>
     {% for team in group.teams %}
                     <tr>
                         <td class="flag"><img src="{{ imagepath }}/flags/{{ countries[team.country].flag }}" alt="{{ team.country|trans({},'lang') }}" title="{{ team.country|trans({},'lang') }}"></td>
-                        <td class="team"><a href="{{ path('_showteam', { 'teamid': team.id, 'groupid': group.group.id }) }}">{{ team.name }}</a></td>
-                        <td class="matches">{{ team.matches }}</td>
-                        <td class="score">{{ team.score }}</td>
-                        <td class="goals">{{ team.goals }}</td> 
-                        <td class="diff hidden-xs">{{ team.diff }}</td>
-                        <td class="points">{{ team.points }}</td>
+                        <td><a href="{{ path('_showteam', { 'teamid': team.id, 'groupid': group.group.id }) }}">{{ team.name }}</a></td>
+                        <td class="narrow-col">{{ team.matches }}</td>
+                        <td class="narrow-col">{{ team.score }}</td>
+                        <td class="narrow-col">{{ team.goals }}</td> 
+                        <td class="narrow-col hidden-xs">{{ team.diff }}</td>
+                        <td class="narrow-col">{{ team.points }}</td>
                     </tr>
     {% endfor %}
-                </tboby>
+                </tbody>
             </table>
         </div>
     </div>
 {% endfor %}
 </div>
 {% else %}
-<h2 class="category">{% trans %}TOURNAMENTNOTREADY{% endtrans %}</h2>
+<div class="panel panel-warning">
+    <div class="panel-heading">
+        <b>
+            {% trans %}TOURNAMENTNOTREADY{% endtrans %}
+        </b>
+    </div>
+</div>
 {% endif %}
 {% endblock %}

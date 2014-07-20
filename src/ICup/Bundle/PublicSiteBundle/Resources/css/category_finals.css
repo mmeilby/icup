@@ -1,8 +1,8 @@
 /*
  *  Category finals
  */
-TD.winner {
-    font-weight: bold;    
+TABLE.finals {
+    width: 340px;
 }
 TD.finals {
     border-top: 2px solid black;
@@ -35,5 +35,5 @@ TD.spacer {
     padding-top: 25px;
 }
 TD.filler {
-    padding-top: 60px;
+    padding-top: 75px;
 }

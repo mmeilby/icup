@@ -24,14 +24,14 @@
     <div class="panel panel-default">
         <div class="panel-heading"><b>{% trans from 'tournament' %}GROUP{% endtrans %} {{ group.group.name }}</b></div>
         <table class="table table-striped">
-            <tboby>
+            <tbody>
         {% for team in group.teams %}
                 <tr>
                     <td class="flag"><img src="{{ imagepath }}/flags/{{ countries[team.country].flag }}" alt="{{ team.country|trans({},'lang') }}" title="{{ team.country|trans({},'lang') }}"></td>
-                    <td class="team"><a href="{{ path('_host_assign_del', { 'teamid': team.id, 'groupid': group.group.id }) }}">{{ team.name }}</a></td>
+                    <td><a href="{{ path('_host_assign_del', { 'teamid': team.id, 'groupid': group.group.id }) }}">{{ team.name }}</a></td>
                 </tr>
         {% endfor %}
-            </tboby>
+            </tbody>
         </table>
     </div>
 </div>
@@ -45,7 +45,7 @@
             {% trans %}FORM.LISTGROUPS.NOGROUP{% endtrans %}
         </div>
         <table class="table table-striped">
-            <tboby>
+            <tbody>
                 <tr>
                     <td>
                         <a href="{{ path('_edit_group_add', { 'categoryid': category.id }) }}">
@@ -53,7 +53,7 @@
                         </a>
                     </td>
                 </tr>
-            </tboby>
+            </tbody>
         </table>
     </div>
 </div>
@@ -62,11 +62,11 @@
     <div class="panel panel-default">
         <div class="panel-heading"><b>{{ 'FORM.LISTGROUPS.UNASSIGNED'|trans|upper }}</b></div>
         <table class="table table-striped">
-            <tboby>
+            <tbody>
     {% for team in unassigned %}
                 <tr>
                     <td class="flag"><img src="{{ imagepath }}/flags/{{ countries[team.country].flag }}" alt="{{ team.country|trans({},'lang') }}" title="{{ team.country|trans({},'lang') }}"></td>
-                    <td class="team">
+                    <td>
         {% if not selectedgroup is null %}
                         <a href="{{ path('_host_assign_add', { 'teamid': team.id, 'groupid': selectedgroup.id }) }}">{{ team.name }}</a>
         {% else %}
@@ -75,7 +75,7 @@
                     </td>
                 </tr>
     {% endfor %}
-            </tboby>
+            </tbody>
         </table>
     </div>
 </div>

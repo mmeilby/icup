@@ -38,15 +38,3 @@ DIV.searchresult {
     margin-top: 90px;
     color: #454545;
 }
-IMG.flag {
-    position: relative;
-    top: -3px;
-}
-DIV.rank {
-    font-size: 10px;
-    font-weight: bold;    
-    color: #313131;
-}
-INPUT.match {
-    width: 40px;
-}

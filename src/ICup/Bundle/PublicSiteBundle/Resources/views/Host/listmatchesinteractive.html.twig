@@ -1,35 +1,13 @@
 {% extends "ICupPublicSiteBundle:Masters:edit.html.twig" %}
 {% trans_default_domain "tournament" %}
 
-{% import _self as formatter %}
+{% import _self as this %}
+{% import 'ICupPublicSiteBundle:Masters:club.html.twig' as formatter %}
 
-{% macro club(team, group, context) %}
-    {% if team.id > 0 %}
-                <td class="flag">
-        {% if team.rank != '' %}
-                    <div class="rank">&nbsp;</div>
-        {% endif %}
-                    <img src="{{ context.imagepath }}/flags/{{ context.countries[team.country].flag }}"
-                         alt="{{ team.country|trans({},'lang') }}"
-                         title="{{ team.country|trans({},'lang') }}">
-                </td>
-                <td class="team">
-    {% if team.rank != '' %}
-                    <div class="rank">{{ team.rank }}</div>
-    {% endif %}
-                    <a href="{{ path('_showteam', { 'teamid': team.id,
-                                                    'groupid': group.id }) }}">{{ team.name }}</a>
-                </td>
-    {% else %}
-                <td class="flag"></td>
-                <td class="team">{{ team.rank }}</td>
-    {% endif %}
-{% endmacro %}
-        
 {% macro scoreinput(match, context) %}
-                <td class="match">
+                <td class="input-col text-nowrap">
     {% if match.rid != '' %}
-                    <input class="match" type="text" name="score_{{ match.rid }}" size="1" value="{{ match.score }}" />
+                    <input type="text" name="score_{{ match.rid }}" size="1" value="{{ match.score }}" />
     {% else %}
                     ?
     {% endif %}
@@ -79,7 +57,7 @@
                 </div>
                 <p></p>
                 <div class="row">
-                    <div class="col-sm-6">
+                    <div class="btn-group col-sm-6">
                         <button class="btn btn-default" id="form_cancel" name="form[cancel]" type="submit">{% trans %}FORM.EDITRESULTS.CANCEL{% endtrans %}</button>
                         <button class="btn btn-primary" id="form_save" name="form[save]" type="submit">{% trans %}FORM.EDITRESULTS.SUBMIT{% endtrans %}</button>
                     </div>
@@ -88,33 +66,33 @@
             <table class="table table-striped">
                 <thead>
                     <tr>
+                        <td class="narrow-col"></td>
+                        <td class="narrow-col">{% trans %}LEGEND.NO{% endtrans %}</td>
+                        <td class="narrow-col">{% trans %}LEGEND.TIME{% endtrans %}</td>
+                        <td class="narrow-col">{% trans %}LEGEND.CATEGORY{% endtrans %}</td>
+                        <td class="narrow-col">{% trans %}LEGEND.GROUP{% endtrans %}</td>
                         <td class="flag"></td>
-                        <td class="no">{% trans %}LEGEND.NO{% endtrans %}</td>
-                        <td class="time">{% trans %}LEGEND.TIME{% endtrans %}</td>
-                        <td class="no">{% trans %}LEGEND.CATEGORY{% endtrans %}</td>
-                        <td class="no">{% trans %}LEGEND.GROUP{% endtrans %}</td>
+                        <td>{% trans %}LEGEND.HOMETEAM{% endtrans %}</td>
                         <td class="flag"></td>
-                        <td class="team">{% trans %}LEGEND.HOMETEAM{% endtrans %}</td>
-                        <td class="flag"></td>
-                        <td class="team">{% trans %}LEGEND.AWAYTEAM{% endtrans %}</td>
-                        <td class="match" colspan="2">{% trans %}LEGEND.RESULT{% endtrans %}</td>
+                        <td>{% trans %}LEGEND.AWAYTEAM{% endtrans %}</td>
+                        <td class="text-nowrap" colspan="2">{% trans %}LEGEND.RESULT{% endtrans %}</td>
                     </tr>
                 </thead>
-                <tboby>
+                <tbody>
         {% for match in matchlist %}
                     <tr>
-                        <td class="flag"></td>
-                        <td class="no">{{ match.matchno }}</td>
-                        <td class="time">{{ match.schedule|date('FORMAT.TIME'|trans([],'messages')) }}</td>
-                        <td class="no"><a href="{{ path('_showcategory', { 'categoryid': match.category.id }) }}">{{ match.category.name }}</a></td>
-                        <td class="no"><a href="{{ path('_showcategory', { 'categoryid': match.category.id }) }}">{{ match.group.name }}</a></td>
+                        <td class="narrow-col"></td>
+                        <td class="narrow-col">{{ match.matchno }}</td>
+                        <td class="narrow-col">{{ match.schedule|date('FORMAT.TIME'|trans([],'messages')) }}</td>
+                        <td class="narrow-col"><a href="{{ path('_showcategory', { 'categoryid': match.category.id }) }}">{{ match.category.name }}</a></td>
+                        <td class="narrow-col"><a href="{{ path('_showcategory', { 'categoryid': match.category.id }) }}">{{ match.group.name }}</a></td>
                         {{ formatter.club(match.home, match.group, _context) }}
                         {{ formatter.club(match.away, match.group, _context) }}
-                        {{ formatter.scoreinput(match.home, _context) }}
-                        {{ formatter.scoreinput(match.away, _context) }}
+                        {{ this.scoreinput(match.home, _context) }}
+                        {{ this.scoreinput(match.away, _context) }}
                     </tr>
         {% endfor %}
-                </tboby>
+                </tbody>
             </table>
         </div>
     </form>

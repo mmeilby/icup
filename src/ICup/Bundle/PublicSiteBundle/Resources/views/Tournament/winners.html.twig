@@ -43,13 +43,13 @@
     <thead>
         <tr>
             <td>{% trans %}CATEGORY{% endtrans %}</td>
-            <td class="winner_first winners">{% trans %}FIRST{% endtrans %}</td>
-            <td class="winner_second winners">{% trans %}SECOND{% endtrans %}</td>
-            <td class="winner_third winners">{% trans %}THIRD{% endtrans %}</td>
-            <td class="winner_third winners">{% trans %}FORTH{% endtrans %}</td>
+            <td class="winner_first">{% trans %}FIRST{% endtrans %}</td>
+            <td class="winner_second">{% trans %}SECOND{% endtrans %}</td>
+            <td class="winner_third">{% trans %}THIRD{% endtrans %}</td>
+            <td class="winner_forth">{% trans %}FORTH{% endtrans %}</td>
         </tr>
     </thead>
-    <tboby>
+    <tbody>
     {% for category in championlist %}
         {% set group = category.group %}
         <tr>
@@ -67,7 +67,7 @@
             <td>{{ formatter.club(category.forth, _context) }}</td>
         </tr>
     {% endfor %}
-    </tboby>
+    </tbody>
 </table>
 {% else %}
 <div class="panel panel-warning">

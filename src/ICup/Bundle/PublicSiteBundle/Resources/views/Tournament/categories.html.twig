@@ -12,47 +12,52 @@
     {% set femalecategorylist = femalekey in categories|keys ? categories[femalekey] : {} %}
     {% set malecategorylist = malekey in categories|keys ? categories[malekey] : {} %}
     {% set size = femalecategorylist|length > malecategorylist|length ? femalecategorylist|length : malecategorylist|length %}
-            <div class="row">
-                <div class="col-sm-3">
-                    <div class="list-group">
+<div class="row">
+    <div class="col-sm-6">
+        <div class="list-group">
     {% for i in 0..size-1 %}
         {% if femalecategorylist[i] is defined %}
-                        <a class="list-group-item" href="{{ path('_showcategory', { 'categoryid': femalecategorylist[i].id }) }}">
-                            <h4 class="list-group-item-heading">
-                                {% trans %}CATEGORY{% endtrans %} {{ femalecategorylist[i].name }}
-                            </h4>
-                            <p class="list-group-item-text">
-                                {{ ['GENDER.',
-                                femalecategorylist[i].gender,
-                                femalecategorylist[i].classification]|join|transchoice(femalecategorylist[i].age, { '%age%': femalecategorylist[i].age },'tournament') }}
-                            </p>
-                        </a>
+            <a class="list-group-item" href="{{ path('_showcategory', { 'categoryid': femalecategorylist[i].id }) }}">
+                <h4 class="list-group-item-heading">
+                    {% trans %}CATEGORY{% endtrans %} {{ femalecategorylist[i].name }}
+                </h4>
+                <p class="list-group-item-text">
+                    {{ ['GENDER.',
+                    femalecategorylist[i].gender,
+                    femalecategorylist[i].classification]|join|transchoice(femalecategorylist[i].age, { '%age%': femalecategorylist[i].age },'tournament') }}
+                </p>
+            </a>
         {% endif %}
     {% endfor %}
-                    </div>
-                </div>
-                <div class="col-sm-3">
-                    <div class="list-group">
+        </div>
+    </div>
+    <div class="col-sm-6">
+        <div class="list-group">
     {% for i in 0..size-1 %}
         {% if malecategorylist[i] is defined %}
-                        <a class="list-group-item" href="{{ path('_showcategory', { 'categoryid': malecategorylist[i].id }) }}">
-                            <h4 class="list-group-item-heading">
-                                {% trans %}CATEGORY{% endtrans %} {{ malecategorylist[i].name }}
-                            </h4>
-                            <p class="list-group-item-text">
-                                {{ ['GENDER.',
-                                malecategorylist[i].gender,
-                                malecategorylist[i].classification]|join|transchoice(malecategorylist[i].age, { '%age%': malecategorylist[i].age },'tournament') }}
-                            </p>
-                        </a>
+            <a class="list-group-item" href="{{ path('_showcategory', { 'categoryid': malecategorylist[i].id }) }}">
+                <h4 class="list-group-item-heading">
+                    {% trans %}CATEGORY{% endtrans %} {{ malecategorylist[i].name }}
+                </h4>
+                <p class="list-group-item-text">
+                    {{ ['GENDER.',
+                    malecategorylist[i].gender,
+                    malecategorylist[i].classification]|join|transchoice(malecategorylist[i].age, { '%age%': malecategorylist[i].age },'tournament') }}
+                </p>
+            </a>
         {% endif %}
     {% endfor %}
-                    </div>
-                </div>
-            </div>
+        </div>
+    </div>
+</div>
 {% endfor %}
 {% else %}
-<h2 class="category">{% trans %}TOURNAMENTNOTREADY{% endtrans %}</h2>
-{% endif %}
+<div class="panel panel-warning">
+    <div class="panel-heading">
+        <b>
+            {% trans %}TOURNAMENTNOTREADY{% endtrans %}
+        </b>
+    </div>
 </div>
+{% endif %}
 {% endblock %}

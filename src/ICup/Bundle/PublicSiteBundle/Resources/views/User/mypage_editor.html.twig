@@ -27,7 +27,7 @@
                 <td>{% trans %}FORM.MYPAGE.SECTION.EDITOR.LEGEND.STATUS{% endtrans %}</td>
             </tr>
         </thead>
-        <tboby>
+        <tbody>
     {% if tournaments|length > 0 %}
         {% for tournament in tournaments %}
             <tr>
@@ -70,7 +70,7 @@
                 </td>
             </tr>
     {% endif %}
-        </tboby>
+        </tbody>
     </table>
 </div>
 {% if tournaments|length > 0 and currentuser.role == 4 %}

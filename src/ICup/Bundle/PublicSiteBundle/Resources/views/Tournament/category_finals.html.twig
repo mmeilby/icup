@@ -3,14 +3,14 @@
 
 {% import _self as formatter %}
 
-{% macro club(team, group, tag, target, context) %}
+{% macro club(team, group, iswinner, target, context) %}
     {% if target == 'top' and team.id > 0 and team.rank != '' %}
             <tr>
                 <td class="flag"></td>
-                <td class="team">
-                    <div class="rank">{{ team.rank }}</div>
+                <td>
+                    <small>{{ team.rank }}</small>
                 </td>
-                <td class="score"></td>
+                <td class="narrow-col"></td>
             </tr>
     {% endif %}
             <tr>
@@ -20,35 +20,50 @@
                          alt="{{ team.country|trans({},'lang') }}"
                          title="{{ team.country|trans({},'lang') }}">
                 </td>
-                <td class="team{{ tag }}">
+                <td>
+{% if iswinner %}
+                    <strong>
+                        <a href="{{ path('_showteam', { 'teamid': team.id,
+                                                        'groupid': group.id }) }}">{{ team.name }}</a>
+                    </strong>
+{% else %}                    
                     <a href="{{ path('_showteam', { 'teamid': team.id,
                                                     'groupid': group.id }) }}">{{ team.name }}</a>
+{% endif %}                                                
                 </td>
-                <td class="score{{ tag }}">{{ team.score }}</td>
+                <td class="narrow-col">
+{% if iswinner %}
+                    <strong>
+                        {{ team.score }}
+                    </strong>
+{% else %}                    
+                    {{ team.score }}
+{% endif %}                                                
+                </td>
     {% else %}
                 <td class="flag"></td>
-                <td class="team">{{ team.rank }}</td>
-                <td class="score"></td>
+                <td>{{ team.rank }}</td>
+                <td class="narrow-col"></td>
     {% endif %}
             </tr>
     {% if target == 'bottom' and team.id > 0 and team.rank != '' %}
             <tr>
                 <td class="flag"></td>
-                <td class="team">
-                    <div class="rank">{{ team.rank }}</div>
+                <td>
+                    <small>{{ team.rank }}</small>
                 </td>
-                <td class="score"></td>
+                <td class="narrow-col"></td>
             </tr>
     {% endif %}
 {% endmacro %}
 
 {% macro match(match, context) %}
-        <table>
-            {{ context.formatter.club(match.home, match.group, match.home.score > match.away.score ? ' winner' : '', 'top', context) }}
+        <table class="finals">
+            {{ context.formatter.club(match.home, match.group, match.home.score > match.away.score, 'top', context) }}
             <tr>
-                <td class="flag"></td>
-                <td class="team">
-                    <div class="rank">
+                <td></td>
+                <td colspan="2">
+                    <small>
                         {% trans %}LEGEND.NO{% endtrans %}: {{ match.matchno }} - 
                         {{ ['GROUPCLASS.',match.group.classification]|join|trans([],'tournament') }}
 {% if match.group.classification == 8 %}
@@ -62,11 +77,10 @@
                             '%year%': match.schedule|date('Y')}, 'messages') }} -
                         {% trans %}LEGEND.TIME{% endtrans %}: {{ match.schedule|date('FORMAT.TIME'|trans([],'messages')) }}<br />
                         {% trans %}LEGEND.PLAYGROUND{% endtrans %}: {{ match.playground.name }}
-                    </div>
+                    </small>
                 </td>
-                <td class="score"></td>
             </tr>
-            {{ context.formatter.club(match.away, match.group, match.away.score > match.home.score ? ' winner' : '', 'bottom', context) }}
+            {{ context.formatter.club(match.away, match.group, match.away.score > match.home.score, 'bottom', context) }}
         </table>
 {% endmacro %}
         
@@ -177,33 +191,39 @@
                 <thead>
                     <tr>
                         <td class="flag"></td>
-                        <td class="team">{% trans %}TEAM{% endtrans %}</td>
-                        <td class="matches">{% trans %}LEGEND.MATCHES{% endtrans %}</td>
-                        <td class="score">{% trans %}LEGEND.GOALS.WON{% endtrans %}</td>
-                        <td class="goals">{% trans %}LEGEND.GOALS.LOST{% endtrans %}</td>
-                        <td class="diff hidden-xs">{% trans %}LEGEND.GOALS.DIFF{% endtrans %}</td>
-                        <td class="points">{% trans %}LEGEND.POINTS{% endtrans %}</td>
+                        <td>{% trans %}TEAM{% endtrans %}</td>
+                        <td class="narrow-col">{% trans %}LEGEND.MATCHES{% endtrans %}</td>
+                        <td class="narrow-col">{% trans %}LEGEND.GOALS.WON{% endtrans %}</td>
+                        <td class="narrow-col">{% trans %}LEGEND.GOALS.LOST{% endtrans %}</td>
+                        <td class="narrow-col hidden-xs">{% trans %}LEGEND.GOALS.DIFF{% endtrans %}</td>
+                        <td class="narrow-col">{% trans %}LEGEND.POINTS{% endtrans %}</td>
                     </tr>
                 </thead>
-                <tboby>
+                <tbody>
     {% for team in group.teams %}
                     <tr>
                         <td class="flag"><img src="{{ imagepath }}/flags/{{ countries[team.country].flag }}" alt="{{ team.country|trans({},'lang') }}" title="{{ team.country|trans({},'lang') }}"></td>
-                        <td class="team"><a href="{{ path('_showteam', { 'teamid': team.id, 'groupid': group.group.id }) }}">{{ team.name }}</a></td>
-                        <td class="matches">{{ team.matches }}</td>
-                        <td class="score">{{ team.score }}</td>
-                        <td class="goals">{{ team.goals }}</td>
-                        <td class="diff hidden-xs">{{ team.diff }}</td>
-                        <td class="points">{{ team.points }}</td>
+                        <td><a href="{{ path('_showteam', { 'teamid': team.id, 'groupid': group.group.id }) }}">{{ team.name }}</a></td>
+                        <td class="narrow-col">{{ team.matches }}</td>
+                        <td class="narrow-col">{{ team.score }}</td>
+                        <td class="narrow-col">{{ team.goals }}</td>
+                        <td class="narrow-col hidden-xs">{{ team.diff }}</td>
+                        <td class="narrow-col">{{ team.points }}</td>
                     </tr>
     {% endfor %}
-                </tboby>
+                </tbody>
             </table>
         </div>
     </div>
 {% endfor %}
 </div>
 {% else %}
-<h2 class="category">{% trans %}TOURNAMENTNOTREADY{% endtrans %}</h2>
+<div class="panel panel-warning">
+    <div class="panel-heading">
+        <b>
+            {% trans %}TOURNAMENTNOTREADY{% endtrans %}
+        </b>
+    </div>
+</div>
 {% endif %}
 {% endblock %}

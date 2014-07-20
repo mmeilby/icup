@@ -18,27 +18,27 @@
     <thead>
         <tr>
             <td></td>
-            <td class="operand"></td>
-            <td class="operand"></td>
-            <td class="operand"></td>
-            <td class="operand"></td>
+            <td class="narrow-col"></td>
+            <td class="narrow-col"></td>
+            <td class="narrow-col"></td>
+            <td class="narrow-col"></td>
         </tr>
     </thead>
-    <tboby>
+    <tbody>
     {% for user in users %}
         {% if currentuser != user %}
-        <tr class="{{ cycle(['even','odd'],loop.index) }}">
-            <td class="user">
+        <tr>
+            <td>
                 {{ user.name|upper }}
             </td>
-            <td class="operand">
+            <td class="narrow-col">
 {% if currentuser.role == 2 %}
                 <a href="{{ path('_club_user_disconnect', { 'userid': user.id }) }}">
                 -
                 </a>    
 {% endif %}
             </td>
-            <td class="operand">
+            <td class="narrow-col">
 {% if currentuser.role == 2 %}
                 <a href="{{ path('_club_user_chg_role', { 'userid': user.id }) }}">
     {% if user.role == 1 %}
@@ -55,7 +55,7 @@
     {% endif %}
 {% endif %}
             </td>
-            <td class="operand">
+            <td class="narrow-col">
 {% if currentuser.role == 2 %}
     {% if user.status == 3 %}
                 <a href="{{ path('_club_user_connect', { 'clubid': club.id, 'userid': user.id }) }}">
@@ -72,17 +72,12 @@
     {% endif %}
 {% endif %}
             </td>
-            <td class="operand">
+            <td class="narrow-col">
             </td>
         </tr>
         {% endif %}
     {% endfor %}
-    </tboby>
-    <tfoot>
-        <tr>
-            <td colspan="5"></td>
-        </tr>
-    </tfoot>
+    </tbody>
 </table>
 {% endif %}
 {% endblock %}

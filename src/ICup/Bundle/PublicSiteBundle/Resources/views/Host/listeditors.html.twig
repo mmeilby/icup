@@ -11,7 +11,7 @@
         {% trans %}FORM.LISTEDITORS.CAPTION{% endtrans %}
     </div>
     <table class="table table-striped">
-        <tboby>
+        <tbody>
 {% if users|length > 0 %}
     {% for user in users %}
             <tr>
@@ -38,24 +38,24 @@
                     {{ 'FORM.MYPAGE.EDITOR_ADMIN'|trans({},'club') }}
     {% endif %}
                 </td>
-                <td class="operand">
+                <td class="narrow-col">
                     <a href="{{ path('_edit_user_add_host', { 'hostid': host.id }) }}">
                         <span class="glyphicon glyphicon-file"></span>
                     </a>    
                 </td>
-                <td class="operand">
+                <td class="narrow-col">
                     <a href="{{ path('_edit_user_chg', { 'userid': user.id }) }}">
                         <span class="glyphicon glyphicon-edit"></span>
                     </a>    
                 </td>
-                <td class="operand">
+                <td class="narrow-col">
     {% if user.id != currentuser.id %}
                     <a href="{{ path('_edit_user_del', { 'userid': user.id }) }}">
                         <span class="glyphicon glyphicon-remove"></span>
                     </a>    
     {% endif %}
                 </td>
-                <td class="operand">
+                <td class="narrow-col">
                     <a href="{{ path('_edit_user_chg_pass', { 'userid': user.id }) }}">
                         <span class="glyphicon glyphicon-lock"></span>
                     </a>    
@@ -69,7 +69,7 @@
                     {{'FORM.LISTEDITORS.NOUSER'|trans|upper}}
                     </a>    
                 </td>
-                <td class="operand">
+                <td class="narrow-col">
                     <a href="{{ path('_edit_user_add_host', { 'hostid': host.id }) }}">
                         <span class="glyphicon glyphicon-file"></span>
                     </a>    
@@ -79,7 +79,7 @@
                 <td></td>
             </tr>
 {% endif %}
-        </tboby>
+        </tbody>
     </table>
 </div>
 {% endblock %}

@@ -12,26 +12,26 @@
         {% trans %}FORM.LISTTOURNAMENTS.CAPTION{% endtrans %}
     </div>
     <table class="table table-striped">
-        <tboby>
+        <tbody>
 {% if sites|length > 0 %}
     {% for site in sites %}
             <tr>
-                <td class="markup" colspan="2">
+                <td class="lead" colspan="2">
                     <a href="{{ path('_edit_site_chg', { 'siteid': site.id }) }}">
                     {{ site.name|upper }}
                     </a>    
                 </td>
-                <td class="operand">
+                <td class="narrow-col">
                     <a href="{{ path('_edit_site_add', { 'tournamentid': tournament.id }) }}">
                         <span class="glyphicon glyphicon-file"></span>
                     </a>    
                 </td>
-                <td class="operand">
+                <td class="narrow-col">
                     <a href="{{ path('_edit_site_chg', { 'siteid': site.id }) }}">
                         <span class="glyphicon glyphicon-edit"></span>
                     </a>    
                 </td>
-                <td class="operand">
+                <td class="narrow-col">
                     <a href="{{ path('_edit_site_del', { 'siteid': site.id }) }}">
                         <span class="glyphicon glyphicon-remove"></span>
                     </a>    
@@ -40,19 +40,19 @@
         {% if site.id in playgrounds|keys %}
             {% for playground in playgrounds[site.id] %}
             <tr>
-                <td class="indent"></td>
+                <td class="narrow-col"></td>
                 <td><a href="{{ path('_edit_playground_chg', { 'playgroundid': playground.id }) }}">{{ playground.name }}</a></td>
-                <td class="operand">
+                <td class="narrow-col">
                     <a href="{{ path('_edit_playground_add', { 'siteid': site.id }) }}">
                         <span class="glyphicon glyphicon-file"></span>
                     </a>    
                 </td>
-                <td class="operand">
+                <td class="narrow-col">
                     <a href="{{ path('_edit_playground_chg', { 'playgroundid': playground.id }) }}">
                         <span class="glyphicon glyphicon-edit"></span>
                     </a>    
                 </td>
-                <td class="operand">
+                <td class="narrow-col">
                     <a href="{{ path('_edit_playground_del', { 'playgroundid': playground.id }) }}">
                         <span class="glyphicon glyphicon-remove"></span>
                     </a>    
@@ -63,7 +63,7 @@
             <tr>
                 <td></td>
                 <td><a href="{{ path('_edit_playground_add', { 'siteid': site.id }) }}">{{'FORM.LISTTOURNAMENTS.NOPLAYGROUND'|trans|upper}}</a></td>
-                <td class="operand">
+                <td class="narrow-col">
                     <a href="{{ path('_edit_playground_add', { 'siteid': site.id }) }}">
                         <span class="glyphicon glyphicon-file"></span>
                     </a>    
@@ -75,12 +75,12 @@
     {% endfor %}
 {% else %}
             <tr>
-                <td class="markup" colspan="2">
+                <td class="lead" colspan="2">
                     <a href="{{ path('_edit_site_add', { 'tournamentid': tournament.id }) }}">
                     {{'FORM.LISTTOURNAMENTS.NOSITE'|trans|upper}}
                     </a>    
                 </td>
-                <td class="operand">
+                <td class="narrow-col">
                     <a href="{{ path('_edit_site_add', { 'tournamentid': tournament.id }) }}">
                         <span class="glyphicon glyphicon-file"></span>
                     </a>    
@@ -89,7 +89,7 @@
                 <td></td>
             </tr>
 {% endif %}
-        </tboby>
+        </tbody>
     </table>
 </div>
 {% endblock %}

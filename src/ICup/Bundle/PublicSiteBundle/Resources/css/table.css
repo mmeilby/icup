@@ -1,0 +1,39 @@
+/*
+    SUPPORTING TABLE STYLES
+*/
+
+/*
+    In general we want table headers to be bold
+*/
+THEAD TR TD {
+    font-weight: bold;
+}
+/*
+    For nice formatting of columns with glyphs or numbers this style is needed
+*/
+TD.narrow-col {
+    width: 20px;
+    text-align: center;
+}
+/*
+    Forms are not organized in tables.
+    However for the matchresults form, the score input controls need to fit in the framing table
+*/
+TD.input-col INPUT {
+    width: 40px;
+}
+/*
+    Fix for flag images.
+    Need to be lifted 3 pixels to fit with team names
+*/
+TD.flag {
+    width: 20px;
+}
+TD.flag IMG {
+    position: relative;
+    top: -3px;
+}
+IMG.flag {
+    position: relative;
+    top: -3px;
+}

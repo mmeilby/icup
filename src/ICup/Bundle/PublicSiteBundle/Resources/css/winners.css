@@ -1,13 +1,6 @@
 /*
  *  Winners
  */
-TD.winners_country {
-    width: 20%;
-    text-align: center;
-}
-TD.winners {
-    width: 20%;
-}
 TD.winner_first {
     padding: 5px;
     background-color: gold;
@@ -17,7 +10,6 @@ TD.winner_first {
     background-image: -webkit-linear-gradient(bottom, gold 5%, white 95%);
     background-image: -ms-linear-gradient(bottom, gold 5%, white 95%);
     background-image: linear-gradient(bottom, gold 5%, white 95%);    
-    font-weight: bold;
 }
 TD.winner_second {
     padding: 5px;
@@ -38,4 +30,7 @@ TD.winner_third {
     background-image: -webkit-linear-gradient(bottom, burlywood 5%, white 95%);
     background-image: -ms-linear-gradient(bottom, burlywood 5%, white 95%);
     background-image: linear-gradient(bottom, burlywood 5%, white 95%);    
+}
+TD.winner_forth {
+    padding: 5px;
 }

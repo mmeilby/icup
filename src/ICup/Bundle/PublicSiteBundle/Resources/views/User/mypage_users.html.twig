@@ -24,7 +24,7 @@
     </div>
 {% if users|length > 0 %}
     <table class="table table-striped">
-        <tboby>
+        <tbody>
     {% for user in users %}
             <tr>
                 <td>
@@ -34,7 +34,7 @@
                     <b>{{ user.name|upper }}</b>
         {% endif %}
                 </td>
-                <td class="operand">
+                <td class="narrow-col">
 {% if user.status != 3 %}
         {% if currentuser != user %}
                     <a href="{{ path('_club_user_disconnect', { 'userid': user.id }) }}">
@@ -43,7 +43,7 @@
         {% endif %}
 {% endif %}
                 </td>
-                <td class="operand">
+                <td class="narrow-col">
         {% if currentuser != user %}
 {% if user.status != 3 %}
                     <a href="{{ path('_club_user_chg_role', { 'userid': user.id }) }}">
@@ -67,7 +67,7 @@
     {% endif %}
 {% endif %}
                 </td>
-                <td class="operand">
+                <td class="narrow-col">
         {% if currentuser != user %}
     {% if user.status == 3 %}
                     <a href="{{ path('_club_user_connect', { 'clubid': club.id, 'userid': user.id }) }}">
@@ -82,7 +82,7 @@
                 </td>
             </tr>
     {% endfor %}
-        </tboby>
+        </tbody>
     </table>
 {% endif %}
 </div>

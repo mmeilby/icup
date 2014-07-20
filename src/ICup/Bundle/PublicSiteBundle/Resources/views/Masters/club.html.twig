@@ -1,0 +1,68 @@
+{% import _self as this %}
+
+{% macro club(team, group, context) %}
+    {% if team.id > 0 %}
+                <td class="flag">
+        {% if team.rank != '' %}
+                    <small>&nbsp;</small><br />
+        {% endif %}
+                    <img src="{{ context.imagepath }}/flags/{{ context.countries[team.country].flag }}"
+                         alt="{{ team.country|trans({},'lang') }}"
+                         title="{{ team.country|trans({},'lang') }}">
+                </td>
+                <td>
+        {% if team.rank != '' %}
+                    <small>{{ team.rank }}</small><br />
+        {% endif %}
+                    <a href="{{ path('_showteam', { 'teamid': team.id,
+                                                    'groupid': group.id }) }}">
+                        <span class="text-nowrap">
+                            {{ team.name }}
+                        </span>
+                    </a>
+                </td>
+    {% else %}
+                <td class="flag"></td>
+                <td>{{ team.rank }}</td>
+    {% endif %}
+{% endmacro %}
+        
+{% macro clubxs(hteam, ateam, group, context) %}
+    {% if hteam.id > 0 %}
+        {% if hteam.rank != '' %}
+            <small>{{ hteam.rank }}</small><br />
+        {% endif %}
+            <span class="text-nowrap">
+                <img src="{{ context.imagepath }}/flags/{{ context.countries[hteam.country].flag }}"
+                     alt="{{ hteam.country|trans({},'lang') }}"
+                     title="{{ hteam.country|trans({},'lang') }}"
+                     class="flag"
+                     >
+                <a href="{{ path('_showteam', { 'teamid': hteam.id,
+                                                'groupid': group.id }) }}">
+                    {{ hteam.name }}
+                </a>
+            </span>
+    {% else %}
+            {{ hteam.rank }}
+    {% endif %}
+            <br />
+    {% if ateam.id > 0 %}
+        {% if ateam.rank != '' %}
+            <small>{{ ateam.rank }}</small><br />
+        {% endif %}
+            <img src="{{ context.imagepath }}/flags/{{ context.countries[ateam.country].flag }}"
+                 alt="{{ ateam.country|trans({},'lang') }}"
+                 title="{{ ateam.country|trans({},'lang') }}"
+                 class="flag"
+                 >
+            <a href="{{ path('_showteam', { 'teamid': ateam.id,
+                                            'groupid': group.id }) }}">
+                <span class="text-nowrap">
+                    {{ ateam.name }}
+                </span>
+            </a>
+    {% else %}
+            {{ ateam.rank }}
+    {% endif %}
+{% endmacro %}

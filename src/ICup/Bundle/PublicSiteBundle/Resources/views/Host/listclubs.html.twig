@@ -4,87 +4,89 @@
 {% block adminbody %}
 <div class="panel panel-success">
     <div class="panel-heading"><b>{{ 'FORM.LISTCLUBS.TITLE'|trans|upper }}</b></div>
-    <div class="panel-body lead">
-        <div class="col-lg-8">
-            <a href="{{ path('_edit_host_list') }}">
-                {{ host.name|upper }}
-            </a><br />
-            {{ tournament.name }}
-        </div>
-        <div class="col-lg-4">
-            <a href="{{ path('_host_club_new', {'tournamentid': tournament.id }) }}" class="btn btn-info">
-                {% trans %}FORM.CLUB.TITLE.ADD{% endtrans %}
-            </a>
-            <a href="{{ path('_edit_import_team', {'tournamentid': tournament.id }) }}" class="btn btn-info">
-                {% trans %}FORM.TEAMIMPORT.TITLE{% endtrans %}
-            </a>
+    <div class="panel-body">
+        <div class="row">
+            <div class="col-lg-8 lead">
+                <a href="{{ path('_edit_host_list') }}">
+                    {{ host.name|upper }}
+                </a><br />
+                {{ tournament.name }}
+            </div>
+            <div class="col-lg-4 lead">
+                <a href="{{ path('_host_club_new', {'tournamentid': tournament.id }) }}" class="btn btn-info">
+                    {% trans %}FORM.CLUB.TITLE.ADD{% endtrans %}
+                </a>
+                <a href="{{ path('_edit_import_team', {'tournamentid': tournament.id }) }}" class="btn btn-info">
+                    {% trans %}FORM.TEAMIMPORT.TITLE{% endtrans %}
+                </a>
 {% if is_granted('ROLE_ADMIN') %}
-            <a href="{{ path('_admin_wipe_teams', {'tournamentid': tournament.id }) }}" class="btn btn-danger">
-                {% trans %}FORM.LISTCLUBS.BUTTON.WIPE{% endtrans %}
-            </a>
+                <a href="{{ path('_admin_wipe_teams', {'tournamentid': tournament.id }) }}" class="btn btn-danger">
+                    {% trans %}FORM.LISTCLUBS.BUTTON.WIPE{% endtrans %}
+                </a>
 {% endif %}    
+            </div>
         </div>
-    </div>
-    <table class="table table-striped">
-        <thead>
-            <tr>
-                <td colspan="2">{% trans %}FORM.LISTCLUBS.LEGEND{% endtrans %}</td>
-            </tr>
-        </thead>
-        <tboby>
-{% if teams|length > 0 %}            
-            <tr>
+{% if teams|length > 0 %}
+        <p></p>
+        <div class="row">
 {% for column in teams %}
-                <td class="column">
+            <div class="col-sm-6">
     {% for countrylist in column %}
     {% for country,teamlist in countrylist %}
-    <table>
-        <tr>
-            <td class="country country_spacer">
-                        <img src="{{ imagepath }}/flags/{{ countries[country].flag }}" alt="{{ country|trans({},'lang') }}" title="{{ country|trans({},'lang') }}">
+                <div class="panel panel-default">
+                    <div class="panel-heading">
+                        <img src="{{ imagepath }}/flags/{{ countries[country].flag }}"
+                             alt="{{ country|trans({},'lang') }}"
+                             title="{{ country|trans({},'lang') }}"
+                             class="flag"
+                        >
                         <b>{{ country|trans({},'lang') }}</b>
-            </td>
-            <td class="operand country_spacer">
-            </td>
-            <td class="score country_spacer">
-            </td>
-        </tr>
-        {% for id,clb in teamlist %}
-        <tr>
-            <td class="clubname">
-                <a href="{{ path('_club_enroll_list_admin', { 'tournament': tournament.id, 'club': clb.club.id }) }}">{{ clb.club.name|upper }}</a>
-            </td>
-            <td class="operand">
-                <a href="{{ path('_club_enroll_list_admin', { 'tournament': tournament.id, 'club': clb.club.id }) }}">
-                    <span class="glyphicon glyphicon-list-alt"></span>
-                </a>    
-            </td>
-            <td class="score">
-            {% if clb.enrolled > 0 %}
-                {{ clb.enrolled }}
-            {% endif %}                
-            </td>
-        </tr>
+                    </div>
+                    <table class="table table-striped">
+            {% for id,clb in teamlist %}
+                        <tr>
+                            <td>
+                                <a href="{{ path('_club_enroll_list_admin', { 'tournament': tournament.id, 'club': clb.club.id }) }}">{{ clb.club.name|upper }}</a>
+                            </td>
+                            <td class="narrow-col">
+                {% if clb.enrolled > 0 %}
+                                {{ clb.enrolled }}
+                {% endif %}                
+                            </td>
+                            <td class="narrow-col">
+                                <a href="{{ path('_club_enroll_list_admin', { 'tournament': tournament.id, 'club': clb.club.id }) }}">
+                                    <span class="glyphicon glyphicon-list-alt"></span>
+                                </a>    
+                            </td>
+                        </tr>
+            {% endfor %}
+                    </table>
+                </div>
         {% endfor %}
-    </table>
+        {% endfor %}
+            </div>
     {% endfor %}
-    {% endfor %}
-                </td>
-{% endfor %}
-            </tr>
 {% else %}
-        <tr>
-            <td class="clubname">
-                <b><a href="{{ path('_host_club_new', {'tournamentid': tournament.id }) }}">{{'FORM.LISTCLUBS.NOCLUB'|trans|upper}}</a></b>
-            </td>
-            <td class="operand">
-                <a href="{{ path('_host_club_new', {'tournamentid': tournament.id }) }}">
-                    <span class="glyphicon glyphicon-file" title="{% trans %}FORM.CLUB.TITLE.ADD{% endtrans %}"></span>
-                </a>
-            </td>
-        </tr>
+            <div class="panel panel-default">
+                <div class="panel-heading">
+                    {{'FORM.LISTCLUBS.NOCLUB'|trans|upper}}
+                </div>
+                <table class="table table-striped">
+                    <tr>
+                        <td>
+                            <b><a href="{{ path('_host_club_new', {'tournamentid': tournament.id }) }}">{{'FORM.LISTCLUBS.NOCLUB'|trans|upper}}</a></b>
+                        </td>
+                        <td></td>
+                        <td class="narrow-col">
+                            <a href="{{ path('_host_club_new', {'tournamentid': tournament.id }) }}">
+                                <span class="glyphicon glyphicon-file" title="{% trans %}FORM.CLUB.TITLE.ADD{% endtrans %}"></span>
+                            </a>
+                        </td>
+                    </tr>
+                </table>
+            </div>
 {% endif %}
-        </tboby>
-    </table>
+        </div>
+    </div>
 </div>
 {% endblock %}

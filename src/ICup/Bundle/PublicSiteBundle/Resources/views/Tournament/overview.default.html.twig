@@ -2,58 +2,46 @@
 
 <div class="row">
     <div class="col-lg-6">
-    <div class="jumbotron"
-         style="
+        <div class="jumbotron"
+             style="
     background-image: url('{{ imagepath }}/IWC/bg.jpg');
     background-size: cover;
     background-repeat: no-repeat;">
-        <img src="{{ imagepath }}/IWC/logo.png" alt="{{ tournament.name }} logo" class="img-responsive" />
-        <h1 class="category">{{ tournament.edition }}</h1>
-        <p class="lead">{{ tournament.name }}</p>
-    </div>
+            <img src="{{ imagepath }}/IWC/logo.png" alt="{{ tournament.name }} logo" class="img-responsive" />
+            <h1>{{ tournament.edition }}</h1>
+            <p class="lead">{{ tournament.name }}</p>
+        </div>
     </div>
     <div class="col-lg-6">
-{% if newsstream|length > 0 %}
-    <div class="list-group">
-        <table>
-            <caption>{% trans %}FORM.NEWS.TITLE{% endtrans %}</caption>
-            <thead>
-                <tr>
-                    <td>{% trans %}FORM.NEWS.DATE{% endtrans %}</td>
-                    <td></td>
-                </tr>
-            </thead>
-            <tboby>
-        {% for news in newsstream %}
-                <tr class="{{ cycle(['even','odd'],loop.index) }}">
-                    <td class="dates">
-                        {{ 'FORMAT.LONGDATE'|transchoice(news.date|date('j'), {
-                                '%week%': ['WEEK.',news.date|date('D')|upper]|join|trans([],'messages')|capitalize,
-                                '%day%': news.date|date('j'),
-                                '%month%': ['MONTH.',news.date|date('M')|upper]|join|trans([],'messages'),
-                                '%year%': ''}, 'messages') }}
-                    </td>
-                    <td class="news">
-                        <a href="{{ news.path }}">{{ news.text }}</a>
-                    </td>
-                </tr>
-        {% endfor %}
-            </tboby>
-            <tfoot>
-                <tr>
-                    <td colspan="2"></td>
-                </tr>
-            </tfoot>
-        </table>
-    </div>
-{% endif %}
-    <div class="list-group">
+        <div class="list-group">
     {% for teaser in teaserlist %}
-        <a class="list-group-item" href="{{ teaser.path }}">
-            <h4 class="list-group-item-heading">{{ teaser.titletext|trans }}</h4>
-            <p class="list-group-item-text">{{ teaser.text|trans }}</p>
-        </a>
+            <a class="list-group-item" href="{{ teaser.path }}">
+                <h4 class="list-group-item-heading">{{ teaser.titletext|trans }}</h4>
+                <p class="list-group-item-text">{{ teaser.text|trans }}</p>
+            </a>
     {% endfor %}
-    </div>
+        </div>
     </div>
 </div>
+{% if newsstream|length > 0 %}
+<div class="row">
+    <div class="col-lg-12">
+        <p class="lead">{% trans %}FORM.NEWS.TITLE{% endtrans %}</p>
+        <div class="list-group">
+    {% for news in newsstream %}
+            <a class="list-group-item" href="{{ news.path }}">
+                <h4 class="list-group-item-heading">
+                    {{ 'FORMAT.LONGDATE'|transchoice(news.date|date('j'), {
+                            '%week%': ['WEEK.',news.date|date('D')|upper]|join|trans([],'messages')|capitalize,
+                            '%day%': news.date|date('j'),
+                            '%month%': ['MONTH.',news.date|date('M')|upper]|join|trans([],'messages'),
+                            '%year%': ''}, 'messages') }}
+                </h4>
+                <p class="list-group-item-text">{{ news.text }}</p>
+            </a>
+    {% endfor %}
+        </div>
+    </div>
+</div>
+{% endif %}
+        

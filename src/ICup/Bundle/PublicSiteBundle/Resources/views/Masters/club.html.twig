@@ -14,8 +14,7 @@
         {% if team.rank != '' %}
                     <small>{{ team.rank }}</small><br />
         {% endif %}
-                    <a href="{{ path('_showteam', { 'teamid': team.id,
-                                                    'groupid': group.id }) }}">
+                    <a href="{{ path('_showteam_all', { 'teamid': team.id }) }}">
                         <span class="text-nowrap">
                             {{ team.name }}
                         </span>
@@ -38,8 +37,7 @@
                      title="{{ hteam.country|trans({},'lang') }}"
                      class="flag"
                      >
-                <a href="{{ path('_showteam', { 'teamid': hteam.id,
-                                                'groupid': group.id }) }}">
+                <a href="{{ path('_showteam_all', { 'teamid': hteam.id }) }}">
                     {{ hteam.name }}
                 </a>
             </span>
@@ -56,8 +54,7 @@
                  title="{{ ateam.country|trans({},'lang') }}"
                  class="flag"
                  >
-            <a href="{{ path('_showteam', { 'teamid': ateam.id,
-                                            'groupid': group.id }) }}">
+            <a href="{{ path('_showteam_all', { 'teamid': ateam.id }) }}">
                 <span class="text-nowrap">
                     {{ ateam.name }}
                 </span>

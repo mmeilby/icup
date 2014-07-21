@@ -99,6 +99,7 @@ FORM:
         MOSTTROPHYS: Flest vundne pokaler af et enkelt land
         DAYS: Dage turneringen afvikles over
         MOSTTROPHYSBYCLUB: Flest vundne pokaler af en klub
+        MOSTGOALSTOTAL: Flest mål scoret af et hold i hele turneringen
       GROUP:
         TEAMS: Lidt statistik om holdene der deltager
         TOURNAMENT: Fakta om turneringen

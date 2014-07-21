@@ -103,6 +103,7 @@ FORM:
             MOSTTROPHYS: La mayoría de los trofeos ganados por un país 
             DAYS: La longitud del torneo en día 
             MOSTTROPHYSBYCLUB: La mayoría de los trofeos ganados por un club
+            MOSTGOALSTOTAL: Más goles anotados por un equipo en el torneo
         GROUP: 
             TEAMS: Datos sobre los equipos 
             TOURNAMENT: Datos sobre el torneo 

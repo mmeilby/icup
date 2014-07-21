@@ -31,7 +31,7 @@
                 </p>
                 <div class="list-group">
                 {% for team in category %}
-                    <a class="list-group-item" href="{{ path('_showteam', { 'teamid': team.id, 'groupid': team.groupid }) }}">
+                    <a class="list-group-item" href="{{ path('_showteam_all', { 'teamid': team.id }) }}">
                         <h4 class="list-group-item-heading">{% trans %}GROUP{% endtrans %} {{ team.grp }}</h4>
                         <p class="list-group-item-text">{{ team.name }}</p>
                     </a>

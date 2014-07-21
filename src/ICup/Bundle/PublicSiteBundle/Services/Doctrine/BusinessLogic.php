@@ -255,6 +255,20 @@ class BusinessLogic
         return $qb->getResult();
     }
     
+    public function getEnrolledCategory($teamid) {
+        $qb = $this->em->createQuery(
+                "select c ".
+                "from ".$this->entity->getRepositoryPath('Enrollment')." e, ".
+                        $this->entity->getRepositoryPath('Category')." c ".
+                "where e.pid=c.id and e.cid=:team");
+        $qb->setParameter('team', $teamid);
+        $category = $qb->getOneOrNullResult();
+        if ($category == null) {
+            throw new ValidationException("NOTEAMS", "Team is not enrolled in any category - team=".$teamid);
+        }
+        return $category;
+    }
+    
     public function listSites($tournamentid) {
         return $this->entity->getSiteRepo()->findBy(array('pid' => $tournamentid));
     }

@@ -99,6 +99,7 @@ FORM:
         MOSTTROPHYS: Plus grand nombre de victoires par pays
         DAYS: Durée du tournoi
         MOSTTROPHYSBYCLUB: Plus grand nombre de victoires par une équipe
+        MOSTGOALSTOTAL: Plus grand nombre de buts marqués par une équipe pendant le tournoi
       GROUP:
         TEAMS: Infos sur les équipes
         TOURNAMENT: Infos sur le tournoi

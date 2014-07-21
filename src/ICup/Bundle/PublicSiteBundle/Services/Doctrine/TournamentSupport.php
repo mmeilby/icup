@@ -355,7 +355,7 @@ class TournamentSupport
         
     public function getMostGoals($tournamentid) {
         $qb = $this->em->createQuery(
-                "select c.name as club, c.country, max(r.score) as mostgoals ".
+                "select t.id,c.name as club, c.country, cat.id as cid, max(r.score) as mostgoals ".
                 "from ".$this->entity->getRepositoryPath('Category')." cat, ".
                         $this->entity->getRepositoryPath('Group')." g, ".
                         $this->entity->getRepositoryPath('MatchRelation')." r, ".
@@ -363,13 +363,35 @@ class TournamentSupport
                         $this->entity->getRepositoryPath('Team')." t, ".
                         $this->entity->getRepositoryPath('Club')." c ".
                 "where cat.pid=:tournament and ".
-                        "r.pid=m.id and ".
-                        "m.pid=g.id and ".
                         "g.pid=cat.id and ".
-                        "t.pid=c.id and ".
+                        "m.pid=g.id and ".
+                        "r.pid=m.id and ".
                         "t.id=r.cid and ".
+                        "t.pid=c.id and ".
                         "r.scorevalid='Y' ".
-                "group by c.name ".
+                "group by t.id ".
+                "order by mostgoals desc");
+        $qb->setParameter('tournament', $tournamentid);
+        return $qb->getResult();
+    }
+        
+    public function getMostGoalsTotal($tournamentid) {
+        $qb = $this->em->createQuery(
+                "select t.id, c.name as club, c.country, cat.id as cid, sum(r.score) as mostgoals ".
+                "from ".$this->entity->getRepositoryPath('Category')." cat, ".
+                        $this->entity->getRepositoryPath('Group')." g, ".
+                        $this->entity->getRepositoryPath('MatchRelation')." r, ".
+                        $this->entity->getRepositoryPath('Match')." m, ".
+                        $this->entity->getRepositoryPath('Team')." t, ".
+                        $this->entity->getRepositoryPath('Club')." c ".
+                "where cat.pid=:tournament and ".
+                        "g.pid=cat.id and ".
+                        "m.pid=g.id and ".
+                        "r.pid=m.id and ".
+                        "t.id=r.cid and ".
+                        "t.pid=c.id and ".
+                        "r.scorevalid='Y' ".
+                "group by t.id ".
                 "order by mostgoals desc");
         $qb->setParameter('tournament', $tournamentid);
         return $qb->getResult();

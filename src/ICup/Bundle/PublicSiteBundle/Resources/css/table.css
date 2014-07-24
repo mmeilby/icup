@@ -16,6 +16,12 @@ TD.narrow-col {
     text-align: center;
 }
 /*
+    For nice formatting of generic table columns with colored background this style is needed
+*/
+TD.box-margin {
+    padding: 10px;
+}
+/*
     Forms are not organized in tables.
     However for the matchresults form, the score input controls need to fit in the framing table
 */

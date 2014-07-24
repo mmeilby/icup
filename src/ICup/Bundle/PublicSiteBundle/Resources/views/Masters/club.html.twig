@@ -63,3 +63,27 @@
             {{ ateam.rank }}
     {% endif %}
 {% endmacro %}
+
+{% macro displayteam(team, context) %}
+    <span class="text-nowrap">
+        <img src="{{ context.imagepath }}/flags/{{ context.countries[team.country].flag }}"
+             alt="{{ team.country|trans({},'lang') }}"
+             title="{{ team.country|trans({},'lang') }}"
+             class="flag"
+             >
+        <a href="{{ path('_showteam_all', { 'teamid': team.id }) }}">
+            {{ team.name }}
+        </a>
+    </span>
+{% endmacro %}
+
+{% macro displayclub(club, context) %}
+    <span class="text-nowrap">
+        <img src="{{ context.imagepath }}/flags/{{ context.countries[club.country].flag }}"
+             alt="{{ club.country|trans({},'lang') }}"
+             title="{{ club.country|trans({},'lang') }}"
+             class="flag"
+             >
+        {{ club.name }}
+    </span>
+{% endmacro %}

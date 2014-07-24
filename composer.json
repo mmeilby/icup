@@ -27,7 +27,8 @@
         "incenteev/composer-parameter-handler": "~2.0",
         "symfony/icu": "1.0.*",
         "jms/security-extra-bundle": "1.5.*",
-        "ircmaxell/password-compat": "1.0.*"
+        "ircmaxell/password-compat": "1.0.*",
+        "friendsofsymfony/jsrouting-bundle": "1.5.*"
     },
     "scripts": {
         "post-install-cmd": [

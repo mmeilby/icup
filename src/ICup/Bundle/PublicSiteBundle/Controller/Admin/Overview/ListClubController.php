@@ -4,7 +4,6 @@ namespace ICup\Bundle\PublicSiteBundle\Controller\Admin\Overview;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
-use Symfony\Component\HttpFoundation\Response;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 
 class ListClubController extends Controller
@@ -21,49 +20,10 @@ class ListClubController extends Controller
         $teamList = array();
         foreach ($clubs as $club) {
             $country = $club->getCountry();
-            $teamList[$country][$club->getId()] = $club;
+            $teams = $this->get('logic')->listTeamsByClub($club->getId());
+            $teamList[$country][$club->getId()] = array('club' => $club, 'teams' => $teams);
         }
-
-        $teamcount = count($teamList, COUNT_RECURSIVE)/2;
-        $teamColumns = array();
-        $ccount = 0;
-        $column = 0;
-        foreach ($teamList as $country => $clubs) {
-            $teamColumns[$column][] = array($country => $clubs);
-            $ccount += count($clubs) + 1;
-            if ($ccount > $teamcount && $column < 1) {
-                $column++;
-                $ccount = 0;
-            }
-        }
-        return array('teams' => $teamColumns);
-    }
-    
-    /**
-     * List the clubs available for a country matching the pattern given
-     * Arguments:
-     *   country: countrycode
-     *   pattern: stringpattern with % for wildcard
-     * @Route("/rest/club/list", name="_rest_list_clubs")
-     */
-    public function restListClubsAction()
-    {
-        /* @var $utilService Util */
-        $utilService = $this->get('util');
-        
-        // Validate that user is logged in...
-        $utilService->getCurrentUser();
-        $request = $this->getRequest();
-        $pattern = $request->get('pattern', '%');
-        $countryCode = $request->get('country', '');
-        $clubs = $this->get('logic')->listClubsByPattern($pattern, $countryCode);
-        $result = array();
-        foreach ($clubs as $club) {
-            $country = $this->get('translator')->trans($club->getCountry(), array(), 'lang');
-            $result[] = array('id' => $club->getId(), 'name' => $club->getname(), 'country' => $country);
-            if (count($result) > 3) break;
-        }
-        return new Response(json_encode($result));
+        return array('teams' => $teamList);
     }
     
     /**

@@ -249,6 +249,13 @@ FORM:
     NOCLUBS: Ingen klubber passer til det søgte
     MORECLUBS: Mange klubber passer til det søgte (et udvalg er vist her) - fortsæt indtastning eller vælg en af klubberne.
     INFO: Hvis du vil vælge en klub der står i listen, skal du klikke på klubbens navn.
+  CLUBMERGE:
+    TITLE: Sammenlæg to klubber
+    PROMPT: Følgende klubber bliver lagt sammen således at den sidstnævnte klub overtager alle hold og brugerprofiler. Førstnævnte klub slettes herefter.
+    SOURCECLUB: Klub der fjernes
+    TARGETCLUB: Klub der overtager hold og brugerprofiler
+    SUBMIT: Sammenlæg klubberne
+    CANCEL: Fortryd sammenlægning
   LISTUSERS:
     TITLE: Vedligehold brugere
     CAPTION: Brugere

@@ -249,6 +249,13 @@ FORM:
     NOCLUBS: No clubs matches the pattern
     MORECLUBS: There are clubs not shown here that match the pattern. Select one from the list or continue narrow the search.
     INFO: If you want to choose a club from the list then click on the name of the club.
+  CLUBMERGE:
+    TITLE: Merge clubs
+    PROMPT: The following clubs will be merged and the last club listed will receive all teams and user profiles. The first club listed will be removed.
+    SOURCECLUB: The club to be removed
+    TARGETCLUB: The club to receive all teams and user profiles
+    SUBMIT: Merge clubs
+    CANCEL: Cancel merge
   LISTUSERS:
     TITLE: User administration
     CAPTION: Users

@@ -4,15 +4,12 @@
 {% block adminbody %}
 <div class="panel panel-success">
     <div class="panel-heading"><b>{{ 'FORM.LISTCLUBS.TITLE'|trans|upper }}</b></div>
-    <div class="panel-body lead">
-        {% trans %}FORM.LISTCLUBS.CAPTION{% endtrans %}
-    </div>
-    <div class="row">
+    <div class="panel-body">
+        <p class="lead">{% trans %}FORM.LISTCLUBS.CAPTION{% endtrans %}</p>
 {% if teams|length > 0 %}
-{% for column in teams %}
-        <div class="col-sm-6">
-    {% for countrylist in column %}
-    {% for country,teamlist in countrylist %}
+    <div class="row">
+        <div class="col-xs-12">
+    {% for country,teamlist in teams %}
             <div class="panel panel-default">
                 <div class="panel-heading">
                     <img src="{{ imagepath }}/flags/{{ countries[country].flag }}"
@@ -25,8 +22,14 @@
                 <table class="table table-striped">
             {% for id,club in teamlist %}
                     <tr>
-                        <td>
-                            {{ club.name|upper }}
+                        <td id="_club_{{ club.club.id }}" draggable="true" ondragstart="drag(event)" ondrop="drop(event)" ondragover="allowDrop(event)">
+                            {{ club.club.name|upper }}
+                        </td>
+                        <td class="narrow-col">
+                            {{ club.teams|length }}
+                        </td>
+                        <td id="star" class="narrow-col">
+                            <span class="glyphicon glyphicon-star-empty"></span>
                         </td>
                         <td class="narrow-col">
                             <a href="{{ path('_edit_club_add', {'country': country }) }}">
@@ -34,17 +37,17 @@
                             </a>
                         </td>
                         <td class="narrow-col">
-                            <a href="{{ path('_edit_club_chg', {'clubid': club.id }) }}">
+                            <a href="{{ path('_edit_club_chg', {'clubid': club.club.id }) }}">
                                 <span class="glyphicon glyphicon-edit"></span>
                             </a>
                         </td>
                         <td class="narrow-col">
-                            <a href="{{ path('_edit_club_del', {'clubid': club.id }) }}">
+                            <a href="{{ path('_edit_club_del', {'clubid': club.club.id }) }}">
                                 <span class="glyphicon glyphicon-remove"></span>
                             </a>
                         </td>
                         <td class="narrow-col">
-                            <a href="{{ path('_edit_user_list', {'clubid': club.id }) }}">
+                            <a href="{{ path('_edit_user_list', {'clubid': club.club.id }) }}">
                                 <span class="glyphicon glyphicon-user"></span>
                             </a><br />
                         </td>
@@ -53,9 +56,7 @@
                 </table>
             </div>
         {% endfor %}
-        {% endfor %}
         </div>
-    {% endfor %}
 {% else %}
         <div class="panel panel-default">
             <div class="panel-heading">
@@ -74,7 +75,80 @@
                 </tr>
             </table>
         </div>
+    </div>
 {% endif %}
     </div>
 </div>
+{% endblock %}
+{% block javascripts %}
+    <script type="text/javascript">
+        $(function onLoad() {
+            $('td#star').click(OnClick);
+        });
+        function OnClick(event) {
+            var marker = $( event.target );
+            marker.toggleClass('glyphicon-star-empty glyphicon-star');
+        }
+        function allowDrop(ev) {
+            ev.preventDefault();
+        }
+
+        function drag(ev) {
+            ev.dataTransfer.setData("Source", ev.target.id);
+        }
+
+        function drop(ev) {
+            ev.preventDefault();
+            var merge_source = ev.dataTransfer.getData("Source");
+            var merge_target = ev.target.id;
+            var source_club = null;
+            var target_club = null;
+            var makeAlertBox = function(alerttext) {
+                return '<div class="alert alert-warning alert-dismissible" role="alert">'+
+                            '<button type="button" class="close" data-dismiss="alert">'+
+                                '<span aria-hidden="true">&times;</span>'+
+                                '<span class="sr-only">Close</span>'+
+                            '</button>'+
+                            '<strong>Warning!</strong> '+
+                            alerttext+
+                       '</div>';
+            };
+            $.when(
+                $.getJSON(Routing.generate('_rest_get_club', { 'clubid': merge_source.substring(6) }))
+                    .done(function( club ) {
+                        source_club = club;
+                    })
+                    .fail(function( jqxhr, textStatus, error ) {
+                        $( ev.target ).parent().parent().parent().parent().after(
+                            makeAlertBox('Problem getting info for club<br />'+
+                                         'Club id: '+merge_source.substring(6)));
+                    })
+                    .always(function() {
+                    }),
+                $.getJSON(Routing.generate('_rest_get_club', { 'clubid': merge_target.substring(6) }))
+                    .done(function( club ) {
+                        target_club = club;
+                    })
+                    .fail(function( jqxhr, textStatus, error ) {
+                        $( ev.target ).parent().parent().parent().parent().after(
+                            makeAlertBox('Problem getting info for club<br />'+
+                                         'Club id: '+merge_target.substring(6)));
+                    })
+                    .always(function() {
+                    }))
+            .then(function() {
+                if (source_club !== null && target_club !== null) {
+                    if (source_club.country !== target_club.country) {
+                        $( ev.target ).parent().parent().parent().parent().after(
+                            makeAlertBox('Not allowed to merge across different countries<br />'+
+                                         source_club.name+' ('+source_club.country+') -> '+
+                                         target_club.name+' ('+target_club.country+')'));
+                    }
+                    else {
+                        location.href=Routing.generate('_edit_club_merge', { 'clubid': target_club.id, 'sourceclubid': source_club.id });
+                    }
+                }
+            });                    
+        }
+    </script>
 {% endblock %}

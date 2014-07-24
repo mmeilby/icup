@@ -1,0 +1,35 @@
+{% extends "ICupPublicSiteBundle:Masters:edit.html.twig" %}
+
+{% form_theme form 'ICupPublicSiteBundle:Default:layout.script.html.twig' %}
+{% trans_default_domain "admin" %}
+
+{% import 'ICupPublicSiteBundle:Masters:club.html.twig' as formatter %}
+
+{% block adminbody %}
+<div class="panel panel-success">
+    <div class="panel-heading"><b>{{ 'FORM.CLUBMERGE.TITLE'|trans|upper }}</b></div>
+    <div class="panel-body">
+        <p class="lead">{{ 'FORM.CLUBMERGE.PROMPT'|trans }}</p>
+        <p>
+            <table>
+                <tr>
+                    <td class="bg-danger box-margin">
+                        {{ 'FORM.CLUBMERGE.SOURCECLUB'|trans }}<br />
+                        {{ source_club.name }}
+                    </td>
+                    <td class="narrow-col lead box-margin">
+                        <span class="glyphicon glyphicon-circle-arrow-right"></span>
+                    </td>
+                    <td class="bg-success box-margin">
+                        {{ 'FORM.CLUBMERGE.TARGETCLUB'|trans }}<br />
+                        <strong>{{ target_club.name }}</strong>
+                    </td>
+                </tr>
+            </table>
+        </p>
+    </div>
+    <div class="panel-body">
+    {{ form(form) }}
+    </div>
+</div>
+{% endblock %}

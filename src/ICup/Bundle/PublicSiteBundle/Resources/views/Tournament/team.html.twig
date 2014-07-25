@@ -48,17 +48,17 @@
             </tr>
         </thead>
         <tbody>
-    {% for matches in matchlist %}
+    {% for matchset in matchlist %}
             <tr>
                 <td class="lead" colspan="9">
-                    {{ 'FORMAT.LONGDATE'|transchoice(matches[0].schedule|date('j'), {
-                            '%week%': ['WEEK.',matches[0].schedule|date('D')|upper]|join|trans([],'messages')|capitalize,
-                            '%day%': matches[0].schedule|date('j'),
-                            '%month%': ['MONTH.',matches[0].schedule|date('M')|upper]|join|trans([],'messages'),
-                            '%year%': matches[0].schedule|date('Y')}, 'messages') }}
+                    {{ 'FORMAT.LONGDATE'|transchoice(matchset[0].schedule|date('j'), {
+                            '%week%': ['WEEK.',matchset[0].schedule|date('D')|upper]|join|trans([],'messages')|capitalize,
+                            '%day%': matchset[0].schedule|date('j'),
+                            '%month%': ['MONTH.',matchset[0].schedule|date('M')|upper]|join|trans([],'messages'),
+                            '%year%': matchset[0].schedule|date('Y')}, 'messages') }}
                 </td>
             </tr>
-        {% for match in matches %}
+        {% for match in matchset %}
             <tr>
                 <td class="narrow-col"></td>
                 <td class="narrow-col">{{ match.matchno }}</td>
@@ -86,17 +86,17 @@
             </tr>
         </thead>
         <tbody>
-    {% for matches in matchlist %}
+    {% for matchset in matchlist %}
             <tr>
                 <td class="lead" colspan="4">
-                    {{ 'FORMAT.LONGDATE'|transchoice(matches[0].schedule|date('j'), {
-                            '%week%': ['WEEK.',matches[0].schedule|date('D')|upper]|join|trans([],'messages')|capitalize,
-                            '%day%': matches[0].schedule|date('j'),
-                            '%month%': ['MONTH.',matches[0].schedule|date('M')|upper]|join|trans([],'messages'),
-                            '%year%': matches[0].schedule|date('Y')}, 'messages') }}
+                    {{ 'FORMAT.LONGDATE'|transchoice(matchset[0].schedule|date('j'), {
+                            '%week%': ['WEEK.',matchset[0].schedule|date('D')|upper]|join|trans([],'messages')|capitalize,
+                            '%day%': matchset[0].schedule|date('j'),
+                            '%month%': ['MONTH.',matchset[0].schedule|date('M')|upper]|join|trans([],'messages'),
+                            '%year%': matchset[0].schedule|date('Y')}, 'messages') }}
                 </td>
             </tr>
-        {% for match in matches %}
+        {% for match in matchset %}
             <tr>
                 <td class="narrow-col">{{ match.matchno }}</td>
                 <td class="narrow-col">{{ match.schedule|date('FORMAT.TIME'|trans([],'messages')) }}<br />

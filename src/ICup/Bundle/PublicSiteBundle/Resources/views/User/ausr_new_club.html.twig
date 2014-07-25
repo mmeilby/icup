@@ -38,11 +38,11 @@
             $('select#form_country').change(OnKeyUp);
         });
         function OnKeyUp() {
-                $.getJSON("{{ path('_rest_list_clubs') }}",
-                           {
-                               'pattern': '%'+$('input#form_name').val()+'%',
-                               'country': $('select#form_country').val()
-                           },
+                $.getJSON(Routing.generate('_rest_list_clubs',
+                                            {
+                                                'countrycode': $('select#form_country').val(),
+                                                'pattern': '%'+$('input#form_name').val()+'%'
+                                            }),
                            function readClubs(data, status) {
                                if (data.length > 0) {
                                     $('#form_div').html(buildTable(data));

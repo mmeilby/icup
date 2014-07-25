@@ -28,9 +28,6 @@
                         <td class="narrow-col">
                             {{ club.teams|length }}
                         </td>
-                        <td id="star" class="narrow-col">
-                            <span class="glyphicon glyphicon-star-empty"></span>
-                        </td>
                         <td class="narrow-col">
                             <a href="{{ path('_edit_club_add', {'country': country }) }}">
                                 <span class="glyphicon glyphicon-file"></span>
@@ -82,13 +79,6 @@
 {% endblock %}
 {% block javascripts %}
     <script type="text/javascript">
-        $(function onLoad() {
-            $('td#star').click(OnClick);
-        });
-        function OnClick(event) {
-            var marker = $( event.target );
-            marker.toggleClass('glyphicon-star-empty glyphicon-star');
-        }
         function allowDrop(ev) {
             ev.preventDefault();
         }
@@ -143,6 +133,9 @@
                             makeAlertBox('Not allowed to merge across different countries<br />'+
                                          source_club.name+' ('+source_club.country+') -> '+
                                          target_club.name+' ('+target_club.country+')'));
+                    }
+                    if (source_club.id === target_club.id) {
+                        // do nothing
                     }
                     else {
                         location.href=Routing.generate('_edit_club_merge', { 'clubid': target_club.id, 'sourceclubid': source_club.id });

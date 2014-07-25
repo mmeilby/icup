@@ -150,7 +150,7 @@ class BusinessLogic
     private function updateDivision(Enrollment $enroll, $division) {
         $firstTeam = $this->entity->getTeamById($enroll->getCid());
         $firstTeam->setDivision($division);
-        $this->em->persist($firstTeam);
+        $this->em->flush();
     }
 
     public function assignEnrolled($teamid, $groupid) {
@@ -255,6 +255,18 @@ class BusinessLogic
         return $qb->getResult();
     }
     
+    public function listEnrolledTeamsByCategory($categoryid, $clubid) {
+        $qb = $this->em->createQuery(
+                "select t ".
+                "from ".$this->entity->getRepositoryPath('Enrollment')." e, ".
+                        $this->entity->getRepositoryPath('Team')." t ".
+                "where e.pid=:category and e.cid=t.id and t.pid=:club ".
+                "order by t.division");
+        $qb->setParameter('category', $categoryid);
+        $qb->setParameter('club', $clubid);
+        return $qb->getResult();
+    }
+    
     public function getEnrolledCategory($teamid) {
         $qb = $this->em->createQuery(
                 "select c ".
@@ -268,7 +280,22 @@ class BusinessLogic
         }
         return $category;
     }
-    
+
+    public function getAssignedCategory($teamid) {
+        $qb = $this->em->createQuery(
+                "select distinct c ".
+                "from ".$this->entity->getRepositoryPath('Group')." g, ".
+                        $this->entity->getRepositoryPath('GroupOrder')." o, ".
+                        $this->entity->getRepositoryPath('Category')." c ".
+                "where o.pid=g.id and o.cid=:team and g.pid=c.id");
+        $qb->setParameter('team', $teamid);
+        $category = $qb->getOneOrNullResult();
+        if ($category == null) {
+            throw new ValidationException("NOTEAMS", "Team is not assigned in any category - team=".$teamid);
+        }
+        return $category;
+    }
+
     public function listSites($tournamentid) {
         return $this->entity->getSiteRepo()->findBy(array('pid' => $tournamentid));
     }

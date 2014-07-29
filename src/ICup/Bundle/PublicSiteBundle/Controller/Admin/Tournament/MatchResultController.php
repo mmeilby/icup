@@ -148,8 +148,13 @@ class MatchResultController extends Controller
     
     private function makeResultForm() {
         $formDef = $this->createFormBuilder();
-        $formDef->add('cancel', 'submit', array('label' => 'FORM.EDITRESULTS.CANCEL', 'translation_domain' => 'tournament'));
-        $formDef->add('save', 'submit', array('label' => 'FORM.EDITRESULTS.SUBMIT', 'translation_domain' => 'tournament'));
+        $formDef->add('cancel', 'submit', array('label' => 'FORM.EDITRESULTS.CANCEL',
+                                                'translation_domain' => 'tournament',
+                                                'buttontype' => 'btn btn-default',
+                                                'icon' => 'fa fa-times'));
+        $formDef->add('save', 'submit', array('label' => 'FORM.EDITRESULTS.SUBMIT',
+                                                'translation_domain' => 'tournament',
+                                                'icon' => 'fa fa-check'));
         return $formDef->getForm();
     }
 }

@@ -53,8 +53,13 @@ class TeamImportController extends Controller
             'required' => false,
             'translation_domain' => 'admin',
             'attr' => array('rows' => '10')));
-        $formDef->add('cancel', 'submit', array('label' => 'FORM.TEAMIMPORT.CANCEL', 'translation_domain' => 'admin'));
-        $formDef->add('save', 'submit', array('label' => 'FORM.TEAMIMPORT.SUBMIT', 'translation_domain' => 'admin'));
+        $formDef->add('cancel', 'submit', array('label' => 'FORM.TEAMIMPORT.CANCEL',
+                                                'translation_domain' => 'admin',
+                                                'buttontype' => 'btn btn-default',
+                                                'icon' => 'fa fa-times'));
+        $formDef->add('save', 'submit', array('label' => 'FORM.TEAMIMPORT.SUBMIT',
+                                                'translation_domain' => 'admin',
+                                                'icon' => 'fa fa-check'));
         return $formDef->getForm();
     }
     

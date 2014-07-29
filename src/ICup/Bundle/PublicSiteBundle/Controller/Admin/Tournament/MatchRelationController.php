@@ -217,8 +217,13 @@ class MatchRelationController extends Controller
         $formDef->add('teamB', 'choice', array('label' => 'FORM.MATCH.AWAY',
             'choices' => $teamnames, 'empty_value' => 'FORM.MATCH.DEFAULT',
             'required' => false, 'disabled' => !$extshow, 'translation_domain' => 'admin'));
-        $formDef->add('cancel', 'submit', array('label' => 'FORM.MATCH.CANCEL.'.strtoupper($action), 'translation_domain' => 'admin'));
-        $formDef->add('save', 'submit', array('label' => 'FORM.MATCH.SUBMIT.'.strtoupper($action), 'translation_domain' => 'admin'));
+        $formDef->add('cancel', 'submit', array('label' => 'FORM.MATCH.CANCEL.'.strtoupper($action),
+                                                'translation_domain' => 'admin',
+                                                'buttontype' => 'btn btn-default',
+                                                'icon' => 'fa fa-times'));
+        $formDef->add('save', 'submit', array('label' => 'FORM.MATCH.SUBMIT.'.strtoupper($action),
+                                                'translation_domain' => 'admin',
+                                                'icon' => 'fa fa-check'));
         return $formDef->getForm();
     }
     
@@ -267,8 +272,13 @@ class MatchRelationController extends Controller
         $formDef->add('teamB', 'choice', array('label' => 'FORM.MATCH.AWAY',
             'choices' => $teamnamesB, 'empty_value' => 'FORM.MATCH.DEFAULT',
             'required' => false, 'disabled' => !$extshow, 'translation_domain' => 'admin'));
-        $formDef->add('cancel', 'submit', array('label' => 'FORM.MATCH.CANCEL.CHG', 'translation_domain' => 'admin'));
-        $formDef->add('save', 'submit', array('label' => 'FORM.MATCH.SUBMIT.CHG', 'translation_domain' => 'admin'));
+        $formDef->add('cancel', 'submit', array('label' => 'FORM.MATCH.CANCEL.CHG',
+                                                'translation_domain' => 'admin',
+                                                'buttontype' => 'btn btn-default',
+                                                'icon' => 'fa fa-times'));
+        $formDef->add('save', 'submit', array('label' => 'FORM.MATCH.SUBMIT.CHG',
+                                                'translation_domain' => 'admin',
+                                                'icon' => 'fa fa-check'));
         return $formDef->getForm();
     }
 }

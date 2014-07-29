@@ -130,8 +130,13 @@ class GroupController extends Controller
         $formDef->add('name', 'text', array('label' => 'FORM.GROUP.NAME', 'required' => false, 'disabled' => $action == 'del', 'translation_domain' => 'admin'));
         $formDef->add('playingtime', 'text', array('label' => 'FORM.GROUP.TIME', 'required' => false, 'disabled' => $action == 'del', 'translation_domain' => 'admin'));
         $formDef->add('classification', 'choice', array('label' => 'FORM.GROUP.CLASSIFICATION', 'required' => false, 'choices' => $classifications, 'empty_value' => 'FORM.GROUP.DEFAULT', 'disabled' => $action == 'del', 'translation_domain' => 'admin'));
-        $formDef->add('cancel', 'submit', array('label' => 'FORM.GROUP.CANCEL.'.strtoupper($action), 'translation_domain' => 'admin'));
-        $formDef->add('save', 'submit', array('label' => 'FORM.GROUP.SUBMIT.'.strtoupper($action), 'translation_domain' => 'admin'));
+        $formDef->add('cancel', 'submit', array('label' => 'FORM.GROUP.CANCEL.'.strtoupper($action),
+                                                'translation_domain' => 'admin',
+                                                'buttontype' => 'btn btn-default',
+                                                'icon' => 'fa fa-times'));
+        $formDef->add('save', 'submit', array('label' => 'FORM.GROUP.SUBMIT.'.strtoupper($action),
+                                                'translation_domain' => 'admin',
+                                                'icon' => 'fa fa-check'));
         return $formDef->getForm();
     }
     

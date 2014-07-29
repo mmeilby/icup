@@ -123,8 +123,13 @@ class PlaygroundController extends Controller
         $formDef = $this->createFormBuilder($playground);
         $formDef->add('name', 'text', array('label' => 'FORM.PLAYGROUND.NAME', 'required' => false, 'disabled' => $action == 'del', 'translation_domain' => 'admin'));
         $formDef->add('no', 'text', array('label' => 'FORM.PLAYGROUND.NO', 'required' => false, 'disabled' => $action == 'del', 'translation_domain' => 'admin'));
-        $formDef->add('cancel', 'submit', array('label' => 'FORM.PLAYGROUND.CANCEL.'.strtoupper($action), 'translation_domain' => 'admin'));
-        $formDef->add('save', 'submit', array('label' => 'FORM.PLAYGROUND.SUBMIT.'.strtoupper($action), 'translation_domain' => 'admin'));
+        $formDef->add('cancel', 'submit', array('label' => 'FORM.PLAYGROUND.CANCEL.'.strtoupper($action),
+                                                'translation_domain' => 'admin',
+                                                'buttontype' => 'btn btn-default',
+                                                'icon' => 'fa fa-times'));
+        $formDef->add('save', 'submit', array('label' => 'FORM.PLAYGROUND.SUBMIT.'.strtoupper($action),
+                                                'translation_domain' => 'admin',
+                                                'icon' => 'fa fa-check'));
         return $formDef->getForm();
     }
     

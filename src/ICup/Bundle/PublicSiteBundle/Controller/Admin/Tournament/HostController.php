@@ -112,8 +112,13 @@ class HostController extends Controller
     private function makeHostForm($host, $action) {
         $formDef = $this->createFormBuilder($host);
         $formDef->add('name', 'text', array('label' => 'FORM.HOST.NAME', 'required' => false, 'disabled' => $action == 'del', 'translation_domain' => 'admin'));
-        $formDef->add('cancel', 'submit', array('label' => 'FORM.HOST.CANCEL.'.strtoupper($action), 'translation_domain' => 'admin'));
-        $formDef->add('save', 'submit', array('label' => 'FORM.HOST.SUBMIT.'.strtoupper($action), 'translation_domain' => 'admin'));
+        $formDef->add('cancel', 'submit', array('label' => 'FORM.HOST.CANCEL.'.strtoupper($action),
+                                                'translation_domain' => 'admin',
+                                                'buttontype' => 'btn btn-default',
+                                                'icon' => 'fa fa-times'));
+        $formDef->add('save', 'submit', array('label' => 'FORM.HOST.SUBMIT.'.strtoupper($action),
+                                                'translation_domain' => 'admin',
+                                                'icon' => 'fa fa-check'));
         return $formDef->getForm();
     }
 

@@ -36,8 +36,13 @@ class ClubMergeController extends Controller
     
     private function makeClubForm() {
         $formDef = $this->createFormBuilder();
-        $formDef->add('cancel', 'submit', array('label' => 'FORM.CLUBMERGE.CANCEL', 'translation_domain' => 'admin'));
-        $formDef->add('save', 'submit', array('label' => 'FORM.CLUBMERGE.SUBMIT', 'translation_domain' => 'admin'));
+        $formDef->add('cancel', 'submit', array('label' => 'FORM.CLUBMERGE.CANCEL',
+                                                'translation_domain' => 'admin',
+                                                'buttontype' => 'btn btn-default',
+                                                'icon' => 'fa fa-times'));
+        $formDef->add('save', 'submit', array('label' => 'FORM.CLUBMERGE.SUBMIT',
+                                                'translation_domain' => 'admin',
+                                                'icon' => 'fa fa-check'));
         return $formDef->getForm();
     }
     

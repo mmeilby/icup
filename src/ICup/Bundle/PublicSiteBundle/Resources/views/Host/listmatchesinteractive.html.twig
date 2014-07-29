@@ -58,8 +58,14 @@
                 <p></p>
                 <div class="row">
                     <div class="btn-group col-sm-6">
-                        <button class="btn btn-default" id="form_cancel" name="form[cancel]" type="submit">{% trans %}FORM.EDITRESULTS.CANCEL{% endtrans %}</button>
-                        <button class="btn btn-primary" id="form_save" name="form[save]" type="submit">{% trans %}FORM.EDITRESULTS.SUBMIT{% endtrans %}</button>
+                        <button class="btn btn-default" id="form_cancel" name="form[cancel]" type="submit">
+                            <i class="fa fa-times"></i>
+                            {% trans %}FORM.EDITRESULTS.CANCEL{% endtrans %}
+                        </button>
+                        <button class="btn btn-success" id="form_save" name="form[save]" type="submit">
+                            <i class="fa fa-check"></i>
+                            {% trans %}FORM.EDITRESULTS.SUBMIT{% endtrans %}
+                        </button>
                     </div>
                 </div>
             </div>

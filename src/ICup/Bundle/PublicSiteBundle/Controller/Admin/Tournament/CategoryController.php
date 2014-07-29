@@ -125,8 +125,13 @@ class CategoryController extends Controller
         $formDef->add('gender', 'choice', array('label' => 'FORM.CATEGORY.GENDER', 'required' => false, 'choices' => $gender, 'empty_value' => 'FORM.CATEGORY.DEFAULT', 'disabled' => $action == 'del', 'translation_domain' => 'admin'));
         $formDef->add('classification', 'choice', array('label' => 'FORM.CATEGORY.CLASSIFICATION', 'required' => false, 'choices' => $classifications, 'empty_value' => 'FORM.CATEGORY.DEFAULT', 'disabled' => $action == 'del', 'translation_domain' => 'admin'));
         $formDef->add('age', 'text', array('label' => 'FORM.CATEGORY.AGE', 'required' => false, 'disabled' => $action == 'del', 'translation_domain' => 'admin'));
-        $formDef->add('cancel', 'submit', array('label' => 'FORM.CATEGORY.CANCEL.'.strtoupper($action), 'translation_domain' => 'admin'));
-        $formDef->add('save', 'submit', array('label' => 'FORM.CATEGORY.SUBMIT.'.strtoupper($action), 'translation_domain' => 'admin'));
+        $formDef->add('cancel', 'submit', array('label' => 'FORM.CATEGORY.CANCEL.'.strtoupper($action),
+                                                'translation_domain' => 'admin',
+                                                'buttontype' => 'btn btn-default',
+                                                'icon' => 'fa fa-times'));
+        $formDef->add('save', 'submit', array('label' => 'FORM.CATEGORY.SUBMIT.'.strtoupper($action),
+                                                'translation_domain' => 'admin',
+                                                'icon' => 'fa fa-check'));
         return $formDef->getForm();
     }
     

@@ -135,8 +135,13 @@ class TournamentController extends Controller
         $formDef->add('key', 'text', array('label' => 'FORM.TOURNAMENT.KEY', 'required' => false, 'disabled' => $action == 'del', 'translation_domain' => 'admin'));
         $formDef->add('edition', 'text', array('label' => 'FORM.TOURNAMENT.EDITION', 'required' => false, 'disabled' => $action == 'del', 'translation_domain' => 'admin'));
         $formDef->add('description', 'text', array('label' => 'FORM.TOURNAMENT.DESC', 'required' => false, 'disabled' => $action == 'del', 'translation_domain' => 'admin'));
-        $formDef->add('cancel', 'submit', array('label' => 'FORM.TOURNAMENT.CANCEL.'.strtoupper($action), 'translation_domain' => 'admin'));
-        $formDef->add('save', 'submit', array('label' => 'FORM.TOURNAMENT.SUBMIT.'.strtoupper($action), 'translation_domain' => 'admin'));
+        $formDef->add('cancel', 'submit', array('label' => 'FORM.TOURNAMENT.CANCEL.'.strtoupper($action),
+                                                'translation_domain' => 'admin',
+                                                'buttontype' => 'btn btn-default',
+                                                'icon' => 'fa fa-times'));
+        $formDef->add('save', 'submit', array('label' => 'FORM.TOURNAMENT.SUBMIT.'.strtoupper($action),
+                                                'translation_domain' => 'admin',
+                                                'icon' => 'fa fa-check'));
         return $formDef->getForm();
     }
     

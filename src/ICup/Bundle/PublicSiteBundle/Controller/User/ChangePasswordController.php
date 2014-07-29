@@ -47,8 +47,13 @@ class ChangePasswordController extends Controller
         $formDef = $this->createFormBuilder($pwd);
         $formDef->add('password', 'password', array('label' => 'FORM.NEWPASS.PASSWORD', 'required' => false, 'translation_domain' => 'club'));
         $formDef->add('password2', 'password', array('label' => 'FORM.NEWPASS.PASSWORD2', 'required' => false, 'translation_domain' => 'club'));
-        $formDef->add('cancel', 'submit', array('label' => 'FORM.NEWPASS.CANCEL', 'translation_domain' => 'club'));
-        $formDef->add('save', 'submit', array('label' => 'FORM.NEWPASS.SUBMIT', 'translation_domain' => 'club'));
+        $formDef->add('cancel', 'submit', array('label' => 'FORM.NEWPASS.CANCEL',
+                                                'translation_domain' => 'club',
+                                                'buttontype' => 'btn btn-default',
+                                                'icon' => 'fa fa-times'));
+        $formDef->add('save', 'submit', array('label' => 'FORM.NEWPASS.SUBMIT',
+                                                'translation_domain' => 'club',
+                                                'icon' => 'fa fa-check'));
         return $formDef->getForm();
     }
     

@@ -262,8 +262,13 @@ class UserController extends Controller
         if ($user->isClub()) {
             $formDef->add('status', 'choice', array('label' => 'FORM.USER.STATUS', 'required' => false, 'choices' => $status, 'empty_value' => 'FORM.USER.DEFAULT', 'disabled' => $action == 'del', 'translation_domain' => 'admin'));
         }
-        $formDef->add('cancel', 'submit', array('label' => 'FORM.USER.CANCEL.'.strtoupper($action), 'translation_domain' => 'admin'));
-        $formDef->add('save', 'submit', array('label' => 'FORM.USER.SUBMIT.'.strtoupper($action), 'translation_domain' => 'admin'));
+        $formDef->add('cancel', 'submit', array('label' => 'FORM.USER.CANCEL.'.strtoupper($action),
+                                                'translation_domain' => 'admin',
+                                                'buttontype' => 'btn btn-default',
+                                                'icon' => 'fa fa-times'));
+        $formDef->add('save', 'submit', array('label' => 'FORM.USER.SUBMIT.'.strtoupper($action),
+                                                'translation_domain' => 'admin',
+                                                'icon' => 'fa fa-check'));
         return $formDef->getForm();
     }
     
@@ -332,8 +337,13 @@ class UserController extends Controller
         $formDef = $this->createFormBuilder($pwd);
         $formDef->add('password', 'password', array('label' => 'FORM.USER.PASSWORD', 'required' => false, 'translation_domain' => 'admin'));
         $formDef->add('password2', 'password', array('label' => 'FORM.USER.PASSWORD2', 'required' => false, 'translation_domain' => 'admin'));
-        $formDef->add('cancel', 'submit', array('label' => 'FORM.USER.CANCEL.CHG', 'translation_domain' => 'admin'));
-        $formDef->add('save', 'submit', array('label' => 'FORM.USER.SUBMIT.CHG', 'translation_domain' => 'admin'));
+        $formDef->add('cancel', 'submit', array('label' => 'FORM.USER.CANCEL.CHG',
+                                                'translation_domain' => 'admin',
+                                                'buttontype' => 'btn btn-default',
+                                                'icon' => 'fa fa-times'));
+        $formDef->add('save', 'submit', array('label' => 'FORM.USER.SUBMIT.CHG',
+                                                'translation_domain' => 'admin',
+                                                'icon' => 'fa fa-check'));
         $form = $formDef->getForm();
         $request = $this->getRequest();
         $form->handleRequest($request);

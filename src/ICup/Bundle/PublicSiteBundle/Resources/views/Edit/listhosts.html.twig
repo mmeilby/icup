@@ -13,27 +13,27 @@
             <tr>
                 <td class="lead" colspan="2">
                     <a href="{{ path('_edit_host_chg', { 'hostid': host.id }) }}">
-                    {{ host.name|upper }}
+                        {{ host.name|upper }}
                     </a>    
                 </td>
                 <td class="narrow-col">
                     <a href="{{ path('_edit_host_add') }}">
-                    <span class="glyphicon glyphicon-file" title="{% trans %}FORM.HOST.TITLE.ADD{% endtrans %}"></span>
+                        <span class="lead glyphicon glyphicon-file" title="{% trans %}FORM.HOST.TITLE.ADD{% endtrans %}"></span>
                     </a>    
                 </td>
                 <td class="narrow-col">
                     <a href="{{ path('_edit_host_chg', { 'hostid': host.id }) }}">
-                    <span class="glyphicon glyphicon-edit" title="{% trans %}FORM.HOST.TITLE.CHG{% endtrans %}"></span>
+                        <span class="lead glyphicon glyphicon-edit" title="{% trans %}FORM.HOST.TITLE.CHG{% endtrans %}"></span>
                     </a>    
                 </td>
                 <td class="narrow-col">
                     <a href="{{ path('_edit_host_del', { 'hostid': host.id }) }}">
-                    <span class="glyphicon glyphicon-remove" title="{% trans %}FORM.HOST.TITLE.DEL{% endtrans %}"></span>
+                        <i class="lead fa fa-trash-o" title="{% trans %}FORM.HOST.TITLE.DEL{% endtrans %}"></i>
                     </a>    
                 </td>
                 <td class="narrow-col">
                     <a href="{{ path('_edit_editor_list', { 'hostid': host.id }) }}">
-                    <span class="glyphicon glyphicon-user" title="{% trans %}FORM.LISTEDITORS.TITLE{% endtrans %}"></span>
+                        <span class="lead glyphicon glyphicon-user" title="{% trans %}FORM.LISTEDITORS.TITLE{% endtrans %}"></span>
                     </a>    
                 </td>
                 <td class="narrow-col"></td>
@@ -60,7 +60,7 @@
                 </td>
                 <td class="narrow-col">
                     <a href="{{ path('_edit_tournament_del', { 'tournamentid': tournament.id }) }}">
-                        <span class="glyphicon glyphicon-remove" title="{% trans %}FORM.TOURNAMENT.TITLE.DEL{% endtrans %}"></span>
+                        <i class="fa fa-trash-o" title="{% trans %}FORM.TOURNAMENT.TITLE.DEL{% endtrans %}"></i>
                     </a>    
                 </td>
                 <td class="narrow-col">

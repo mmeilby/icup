@@ -5,6 +5,7 @@
         <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
         {% block meta %}{% endblock %}
         <title>{% block title %}{% endblock %}</title>
+        <link href="{{ asset( 'bundles/icuppublicsite/font-awesome-4.1.0/css/font-awesome.min.css' ) }}" rel="stylesheet" type="text/css" />
         <link href="{{ asset( 'bundles/icuppublicsite/css/bootstrap.min.css' ) }}" rel="stylesheet" type="text/css" />
         <link href="{{ asset( 'bundles/icuppublicsite/css/bootstrap-theme.min.css' ) }}" rel="stylesheet" type="text/css" />
         {% stylesheets '@ICupPublicSiteBundle/Resources/css/*' output="bundles/icuppublicsite/css/style.css" %}

@@ -51,7 +51,7 @@ class Util
         $globals = $this->container->get('twig')->getGlobals();
         return $globals['supported_locales'][$locale];
     }
-    
+
     public function getReferer() {
         /* @var $request Request */
         $request = $this->container->get('request');

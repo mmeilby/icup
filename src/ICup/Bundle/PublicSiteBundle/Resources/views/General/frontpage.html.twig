@@ -1,0 +1,101 @@
+{% extends "ICupPublicSiteBundle:Masters:standard.html.twig" %}
+
+{% form_theme form 'ICupPublicSiteBundle:Default:layout.script.html.twig' %}
+{% trans_default_domain "club" %}
+
+{% block widebody %}
+<div class="jumbotron"
+     style="
+    background-image: url('{{ imagepath }}/IWC/bg.jpg');
+    background-size: cover;
+    background-repeat: no-repeat;">
+    <div class="container">
+        <img src="{{ imagepath }}/IWC/logo.png" alt="logo" class="img-responsive" />
+    </div>
+</div>
+<div class="container">
+    <div class="row">
+        <div class="col-md-8">
+            <h1>{% trans %}FORM.FRONTPAGE.SUBTITLE{% endtrans %}</h1>
+            <div class="row">
+                <div class="col-sm-8">
+                    <p>{% trans %}FORM.FRONTPAGE.DESCRIPTION{% endtrans %}</p>
+                    <p>
+                        <a href="{{ path('_tournament_select') }}" class="btn btn-success btn-lg" role="button">{% trans %}FORM.FRONTPAGE.LEARNMORE{% endtrans %}&nbsp;<i class="fa fa-angle-double-right"></i></a>
+                    </p>
+                </div>
+                <div class="col-sm-4 hidden-xs">
+                    <img src="{{ imagepath }}/IWC/Teramo.png" alt="logo" class="img-responsive img-rounded" />
+                </div>
+            </div>
+        </div>
+        <hr class="hidden-md hidden-lg" />
+{% for tournament in statuslist.enroll %}
+        <div class="col-md-4">
+            <h2>{% trans %}FORM.FRONTPAGE.BLOCK2.TITLE{% endtrans %}</h2>
+            <h3><span class="label label-default"><i class="fa fa-ticket"></i>&nbsp;{{ tournament.name }}</span></h3>
+            <p>{% trans %}FORM.FRONTPAGE.BLOCK2.DESCRIPTION{% endtrans %}</p>
+            <p>
+    {% if app.user == null %}
+                <a class="btn btn-default" href="{{ path('_ausr_new_user') }}" role="button">{% trans %}FORM.FRONTPAGE.BLOCK2.LEARNMORE{% endtrans %}&nbsp;<i class="fa fa-angle-double-right"></i></a>
+    {% else %}
+                <a class="btn btn-default" href="{{ path('_user_my_page') }}" role="button">{% trans %}FORM.FRONTPAGE.BLOCK2.LEARNMORE{% endtrans %}&nbsp;<i class="fa fa-angle-double-right"></i></a>
+    {% endif %}
+            </p>
+        </div>
+{% endfor %}
+{% for tournament in statuslist.active %}
+        <div class="col-md-4">
+            <h2>{% trans %}FORM.FRONTPAGE.BLOCK3.TITLE{% endtrans %}</h2>
+            <h3><span class="label label-default"><i class="fa fa-ticket"></i>&nbsp;{{ tournament.name }}</span></h3>
+            <p>{% trans %}FORM.FRONTPAGE.BLOCK3.DESCRIPTION{% endtrans %}</p>
+            <p>
+                <a class="btn btn-default" href="{{ path('_edit_list_matches') }}" role="button">{% trans %}FORM.FRONTPAGE.BLOCK3.LEARNMORE{% endtrans %}&nbsp;<i class="fa fa-angle-double-right"></i></a>
+            </p>
+        </div>
+{% endfor %}
+    </div>
+    <hr />
+    <div class="row">
+        <div class="col-md-8">
+            <div class="row">
+                <div class="col-md-12 bg-info">
+                    <h2>Få mere information - udfyld og send</h2>
+                    <p>
+                        {{ form(form) }}
+                    </p>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-4">
+            <div class="row">
+                <div class="col-md-12">
+                    <h2>{% trans %}FORM.FRONTPAGE.BLOCK1.TITLE{% endtrans %}</h2>
+                    <p>{% trans %}FORM.FRONTPAGE.BLOCK1.DESCRIPTION{% endtrans %}</p>
+                    <p>
+{% if app.user == null %}
+                        <a class="btn btn-default" href="{{ path('_ausr_new_user') }}" role="button">{% trans %}FORM.FRONTPAGE.BLOCK1.LEARNMORE{% endtrans %}&nbsp;<i class="fa fa-angle-double-right"></i></a>
+{% else %}
+                        <a class="btn btn-default" href="{{ path('_user_my_page') }}" role="button">{% trans %}FORM.FRONTPAGE.BLOCK1.LEARNMORE{% endtrans %}&nbsp;<i class="fa fa-angle-double-right"></i></a>
+{% endif %}
+                    </p>
+                </div>
+{% for tournament in statuslist.done %}
+            </div>
+            <hr />
+            <div class="row">
+                <div class="col-md-12">
+                    <h2>{% trans %}FORM.FRONTPAGE.BLOCK4.TITLE{% endtrans %}</h2>
+                    <h3><span class="label label-primary"><i class="fa fa-trophy"></i>&nbsp;{{ tournament.name }}</span></h3>
+                    <p>{% trans %}FORM.FRONTPAGE.BLOCK4.DESCRIPTION{% endtrans %}</p>
+                    <p>
+                        <a class="btn btn-default" href="{{ path('_tournament_winners', {'tournament': tournament.key}) }}" role="button">{% trans %}FORM.FRONTPAGE.BLOCK4.LEARNMORE{% endtrans %}&nbsp;<i class="fa fa-angle-double-right"></i></a>
+                    </p>
+                </div>
+{% endfor %}
+            </div>
+            <hr />
+        </div>
+    </div>
+</div>
+{% endblock %}

@@ -2,62 +2,90 @@
 {% trans_default_domain "tournament" %}
 
 {% block body %}
-<p class="lead">
-    {% trans %}FORM.CONTACT.TITLE{% endtrans %}
-</p>
-<div class="panel panel-default">
-    <div class="panel-heading">
-        {% trans %}FORM.CONTACT.SUBTITLE{% endtrans %}<br />
+<h2>{% trans %}FORM.CONTACT.TITLE{% endtrans %}</h2>
+<div class="row">
+    <div class="col-md-8">
+        <p>{% trans %}Hvis du har brug for mere information er du velkommen til at kontakte stævnets danske kontakt:{% endtrans %}</p>
+        <address>
+            <strong>Morten Meilby<br />
+            e-mail: mm@iserve.dk<br />
+            Tlf.: 40203500</strong>
+        </address>
+        <p>Du kan også få hjælp til tilmelding.</p>
+        <p>Kontakt til stævnekontoret i Teramo:</p>
+        <address>
+            <strong>INTERAMNIA WORLD CUP<br />
+            ORGANIZING COMMITTEE</strong><br />
+            Via V. Irelli 55<br />
+            64100 Teramo<br />
+            Italien<br />
+            Tlf.: +39 086 124 3375<br />
+            Fax: +39 086 124 7648<br />
+            Skype: interamniacup<br />
+            e-mail: coppaint@genesi.it<br />
+            www.interamniaworldcup.com<br />
+            <br />
+            <strong>FACEBOOK</strong><br />
+            Interamnia World Cup officielle Facebook side:<br />
+            www.facebook.com/InteramniaWorldCup
+        </address>
     </div>
-    <div class="panel-body">
-        <b>icup.dk</b><br />
-        Morten Meilby<br />
-        mm@iserve.dk
+    <div class="col-md-4">
+        <div class="panel panel-default">
+           <div class="panel-heading">
+               {% trans %}FORM.CONTACT.SUBTITLE{% endtrans %}<br />
+           </div>
+           <div class="panel-body">
+               <b>icup.dk</b><br />
+               Morten Meilby<br />
+               mm@iserve.dk
+           </div>
+       </div>
+       <div class="panel panel-default">
+           <div class="panel-heading">
+               {% trans %}FORM.CONTACT.CAPTION{% endtrans %}
+           </div>
+           <table class="table table-striped">
+               <thead>
+                   <tr>
+                       <td>{% trans %}FORM.CONTACT.LEGEND.NAME{% endtrans %}</td>
+                       <td>{% trans %}FORM.CONTACT.LEGEND.EDITION{% endtrans %}</td>
+                   </tr>
+               </thead>
+               <tbody>
+       <!--            
+                   <tr>
+                       <td>{% trans %}FORM.CONTACT.DATA.PROGRAM{% endtrans %}</td>
+                       <td>Morten Meilby</td>
+                   </tr>
+       -->
+                   <tr>
+                       <td>{% trans %}FORM.CONTACT.DATA.TRANSLATION.ITA{% endtrans %}</td>
+                       <td>Fabrizio Quaranta</td>
+                   </tr>
+                   <tr>
+                       <td>{% trans %}FORM.CONTACT.DATA.TRANSLATION.FRA{% endtrans %}</td>
+                       <td>George Cantarutti</td>
+                   </tr>
+       <!--
+                   <tr>
+                       <td>{% trans %}FORM.CONTACT.DATA.TRANSLATION.ENG{% endtrans %}</td>
+                       <td>Morten Meilby</td>
+                   </tr>
+       -->
+                   <tr>
+                       <td>{% trans %}FORM.CONTACT.DATA.TRANSLATION.POL{% endtrans %}</td>
+                       <td>Marta Gonschorreck</td>
+                   </tr>
+       <!--
+                   <tr>
+                       <td>{% trans %}FORM.CONTACT.DATA.TRANSLATION.DAN{% endtrans %}</td>
+                       <td>Morten Meilby</td>
+                   </tr>
+       -->
+               </tbody>
+           </table>
+       </div>
     </div>
-</div>
-<div class="panel panel-default">
-    <div class="panel-heading">
-        {% trans %}FORM.CONTACT.CAPTION{% endtrans %}
-    </div>
-    <table class="table table-striped">
-        <thead>
-            <tr>
-                <td>{% trans %}FORM.CONTACT.LEGEND.NAME{% endtrans %}</td>
-                <td>{% trans %}FORM.CONTACT.LEGEND.EDITION{% endtrans %}</td>
-            </tr>
-        </thead>
-        <tbody>
-<!--            
-            <tr>
-                <td>{% trans %}FORM.CONTACT.DATA.PROGRAM{% endtrans %}</td>
-                <td>Morten Meilby</td>
-            </tr>
--->
-            <tr>
-                <td>{% trans %}FORM.CONTACT.DATA.TRANSLATION.ITA{% endtrans %}</td>
-                <td>Fabrizio Quaranta</td>
-            </tr>
-            <tr>
-                <td>{% trans %}FORM.CONTACT.DATA.TRANSLATION.FRA{% endtrans %}</td>
-                <td>George Cantarutti</td>
-            </tr>
-<!--
-            <tr>
-                <td>{% trans %}FORM.CONTACT.DATA.TRANSLATION.ENG{% endtrans %}</td>
-                <td>Morten Meilby</td>
-            </tr>
--->
-            <tr>
-                <td>{% trans %}FORM.CONTACT.DATA.TRANSLATION.POL{% endtrans %}</td>
-                <td>Marta Gonschorreck</td>
-            </tr>
-<!--
-            <tr>
-                <td>{% trans %}FORM.CONTACT.DATA.TRANSLATION.DAN{% endtrans %}</td>
-                <td>Morten Meilby</td>
-            </tr>
--->
-        </tbody>
-    </table>
 </div>
 {% endblock %}

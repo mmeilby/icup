@@ -5,17 +5,22 @@
     {% else %}
     <div class="form-group">
     {% endif %}
+    {% set pholder = form.vars.help %}
+    {% if not form.vars.phonestyle %}
         {{ form_label(form) }}
+    {% else %}
+        {% set pholder = form.vars.label %}
+    {% endif %}
         {{ form_errors(form) }}
         {% if form.vars.icon is not null %}
             <div class="input-group">
                 <span class="input-group-addon">
                     <i class="{{ form.vars.icon }}"></i>
                 </span>
-                {{ form_widget(form, { 'attr': {'class': 'form-control', 'placeholder': form.vars.help|trans({}, translation_domain)}}) }}
+                {{ form_widget(form, { 'attr': {'class': 'form-control', 'placeholder': pholder|trans({}, translation_domain)}}) }}
             </div>
         {% else %}
-            {{ form_widget(form, { 'attr': {'class': 'form-control', 'placeholder': form.vars.help|trans({}, translation_domain)}}) }}
+            {{ form_widget(form, { 'attr': {'class': 'form-control', 'placeholder': pholder|trans({}, translation_domain)}}) }}
         {% endif %}
     </div>
 {% endspaceless %}
@@ -54,7 +59,7 @@
 {% block button_row %}
 {% spaceless %}
     {% if form.vars.buttontype is not null %}
-        {{ form_widget(form, { 'attr': {'class': form.vars.buttontype }}) }}
+        {{ form_widget(form, { 'attr': {'class': [form.vars.buttontype,'btn-lg']|join(' ') }}) }}
     {% else %}
         {{ form_widget(form) }}
     {% endif %}
@@ -68,7 +73,7 @@
         {{ form_row(child) }}
         {% endif %}
     {% endfor %}
-    <div class="btn-group">
+    <div class="btn-group form-btn-row">
     {% for child in form %}
         {% if child.vars.block_prefixes[0] == 'button' %}
         {{ form_row(child) }}

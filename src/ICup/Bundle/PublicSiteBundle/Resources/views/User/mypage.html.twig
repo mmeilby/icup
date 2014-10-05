@@ -1,73 +1,114 @@
 {% extends "ICupPublicSiteBundle:Masters:edit.html.twig" %}
 {% trans_default_domain "club" %}
 
+{% import 'ICupPublicSiteBundle:Masters:club.html.twig' as formatter %}
+
 {% block body %}
-<div class="panel panel-info">
-    <div class="panel-heading"><b>{{ 'FORM.MYPAGE.TITLE'|trans|upper }}</b></div>
-    <div class="panel-body lead">
-        {{ currentuser.name|capitalize }} ({{ currentuser.username|upper }})
-    </div>
-    <div class="panel-body">
-        {{ club.name }}
-        &nbsp;
-        <img src="{{ imagepath }}/flags/{{ countries[club.country].flag }}" 
-             alt="{{ club.country|trans({},'lang') }}" 
-             title="{{ club.country|trans({},'lang') }}"><br />
-        <b>
+<div class="row">
+    <div class="col-md-8">
 {% if currentuser.status == 3 %}
-            {% trans %}FORM.MYPAGE.PROSPECT{% endtrans %}
+        <div class="row">
+            <div class="col-sm-9">
+                <h1>{{ 'FORM.MYPAGE.GREETING.TITLE'|trans({ '%club%': club.name }) }}</h1>
+                {% trans %}FORM.MYPAGE.GREETING.TEXT{% endtrans %}
+            </div>
+            <div class="col-sm-3 hidden-xs">
+                <br />
+                <img src="{{ imagepath }}/IWC/Teramo8.png" alt="logo" class="img-responsive img-rounded" />
+            </div>
+        </div>
 {% else %}
-    {% if currentuser.role == 2 %}
-            {% trans %}FORM.MYPAGE.CLUBADMIN{% endtrans %}
-    {% else %}
-            {% trans %}FORM.MYPAGE.CLUBUSER{% endtrans %}
-    {% endif %}
 {% endif %}
-        </b>
+        <div class="row">
+{% for tournament in statuslist.active %}
+            <div class="col-sm-6">
+                <h2>{% trans %}FORM.FRONTPAGE.BLOCK3.TITLE{% endtrans %}</h2>
+                <h3><span class="label label-default"><i class="fa fa-ticket"></i>&nbsp;{{ tournament.name }}</span></h3>
+                <p>{% trans %}FORM.FRONTPAGE.BLOCK3.DESCRIPTION{% endtrans %}</p>
+                <p>
+                    <a class="btn btn-default" href="{{ path('_edit_list_matches') }}" role="button">{% trans %}FORM.FRONTPAGE.BLOCK3.LEARNMORE{% endtrans %}&nbsp;<i class="fa fa-angle-double-right"></i></a>
+                </p>
+            </div>
+{% endfor %}
+{% for tournament in statuslist.done %}
+            <div class="col-sm-6">
+                <h2>{% trans %}FORM.FRONTPAGE.BLOCK4.TITLE{% endtrans %}</h2>
+                <h3><span class="label label-primary"><i class="fa fa-trophy"></i>&nbsp;{{ tournament.name }}</span></h3>
+                <p>{% trans %}FORM.FRONTPAGE.BLOCK4.DESCRIPTION{% endtrans %}</p>
+                <p>
+                    <a class="btn btn-default" href="{{ path('_tournament_winners', {'tournament': tournament.key}) }}" role="button">{% trans %}FORM.FRONTPAGE.BLOCK4.LEARNMORE{% endtrans %}&nbsp;<i class="fa fa-angle-double-right"></i></a>
+                </p>
+            </div>
+{% endfor %}
+{% if currentuser.status != 5 %}
+    {% for tournament in statuslist.enroll %}
+            <div class="col-sm-6">
+                <h2>{% trans %}FORM.MYPAGE.ENROLL.TITLE{% endtrans %}</h2>
+                <h3><span class="label label-default"><i class="fa fa-ticket"></i>&nbsp;{{ tournament.name }}</span></h3>
+                <p>{% trans %}FORM.MYPAGE.ENROLL.DESCRIPTION{% endtrans %}</p>
+        {% if currentuser.status == 4 %}
+                <p>
+                    <a href="{{ path('_club_enroll_check') }}" class="btn btn-default" role="button">{% trans %}FORM.MYPAGE.REL.LINK{% endtrans %}&nbsp;<i class="fa fa-angle-double-right"></i></a>
+                </p>
+        {% endif %}        
+            </div>
+    {% endfor %}
+{% endif %}        
+{% if teams|length > 0 %}
+        </div>
+        <div class="row">
+            <div class="col-sm-12">
+                <h2>{% trans %}FORM.MYPAGE.TOURNAMENTS.TITLE{% endtrans %}</h2>
+                <div class="panel panel-default">
+                    <div class="panel-body">
+                        <div class="row">
+                            {% for catid,category in teams %}
+                            <div class="col-sm-4">
+                                <p class="lead">
+                                    <a href="{{ path('_showcategory', { 'categoryid': categories[catid].id }) }}">
+                                        <b>{% trans from 'tournament' %}CATEGORY{% endtrans %} {{ categories[catid].name }}</b>
+                                    </a><br />
+                                    {{ ['GENDER.',
+                                        categories[catid].gender,
+                                        categories[catid].classification]|join|transchoice(categories[catid].age, { '%age%': categories[catid].age },'tournament') }}
+                                </p>
+                                <div class="list-group">
+                                {% for team in category %}
+                                    <a class="list-group-item" href="{{ path('_showteam_all', { 'teamid': team.id }) }}">
+                                        <h4 class="list-group-item-heading">{% trans from 'tournament' %}GROUP{% endtrans %} {{ team.grp }}</h4>
+                                        <p class="list-group-item-text">{{ team.name }}</p>
+                                    </a>
+                                {% endfor %}
+                                </div>
+                            </div>
+                            {% endfor %}
+                        </div>
+                    </div>
+                </div>
+            </div>
+{% endif %}
+        </div>
     </div>
+    <hr class="hidden-md hidden-lg" />
+    <div class="col-md-4">
+        <h1>
+            <span class="label label-success">
+                <i class="fa fa-home"></i>&nbsp;
+                {% trans %}FORM.MYPAGE.TITLE{% endtrans %}
+            </span>
+        </h1>
 {% if currentuser.status == 3 %}
-    <p>Velkommen til klubben.<br/>Klubbens administrator skal godkende din ansøgning om tilknytning.
-        Du kan afvente godkendelse eller du kan trække din ansøgning tilbage.</p>
-    <p><a href="{{ path('_club_user_refuse') }}">
-        Træk ansøgning tilbage...
-        </a></p>    
+        <h2>{% trans %}FORM.MYPAGE.REL.TITLE{% endtrans %}</h2>
+        <p>{% trans %}FORM.MYPAGE.REL.TEXT{% endtrans %}</p>
+        <p>
+            <a href="{{ path('_club_user_dismiss') }}" class="btn btn-default" role="button">{% trans %}FORM.MYPAGE.REL.DISMISS{% endtrans %}&nbsp;<i class="fa fa-angle-double-right"></i></a>
+        </p>
+{% include 'ICupPublicSiteBundle:User:Blocks/mypage_userinfo.html.twig' %}
 {% else %}
-    {% if currentuser.role == 2 %}
-        {% if prospectors|length > 0 %}
-            <p><a href="{{ path('_user_my_page_users') }}">{% trans %}FORM.MYPAGE.PROSPECTS.AVAILABLE{% endtrans %}</a></p>
-        {% endif %}
-    {% endif %}
-    {% if tournaments|length > 0 %}
-    <table class="table table-striped">
-        <caption>{% trans %}FORM.MYPAGE.TOURNAMENTS.CAPTION{% endtrans %}</caption>
-        <thead>
-            <tr>
-                <td>{% trans %}FORM.MYPAGE.TOURNAMENTS.TOURNAMENT{% endtrans %}</td>
-                <td class="narrow-col"></td>
-                <td class="narrow-col">{% trans %}FORM.MYPAGE.TOURNAMENTS.TEAMS{% endtrans %}</td>
-            </tr>
-        </thead>
-        <tbody>
-        {% for tmnt in tournaments %}
-            {% set tournament = tmnt.tournament %}
-            <tr>
-                <td>
-                    <a href="{{ path('_club_enroll_list', { 'tournament': tournament.id }) }}">{{ tournament.name|upper }}</a>
-                </td>
-                <td class="narrow-col">
-                    <a href="{{ path('_club_enroll_list', { 'tournament': tournament.id }) }}">
-                    E
-                    </a>    
-                </td>
-                <td class="narrow-col">
-    {% if tmnt.enrolled > 0 %}
-                    {{ tmnt.enrolled }}
-    {% endif %}                
-                </td>
-            </tr>
-        {% endfor %}
-        </tbody>
-    </table>
-    {% endif %}
-{% endif %}
+        <p>&nbsp;</p>
+{% include 'ICupPublicSiteBundle:User:Blocks/mypage_calendar.html.twig' %}
+{% include 'ICupPublicSiteBundle:User:Blocks/mypage_userinfo.html.twig' %}
+{% endif %}        
+    </div>
+</div>    
 {% endblock %}

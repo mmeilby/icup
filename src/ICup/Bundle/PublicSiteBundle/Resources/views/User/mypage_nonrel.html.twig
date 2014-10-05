@@ -2,14 +2,94 @@
 {% trans_default_domain "club" %}
 
 {% block body %}
-<div class="panel panel-info">
-    <div class="panel-heading"><b>{{ 'FORM.MYPAGE.TITLE'|trans|upper }}</b></div>
-    <div class="panel-body lead">
-        {{ currentuser.name|capitalize }} ({{ currentuser.username|upper }})
+<div class="row">
+    <div class="col-md-8">
+        <div class="row">
+            <div class="col-sm-9">
+                <h1>{% trans %}FORM.MYPAGE.NONREL.GREETING.TITLE{% endtrans %}</h1>
+                <p>{% trans %}FORM.MYPAGE.NONREL.GREETING.TEXT{% endtrans %}</p>
+            </div>
+            <div class="col-sm-3 hidden-xs">
+                <br />
+                <img src="{{ imagepath }}/IWC/Teramo8.png" alt="logo" class="img-responsive img-rounded" />
+            </div>
+        </div>
+        <div class="row">
+{% for tournament in statuslist.active %}
+            <div class="col-sm-6">
+                <h2>{% trans %}FORM.FRONTPAGE.BLOCK3.TITLE{% endtrans %}</h2>
+                <h3><span class="label label-default"><i class="fa fa-ticket"></i>&nbsp;{{ tournament.name }}</span></h3>
+                <p>{% trans %}FORM.FRONTPAGE.BLOCK3.DESCRIPTION{% endtrans %}</p>
+                <p>
+                    <a class="btn btn-default" href="{{ path('_edit_list_matches') }}" role="button">{% trans %}FORM.FRONTPAGE.BLOCK3.LEARNMORE{% endtrans %}&nbsp;<i class="fa fa-angle-double-right"></i></a>
+                </p>
+            </div>
+{% endfor %}
+{% for tournament in statuslist.done %}
+            <div class="col-sm-6">
+                <h2>{% trans %}FORM.FRONTPAGE.BLOCK4.TITLE{% endtrans %}</h2>
+                <h3><span class="label label-primary"><i class="fa fa-trophy"></i>&nbsp;{{ tournament.name }}</span></h3>
+                <p>{% trans %}FORM.FRONTPAGE.BLOCK4.DESCRIPTION{% endtrans %}</p>
+                <p>
+                    <a class="btn btn-default" href="{{ path('_tournament_winners', {'tournament': tournament.key}) }}" role="button">{% trans %}FORM.FRONTPAGE.BLOCK4.LEARNMORE{% endtrans %}&nbsp;<i class="fa fa-angle-double-right"></i></a>
+                </p>
+            </div>
+{% endfor %}
+{% for tournament in statuslist.enroll %}
+            <div class="col-sm-6">
+                <h2>{% trans %}FORM.FRONTPAGE.BLOCK2.TITLE{% endtrans %}</h2>
+                <h3><span class="label label-default"><i class="fa fa-ticket"></i>&nbsp;{{ tournament.name }}</span></h3>
+                <p>{% trans %}FORM.FRONTPAGE.BLOCK2.DESCRIPTION{% endtrans %}</p>
+                <p>
+                    <a href="{{ path('_club_new') }}" class="btn btn-default" role="button">{% trans %}FORM.MYPAGE.NONREL.LINK{% endtrans %}&nbsp;<i class="fa fa-angle-double-right"></i></a>
+                </p>
+            </div>
+{% endfor %}
+        </div>
     </div>
-    <div class="panel-body">
-        <b>{% trans %}FORM.MYPAGE.NONREL.TITLE{% endtrans %}</b><br />
-        {% trans %}FORM.MYPAGE.NONREL.TEXT{% endtrans %}<br />
-        <a href="{{ path('_club_new') }}">{% trans %}FORM.MYPAGE.NONREL.LINK{% endtrans %}</a>
+    <hr class="hidden-md hidden-lg" />
+    <div class="col-md-4">
+        <h1>
+            <span class="label label-success">
+                <i class="fa fa-home"></i>&nbsp;
+                {% trans %}FORM.MYPAGE.TITLE{% endtrans %}
+            </span>
+        </h1>
+        <h2>{% trans %}FORM.MYPAGE.NONREL.TITLE{% endtrans %}</h2>
+        <p>{% trans %}FORM.MYPAGE.NONREL.TEXT{% endtrans %}</p>
+        <p>
+            <a href="{{ path('_club_new') }}" class="btn btn-info" role="button">{% trans %}FORM.MYPAGE.NONREL.LINK{% endtrans %}&nbsp;<i class="fa fa-angle-double-right"></i></a>
+        </p>
+        <hr />
+        <div class="panel panel-default">
+            <div class="panel-heading">
+                <span class="lead">{{ currentuser.name }}</span>
+            </div>
+            <table class="table table-striped">
+                <tbody>
+                    <tr>
+                        <td>
+                            <p><span class="label label-default">E-mail:</span><br />{{ currentuser.username|lower }}</p>
+                            <p><span class="label label-warning">Klub:&nbsp;<i class="fa fa-warning"></i></span><br />Ikke valgt</p>
+                            <div class="btn-group dropup">
+                              <button type="button" class="btn btn-default">Profil handlinger</button>
+                              <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown">
+                                <span class="caret"></span>
+                                <span class="sr-only">Toggle Dropdown</span>
+                              </button>
+                              <ul class="dropdown-menu" role="menu">
+                                <li><a href="#">Skift kodeord</a></li>
+                                <li><a href="#">Tilknyt klub</a></li>
+                                <li><a href="#">Something else here</a></li>
+                                <li class="divider"></li>
+                                <li><a href="#">Separated link</a></li>
+                              </ul>
+                            </div>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
     </div>
+</div>
 {% endblock %}

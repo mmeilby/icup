@@ -1,0 +1,53 @@
+{% trans_default_domain "club" %}
+
+        <div class="panel panel-default">
+            <div class="panel-heading">
+                <span class="lead"><i class="fa fa-user"></i>&nbsp;{{ currentuser.name }}</span>
+            </div>
+            <table class="table table-striped">
+                <tbody>
+                    <tr>
+                        <td>
+                            <p><span class="label label-default">E-mail:</span><br />{{ currentuser.username|lower }}</p>
+                            <p><span class="label label-default">Klub:</span><br />
+                                {{ formatter.displayclub(club, _context) }}
+                            </p>
+                            <p><span class="label label-default">Rolle:</span><br />
+{% if currentuser.status == 4 %}
+    {% if currentuser.role == 2 %}
+                                {% trans %}FORM.MYPAGE.CLUBADMIN{% endtrans %}
+    {% else %}
+                                {% trans %}FORM.MYPAGE.CLUBUSER{% endtrans %}
+    {% endif %}
+{% else %}
+                                {% trans %}FORM.MYPAGE.PROSPECT{% endtrans %}
+{% endif %}
+                            </p>
+                            <div class="btn-group dropup">
+                              <button type="button" class="btn btn-default">Profil handlinger</button>
+                              <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown">
+                                <span class="caret"></span>
+                                <span class="sr-only">Toggle Dropdown</span>
+                              </button>
+                              <ul class="dropdown-menu" role="menu">
+                                <li><a href="#">Skift kodeord</a></li>
+{% if currentuser.status == 4 %}
+    {% if currentuser.role == 2 %}
+        {% if prospectors is defined and prospectors|length > 0 %}
+                                <li class="divider"></li>
+                                <li><a href="{{ path('_user_my_page_users') }}">{% trans %}FORM.MYPAGE.PROSPECTS.AVAILABLE{% endtrans %}</a></li>
+        {% else %}
+                                <li class="divider"></li>
+                                <li><a href="{{ path('_user_my_page_users') }}">{% trans %}FORM.MYPAGE.USERS.LINK{% endtrans %}</a></li>
+        {% endif %}
+    {% endif %}
+{% else %}
+                                <li><a href="{{ path('_club_user_refuse') }}">Træk tilknytning tilbage</a></li>
+{% endif %}
+                              </ul>
+                            </div>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>

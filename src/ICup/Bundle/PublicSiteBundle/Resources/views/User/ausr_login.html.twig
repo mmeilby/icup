@@ -4,19 +4,45 @@
 {% trans_default_domain "club" %}
 
 {% block body %}
-<div style="width: 70%; float: left;">
+<h2>{% trans %}FORM.LOGIN.TITLE{% endtrans %}</h2>
+<div class="row">
+    <div class="col-md-8">
+        <div class="row">
+            <div class="col-md-12">
+                <p>{% trans %}FORM.LOGIN.PROMPT{% endtrans %}</p>
 {% if tournament is defined and tournament %}
-    <h1>{{ tournament.name }}</h1>
-    <p class="lead">{% trans %}FORM.TITLE{% endtrans %}</p>
-{% else %}
-    <h1>{% trans %}FORM.TITLE{% endtrans %}</h1>
+                <p><span class="label label-default">{{ tournament.name }}</span></p>
 {% endif %}
-<p>{% trans %}FORM.LOGIN.TITLE{% endtrans %}</p>
-{{ form(form) }}
-</div>
-<div class="new_user" style="width: 25%; float: left;">
-    <p><b>{{ 'FORM.LOGIN.SECTION.HEADER'|trans|upper }}</b></p>
-    <p>{% trans %}FORM.LOGIN.SECTION.TEXT{% endtrans %}</p>
-    <p><a href="{{ path('_ausr_new_user') }}">{% trans %}FORM.LOGIN.SECTION.LINK{% endtrans %}</a></p>
+            </div>
+            <div class="col-md-7">
+                {{ form(form) }}
+            </div>
+            <div class="col-md-5">
+                <h3>
+                    <span class="label label-default">
+                        <i class="fa fa-question-circle"></i>&nbsp;
+                        {% trans %}FORM.LOGIN.SECTION1.HEADER{% endtrans %}
+                    </span>
+                </h3>
+                <p>{% trans %}FORM.LOGIN.SECTION1.TEXT{% endtrans %}</p>
+                <p />
+                    <a href="{{ path('_user_my_page') }}" class="btn btn-info" role="button">{% trans %}FORM.LOGIN.LOSTPWD{% endtrans %}&nbsp;<i class="fa fa-angle-double-right"></i></a>
+                </p>
+            </div>
+        </div>
+    </div>
+    <hr class="hidden-md hidden-lg" />
+    <div class="col-md-4">
+        <h1>
+            <span class="label label-primary">
+                <i class="fa fa-info-circle"></i>&nbsp;
+                {% trans %}FORM.LOGIN.SECTION.HEADER{% endtrans %}
+            </span>
+        </h1>
+        <p class="lead">{% trans %}FORM.LOGIN.SECTION.TEXT{% endtrans %}</p>
+        <p />
+            <a href="{{ path('_ausr_new_user') }}" class="btn btn-default" role="button">{% trans %}FORM.LOGIN.SECTION.LINK{% endtrans %}&nbsp;<i class="fa fa-angle-double-right"></i></a>
+        </p>
+    </div>
 </div>
 {% endblock %}

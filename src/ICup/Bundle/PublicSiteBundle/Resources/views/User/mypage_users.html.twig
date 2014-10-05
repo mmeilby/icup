@@ -1,89 +1,132 @@
 {% extends "ICupPublicSiteBundle:Masters:edit.html.twig" %}
 {% trans_default_domain "club" %}
 
+{% import 'ICupPublicSiteBundle:Masters:club.html.twig' as formatter %}
+
 {% block body %}
-<div class="panel panel-info">
-    <div class="panel-heading"><b>{{ 'FORM.MYPAGE.USERS.TITLE'|trans|upper }}</b></div>
-    <div class="panel-body lead">
-        {{ currentuser.name|capitalize }} ({{ currentuser.username|upper }})
-    </div>
-    <div class="panel-body">
-        {{ club.name }}
-        &nbsp;
-        <img src="{{ imagepath }}/flags/{{ countries[club.country].flag }}" 
-             alt="{{ club.country|trans({},'lang') }}" 
-             title="{{ club.country|trans({},'lang') }}"><br />
-        <b>
-{% if currentuser.role == 2 %}
-            {% trans %}FORM.MYPAGE.CLUBADMIN{% endtrans %}
-{% else %}
-            {% trans %}FORM.MYPAGE.CLUBUSER{% endtrans %}
-{% endif %}
-        </b><br />
-        {% trans %}FORM.MYPAGE.CAPTION{% endtrans %}
-    </div>
-{% if users|length > 0 %}
-    <table class="table table-striped">
-        <tbody>
+<div class="row">
+    <div class="col-md-8">
+        <h2>{% trans %}FORM.MYPAGE.USERS.TITLE{% endtrans %}</h2>
+        <div class="panel panel-primary">
+            <div class="panel-heading">
+                {{ 'FORM.MYPAGE.PROSPECTS.CAPTION'|trans({ '%club%': club.name }) }}
+            </div>
+            <table class="table table-striped">
+                <tbody>
     {% for user in users %}
-            <tr>
-                <td>
-        {% if currentuser != user %}
-                    {{ user.name|upper }}
-        {% else %}
-                    <b>{{ user.name|upper }}</b>
+        {% if user.status == 3 %}
+                    <tr>
+                        <td>
+                            {{ user.name|upper }}
+                        </td>
+                        <td class="narrow-col">
+            {% if currentuser != user %}
+                            <a href="{{ path('_club_user_ignore', { 'userid': user.id }) }}">
+                                <span class="fa fa-thumbs-down" title="{% trans %}FORM.MYPAGE.IGNORE{% endtrans %}"></span>
+                            </a>    
+            {% endif %}
+                        </td>
+                        <td class="narrow-col">
+            {% if currentuser != user %}
+                            <a href="{{ path('_club_user_connect', { 'clubid': club.id, 'userid': user.id }) }}">
+                                <span class="fa fa-thumbs-up" title="{% trans %}FORM.MYPAGE.CONNECT{% endtrans %}"></span>
+                            </a>    
+            {% endif %}
+                        </td>
+                    </tr>
         {% endif %}
-                </td>
-                <td class="narrow-col">
-{% if user.status != 3 %}
-        {% if currentuser != user %}
-                    <a href="{{ path('_club_user_disconnect', { 'userid': user.id }) }}">
-                    -
-                    </a>    
-        {% endif %}
-{% endif %}
-                </td>
-                <td class="narrow-col">
-        {% if currentuser != user %}
-{% if user.status != 3 %}
-                    <a href="{{ path('_club_user_chg_role', { 'userid': user.id }) }}">
-    {% if user.role == 1 %}
-                    P
-    {% else %}
-                    D
-    {% endif %}
-                    </a>
-{% endif %}
-        {% endif %}
-                </td>
-                <td>
-{% if user.status == 3 %}
-                    {% trans %}FORM.MYPAGE.PROSPECT{% endtrans %}
-{% else %}
-    {% if user.role == 1 %}
-                    {% trans %}FORM.MYPAGE.CLUBUSER{% endtrans %}
-    {% else %}
-                    {% trans %}FORM.MYPAGE.CLUBADMIN{% endtrans %}
-    {% endif %}
-{% endif %}
-                </td>
-                <td class="narrow-col">
-        {% if currentuser != user %}
-    {% if user.status == 3 %}
-                    <a href="{{ path('_club_user_connect', { 'clubid': club.id, 'userid': user.id }) }}">
-                    +
-                    </a>    
-    {% else %}
-                    {% trans %}FORM.MYPAGE.ATTACHED{% endtrans %}
-    {% endif %}
-        {% else %}
-                    {% trans %}FORM.MYPAGE.ATTACHED{% endtrans %}
-        {% endif %}
-                </td>
-            </tr>
     {% endfor %}
-        </tbody>
-    </table>
-{% endif %}
-</div>
+                </tbody>
+            </table>
+        </div>
+        <div class="panel panel-default">
+            <div class="panel-heading">
+                {{ 'FORM.MYPAGE.CAPTION'|trans({ '%club%': club.name }) }}
+            </div>
+            <table class="table table-striped">
+                <tbody>
+    {% for user in users %}
+        {% if user.status == 4 %}
+                    <tr>
+                        <td>
+            {% if currentuser != user %}
+                            {{ user.name|upper }}
+            {% else %}
+                            <b>{{ user.name|upper }}</b>
+            {% endif %}
+                        </td>
+                        <td>
+            {% if user.role == 1 %}
+                            {% trans %}FORM.MYPAGE.CLUBUSER{% endtrans %}
+            {% else %}
+                            {% trans %}FORM.MYPAGE.CLUBADMIN{% endtrans %}
+            {% endif %}
+                        </td>
+                        <td class="narrow-col">
+            {% if currentuser != user %}
+                            <a href="{{ path('_club_user_chg_role', { 'userid': user.id }) }}">
+                {% if user.role == 1 %}
+                                <span class="fa fa-graduation-cap" title="{% trans %}FORM.MYPAGE.PROMOTE{% endtrans %}"></span>
+                {% else %}
+                                <span class="fa fa-briefcase" title="{% trans %}FORM.MYPAGE.DEMOTE{% endtrans %}"></span>
+                {% endif %}
+                            </a>
+            {% endif %}
+                        </td>
+                        <td class="narrow-col">
+            {% if currentuser != user %}
+                            <a href="{{ path('_club_user_ignore', { 'userid': user.id }) }}">
+                                <span class="fa fa-thumbs-down" title="{% trans %}FORM.MYPAGE.IGNORE{% endtrans %}"></span>
+                            </a>    
+            {% endif %}
+                        </td>
+                    </tr>
+        {% endif %}
+    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+        <div class="panel panel-default">
+            <div class="panel-heading">
+                {{ 'FORM.MYPAGE.IGNORED.CAPTION'|trans({ '%club%': club.name }) }}
+            </div>
+            <table class="table table-striped">
+                <tbody>
+    {% for user in users %}
+        {% if user.status == 5 %}
+                    <tr>
+                        <td>
+                            {{ user.name|upper }}
+                        </td>
+                        <td class="narrow-col">
+                            <a href="{{ path('_club_user_disconnect', { 'userid': user.id }) }}">
+                                <span class="fa fa-undo" title="{% trans %}FORM.MYPAGE.DISCONNECT{% endtrans %}"></span>
+                            </a>    
+                        </td>
+                        <td class="narrow-col">
+                            <a href="{{ path('_club_user_connect', { 'clubid': club.id, 'userid': user.id }) }}">
+                                <span class="fa fa-thumbs-up" title="{% trans %}FORM.MYPAGE.CONNECT{% endtrans %}"></span>
+                            </a>    
+                        </td>
+                    </tr>
+        {% endif %}
+    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    </div>
+    <hr class="hidden-md hidden-lg" />
+    <div class="col-md-4">
+        <a class="nolink" href="{{ path('_user_my_page') }}">
+            <h1>
+                <span class="label label-success">
+                    <i class="fa fa-home"></i>&nbsp;
+                    {% trans %}FORM.MYPAGE.TITLE{% endtrans %}
+                </span>
+            </h1>
+        </a>
+        <p>&nbsp;</p>
+{% include 'ICupPublicSiteBundle:User:Blocks/mypage_userinfo.html.twig' %}
+    </div>
+</div>    
 {% endblock %}

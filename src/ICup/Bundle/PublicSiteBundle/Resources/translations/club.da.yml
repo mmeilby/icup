@@ -1,5 +1,50 @@
 FORM:
   TITLE: iCup tilmelding
+  FRONTPAGE:
+    TITLE: Interamnia World Cup
+    SUBTITLE: Tag til Italien med din håndboldklub
+    DESCRIPTION: >
+        <p>Elsker du håndbold og vil du gerne deltage i et internationalt stævne til sommer - 
+        så er Interamnia World Cup det helt rigtige!</p>
+        <p>På disse sider finder du al den information der er nødvendig for at komme videre
+        og blive en del af oplevelsen til sommer. Har du brug for yderligere information finder
+        du kontaktoplysninger i menuen.</p>
+    LEARNMORE: Læs mere om turneringen 
+#    SUBTITLE: Resultater og stillinger lige ved hånden
+#    DESCRIPTION: De tilmeldte turneringer tilbyder dig resultatformidling og mulighed for holdtilmelding.
+#    LEARNMORE: Følg en turnering
+    BLOCK1:
+        TITLE: Følg din klub
+        DESCRIPTION: >
+                     Er du forældre eller spiller kan du følge holdene fra din klub.
+                     Du skal blot oprette en gratis profil.
+                     Så ser du automatisk alle resultater og stillinger for klubbens hold.
+        LEARNMORE: Følg holdene
+    BLOCK2:
+        TITLE: Holdtilmelding
+        DESCRIPTION: >
+                     Du kan tilmelde hold til turneringen.
+                     Med en gratis klubprofil kan du tilmelde hold her og nu,
+                     så du sikrer dig en plads i turneringen.
+        LEARNMORE: Tilmeld hold
+    BLOCK3:
+        TITLE: Kampe i dag
+        DESCRIPTION: >
+                     Hvilke kampe spilles lige nu. Se eller følg dagens resultater her.
+        LEARNMORE: Se dagens kampe
+    BLOCK4:
+        TITLE: Finalisterne
+        DESCRIPTION: >
+                     Hvem blev turneringens vindere? Se hvilke lande der fik pokaler med hjem.
+                     Under statistik finder du de største bedrifter i turneringen.
+        LEARNMORE: Læs mere om vinderne
+    NAME: Dit navn
+    CLUB: Angiv hvilken klub du henvender dig på vegne af
+    PHONE: Et telefon nummer du kan kontaktes på
+    EMAIL: En e-mail adresse du vil modtage svar på
+    MSG: Skriv en besked, et spørgsmål eller en god ide her...
+    SUBMIT: Send besked
+        
   CLUB: 
     WELLCOME: Velkommen til iCup
     TITLE:
@@ -11,26 +56,109 @@ FORM:
       CHG: Ret klubinformationer. Ændring af login oplysninger skal foretages ved at følge linket.
       DEL: Klubben fjernes fra kluboversigten og alle hold og kampe knyttet til klubbens aktiviteter slettes. Det er ikke muligt at fortryde når klubben er fjernet.
   NEWUSER:
-    TITLE: Du har valgt at oprette et ny profil. Indtast følgende oplysninger til brug for profilen.
-    SECTION:
+    TITLE: Opret personlig profil
+    PROMPT: >
+            Inden du begynder at følge en klub eller tilmelde hold, skal vi bruge nogle få oplysninger fra dig.
+            Dit navn og e-mail adresse er nok til at danne en profil til dig.
+            Start nu med at oprette din personlige profil.
+    LOGIN: Jeg har en personlig profil - log på
+    SECTION1:
       HEADER: Første gang?
-      TEXT: Er din klub ikke på iCup kan du oprette en klubprofil om lidt.<br /><br />Start med at oprette din personlige profil.
+      TEXT: >
+            <p>Har du allerede en personlig profil kan du logge på direkte.</p>
+            <p>Men har du bemærket at du øverst til højre i menuen finder menupunktet "Bruger Login"?
+            Hvis du klikker på dette menupunkt kan du logge direkte på med din profil.</p>
+    SECTION2:
+      HEADER: Din personlige profil
+      TEXT: >
+            <p>En personlig profil giver dig mulighed for at følge hold fra din klub.
+            Med den rette myndighed kan du også tilmelde hold til turneringer.</p>
+            <p>Din e-mail skal bruges når du logger ind fremover (indtil du vælger dit eget kodeord,
+            svarer kodeordet til din e-mail adresse).</p>
+            <p>Når din profil er oprettet vælger du en klub at knytte dig til.</p>
+    SECTION3:
+      HEADER: Anvendelse af e-mail
+      TEXT: >
+            <p>Din e-mail adresse vil udelukkende blive brugt service meddelelser du selv
+            foranleder. Nyhedsbreve eller andre forsendelser vil kun blive sendt til dig
+            på din opfordring. Din e-mail adresse vil ikke blive videregivet til trediepart.</p>
+    NAME: Dit navn
+    EMAIL: E-mail
+    HELP:
+      NAME: Angiv dit fulde navn som du vil have det vist
+      EMAIL: Angiv din e-mail adresse
+    SUBMIT:
+      ADD: Opret profil
+    CANCEL:
+      ADD: Fortryd
   NEWCLUB:
+    TITLE: Forbind din profil til en klub
+    PROMPT: >
+            Nu er du næsten klar til at følge en klub eller tilmelde hold. 
+            Find din klub ved at skrive klubbens navn. 
+            Hvis ikke den findes kan du oprette den og blive administrator for klubben.
     CAPTION: Resultat af søgning
     LEGEND: Klubber
-    NOCLUBS: Ingen klubber passer til det søgte
-    MORECLUBS: Mange klubber passer til det søgte (et udvalg er vist her) - fortsæt indtastning eller vælg en af klubberne
-    INFO: Hvis du vil knyttes til en klub der står i listen, skal du klikke på klubbens navn.
-  LOGIN:
+    NOCLUBS: Ingen klubber passer til det indtastede. Opret klubben når du har tastet navnet fuldt ud.
+    MORECLUBS: Mange klubber passer til det søgte (et udvalg er vist her) - fortsæt indtastning eller vælg en af klubberne.
+    INFO: Hvis du vil knyttes til denne klub, skal du klikke her...
+    ADVISE:
+       TITLE: Ny klub?
+       TEXT: >
+            <p>Du har valgt at forbinde din profil med en klub.
+            Måske er klubben allerede oprettet - måske er du den første der opretter en profil for klubben.</p>
+            <ul>
+            <li><strong>Hvis du ønsker at følge en klub</strong> for at se holdenes resultater skal du knytte
+                din profil til en eksisterende klub. At oprette en ny klubprofil vil i dette tilfælde
+                ikke give dig adgang til at se og følge klubbens hold. Vær omhyggelig når du søger
+                klubben ved at skrive dens navn.</li>
+            <li><strong>Hvis du er klubansvarlig</strong> og skal tilmelde hold til en turnering kan du opleve at du
+                skal oprette en klubprofil først. Hvis du forventer at klubprofilen allerede er oprettet
+                skal du være omhyggelig når du søger klubben på dens navn.</li>
+            </ul>
+            <p><strong>Generelt når du søger efter en klub</strong><br />
+                Når du har skrevet to tegn eller mere fra klubbens navn vil du få mulighed for at vælge
+                mellem op til tre klubber der allerede er oprettet og som passer til din søgning.
+                Hvis du ser din klub i listen af klubber skal du klikke på klubbens navn i listen.</p>
+            <p><u>Hvis du ikke finder den klub du søger</u> skal du taste klubbens fulde navn og
+                klikke på knappen <em>tilknyt klub</em>. Dermed opretter du en ny klubprofil hvor du er
+                administrator. Denne rolle kan du senere videregive til andre der tilknyttes klubben.</p>
+    DEFAULT: Vælg...
+    NONAME: Et klubnavn skal angives.
+    NOCOUNTRY: Klubbens hjemland skal angives.
+    NAME: Klubnavn
+    COUNTRY: Hjemland
+    HELP:
+      NAME: Skriv et par bogstaver af klubbens navn eller udfyld hele navnet og opret klubben
+    SUBMIT: Tilknyt klub
+    CANCEL: Fortryd tilknytning
+  LOGIN_CLUB:
     TITLE: Tilmelding af klub og hold kan ske med en aktiv profil. Log ind med dit brugernavn hvis du har en profil. Ellers opret en ny profil.
     SECTION:
       HEADER: Opret en ny profil
       TEXT: Som holdleder eller klubansvarlig kan du oprette en gratis profil og tilmelde dine hold.
       LINK: Klik her for at oprette en gratis profil
+  LOGIN:
+    TITLE: Log på
+    PROMPT: Log på med dit brugernavn hvis du har en profil.
+    USERNAME: Brugernavn
+    PASSWORD: Kodeord
+    HELP:
+      USERNAME: Angiv dit brugernavn
+      PASSWORD: Tast dit kodeord (det vises med prikker)
+    LOGIN: Log på
+    LOSTPWD: Jeg mangler mit kodeord
+    SECTION1:
+      HEADER: Mangler dit kodeord?
+      TEXT: >
+            <p>Har du glemt dit kodeord kan du få tilsendt en e-mail med din kode.</p>
+            <p><em>Er det første gang du logger på skal du blot benytte din e-mail adresse som kode.</em></p>
+
   MYPAGE:
     TITLE: Mit iCup
     USERS:
-      TITLE: Mit iCup klubbrugere
+      TITLE: Klubbrugere
+      LINK: Vedligehold klubbrugere
     EDITOR: Redaktør
     EDITOR_ADMIN: Turneringsansvarlig
     ADMIN: Administrator
@@ -38,21 +166,75 @@ FORM:
     CLUBUSER: Klubbruger
     CLUBADMIN: Klubansvarlig
     ATTACHEDTO: Tilknyttet
-    CAPTION: Klubbrugere tilknyttet denne klub
+    CAPTION: Klubbrugere tilknyttet %club%
     ATTACHED: Tilknyttet
-    PROSPECT: Ansøgt om tilknytning
+    CONNECT: Knyt brugeren til klubben
+    DISCONNECT: Placer brugeren som ansøger til klubben
+    PROMOTE: Gør bruger til ansvarlig
+    DEMOTE: Fjern klubansvar
+    IGNORE: Placer bruger som følger af klubben
+    IGNORED:
+      CAPTION: Brugere der følger %club%
+    PROSPECT: Følger klubben
     PROSPECTS:
+      CAPTION: Ansøgere til %club%
       AVAILABLE: Der er ansøgere til klubben - vis listen...
     DEFADM:
       WARNING: <b>Skift kodeord for administrator</b><br />Standard administrator er ikke en sikker bruger. Benyt følgende link til at vælge et nyt kodeord til administrator brugeren.
       LINK: Vælg nyt kodeord til administrator
     TOURNAMENTS:
-      CAPTION: Turneringer - åbne for tilmelding
+      TITLE: Tilmeldte hold
+      CAPTION: Klubaktiviteter
       TOURNAMENT: Turnering
       TEAMS: Tilmeldte hold
+    GREETING:
+      TITLE: Velkommen til %club%
+      TEXT: >
+          <p>Velkommen til klubben.<br/>
+          Klubbens administrator skal godkende din ansøgning om tilknytning.
+          Du kan afvente godkendelse eller du kan trække din ansøgning tilbage.</p>
+          <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Morbi id bibendum tortor.
+          Mauris varius fermentum elit vitae ultrices. Praesent vehicula nulla ut arcu accumsan suscipit.
+          Cras pellentesque elit quis quam aliquam, molestie viverra turpis semper.
+          Nam purus arcu, aliquet molestie tristique non, volutpat ac neque. Suspendisse id velit orci.
+          Maecenas eleifend condimentum turpis vitae dignissim. Ut a lorem leo.
+          Sed augue felis, vehicula ac urna ac, ultrices viverra sem.
+          Nulla dapibus ullamcorper lorem, sit amet posuere dui pulvinar eget.
+          Sed pulvinar lacus nisi, id fermentum turpis imperdiet sit amet.</p>
+    ENROLL:
+        TITLE: Holdtilmelding
+        DESCRIPTION: >
+                     Der er åbent for tilmelding af hold til turneringen.
+                     Hvis du er holdansvarlig bør du kontakte din klubansvarlige for at
+                     få tilladelse til at tilmelde hold til turneringen.
+        LEARNMORE: Tilmeld hold
+    REL:
+      TITLE: Holdansvarlig
+      TEXT: >
+            Med din nuværende brugerrolle kan du følge klubbens hold.
+            Men du har ikke mulighed for at tilmelde hold. Hvis du er ansvarlig for
+            hold fra klubben bør du kontakte den klubansvarlige og søge om rollen som klubbruger.
+      LINK: Tilmeld hold
+      DISMISS: Fjern denne besked
     NONREL:
+      GREETING:
+        TITLE: Velkommen til mit iCup
+        TEXT: >
+            Lorem ipsum dolor sit amet, consectetur adipiscing elit. Morbi id bibendum tortor.
+            Mauris varius fermentum elit vitae ultrices. Praesent vehicula nulla ut arcu accumsan suscipit.
+            Cras pellentesque elit quis quam aliquam, molestie viverra turpis semper.
+            Nam purus arcu, aliquet molestie tristique non, volutpat ac neque. Suspendisse id velit orci.
+            Maecenas eleifend condimentum turpis vitae dignissim. Ut a lorem leo.
+            Sed augue felis, vehicula ac urna ac, ultrices viverra sem.
+            Nulla dapibus ullamcorper lorem, sit amet posuere dui pulvinar eget.
+            Sed pulvinar lacus nisi, id fermentum turpis imperdiet sit amet.
+      
       TITLE: Vælg en klub
-      TEXT: Din profil er ikke forbundet med en klub. Det er tid til at forbinde med en eksisterende klub. Du kan også vælge at oprette en ny klubprofil. Klik på det følgende link for at forbinde med en ny eller eksisterende klub.
+      TEXT: >
+            Din profil er ikke forbundet med en klub.
+            Det er tid til at forbinde med en eksisterende klub.
+            Du kan også vælge at oprette en ny klubprofil.
+            Klik på knappen for at forbinde med en ny eller eksisterende klub.
       LINK: Forbind til klub
     SECTION:
       EDITOR:
@@ -63,6 +245,7 @@ FORM:
           DESCRIPTION: Beskrivelse
           STATUS: Tilstand
         STATUS:
+          0: Under oprettelse
           1: Tilmelding
           2: Afvikles
           3: Afsluttet

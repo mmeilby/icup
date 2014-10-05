@@ -282,6 +282,7 @@ FORM:
         2: Confirmed user
         3: Candidate
         4: Affiliate
+        5: Follower
     TITLE:
       ADD: Add new user
       CHG: Modify user

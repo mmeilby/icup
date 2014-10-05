@@ -282,6 +282,7 @@ FORM:
         2: Bekræftet bruger
         3: Ansøger
         4: Klubmedlem
+        5: Følger
     TITLE:
       ADD: Tilføj ny bruger
       CHG: Rediger brugerinformationer

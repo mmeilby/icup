@@ -24,7 +24,7 @@ services:
         arguments:
             - "@twig"
             - "@logger"
-            - ["%kernel.default_locale%"]
+            - "%kernel.default_locale%"
         tags:
             - { name: kernel.event_subscriber }
             

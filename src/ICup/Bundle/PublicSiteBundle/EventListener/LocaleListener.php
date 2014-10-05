@@ -47,7 +47,7 @@ class LocaleListener implements EventSubscriberInterface
         } else {
             // if no explicit locale has been set on this request, use one from the session
             $language = $session->get('_locale', $request->getPreferredLanguage($this->supported_locales));
-            if (!array_search($language, $this->supported_locales)) {
+            if (FALSE === array_search($language, $this->supported_locales)) {
                 $request->setLocale($this->defaultLocale);
             }
             else {

@@ -84,8 +84,6 @@ class ClubAdminController extends Controller
     {
         /* @var $utilService Util */
         $utilService = $this->get('util');
-        
-
         /* @var $user User */
         $user = $this->get('entity')->getUserById($userid);
         $this->validateClubUser($user);
@@ -104,17 +102,13 @@ class ClubAdminController extends Controller
      * Submit request for current user to be an attached user to club identified by clubid
      * Current user must be a non related plain user
      * This function can not promote related prospect users
-     * NOTE: this action will be requested from javascript and can not be parameterized the traditional Symfony way
-     * @Route("/user/request", name="_club_user_request")
+     * @Route("/user/request/{clubid}", name="_club_user_request", options={"expose"=true})
      * @Method("GET")
      */
-    public function requestAction()
+    public function requestAction($clubid)
     {
         /* @var $utilService Util */
         $utilService = $this->get('util');
-        
-
-        $clubid = $this->getRequest()->get('clubid', '');
         /* @var $user User */
         $user = $utilService->getCurrentUser();
         if (!$user->isClub()) {
@@ -148,8 +142,6 @@ class ClubAdminController extends Controller
     {
         /* @var $utilService Util */
         $utilService = $this->get('util');
-        
-
         /* @var $user User */
         $user = $utilService->getCurrentUser();
         $this->validateClubUser($user);
@@ -161,6 +153,55 @@ class ClubAdminController extends Controller
         $em->flush();
         // Redirect to my page
         return $this->redirect($this->generateUrl('_user_my_page'));
+    }
+
+    /**
+     * Ignore pending request for current user to be an attached user to club identified by clubid
+     * Current user must be prospect user for any club
+     * User will be attached to the club however relation is only for viewing
+     * @Route("/user/dismiss", name="_club_user_dismiss")
+     * @Method("GET")
+     */
+    public function dismissAction()
+    {
+        /* @var $utilService Util */
+        $utilService = $this->get('util');
+        /* @var $user User */
+        $user = $utilService->getCurrentUser();
+        $this->validateClubUser($user);
+        // Connect user to the club - make user an ignored user
+        $user->setRole(User::$CLUB);
+        $user->setStatus(User::$INF);
+        $em = $this->getDoctrine()->getManager();
+        $em->flush();
+        // Redirect to my page
+        return $this->redirect($this->generateUrl('_user_my_page'));
+    }
+
+    /**
+     * Ignore user identified by userid
+     * Current user must be club administrator assigned to the same club as the user to be ignored
+     * @Route("/club/ignore/{userid}", name="_club_user_ignore")
+     * @Method("GET")
+     */
+    public function ignoreAction($userid)
+    {
+        /* @var $utilService Util */
+        $utilService = $this->get('util');
+
+        /* @var $user User */
+        $user = $this->get('entity')->getUserById($userid);
+        $this->validateClubUser($user);
+        // Validate current user - is it a club administrator?
+        $thisuser = $utilService->getCurrentUser();
+        $utilService->validateClubAdminUser($thisuser, $user->getCid());
+        // Ignore user - make user an attached user with no rights other than following the club
+        $user->setRole(User::$CLUB);
+        $user->setStatus(User::$INF);
+        $em = $this->getDoctrine()->getManager();
+        $em->flush();
+        // Redirect to my page
+        return $this->redirect($this->generateUrl('_user_my_page_users'));
     }
 
     private function validateClubUser(User $user) {

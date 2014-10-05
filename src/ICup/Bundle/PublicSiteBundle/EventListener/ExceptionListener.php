@@ -12,7 +12,7 @@ use Symfony\Component\HttpKernel\Event\GetResponseForExceptionEvent;
 use ICup\Bundle\PublicSiteBundle\Exceptions\ValidationException;
 use ICup\Bundle\PublicSiteBundle\Exceptions\RedirectException;
 use Symfony\Bundle\TwigBundle\TwigEngine;
-use Symfony\Component\Routing\Router;
+use Symfony\Component\Routing\RouterInterface;
 use Monolog\Logger;
 
 /**
@@ -25,12 +25,12 @@ class ExceptionListener extends ContainerAware
 
     /* @var $templating TwigEngine */
     protected $templating;
-    /* @var $router Router */
+    /* @var $router RouterInterface */
     protected $router;
     /* @var $logger Logger */
     protected $logger;
     
-    public function __construct(TwigEngine $templating, Router $router, Logger $logger)
+    public function __construct(TwigEngine $templating, RouterInterface $router, Logger $logger)
     {
         $this->templating = $templating;
         $this->router = $router;

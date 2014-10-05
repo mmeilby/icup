@@ -2,6 +2,17 @@
     SUPPORTING TABLE STYLES
 */
 
+BODY {
+    padding-top: 50px;
+}
+
+DIV.main {
+    padding-top: 20px;
+}
+DIV.form-btn-row {
+    padding-top: 10px;
+    padding-bottom: 40px;
+}
 /*
     In general we want table headers to be bold
 */
@@ -42,4 +53,14 @@ TD.flag IMG {
 IMG.flag {
     position: relative;
     top: -3px;
+}
+/*
+    This class disables the hover underline for labels with a link
+*/
+A:hover.nolink {
+    text-decoration: none;
+}
+
+.create-ui-toolbar-wrapper {
+    position: relative;
 }

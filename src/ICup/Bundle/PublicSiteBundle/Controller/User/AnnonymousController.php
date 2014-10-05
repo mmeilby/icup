@@ -23,10 +23,6 @@ class AnnonymousController extends Controller
      */
     public function newUserAction()
     {
-        /* @var $utilService Util */
-        $utilService = $this->get('util');
-        
-
         /* @var $user User */
         $user = $this->getUser();
         if ($user != null) {
@@ -44,6 +40,7 @@ class AnnonymousController extends Controller
             return $this->redirect($this->generateUrl('_icup'));
         }
         if ($this->checkForm($form, $user)) {
+            $user->setUsername($user->getEmail());
             $user->setStatus(User::$AUTH);
             $user->setRole(User::$CLUB);
             $user->setCid(0);
@@ -61,14 +58,7 @@ class AnnonymousController extends Controller
             return $this->redirect($this->generateUrl('_user_my_page'));
         }
         
-        $tournamentKey = $utilService->getTournamentKey();
-        if ($tournamentKey != '_') {
-            $tournament = $this->get('logic')->getTournamentByKey($tournamentKey);
-        }
-        else {
-            $tournament = null;
-        }
-        return array('form' => $form->createView(), 'action' => 'add', 'user' => $user, 'tournament' => $tournament);
+        return array('form' => $form->createView(), 'action' => 'add', 'user' => $user);
     }
 
     /**
@@ -82,17 +72,25 @@ class AnnonymousController extends Controller
     
     private function makeUserForm(User $user, $action) {
         $formDef = $this->createFormBuilder($user);
-        $formDef->add('name', 'text', array('label' => 'FORM.USER.NAME', 'required' => false, 'disabled' => $action == 'del', 'translation_domain' => 'admin'));
-        $formDef->add('email', 'text', array('label' => 'FORM.USER.EMAIL', 'required' => false, 'disabled' => $action == 'del', 'translation_domain' => 'admin'));
-        $formDef->add('username', 'text', array('label' => 'FORM.USER.USERNAME', 'required' => false, 'disabled' => $action == 'del', 'translation_domain' => 'admin'));
-        $formDef->add('password', 'text', array('label' => 'FORM.USER.PASSWORD', 'required' => false, 'disabled' => $action == 'del', 'translation_domain' => 'admin'));
-        $formDef->add('cancel', 'submit', array('label' => 'FORM.USER.CANCEL.'.strtoupper($action),
-                                                'translation_domain' => 'admin',
+        $formDef->add('name', 'text', array('label' => 'FORM.NEWUSER.NAME',
+                                            'required' => false,
+                                            'disabled' => $action == 'del',
+                                            'translation_domain' => 'club',
+                                            'help' => 'FORM.NEWUSER.HELP.NAME',
+                                            'icon' => 'fa fa-user'));
+        $formDef->add('email', 'text', array('label' => 'FORM.NEWUSER.EMAIL',
+                                            'required' => false,
+                                            'disabled' => $action == 'del',
+                                            'translation_domain' => 'club',
+                                            'help' => 'FORM.NEWUSER.HELP.EMAIL',
+                                            'icon' => 'fa fa-envelope'));
+        $formDef->add('cancel', 'submit', array('label' => 'FORM.NEWUSER.CANCEL.'.strtoupper($action),
+                                                'translation_domain' => 'club',
                                                 'buttontype' => 'btn btn-default',
                                                 'icon' => 'fa fa-times'));
-        $formDef->add('save', 'submit', array('label' => 'FORM.USER.SUBMIT.'.strtoupper($action),
-                                                'translation_domain' => 'admin',
-                                                'icon' => 'fa fa-check'));
+        $formDef->add('save', 'submit', array('label' => 'FORM.NEWUSER.SUBMIT.'.strtoupper($action),
+                                                'translation_domain' => 'club',
+                                                'icon' => 'fa fa-magic'));
         return $formDef->getForm();
     }
     
@@ -101,24 +99,18 @@ class AnnonymousController extends Controller
             if ($user->getName() == null || trim($user->getName()) == '') {
                 $form->addError(new FormError($this->get('translator')->trans('FORM.USER.NONAME', array(), 'admin')));
             }
-            if ($user->getUsername() == null || trim($user->getUsername()) == '') {
-                $form->addError(new FormError($this->get('translator')->trans('FORM.USER.NOUSERNAME', array(), 'admin')));
-            }
             if ($user->getEmail() == null || trim($user->getEmail()) == '') {
                 $form->addError(new FormError($this->get('translator')->trans('FORM.USER.NOEMAIL', array(), 'admin')));
             }
-            if ($user->getPassword() == null || trim($user->getPassword()) == '') {
-                $form->addError(new FormError($this->get('translator')->trans('FORM.USER.NOPASSWORD', array(), 'admin')));
-            }
         }
         if ($form->isValid()) {
-            $usr = $this->get('logic')->getUserByName($user->getUsername());
+            $usr = $this->get('logic')->getUserByName($user->getEmail());
             if ($usr != null) {
                 $form->addError(new FormError($this->get('translator')->trans('FORM.USER.NAMEEXIST', array(), 'admin')));
             }
             /* @var $utilService Util */
             $utilService = $this->get('util');
-            if ($utilService->generatePassword($user, $user->getPassword()) === FALSE) {
+            if ($utilService->generatePassword($user, $user->getEmail()) === FALSE) {
                 $form->addError(new FormError($this->get('translator')->trans('FORM.USER.BADPASSWORD', array(), 'admin')));
             }
         }

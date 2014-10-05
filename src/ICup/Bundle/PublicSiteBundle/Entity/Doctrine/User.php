@@ -27,6 +27,8 @@ class User implements UserInterface
     public static $PRO = 3;
     /* Attached user - verified user - accepted to reference a club - cid must be valid */
     public static $ATT = 4;
+    /* Inform - ignored user - accepted to reference a club - cid must be valid */
+    public static $INF = 5;
     /* System user */
     public static $SYSTEM = 9;
 
@@ -69,7 +71,7 @@ class User implements UserInterface
 
     /**
      * @var integer $status
-     * User status: 1: authenticating, 2: verified, 3: prospector, 4: attached, 9: system
+     * User status: 1: authenticating, 2: verified, 3: prospector, 4: attached, 5: inform, 9: system
      * @ORM\Column(name="status", type="integer", nullable=false)
      */
     private $status;
@@ -226,7 +228,7 @@ class User implements UserInterface
     
     /**
      * Set status
-     * User status: AUTH: authenticating, VER: verified, PRO: prospector, ATT: attached, SYSTEM: system
+     * User status: AUTH: authenticating, VER: verified, PRO: prospector, ATT: attached, INF: inform, SYSTEM: system
      * @param integer $status
      * @return User
      */
@@ -239,7 +241,7 @@ class User implements UserInterface
 
     /**
      * Get status
-     * User status: AUTH: authenticating, VER: verified, PRO: prospector, ATT: attached, SYSTEM: system
+     * User status: AUTH: authenticating, VER: verified, PRO: prospector, ATT: attached, INF: inform, SYSTEM: system
      * @return integer 
      */
     public function getStatus()
@@ -253,7 +255,7 @@ class User implements UserInterface
      */
     public function isRelated()
     {
-        return $this->status === User::$PRO || $this->status === User::$ATT;
+        return $this->status === User::$PRO || $this->status === User::$ATT || $this->status === User::$INF;
     }
     
     /**

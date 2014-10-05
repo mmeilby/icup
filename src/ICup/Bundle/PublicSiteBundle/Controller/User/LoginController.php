@@ -58,17 +58,17 @@ class LoginController extends Controller
         $formDef = $this->createFormBuilder(array('username' => $request->getSession()->get(SecurityContext::LAST_USERNAME)));
         $formDef->setAction($this->generateUrl('_security_check'));
         $formDef->add('username', 'text', array('label' => 'FORM.LOGIN.USERNAME',
-                                                'translation_domain' => 'admin',
+                                                'translation_domain' => 'club',
                                                 'required' => false,
                                                 'help' => 'FORM.LOGIN.HELP.USERNAME',
                                                 'icon' => 'fa fa-user'));
         $formDef->add('password', 'password', array('label' => 'FORM.LOGIN.PASSWORD', 
-                                                    'translation_domain' => 'admin',
+                                                    'translation_domain' => 'club',
                                                     'required' => false,
                                                     'help' => 'FORM.LOGIN.HELP.PASSWORD',
                                                     'icon' => 'fa fa-key'));
         $formDef->add('login', 'submit', array('label' => 'FORM.LOGIN.LOGIN',
-                                               'translation_domain' => 'admin',
+                                               'translation_domain' => 'club',
                                                'icon' => 'fa fa-sign-in'));
         return $formDef->getForm();
     }

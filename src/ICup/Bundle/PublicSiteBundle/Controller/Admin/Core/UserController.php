@@ -245,7 +245,7 @@ class UserController extends Controller
             }
         }
         $status = array();
-        foreach (array(User::$AUTH, User::$VER, User::$PRO, User::$ATT) as $stat) {
+        foreach (array(User::$AUTH, User::$VER, User::$PRO, User::$INF, User::$ATT) as $stat) {
             $status[$stat] = 'FORM.USER.CHOICE.STATUS.'.$stat;
         }
         $formDef = $this->createFormBuilder($user);

@@ -9,7 +9,6 @@ use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\Form\FormError;
-use Symfony\Component\HttpFoundation\Response;
 use ICup\Bundle\PublicSiteBundle\Services\Util;
 
 /**
@@ -27,8 +26,6 @@ class ClubAdminController extends Controller
     {
         /* @var $utilService Util */
         $utilService = $this->get('util');
-        
-
         /* @var $user User */
         $user = $utilService->getCurrentUser();
         if (!$user->isClub()) {
@@ -42,7 +39,7 @@ class ClubAdminController extends Controller
         }
         // Prepare default data for form
         $clubFormData = $this->getClubDefaults();
-        $form = $this->makeClubForm($clubFormData, 'sel');
+        $form = $this->makeClubForm($clubFormData);
         $request = $this->getRequest();
         $form->handleRequest($request);
         if ($form->get('cancel')->isClicked()) {
@@ -76,7 +73,7 @@ class ClubAdminController extends Controller
         else {
             $tournament = null;
         }
-        return array('form' => $form->createView(), 'action' => 'add', 'user' => $user, 'tournament' => $tournament);
+        return array('form' => $form->createView(), 'currentuser' => $user, 'tournament' => $tournament);
     }
 
     /**
@@ -89,8 +86,6 @@ class ClubAdminController extends Controller
     {
         /* @var $utilService Util */
         $utilService = $this->get('util');
-        
-
         /* @var $user User */
         $user = $utilService->getCurrentUser();
         /* @var $tournament Tournament */
@@ -100,7 +95,7 @@ class ClubAdminController extends Controller
 
         // Prepare default data for form
         $clubFormData = $this->getClubDefaults();
-        $form = $this->makeClubForm($clubFormData, 'sel');
+        $form = $this->makeClubForm($clubFormData);
         $request = $this->getRequest();
         $form->handleRequest($request);
         if ($form->get('cancel')->isClicked()) {
@@ -134,7 +129,7 @@ class ClubAdminController extends Controller
         return $clubFormData;
     }
 
-    private function makeClubForm($club, $action) {
+    private function makeClubForm($club) {
         $countries = array();
         foreach ($this->get('util')->getCountries() as $ccode) {
             $country = $this->get('translator')->trans($ccode, array(), 'lang');
@@ -142,14 +137,25 @@ class ClubAdminController extends Controller
         }
         asort($countries);
         $formDef = $this->createFormBuilder($club);
-        $formDef->add('country', 'choice', array('label' => 'FORM.CLUB.COUNTRY', 'required' => false, 'choices' => $countries, 'empty_value' => 'FORM.CLUB.DEFAULT', 'disabled' => $action == 'del', 'translation_domain' => 'admin'));
-        $formDef->add('name', 'text', array('label' => 'FORM.CLUB.NAME', 'required' => false, 'disabled' => $action == 'del', 'translation_domain' => 'admin'));
-        $formDef->add('cancel', 'submit', array('label' => 'FORM.CLUB.CANCEL.'.strtoupper($action),
-                                                'translation_domain' => 'admin',
+        $formDef->add('country', 'choice', array('label' => 'FORM.NEWCLUB.COUNTRY',
+                                                'required' => false,
+                                                'choices' => $countries,
+                                                'empty_value' => 'FORM.NEWCLUB.DEFAULT',
+                                                'disabled' => false,
+                                                'translation_domain' => 'club',
+                                                'icon' => 'fa fa-globe'));
+        $formDef->add('name', 'text', array('label' => 'FORM.NEWCLUB.NAME',
+                                                'required' => false,
+                                                'disabled' => false,
+                                                'translation_domain' => 'club',
+                                                'help' => 'FORM.NEWCLUB.HELP.NAME',
+                                                'icon' => 'fa fa-home'));
+        $formDef->add('cancel', 'submit', array('label' => 'FORM.NEWCLUB.CANCEL',
+                                                'translation_domain' => 'club',
                                                 'buttontype' => 'btn btn-default',
                                                 'icon' => 'fa fa-times'));
-        $formDef->add('save', 'submit', array('label' => 'FORM.CLUB.SUBMIT.'.strtoupper($action),
-                                                'translation_domain' => 'admin',
+        $formDef->add('save', 'submit', array('label' => 'FORM.NEWCLUB.SUBMIT',
+                                                'translation_domain' => 'club',
                                                 'icon' => 'fa fa-check'));
         return $formDef->getForm();
     }
@@ -157,10 +163,10 @@ class ClubAdminController extends Controller
     private function checkForm($form, $club) {
         if ($form->isValid()) {
             if ($club->getName() == null || trim($club->getName()) == '') {
-                $form->addError(new FormError($this->get('translator')->trans('FORM.CLUB.NONAME', array(), 'admin')));
+                $form->addError(new FormError($this->get('translator')->trans('FORM.NEWCLUB.NONAME', array(), 'club')));
             }
             if ($club->getCountry() == null) {
-                $form->addError(new FormError($this->get('translator')->trans('FORM.CLUB.NOCOUNTRY', array(), 'admin')));
+                $form->addError(new FormError($this->get('translator')->trans('FORM.NEWCLUB.NOCOUNTRY', array(), 'club')));
             }
         }
         return $form->isValid();

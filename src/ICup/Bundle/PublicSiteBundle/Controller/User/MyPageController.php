@@ -7,6 +7,7 @@ use ICup\Bundle\PublicSiteBundle\Exceptions\RedirectException;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
+use ICup\Bundle\PublicSiteBundle\Services\Doctrine\TournamentSupport;
 use DateTime;
 
 /**
@@ -103,7 +104,7 @@ class MyPageController extends Controller
             // Non related users get a different view
             $rexp = new RedirectException();
             $rexp->setResponse($this->render('ICupPublicSiteBundle:User:mypage_nonrel.html.twig',
-                                             array('currentuser' => $user)));
+                                             array_merge(array('currentuser' => $user), $this->getTournaments())));
             throw $rexp;
         }
     }
@@ -121,18 +122,54 @@ class MyPageController extends Controller
         $tournamentList = $this->getEnrollments($user);
         // Redirect to my page
         return $this->render('ICupPublicSiteBundle:User:mypage.html.twig',
-                array('club' => $club,
-                      'prospectors' => $prospectors,
-                      'currentuser' => $user,
-                      'tournaments' => $tournamentList));
+                array_merge(
+                    array('club' => $club,
+                          'prospectors' => $prospectors,
+                          'currentuser' => $user,
+                          'tournamentlist' => $tournamentList),
+                    $this->getTournaments(),
+                    $this->listTeams($club)));
+    }
+
+    private function listTeams($club)
+    {
+        $today = new DateTime();
+        $tournaments = $this->get('logic')->listAvailableTournaments();
+        foreach ($tournaments as $tournament) {
+            $stat = $this->get('tmnt')->getTournamentStatus($tournament->getId(), $today);
+            if ($stat == TournamentSupport::$TMNT_GOING || $stat == TournamentSupport::$TMNT_DONE) {
+                $categories = $this->get('logic')->listCategories($tournament->getId());
+                $categoryList = array();
+                foreach ($categories as $category) {
+                    $categoryList[$category->getId()] = $category;
+                }
+                $teams = $this->get('tmnt')->listTeamsByClub($tournament->getId(), $club->getId());
+                $teamList = array();
+                foreach ($teams as $team) {
+                    $name = $team['name'];
+                    if ($team['division'] != '') {
+                        $name.= ' "'.$team['division'].'"';
+                    }
+                    $team['name'] = $name;
+                    $teamList[$team['catid']][$team['id']] = $team;
+                }
+
+                return array('teams' => $teamList, 'categories' => $categoryList);
+            }
+        }
+        return array('teams' => array());
     }
 
     private function getEnrollments(User $user) {
+        $today = new DateTime();
         $enrolled = $this->get('logic')->listAnyEnrolledByClub($user->getCid());
         $tournaments = $this->get('logic')->listAvailableTournaments();
         $tournamentList = array();
         foreach ($tournaments as $tournament) {
-            $tournamentList[$tournament->getId()] = array('tournament' => $tournament, 'enrolled' => 0);
+            $stat = $this->get('tmnt')->getTournamentStatus($tournament->getId(), $today);
+            if ($stat != TournamentSupport::$TMNT_HIDE) {
+                $tournamentList[$tournament->getId()] = array('tournament' => $tournament, 'enrolled' => 0);
+            }
         }
         
         foreach ($enrolled as $enroll) {
@@ -142,5 +179,29 @@ class MyPageController extends Controller
             }
         }
         return $tournamentList;
+    }
+    
+    private function getTournaments() {
+        $tournaments = $this->get('logic')->listAvailableTournaments();
+        $tournamentList = array();
+        $keyList = array(
+            TournamentSupport::$TMNT_ENROLL => 'enroll',
+            TournamentSupport::$TMNT_GOING => 'active',
+            TournamentSupport::$TMNT_DONE => 'done'
+        );
+        $statusList = array(
+            'enroll' => array(),
+            'active' => array(),
+            'done' => array()
+        );
+        $today = new DateTime();
+        foreach ($tournaments as $tournament) {
+            $stat = $this->get('tmnt')->getTournamentStatus($tournament->getId(), $today);
+            if ($stat != TournamentSupport::$TMNT_HIDE) {
+                $tournamentList[$tournament->getId()] = array('tournament' => $tournament, 'status' => $stat);
+                $statusList[$keyList[$stat]][] = $tournament;
+            }
+        }
+        return array('tournaments' => $tournamentList, 'statuslist' => $statusList);
     }
 }

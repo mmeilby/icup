@@ -598,7 +598,7 @@ class BusinessLogic
                 "from ".$this->entity->getRepositoryPath('User')." u ".
                 "where u.cid=:club and ".
                       "u.role in (".User::$CLUB.",".User::$CLUB_ADMIN.") and ".
-                      "u.status in (".User::$PRO.",".User::$ATT.") ".
+                      "u.status in (".User::$PRO.",".User::$ATT.",".User::$INF.") ".
                 "order by u.status, u.role desc, u.name");
         $qb->setParameter('club', $clubid);
         return $qb->getResult();

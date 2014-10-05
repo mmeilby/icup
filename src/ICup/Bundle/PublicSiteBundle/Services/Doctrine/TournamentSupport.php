@@ -60,24 +60,42 @@ class TournamentSupport
     }
     
     public function isEnrollmentAllowed($tournamentid, $date) {
+        return $this->isDateWithinInterval($tournamentid, $date, Event::$ENROLL_START, Event::$ENROLL_STOP, false);
+    }
+
+    public function isTournamentInProgress($tournamentid, $date) {
+        return $this->isDateWithinInterval($tournamentid, $date, Event::$MATCH_START, Event::$MATCH_STOP, true);
+    }
+
+    public function isTournamentArchived($tournamentid, $date) {
+        return $this->isDatePassedEvent($tournamentid, $date, Event::$TOURNAMENT_ARCHIVED);
+    }
+
+    public function isTournamentComplete($tournamentid, $date) {
+        return $this->isDatePassedEvent($tournamentid, $date, Event::$MATCH_STOP);
+    }
+
+    private function isDateWithinInterval($tournamentid, $date, $start, $stop, $default) {
         $qb = $this->em->createQuery(
                 "select e.id,e.date,e.event ".
                 "from ".$this->entity->getRepositoryPath('Event')." e ".
                 "where e.pid=:tournament and ".
-                      "e.event in (1,2) ".
+                      "e.event in (:start,:stop) ".
                 "order by e.event asc");
         $qb->setParameter('tournament', $tournamentid);
-        $status = false;
+        $qb->setParameter('start', $start);
+        $qb->setParameter('stop', $stop);
+        $status = $default;
         foreach ($qb->getResult() as $event) {
             $eventdate = date_create_from_format($this->container->getParameter('db_date_format'), $event['date']);
-            if ($event['event'] == Event::$ENROLL_START && $date < $eventdate) {
+            if ($event['event'] == $start && $date < $eventdate) {
                 $status = false;
                 break;
             }
             else {
                 $status = true;
             }
-            if ($event['event'] == Event::$ENROLL_STOP && $date < $eventdate) {
+            if ($event['event'] == $stop && $date < $eventdate) {
                 $status = true;
             }
             else {
@@ -88,6 +106,27 @@ class TournamentSupport
         return $status;
     }
 
+    private function isDatePassedEvent($tournamentid, $date, $eventType) {
+        $qb = $this->em->createQuery(
+                "select e.id,e.date,e.event ".
+                "from ".$this->entity->getRepositoryPath('Event')." e ".
+                "where e.pid=:tournament and ".
+                      "e.event=:etype");
+        $qb->setParameter('tournament', $tournamentid);
+        $qb->setParameter('etype', $eventType);
+        $event = $qb->getOneOrNullResult();
+        if ($event != null) {
+            $eventdate = date_create_from_format($this->container->getParameter('db_date_format'), $event['date']);
+            $status = $date >= $eventdate;
+        }
+        else {
+            $status = false;
+        }
+        return $status;
+    }
+
+    /* Tournament is archived - not shown by default */
+    public static $TMNT_HIDE = 0;
     /* Tournament is open for team enrollment */
     public static $TMNT_ENROLL = 1;
     /* Tournament is in progress */
@@ -96,48 +135,21 @@ class TournamentSupport
     public static $TMNT_DONE = 3;
     
     public function getTournamentStatus($tournamentid, $date) {
-        $qb = $this->em->createQuery(
-                "select e.id,e.date,e.event ".
-                "from ".$this->entity->getRepositoryPath('Event')." e ".
-                "where e.pid=:tournament and ".
-                      "e.event in (3,4) ".
-                "order by e.event asc");
-        $qb->setParameter('tournament', $tournamentid);
-        $status = TournamentSupport::$TMNT_GOING;
-        foreach ($qb->getResult() as $event) {
-            $eventdate = date_create_from_format($this->container->getParameter('db_date_format'), $event['date']);
-            if ($event['event'] == Event::$MATCH_START && $date < $eventdate) {
-                $status = TournamentSupport::$TMNT_ENROLL;
-            }
-            if ($event['event'] == Event::$MATCH_STOP && $date >= $eventdate) {
-                $status = TournamentSupport::$TMNT_DONE;
-            }
+        if ($this->isTournamentArchived($tournamentid, $date)) {
+            return TournamentSupport::$TMNT_HIDE;
         }
-        return $status;
+        if ($this->isTournamentInProgress($tournamentid, $date)) {
+            return TournamentSupport::$TMNT_GOING;
+        }
+        if ($this->isEnrollmentAllowed($tournamentid, $date)) {
+            return TournamentSupport::$TMNT_ENROLL;
+        }
+        if ($this->isTournamentComplete($tournamentid, $date)) {
+            return TournamentSupport::$TMNT_DONE;
+        }
+        return TournamentSupport::$TMNT_HIDE;
     }
 
-    public function isTournamentArchived($tournamentid, $date) {
-        $qb = $this->em->createQuery(
-                "select e.id,e.date,e.event ".
-                "from ".$this->entity->getRepositoryPath('Event')." e ".
-                "where e.pid=:tournament and e.event=9");
-        $qb->setParameter('tournament', $tournamentid);
-        $event = $qb->getOneOrNullResult();
-        if ($event != null) {
-            $eventdate = date_create_from_format($this->container->getParameter('db_date_format'), $event['date']);
-            if ($date < $eventdate) {
-                $status = false;
-            }
-            else {
-                $status = true;
-            }
-        }
-        else {
-            $status = false;
-        }
-        return $status;
-    }
-    
     public function listPlaygroundsByTournament($tournamentid) {
         $qb = $this->em->createQuery(
                 "select p.id,p.name,s.name as site ".

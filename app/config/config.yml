@@ -29,7 +29,7 @@ framework:
     validation:
         enabled:              false
         cache:                ~
-        enable_annotations:   false
+        enable_annotations:   true
         translation_domain:   validators
 
 # Twig Configuration

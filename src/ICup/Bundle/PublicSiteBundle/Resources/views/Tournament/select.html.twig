@@ -1,40 +1,28 @@
 {% extends "ICupPublicSiteBundle:Masters:standard.html.twig" %}
 {% trans_default_domain "tournament" %}
 
+{% block widebody %}
+<div class="jumbotron">
+    <div class="container">
+        <h1>{% trans %}FORM.SEL_TMNT.TITLE{% endtrans %}</h1>
+        <h3>{% trans %}FORM.SEL_TMNT.SUBTITLE{% endtrans %}</h3>
+        <p>{% trans %}FORM.SEL_TMNT.DESCRIPTION{% endtrans %}</p>
+    </div>
+</div>
+{% endblock %}
+
 {% block body %}
-<div class="row">
-    <div class="col-lg-6 hidden-xs">
-        <div class="jumbotron">
-            <h1>{% trans %}FORM.SEL_TMNT.TITLE{% endtrans %}</h1>
-            <h3>
-                {% trans %}FORM.SEL_TMNT.SUBTITLE{% endtrans %}<br />
-            </h3>
-            <p class="lead">{% trans %}FORM.SEL_TMNT.DESCRIPTION{% endtrans %}</p>
-        </div>
-    </div>
-    <div class="col-lg-6 visible-xs-block">
-        <div>
-            <h1>{% trans %}FORM.SEL_TMNT.TITLE{% endtrans %}</h1>
-            <h3>
-                {% trans %}FORM.SEL_TMNT.SUBTITLE{% endtrans %}<br />
-            </h3>
-            <p class="lead">{% trans %}FORM.SEL_TMNT.DESCRIPTION{% endtrans %}</p>
-        </div>
-    </div>
-    <div class="col-lg-6">
-        <div class="list-group">
-        {% for tmnt in tournaments %}
-            {% set tournament = tmnt.tournament %}
-            <a class="list-group-item" href="{{ path('_tournament_overview', { 'tournament': tournament.key }) }}">
-                <h3 class="list-group-item-heading">{{ tournament.name }}</h3>
-                <p class="list-group-item-text">
-                    {{ ['FORM.SEL_TMNT.STATUS.',tmnt.status]|join|trans }}
-                </p>
-                <h4 class="list-group-item-text">{% trans %}FORM.SEL_TMNT.LEGEND.EDITION{% endtrans %}: {{ tournament.edition }}</h4>
-                <p class="list-group-item-text">{{ tournament.description }}</p>
-            </a>
-        {% endfor %}
-        </div>
-    </div>
+<div class="list-group">
+{% for tmnt in tournaments %}
+    {% set tournament = tmnt.tournament %}
+    <a class="list-group-item" href="{{ path('_tournament_overview', { 'tournament': tournament.key }) }}">
+        <h3 class="list-group-item-heading">{{ tournament.name }}</h3>
+        <p class="list-group-item-text">
+            {{ ['FORM.SEL_TMNT.STATUS.',tmnt.status]|join|trans }}
+        </p>
+        <h4 class="list-group-item-text">{% trans %}FORM.SEL_TMNT.LEGEND.EDITION{% endtrans %}: {{ tournament.edition }}</h4>
+        <p class="list-group-item-text">{{ tournament.description }}</p>
+    </a>
+{% endfor %}
 </div>
 {% endblock %}

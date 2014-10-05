@@ -15,7 +15,6 @@ class LocaleController extends Controller
     {
         $request = $this->getRequest();
         $session = $request->getSession();
-        $session->set('locale', $locale);
         $session->set('_locale', $locale);
         $referer = $request->headers->get('referer');
         return new RedirectResponse($referer);

@@ -12,13 +12,21 @@ services:
         tags:
             - { name: kernel.event_listener, event: kernel.exception, method: onKernelException }
 
-    icup.language.kernel_request_listener:
-        class: "ICup\\Bundle\\PublicSiteBundle\\EventListener\\LanguageListener"
+    kernel.listener.translation.listener:
+        class: ICup\Bundle\PublicSiteBundle\EventListener\TranslatorListener
+        arguments:
+            - "@translator"
+        tags:
+            - { name: kernel.event_subscriber }
+        
+    kernel.listener.locale.listener:
+        class: ICup\Bundle\PublicSiteBundle\EventListener\LocaleListener
         arguments:
             - "@twig"
             - "@logger"
+            - ["%kernel.default_locale%"]
         tags:
-            - { name: kernel.event_listener, event: kernel.request, method: setLocaleForUnauthenticatedUser }
+            - { name: kernel.event_subscriber }
             
     form.type_extension.field:
         class: "ICup\\Bundle\\PublicSiteBundle\\Form\\Extension\\FieldTypeExtension"

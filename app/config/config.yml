@@ -5,15 +5,16 @@ imports:
     - { resource: countries.yml }
 
 framework:
-    #esi:             ~
-    translator:       { fallback: en }
+    translator:     
+        enabled: true
+        fallback: en
+        logging: %kernel.debug%
     secret:          %secret%
     router:
         resource: "%kernel.root_dir%/config/routing.yml"
         strict_requirements: %kernel.debug%
     form:            ~
     csrf_protection: ~
-    validation:      { enable_annotations: true }
     templating:
         engines: ['twig']
         assets_base_urls:
@@ -38,7 +39,6 @@ twig:
     strict_variables: %kernel.debug%
     globals:
         imagepath: /icup/web/bundles/icuppublicsite/images
-        # List of supported locales - first locale is preferred default if user requests unsupported locale
         supported_locales: { en: 'GBR', it: 'ITA', fr: 'FRA', de: 'DEU', es: 'ESP', po: 'POL', da: 'DNK' }
         
 # Assetic Configuration

@@ -3,6 +3,7 @@ imports:
     - { resource: security.yml }
     - { resource: services.yml }
     - { resource: countries.yml }
+    - { resource: config_cmf.yml }
 
 framework:
     translator:     

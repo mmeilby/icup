@@ -16,9 +16,35 @@ class AppKernel extends Kernel
             new Symfony\Bundle\AsseticBundle\AsseticBundle(),
             new Doctrine\Bundle\DoctrineBundle\DoctrineBundle(),
             new Sensio\Bundle\FrameworkExtraBundle\SensioFrameworkExtraBundle(),
+            
             new JMS\AopBundle\JMSAopBundle(),
             new JMS\SecurityExtraBundle\JMSSecurityExtraBundle(),
             new FOS\JsRoutingBundle\FOSJsRoutingBundle(),
+
+            // Symfony CMF Standard Edition Bundles
+            new Doctrine\Bundle\PHPCRBundle\DoctrinePHPCRBundle(),
+            new Doctrine\Bundle\DoctrineCacheBundle\DoctrineCacheBundle(),
+            new Symfony\Cmf\Bundle\CoreBundle\CmfCoreBundle(),
+            new Symfony\Cmf\Bundle\ContentBundle\CmfContentBundle(),
+            new Symfony\Cmf\Bundle\RoutingBundle\CmfRoutingBundle(),
+            new Symfony\Cmf\Bundle\SimpleCmsBundle\CmfSimpleCmsBundle(),
+//            new Symfony\Cmf\Bundle\TreeBrowserBundle\CmfTreeBrowserBundle(),
+
+            new Symfony\Cmf\Bundle\BlockBundle\CmfBlockBundle(),
+            new Sonata\BlockBundle\SonataBlockBundle(),
+            new Sonata\CoreBundle\SonataCoreBundle(),
+//            new Sonata\AdminBundle\SonataAdminBundle(),
+//            new Sonata\jQueryBundle\SonatajQueryBundle(),
+//            new Sonata\DoctrinePHPCRAdminBundle\SonataDoctrinePHPCRAdminBundle(),
+
+            new Symfony\Cmf\Bundle\MenuBundle\CmfMenuBundle(),
+            new Knp\Bundle\MenuBundle\KnpMenuBundle(),
+
+//            new Lunetics\LocaleBundle\LuneticsLocaleBundle(),
+            new Symfony\Cmf\Bundle\CreateBundle\CmfCreateBundle(),
+            new FOS\RestBundle\FOSRestBundle(),
+            new JMS\SerializerBundle\JMSSerializerBundle(),
+            
             new ICup\Bundle\PublicSiteBundle\ICupPublicSiteBundle(),
        );
 

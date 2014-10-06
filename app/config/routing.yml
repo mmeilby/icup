@@ -5,4 +5,15 @@ i_cup_public_site:
 
 fos_js_routing:
     resource: "@FOSJsRoutingBundle/Resources/config/routing/routing.xml"
-    
+
+cmf_create:
+    resource: "@CmfCreateBundle/Resources/config/routing/rest.xml"
+
+#admin:
+#    resource: '@SonataAdminBundle/Resources/config/routing/sonata_admin.xml'
+#    prefix: /admin
+
+#_sonata_admin:
+#    resource: .
+#    type: sonata_admin
+#    prefix: /admin

@@ -1,0 +1,88 @@
+assetic:
+    bundles:        [ ICupPublicSiteBundle, CmfCreateBundle ]
+
+# Doctrine PHPCR-ODM configuration
+doctrine_phpcr:
+    session:
+        backend:    "%phpcr_backend%"
+        workspace:  "%phpcr_workspace%"
+        username:   "%phpcr_user%"
+        password:   "%phpcr_password%"
+
+    odm:
+        auto_generate_proxy_classes: "%kernel.debug%"
+        auto_mapping: true
+        locales:
+            en: [ de, fr, da ]
+            it: [ en ]
+            fr: [ en ]
+            de: [ en ]
+            es: [ en ]
+            po: [ en ]
+            da: [ en ]
+        locale_fallback: hardcoded
+        
+# Jackalope Metadata and Node Cache services
+doctrine_cache:
+    providers:
+        phpcr_meta:
+            type: file_system
+        phpcr_nodes:
+            type: file_system
+
+# Cmf Configuration
+cmf_core:
+    persistence:
+        phpcr: true
+        # if you want another basepath
+        # basepath: /custom/basepath
+    publish_workflow: false
+    multilang:
+        locales: [ en, it, fr, de, es, po, da ]
+
+# Cmf Routing Configuration
+cmf_routing:
+    chain:
+        routers_by_id:
+            router.default: 200
+            cmf_routing.dynamic_router: 100
+    dynamic:
+        persistence:
+            phpcr:
+                enabled: true
+        templates_by_class:
+            Symfony\Cmf\Bundle\SimpleCmsBundle\Doctrine\Phpcr\Page: ICupPublicSiteBundle:Page:index.html.twig
+        locales: [ en, it, fr, de, es, po, da ]
+
+#lunetics_locale:
+#    strict_mode: true
+#    guessing_order:
+#        - cookie
+#        - router
+#        - browser
+#    allowed_locales: [ en, it, fr, de, es, po, da ]
+
+# Menu Configuration
+knp_menu:
+    twig: true
+
+sonata_block:
+    default_contexts: [cms]
+    blocks:
+        # Enable the SonataAdminBundle block
+#        sonata.admin.block.admin_list:
+#            contexts: [admin]
+        icup.block.unit:
+            settings:
+                maxItems: 3
+#    blocks_by_class:
+#        Symfony\Cmf\Bundle\BlockBundle\Doctrine\Phpcr\RssBlock:
+#            settings:
+#                maxItems: 5            
+                
+# Cmf Create Configuration
+fos_rest:
+    view:
+        formats:
+            json: true
+

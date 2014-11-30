@@ -7,6 +7,8 @@
 <div class="row">
     <div class="col-md-8">
 {% if currentuser.status == 3 %}
+        {{ sonata_block_render({'name': '/cms/content/blocks/mypage/section_1'}) }}
+<!--
         <div class="row">
             <div class="col-sm-9">
                 <h1>{{ 'FORM.MYPAGE.GREETING.TITLE'|trans({ '%club%': club.name }) }}</h1>
@@ -17,6 +19,7 @@
                 <img src="{{ imagepath }}/IWC/Teramo8.png" alt="logo" class="img-responsive img-rounded" />
             </div>
         </div>
+-->
 {% else %}
 {% endif %}
         <div class="row">

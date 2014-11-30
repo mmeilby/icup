@@ -4,17 +4,8 @@
 {% block body %}
 <div class="row">
     <div class="col-md-8">
-        <div class="row">
-            <div class="col-sm-9">
-                <h1>{% trans %}FORM.MYPAGE.NONREL.GREETING.TITLE{% endtrans %}</h1>
-                <p>{% trans %}FORM.MYPAGE.NONREL.GREETING.TEXT{% endtrans %}</p>
-            </div>
-            <div class="col-sm-3 hidden-xs">
-                <br />
-                <img src="{{ imagepath }}/IWC/Teramo8.png" alt="logo" class="img-responsive img-rounded" />
-            </div>
-        </div>
-        <div class="row">
+        {{ sonata_block_render({'name': '/cms/content/blocks/mypage/wellcome'}) }}
+<       <div class="row">
 {% for tournament in statuslist.active %}
             <div class="col-sm-6">
                 <h2>{% trans %}FORM.FRONTPAGE.BLOCK3.TITLE{% endtrans %}</h2>

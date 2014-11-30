@@ -1,0 +1,33 @@
+{% extends "ICupPublicSiteBundle:Masters:standard.html.twig" %}
+{% trans_default_domain "club" %}
+
+{% block widebody %}
+<div class="jumbotron"
+     style="
+    background-image: url('{{ imagepath }}/IWC/bg.jpg');
+    background-size: cover;
+    background-repeat: no-repeat;">
+    <div class="container">
+        <img src="{{ imagepath }}/IWC/logo.png" alt="logo" class="img-responsive" />
+    </div>
+</div>
+{% endblock %}
+
+{% block body %}
+<div class="row">
+    <div class="col-md-8">
+        {{ sonata_block_render({'name': '/cms/content/blocks/information/intro'}) }}
+        {{ sonata_block_render({'name': '/cms/content/blocks/information/price'}) }}
+        {{ sonata_block_render({'name': '/cms/content/blocks/information/firsttime'}) }}
+        {{ sonata_block_render({'name': '/cms/content/blocks/information/advices'}) }}
+        {{ sonata_block_render({'name': '/cms/content/blocks/information/matches'}) }}
+        {{ sonata_block_render({'name': '/cms/content/blocks/information/packing'}) }}
+    </div>
+    <div class="col-md-4">
+        {{ sonata_block_render({'name': '/cms/content/blocks/information/accomodation'}) }}
+        {{ sonata_block_render({'name': '/cms/content/blocks/information/dining'}) }}
+        {{ sonata_block_render({'name': '/cms/content/blocks/information/matchtime'}) }}
+        {{ sonata_block_render({'name': '/cms/content/blocks/information/playgrounds'}) }}
+    </div>
+</div>
+{% endblock %}

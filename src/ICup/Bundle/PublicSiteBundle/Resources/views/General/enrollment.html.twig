@@ -1,0 +1,46 @@
+{% extends "ICupPublicSiteBundle:Masters:standard.html.twig" %}
+{% trans_default_domain "club" %}
+
+{% block widebody %}
+<div class="jumbotron"
+     style="
+    background-image: url('{{ imagepath }}/IWC/bg.jpg');
+    background-size: cover;
+    background-repeat: no-repeat;">
+    <div class="container">
+        <img src="{{ imagepath }}/IWC/logo.png" alt="logo" class="img-responsive" />
+    </div>
+</div>
+{% endblock %}
+
+{% block body %}
+<div class="row">
+    <div class="col-md-8">
+        {{ sonata_block_render({'name': '/cms/content/blocks/enrollment/terms'}) }}
+    </div>
+    <div class="col-md-4">
+        <i class="fa fa-ticket fa-5x"></i>
+        <h2>Tilmeld dig her - udfyld og send</h2>
+        <p>
+            {{ form(form) }}
+        </p>
+<!--    
+        <i class="fa fa-ticket fa-5x"></i>
+        <h2>{% trans %}FORM.FRONTPAGE.BLOCK2.TITLE{% endtrans %}</h2>
+        <p>{% trans %}FORM.FRONTPAGE.BLOCK2.DESCRIPTION{% endtrans %}</p>
+        <p>
+{% if app.user == null %}
+            <a href="{{ path('_ausr_new_user') }}" role="button">
+                <h3><span class="label label-default"><i class="fa fa-ticket"></i>&nbsp;Opret profil</span></h3>
+            </a>
+{% else %}
+            <a href="{{ path('_user_my_page') }}" role="button">
+                <h3><span class="label label-default"><i class="fa fa-ticket"></i>&nbsp;Tilmeld</span></h3>
+            </a>
+{% endif %}
+        </p>
+-->
+        {{ sonata_block_render({'name': '/cms/content/blocks/contact/address'}) }}
+    </div>
+</div>
+{% endblock %}

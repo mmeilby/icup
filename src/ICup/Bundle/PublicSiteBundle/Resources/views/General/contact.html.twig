@@ -2,35 +2,12 @@
 {% trans_default_domain "tournament" %}
 
 {% block body %}
-<h2>{% trans %}FORM.CONTACT.TITLE{% endtrans %}</h2>
 <div class="row">
     <div class="col-md-8">
-        <p>{% trans %}Hvis du har brug for mere information er du velkommen til at kontakte stævnets danske kontakt:{% endtrans %}</p>
-        <address>
-            <strong>Morten Meilby<br />
-            e-mail: mm@iserve.dk<br />
-            Tlf.: 40203500</strong>
-        </address>
-        <p>Du kan også få hjælp til tilmelding.</p>
-        <p>Kontakt til stævnekontoret i Teramo:</p>
-        <address>
-            <strong>INTERAMNIA WORLD CUP<br />
-            ORGANIZING COMMITTEE</strong><br />
-            Via V. Irelli 55<br />
-            64100 Teramo<br />
-            Italien<br />
-            Tlf.: +39 086 124 3375<br />
-            Fax: +39 086 124 7648<br />
-            Skype: interamniacup<br />
-            e-mail: coppaint@genesi.it<br />
-            www.interamniaworldcup.com<br />
-            <br />
-            <strong>FACEBOOK</strong><br />
-            Interamnia World Cup officielle Facebook side:<br />
-            www.facebook.com/InteramniaWorldCup
-        </address>
+        {{ sonata_block_render({'name': '/cms/content/blocks/contact/address'}) }}
     </div>
     <div class="col-md-4">
+        <p>&nbsp;</p>
         <div class="panel panel-default">
            <div class="panel-heading">
                {% trans %}FORM.CONTACT.SUBTITLE{% endtrans %}<br />

@@ -23,9 +23,9 @@ FORM:
     BLOCK2:
         TITLE: Holdtilmelding
         DESCRIPTION: >
-                     Du kan tilmelde hold til turneringen.
-                     Med en gratis klubprofil kan du tilmelde hold her og nu,
-                     så du sikrer dig en plads i turneringen.
+                     Tilmelding af hold er mulig nu.
+                     Se hvilke betingelser der gælder og hvad prisen for at deltage er.
+                     Hvis du opretter en gratis profil kan du tilmelde hold online.
         LEARNMORE: Tilmeld hold
     BLOCK3:
         TITLE: Kampe i dag
@@ -38,6 +38,11 @@ FORM:
                      Hvem blev turneringens vindere? Se hvilke lande der fik pokaler med hjem.
                      Under statistik finder du de største bedrifter i turneringen.
         LEARNMORE: Læs mere om vinderne
+    BLOCK5:
+        TITLE: Information
+        DESCRIPTION: >
+                     Læs om det der er værd at vide om stævnet. Hvad koster det? Hvormange
+                     kampe spiller man? Hvad kan du pakke? Hvor bor og spiser man i Teramo?
     NAME: Dit navn
     CLUB: Angiv hvilken klub du henvender dig på vegne af
     PHONE: Et telefon nummer du kan kontaktes på

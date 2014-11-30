@@ -1,0 +1,464 @@
+frontpage:
+    section_1:
+        title: Tag til Italien med din håndboldklub
+        body: >
+            <p>Elsker du håndbold og vil du gerne deltage i et internationalt stævne til sommer - så er Interamnia World Cup det helt rigtige!</p>
+            <p><img alt="" src="/icup/web/bundles/icuppublicsite/images/IWC/Teramo.png" style="border-style:solid; border-width:2px; float:right; height:200px; margin-left:5px; margin-right:5px; width:300px">Fra den 5. til den 11. juli afvikles dette fantastiske stævne ved Italiens østkyst - kun&nbsp;25 km fra Adriaterhavet - i den kønne klassiske by Teramo for foden af Italiens højeste bjerg Gran Sasso.</p>
+            <p>Med 200 hold fordelt på 50 lande der til sammen repræsenterer de fem kontinenter bliver&nbsp;stævnet afholdes et brag af en oplevelse.</p>
+            <p>På disse sider finder du al den information der er nødvendig for at komme videre og blive en del af oplevelsen til sommer. Har du brug for yderligere information finder du&nbsp;kontaktoplysninger i menuen.</p>
+            <p>Vediamo a Teramo</p>
+mypage:
+    wellcome:
+        title: Velkommen til mit iCup
+        body: >
+            <p>Elsker du håndbold og vil du gerne deltage i et internationalt stævne til sommer - så er Interamnia World Cup det helt rigtige!</p>
+            <p><img alt="" src="/icup/web/bundles/icuppublicsite/images/IWC/Teramo8.png" style="border-style:solid; border-width:2px; float:right; height:300px; margin-left:5px; margin-right:5px; width:200px">Fra den 5. til den 11. juli afvikles dette fantastiske stævne ved Italiens østkyst - kun&nbsp;25 km fra Adriaterhavet - i den kønne klassiske by Teramo for foden af Italiens højeste bjerg Gran Sasso.</p>
+            <p>Med 200 hold fordelt på 50 lande der til sammen repræsenterer de fem kontinenter bliver&nbsp;stævnet afholdes et brag af en oplevelse.</p>
+            <p>På disse sider finder du al den information der er nødvendig for at komme videre og blive en del af oplevelsen til sommer. Har du brug for yderligere information finder du&nbsp;kontaktoplysninger i menuen.</p>
+            <p>Vediamo a Teramo</p>
+    section_1:
+        title: Mit iCup
+        body: >
+            <p>Elsker du håndbold og vil du gerne deltage i et internationalt stævne til sommer - så er Interamnia World Cup det helt rigtige!</p>
+            <p><img alt="" src="/icup/web/bundles/icuppublicsite/images/IWC/Teramo8.png" style="border-style:solid; border-width:2px; float:right; height:300px; margin-left:5px; margin-right:5px; width:200px">Fra den 5. til den 11. juli afvikles dette fantastiske stævne ved Italiens østkyst - kun&nbsp;25 km fra Adriaterhavet - i den kønne klassiske by Teramo for foden af Italiens højeste bjerg Gran Sasso.</p>
+            <p>Med 200 hold fordelt på 50 lande der til sammen repræsenterer de fem kontinenter bliver&nbsp;stævnet afholdes et brag af en oplevelse.</p>
+            <p>På disse sider finder du al den information der er nødvendig for at komme videre og blive en del af oplevelsen til sommer. Har du brug for yderligere information finder du&nbsp;kontaktoplysninger i menuen.</p>
+            <p>Vediamo a Teramo</p>
+connectclub:
+    follower:
+        title: Ny club?
+        body: >
+            <p>Du har valgt at forbinde din profil med en klub. Måske er klubben allerede oprettet - måske er du den første der opretter en profil for klubben.</p>
+            <ul>
+                <li><strong>Hvis du ønsker at følge en klub</strong> for at se holdenes resultater skal du knytte din profil til en eksisterende klub. At oprette en ny klubprofil vil i dette tilfælde ikke give dig adgang til at se og følge klubbens hold. Vær omhyggelig når du søger klubben ved at skrive dens navn.</li>
+                <li><strong>Hvis du er klubansvarlig</strong> og skal tilmelde hold til en turnering kan du opleve at du skal oprette en klubprofil først. Hvis du forventer at klubprofilen allerede er oprettet skal du være omhyggelig når du søger klubben på dens navn.</li>
+            </ul>
+            <p><strong>Generelt når du søger efter en klub</strong><br>
+            Når du har skrevet to tegn eller mere fra klubbens navn vil du få mulighed for at vælge mellem op til tre klubber der allerede er oprettet og som passer til din søgning. Hvis du ser din klub i listen af klubber skal du klikke på klubbens navn i listen.</p>
+            <p><u>Hvis du ikke finder den klub du søger</u> skal du taste klubbens fulde navn og klikke på knappen <em>tilknyt klub</em>. Dermed opretter du en ny klubprofil hvor du er administrator. Denne rolle kan du senere videregive til andre der tilknyttes klubben.</p>
+contact:
+    address:
+        title: Kontakt
+        body: >
+            <p>Hvis du har brug for mere information er du velkommen til at kontakte stævnets danske kontakt:</p>
+            <address>
+                <strong>Morten Meilby<br />
+                e-mail: mm@iserve.dk<br />
+                Tlf.: 40203500</strong>
+            </address>
+            <p>Du kan også få hjælp til tilmelding.</p>
+            <p>Kontakt til stævnekontoret i Teramo:</p>
+            <address>
+                <strong>INTERAMNIA WORLD CUP<br />
+                ORGANIZING COMMITTEE</strong><br />
+                Via V. Irelli 55<br />
+                64100 Teramo<br />
+                Italien<br />
+                Tlf.: +39 086 124 3375<br />
+                Fax: +39 086 124 7648<br />
+                Skype: interamniacup<br />
+                e-mail: coppaint@genesi.it<br />
+                <a href="www.interamniaworldcup.com">www.interamniaworldcup.com</a><br />
+                <br />
+                <strong>FACEBOOK</strong><br />
+                Interamnia World Cup officielle Facebook side:<br />
+                <a href="http://www.facebook.com/InteramniaWorldCup">www.facebook.com/InteramniaWorldCup</a>
+            </address>
+enrollment:
+    terms:
+        title: Tilmelding 2015
+        body: >
+            <p>
+            Tilmelding sker ved indbetaling af holdgebyr samt depositum.
+            Deltagergebyr der dækker logi/forplejning betales efterfølgende.
+            Kvittering for indbetaling vedlægges tilmeldingsblanket (blanketten kan hentes under trykt information i menuen).
+            </p>
+
+            <h4>HOLDGEBYR OG DEPOSITUM</h4>
+
+            <p>
+            Tilmelding af hold kan ske frem til den 15. april 2015.
+            Men af hensyn til planlægning med de mange hold, der forventes at deltage til stævnet,
+            ydes der en reduktion i holdgebyret jo tidligere tilmelding sker.
+            Da det også er væsentligt for stævnet at have en repræsentativ deltagelse fra alle fem kontinenter vil hold
+            der tilmelder sig tidligt have en fordel for optagelse frem for hold der tilmelder sig senere.
+            </p>
+
+            <p>Tilmelding anses for at være bindende når tilmeldingsblanket er indsendt og holdgebyr samt depositum er overført til stævnets bankkonto.</p>
+
+            <p>Depositum er €400 per hold uanset tidpunkt for tilmelding.</p>
+
+            <p>Hold der ønsker at bo på hotel skal betale 25% af de samlede hold- og deltagergebyr i depositum.</p>
+
+            <p>Ved tilmelding inden:</p>
+            
+            <p>
+            30. november 2014 er holdgebyret €100.<br />
+            10. februar 2015 er holdgebyret €200.<br />
+            15. april 2015 er holdgebyret €300.
+            </p>
+            
+            <p>Bemærk at der ved tilmelding inden 30. november 2014 også gives rabat på deltagergebyret. Se nærmere under deltagergebyr.</p>
+
+            <h4>BETALINGSBETINGELSER</h4>
+
+            <p>Alle indbetalinger skal foretages som udenlandsk bankoverførsel i euro til følgende bankkonto inden de anviste frister:</p>
+
+            <p>
+            Banca Tercas<br />
+            Teramo afdeling (Branch in Teramo)<br />
+            Konto:	CC0900053052<br />
+            IBAN:	IT05 B 06060 15300 CC0900053052<br />
+            SWIFT:	TERCIT 3TXXX
+            </p>
+            <p>
+            Adviseringstekst:<br />
+            INTERAMNIA WORLD CUP
+            </p>
+
+            <p>Bemærk at kvittering for betaling SKAL fremsendes sammen med tilmeldingsblanket for at tilmeldingen accepteres.</p>
+
+            <p>Tilmeldingsblanket skal udfyldes komplet og underskrives af en tegningsberetiget for klubben.</p>
+
+            <h4>DELTAGERGEBYR</h4>
+
+            <p>Deltagergebyr (fratrukket depositum) skal være overført senest den 15. maj 2015.</p>
+
+            <p>Deltagergebyr betales af mindst 15 personer for hvert hold – altså både spillere, trænere og officials.</p>
+
+            <p>Deltagergebyret afhænger af valg af opholdssted og forplejning. Der er følgende muligheder:</p>
+
+            <h4>OPHOLD I TERAMO</h4>
+
+            <p>
+            A)	Skole i Teramo uden senge.<br />
+            €50 per person. Beløbet dækker ophold fra morgenen den 4. juli til morgenen den 11. juli.
+            Hvert hold vil have et rum til deres rådighed. Ekstra dage kan tilkøbes for €5 per dag.<br />
+            Kapacitet: 80 hold.
+            </p>
+
+            <p>
+            B)	Skole i Teramo med senge.<br />
+            €80 per person. Beløbet dækker ophold fra morgenen den 4. juli til morgenen den 11. juli.
+            Hvert hold vil have et rum til deres rådighed med senge med madras og lagen. Ekstra dage kan tilkøbes for €10 per dag.<br />
+            Kapacitet: 50 hold.
+            </p>
+
+            <p>
+            C)	Eget telt i Teramo.<br />
+            €30 per person. Beløbet dækker ophold fra aftenen den 4. juli til aftenen den 11. juli.
+            Ekstra dage kan tilkøbes for €5 per dag.<br />
+            Kapacitet: 50 hold.
+            </p>
+
+            <h4>OPHOLD VED KYSTEN</h4>
+
+            <p>
+            D)	Eget telt på teltplads ved kysten.<br />
+            €55 per person. Beløbet dækker ophold fra aftenen den 4. juli til aftenen den 11. juli. Der vil være mulighed for at benytte
+            teltpladsens facilliteter samt den nærliggende strand.
+            Ekstra dage kan tilkøbes for €8 per dag.<br />
+            Kapacitet: 50 hold.<br />
+            *) Holdene skal selv arrangere transport.
+            </p>
+
+            <h4>FORPLEJNING</h4>
+
+            <p>
+            Restaurant i Teramo.<br />
+            €150 per person. Beløbet dækker frokost og aftensmad fra aftenen den 4. juli til aftenen den 11. juli.
+            Ekstra måltider kan tilkøbes for €10 per styk.
+            </p>
+
+            <h4>HOTEL</h4>
+
+            <p>
+            E)	Hotel i Teramo.<br />
+            €400 per person. Beløbet dækker ophold fra aftenen den 4. juli til morgenen den 12. juli.
+            Opholdet er inkluderet morgenmad samt frokost og aftensmad. Forlænget ophold kan tilkøbes for €50 per nat.
+            Der er tillæg på €100 for enkeltværelser.<br />
+            Kapacitet: 37 hold (17 i Teramo).
+            </p>
+
+            <p>
+            F)	Hotel ved kysten.<br />
+            €400 per person. Beløbet dækker ophold fra aftenen den 4. juli til morgenen den 12. juli.
+            Opholdet er inkluderet morgenmad samt frokost og aftensmad. Forlænget ophold kan tilkøbes for €50 per nat.
+            Der er tillæg på €100 for enkeltværelser.<br />
+            Kapacitet: 100 hold.<br />
+            *) Holdene skal selv arrangere transport.
+            </p>
+
+            <p>
+            Hold der ikke gør brug af stævnets tilbud om ophold og forplejning kan nøjes med at betale €35 per deltager foruden holdgebyret.
+            </p>
+
+            <h4>ANDRE OPHOLD</h4>
+
+            <p>Udlejningshuse, lejligheder, turistbyer ved havet og agritourisms er andre former for ophold som kan arrangeres via
+            stævnets serkretariat som står til rådighed for yderligere oplysninger.</p>
+
+            <p>Bemærk at klubber der vælger at bo ved havet selv skal sørge for transport til og fra Teramo.</p>
+
+            <h4>BEKRÆFTELSE</h4>
+
+            <p>Når stævnets sekretariat har modtaget og godkendt tilmelding fremsendes en bekræftelse sidst i april 2015
+            sammen med detaljeret information om stævnet.</p>
+
+            <h4>REGLER FOR AFBUD</h4>
+
+            <p>Et hold der ikke kan deltage i stævnet vil ikke kunne få de indbetalte beløb refunderet.</p>
+
+            <p>Dog vil hold der med en rimelig begrundelse melder afbud skriftligt til stævnets sekretariat inden den 10. juni 2015
+            kunne få depositum (gælder ikke depositum for hotelophold) og eventuelle deltagergebyr refunderet.</p>
+
+            <p>Holdgebyr vil i alle tilfælde være tabt for hold der ikke deltager.</p>
+
+            <h4>TRANSPORT</h4>
+
+            <p>Transport til og fra Rom kan ske på egen hånd med offentlige transportmidler
+            (stævnets sekretariat giver gerne nærmere oplysninger herom) eller med stævnebus.</p>
+
+            <p>
+            <strong>Offentlig transport</strong><br />
+            Gaspari Agency Travel kører mellem Rom og Teramo - for pladsreservation besøg www.gasparionline.it
+            </p>
+
+            <p>Prisen for offentlig transport er €38 per person tur/retur.</p>
+
+            <p>Bemærk at det er muligt at flyve til Pescara og Ancona fra flere europæiske lufthavne (men ikke danske).
+            Stævnets sekretariat hjælper også gerne med transport fra disse lufthavne.</p>
+
+            <p>
+            <strong>Stævnebus</strong><br />
+            Prisen for en gruppe på op til 50 personer tur/retur med stævnebus er €1800. Turen skal bestilles ved tilmelding og inkluderer en guide/tolk.
+            </p>
+
+            <p>Hvis to klubber kan køre med samme bus halveres prisen.</p>
+
+            <p>Præcise oplysninger om ankomst og afgangstider samt fly numre skal oplyses til stævnet mindst tre dage før ankomst.</p>
+
+            <h4>ADRESSE OPLYSNINGER</h4>
+
+            <p>Adressen til stævnets sekretariat hvortil tilmeldingsblanket og kvittering skal sendes er følgende:</p>
+
+            <address>
+            <strong>INTERAMNIA WORLD CUP<br />
+            ORGANIZING COMMITTEE</strong><br />
+            Via V. Irelli 55<br />
+            64100 Teramo<br />
+            Italien<br />
+            <br />
+            Tlf.: +39 086 124 3375<br />
+            Fax: +39 086 124 7648<br />
+            <br />
+            Skype: interamniacup<br />
+            e-mail: coppaint@genesi.it<br />
+            <a href="www.interamniaworldcup.com">www.interamniaworldcup.com</a><br />
+            <br />
+            <strong>FACEBOOK</strong><br />
+            Interamnia World Cup officielle Facebook side:<br />
+            <a href="http://www.facebook.com/InteramniaWorldCup">www.facebook.com/InteramniaWorldCup</a>
+            </address>
+information:
+    intro:
+        title: Håndboldstævnet Interamnia World Cup afholdes for 43. gang
+        body: >
+            <p>Interamnia – der betyder mellem floder – hentyder til byen Teramos placering mellem floderne Tordino og Vezzola.
+            I denne skønne klassiske by for foden af Italiens højeste bjerg Gran Sasso afvikles til sommer for 43. gang det der med tiden er blevet
+            håndboldens mesterskaber for unge fra hele verden.</p>
+
+            <p>Stævnet der første gang blev afholdt i sommeren 1973 er for både piger og drenge i alderen 12-18 år.
+            De seneste år er der også blevet plads til senior hold i turneringen.</p>
+
+            <p>Stævnet danner den perfekte ramme for styrkelse af sociale relationer på de nye årgange og byder på mange gode oplevelser med danske
+            og udenlandske venner i det italienske byliv. Stævnet har udviklet sig gennem de sidste 42 år og er i dag både et fantastisk håndboldstævne
+            og et multikulturelt forum for unge.</p>
+
+            <p>Der overnattes på skoler og spilles på pladser og gårde og alt sammen er med til at give spillerne en anden forståelse af
+            andre unge uanset om de kommer fra Italien, Polen, Canada eller Taiwan.</p>
+    price:
+        title: Det koster det at deltage
+        body: >
+            <p>Prisen for at deltage i stævnet afhænger af flere ting.</p>
+
+            <p>Tager din klub med bus eller fly?<br />
+            Overnatter holdet i telt, på skole eller på hotel?<br />
+            Som udgangspunkt kan du regne med en pris på 3.800 kr. for transport og deltagerafgift.
+            Det inkluderer også opholdet på skole eller på campingplads ved stranden.</p>
+
+            <p>Mad og drikke i Teramo er billigere end danske forhold og du kan regne med at klare dig for omkring 1.300 kr. i otte dage.
+            Typisk vil du kunne klare dig for 20 euro om dagen plus et lille bidrag til fælles morgenmad.</p>
+
+            <p>Hvis du skal med til Italien til sommer skal du altså afsætte ca. 5.000 kr. til turen.
+            Denne pris inkluderer transport, deltagergebyr og ophold inklusive måltider – altså alt nødvendigt på turen.
+            Afhængig af klubtilskud kan turen gøres endnu billigere - tal med din klub eller træner herom.</p>
+    firsttime:
+        title: Første gang i Teramo?
+        body: >
+            <p>Hvis det er første gang du deltager i Interamnia World Cup er der sikkert mange spørgsmål der melder sig.
+            Som træner eller holdleder kan du besøge stævnekontoret når i ankommer til Teramo.
+            Her får du hjælp til at finde stedet i skal overnatte på samt får udleveret en stævnepakke med mange relevante oplysninger.</p>
+
+            <p>Stævnekontoret finder man bag den centrale kirkeplads Piazza Martiri della Libertà.
+            Adressen er starten af Via Nico Palma ved Corso Cerulli.</p>
+    advices:
+        title: Gode råd om stævnet
+        body: >
+            <p>Interamnia World Cup afvikles som udgangspunkt i Teramo som er en afgrænset by med et lille hyggeligt centrum der er nemt at
+            overskue og finde rundt i.</p>
+
+            <p>Spillere kan selv gå ud og spise og siden mødes ved Campo 1 på det store torv midt i byen.</p>
+
+            <p>Men det er en god ide at aftale nogle simple regler.</p>
+
+            <p>Nogen hold følger samme regler som klubben traditionelt håndhæver ved andre stævner - andre tager en mere let holdning til eksempelvis alkohol.</p>
+
+            <p>Når spillerne færdes i grupper af tre eller flere spillere opstår der erfaringsmæssigt aldrig problemer.</p>
+    matches:
+        title: Hvormange kampe spiller man?
+        body: >
+            <p>Normalt er puljerne besat med seks hold. Så som udgangspunkt får alle hold fem indledende kampe.
+            Bliver holdet nummer et eller to i sin pulje er der mulighed for mellem- og slutrunde kampe frem til finalen.</p>
+
+            <p>Hvis ikke holdet har mulighed for at kvalificere sig til slutspillet er der mulighed for at aftale træningskampe.
+            Tal med sekretariatet på dagen hvor holdet ønsker en kamp og aftal spillested og modstander.</p>
+
+            <p>Det vil typisk være muligt at få lov til at låne en tid i en af hallerne - campo 2, 10, 11 eller 12.
+            Ellers kan man måske nøjes med campo 3 som er en bane med gummiunderlag.</p>
+
+            <p>Ofte er hviledagen eller en af de sidste dage i stævnet det bedste tidspunkt at afvikle en træningskamp på.</p>
+
+            <p>Stævnekontoret vil også kunne skaffe dommere til træningskampe.</p>
+    packing:
+        title: Det kan du pakke
+        body: >
+            <p>Hvis du allerede nu er klar til at deltage i Interamnia World Cup følger her et simpelt forslag til hvad du kan tage med dig på turen.</p>
+
+            <p>Brug din sunde fornuft men lad dig gerne inspirere af følgende:</p>
+            <ul>
+            <li>Pas (skal vises før kamp)</li>
+            <li>Sygesikringskort</li>
+            <li>Penge (euro) og pung</li>
+            <li>Toilet ting</li>
+            <li>To håndklæder (et til bad og et til strand/friluftsbad)</li>
+            <li>Badetøj</li>
+            <li>Rygsæk/taske til kampe</li>
+            <li>Håndbold sko – skal kunne bruges udendørs</li>
+            <li>Strømper til kamp</li>
+            <li>T-shirts til fritid og pænt tøj til aftenbrug</li>
+            <li>Sko eller sandaler til fritid</li>
+            <li>Solcreme</li>
+            <li>Mad pakke til turen</li>
+            </ul>
+    accomodation:
+        title: Adresser
+        body: >
+            <p>Ophold under stævnet sker enten på skole i Teramo eller på campingplads i Giulianova.</p>
+
+            <p>På denne side finder du adresser på de benyttede opholdssteder hvor adressen er oplyst:</p>
+
+            <address>
+            <strong>Teramo</strong><br />
+            <br />
+            Scuola Media "Zippilli"<br />
+            Via G. De Vincentiis<br />
+            64100 Teramo<br />
+            <br />
+            Scuola Savini<br />
+            Via Giosué Carducci 39<br />
+            64100 Teramo<br />
+            <br />
+            Scuola<br />
+            Via V. Cerulli Irelli 15<br />
+            64100 Teramo<br />
+            <br />
+            Scuola Media D'Alessandro<br />
+            Via del Tiro a Segno<br />
+            64100 Teramo<br />
+            <br />
+            <strong>Giulianova</strong><br />
+            <br />
+            Stork Camping Village<br />
+            Via del Mare, 11<br />
+            64026 Roseto degli Abruzzi (TE)<br />
+            Tel.: +39 085 893 7076<br />
+            Fax: +39 085 893 7542<br />
+            E-mail: info@campingstork.it<br />
+            Web: www.campingstork.com<br />
+            <br />
+            Tam Tam Camping<br />
+            Lungomare Rodi<br />
+            64022 Giulianova Lido (TE)<br />
+            Tel.: +39 085 800 3563<br />
+            Fax: +39 085 800 3563<br />
+            E-mail: info@campingtamtam.it<br />
+            Web: www.campingtamtam.it
+            </address>
+    dining:
+        title: Gode spisesteder
+        body: >
+            <p>I Teramo findes en masse spisesteder der varierer i pris og kvalitet.
+            Følgende steder har vist sig at have en god kvalitet og et rimeligt prisniveau.</p>
+
+            <p>Husk at bestille bord hvis I kommer et helt hold - eller klub.</p>
+
+            <address>
+            El Gato<br />
+            Via Della Banca, 1<br />
+            64100 Teramo<br />
+            Tlf.: +39 086 124 7880<br />
+            <br />
+            La Clessidra<br />
+            Via Vezzola, 12<br />
+            64100 Teramo<br />
+            Tlf.: +39 086 124 5347<br />
+            <br />
+            I Carati di Bacco<br />
+            Via Torre Bruciata, 23<br />
+            64100 Teramo<br />
+            Tlf.: +39 086 124 3019<br />
+            <br />
+            Ristorante Antico Cantinone<br />
+            Via Ciotti, 5<br />
+            64100 Teramo<br />
+            Tlf.: +39 086 124 8863
+            </address>
+    matchtime:
+        title: Spilletid
+        body: >
+            <table>
+            <thead>
+                <td>Kategori</td><td>Spilletid</td>
+            </thead>
+            <tr>
+                <td>U30 og U21 nationale teams</td><td>2 x 30 min</td>
+            </tr>
+            <tr>
+                <td>U21</td><td>2 x 20 min</td>
+            </tr>
+            <tr>
+                <td>U12-U18</td><td>2 x 15 min</td>
+            </tr>
+            </table>
+    playgrounds:
+        title: Spillesteder
+        body: >
+            <p>
+            CAMPO 1 - Piazza Martiri della Libertà<br />
+            CAMPO 2 - Palestra Molinari<br />
+            CAMPO 3 - Via G.B. Campano<br />
+            CAMPO 4 - C.R.A.L. Telecom<br />
+            CAMPO 5 - Scuola Media D'Alessandro<br />
+            CAMPO 6 - Palestra I.T.I.S.<br />
+            CAMPO 7 - Pista Pattinaggio Acquaviva<br />
+            CAMPO 8 - Via L. Tripoti<br />
+            CAMPO 9 - Scuola Media Molinari<br />
+            CAMPO 10 - Pala Giorgio Binchi<br />
+            CAMPO 11 - Palestra I.P.C.<br />
+            CAMPO 12 - Palasport, San Nicoló<br />
+            CAMPO 13 - Giulianova<br />
+            CAMPO 14 - Pineto<br />
+            CAMPO 15 - Rocca Santa Maria<br />
+            CAMPO 16 - S. Egidio
+            </p>

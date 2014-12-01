@@ -14,9 +14,13 @@
 {% endblock %}
 
 {% block body %}
+<div class="jumbotron">
+    <div class="container">
+        {{ sonata_block_render({'name': '/cms/content/blocks/information/intro'}) }}
+    </div>
+</div>
 <div class="row">
     <div class="col-md-8">
-        {{ sonata_block_render({'name': '/cms/content/blocks/information/intro'}) }}
         {{ sonata_block_render({'name': '/cms/content/blocks/information/price'}) }}
         {{ sonata_block_render({'name': '/cms/content/blocks/information/firsttime'}) }}
         {{ sonata_block_render({'name': '/cms/content/blocks/information/advices'}) }}

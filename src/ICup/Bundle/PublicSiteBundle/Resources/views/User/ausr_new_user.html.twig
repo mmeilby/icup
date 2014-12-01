@@ -3,39 +3,27 @@
 {% form_theme form 'ICupPublicSiteBundle:Default:layout.script.html.twig' %}
 {% trans_default_domain "club" %}
 
-{% block body %}
-<h2>{% trans %}FORM.NEWUSER.TITLE{% endtrans %}</h2>
-<div class="row">
-    <div class="col-md-8">
-        <div class="row">
-            <div class="col-md-12">
-                <p>{% trans %}FORM.NEWUSER.PROMPT{% endtrans %}</p>
-            </div>
-            <div class="col-md-7">
-                {{ form(form) }}
-            </div>
-            <div class="col-md-5">
-                <h3>
-                    <span class="label label-default">
-                        <i class="fa fa-question-circle"></i>&nbsp;
-                        {% trans %}FORM.NEWUSER.SECTION3.HEADER{% endtrans %}
-                    </span>
-                </h3>
-                <p>{% trans %}FORM.NEWUSER.SECTION3.TEXT{% endtrans %}</p>
-                <h3>
-                    <span class="label label-default">
-                        <i class="fa fa-magic"></i>&nbsp;
-                        {% trans %}FORM.NEWUSER.SECTION1.HEADER{% endtrans %}        
-                    </span>
-                </h3>
-                <p>{% trans %}FORM.NEWUSER.SECTION1.TEXT{% endtrans %}</p>
-                <p />
-                    <a href="{{ path('_user_my_page') }}" class="btn btn-default" role="button">{% trans %}FORM.NEWUSER.LOGIN{% endtrans %}&nbsp;<i class="fa fa-angle-double-right"></i></a>
-                </p>
-            </div>
-        </div>
+{% block widebody %}
+<div class="jumbotron"
+     style="
+    background-image: url('{{ imagepath }}/IWC/bg.jpg');
+    background-size: cover;
+    background-repeat: no-repeat;">
+    <div class="container">
+        <img src="{{ imagepath }}/IWC/logo.png" alt="logo" class="img-responsive" />
     </div>
-    <hr class="hidden-md hidden-lg" />
+</div>
+{% endblock %}
+
+{% block body %}
+<div class="jumbotron">
+    <div class="container">
+        <h2>{% trans %}FORM.NEWUSER.TITLE{% endtrans %}</h2>
+        <p>{% trans %}FORM.NEWUSER.PROMPT{% endtrans %}</p>
+        {{ form(form) }}
+    </div>
+</div>
+<div class="row">
     <div class="col-md-4">
         <h1>
             <span class="label label-primary">
@@ -44,6 +32,27 @@
             </span>
         </h1>
         <p class="lead">{% trans %}FORM.NEWUSER.SECTION2.TEXT{% endtrans %}</p>
+    </div>
+    <div class="col-md-4">
+        <h3>
+            <span class="label label-default">
+                <i class="fa fa-magic"></i>&nbsp;
+                {% trans %}FORM.NEWUSER.SECTION1.HEADER{% endtrans %}        
+            </span>
+        </h3>
+        <p>{% trans %}FORM.NEWUSER.SECTION1.TEXT{% endtrans %}</p>
+        <p />
+            <a href="{{ path('_user_my_page') }}" class="btn btn-default" role="button">{% trans %}FORM.NEWUSER.LOGIN{% endtrans %}&nbsp;<i class="fa fa-angle-double-right"></i></a>
+        </p>
+    </div>
+    <div class="col-md-4">
+        <h3>
+            <span class="label label-default">
+                <i class="fa fa-question-circle"></i>&nbsp;
+                {% trans %}FORM.NEWUSER.SECTION3.HEADER{% endtrans %}
+            </span>
+        </h3>
+        <p>{% trans %}FORM.NEWUSER.SECTION3.TEXT{% endtrans %}</p>
     </div>
 </div>
 {% endblock %}

@@ -1,6 +1,18 @@
 {% extends "ICupPublicSiteBundle:Masters:standard.html.twig" %}
 {% trans_default_domain "tournament" %}
 
+{% block widebody %}
+<div class="jumbotron"
+     style="
+    background-image: url('{{ imagepath }}/IWC/bg.jpg');
+    background-size: cover;
+    background-repeat: no-repeat;">
+    <div class="container">
+        <img src="{{ imagepath }}/IWC/logo.png" alt="logo" class="img-responsive" />
+    </div>
+</div>
+{% endblock %}
+
 {% block body %}
 <div class="row">
     <div class="col-md-8">

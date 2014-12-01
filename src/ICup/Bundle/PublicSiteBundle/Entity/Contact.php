@@ -151,4 +151,14 @@ class Contact
     {
         return $this->msg;
     }
+    
+    public function getArray() {
+        return array(
+            "name" => $this->name,
+            "club" => $this->club,
+            "phone" => $this->phone,
+            "email" => $this->email,
+            "msg" => $this->msg
+        );
+    }
 }

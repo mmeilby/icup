@@ -1,9 +1,11 @@
+/app/cache/
+/app/config/local/
 /app/logs/
 /app/bootstrap.php.cache
 /bin/
 /nbproject/
 /vendor/
 /web/bundles/
-/app/cache/
+/web/css/
+/web/js/
 /composer.lock
-/app/config/local/

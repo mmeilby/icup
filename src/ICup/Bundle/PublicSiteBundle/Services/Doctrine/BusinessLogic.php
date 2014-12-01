@@ -619,6 +619,15 @@ class BusinessLogic
         return $this->entity->getUserRepo()->findOneBy(array('username' => $username));
     }
     
+    public function listAdminUsers() {
+        $qb = $this->em->createQuery(
+                "select u ".
+                "from ".$this->entity->getRepositoryPath('User')." u ".
+                "where u.role in (".User::$ADMIN.") ".
+                "order by u.name");
+        return $qb->getResult();
+    }
+    
     public function isUserKnown($username) {
         return $this->getUserByName($username) != null;
     }

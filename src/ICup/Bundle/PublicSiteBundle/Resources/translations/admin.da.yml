@@ -409,3 +409,9 @@ FORM:
     TITLE: Turneringskalender
     CAPTION: Hændelser for denne turnering
     NOEVENT: Tilføj hændelse til kalender
+  INFOEMAIL:
+    TITLE: Forespørgsel på mere information
+    NAME: Navn
+    CLUB: Klub
+    EMAIL: E-mail
+    PHONE: Tlf.

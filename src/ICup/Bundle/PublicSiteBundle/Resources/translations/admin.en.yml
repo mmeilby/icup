@@ -409,3 +409,9 @@ FORM:
     TITLE: Event calendar
     CAPTION: Events for this tournament
     NOEVENT: Add event to calendar
+  INFOEMAIL:
+    TITLE: Request for more information
+    NAME: Name
+    CLUB: Club
+    EMAIL: E-mail
+    PHONE: Phone

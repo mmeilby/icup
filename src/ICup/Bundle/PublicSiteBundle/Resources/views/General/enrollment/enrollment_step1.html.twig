@@ -1,5 +1,6 @@
 {% extends "ICupPublicSiteBundle:Masters:standard.html.twig" %}
 
+{% form_theme form 'ICupPublicSiteBundle:Default:layout.script.html.twig' %}
 {% trans_default_domain "club" %}
 
 
@@ -17,18 +18,16 @@
 
 {% block body %}
 <div class="row">
-    <div class="col-md-8">
+    <div class="col-md-6">
         {{ sonata_block_render({'name': '/cms/content/blocks/enrollment/terms'}) }}
-        {{ sonata_block_render({'name': '/cms/content/blocks/enrollment/accomodation'}) }}
     </div>
-    <div class="col-md-4">
-        {{ sonata_block_render({'name': '/cms/content/blocks/enrollment/paymentterms'}) }}
-<!--    
+    <div class="col-md-6">
         <i class="fa fa-ticket fa-5x"></i>
         <h2>Tilmeld dig her - udfyld og send</h2>
         <p>
+            {{ form(form) }}
         </p>
-
+<!--    
         <i class="fa fa-ticket fa-5x"></i>
         <h2>{% trans %}FORM.FRONTPAGE.BLOCK2.TITLE{% endtrans %}</h2>
         <p>{% trans %}FORM.FRONTPAGE.BLOCK2.DESCRIPTION{% endtrans %}</p>
@@ -44,7 +43,7 @@
 {% endif %}
         </p>
 -->
-        {{ sonata_block_render({'name': '/cms/content/blocks/enrollment/address'}) }}
+        {{ sonata_block_render({'name': '/cms/content/blocks/contact/address'}) }}
     </div>
 </div>
 {% endblock %}

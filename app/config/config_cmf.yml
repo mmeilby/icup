@@ -4,11 +4,20 @@ assetic:
 # Doctrine PHPCR-ODM configuration
 doctrine_phpcr:
     session:
-        backend:    "%phpcr_backend%"
-        workspace:  "%phpcr_workspace%"
+        backend:
+            # use Jackalope Doctrine DBAL
+            type: doctrinedbal
+            connection: default
+            caches:
+                meta: doctrine_cache.providers.phpcr_meta
+                nodes: doctrine_cache.providers.phpcr_nodes
+            # enable logging
+            logging: true
+            # enable profiling in the debug toolbar.
+            profiling: true
+        workspace:  default
         username:   "%phpcr_user%"
         password:   "%phpcr_password%"
-
     odm:
         auto_generate_proxy_classes: "%kernel.debug%"
         auto_mapping: true
@@ -54,32 +63,11 @@ cmf_routing:
             Symfony\Cmf\Bundle\SimpleCmsBundle\Doctrine\Phpcr\Page: ICupPublicSiteBundle:Page:index.html.twig
         locales: [ en, it, fr, de, es, po, da ]
 
-#lunetics_locale:
-#    strict_mode: true
-#    guessing_order:
-#        - cookie
-#        - router
-#        - browser
-#    allowed_locales: [ en, it, fr, de, es, po, da ]
-
-# Menu Configuration
-knp_menu:
-    twig: true
+sonata_core: ~
 
 sonata_block:
-    default_contexts: [cms]
-    blocks:
-        # Enable the SonataAdminBundle block
-#        sonata.admin.block.admin_list:
-#            contexts: [admin]
-        icup.block.unit:
-            settings:
-                maxItems: 3
-#    blocks_by_class:
-#        Symfony\Cmf\Bundle\BlockBundle\Doctrine\Phpcr\RssBlock:
-#            settings:
-#                maxItems: 5            
-                
+    default_contexts: [cms/content/blocks]
+
 # Cmf Create Configuration
 fos_rest:
     view:

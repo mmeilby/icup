@@ -10,6 +10,7 @@ FORM:
         og blive en del af oplevelsen til sommer. Har du brug for yderligere information finder
         du kontaktoplysninger i menuen.</p>
     LEARNMORE: Læs mere om turneringen 
+    MSGSENT: Din forespørgsel er blevet sendt. Du kan forvente at få svar på den adresse eller nummer du har angivet.
 #    SUBTITLE: Resultater og stillinger lige ved hånden
 #    DESCRIPTION: De tilmeldte turneringer tilbyder dig resultatformidling og mulighed for holdtilmelding.
 #    LEARNMORE: Følg en turnering
@@ -49,7 +50,63 @@ FORM:
     EMAIL: En e-mail adresse du vil modtage svar på
     MSG: Skriv en besked, et spørgsmål eller en god ide her...
     SUBMIT: Send besked
-        
+  ENROLLMENT:        
+    CLUB: Klubbens navn
+    ADDRESS: Klubbens adresse
+    CITY: Postnummer og by
+    COUNTRY: Land
+    PHONE: Telefon til klubbens administration eller bestyrelse
+    FAX: Fax der kan benyttes i forbindelse med tilmeldingen
+    SKYPE: Skype adresse hvis klubben benytter det
+    EMAIL: E-mail adresse til klubbens administration eller bestyrelse 
+    WEB: Adresse på klubbens hjemmeside
+    MEMBERSHIP: Medlemsskab - angiv hvilket forbund
+    AFFILIATION: Tilhørsforhold - angiv kode eller blank
+    CHAMPIONSHIP: Bedste række klubben deltager i
+    BESTRESULT: Bedste resultat klubben har opnået
+    SUBMIT: Næste
+    MANAGER: Turleders navn
+    M_ADDRESS: Adresse
+    M_CITY: Postnummer og by
+    M_COUNTRY: Land
+    M_PHONE: Fastnetstelefon
+    M_FAX: Fax
+    M_SKYPE: Skype adresse hvis turlederen benytter det
+    M_MOBILE: Mobiltelefon til turlederen
+    M_EMAIL: E-mail adresse
+    NTMU18: Landshold drenge under 18
+    NTFU18: Landshold piger under 18
+    MO18: Herre senior
+    FO18: Dame senior
+    MU18: Drenge under 18
+    FU18: Piger under 18
+    MU16: Drenge under 16
+    FU16: Piger under 16
+    MU14: Drenge under 14
+    FU14: Piger under 14
+    MU12: Drenge under 12
+    FU12: Piger under 12
+    A_TERAMO_WB: Skole i Teramo med senge
+    A_TERAMO_WOB: Skole i Teramo uden senge
+    A_TERAMO_TENT: Telt i Teramo
+    A_GUILIANOVA_TENT: Telt ved havet
+    A_RESTAURANT: Restaurant i Teramo
+    A_TERAMO_HOTEL: Hotel i Teramo eller nærliggende område
+    A_GUILIANOVA_HOTEL: Trestjernet hotel ved havet
+    A_OTHER: Anden indkvartering (skriv ønske)
+    A_NONE: Hold uden indkvartering
+    arrival_date:
+    arrival_time:
+    departure_date:
+    departure_time:
+    b_arrival:
+    b_arrival_airport:
+    b_arrival_date:
+    b_arrival_time:
+    b_departure:
+    b_departure_airport:
+    b_departure_date:
+    b_departure_time:
   CLUB: 
     WELLCOME: Velkommen til iCup
     TITLE:

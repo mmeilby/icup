@@ -9,6 +9,9 @@ use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use ICup\Bundle\PublicSiteBundle\Services\Doctrine\TournamentSupport;
 use DateTime;
+use Symfony\Cmf\Bundle\MediaBundle\File\UploadFileHelperInterface;
+use Symfony\Cmf\Bundle\MediaBundle\Doctrine\Phpcr\File;
+use Symfony\Component\HttpFoundation\Request;
 
 /**
  * myPage - myICup - user's home page with context dependent content
@@ -68,10 +71,16 @@ class MyPageController extends Controller
         }
         /* @var $user User */
         if ($user->isAdmin()) {
+            $fileClass = 'Symfony\Cmf\Bundle\MediaBundle\Doctrine\Phpcr\File';
+            $dm = $this->get('doctrine_phpcr')->getManager('default');
+            $files = $dm->getRepository($fileClass)->findAll();
             // Admins should get a different view
             $rexp = new RedirectException();
-            $rexp->setResponse($this->render('ICupPublicSiteBundle:User:mypage_admin.html.twig',
-                                             array('currentuser' => $user)));
+            $rexp->setResponse($this->render('ICupPublicSiteBundle:User:mypage_admin.html.twig', array(
+                        'currentuser' => $user,
+                        'upload_form' => $this->getUploadForm()->createView(),
+                        'files' => $files,
+            )));
             throw $rexp;
         }
     }
@@ -204,4 +213,41 @@ class MyPageController extends Controller
         }
         return array('tournaments' => $tournamentList, 'statuslist' => $statusList);
     }
+    
+    private function getUploadForm() {
+        return $this->container->get('form.factory')->createNamedBuilder(null, 'form')
+                ->add('name', 'text', array('label' => 'FORM.CLUB.NAME', 'required' => false, 'disabled' => false, 'translation_domain' => 'admin'))
+                ->add('file', 'file', array('label' => 'FORM.CLUB.COUNTRY',
+                                            'required' => false,
+                                            'disabled' => false,
+                                            'translation_domain' => 'admin'))
+                ->getForm();
+    }
+    
+    /**
+     * Show myICup page for authenticated users
+     * @Route("/user/mypage/upload", name="_user_my_page_upload")
+     * @Method("POST")
+     */
+    public function uploadAction(Request $request) {
+        $form = $this->getUploadForm();
+        if ($request->isMethod('POST')) {
+            $form->bind($request);
+            if ($form->isValid()) {
+                /** @var UploadFileHelperInterface $uploadFileHelper */
+                $uploadFileHelper = $this->get('cmf_media.upload_file_helper');
+                $uploadedFile = $request->files->get('file');
+                $file = $uploadFileHelper->handleUploadedFile($uploadedFile);
+                $file->setDescription($request->get('name'));
+                // persist
+                $dm = $this->get('doctrine_phpcr')->getManager('default');
+                $parent = $dm->find(null, '/cms/media');
+                $file->setParent($parent);
+                $dm->persist($file);
+                $dm->flush();
+            }
+        }
+        return $this->redirect($this->generateUrl('_user_my_page'));
+    }
+
 }

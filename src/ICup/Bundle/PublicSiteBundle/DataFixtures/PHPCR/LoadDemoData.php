@@ -11,6 +11,7 @@ use Symfony\Cmf\Bundle\SimpleCmsBundle\Doctrine\Phpcr\Page;
 use Symfony\Cmf\Bundle\BlockBundle\Doctrine\Phpcr\SimpleBlock;
 use Symfony\Component\Translation\Translator;
 use Symfony\Component\Translation\Loader\YamlFileLoader;
+use Symfony\Component\Yaml\Parser;
 
 /**
  * Loads the initial demo data of the demo website.
@@ -18,6 +19,7 @@ use Symfony\Component\Translation\Loader\YamlFileLoader;
 class LoadDemoData implements FixtureInterface
 {
     private $translator;
+    private $domains;
     
     /**
      * Load data fixtures with the passed DocumentManager
@@ -27,7 +29,7 @@ class LoadDemoData implements FixtureInterface
     public function load(ObjectManager $manager)
     {
         $this->setupTranslator();
-        
+/*        
         $parent = $manager->find(null, '/cms/simple');
         
         // pass add_locale_pattern as true to prefix the route pattern with /{_locale}
@@ -73,33 +75,15 @@ class LoadDemoData implements FixtureInterface
         $loginMenuNode->setRoute('_demo_login');
 
         $manager->persist($loginMenuNode);
-
-        // load the blocks
+*/
         NodeHelper::createPath($manager->getPhpcrSession(), '/cms/content/blocks');
-        NodeHelper::createPath($manager->getPhpcrSession(), '/cms/content/blocks/frontpage');
-        NodeHelper::createPath($manager->getPhpcrSession(), '/cms/content/blocks/mypage');
-        NodeHelper::createPath($manager->getPhpcrSession(), '/cms/content/blocks/connectclub');
-        NodeHelper::createPath($manager->getPhpcrSession(), '/cms/content/blocks/contact');
-        NodeHelper::createPath($manager->getPhpcrSession(), '/cms/content/blocks/enrollment');
-        NodeHelper::createPath($manager->getPhpcrSession(), '/cms/content/blocks/information');
-
-        $this->blockCreator('section_1', 'frontpage', $manager);
-        $this->blockCreator('wellcome', 'mypage', $manager);
-        $this->blockCreator('chooseclub', 'mypage', $manager);
-        $this->blockCreator('follower', 'connectclub', $manager);
-        $this->blockCreator('address', 'contact', $manager);
-        $this->blockCreator('terms', 'enrollment', $manager);
-        $this->blockCreator('intro', 'information', $manager);
-        $this->blockCreator('price', 'information', $manager);
-        $this->blockCreator('firsttime', 'information', $manager);
-        $this->blockCreator('advices', 'information', $manager);
-        $this->blockCreator('matches', 'information', $manager);
-        $this->blockCreator('packing', 'information', $manager);
-        $this->blockCreator('accomodation', 'information', $manager);
-        $this->blockCreator('dining', 'information', $manager);
-        $this->blockCreator('matchtime', 'information', $manager);
-        $this->blockCreator('playgrounds', 'information', $manager);
-       
+        // load the blocks
+        foreach ($this->domains as $domain => $sections) {
+            NodeHelper::createPath($manager->getPhpcrSession(), '/cms/content/blocks/'.$domain);
+            foreach ($sections as $section => $messages) {
+                $this->blockCreator($section, $domain, $manager);
+            }
+        }
         // save the changes
         $manager->flush();
     }
@@ -133,6 +117,9 @@ class LoadDemoData implements FixtureInterface
         $this->addTranslatorResource($format, $transPath, 'es');
         $this->addTranslatorResource($format, $transPath, 'it');
         $this->addTranslatorResource($format, $transPath, 'po');
+        
+        $yaml = new Parser();
+        $this->domains = $yaml->parse(file_get_contents($transPath.'/messages.da.yml'));
     }
     
     private function addTranslatorResource($format, $path, $locale) {

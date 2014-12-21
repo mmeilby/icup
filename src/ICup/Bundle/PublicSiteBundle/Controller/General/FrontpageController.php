@@ -44,8 +44,16 @@ class FrontpageController extends Controller
         $form->handleRequest($request);
         if ($form->isValid()) {
             $this->sendMail($form->getData());
+            $request->getSession()->getFlashBag()->add(
+                'msgsent',
+                'FORM.FRONTPAGE.MSGSENT'
+            );
+            // clear form
+            $form = $this->makeContactForm(new Contact());
         }
-        return array('form' => $form->createView(), 'tournaments' => $tournamentList, 'statuslist' => $statusList);
+        return array('form' => $form->createView(),
+                     'tournaments' => $tournamentList,
+                     'statuslist' => $statusList);
     }
     
     private function makeContactForm(Contact $contact) {
@@ -68,7 +76,10 @@ class FrontpageController extends Controller
             $recv = $from;
         }
         else {
-            $recv = array($admins[0]->getEmail() => $admins[0]->getName());
+            $recv = array();
+            foreach ($admins as $admin) {
+                $recv[$admin->getEmail()] = $admin->getName();
+            }
         }
         $mailbody = $this->renderView('ICupPublicSiteBundle:Email:infomail.html.twig', $contact->getArray());
         $message = Swift_Message::newInstance()

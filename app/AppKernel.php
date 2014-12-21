@@ -28,19 +28,16 @@ class AppKernel extends Kernel
             new Symfony\Cmf\Bundle\ContentBundle\CmfContentBundle(),
             new Symfony\Cmf\Bundle\RoutingBundle\CmfRoutingBundle(),
             new Symfony\Cmf\Bundle\SimpleCmsBundle\CmfSimpleCmsBundle(),
-//            new Symfony\Cmf\Bundle\TreeBrowserBundle\CmfTreeBrowserBundle(),
-
+            new Symfony\Cmf\Bundle\MediaBundle\CmfMediaBundle(),
             new Symfony\Cmf\Bundle\BlockBundle\CmfBlockBundle(),
+            new Liip\ImagineBundle\LiipImagineBundle(),
+
             new Sonata\BlockBundle\SonataBlockBundle(),
             new Sonata\CoreBundle\SonataCoreBundle(),
-//            new Sonata\AdminBundle\SonataAdminBundle(),
-//            new Sonata\jQueryBundle\SonatajQueryBundle(),
-//            new Sonata\DoctrinePHPCRAdminBundle\SonataDoctrinePHPCRAdminBundle(),
+            new Sonata\AdminBundle\SonataAdminBundle(),
 
             new Symfony\Cmf\Bundle\MenuBundle\CmfMenuBundle(),
-            new Knp\Bundle\MenuBundle\KnpMenuBundle(),
 
-//            new Lunetics\LocaleBundle\LuneticsLocaleBundle(),
             new Symfony\Cmf\Bundle\CreateBundle\CmfCreateBundle(),
             new FOS\RestBundle\FOSRestBundle(),
             new JMS\SerializerBundle\JMSSerializerBundle(),

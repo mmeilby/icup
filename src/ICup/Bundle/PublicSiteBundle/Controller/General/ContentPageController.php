@@ -16,4 +16,14 @@ class ContentPageController extends Controller
     {
         return array();
     }
+    
+    /**
+     * @Route("/enrollment", name="_enrollment")
+     * @Template("ICupPublicSiteBundle:General:enrollment.html.twig")
+     */
+    public function showEnrollment()
+    {
+        return array();
+    }
+    
 }

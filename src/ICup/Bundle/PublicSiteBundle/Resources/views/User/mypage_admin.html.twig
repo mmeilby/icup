@@ -1,4 +1,6 @@
 {% extends "ICupPublicSiteBundle:Masters:edit.html.twig" %}
+
+{% form_theme upload_form 'ICupPublicSiteBundle:Default:layout.script.html.twig' %}
 {% trans_default_domain "club" %}
 
 {% block body %}
@@ -9,6 +11,27 @@
         {% trans %}FORM.MYPAGE.ADMIN{% endtrans %}
     </div>
     <div class="panel-body">
+        <h2>Upload file</h2>
+        <form class="standard" action="{{ path('_user_my_page_upload') }}" method="post" {{ form_enctype(upload_form) }}>
+            {{ form_widget(upload_form) }}
+        </form>
+        <h2>Download file(s)</h2>
+        {% if files is empty %}
+            <p>No files found, upload a file first.</p>
+        {% else %}
+            <ul class="downloads">
+                {% for file in files %}
+                    <li><a href="{{ cmf_media_download_url(file) }}" title="Download {{ file.name }}">{{ file.description }} (id: {{ file.id }})</a></li>
+                {% endfor %}
+            </ul>
+        {% endif %}
     </div>
 </div>
+{% endblock %}
+{% block javascripts %}
+<script>
+    $("#file").fileinput({
+        'allowedFileExtensions' : ['jpg', 'png','gif'],
+    });
+</script>
 {% endblock %}

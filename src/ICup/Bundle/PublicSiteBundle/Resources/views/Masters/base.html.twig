@@ -12,6 +12,7 @@
         <link href="{{ asset( 'bundles/icuppublicsite/font-awesome-4.1.0/css/font-awesome.min.css' ) }}" rel="stylesheet" type="text/css" />
         <link href="{{ asset( 'bundles/icuppublicsite/css/bootstrap.min.css' ) }}" rel="stylesheet" type="text/css" />
         <link href="{{ asset( 'bundles/icuppublicsite/css/bootstrap-theme.min.css' ) }}" rel="stylesheet" type="text/css" />
+        <link href="{{ asset( 'bundles/icuppublicsite/bootstrap-fileinput/css/fileinput.min.css' ) }}" media="all" rel="stylesheet" type="text/css" />
         {% stylesheets '@ICupPublicSiteBundle/Resources/css/*' output="bundles/icuppublicsite/css/style.css" %}
             <link href="{{ asset_url }}" rel="stylesheet" type="text/css" />
         {% endstylesheets %}
@@ -27,6 +28,7 @@
         {% javascripts '@ICupPublicSiteBundle/Resources/js/bs/*' output="bundles/icuppublicsite/js/bootstrap.min.js" %}
         <script type="text/javascript" src="{{ asset_url }}"></script>
         {% endjavascripts  %}
+        <script src="{{ asset('bundles/icuppublicsite/bootstrap-fileinput/js/fileinput.min.js') }}"></script>
         <script src="{{ asset('bundles/fosjsrouting/js/router.js') }}"></script>
         <script src="{{ path('fos_js_routing_js', {"callback": "fos.Router.setData"}) }}"></script>
     </head>

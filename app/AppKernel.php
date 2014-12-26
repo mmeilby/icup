@@ -5,6 +5,14 @@ use Symfony\Component\Config\Loader\LoaderInterface;
 
 class AppKernel extends Kernel
 {
+    public function __construct($environment, $debug) {
+        parent::__construct($environment, $debug);
+        
+        if (in_array($environment, array('dev', 'test'))) {
+            date_default_timezone_set( 'Europe/Copenhagen' );
+        }
+    }
+    
     public function registerBundles()
     {
         $bundles = array(
@@ -57,12 +65,5 @@ class AppKernel extends Kernel
     public function registerContainerConfiguration(LoaderInterface $loader)
     {
         $loader->load(__DIR__.'/config/config_'.$this->getEnvironment().'.yml');
-    }
-    
-    public function init() {
-        if (in_array($this->getEnvironment(), array('dev', 'test'))) {
-            date_default_timezone_set( 'Europe/Copenhagen' );
-        }
-        parent::init();
     }
 }

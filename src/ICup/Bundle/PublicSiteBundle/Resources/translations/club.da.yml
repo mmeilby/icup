@@ -29,7 +29,7 @@ FORM:
                      Hvis du opretter en gratis profil kan du tilmelde hold online.
         LEARNMORE: Tilmeld hold
     BLOCK3:
-        TITLE: Kampe i dag
+        TITLE: Aktuelle kampe
         DESCRIPTION: >
                      Hvilke kampe spilles lige nu. Se eller følg dagens resultater her.
         LEARNMORE: Se dagens kampe
@@ -50,7 +50,9 @@ FORM:
     EMAIL: En e-mail adresse du vil modtage svar på
     MSG: Skriv en besked, et spørgsmål eller en god ide her...
     SUBMIT: Send besked
-  ENROLLMENT:        
+  ENROLLMENT:
+    DOCUMENTS: Dokumenter
+    DOWNLOAD: Hent
     CLUB: Klubbens navn
     ADDRESS: Klubbens adresse
     CITY: Postnummer og by

@@ -23,7 +23,16 @@ class ContentPageController extends Controller
      */
     public function showEnrollment()
     {
-        return array();
+        /* @var $manager \Doctrine\ODM\PHPCR\DocumentManager */
+        $manager = $this->get('doctrine_phpcr')->getManager('default');
+        $parent = $manager->find(null, '/cms/media/enrollment');
+        if ($parent) {
+            $files = $manager->getChildren($parent);
+            return array('files' => $files);
+        }
+        else {
+            return array('files' => array());
+        }
     }
     
 }

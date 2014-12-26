@@ -88,19 +88,23 @@ class TournamentSupport
         $status = $default;
         foreach ($qb->getResult() as $event) {
             $eventdate = date_create_from_format($this->container->getParameter('db_date_format'), $event['date']);
-            if ($event['event'] == $start && $date < $eventdate) {
-                $status = false;
-                break;
+            if ($event['event'] == $start) {
+                if ($date < $eventdate) {
+                    $status = false;
+                    break;
+                }
+                else {
+                    $status = true;
+                }
             }
             else {
-                $status = true;
-            }
-            if ($event['event'] == $stop && $date < $eventdate) {
-                $status = true;
-            }
-            else {
-                $status = false;
-                break;
+                if ($date < $eventdate) {
+                    $status = true;
+                }
+                else {
+                    $status = false;
+                    break;
+                }
             }
         }
         return $status;

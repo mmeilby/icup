@@ -31,11 +31,19 @@ class FrontpageController extends Controller
             'done' => array()
         );
         $today = new DateTime();
+        $shortMatches = array();
         foreach ($tournaments as $tournament) {
             $stat = $this->get('tmnt')->getTournamentStatus($tournament->getId(), $today);
             if ($stat != TournamentSupport::$TMNT_HIDE) {
                 $tournamentList[$tournament->getId()] = array('tournament' => $tournament, 'status' => $stat);
                 $statusList[$keyList[$stat]][] = $tournament;
+            }
+            if ($stat == TournamentSupport::$TMNT_GOING) {
+                $shortMatchList = $this->get('match')->listMatchesLimitedWithTournament($tournament->getId(), $today, 3, 3);
+                $shortMatches = array();
+                foreach ($shortMatchList as $match) {
+                    $shortMatches[date_format($match['schedule'], "Y/m/d")][] = $match;
+                }
             }
         }
 
@@ -53,7 +61,8 @@ class FrontpageController extends Controller
         }
         return array('form' => $form->createView(),
                      'tournaments' => $tournamentList,
-                     'statuslist' => $statusList);
+                     'statuslist' => $statusList,
+                     'matchlist' => $shortMatches);
     }
     
     private function makeContactForm(Contact $contact) {

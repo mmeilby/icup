@@ -10,7 +10,7 @@ use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use ICup\Bundle\PublicSiteBundle\Services\Doctrine\TournamentSupport;
 use DateTime;
 use Symfony\Cmf\Bundle\MediaBundle\File\UploadFileHelperInterface;
-use Symfony\Cmf\Bundle\MediaBundle\Doctrine\Phpcr\File;
+use PHPCR\Util\NodeHelper;
 use Symfony\Component\HttpFoundation\Request;
 
 /**
@@ -241,7 +241,11 @@ class MyPageController extends Controller
                 $file->setDescription($request->get('name'));
                 // persist
                 $dm = $this->get('doctrine_phpcr')->getManager('default');
-                $parent = $dm->find(null, '/cms/media');
+                $parent = $dm->find(null, '/cms/media/enrollment');
+                if (!$parent) {
+                    NodeHelper::createPath($dm->getPhpcrSession(), '/cms/media/enrollment');
+                    $parent = $dm->find(null, '/cms/media/enrollment');
+                }
                 $file->setParent($parent);
                 $dm->persist($file);
                 $dm->flush();

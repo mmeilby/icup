@@ -22,6 +22,25 @@
         {{ sonata_block_render({'name': '/cms/content/blocks/enrollment/accomodation'}) }}
     </div>
     <div class="col-md-4">
+        {% if files is not empty %}
+            <h2><i class="fa fa-download">&nbsp;</i>{% trans %}FORM.ENROLLMENT.DOCUMENTS{% endtrans %}</h2>
+            <div class="list-group">
+            {% for file in files %}
+                <a class="list-group-item"
+                   href="{{ cmf_media_download_url(file) }}"
+                   title="{% trans %}FORM.ENROLLMENT.DOWNLOAD{% endtrans %} {{ file.name }}">
+                    <p class="list-group-item-text">
+                    {% if file.extension == 'pdf' %}
+                        <i class="fa fa-file-pdf-o">&nbsp;</i>
+                    {% else %}
+                        <i class="fa fa-file-image-o">&nbsp;</i>
+                    {% endif %}
+                        {{ file.description }}
+                    </p>
+                </a>
+            {% endfor %}
+            </div>
+        {% endif %}
         {{ sonata_block_render({'name': '/cms/content/blocks/enrollment/paymentterms'}) }}
 <!--    
         <i class="fa fa-ticket fa-5x"></i>

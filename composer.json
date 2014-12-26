@@ -39,7 +39,7 @@
         "friendsofsymfony/jsrouting-bundle": "1.5.*",
         "lunetics/locale-bundle": "2.2.*",
         "nelmio/alice": "1.*",
-        "liip/imagine-bundle": "dev-master",
+        "liip/imagine-bundle": "1.0.4",
         "sonata-project/core-bundle": "~2.2",
         "sonata-project/admin-bundle": "2.4.x-dev",
         "kartik-v/bootstrap-fileinput": "dev-master"

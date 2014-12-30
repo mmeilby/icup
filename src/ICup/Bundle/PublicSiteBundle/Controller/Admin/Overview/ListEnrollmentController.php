@@ -9,6 +9,7 @@ use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
+use Symfony\Component\HttpFoundation\Request;
 
 /**
  * List the categories and groups available
@@ -76,10 +77,10 @@ class ListEnrollmentController extends Controller
      * @Route("/edit/enroll/list/check", name="_host_select_club")
      * @Method("GET")
      */
-    public function selectClubAction()
+    public function selectClubAction(Request $request)
     {
-        $clubid = $this->getRequest()->get('clubid', '');
-        $tournamentid = $this->getRequest()->get('tournamentid', '');
+        $clubid = $request->get('clubid', '');
+        $tournamentid = $request->get('tournamentid', '');
         return $this->redirect($this->generateUrl('_club_enroll_list_admin', array('tournament' => $tournamentid, 'club' => $clubid)));
     }
 

@@ -9,6 +9,7 @@ use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\Form\FormError;
 use ICup\Bundle\PublicSiteBundle\Entity\Match as MatchForm;
+use Symfony\Component\HttpFoundation\Request;
 
 /**
  * List the categories and groups available
@@ -20,7 +21,7 @@ class MatchController extends Controller
      * @Route("/edit/match/add/{groupid}", name="_edit_match_add")
      * @Template("ICupPublicSiteBundle:Host:editmatch.html.twig")
      */
-    public function addAction($groupid) {
+    public function addAction($groupid, Request $request) {
         /* @var $utilService Util */
         $utilService = $this->get('util');
         $returnUrl = $utilService->getReferer();
@@ -35,7 +36,6 @@ class MatchController extends Controller
         $matchForm = new MatchForm();
         $matchForm->setPid($group->getId());
         $form = $this->makeMatchForm($matchForm, $tournament->getId(), 'add');
-        $request = $this->getRequest();
         $form->handleRequest($request);
         if ($form->get('cancel')->isClicked()) {
             return $this->redirect($returnUrl);
@@ -58,7 +58,7 @@ class MatchController extends Controller
      * @Route("/edit/match/chg/{matchid}", name="_edit_match_chg")
      * @Template("ICupPublicSiteBundle:Host:editmatch.html.twig")
      */
-    public function chgAction($matchid) {
+    public function chgAction($matchid, Request $request) {
         /* @var $utilService Util */
         $utilService = $this->get('util');
         $returnUrl = $utilService->getReferer();
@@ -74,7 +74,6 @@ class MatchController extends Controller
 
         $matchForm = $this->copyMatchForm($match);
         $form = $this->makeMatchForm($matchForm, $tournament->getId(), 'chg');
-        $request = $this->getRequest();
         $form->handleRequest($request);
         if ($form->get('cancel')->isClicked()) {
             return $this->redirect($returnUrl);
@@ -97,7 +96,7 @@ class MatchController extends Controller
      * @Route("/edit/match/del/{matchid}", name="_edit_match_del")
      * @Template("ICupPublicSiteBundle:Host:editmatch.html.twig")
      */
-    public function delAction($matchid) {
+    public function delAction($matchid, Request $request) {
         /* @var $utilService Util */
         $utilService = $this->get('util');
         $returnUrl = $utilService->getReferer();
@@ -112,7 +111,6 @@ class MatchController extends Controller
 
         $matchForm = $this->copyMatchForm($match);
         $form = $this->makeMatchForm($matchForm, $tournament->getId(), 'del');
-        $request = $this->getRequest();
         $form->handleRequest($request);
         if ($form->get('cancel')->isClicked()) {
             return $this->redirect($returnUrl);

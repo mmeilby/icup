@@ -7,6 +7,7 @@ use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use ICup\Bundle\PublicSiteBundle\Services\Util;
+use Symfony\Component\HttpFoundation\Request;
 
 class MatchResultController extends Controller
 {
@@ -15,7 +16,7 @@ class MatchResultController extends Controller
      * @Template("ICupPublicSiteBundle:Host:listmatchesinteractive.html.twig")
      * @Method("GET")
      */
-    public function listAction($playgroundid, $date)
+    public function listAction($playgroundid, $date, Request $request)
     {
         /* @var $utilService Util */
         $utilService = $this->get('util');
@@ -31,8 +32,6 @@ class MatchResultController extends Controller
         if ($matchDate == null) {
             throw new ValidationException("INVALIDDATE", "Match date invalid: date=".$date);
         }
-        /* @var $request Request */
-        $request = $this->getRequest();
         $session = $request->getSession();
         $session->set('icup.matchedit.date', $matchDate);
         $session->set('icup.matchedit.playground', $playgroundid);
@@ -60,14 +59,12 @@ class MatchResultController extends Controller
      * @Route("/host/edit/match/score", name="_edit_match_score_post")
      * @Method("POST")
      */
-    public function postAction()
+    public function postAction(Request $request)
     {
         /* @var $utilService Util */
         $utilService = $this->get('util');
         $returnUrl = $utilService->getReferer();
 
-        /* @var $request Request */
-        $request = $this->getRequest();
         $session = $request->getSession();
         $date = $session->get('icup.matchedit.date');
         $playgroundid = $session->get('icup.matchedit.playground');

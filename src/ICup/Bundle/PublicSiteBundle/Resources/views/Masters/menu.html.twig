@@ -8,146 +8,38 @@
 
 {% block header %}
 <nav class="navbar navbar-default navbar-fixed-top" role="navigation">
-  <div class="container">
-    <!-- Brand and toggle get grouped for better mobile display -->
-    <div class="navbar-header">
-      <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#icup-navbar-collapse-1">
-        <span class="sr-only">Toggle navigation</span>
-        <span class="icon-bar"></span>
-        <span class="icon-bar"></span>
-        <span class="icon-bar"></span>
-      </button>
-      <a class="navbar-brand" href="{{ path('_icup') }}">
+    <div class="container">
+        <!-- Brand and toggle get grouped for better mobile display -->
+        <div class="navbar-header">
+            <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#icup-navbar-collapse-1">
+                <span class="sr-only">Toggle navigation</span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+            </button>
+            <a class="navbar-brand" href="{{ path('_icup') }}">
 {% if tournament is defined and tournament %}
-        {{ tournament.name }}
+                {{ tournament.name }}
 {% else %}
-        iCup
+                iCup
 {% endif %}
-      </a>
-    </div>
-
-    <!-- Collect the nav links, forms, and other content for toggling -->
-    <div class="collapse navbar-collapse" id="icup-navbar-collapse-1">
-      <ul class="nav navbar-nav">
-{% if app.user == null %}
-    {% if tmnt != '_' %}
-        <li class="active"><a href="{{ path('_tournament_overview', {'tournament': tmnt}) }}">{{ 'MENU.TOURNAMENT.OVERVIEW'|trans }}</a></li>
-    {% else %}
-        <li class="active"><a href="{{ path('_tournament_select') }}">{% trans %}MENU.TOURNAMENT.SELECT{% endtrans %}</a></li>
-    {% endif %}
-{% else %}
-        <li class="active"><a href="{{ path('_user_my_page') }}">{% trans %}MENU.ENROLLMENT.MYPAGE{% endtrans %}</a></li>
-{% endif %}
-        <!-- Tournament section -->
-        <li class="dropdown">
-    {% if tmnt != '_' %}
-          <a href="{{ path('_tournament_overview', {'tournament': tmnt}) }}" class="dropdown-toggle" data-toggle="dropdown">{% trans %}MENU.TOURNAMENT.TITLE{% endtrans %} <span class="caret"></span></a>
-    {% else %}
-          <a href="{{ path('_tournament_select') }}" class="dropdown-toggle" data-toggle="dropdown">{% trans %}MENU.TOURNAMENT.TITLE{% endtrans %} <span class="caret"></span></a>
-    {% endif %}
-          <ul class="dropdown-menu" role="menu">
-{% if tmnt != '_' %}
-            <li><a href="{{ path('_tournament_overview', {'tournament': tmnt}) }}">{% trans %}MENU.TOURNAMENT.OVERVIEW{% endtrans %}</a></li>
-            <li><a href="{{ path('_tournament_categories', {'tournament': tmnt}) }}">{% trans %}MENU.TOURNAMENT.GROUPS{% endtrans %}</a></li>
-            <li><a href="{{ path('_tournament_playgrounds', {'tournament': tmnt}) }}">{% trans %}MENU.TOURNAMENT.PLAYGROUNDS{% endtrans %}</a></li>
-            <li><a href="{{ path('_tournament_clubs', {'tournament': tmnt}) }}">{% trans %}MENU.TOURNAMENT.TEAMS{% endtrans %}</a></li>
-            <li><a href="{{ path('_tournament_winners', {'tournament': tmnt}) }}">{% trans %}MENU.TOURNAMENT.WINNERS{% endtrans %}</a></li>
-            <li><a href="{{ path('_tournament_statistics', {'tournament': tmnt}) }}">{% trans %}MENU.TOURNAMENT.STATISTICS{% endtrans %}</a></li>
-            <li class="divider"></li>
-{% endif %}
-            <li><a href="{{ path('_tournament_select') }}">{% trans %}MENU.TOURNAMENT.SELECT{% endtrans %}</a></li>
-          </ul>
-        </li>
-        <!-- ANNONOMOUS USER -->
-{% if app.user == null %}
-        <!-- Information section -->
-<!--            
-        <li class="dropdown">
-          <a href="#" class="dropdown-toggle" data-toggle="dropdown">{% trans %}MENU.INFORMATION.TITLE{% endtrans %} <span class="caret"></span></a>
-          <ul class="dropdown-menu" role="menu">
-          </ul>
-        </li>
--->
-        <!-- Enrollment/registration section -->
-        <li class="dropdown">
-          <a href="#" class="dropdown-toggle" data-toggle="dropdown">{% trans %}MENU.REGISTER.TITLE{% endtrans %} <span class="caret"></span></a>
-          <ul class="dropdown-menu" role="menu">
-            <li><a href="{{ path('_ausr_new_user') }}">{% trans %}MENU.REGISTER.USER{% endtrans %}</a></li>
-    {% if tmnt != '_' %}
-            <li><a href="{{ path('_club_enroll_check') }}">{% trans %}MENU.REGISTER.ENROLL{% endtrans %}</a></li>
-    {% endif %}
-          </ul>
-        </li>
-        <li><a href="{{ path('_contact') }}">{% trans %}MENU.INFO.ABOUT{% endtrans %}</a></li>
-        <!-- REGISTRATED USER -->
-{% else %}
-    {% if not is_granted('ROLE_EDITOR') %}
-        <!-- Enrollment section -->
-        <li class="dropdown">
-          <a href="#" class="dropdown-toggle" data-toggle="dropdown">{% trans %}MENU.ENROLLMENT.TITLE{% endtrans %} <span class="caret"></span></a>
-          <ul class="dropdown-menu" role="menu">
-        {% if is_granted('ROLE_USER') %}
-            {% if is_granted('ROLE_CLUB_ADMIN') %}
-                {% if tmnt != '_' %}
-            <li><a href="{{ path('_club_enroll_check') }}">{% trans %}MENU.ENROLLMENT.CLUBS{% endtrans %}</a></li>
-                {% endif %}
-            {% elseif app.user.status < 3 %}
-            <li><a href="{{ path('_club_new') }}">{% trans %}MENU.NONREL.ENROLL{% endtrans %}</a></li>
-            {% endif %}
-        {% endif %}
-          </ul>
-        </li>
-    {% else %}
-        <!-- Registration section -->
-        <li class="dropdown">
-          <a href="#" class="dropdown-toggle" data-toggle="dropdown">{% trans %}MENU.REGISTER.TITLE{% endtrans %} <span class="caret"></span></a>
-          <ul class="dropdown-menu" role="menu">
-        {% if is_granted('ROLE_EDITOR_ADMIN') %}
-<!--            
-            <li><a href="{{ path('_club_enroll_check') }}">TBD:{% trans %}MENU.ENROLLMENT.CLUBS{% endtrans %}</a></li>
--->
-        {% endif %}
-        {% if tmnt != '_' %}
-            <li><a href="{{ path('_edit_list_matches') }}">{% trans %}MENU.ADMIN.RESULTS{% endtrans %}</a></li>
-        {% endif %}
-          </ul>
-        </li>
-    {% endif %}
-        <!-- Admin section -->
-        <li class="dropdown">
-          <a href="#" class="dropdown-toggle" data-toggle="dropdown">{% trans %}MENU.ADMIN.TITLE{% endtrans %} <span class="caret"></span></a>
-          <ul class="dropdown-menu" role="menu">
-            <li><a href="{{ path('_user_my_page') }}">{% trans %}MENU.ENROLLMENT.MYPAGE{% endtrans %}</a></li>
-            <li><a href="{{ path('_user_chg_pass') }}">{% trans %}MENU.ADMIN.CHANGEPWD{% endtrans %}</a></li>
-    {% if is_granted('ROLE_ADMIN') %}
-            <li><a href="{{ path('_edit_host_list') }}">{% trans %}MENU.ADMIN.TOURNAMENT{% endtrans %}</a></li>
-            <li><a href="{{ path('_edit_club_list') }}">{% trans %}MENU.ADMIN.TEAMS{% endtrans %}</a></li>
-<!--                <li><a href="{{ path('_edit_host_list') }}">{% trans %}MENU.ADMIN.PLAYERS{% endtrans %}</a></li>
-            <li><a href="{{ path('_edit_host_list') }}">{% trans %}MENU.ADMIN.REFEREES{% endtrans %}</a></li> -->
-    {% elseif is_granted('ROLE_EDITOR_ADMIN') %}
-            <li><a href="{{ path('_host_list_tournaments') }}">{% trans %}MENU.ADMIN.TOURNAMENT{% endtrans %}</a></li>
-            <li><a href="{{ path('_edit_editors_list') }}">{% trans %}MENU.ADMIN.EDITORS{% endtrans %}</a></li>
-    {% elseif is_granted('ROLE_CLUB_ADMIN') %}
-            <li><a href="{{ path('_user_my_page_users') }}">{% trans %}MENU.ENROLLMENT.MYPAGE_USERS{% endtrans %}</a></li>
-    {% endif %}
-          </ul>
-        </li>
-{% endif %}
-      </ul>
-<!--        
-      <form class="navbar-form navbar-left" role="search">
-        <div class="form-group">
-          <input type="text" class="form-control" placeholder="Search">
+            </a>
         </div>
-        <button type="submit" class="btn btn-default">Submit</button>
-      </form>
--->
-      <ul class="nav navbar-nav navbar-right">
-        <li>
+
+        <!-- Collect the nav links, forms, and other content for toggling -->
+        <div class="collapse navbar-collapse" id="icup-navbar-collapse-1">
+            <ul class="nav navbar-nav">
+{% if app.user != null %}
+                <li><a href="{{ path('_user_my_page') }}">{% trans %}MENU.ENROLLMENT.MYPAGE{% endtrans %}</a></li>
+{% endif %}
+                <li><a href="{{ path('_contact') }}">{% trans %}MENU.INFO.ABOUT{% endtrans %}</a></li>
+            </ul>
+            <ul class="nav navbar-nav navbar-right">
+                <li>
             {% if is_granted('ROLE_PREVIOUS_ADMIN') %}
-                <a href="{{ path('_user_my_page', {'_switch_user': '_exit'}) }}">
-                    <i class="fa fa-eye"></i>&nbsp;{{ app.user.name }} {% trans %}MENU.LOGOUT{% endtrans %}
-                </a>
+                    <a href="{{ path('_user_my_page', {'_switch_user': '_exit'}) }}">
+                        <i class="fa fa-eye"></i>&nbsp;{{ app.user.name }} {% trans %}MENU.LOGOUT{% endtrans %}
+                    </a>
             {% else %}
                 {% if app.user != null %}
                     <a href="{{ path('_admin_logout') }}">{{ app.user.name }} {% trans %}MENU.LOGOUT{% endtrans %}</a>
@@ -155,29 +47,29 @@
                     <a href="{{ path('_user_my_page') }}">{% trans %}MENU.LOGIN{% endtrans %}</a>
                 {% endif %}
             {% endif %}
-        </li>
-        <li class="dropdown">
-          <a href="#" class="dropdown-toggle" data-toggle="dropdown">{% trans %}MENU.LANGCHOICE.TITLE{% endtrans %} <span class="caret"></span></a>
-          <ul class="dropdown-menu" role="menu">
-            <!-- Language section -->
+                </li>
+                <li class="dropdown">
+                    <a href="#" class="dropdown-toggle" data-toggle="dropdown">{% trans %}MENU.LANGCHOICE.TITLE{% endtrans %} <span class="caret"></span></a>
+                    <ul class="dropdown-menu" role="menu">
+                        <!-- Language section -->
             {% for local in supported_locales|keys %}
                 {% set flag = countries[supported_locales[local]].flag %}
                 {% set lang = ['LANG.',local|upper]|join|trans({}, 'common') %}
-            <li>
-                <a href="{{ path('_switch', { 'locale': local }) }}">
-                    <img src="{{ imagepath }}/flags/{{ flag }}"
-                         alt="{{ lang }}"
-                         title="{% trans %}MENU.LANGCHOICE.CHOOSELANG{% endtrans %}: {{ lang }}"
-                         class="flag"
-                    />&nbsp;{{ lang }}
-                </a>
-            </li>
+                        <li>
+                            <a href="{{ path('_switch', { 'locale': local }) }}">
+                                <img src="{{ imagepath }}/flags/{{ flag }}"
+                                     alt="{{ lang }}"
+                                     title="{% trans %}MENU.LANGCHOICE.CHOOSELANG{% endtrans %}: {{ lang }}"
+                                     class="flag"
+                                />&nbsp;{{ lang }}
+                            </a>
+                        </li>
             {% endfor %}
-          </ul>
-        </li>
-      </ul>
-    </div><!-- /.navbar-collapse -->
-  </div><!-- /.container -->
+                    </ul>
+                </li>
+            </ul>
+        </div>
+    </div>
 </nav>
 {% endblock %}
 

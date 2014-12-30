@@ -196,12 +196,14 @@ class MyPageController extends Controller
         $keyList = array(
             TournamentSupport::$TMNT_ENROLL => 'enroll',
             TournamentSupport::$TMNT_GOING => 'active',
-            TournamentSupport::$TMNT_DONE => 'done'
+            TournamentSupport::$TMNT_DONE => 'done',
+            TournamentSupport::$TMNT_ANNOUNCE => 'announce'
         );
         $statusList = array(
             'enroll' => array(),
             'active' => array(),
-            'done' => array()
+            'done' => array(),
+            'announce' => array()
         );
         $today = new DateTime();
         foreach ($tournaments as $tournament) {

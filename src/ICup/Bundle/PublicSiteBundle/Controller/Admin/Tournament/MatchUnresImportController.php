@@ -11,6 +11,7 @@ use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
 use Symfony\Component\Form\FormError;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use ICup\Bundle\PublicSiteBundle\Exceptions\ValidationException;
+use Symfony\Component\HttpFoundation\Request;
 
 class MatchUnresImportController extends Controller
 {
@@ -19,7 +20,7 @@ class MatchUnresImportController extends Controller
      * @Route("/edit/import/matchunres/{tournamentid}", name="_edit_import_match_unres")
      * @Template("ICupPublicSiteBundle:Host:matchimport.html.twig")
      */
-    public function matchImportAction($tournamentid) {
+    public function matchImportAction($tournamentid, Request $request) {
         /* @var $utilService Util */
         $utilService = $this->get('util');
         $returnUrl = $utilService->getReferer();
@@ -31,7 +32,6 @@ class MatchUnresImportController extends Controller
 
         $matchImport = new MatchImport();
         $form = $this->makeImportForm($matchImport);
-        $request = $this->getRequest();
         $form->handleRequest($request);
         if ($form->get('cancel')->isClicked()) {
             return $this->redirect($returnUrl);

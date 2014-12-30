@@ -9,6 +9,7 @@ use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
 use Symfony\Component\Form\FormError;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use ICup\Bundle\PublicSiteBundle\Exceptions\ValidationException;
+use Symfony\Component\HttpFoundation\Request;
 
 class TeamImportController extends Controller
 {
@@ -17,7 +18,7 @@ class TeamImportController extends Controller
      * @Route("/edit/import/team/{tournamentid}", name="_edit_import_team")
      * @Template("ICupPublicSiteBundle:Host:teamimport.html.twig")
      */
-    public function teamImportAction($tournamentid) {
+    public function teamImportAction($tournamentid, Request $request) {
         /* @var $utilService Util */
         $utilService = $this->get('util');
         $returnUrl = $utilService->getReferer();
@@ -29,7 +30,6 @@ class TeamImportController extends Controller
 
         $matchImport = new MatchImport();
         $form = $this->makeImportForm($matchImport);
-        $request = $this->getRequest();
         $form->handleRequest($request);
         if ($form->get('cancel')->isClicked()) {
             return $this->redirect($returnUrl);

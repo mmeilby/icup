@@ -7,6 +7,7 @@ use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use ICup\Bundle\PublicSiteBundle\Services\Doctrine\TournamentSupport;
 use ICup\Bundle\PublicSiteBundle\Entity\Contact;
+use Symfony\Component\HttpFoundation\Request;
 use DateTime;
 use Swift_Message;
 
@@ -16,22 +17,25 @@ class FrontpageController extends Controller
      * @Route("/", name="_icup")
      * @Template("ICupPublicSiteBundle:General:frontpage.html.twig")
      */
-    public function rootAction()
+    public function rootAction(Request $request)
     {
         $tournaments = $this->get('logic')->listAvailableTournaments();
         $tournamentList = array();
         $keyList = array(
             TournamentSupport::$TMNT_ENROLL => 'enroll',
             TournamentSupport::$TMNT_GOING => 'active',
-            TournamentSupport::$TMNT_DONE => 'done'
+            TournamentSupport::$TMNT_DONE => 'done',
+            TournamentSupport::$TMNT_ANNOUNCE => 'announce'
         );
         $statusList = array(
             'enroll' => array(),
             'active' => array(),
-            'done' => array()
+            'done' => array(),
+            'announce' => array()
         );
         $today = new DateTime();
         $shortMatches = array();
+        $teaserList = array();
         foreach ($tournaments as $tournament) {
             $stat = $this->get('tmnt')->getTournamentStatus($tournament->getId(), $today);
             if ($stat != TournamentSupport::$TMNT_HIDE) {
@@ -39,16 +43,44 @@ class FrontpageController extends Controller
                 $statusList[$keyList[$stat]][] = $tournament;
             }
             if ($stat == TournamentSupport::$TMNT_GOING) {
-                $shortMatchList = $this->get('match')->listMatchesLimitedWithTournament($tournament->getId(), $today, 3, 3);
+                $shortMatchList = $this->get('match')->listMatchesLimitedWithTournament($tournament->getId(), $today, 5, 3);
                 $shortMatches = array();
                 foreach ($shortMatchList as $match) {
                     $shortMatches[date_format($match['schedule'], "Y/m/d")][] = $match;
                 }
+                $teaserList = array(
+                    array(
+                        'titletext' => 'FORM.TEASER.TOURNAMENT.GROUPS.TITLE',
+                        'text' => 'FORM.TEASER.TOURNAMENT.GROUPS.DESC',
+                        'path' => $this->generateUrl('_tournament_categories', array('tournament' => $tournament->getKey()))
+                    ),
+                    array(
+                        'titletext' => 'FORM.TEASER.TOURNAMENT.PLAYGROUNDS.TITLE',
+                        'text' => 'FORM.TEASER.TOURNAMENT.PLAYGROUNDS.DESC',
+                        'path' => $this->generateUrl('_tournament_playgrounds', array('tournament' => $tournament->getKey()))
+                    ),
+                    array(
+                        'titletext' => 'FORM.TEASER.TOURNAMENT.TEAMS.TITLE',
+                        'text' => 'FORM.TEASER.TOURNAMENT.TEAMS.DESC',
+                        'path' => $this->generateUrl('_tournament_clubs', array('tournament' => $tournament->getKey()))
+                    ),
+        /*
+                    array(
+                        'titletext' => 'FORM.TEASER.TOURNAMENT.WINNERS.TITLE',
+                        'text' => 'FORM.TEASER.TOURNAMENT.WINNERS.DESC',
+                        'path' => $this->generateUrl('_tournament_winners', array('tournament' => $tournament->getKey()))
+                    ),
+                    array(
+                        'titletext' => 'FORM.TEASER.TOURNAMENT.STATISTICS.TITLE',
+                        'text' => 'FORM.TEASER.TOURNAMENT.STATISTICS.DESC',
+                        'path' => $this->generateUrl('_tournament_statistics', array('tournament' => $tournament->getKey()))
+                    )
+         */
+                );
             }
         }
 
         $form = $this->makeContactForm(new Contact());
-        $request = $this->getRequest();
         $form->handleRequest($request);
         if ($form->isValid()) {
             $this->sendMail($form->getData());
@@ -59,10 +91,12 @@ class FrontpageController extends Controller
             // clear form
             $form = $this->makeContactForm(new Contact());
         }
+
         return array('form' => $form->createView(),
                      'tournaments' => $tournamentList,
                      'statuslist' => $statusList,
-                     'matchlist' => $shortMatches);
+                     'matchlist' => $shortMatches,
+                     'teaserlist' => $teaserList);
     }
     
     private function makeContactForm(Contact $contact) {

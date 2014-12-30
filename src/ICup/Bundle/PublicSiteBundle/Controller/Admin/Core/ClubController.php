@@ -7,6 +7,7 @@ use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\Form\FormError;
+use Symfony\Component\HttpFoundation\Request;
 
 class ClubController extends Controller
 {
@@ -15,19 +16,18 @@ class ClubController extends Controller
      * @Route("/admin/club/add", name="_edit_club_add")
      * @Template("ICupPublicSiteBundle:Edit:editclub.html.twig")
      */
-    public function addAction() {
+    public function addAction(Request $request) {
         $returnUrl = $this->get('util')->getReferer();
         
-        $country = $this->getRequest()->get('country');
+        $country = $request->get('country');
         if ($country == null) {
-            $country = $this->get('util')->getCountryByLocale($this->getRequest()->getLocale());
+            $country = $this->get('util')->getCountryByLocale($request->getLocale());
         }
 
         $club = new Club();
         // If country is a part of the request parameters - use it
         $club->setCountry($country);
         $form = $this->makeClubForm($club, 'add');
-        $request = $this->getRequest();
         $form->handleRequest($request);
         if ($form->get('cancel')->isClicked()) {
             return $this->redirect($returnUrl);
@@ -52,14 +52,13 @@ class ClubController extends Controller
      * @Route("/admin/club/chg/{clubid}", name="_edit_club_chg")
      * @Template("ICupPublicSiteBundle:Edit:editclub.html.twig")
      */
-    public function chgAction($clubid) {
+    public function chgAction($clubid, Request $request) {
         $returnUrl = $this->get('util')->getReferer();
 
         /* @var $club Club */
         $club = $this->get('entity')->getClubById($clubid);
 
         $form = $this->makeClubForm($club, 'chg');
-        $request = $this->getRequest();
         $form->handleRequest($request);
         if ($form->get('cancel')->isClicked()) {
             return $this->redirect($returnUrl);
@@ -83,7 +82,7 @@ class ClubController extends Controller
      * @Route("/admin/club/del/{clubid}", name="_edit_club_del")
      * @Template("ICupPublicSiteBundle:Edit:editclub.html.twig")
      */
-    public function delAction($clubid) {
+    public function delAction($clubid, Request $request) {
         $returnUrl = $this->get('util')->getReferer();
 
         /* @var $club Club */
@@ -94,7 +93,6 @@ class ClubController extends Controller
         if ($teams != null) {
             $form->addError(new FormError($this->get('translator')->trans('FORM.CLUB.TEAMSEXIST', array(), 'admin')));
         }
-        $request = $this->getRequest();
         $form->handleRequest($request);
         if ($form->get('cancel')->isClicked()) {
             return $this->redirect($returnUrl);

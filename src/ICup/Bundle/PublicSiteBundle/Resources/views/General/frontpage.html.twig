@@ -13,6 +13,9 @@
     background-repeat: no-repeat;">
     <div class="container">
         <img src="{{ imagepath }}/IWC/logo.png" alt="logo" class="img-responsive" />
+{% for tournament in statuslist.active %}
+        <p class="lead"><strong>{{ tournament.edition }} - {{ tournament.name }}</strong></p>
+{% endfor %}
     </div>
 </div>
 <div class="container">
@@ -24,125 +27,109 @@
         {{ flashMessage|trans }}
     </div>
 {% endfor %}
-    <div class="jumbotron">
-        <div class="row">
-            <div class="col-md-4 hidden-sm hidden-xs">
-                <img src="{{ imagepath }}/IWC/Teramo.png" alt="logo" class="img-responsive img-rounded" />
-                <h2>{% trans %}FORM.FRONTPAGE.BLOCK1.TITLE{% endtrans %}</h2>
-                <p>{% trans %}FORM.FRONTPAGE.BLOCK1.DESCRIPTION{% endtrans %}</p>
-                <p>
-{% if app.user == null %}
-                    <a class="btn btn-default" href="{{ path('_ausr_new_user') }}" role="button">{% trans %}FORM.FRONTPAGE.BLOCK1.LEARNMORE{% endtrans %}&nbsp;<i class="fa fa-angle-double-right"></i></a>
-{% else %}
-                    <a class="btn btn-default" href="{{ path('_user_my_page') }}" role="button">{% trans %}FORM.FRONTPAGE.BLOCK1.LEARNMORE{% endtrans %}&nbsp;<i class="fa fa-angle-double-right"></i></a>
-{% endif %}
-                </p>
-            </div>
-            <div class="col-md-8">
 {% for tournament in statuslist.active %}
+    <h2><i class="fa fa-flag">&nbsp;</i>{% trans %}FORM.FRONTPAGE.BLOCK3.TITLE{% endtrans %}</h2>
+    <hr />
+    <div class="row">
+        <div class="col-md-8">
     {% for matchset in matchlist %}
-                <div class="visible-md visible-lg">
-                    <h2><i class="fa fa-flag">&nbsp;</i>{% trans %}FORM.FRONTPAGE.BLOCK3.TITLE{% endtrans %}</h2>
-                    <p>
-                        {{ 'FORMAT.LONGDATE'|transchoice(matchset[0].schedule|date('j'), {
-                                '%week%': ['WEEK.',matchset[0].schedule|date('D')|upper]|join|trans([],'messages')|capitalize,
-                                '%day%': matchset[0].schedule|date('j'),
-                                '%month%': ['MONTH.',matchset[0].schedule|date('M')|upper]|join|trans([],'messages'),
-                                '%year%': matchset[0].schedule|date('Y')}, 'messages') }}
-                    </p>
-                </div>
-                <div class="visible-sm visible-xs">
-                    <center>
-                        <h2>{% trans %}FORM.FRONTPAGE.BLOCK3.TITLE{% endtrans %}</h2>
-                        <p>
-                            <a href="{{ path('_show_matches', {'tournament': tournament.key}) }}" role="button">
-                                <h3><span class="label label-default"><i class="fa fa-flag"></i>&nbsp;{{ tournament.name }}</span></h3>
-                            </a>
-                            {{ 'FORMAT.LONGDATE'|transchoice(matchset[0].schedule|date('j'), {
-                                    '%week%': ['WEEK.',matchset[0].schedule|date('D')|upper]|join|trans([],'messages')|capitalize,
-                                    '%day%': matchset[0].schedule|date('j'),
-                                    '%month%': ['MONTH.',matchset[0].schedule|date('M')|upper]|join|trans([],'messages'),
-                                    '%year%': matchset[0].schedule|date('Y')}, 'messages') }}
-                        </p>
-                    </center>
-                </div>
-                <div class="hidden-xs">
-                    <table class="table table-striped">
-                        <thead>
-                            <tr>
-                                <td class="narrow-col">{% trans from "tournament" %}LEGEND.NO{% endtrans %}</td>
-                                <td class="narrow-col">{% trans from "tournament" %}LEGEND.TIME{% endtrans %}<br />
-                                                       {% trans from "tournament" %}LEGEND.PLAYGROUND{% endtrans %}</td>
-                                <td class="flag"></td>
-                                <td>{% trans from "tournament" %}LEGEND.HOMETEAM{% endtrans %}</td>
-                                <td class="flag"></td>
-                                <td>{% trans from "tournament" %}LEGEND.AWAYTEAM{% endtrans %}</td>
-                                <td class="narrow-col">{% trans from "tournament" %}LEGEND.RESULT{% endtrans %}</td>
-                            </tr>
-                        </thead>
-                        <tbody>
-                        {% for match in matchset %}
-                            <tr>
-                                <td class="narrow-col">{{ match.matchno }}</td>
-                                <td class="narrow-col">{{ match.schedule|date('FORMAT.TIME'|trans([],'messages')) }}<br />
-                                    <a href="{{ path('_showplayground_full', { 'playgroundid': match.playground.id }) }}" title="{{ match.playground.name }}">{{ match.playground.no }}</a></td>
-                                {{ formatter.club(match.home, match.group.id, _context) }}
-                                {{ formatter.club(match.away, match.group.id, _context) }}
-                                <td class="narrow-col text-nowrap">{{ match.home.score }}-{{ match.away.score }}</td>
-                            </tr>
-                        {% endfor %}
-                        </tbody>
-                    </table>
-                </div>
-                <div class="hidden-sm hidden-md hidden-lg">
-                    <table class="table table-striped">
-                        <thead>
-                            <tr>
-                                <td class="narrow-col">{% trans from "tournament" %}LEGEND.NO{% endtrans %}</td>
-                                <td class="narrow-col">{% trans from "tournament" %}LEGEND.TIME{% endtrans %}<br />
-                                                       {% trans from "tournament" %}LEGEND.PLAYGROUND{% endtrans %}</td>
-                                <td>{% trans from "tournament" %}LEGEND.HOMETEAM{% endtrans %}<br />
-                                    {% trans from "tournament" %}LEGEND.AWAYTEAM{% endtrans %}</td>
-                                <td class="narrow-col">{% trans from "tournament" %}LEGEND.RESULT{% endtrans %}</td>
-                            </tr>
-                        </thead>
-                        <tbody>
-                        {% for match in matchset %}
-                            <tr>
-                                <td class="narrow-col">{{ match.matchno }}</td>
-                                <td class="narrow-col">{{ match.schedule|date('FORMAT.TIME'|trans([],'messages')) }}<br />
-                                    <a href="{{ path('_showplayground_full', { 'playgroundid': match.playground.id }) }}" title="{{ match.playground.name }}">{{ match.playground.no }}</a></td>
-                                <td>
-                                    {{ formatter.clubxs(match.home, match.away, match.group.id, _context) }}
-                                </td>
-                                <td class="narrow-col text-nowrap">{{ match.home.score }}-{{ match.away.score }}</td>
-                            </tr>
-                        {% endfor %}
+            <p class="lead">
+                {{ 'FORMAT.LONGDATE'|transchoice(matchset[0].schedule|date('j'), {
+                        '%week%': ['WEEK.',matchset[0].schedule|date('D')|upper]|join|trans([],'messages')|capitalize,
+                        '%day%': matchset[0].schedule|date('j'),
+                        '%month%': ['MONTH.',matchset[0].schedule|date('M')|upper]|join|trans([],'messages'),
+                        '%year%': matchset[0].schedule|date('Y')}, 'messages') }}
+            </p>
+            <div class="visible-sm visible-md visible-lg">
+                <table class="table table-striped">
+                    <thead>
+                        <tr>
+                            <td class="narrow-col">{% trans from "tournament" %}LEGEND.NO{% endtrans %}</td>
+                            <td class="narrow-col">{% trans from "tournament" %}LEGEND.TIME{% endtrans %}<br />
+                                                   {% trans from "tournament" %}LEGEND.PLAYGROUND{% endtrans %}</td>
+                            <td class="flag"></td>
+                            <td>{% trans from "tournament" %}LEGEND.HOMETEAM{% endtrans %}</td>
+                            <td class="flag"></td>
+                            <td>{% trans from "tournament" %}LEGEND.AWAYTEAM{% endtrans %}</td>
+                            <td class="narrow-col">{% trans from "tournament" %}LEGEND.RESULT{% endtrans %}</td>
+                        </tr>
+                    </thead>
+                    <tbody>
+        {% for match in matchset %}
+                        <tr>
+                            <td class="narrow-col">{{ match.matchno }}</td>
+                            <td class="narrow-col">{{ match.schedule|date('FORMAT.TIME'|trans([],'messages')) }}<br />
+                                <a href="{{ path('_showplayground_full', { 'playgroundid': match.playground.id }) }}" title="{{ match.playground.name }}">{{ match.playground.no }}</a></td>
+                            {{ formatter.club(match.home, match.group.id, _context) }}
+                            {{ formatter.club(match.away, match.group.id, _context) }}
+                            <td class="narrow-col text-nowrap">{{ match.home.score }}-{{ match.away.score }}</td>
+                        </tr>
+        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+            <div class="visible-xs">
+                <table class="table table-striped">
+                    <thead>
+                        <tr>
+                            <td class="narrow-col">{% trans from "tournament" %}LEGEND.NO{% endtrans %}</td>
+                            <td class="narrow-col">{% trans from "tournament" %}LEGEND.TIME{% endtrans %}<br />
+                                                   {% trans from "tournament" %}LEGEND.PLAYGROUND{% endtrans %}</td>
+                            <td>{% trans from "tournament" %}LEGEND.HOMETEAM{% endtrans %}<br />
+                                {% trans from "tournament" %}LEGEND.AWAYTEAM{% endtrans %}</td>
+                            <td class="narrow-col">{% trans from "tournament" %}LEGEND.RESULT{% endtrans %}</td>
+                        </tr>
+                    </thead>
+                    <tbody>
+        {% for match in matchset %}
+                        <tr>
+                            <td class="narrow-col">{{ match.matchno }}</td>
+                            <td class="narrow-col">{{ match.schedule|date('FORMAT.TIME'|trans([],'messages')) }}<br />
+                                <a href="{{ path('_showplayground_full', { 'playgroundid': match.playground.id }) }}" title="{{ match.playground.name }}">{{ match.playground.no }}</a></td>
+                            <td>
+                                {{ formatter.clubxs(match.home, match.away, match.group.id, _context) }}
+                            </td>
+                            <td class="narrow-col text-nowrap">{{ match.home.score }}-{{ match.away.score }}</td>
+                        </tr>
+        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+            <a href="{{ path('_show_matches', {'tournament': tournament.key}) }}" role="button">
+                <h3><span class="label label-default">{% trans %}FORM.FRONTPAGE.BLOCK3.LEARNMORE{% endtrans %}</span></h3>
+            </a>
+            <br />
+            <div class="list-group">
+        {% for teaser in teaserlist %}
+                <a class="list-group-item" href="{{ teaser.path }}">
+                    <h4 class="list-group-item-heading">{{ teaser.titletext|trans([], 'tournament') }}</h4>
+                    <p class="list-group-item-text">{{ teaser.text|trans([], 'tournament') }}</p>
+                </a>
+        {% endfor %}
+            </div>
     {% endfor %}
-                        </tbody>
-                    </table>
-                </div>
-{% else %}
-                {{ sonata_block_render({'name': '/cms/content/blocks/frontpage/section_1'}) }}
-{% endfor %}
-            </div>
         </div>
-        <div class="row">
-            <div class="col-sm-12 visible-sm visible-xs">
-                <center>
-                    <h2>{% trans %}FORM.FRONTPAGE.BLOCK1.TITLE{% endtrans %}</h2>
-                    <p>{% trans %}FORM.FRONTPAGE.BLOCK1.DESCRIPTION{% endtrans %}</p>
-                    <p>
-{% if app.user == null %}
-                        <a class="btn btn-default" href="{{ path('_ausr_new_user') }}" role="button">{% trans %}FORM.FRONTPAGE.BLOCK1.LEARNMORE{% endtrans %}&nbsp;<i class="fa fa-angle-double-right"></i></a>
-{% else %}
-                        <a class="btn btn-default" href="{{ path('_user_my_page') }}" role="button">{% trans %}FORM.FRONTPAGE.BLOCK1.LEARNMORE{% endtrans %}&nbsp;<i class="fa fa-angle-double-right"></i></a>
-{% endif %}
-                    </p>
-                </center>
-            </div>
+        <div class="col-md-4 hidden-sm hidden-xs">
+            <img src="{{ imagepath }}/IWC/Teramo.png" alt="logo" class="img-responsive img-rounded" />
+            <h2>{% trans %}FORM.FRONTPAGE.BLOCK1.TITLE{% endtrans %}</h2>
+            <p class="lead">{% trans %}FORM.FRONTPAGE.BLOCK1.DESCRIPTION{% endtrans %}</p>
+            <p>
+                <a class="btn btn-success btn-lg" href="{{ path('_ausr_new_user') }}" role="button">{% trans %}FORM.FRONTPAGE.BLOCK1.LEARNMORE{% endtrans %}&nbsp;<i class="fa fa-angle-double-right"></i></a>
+            </p>
         </div>
     </div>
+    <div class="visible-sm visible-xs">
+        <hr />
+        <h2>{% trans %}FORM.FRONTPAGE.BLOCK1.TITLE{% endtrans %}</h2>
+        <p class="lead">{% trans %}FORM.FRONTPAGE.BLOCK1.DESCRIPTION{% endtrans %}</p>
+        <p>
+            <a class="btn btn-success btn-lg" href="{{ path('_ausr_new_user') }}" role="button">{% trans %}FORM.FRONTPAGE.BLOCK1.LEARNMORE{% endtrans %}&nbsp;<i class="fa fa-angle-double-right"></i></a>
+        </p>
+    </div>
+{% else %}
+    {{ sonata_block_render({'name': '/cms/content/blocks/frontpage/section_1'}) }}
+{% endfor %}
+    <hr />        
 {% set spaceleft = 8 - ((statuslist.enroll|length * 4) + (statuslist.done|length * 4)) %}
     <div class="row">
 {% if spaceleft > 0 %}
@@ -160,22 +147,10 @@
                     </a>
                 </p>
             </center>
+            <br />
+            <hr class="visible-sm visible-xs" />
         </div>
 {% endfor %}
-{% for tournament in statuslist.active %}
-        <div class="col-md-4 visible-md visible-lg">
-            <center>
-                <i class="fa fa-flag fa-5x"></i>
-                <h2>{% trans %}FORM.FRONTPAGE.BLOCK3.TITLE{% endtrans %}</h2>
-                <p>{% trans %}FORM.FRONTPAGE.BLOCK3.DESCRIPTION{% endtrans %}</p>
-                <p>
-                    <a href="{{ path('_show_matches', {'tournament': tournament.key}) }}" role="button">
-                        <h3><span class="label label-default"><i class="fa fa-flag"></i>&nbsp;{{ tournament.name }}</span></h3>
-                    </a>
-                </p>
-            </center>
-        </div>
-{% else %}
         <div class="col-md-4">
             <center>
                 <i class="fa fa-info-circle fa-5x"></i>
@@ -187,8 +162,9 @@
                     </a>
                 </p>
             </center>
+            <br />
+            <hr class="visible-sm visible-xs" />
         </div>
-{% endfor %}
 {% for tournament in statuslist.enroll %}
         <div class="col-md-4">
             <center>
@@ -201,6 +177,8 @@
                     </a>
                 </p>
             </center>
+            <br />
+            <hr class="visible-sm visible-xs" />
         </div>
 {% endfor %}
 {% if spaceleft > 0 %}

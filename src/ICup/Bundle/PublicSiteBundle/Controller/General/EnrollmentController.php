@@ -6,6 +6,7 @@ use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use ICup\Bundle\PublicSiteBundle\Entity\Enrollment;
+use Symfony\Component\HttpFoundation\Request;
 
 class EnrollmentController extends Controller
 {
@@ -13,14 +14,13 @@ class EnrollmentController extends Controller
      * @Route("/enrollment/step1", name="_enrollment_step1")
      * @Template("ICupPublicSiteBundle:General:enrollment_step1.html.twig")
      */
-    public function showEnrollment()
+    public function showEnrollment(Request $request)
     {
-        $enrollform = $this->getRequest()->getSession()->get('enrollform', new Enrollment());
+        $enrollform = $request->getSession()->get('enrollform', new Enrollment());
         $form = $this->makeEnrollmentFormStep1($enrollform);
-        $request = $this->getRequest();
         $form->handleRequest($request);
         if ($form->isValid()) {
-            $this->getRequest()->getSession()->set('enrollform', $enrollform);
+            $request->getSession()->set('enrollform', $enrollform);
             $this->redirectToRoute('_enrollment_step2');
         }
         return array('form' => $form->createView());
@@ -30,14 +30,13 @@ class EnrollmentController extends Controller
      * @Route("/enrollment/step2", name="_enrollment_step2")
      * @Template("ICupPublicSiteBundle:General:enrollment_step2.html.twig")
      */
-    public function showEnrollmentStep2()
+    public function showEnrollmentStep2(Request $request)
     {
-        $enrollform = $this->getRequest()->getSession()->get('enrollform', new Enrollment());
+        $enrollform = $request->getSession()->get('enrollform', new Enrollment());
         $form = $this->makeEnrollmentFormStep2($enrollform);
-        $request = $this->getRequest();
         $form->handleRequest($request);
         if ($form->isValid()) {
-            $this->getRequest()->getSession()->set('enrollform', $enrollform);
+            $request->getSession()->set('enrollform', $enrollform);
             $this->redirectToRoute('_enrollment_step3');
         }
         return array('form' => $form->createView());
@@ -47,14 +46,13 @@ class EnrollmentController extends Controller
      * @Route("/enrollment/step3", name="_enrollment_step3")
      * @Template("ICupPublicSiteBundle:General:enrollment_step3.html.twig")
      */
-    public function showEnrollmentStep3()
+    public function showEnrollmentStep3(Request $request)
     {
-        $enrollform = $this->getRequest()->getSession()->get('enrollform', new Enrollment());
+        $enrollform = $request->getSession()->get('enrollform', new Enrollment());
         $form = $this->makeEnrollmentFormStep3($enrollform);
-        $request = $this->getRequest();
         $form->handleRequest($request);
         if ($form->isValid()) {
-            $this->getRequest()->getSession()->set('enrollform', $enrollform);
+            $request->getSession()->set('enrollform', $enrollform);
             $this->redirectToRoute('_enrollment_step4');
         }
         return array('form' => $form->createView());
@@ -64,14 +62,13 @@ class EnrollmentController extends Controller
      * @Route("/enrollment/step4", name="_enrollment_step4")
      * @Template("ICupPublicSiteBundle:General:enrollment_step4.html.twig")
      */
-    public function showEnrollmentStep4()
+    public function showEnrollmentStep4(Request $request)
     {
-        $enrollform = $this->getRequest()->getSession()->get('enrollform', new Enrollment());
+        $enrollform = $request->getSession()->get('enrollform', new Enrollment());
         $form = $this->makeEnrollmentFormStep4($enrollform);
-        $request = $this->getRequest();
         $form->handleRequest($request);
         if ($form->isValid()) {
-            $this->getRequest()->getSession()->set('enrollform', $enrollform);
+            $request->getSession()->set('enrollform', $enrollform);
             $this->redirectToRoute('_enrollment_step5');
         }
         return array('form' => $form->createView());
@@ -81,14 +78,13 @@ class EnrollmentController extends Controller
      * @Route("/enrollment/step5", name="_enrollment_step5")
      * @Template("ICupPublicSiteBundle:General:enrollment_step5.html.twig")
      */
-    public function showEnrollmentStep5()
+    public function showEnrollmentStep5(Request $request)
     {
-        $enrollform = $this->getRequest()->getSession()->get('enrollform', new Enrollment());
+        $enrollform = $request->getSession()->get('enrollform', new Enrollment());
         $form = $this->makeEnrollmentFormStep5($enrollform);
-        $request = $this->getRequest();
         $form->handleRequest($request);
         if ($form->isValid()) {
-            $this->getRequest()->getSession()->set('enrollform', $enrollform);
+            $request->getSession()->set('enrollform', $enrollform);
             $this->redirectToRoute('_enrollment');
         }
         return array('form' => $form->createView());

@@ -7,6 +7,7 @@ use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use ICup\Bundle\PublicSiteBundle\Services\Util;
+use Symfony\Component\HttpFoundation\Request;
 
 /**
  * List the tournaments available
@@ -18,7 +19,7 @@ class TournamentController extends Controller
      * @Route("/edit/tournament/add/{hostid}", name="_edit_tournament_add")
      * @Template("ICupPublicSiteBundle:Edit:edittournament.html.twig")
      */
-    public function addTournamentAction($hostid) {
+    public function addTournamentAction($hostid, Request $request) {
         /* @var $utilService Util */
         $utilService = $this->get('util');
         
@@ -32,7 +33,6 @@ class TournamentController extends Controller
         $tournament = new Tournament();
         $tournament->setPid($host->getId());
         $form = $this->makeTournamentForm($tournament, 'add');
-        $request = $this->getRequest();
         $form->handleRequest($request);
         if ($form->get('cancel')->isClicked()) {
             return $this->redirect($returnUrl);
@@ -56,7 +56,7 @@ class TournamentController extends Controller
      * @Route("/edit/tournament/chg/{tournamentid}", name="_edit_tournament_chg")
      * @Template("ICupPublicSiteBundle:Edit:edittournament.html.twig")
      */
-    public function chgTournamentAction($tournamentid) {
+    public function chgTournamentAction($tournamentid, Request $request) {
         /* @var $utilService Util */
         $utilService = $this->get('util');
         
@@ -69,7 +69,6 @@ class TournamentController extends Controller
         $utilService->validateEditorAdminUser($user, $host->getId());
 
         $form = $this->makeTournamentForm($tournament, 'chg');
-        $request = $this->getRequest();
         $form->handleRequest($request);
         if ($form->get('cancel')->isClicked()) {
             return $this->redirect($returnUrl);
@@ -94,7 +93,7 @@ class TournamentController extends Controller
      * @Route("/edit/tournament/del/{tournamentid}", name="_edit_tournament_del")
      * @Template("ICupPublicSiteBundle:Edit:edittournament.html.twig")
      */
-    public function delTournamentAction($tournamentid) {
+    public function delTournamentAction($tournamentid, Request $request) {
         /* @var $utilService Util */
         $utilService = $this->get('util');
         
@@ -107,7 +106,6 @@ class TournamentController extends Controller
         $utilService->validateEditorAdminUser($user, $host->getId());
 
         $form = $this->makeTournamentForm($tournament, 'del');
-        $request = $this->getRequest();
         $form->handleRequest($request);
         if ($form->get('cancel')->isClicked()) {
             return $this->redirect($returnUrl);

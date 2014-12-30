@@ -9,6 +9,7 @@ use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\Form\FormError;
 use ICup\Bundle\PublicSiteBundle\Entity\QMatch as MatchForm;
+use Symfony\Component\HttpFoundation\Request;
 use DateTime;
 
 /**
@@ -21,7 +22,7 @@ class QMatchRelationController extends Controller
      * @Route("/edit/qmatchrel/chg/{matchid}", name="_edit_qmatchrel_chg")
      * @Template("ICupPublicSiteBundle:Host:editmatchrelation.html.twig")
      */
-    public function chgAction($matchid) {
+    public function chgAction($matchid, Request $request) {
         /* @var $utilService Util */
         $utilService = $this->get('util');
         $returnUrl = $utilService->getReferer();
@@ -37,7 +38,6 @@ class QMatchRelationController extends Controller
 
         $matchForm = $this->copyMatchForm($match);
         $form = $this->makeMatchForm($matchForm, $category->getId(), 'chg');
-        $request = $this->getRequest();
         $form->handleRequest($request);
         if ($form->get('cancel')->isClicked()) {
             return $this->redirect($returnUrl);
@@ -64,7 +64,7 @@ class QMatchRelationController extends Controller
      * @Route("/edit/qmatchrel/del/{matchid}", name="_edit_qmatchrel_del")
      * @Template("ICupPublicSiteBundle:Host:editmatchrelation.html.twig")
      */
-    public function delAction($matchid) {
+    public function delAction($matchid, Request $request) {
         /* @var $utilService Util */
         $utilService = $this->get('util');
         $returnUrl = $utilService->getReferer();
@@ -79,7 +79,6 @@ class QMatchRelationController extends Controller
 
         $matchForm = $this->copyMatchForm($match);
         $form = $this->makeMatchForm($matchForm, $category->getId(), 'del');
-        $request = $this->getRequest();
         $form->handleRequest($request);
         if ($form->get('cancel')->isClicked()) {
             return $this->redirect($returnUrl);

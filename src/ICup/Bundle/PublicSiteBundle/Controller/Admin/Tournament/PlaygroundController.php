@@ -8,6 +8,7 @@ use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use ICup\Bundle\PublicSiteBundle\Services\Util;
 use Symfony\Component\Form\FormError;
+use Symfony\Component\HttpFoundation\Request;
 
 /**
  * Maintain playgrounds for a tournament
@@ -19,7 +20,7 @@ class PlaygroundController extends Controller
      * @Route("/edit/playground/add/{siteid}", name="_edit_playground_add")
      * @Template("ICupPublicSiteBundle:Edit:editplayground.html.twig")
      */
-    public function addPlaygroundAction($siteid) {
+    public function addPlaygroundAction($siteid, Request $request) {
         /* @var $utilService Util */
         $utilService = $this->get('util');
         
@@ -34,7 +35,6 @@ class PlaygroundController extends Controller
         $playground = new Playground();
         $playground->setPid($site->getId());
         $form = $this->makePlaygroundForm($playground, 'add');
-        $request = $this->getRequest();
         $form->handleRequest($request);
         if ($form->get('cancel')->isClicked()) {
             return $this->redirect($returnUrl);
@@ -53,7 +53,7 @@ class PlaygroundController extends Controller
      * @Route("/edit/playground/chg/{playgroundid}", name="_edit_playground_chg")
      * @Template("ICupPublicSiteBundle:Edit:editplayground.html.twig")
      */
-    public function chgPlaygroundAction($playgroundid) {
+    public function chgPlaygroundAction($playgroundid, Request $request) {
         /* @var $utilService Util */
         $utilService = $this->get('util');
         
@@ -67,7 +67,6 @@ class PlaygroundController extends Controller
         $utilService->validateEditorAdminUser($user, $tournament->getPid());
 
         $form = $this->makePlaygroundForm($playground, 'chg');
-        $request = $this->getRequest();
         $form->handleRequest($request);
         if ($form->get('cancel')->isClicked()) {
             return $this->redirect($returnUrl);
@@ -86,7 +85,7 @@ class PlaygroundController extends Controller
      * @Route("/edit/playground/del/{playgroundid}", name="_edit_playground_del")
      * @Template("ICupPublicSiteBundle:Edit:editplayground.html.twig")
      */
-    public function delPlaygroundAction($playgroundid) {
+    public function delPlaygroundAction($playgroundid, Request $request) {
         /* @var $utilService Util */
         $utilService = $this->get('util');
         
@@ -100,7 +99,6 @@ class PlaygroundController extends Controller
         $utilService->validateEditorAdminUser($user, $tournament->getPid());
 
         $form = $this->makePlaygroundForm($playground, 'del');
-        $request = $this->getRequest();
         $form->handleRequest($request);
         if ($form->get('cancel')->isClicked()) {
             return $this->redirect($returnUrl);

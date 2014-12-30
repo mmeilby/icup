@@ -137,21 +137,24 @@ class TournamentSupport
     public static $TMNT_GOING = 2;
     /* Tournament is over - hall of fame is visual */
     public static $TMNT_DONE = 3;
+    /* Tournament is defined - ready to be announced */
+    public static $TMNT_ANNOUNCE = 4;
     
     public function getTournamentStatus($tournamentid, $date) {
+        // The order of checks is important - the checks are 
         if ($this->isTournamentArchived($tournamentid, $date)) {
             return TournamentSupport::$TMNT_HIDE;
-        }
-        if ($this->isTournamentInProgress($tournamentid, $date)) {
-            return TournamentSupport::$TMNT_GOING;
-        }
-        if ($this->isEnrollmentAllowed($tournamentid, $date)) {
-            return TournamentSupport::$TMNT_ENROLL;
         }
         if ($this->isTournamentComplete($tournamentid, $date)) {
             return TournamentSupport::$TMNT_DONE;
         }
-        return TournamentSupport::$TMNT_HIDE;
+        if ($this->isEnrollmentAllowed($tournamentid, $date)) {
+            return TournamentSupport::$TMNT_ENROLL;
+        }
+        if ($this->isTournamentInProgress($tournamentid, $date)) {
+            return TournamentSupport::$TMNT_GOING;
+        }
+        return TournamentSupport::$TMNT_ANNOUNCE;
     }
 
     public function listPlaygroundsByTournament($tournamentid) {

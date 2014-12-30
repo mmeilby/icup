@@ -6,6 +6,7 @@ use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\Security\Core\SecurityContext;
+use Symfony\Component\HttpFoundation\Request;
 
 class LoginController extends Controller
 {
@@ -14,13 +15,11 @@ class LoginController extends Controller
      * @Route("/login", name="_admin_login")
      * @Method("GET")
      */
-    public function loginAction()
+    public function loginAction(Request $request)
     {
         /* @var $utilService Util */
         $utilService = $this->get('util');
-        
 
-        $request = $this->getRequest();
         $session = $request->getSession();
         if ($request->attributes->has(SecurityContext::AUTHENTICATION_ERROR)) {
             $error = $request->attributes->get(SecurityContext::AUTHENTICATION_ERROR);
@@ -36,7 +35,7 @@ class LoginController extends Controller
             $twig = 'ICupPublicSiteBundle:User:ausr_login.html.twig';
         }
 
-        $form = $this->makeLoginForm();
+        $form = $this->makeLoginForm($request);
         $form->handleRequest($request);
 
         $tournamentKey = $utilService->getTournamentKey();
@@ -53,8 +52,7 @@ class LoginController extends Controller
         ));
     }
 
-    private function makeLoginForm() {
-        $request = $this->getRequest();
+    private function makeLoginForm(Request $request) {
         $formDef = $this->createFormBuilder(array('username' => $request->getSession()->get(SecurityContext::LAST_USERNAME)));
         $formDef->setAction($this->generateUrl('_security_check'));
         $formDef->add('username', 'text', array('label' => 'FORM.LOGIN.USERNAME',

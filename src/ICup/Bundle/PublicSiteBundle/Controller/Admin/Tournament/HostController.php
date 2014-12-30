@@ -8,6 +8,7 @@ use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use ICup\Bundle\PublicSiteBundle\Services\Util;
 use ICup\Bundle\PublicSiteBundle\Exceptions\ValidationException;
+use Symfony\Component\HttpFoundation\Request;
 
 /**
  * List the tournaments available
@@ -20,7 +21,7 @@ class HostController extends Controller
      * @Route("/admin/host/add", name="_edit_host_add")
      * @Template("ICupPublicSiteBundle:Edit:edithost.html.twig")
      */
-    public function addAction() {
+    public function addAction(Request $request) {
         /* @var $utilService Util */
         $utilService = $this->get('util');
         
@@ -28,7 +29,6 @@ class HostController extends Controller
 
         $host = new Host();
         $form = $this->makeHostForm($host, 'add');
-        $request = $this->getRequest();
         $form->handleRequest($request);
         if ($form->get('cancel')->isClicked()) {
             return $this->redirect($returnUrl);
@@ -47,7 +47,7 @@ class HostController extends Controller
      * @Route("/edit/host/chg/{hostid}", name="_edit_host_chg")
      * @Template("ICupPublicSiteBundle:Edit:edithost.html.twig")
      */
-    public function chgAction($hostid) {
+    public function chgAction($hostid, Request $request) {
         /* @var $utilService Util */
         $utilService = $this->get('util');
         
@@ -59,7 +59,6 @@ class HostController extends Controller
         $utilService->validateEditorAdminUser($user, $hostid);
 
         $form = $this->makeHostForm($host, 'chg');
-        $request = $this->getRequest();
         $form->handleRequest($request);
         if ($form->get('cancel')->isClicked()) {
             return $this->redirect($returnUrl);
@@ -79,7 +78,7 @@ class HostController extends Controller
      * @Route("/admin/host/del/{hostid}", name="_edit_host_del")
      * @Template("ICupPublicSiteBundle:Edit:edithost.html.twig")
      */
-    public function delAction($hostid) {
+    public function delAction($hostid, Request $request) {
         /* @var $utilService Util */
         $utilService = $this->get('util');
         
@@ -87,7 +86,6 @@ class HostController extends Controller
 
         $host = $this->get('entity')->getHostById($hostid);
         $form = $this->makeHostForm($host, 'del');
-        $request = $this->getRequest();
         $form->handleRequest($request);
         if ($form->get('cancel')->isClicked()) {
             return $this->redirect($returnUrl);

@@ -6,6 +6,7 @@ use ICup\Bundle\PublicSiteBundle\Entity\Doctrine\User;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
+use Symfony\Component\HttpFoundation\Request;
 
 /**
  * List the categories and groups available
@@ -17,7 +18,7 @@ class CategoryController extends Controller
      * @Route("/edit/category/add/{tournamentid}", name="_edit_category_add")
      * @Template("ICupPublicSiteBundle:Host:editcategory.html.twig")
      */
-    public function addAction($tournamentid) {
+    public function addAction($tournamentid, Request $request) {
         /* @var $utilService Util */
         $utilService = $this->get('util');
         
@@ -31,7 +32,6 @@ class CategoryController extends Controller
         $category = new Category();
         $category->setPid($tournament->getId());
         $form = $this->makeCategoryForm($category, 'add');
-        $request = $this->getRequest();
         $form->handleRequest($request);
         if ($form->get('cancel')->isClicked()) {
             return $this->redirect($returnUrl);
@@ -50,7 +50,7 @@ class CategoryController extends Controller
      * @Route("/edit/category/chg/{categoryid}", name="_edit_category_chg")
      * @Template("ICupPublicSiteBundle:Host:editcategory.html.twig")
      */
-    public function chgAction($categoryid) {
+    public function chgAction($categoryid, Request $request) {
         /* @var $utilService Util */
         $utilService = $this->get('util');
         
@@ -63,7 +63,6 @@ class CategoryController extends Controller
         $utilService->validateEditorAdminUser($user, $tournament->getPid());
 
         $form = $this->makeCategoryForm($category, 'chg');
-        $request = $this->getRequest();
         $form->handleRequest($request);
         if ($form->get('cancel')->isClicked()) {
             return $this->redirect($returnUrl);
@@ -82,7 +81,7 @@ class CategoryController extends Controller
      * @Route("/edit/category/del/{categoryid}", name="_edit_category_del")
      * @Template("ICupPublicSiteBundle:Host:editcategory.html.twig")
      */
-    public function delAction($categoryid) {
+    public function delAction($categoryid, Request $request) {
         /* @var $utilService Util */
         $utilService = $this->get('util');
         
@@ -95,7 +94,6 @@ class CategoryController extends Controller
         $utilService->validateEditorAdminUser($user, $tournament->getPid());
 
         $form = $this->makeCategoryForm($category, 'del');
-        $request = $this->getRequest();
         $form->handleRequest($request);
         if ($form->get('cancel')->isClicked()) {
             return $this->redirect($returnUrl);

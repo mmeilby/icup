@@ -10,6 +10,7 @@ use Symfony\Component\Form\FormError;
 use Symfony\Component\Security\Core\Authentication\Token\UsernamePasswordToken;
 use Symfony\Component\Security\Core\AuthenticationEvents;
 use Symfony\Component\Security\Core\Event\AuthenticationEvent;
+use Symfony\Component\HttpFoundation\Request;
 
 /**
  * List the categories and groups available
@@ -21,7 +22,7 @@ class AnnonymousController extends Controller
      * @Route("/new/user", name="_ausr_new_user")
      * @Template("ICupPublicSiteBundle:User:ausr_new_user.html.twig")
      */
-    public function newUserAction()
+    public function newUserAction(Request $request)
     {
         /* @var $user User */
         $user = $this->getUser();
@@ -34,7 +35,6 @@ class AnnonymousController extends Controller
         }
         
         $form = $this->makeUserForm($user, 'add');
-        $request = $this->getRequest();
         $form->handleRequest($request);
         if ($form->get('cancel')->isClicked()) {
             return $this->redirect($this->generateUrl('_icup'));

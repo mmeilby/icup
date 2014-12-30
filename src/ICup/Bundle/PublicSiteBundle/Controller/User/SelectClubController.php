@@ -1,5 +1,5 @@
 <?php
-namespace ICup\Bundle\PublicSiteBundle\Controller\Club;
+namespace ICup\Bundle\PublicSiteBundle\Controller\User;
 
 use ICup\Bundle\PublicSiteBundle\Entity\Doctrine\Tournament;
 use ICup\Bundle\PublicSiteBundle\Entity\Doctrine\Club;
@@ -15,104 +15,48 @@ use Symfony\Component\HttpFoundation\Request;
 /**
  * Club administrator core functions
  */
-class ClubAdminController extends Controller
+class SelectClubController extends Controller
 {
     /**
      * Add new club for user not related to any club
      * Current user must be a non related plain user
-     * @Route("/user/club/new", name="_club_new")
+     * @Route("/new/club/select", name="_club_select")
      * @Template("ICupPublicSiteBundle:User:ausr_new_club.html.twig")
      */
-    public function newClubAction(Request $request)
+    public function selectClubAction(Request $request)
     {
         /* @var $utilService Util */
         $utilService = $this->get('util');
         /* @var $user User */
         $user = $utilService->getCurrentUser();
-        if (!$user->isClub()) {
-            // The user is not a club user...
-            throw new ValidationException("NOTCLUBUSER", "userid=".$user->getId().", role=".$user->getRole());
-        }
-        // Validate user - must be a non related club user
-        if ($user->isRelated()) {
-            // Controller is called by user assigned to a club - switch to my page
-            return $this->redirect($this->generateUrl('_user_my_page'));
-        }
-        // Prepare default data for form
-        $clubFormData = $this->getClubDefaults();
-        $form = $this->makeClubForm($clubFormData);
-        $form->handleRequest($request);
-        if ($form->get('cancel')->isClicked()) {
-            return $this->redirect($this->generateUrl('_user_my_page'));
-        }
-        if ($this->checkForm($form, $clubFormData)) {
-            $club = $this->get('logic')->getClubByName($clubFormData->getName(), $clubFormData->getCountry());
-            if ($club != null) {
-                $user->setStatus(User::$PRO);
-                $user->setRole(User::$CLUB);
-            }
-            else {
-                $club = new Club();
-                $club->setName($clubFormData->getName());
-                $club->setCountry($clubFormData->getCountry());
-                $em = $this->getDoctrine()->getManager();
-                $em->persist($club);
-                $em->flush();
-                $user->setStatus(User::$ATT);
-                $user->setRole(User::$CLUB_ADMIN);
-            }
-            $user->setCid($club->getId());
-            $em->flush();
-            return $this->redirect($this->generateUrl('_user_my_page'));
-        }
-        // Get tournament if defined
-        $tournamentKey = $utilService->getTournamentKey();
-        if ($tournamentKey != '_') {
-            $tournament = $this->get('logic')->getTournamentByKey($tournamentKey);
-        }
-        else {
-            $tournament = null;
-        }
-        return array('form' => $form->createView(), 'currentuser' => $user, 'tournament' => $tournament);
-    }
-
-    /**
-     * Add new club for for selected tournament
-     * - Editor version only -
-     * @Route("/edit/club/new/{tournamentid}", name="_host_club_new")
-     * @Template("ICupPublicSiteBundle:Host:new_club.html.twig")
-     */
-    public function hostNewClubAction($tournamentid, Request $request)
-    {
-        /* @var $utilService Util */
-        $utilService = $this->get('util');
-        /* @var $user User */
-        $user = $utilService->getCurrentUser();
-        /* @var $tournament Tournament */
-        $tournament = $this->get('entity')->getTournamentById($tournamentid);
-        // Check that user is editor
-        $utilService->validateEditorAdminUser($user, $tournament->getPid());
-
         // Prepare default data for form
         $clubFormData = $this->getClubDefaults($request);
         $form = $this->makeClubForm($clubFormData);
         $form->handleRequest($request);
         if ($form->get('cancel')->isClicked()) {
-            return $this->redirect($this->generateUrl('_host_list_clubs', array('tournamentid' => $tournamentid)));
+            return $this->redirect($this->generateUrl('_user_my_page'));
         }
-        if ($this->checkForm($form, $clubFormData)) {
+        elseif ($this->checkForm($form, $clubFormData)) {
             $club = $this->get('logic')->getClubByName($clubFormData->getName(), $clubFormData->getCountry());
-            if ($club == null) {
-                $club = new Club();
-                $club->setName($clubFormData->getName());
-                $club->setCountry($clubFormData->getCountry());
-                $em = $this->getDoctrine()->getManager();
-                $em->persist($club);
-                $em->flush();
+            if ($club != null) {
             }
-            return $this->redirect($this->generateUrl('_club_enroll_list_admin', array('tournament' => $tournamentid, 'club' => $club->getId())));
+            else {
+            }
+            $user->setCid($club->getId());
+            $em->flush();
+            return $this->redirect($this->generateUrl('_user_my_page'));
         }
-        return array('form' => $form->createView(), 'action' => 'add', 'user' => $user, 'tournament' => $tournament);
+        else {
+            // Get tournament if defined
+            $tournamentKey = $utilService->getTournamentKey();
+            if ($tournamentKey != '_') {
+                $tournament = $this->get('logic')->getTournamentByKey($tournamentKey);
+            }
+            else {
+                $tournament = null;
+            }
+            return array('form' => $form->createView(), 'currentuser' => $user, 'tournament' => $tournament);
+        }
     }
 
     private function getClubDefaults(Request $request) {

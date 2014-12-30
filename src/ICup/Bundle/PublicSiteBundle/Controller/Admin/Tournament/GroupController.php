@@ -7,6 +7,7 @@ use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\Form\FormError;
+use Symfony\Component\HttpFoundation\Request;
 
 /**
  * List the categories and groups available
@@ -18,7 +19,7 @@ class GroupController extends Controller
      * @Route("/edit/group/add/{categoryid}", name="_edit_group_add")
      * @Template("ICupPublicSiteBundle:Host:editgroup.html.twig")
      */
-    public function addGroupAction($categoryid) {
+    public function addGroupAction($categoryid, Request $request) {
         /* @var $utilService Util */
         $utilService = $this->get('util');
         
@@ -33,7 +34,6 @@ class GroupController extends Controller
         $group = new Group();
         $group->setPid($category->getId());
         $form = $this->makeGroupForm($group, 'add');
-        $request = $this->getRequest();
         $form->handleRequest($request);
         if ($form->get('cancel')->isClicked()) {
             return $this->redirect($returnUrl);
@@ -52,7 +52,7 @@ class GroupController extends Controller
      * @Route("/edit/group/chg/{groupid}", name="_edit_group_chg")
      * @Template("ICupPublicSiteBundle:Host:editgroup.html.twig")
      */
-    public function chgGroupAction($groupid) {
+    public function chgGroupAction($groupid, Request $request) {
         /* @var $utilService Util */
         $utilService = $this->get('util');
         
@@ -66,7 +66,6 @@ class GroupController extends Controller
         $utilService->validateEditorAdminUser($user, $tournament->getPid());
 
         $form = $this->makeGroupForm($group, 'chg');
-        $request = $this->getRequest();
         $form->handleRequest($request);
         if ($form->get('cancel')->isClicked()) {
             return $this->redirect($returnUrl);
@@ -85,7 +84,7 @@ class GroupController extends Controller
      * @Route("/edit/group/del/{groupid}", name="_edit_group_del")
      * @Template("ICupPublicSiteBundle:Host:editgroup.html.twig")
      */
-    public function delGroupAction($groupid) {
+    public function delGroupAction($groupid, Request $request) {
         /* @var $utilService Util */
         $utilService = $this->get('util');
         
@@ -99,7 +98,6 @@ class GroupController extends Controller
         $utilService->validateEditorAdminUser($user, $tournament->getPid());
 
         $form = $this->makeGroupForm($group, 'del');
-        $request = $this->getRequest();
         $form->handleRequest($request);
         if ($form->get('cancel')->isClicked()) {
             return $this->redirect($returnUrl);

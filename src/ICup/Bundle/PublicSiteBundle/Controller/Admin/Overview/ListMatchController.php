@@ -8,6 +8,7 @@ use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use ICup\Bundle\PublicSiteBundle\Services\Util;
 use ICup\Bundle\PublicSiteBundle\Entity\Doctrine\User;
 use ICup\Bundle\PublicSiteBundle\Exceptions\ValidationException;
+use Symfony\Component\HttpFoundation\Request;
 
 /**
  * List the matches scheduled for a group
@@ -53,7 +54,7 @@ class ListMatchController extends Controller
      * @Route("/host/list/matches", name="_edit_list_matches")
      * @Method("GET")
      */
-    public function listMatchAction() {
+    public function listMatchAction(Request $request) {
         /* @var $utilService Util */
         $utilService = $this->get('util');
         
@@ -62,16 +63,15 @@ class ListMatchController extends Controller
         $tournament = $utilService->getTournament();
         $utilService->validateEditorAdminUser($user, $tournament->getPid());
 
-        $date = $this->getSelectedDate($tournament->getId());
-        $playgroundid = $this->getSelectedPlayground($tournament->getId());
+        $date = $this->getSelectedDate($tournament->getId(), $request);
+        $playgroundid = $this->getSelectedPlayground($tournament->getId(), $request);
 
         return $this->redirect($this->generateUrl('_edit_match_score',
                 array('playgroundid' => $playgroundid, 'date' => date_format($date, "d-m-Y"))));
     }
     
-    private function getSelectedDate($tournamentid) {
+    private function getSelectedDate($tournamentid, Request $request) {
         /* @var $request Request */
-        $request = $this->getRequest();
         $session = $request->getSession();
         $date = $session->get('icup.matchedit.date');
         $dates = $this->get('match')->listMatchCalendar($tournamentid);
@@ -93,9 +93,8 @@ class ListMatchController extends Controller
         return $date;
     }
     
-    private function getSelectedPlayground($tournamentid) {
+    private function getSelectedPlayground($tournamentid, Request $request) {
         /* @var $request Request */
-        $request = $this->getRequest();
         $session = $request->getSession();
         $playgroundid = $session->get('icup.matchedit.playground');
         $playgrounds = $this->get('logic')->listPlaygroundsByTournament($tournamentid);

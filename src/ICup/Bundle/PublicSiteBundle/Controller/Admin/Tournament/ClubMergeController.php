@@ -7,6 +7,7 @@ use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use ICup\Bundle\PublicSiteBundle\Exceptions\ValidationException;
 use Symfony\Component\Form\FormError;
+use Symfony\Component\HttpFoundation\Request;
 
 class ClubMergeController extends Controller
 {
@@ -15,14 +16,13 @@ class ClubMergeController extends Controller
      * @Route("/admin/club/merge/{clubid}/{sourceclubid}", name="_edit_club_merge", options={"expose"=true}))
      * @Template("ICupPublicSiteBundle:Edit:mergeclub.html.twig")
      */
-    public function mergeAction($clubid, $sourceclubid) {
+    public function mergeAction($clubid, $sourceclubid, Request $request) {
         $returnUrl = $this->get('util')->getReferer();
         
         $target_club = $this->get('entity')->getClubById($clubid);
         $source_club = $this->get('entity')->getClubById($sourceclubid);
         
         $form = $this->makeClubForm();
-        $request = $this->getRequest();
         $form->handleRequest($request);
         if ($form->get('cancel')->isClicked()) {
             return $this->redirect($returnUrl);

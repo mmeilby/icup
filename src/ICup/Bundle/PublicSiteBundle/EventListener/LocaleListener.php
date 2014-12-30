@@ -3,14 +3,12 @@
 namespace ICup\Bundle\PublicSiteBundle\EventListener;
 
 use Symfony\Component\HttpFoundation\Session\Session;
-use Symfony\Component\Security\Http\Event\InteractiveLoginEvent;
-use Symfony\Component\HttpKernel\HttpKernelInterface;
-use Symfony\Bundle\TwigBundle\TwigEngine;
 use Monolog\Logger;
 
 use Symfony\Component\HttpKernel\Event\GetResponseEvent;
 use Symfony\Component\HttpKernel\KernelEvents;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
+use Symfony\Component\HttpFoundation\Request;
 
 class LocaleListener implements EventSubscriberInterface
 {

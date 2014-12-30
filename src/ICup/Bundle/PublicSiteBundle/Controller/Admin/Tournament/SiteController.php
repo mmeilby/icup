@@ -7,6 +7,7 @@ use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use ICup\Bundle\PublicSiteBundle\Services\Util;
+use Symfony\Component\HttpFoundation\Request;
 
 /**
  * List the categories, groups and playgrounds available
@@ -18,7 +19,7 @@ class SiteController extends Controller
      * @Route("/edit/site/add/{tournamentid}", name="_edit_site_add")
      * @Template("ICupPublicSiteBundle:Edit:editsite.html.twig")
      */
-    public function addAction($tournamentid) {
+    public function addAction($tournamentid, Request $request) {
         /* @var $utilService Util */
         $utilService = $this->get('util');
         
@@ -32,7 +33,6 @@ class SiteController extends Controller
         $site = new Site();
         $site->setPid($tournament->getId());
         $form = $this->makeSiteForm($site, 'add');
-        $request = $this->getRequest();
         $form->handleRequest($request);
         if ($form->get('cancel')->isClicked()) {
             return $this->redirect($returnUrl);
@@ -51,7 +51,7 @@ class SiteController extends Controller
      * @Route("/edit/site/chg/{siteid}", name="_edit_site_chg")
      * @Template("ICupPublicSiteBundle:Edit:editsite.html.twig")
      */
-    public function chgAction($siteid) {
+    public function chgAction($siteid, Request $request) {
         /* @var $utilService Util */
         $utilService = $this->get('util');
         
@@ -64,7 +64,6 @@ class SiteController extends Controller
         $utilService->validateEditorAdminUser($user, $tournament->getPid());
 
         $form = $this->makeSiteForm($site, 'chg');
-        $request = $this->getRequest();
         $form->handleRequest($request);
         if ($form->get('cancel')->isClicked()) {
             return $this->redirect($returnUrl);
@@ -83,7 +82,7 @@ class SiteController extends Controller
      * @Route("/edit/site/del/{siteid}", name="_edit_site_del")
      * @Template("ICupPublicSiteBundle:Edit:editsite.html.twig")
      */
-    public function delAction($siteid) {
+    public function delAction($siteid, Request $request) {
         /* @var $utilService Util */
         $utilService = $this->get('util');
         
@@ -96,7 +95,6 @@ class SiteController extends Controller
         $utilService->validateEditorAdminUser($user, $tournament->getPid());
 
         $form = $this->makeSiteForm($site, 'del');
-        $request = $this->getRequest();
         $form->handleRequest($request);
         if ($form->get('cancel')->isClicked()) {
             return $this->redirect($returnUrl);

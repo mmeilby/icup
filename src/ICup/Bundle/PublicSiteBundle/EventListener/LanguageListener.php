@@ -6,7 +6,7 @@ use Symfony\Component\HttpFoundation\Session\Session;
 use Symfony\Component\Security\Http\Event\InteractiveLoginEvent;
 use Symfony\Component\HttpKernel\Event\GetResponseEvent;
 use Symfony\Component\HttpKernel\HttpKernelInterface;
-use Symfony\Bundle\TwigBundle\TwigEngine;
+use Symfony\Component\HttpFoundation\Request;
 use Monolog\Logger;
 
 class LanguageListener
@@ -59,8 +59,13 @@ class LanguageListener
     {
         $user = $event->getAuthenticationToken()->getUser();
 
-        if ($lang = $user->getLanguage()) {
-            $this->session->set('_locale', $lang);
+        $lang = $user->getLanguage();
+        if ($lang) {
+            /* @var $request Request */
+            $request = $event->getRequest();
+            /* @var $session Session */
+            $session = $request->getSession();
+            $session->set('_locale', $lang);
         }
     }
 }

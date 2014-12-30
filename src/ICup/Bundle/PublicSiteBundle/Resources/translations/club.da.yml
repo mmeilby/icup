@@ -18,8 +18,8 @@ FORM:
         TITLE: Følg din klub
         DESCRIPTION: >
                      Er du forældre eller spiller kan du følge holdene fra din klub.
-                     Du skal blot oprette en gratis profil.
-                     Så ser du automatisk alle resultater og stillinger for klubbens hold.
+                     Du skal blot vælge holdene her.
+                     Så ser du automatisk resultater og stillinger for klubbens hold.
         LEARNMORE: Følg holdene
     BLOCK2:
         TITLE: Holdtilmelding
@@ -32,7 +32,7 @@ FORM:
         TITLE: Aktuelle kampe
         DESCRIPTION: >
                      Hvilke kampe spilles lige nu. Se eller følg dagens resultater her.
-        LEARNMORE: Se dagens kampe
+        LEARNMORE: Se alle dagens kampe
     BLOCK4:
         TITLE: Finalisterne
         DESCRIPTION: >
@@ -309,10 +309,11 @@ FORM:
           DESCRIPTION: Beskrivelse
           STATUS: Tilstand
         STATUS:
-          0: Under oprettelse
+          0: Arkiveret
           1: Tilmelding
           2: Afvikles
           3: Afsluttet
+          4: Under oprettelse
         NOTOURNAMENT: Tilføj ny turnering
   NEWPASS: 
     NOPASSWORD: Et kodeord skal angives.

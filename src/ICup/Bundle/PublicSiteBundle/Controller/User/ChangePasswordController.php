@@ -8,6 +8,7 @@ use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\Form\FormError;
+use Symfony\Component\HttpFoundation\Request;
 
 /**
  * General user account functions
@@ -19,7 +20,7 @@ class ChangePasswordController extends Controller
      * @Route("/user/chg/pass", name="_user_chg_pass")
      * @Template("ICupPublicSiteBundle:User:chg_pass.html.twig")
      */
-    public function passAction() {
+    public function passAction(Request $request) {
         /* @var $utilService Util */
         $utilService = $this->get('util');
         
@@ -29,7 +30,6 @@ class ChangePasswordController extends Controller
         
         $pwd = new Password();
         $form = $this->makePassForm($pwd);
-        $request = $this->getRequest();
         $form->handleRequest($request);
         if ($form->get('cancel')->isClicked()) {
             return $this->redirect($this->generateUrl('_user_my_page'));

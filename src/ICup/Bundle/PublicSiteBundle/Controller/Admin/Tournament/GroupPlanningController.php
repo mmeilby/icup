@@ -16,7 +16,7 @@ class GroupPlanningController extends Controller
      * @Route("/edit/list/grps/{categoryid}", name="_host_list_groups")
      * @Template("ICupPublicSiteBundle:Host:listcategory.html.twig")
      */
-    public function listByCategoryAction($categoryid)
+    public function listByCategoryAction($categoryid, Request $request)
     {
         /* @var $utilService Util */
         $utilService = $this->get('util');
@@ -32,7 +32,7 @@ class GroupPlanningController extends Controller
         $teamsUnassigned = $this->get('logic')->listTeamsEnrolledUnassigned($categoryid);
         $groupList = array();
         $selectedGroup = null;
-        $preferredGroup = $this->getSelectedGroup();
+        $preferredGroup = $this->getSelectedGroup($request);
         foreach ($groups as $group) {
             $teamsList = $this->get('logic')->listTeamsByGroup($group->getId());
             $groupList[$group->getName()] = array('group' => $group, 'teams' => $teamsList);
@@ -51,17 +51,13 @@ class GroupPlanningController extends Controller
                      'selectedgroup' => $selectedGroup);
     }
 
-    private function getSelectedGroup() {
-        /* @var $request Request */
-        $request = $this->getRequest();
+    private function getSelectedGroup(Request $request) {
         /* @var $session Session */
         $session = $request->getSession();
         return $session->get('SelectedGroup', "0");
     }
     
-    private function setSelectedGroup($selectedGroup) {
-        /* @var $request Request */
-        $request = $this->getRequest();
+    private function setSelectedGroup($selectedGroup, Request $request) {
         /* @var $session Session */
         $session = $request->getSession();
         $session->set('SelectedGroup', $selectedGroup);
@@ -72,7 +68,7 @@ class GroupPlanningController extends Controller
      * @Route("/edit/assign/select/{groupid}", name="_host_assign_select_group")
      * @Method("GET")
      */
-    public function selectAssignAction($groupid) {
+    public function selectAssignAction($groupid, Request $request) {
         /* @var $utilService Util */
         $utilService = $this->get('util');
         
@@ -86,7 +82,7 @@ class GroupPlanningController extends Controller
         $tournament = $this->get('entity')->getTournamentById($category->getPid());
         $utilService->validateEditorAdminUser($user, $tournament->getPid());
 
-        $this->setSelectedGroup($groupid);
+        $this->setSelectedGroup($groupid, $request);
         return $this->redirect($returnUrl);
     }
     

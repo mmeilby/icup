@@ -8,6 +8,7 @@ use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\Form\FormError;
 use ICup\Bundle\PublicSiteBundle\Entity\Event as EventForm;
+use Symfony\Component\HttpFoundation\Request;
 
 /**
  * Maintain tournament events
@@ -19,7 +20,7 @@ class EventController extends Controller
      * @Route("/edit/event/add/{tournamentid}", name="_edit_event_add")
      * @Template("ICupPublicSiteBundle:Host:editevent.html.twig")
      */
-    public function addAction($tournamentid) {
+    public function addAction($tournamentid, Request $request) {
         /* @var $utilService Util */
         $utilService = $this->get('util');
         $returnUrl = $utilService->getReferer();
@@ -32,7 +33,6 @@ class EventController extends Controller
         $eventForm = new EventForm();
         $eventForm->setPid($tournament->getId());
         $form = $this->makeEventForm($eventForm, 'add');
-        $request = $this->getRequest();
         $form->handleRequest($request);
         if ($form->get('cancel')->isClicked()) {
             return $this->redirect($returnUrl);
@@ -60,7 +60,7 @@ class EventController extends Controller
      * @Route("/edit/event/chg/{eventid}", name="_edit_event_chg")
      * @Template("ICupPublicSiteBundle:Host:editevent.html.twig")
      */
-    public function chgAction($eventid) {
+    public function chgAction($eventid, Request $request) {
         /* @var $utilService Util */
         $utilService = $this->get('util');
         $returnUrl = $utilService->getReferer();
@@ -74,7 +74,6 @@ class EventController extends Controller
 
         $eventForm = $this->copyEventForm($event);
         $form = $this->makeEventForm($eventForm, 'chg');
-        $request = $this->getRequest();
         $form->handleRequest($request);
         if ($form->get('cancel')->isClicked()) {
             return $this->redirect($returnUrl);
@@ -99,7 +98,7 @@ class EventController extends Controller
      * @Route("/edit/event/del/{eventid}", name="_edit_event_del")
      * @Template("ICupPublicSiteBundle:Host:editevent.html.twig")
      */
-    public function delAction($eventid) {
+    public function delAction($eventid, Request $request) {
         /* @var $utilService Util */
         $utilService = $this->get('util');
         $returnUrl = $utilService->getReferer();
@@ -112,7 +111,6 @@ class EventController extends Controller
 
         $eventForm = $this->copyEventForm($event);
         $form = $this->makeEventForm($eventForm, 'del');
-        $request = $this->getRequest();
         $form->handleRequest($request);
         if ($form->get('cancel')->isClicked()) {
             return $this->redirect($returnUrl);

@@ -8,6 +8,7 @@ use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\Form\FormError;
 use ICup\Bundle\PublicSiteBundle\Exceptions\ValidationException;
+use Symfony\Component\HttpFoundation\Request;
 
 class UserController extends Controller
 {
@@ -16,7 +17,7 @@ class UserController extends Controller
      * @Route("/admin/add/club/{clubid}", name="_edit_user_add")
      * @Template("ICupPublicSiteBundle:Edit:edituser.html.twig")
      */
-    public function addAction($clubid) {
+    public function addAction($clubid, Request $request) {
         
         $returnUrl = $this->get('util')->getReferer();
 
@@ -27,7 +28,6 @@ class UserController extends Controller
         $user->setStatus(User::$ATT);
         $user->setRole(User::$CLUB);
         $form = $this->makeUserForm($user, 'add');
-        $request = $this->getRequest();
         $form->handleRequest($request);
         if ($form->get('cancel')->isClicked()) {
             return $this->redirect($returnUrl);
@@ -54,7 +54,7 @@ class UserController extends Controller
      * @Route("/edit/user/add/host/{hostid}", name="_edit_user_add_host")
      * @Template("ICupPublicSiteBundle:Edit:edituser.html.twig")
      */
-    public function addHostAction($hostid) {
+    public function addHostAction($hostid, Request $request) {
         
         $returnUrl = $this->get('util')->getReferer();
 
@@ -67,7 +67,6 @@ class UserController extends Controller
         $user->setStatus(User::$SYSTEM);
         $user->setRole(User::$EDITOR);
         $form = $this->makeUserForm($user, 'add');
-        $request = $this->getRequest();
         $form->handleRequest($request);
         if ($form->get('cancel')->isClicked()) {
             return $this->redirect($returnUrl);
@@ -94,7 +93,7 @@ class UserController extends Controller
      * @Route("/admin/user/add/system", name="_edit_user_add_system")
      * @Template("ICupPublicSiteBundle:Edit:edituser.html.twig")
      */
-    public function addSystemAction() {
+    public function addSystemAction(Request $request) {
         
         $returnUrl = $this->get('util')->getReferer();
 
@@ -102,7 +101,6 @@ class UserController extends Controller
         $user->setStatus(User::$SYSTEM);
         $user->setRole(User::$ADMIN);
         $form = $this->makeUserForm($user, 'add');
-        $request = $this->getRequest();
         $form->handleRequest($request);
         if ($form->get('cancel')->isClicked()) {
             return $this->redirect($returnUrl);
@@ -129,7 +127,7 @@ class UserController extends Controller
      * @Route("/edit/chg/{userid}", name="_edit_user_chg")
      * @Template("ICupPublicSiteBundle:Edit:edituser.html.twig")
      */
-    public function chgAction($userid) {
+    public function chgAction($userid, Request $request) {
         
         $returnUrl = $this->get('util')->getReferer();
 
@@ -149,7 +147,6 @@ class UserController extends Controller
         $this->get('util')->validateEditorAdminUser($thisuser, $hostid);
 
         $form = $this->makeUserForm($user, 'chg');
-        $request = $this->getRequest();
         $form->handleRequest($request);
         if ($form->get('cancel')->isClicked()) {
             return $this->redirect($returnUrl);
@@ -180,7 +177,7 @@ class UserController extends Controller
      * @Route("/edit/del/{userid}", name="_edit_user_del")
      * @Template("ICupPublicSiteBundle:Edit:edituser.html.twig")
      */
-    public function delAction($userid) {
+    public function delAction($userid, Request $request) {
         
         $returnUrl = $this->get('util')->getReferer();
 
@@ -202,7 +199,6 @@ class UserController extends Controller
             throw new ValidationException("CANNOTDELETESELF", "Attempt to remove current user: user=".$thisuser->getId());
         }
         $form = $this->makeUserForm($user, 'del');
-        $request = $this->getRequest();
         $form->handleRequest($request);
         if ($form->get('cancel')->isClicked()) {
             return $this->redirect($returnUrl);
@@ -315,7 +311,7 @@ class UserController extends Controller
      * @Route("/edit/chg/pass/{userid}", name="_edit_user_chg_pass")
      * @Template("ICupPublicSiteBundle:Edit:edituser.html.twig")
      */
-    public function passAction($userid) {
+    public function passAction($userid, Request $request) {
         
         $returnUrl = $this->get('util')->getReferer();
         
@@ -345,7 +341,6 @@ class UserController extends Controller
                                                 'translation_domain' => 'admin',
                                                 'icon' => 'fa fa-check'));
         $form = $formDef->getForm();
-        $request = $this->getRequest();
         $form->handleRequest($request);
         if ($form->get('cancel')->isClicked()) {
             return $this->redirect($returnUrl);

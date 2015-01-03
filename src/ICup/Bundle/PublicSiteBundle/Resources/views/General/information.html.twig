@@ -2,22 +2,23 @@
 {% trans_default_domain "club" %}
 
 {% block widebody %}
-<div class="jumbotron"
-     style="
-    background-image: url('{{ imagepath }}/IWC/bg.jpg');
-    background-size: cover;
-    background-repeat: no-repeat;">
-    <div class="container">
+<div style="background-image: url('{{ imagepath }}/IWC/bg.jpg');
+            background-size: cover;
+            background-repeat: no-repeat;">
+    <div class="container" style="padding-top: 10px; padding-bottom: 10px;">
         <img src="{{ imagepath }}/IWC/logo.png" alt="logo" class="img-responsive" />
     </div>
 </div>
 {% endblock %}
 
 {% block body %}
-<div class="jumbotron">
+<div class="jumbotron hidden-xs">
     <div class="container">
         {{ sonata_block_render({'name': '/cms/content/blocks/information/intro'}) }}
     </div>
+</div>
+<div class="visible-xs">
+    {{ sonata_block_render({'name': '/cms/content/blocks/information/intro'}) }}
 </div>
 <div class="row">
     <div class="col-md-8">

@@ -7,6 +7,7 @@ use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use ICup\Bundle\PublicSiteBundle\Services\Doctrine\TournamentSupport;
 use ICup\Bundle\PublicSiteBundle\Entity\Contact;
+use ICup\Bundle\PublicSiteBundle\Controller\User\SelectClubController;
 use Symfony\Component\HttpFoundation\Request;
 use DateTime;
 use Swift_Message;
@@ -33,6 +34,7 @@ class FrontpageController extends Controller
             'done' => array(),
             'announce' => array()
         );
+        $club_list = $this->getClubList($request);
         $today = new DateTime();
         $shortMatches = array();
         $teaserList = array();
@@ -43,7 +45,7 @@ class FrontpageController extends Controller
                 $statusList[$keyList[$stat]][] = $tournament;
             }
             if ($stat == TournamentSupport::$TMNT_GOING) {
-                $shortMatchList = $this->get('match')->listMatchesLimitedWithTournament($tournament->getId(), $today, 5, 3);
+                $shortMatchList = $this->get('match')->listMatchesLimitedWithTournament($tournament->getId(), $today, 5, 3, $club_list);
                 $shortMatches = array();
                 foreach ($shortMatchList as $match) {
                     $shortMatches[date_format($match['schedule'], "Y/m/d")][] = $match;
@@ -97,6 +99,26 @@ class FrontpageController extends Controller
                      'statuslist' => $statusList,
                      'matchlist' => $shortMatches,
                      'teaserlist' => $teaserList);
+    }
+    
+    public function getClubList(Request $request) {
+        $clubs = array();
+        $club_list = $request->cookies->get(SelectClubController::$ENV_CLUB_LIST, '');
+        foreach (explode(':', $club_list) as $club_ident) {
+            $club_ident_array = explode('|', $club_ident);
+            $name = $club_ident_array[0];
+            if (count($club_ident_array) > 1) {
+                $countryCode = $club_ident_array[1];
+            }
+            else {
+                $countryCode = 'EUR';
+            }
+            $club = $this->get('logic')->getClubByName($name, $countryCode);
+            if ($club) {
+                $clubs[] = $club->getId();
+            }
+        }
+        return $clubs;
     }
     
     private function makeContactForm(Contact $contact) {

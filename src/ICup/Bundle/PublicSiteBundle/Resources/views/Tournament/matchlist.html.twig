@@ -56,14 +56,6 @@
     </table>
 </div>
 <div class="visible-xs-block">
-    {% for matchset in shortmatchlist %}
-    <p class="lead">
-        {{ 'FORMAT.LONGDATE'|transchoice(matchset[0].schedule|date('j'), {
-                '%week%': ['WEEK.',matchset[0].schedule|date('D')|upper]|join|trans([],'messages')|capitalize,
-                '%day%': matchset[0].schedule|date('j'),
-                '%month%': ['MONTH.',matchset[0].schedule|date('M')|upper]|join|trans([],'messages'),
-                '%year%': matchset[0].schedule|date('Y')}, 'messages') }}
-    </p>
     <table class="table table-striped">
         <thead>
             <tr>
@@ -76,6 +68,14 @@
             </tr>
         </thead>
         <tbody>
+    {% for matchset in shortmatchlist %}
+            <tr><td colspan="7">
+                {{ 'FORMAT.LONGDATE'|transchoice(matchset[0].schedule|date('j'), {
+                        '%week%': ['WEEK.',matchset[0].schedule|date('D')|upper]|join|trans([],'messages')|capitalize,
+                        '%day%': matchset[0].schedule|date('j'),
+                        '%month%': ['MONTH.',matchset[0].schedule|date('M')|upper]|join|trans([],'messages'),
+                        '%year%': matchset[0].schedule|date('Y')}, 'messages') }}
+            </td></tr>
         {% for match in matchset %}
             <tr>
                 <td class="narrow-col">{{ match.matchno }}</td>

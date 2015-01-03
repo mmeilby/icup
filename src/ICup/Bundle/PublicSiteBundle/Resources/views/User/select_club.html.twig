@@ -1,0 +1,124 @@
+{% extends "ICupPublicSiteBundle:Masters:standard.html.twig" %}
+
+{% form_theme form 'ICupPublicSiteBundle:Default:layout.script.html.twig' %}
+{% trans_default_domain "club" %}
+
+{% block body %}
+<div class="row">
+    <div class="col-sm-8">
+        <div class="row">
+            <div class="col-sm-12">
+                <h2>{% trans %}FORM.SELECTCLUB.TITLE{% endtrans %}</h2>
+                <p>{% trans %}FORM.SELECTCLUB.PROMPT{% endtrans %}</p>
+            </div>
+            <div class="col-sm-12">
+                {{ form(form) }}
+            </div>
+        </div>
+    </div>
+    <hr class="hidden-md hidden-lg" />
+    <div class="col-md-4">
+        <h2>{% trans %}FORM.SELECTCLUB.CAPTION{% endtrans %}</h2>
+        <div class="list-group">
+{% for club in clubs %}
+            <a class="list-group-item" href="{{ path('_club_select_toggle', { 'clubid': club.club.id }) }}">
+                <div class="row">
+                    <div class="col-xs-9">
+                        <h4 class="list-group-item-heading">{{ club.club.name }}</h4>
+                        <p class="list-group-item-text">
+                            <img src="{{ imagepath }}/flags/{{ countries[club.club.country].flag }}"
+                                 alt="{{ club.club.country|trans({},'lang') }}"
+                                 title="{{ club.club.country|trans({},'lang') }}"
+                                 class="flag"
+                            >
+                            <b>{{ club.club.country|trans({},'lang') }}</b>
+                        </p>
+                    </div>
+                    <div class="col-xs-3">
+                        <center>
+                            <font size="5">
+    {% if club.selected %}
+                                <span class="label label-success"><i class="fa fa-check"></i></span>
+    {% else %}
+                                <span class="label label-danger"><i class="fa fa-minus-circle"></i></span>
+    {% endif %}
+                            </font>
+                        </center>
+                    </div>
+                </div>
+            </a>
+{% endfor %}
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+{% block javascripts %}
+    <script type="text/javascript">
+        $(function onLoad() {
+            // Add warning block
+            $('input#form_name').parent().after("<div id='form_warning' role='alert'></div>");
+            $('#form_warning').addClass("alert alert-warning hidden");
+            // Add club list
+            $('input#form_name').parent().after("<div id='form_div'></div>");
+            $('#form_div').addClass("list-group");
+            // Add key awareness
+            $('input#form_name').keyup(OnKeyUp);
+            $('select#form_country').change(OnKeyUp);
+            // Initialize
+            OnKeyUp();
+        });
+        function OnKeyUp() {
+            if ($('input#form_name').val().length > 1) {
+                $.getJSON(Routing.generate('_rest_list_clubs',
+                                            {
+                                                'countrycode': $('select#form_country').val(),
+                                                'pattern': '%'+$('input#form_name').val()+'%'
+                                            }),
+                           function readClubs(data, status) {
+                               if (data.length > 0) {
+                                    $('#form_div').html(buildTable(data));
+                                    if (data.length > 3) {
+                                        $('#form_warning').html('{% trans %}FORM.SELECTCLUB.MORECLUBS{% endtrans %}');
+                                        $('#form_warning').removeClass('hidden');
+                                    }
+                                    else {
+                                        $('#form_warning').addClass('hidden');
+                                    }
+                                }
+                                else {
+                                    $('#form_div').html(buildDefault());
+                                    $('#form_warning').html('{% trans %}FORM.SELECTCLUB.NOCLUBS{% endtrans %}');
+                                    $('#form_warning').removeClass('hidden');
+                                }
+                           }
+                         );
+            }
+            else {
+                $('#form_warning').addClass('hidden');
+                $('#form_div').html(buildDefault());
+            }
+        };
+        function buildTable(data) {
+           opt = buildDefault();
+           $.each(data, 
+                   function updateDropDown(index, club) {
+                       if (index < 3) {
+                         var link = Routing.generate('_club_select_request',
+                                            {
+                                                'clubid': club.id
+                                            });
+                         opt += "<a class=\"list-group-item\" href=\""+link+"\">";
+                         opt += "<h3 class=\"list-group-item-heading\">"+club.name+"</h3>";
+                         opt += "<p class=\"list-group-item-text\">{% trans %}FORM.SELECTCLUB.INFO{% endtrans %}</p>";
+                         opt += "</a>";
+                       }
+                   });
+           return opt;
+        };
+        function buildDefault() {
+           opt = "";
+           return opt;
+        };
+    </script>
+{% endblock %}

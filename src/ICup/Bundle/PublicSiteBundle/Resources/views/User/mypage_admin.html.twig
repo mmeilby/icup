@@ -3,6 +3,93 @@
 {% form_theme upload_form 'ICupPublicSiteBundle:Default:layout.script.html.twig' %}
 {% trans_default_domain "club" %}
 
+{% block header %}
+<nav class="navbar navbar-default navbar-fixed-top" role="navigation">
+  <div class="container">
+    <!-- Brand and toggle get grouped for better mobile display -->
+    <div class="navbar-header">
+      <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#icup-navbar-collapse-1">
+        <span class="sr-only">Toggle navigation</span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+      </button>
+      <a class="navbar-brand" href="{{ path('_icup') }}">
+{% if tournament is defined and tournament %}
+        {{ tournament.name }}
+{% else %}
+        iCup
+{% endif %}
+      </a>
+    </div>
+
+    <!-- Collect the nav links, forms, and other content for toggling -->
+    <div class="collapse navbar-collapse" id="icup-navbar-collapse-1">
+      <ul class="nav navbar-nav">
+{% if app.user != null %}
+        <li class="active"><a href="{{ path('_user_my_page') }}">{% trans from 'menu' %}MENU.ENROLLMENT.MYPAGE{% endtrans %}</a></li>
+{% endif %}
+{% if app.user != null %}
+        <!-- Admin section -->
+        <li class="dropdown">
+          <a href="#" class="dropdown-toggle" data-toggle="dropdown">{% trans from 'menu' %}MENU.ADMIN.TITLE{% endtrans %} <span class="caret"></span></a>
+          <ul class="dropdown-menu" role="menu">
+            <li><a href="{{ path('_user_my_page') }}">{% trans from 'menu' %}MENU.ENROLLMENT.MYPAGE{% endtrans %}</a></li>
+            <li><a href="{{ path('_user_chg_pass') }}">{% trans from 'menu' %}MENU.ADMIN.CHANGEPWD{% endtrans %}</a></li>
+    {% if is_granted('ROLE_ADMIN') %}
+            <li><a href="{{ path('_edit_host_list') }}">{% trans from 'menu' %}MENU.ADMIN.TOURNAMENT{% endtrans %}</a></li>
+            <li><a href="{{ path('_edit_club_list') }}">{% trans from 'menu' %}MENU.ADMIN.TEAMS{% endtrans %}</a></li>
+<!--                <li><a href="{{ path('_edit_host_list') }}">{% trans from 'menu' %}MENU.ADMIN.PLAYERS{% endtrans %}</a></li>
+            <li><a href="{{ path('_edit_host_list') }}">{% trans from 'menu' %}MENU.ADMIN.REFEREES{% endtrans %}</a></li> -->
+    {% elseif is_granted('ROLE_EDITOR_ADMIN') %}
+            <li><a href="{{ path('_host_list_tournaments') }}">{% trans from 'menu' %}MENU.ADMIN.TOURNAMENT{% endtrans %}</a></li>
+            <li><a href="{{ path('_edit_editors_list') }}">{% trans from 'menu' %}MENU.ADMIN.EDITORS{% endtrans %}</a></li>
+    {% elseif is_granted('ROLE_CLUB_ADMIN') %}
+            <li><a href="{{ path('_user_my_page_users') }}">{% trans from 'menu' %}MENU.ENROLLMENT.MYPAGE_USERS{% endtrans %}</a></li>
+    {% endif %}
+          </ul>
+        </li>
+{% endif %}
+      </ul>
+      <ul class="nav navbar-nav navbar-right">
+        <li>
+            {% if is_granted('ROLE_PREVIOUS_ADMIN') %}
+                <a href="{{ path('_user_my_page', {'_switch_user': '_exit'}) }}">
+                    <i class="fa fa-eye"></i>&nbsp;{{ app.user.name }} {% trans from 'menu' %}MENU.LOGOUT{% endtrans %}
+                </a>
+            {% else %}
+                {% if app.user != null %}
+                    <a href="{{ path('_admin_logout') }}">{{ app.user.name }} {% trans from 'menu' %}MENU.LOGOUT{% endtrans %}</a>
+                {% else %}
+                    <a href="{{ path('_user_my_page') }}">{% trans from 'menu' %}MENU.LOGIN{% endtrans %}</a>
+                {% endif %}
+            {% endif %}
+        </li>
+        <li class="dropdown">
+          <a href="#" class="dropdown-toggle" data-toggle="dropdown">{% trans from 'menu' %}MENU.LANGCHOICE.TITLE{% endtrans %} <span class="caret"></span></a>
+          <ul class="dropdown-menu" role="menu">
+            <!-- Language section -->
+            {% for local in supported_locales|keys %}
+                {% set flag = countries[supported_locales[local]].flag %}
+                {% set lang = ['LANG.',local|upper]|join|trans({}, 'common') %}
+            <li>
+                <a href="{{ path('_switch', { 'locale': local }) }}">
+                    <img src="{{ imagepath }}/flags/{{ flag }}"
+                         alt="{{ lang }}"
+                         title="{% trans from 'menu' %}MENU.LANGCHOICE.CHOOSELANG{% endtrans %}: {{ lang }}"
+                         class="flag"
+                    />&nbsp;{{ lang }}
+                </a>
+            </li>
+            {% endfor %}
+          </ul>
+        </li>
+      </ul>
+    </div><!-- /.navbar-collapse -->
+  </div><!-- /.container -->
+</nav>
+{% endblock %}
+
 {% block body %}
 <div class="panel panel-success">
     <div class="panel-heading"><b>{{ 'FORM.MYPAGE.TITLE'|trans|upper }}</b></div>

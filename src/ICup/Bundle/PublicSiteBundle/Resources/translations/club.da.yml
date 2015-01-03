@@ -32,7 +32,7 @@ FORM:
         TITLE: Aktuelle kampe
         DESCRIPTION: >
                      Hvilke kampe spilles lige nu. Se eller følg dagens resultater her.
-        LEARNMORE: Se alle dagens kampe
+        LEARNMORE: Vis flere kampe
     BLOCK4:
         TITLE: Finalisterne
         DESCRIPTION: >
@@ -50,6 +50,25 @@ FORM:
     EMAIL: En e-mail adresse du vil modtage svar på
     MSG: Skriv en besked, et spørgsmål eller en god ide her...
     SUBMIT: Send besked
+  SELECTCLUB:
+    TITLE: Følg din klub
+    PROMPT: >
+            Du kan indstille resultater og kamplister til at vise den klub du ønsker at følge.
+            Hvis du gerne vil følge flere klubber kan du tilføje så mange du vil.
+            Find din klub ved at skrive klubbens navn. 
+            Hvis ikke den findes kan du forsøge med en del af klubbens navn.
+    CAPTION: Klubber du følger
+    LEGEND: Klubber
+    NOCLUBS: Ingen klubber passer til det indtastede. Prøv med en del af klubnavnet.
+    MORECLUBS: Mange klubber passer til det søgte (et udvalg er vist her) - fortsæt indtastning eller vælg en af klubberne.
+    INFO: Hvis du vil følge denne klub, skal du klikke her...
+    DEFAULT: Vælg...
+    NAME: Klubnavn
+    COUNTRY: Hjemland
+    HELP:
+      NAME: Skriv et par bogstaver af klubbens navn eller udfyld hele navnet
+    SUBMIT: Gem listen
+    CANCEL: Fortryd
   ENROLLMENT:
     DOCUMENTS: Dokumenter
     DOWNLOAD: Hent

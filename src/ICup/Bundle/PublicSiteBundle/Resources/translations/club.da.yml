@@ -44,6 +44,7 @@ FORM:
         DESCRIPTION: >
                      Læs om det der er værd at vide om stævnet. Hvad koster det? Hvormange
                      kampe spiller man? Hvad kan du pakke? Hvor bor og spiser man i Teramo?
+    SENDMAIL: Få mere information - udfyld og send
     NAME: Dit navn
     CLUB: Angiv hvilken klub du henvender dig på vegne af
     PHONE: Et telefon nummer du kan kontaktes på

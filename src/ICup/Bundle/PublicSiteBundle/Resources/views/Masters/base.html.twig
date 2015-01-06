@@ -2,7 +2,7 @@
 <html>
     <head>
         <meta charset="UTF-8" />
-        <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+        <meta name="viewport" content="width=device-width, initial-scale=1"/>
         {% block meta %}{% endblock %}
         <title>{% block title %}{% endblock %}</title>
         {# CreateJS is only available for admins by default #}
@@ -10,8 +10,12 @@
             {% include "CmfCreateBundle::includecssfiles.html.twig" %}
         {% endif %}
         <link href="{{ asset( 'bundles/icuppublicsite/font-awesome-4.1.0/css/font-awesome.min.css' ) }}" rel="stylesheet" type="text/css" />
+        <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.1/css/bootstrap.min.css">
+        <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.1/css/bootstrap-theme.min.css">
+<!--        
         <link href="{{ asset( 'bundles/icuppublicsite/css/bootstrap.min.css' ) }}" rel="stylesheet" type="text/css" />
         <link href="{{ asset( 'bundles/icuppublicsite/css/bootstrap-theme.min.css' ) }}" rel="stylesheet" type="text/css" />
+-->
         <link href="{{ asset( 'bundles/icuppublicsite/bootstrap-fileinput-4.0.0/css/fileinput.min.css' ) }}" media="all" rel="stylesheet" type="text/css" />
         {% stylesheets '@ICupPublicSiteBundle/Resources/css/*' output="bundles/icuppublicsite/css/style.css" %}
             <link href="{{ asset_url }}" rel="stylesheet" type="text/css" />
@@ -25,17 +29,29 @@
         {% javascripts '@ICupPublicSiteBundle/Resources/js/jquery/*' output="bundles/icuppublicsite/js/jquery.min.js" %}
         <script type="text/javascript" src="{{ asset_url }}"></script>
         {% endjavascripts  %}
+        <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.1/js/bootstrap.min.js"></script>
+{#        
         {% javascripts '@ICupPublicSiteBundle/Resources/js/bs/*' output="bundles/icuppublicsite/js/bootstrap.min.js" %}
         <script type="text/javascript" src="{{ asset_url }}"></script>
         {% endjavascripts  %}
+#}        
         <script src="{{ asset('bundles/icuppublicsite/bootstrap-fileinput-4.0.0/js/fileinput.min.js') }}"></script>
         <script src="{{ asset('bundles/fosjsrouting/js/router.js') }}"></script>
         <script src="{{ path('fos_js_routing_js', {"callback": "fos.Router.setData"}) }}"></script>
     </head>
     <body role="document">
         {% block header %}{% endblock %}
+        {% block banner %}
+        <div style="background-image: url('{{ imagepath }}/IWC/bg.jpg');
+                    background-size: cover;
+                    background-repeat: no-repeat;">
+            <div class="container" style="padding-top: 10px; padding-bottom: 10px;">
+                <img src="{{ imagepath }}/IWC/logo.png" alt="logo" class="img-responsive" />
+            </div>
+        </div>
+        {% endblock %}
         {% block widebody %}{% endblock %}
-        <div class="container main" role="main">
+        <div class="container" role="main">
         {% block body %}{% endblock %}
         </div>
         {% block footer %}{% endblock %}

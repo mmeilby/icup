@@ -1,19 +1,7 @@
 FORM:
   TITLE: iCup registration
   FRONTPAGE:
-    TITLE: Interamnia World Cup
-    SUBTITLE: Tag til Italien med din håndboldklub
-    DESCRIPTION: >
-        <p>Elsker du håndbold og vil du gerne deltage i et internationalt stævne til sommer - 
-        så er Interamnia World Cup det helt rigtige!</p>
-        <p>På disse sider finder du al den information der er nødvendig for at komme videre
-        og blive en del af oplevelsen til sommer. Har du brug for yderligere information finder
-        du kontaktoplysninger i menuen.</p>
-    LEARNMORE: Læs mere om turneringen 
-    MSGSENT: Din forespørgsel er blevet sendt. Du kan forvente at få svar på den adresse eller nummer du har angivet.
-#    SUBTITLE: Resultater og stillinger lige ved hånden
-#    DESCRIPTION: De tilmeldte turneringer tilbyder dig resultatformidling og mulighed for holdtilmelding.
-#    LEARNMORE: Følg en turnering
+    MSGSENT: Your request for more information has been submitted. You will receive a response shortly.
     BLOCK1:
         TITLE: Watch you club
         DESCRIPTION: >

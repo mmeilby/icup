@@ -2,11 +2,13 @@
 {% trans_default_domain "tournament" %}
 
 {% import 'ICupPublicSiteBundle:Masters:club.html.twig' as formatter %}
+{% import 'ICupPublicSiteBundle:Masters:tournament.html.twig' as tformatter %}
+
+{% block widebody %}
+{{ tformatter.title(tournament) }}
+{% endblock %}
 
 {% block body %}
-<p class="lead">
-    {% trans %}RESULTS{% endtrans %} {{ tournament.edition }}
-</p>
 <div class="row">
     <div class="col-sm-2">
         <p class="lead">

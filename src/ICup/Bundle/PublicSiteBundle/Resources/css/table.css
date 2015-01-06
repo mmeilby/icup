@@ -41,7 +41,7 @@ TD.input-col INPUT {
 }
 /*
     Fix for flag images.
-    Need to be lifted 3 pixels to fit with team names
+    Need to be lifted 1 pixel to fit with team names
 */
 TD.flag {
     width: 20px;

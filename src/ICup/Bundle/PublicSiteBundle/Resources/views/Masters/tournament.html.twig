@@ -1,0 +1,129 @@
+{% macro title(tournament) %}
+    <div class="container visible-xs-block">
+        <h4 style="margin-bottom: 0;">
+            <i class="fa fa-flag"></i>&nbsp;{% trans from 'tournament' %}RESULTS{% endtrans %} {{ tournament.edition }}
+        </h4>
+        <div class="small">{{ tournament.name }}</div>
+    </div>
+    <div class="container hidden-xs">
+        <h2 style="margin-bottom: 0;">
+            <i class="fa fa-flag"></i>&nbsp;{% trans from 'tournament' %}RESULTS{% endtrans %} {{ tournament.edition }}
+        </h2>
+        <div>{{ tournament.name }}</div>
+    </div>
+{% endmacro %}
+{# *******************************************
+   DISPLAY MATCHLIST
+   SMALL MOBILE DEVICES
+   ******************************************* #}
+{% macro listmatchesxs(matchlist, context) %}
+    {% set playground_defined = 0 %}
+    {% for matchset in matchlist %}
+        {% for match in matchset %}
+            {% if match.playground.id != "" %}
+                {% set playground_defined = 1 %}
+            {% endif %}
+        {% endfor %}
+    {% endfor %}
+    
+<table class="table table-striped">
+    <thead>
+        <tr>
+            <td class="narrow-col">
+                {% trans from "tournament" %}LEGEND.TIME{% endtrans %}<br />
+            {% if playground_defined %}                
+                {% trans from "tournament" %}LEGEND.PLAYGROUND{% endtrans %}
+            {% endif %}
+            </td>
+            <td>
+                {% trans from "tournament" %}LEGEND.HOMETEAM{% endtrans %}<br />
+                {% trans from "tournament" %}LEGEND.AWAYTEAM{% endtrans %}
+            </td>
+            <td class="narrow-col">{% trans from "tournament" %}LEGEND.RESULT{% endtrans %}</td>
+        </tr>
+    </thead>
+    <tbody>
+{% for matchset in matchlist %}
+        <tr><td class="bg-warning" colspan="3">
+            {{ 'FORMAT.LONGDATE'|transchoice(matchset[0].schedule|date('j'), {
+                    '%week%': ['WEEK.',matchset[0].schedule|date('D')|upper]|join|trans([],'messages')|capitalize,
+                    '%day%': matchset[0].schedule|date('j'),
+                    '%month%': ['MONTH.',matchset[0].schedule|date('M')|upper]|join|trans([],'messages'),
+                    '%year%': matchset[0].schedule|date('Y')}, 'messages') }}
+        </td></tr>
+    {% for match in matchset %}
+        <tr>
+            <td class="narrow-col">
+                {{ match.schedule|date('FORMAT.TIME'|trans([],'messages')) }}<br />
+            {% if playground_defined %}                
+                <a href="{{ path('_showplayground_full', { 'playgroundid': match.playground.id }) }}" title="{{ match.playground.name }}">{{ match.playground.no }}</a>
+            {% endif %}    
+            </td>
+            <td>{{ context.formatter.clubxs(match.home, match.away, match.group.id, context) }}</td>
+            <td class="narrow-col text-nowrap">{{ match.home.score }}-{{ match.away.score }}</td>
+        </tr>
+    {% endfor %}
+{% endfor %}
+    </tbody>
+</table>
+{% endmacro %}
+{# *******************************************
+   DISPLAY MATCHLIST
+   OTHER DEVICES
+   ******************************************* #}
+{% macro listmatches(matchlist, context) %}
+    {% set playground_defined = 0 %}
+    {% for matchset in matchlist %}
+        {% for match in matchset %}
+            {% if match.playground.id != "" %}
+                {% set playground_defined = 1 %}
+            {% endif %}
+        {% endfor %}
+    {% endfor %}
+    
+<table class="table table-striped">
+    <thead>
+        <tr>
+            <td class="narrow-col">{% trans from "tournament" %}LEGEND.NO{% endtrans %}</td>
+            <td class="narrow-col">{% trans from "tournament" %}LEGEND.TIME{% endtrans %}<br />
+            {% if playground_defined %}                
+                                   {% trans from "tournament" %}LEGEND.PLAYGROUND{% endtrans %}
+            {% endif %}
+            </td>
+            <td class="narrow-col">{% trans from "tournament" %}LEGEND.CATEGORY{% endtrans %}<br />
+                                   {% trans from "tournament" %}LEGEND.GROUP{% endtrans %}</td>
+            <td class="flag"></td>
+            <td>{% trans from "tournament" %}LEGEND.HOMETEAM{% endtrans %}</td>
+            <td class="flag"></td>
+            <td>{% trans from "tournament" %}LEGEND.AWAYTEAM{% endtrans %}</td>
+            <td class="narrow-col">{% trans from "tournament" %}LEGEND.RESULT{% endtrans %}</td>
+        </tr>
+    </thead>
+    <tbody>
+    {% for matchset in matchlist %}
+        <tr><td class="bg-warning" colspan="8">
+                {{ 'FORMAT.LONGDATE'|transchoice(matchset[0].schedule|date('j'), {
+                        '%week%': ['WEEK.',matchset[0].schedule|date('D')|upper]|join|trans([],'messages')|capitalize,
+                        '%day%': matchset[0].schedule|date('j'),
+                        '%month%': ['MONTH.',matchset[0].schedule|date('M')|upper]|join|trans([],'messages'),
+                        '%year%': matchset[0].schedule|date('Y')}, 'messages') }}
+        </td></tr>
+        {% for match in matchset %}
+        <tr>
+            <td class="narrow-col">{{ match.matchno }}</td>
+            <td class="narrow-col">{{ match.schedule|date('FORMAT.TIME'|trans([],'messages')) }}<br />
+            {% if playground_defined %}                
+                <a href="{{ path('_showplayground_full', { 'playgroundid': match.playground.id }) }}" title="{{ match.playground.name }}">{{ match.playground.no }}</a>
+            {% endif %}    
+            </td>
+            <td class="narrow-col"><a href="{{ path('_showcategory', { 'categoryid': match.category.id }) }}">{{ match.category.name }}</a><br />
+                {{ match.group.name }}</td>
+            {{ context.formatter.club(match.home, match.group.id, context) }}
+            {{ context.formatter.club(match.away, match.group.id, context) }}
+            <td class="narrow-col text-nowrap">{{ match.home.score }}-{{ match.away.score }}</td>
+        </tr>
+        {% endfor %}
+    {% endfor %}
+    </tbody>
+</table>
+{% endmacro %}

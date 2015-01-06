@@ -1,10 +1,13 @@
 {% extends "ICupPublicSiteBundle:Masters:standard.html.twig" %}
 {% trans_default_domain "tournament" %}
 
+{% import 'ICupPublicSiteBundle:Masters:tournament.html.twig' as tformatter %}
+
+{% block widebody %}
+{{ tformatter.title(tournament) }}
+{% endblock %}
+
 {% block body %}
-<p class="lead">
-    {% trans %}RESULTS{% endtrans %} {{ tournament.edition }}
-</p>
 <ul class="nav nav-pills" role="tablist">
     <li>
         <a href="{{ path('_tournament_winners', {'tournament': tournament.key }) }}">{{ 'WINNERS'|trans|upper }}</a>

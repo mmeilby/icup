@@ -1,4 +1,5 @@
 MENU: 
+    ROOT: iCup
     LANGCHOICE: 
         TITLE: Idioma 
         CHOOSELANG: Elija el idioma 

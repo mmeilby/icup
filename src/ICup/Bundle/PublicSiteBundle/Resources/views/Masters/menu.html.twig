@@ -18,11 +18,7 @@
                 <span class="icon-bar"></span>
             </button>
             <a class="navbar-brand" href="{{ path('_icup') }}">
-{% if tournament is defined and tournament %}
-                {{ tournament.name }}
-{% else %}
-                iCup
-{% endif %}
+                {% trans %}MENU.ROOT{% endtrans %}
             </a>
         </div>
 
@@ -71,7 +67,4 @@
         </div>
     </div>
 </nav>
-{% endblock %}
-
-{% block footer %}
 {% endblock %}

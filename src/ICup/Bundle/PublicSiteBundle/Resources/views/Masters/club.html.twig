@@ -85,3 +85,20 @@
         {{ club.name }}
     </span>
 {% endmacro %}
+
+{% macro td(count) %}
+    {% for i in 1..count %}
+        <td>&nbsp;</td>
+    {% endfor %}
+{% endmacro %}
+
+{% macro match(match, context) %}
+{% trans from 'tournament' %}LEGEND.NO{% endtrans %}: {{ match.matchno }} - {{ ['GROUPCLASS.',match.group.classification]|join|trans([],'tournament') }}{% if match.group.classification < 9 %} {{ match.group.name }}{% endif %}                        
+{{ 'FORMAT.LONGDATE'|transchoice(match.schedule|date('j'), {
+    '%week%': ['WEEK.',match.schedule|date('D')|upper]|join|trans([],'messages')|capitalize,
+    '%day%': match.schedule|date('j'),
+    '%month%': ['MONTH.',match.schedule|date('M')|upper]|join|trans([],'messages'),
+    '%year%': match.schedule|date('Y')}, 'messages') }} - {% trans from 'tournament' %}LEGEND.TIME{% endtrans %}: {{ match.schedule|date('FORMAT.TIME'|trans([],'messages')) }}
+{% trans from 'tournament' %}LEGEND.PLAYGROUND{% endtrans %}: {{ match.playground.name }}
+{% endmacro %}
+

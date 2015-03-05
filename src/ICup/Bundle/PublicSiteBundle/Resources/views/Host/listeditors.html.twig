@@ -1,85 +1,80 @@
 {% extends "ICupPublicSiteBundle:Masters:edit.html.twig" %}
 {% trans_default_domain "admin" %}
 
-{% block adminbody %}
-<div class="panel panel-success">
-    <div class="panel-heading"><b>{{ 'FORM.LISTEDITORS.TITLE'|trans|upper }}</b></div>
-    <div class="panel-body lead">
-        <a href="{{ path('_edit_host_list') }}">
-            {{ host.name|upper }}
-        </a><br />
-        {% trans %}FORM.LISTEDITORS.CAPTION{% endtrans %}
-    </div>
-    <table class="table table-striped">
-        <tbody>
-{% if users|length > 0 %}
+{% block body %}
+    <h2 style="margin-bottom: 0">
+        <i class="fa fa-cogs"></i>&nbsp;{{ 'FORM.LISTEDITORS.TITLE'|trans|upper }}
+    </h2>
+    <p>
+        {{ host.name|upper }}
+    </p>
+    <div class="panel panel-default">
+        <div class="panel-heading"><h3>{% trans %}FORM.LISTEDITORS.CAPTION{% endtrans %}</h3></div>
+        <div class="panel-body text-right">
+            <a class="btn btn-primary btn-lg" href="{{ path('_edit_user_add_host', { 'hostid': host.id }) }}">
+                <span class="fa fa-file"></span>&nbsp;{% trans %}FORM.LISTEDITORS.NOUSER{% endtrans %}
+            </a>
+        </div>
+        <table class="table table-striped">
+            <thead>
+                <tr>
+                    <td>{% trans %}FORM.LISTEDITORS.LEGEND.USERNAME{% endtrans %}</td>
+                    <td>{% trans %}FORM.LISTEDITORS.LEGEND.NAME{% endtrans %}</td>
+                    <td>{% trans %}FORM.LISTEDITORS.LEGEND.ROLE{% endtrans %}</td>
+                </tr>
+            </thead>
+            <tbody>
     {% for user in users %}
-            <tr>
-                <td class="user">
+                <tr>
+                    <td class="user">
         {% if is_granted('ROLE_ADMIN') %}
-                    <a href="{{ path('_user_my_page', {'_switch_user': user.username }) }}">
-                    {{ user.username|upper }}
-                    </a>    
+                        <a href="{{ path('_user_my_page', {'_switch_user': user.username }) }}">
+                            {{ user.username|upper }}
+                        </a>    
         {% else %}
             {% if user.id == currentuser.id %}
-                    <b>{{ user.username|upper }}</b>
+                        <b>{{ user.username|upper }}</b>
             {% else %}
-                    {{ user.username|upper }}
+                        {{ user.username|upper }}
             {% endif %}
         {% endif %}
-                </td>
-                <td class="user">
-                    {{ user.name }}
-                </td>
-                <td class="role">
+                    </td>
+                    <td class="user">
+                        {{ user.name }}
+                    </td>
+                    <td class="role">
     {% if user.role == 3 %}
-                    {{ 'FORM.MYPAGE.EDITOR'|trans({},'club') }}
+                        {{ 'FORM.MYPAGE.EDITOR'|trans({},'club') }}
     {% else %}
-                    {{ 'FORM.MYPAGE.EDITOR_ADMIN'|trans({},'club') }}
+                        {{ 'FORM.MYPAGE.EDITOR_ADMIN'|trans({},'club') }}
     {% endif %}
-                </td>
-                <td class="narrow-col">
-                    <a href="{{ path('_edit_user_add_host', { 'hostid': host.id }) }}">
-                        <span class="glyphicon glyphicon-file"></span>
-                    </a>    
-                </td>
-                <td class="narrow-col">
-                    <a href="{{ path('_edit_user_chg', { 'userid': user.id }) }}">
-                        <span class="glyphicon glyphicon-edit"></span>
-                    </a>    
-                </td>
-                <td class="narrow-col">
+                    </td>
+                    <td class="narrow-col">
+                        <a href="{{ path('_edit_user_chg', { 'userid': user.id }) }}">
+                            <span class="glyphicon glyphicon-edit"></span>
+                        </a>    
+                    </td>
+                    <td class="narrow-col">
     {% if user.id != currentuser.id %}
-                    <a href="{{ path('_edit_user_del', { 'userid': user.id }) }}">
-                        <span class="glyphicon glyphicon-remove"></span>
-                    </a>    
+                        <a href="{{ path('_edit_user_del', { 'userid': user.id }) }}">
+                            <span class="glyphicon glyphicon-remove"></span>
+                        </a>    
     {% endif %}
-                </td>
-                <td class="narrow-col">
-                    <a href="{{ path('_edit_user_chg_pass', { 'userid': user.id }) }}">
-                        <span class="glyphicon glyphicon-lock"></span>
-                    </a>    
-                </td>
-            </tr>
+                    </td>
+                    <td class="narrow-col">
+                        <a href="{{ path('_edit_user_chg_pass', { 'userid': user.id }) }}">
+                            <span class="glyphicon glyphicon-lock"></span>
+                        </a>    
+                    </td>
+                </tr>
+    {% else %}
+                <tr>
+                    <td class="user" colspan="6">
+                        {{'FORM.LISTEDITORS.NOUSER'|trans|upper}}
+                    </td>
+                </tr>
     {% endfor %}
-{% else %}
-            <tr>
-                <td class="user" colspan="2">
-                    <a href="{{ path('_edit_user_add_host', { 'hostid': host.id }) }}">
-                    {{'FORM.LISTEDITORS.NOUSER'|trans|upper}}
-                    </a>    
-                </td>
-                <td class="narrow-col">
-                    <a href="{{ path('_edit_user_add_host', { 'hostid': host.id }) }}">
-                        <span class="glyphicon glyphicon-file"></span>
-                    </a>    
-                </td>
-                <td></td>
-                <td></td>
-                <td></td>
-            </tr>
-{% endif %}
-        </tbody>
-    </table>
-</div>
+            </tbody>
+        </table>
+    </div>
 {% endblock %}

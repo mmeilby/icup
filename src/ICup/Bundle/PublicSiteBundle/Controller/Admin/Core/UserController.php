@@ -309,7 +309,7 @@ class UserController extends Controller
    /**
      * Change password
      * @Route("/edit/chg/pass/{userid}", name="_edit_user_chg_pass")
-     * @Template("ICupPublicSiteBundle:Edit:edituser.html.twig")
+     * @Template("ICupPublicSiteBundle:Edit:chg_pass.html.twig")
      */
     public function passAction($userid, Request $request) {
         
@@ -331,13 +331,17 @@ class UserController extends Controller
         
         $pwd = new Password();
         $formDef = $this->createFormBuilder($pwd);
-        $formDef->add('password', 'password', array('label' => 'FORM.USER.PASSWORD', 'required' => false, 'translation_domain' => 'admin'));
-        $formDef->add('password2', 'password', array('label' => 'FORM.USER.PASSWORD2', 'required' => false, 'translation_domain' => 'admin'));
-        $formDef->add('cancel', 'submit', array('label' => 'FORM.USER.CANCEL.CHG',
+        $formDef->add('password', 'password', array('label' => 'FORM.NEWPASS.PASSWORD', 'required' => false, 'translation_domain' => 'admin'));
+        $formDef->add('password2', 'password', array('label' => 'FORM.NEWPASS.PASSWORD2', 'required' => false, 'translation_domain' => 'admin'));
+        $formDef->add('cancel', 'submit', array('label' => 'FORM.NEWPASS.CANCEL',
                                                 'translation_domain' => 'admin',
                                                 'buttontype' => 'btn btn-default',
                                                 'icon' => 'fa fa-times'));
-        $formDef->add('save', 'submit', array('label' => 'FORM.USER.SUBMIT.CHG',
+        $formDef->add('make', 'submit', array('label' => 'FORM.NEWPASS.MAKEPWD',
+                                                'translation_domain' => 'admin',
+                                                'buttontype' => 'btn btn-default',
+                                                'icon' => 'fa fa-barcode'));
+        $formDef->add('save', 'submit', array('label' => 'FORM.NEWPASS.SUBMIT',
                                                 'translation_domain' => 'admin',
                                                 'icon' => 'fa fa-check'));
         $form = $formDef->getForm();
@@ -345,7 +349,12 @@ class UserController extends Controller
         if ($form->get('cancel')->isClicked()) {
             return $this->redirect($returnUrl);
         }
-        if ($form->isValid()) {
+        if ($form->get('make')->isClicked()) {
+            $password = uniqid("", true);
+            $pwd->setPassword($password);
+            $pwd->setPassword2($password);
+        }
+        elseif ($form->isValid()) {
             $this->get('util')->generatePassword($user, $pwd->getPassword());
             $em = $this->getDoctrine()->getManager();
             $em->flush();
@@ -357,6 +366,6 @@ class UserController extends Controller
         else {
             $club = null;
         }
-        return array('form' => $form->createView(), 'action' => 'chg', 'host' => $user->getPid(), 'club' => $club, 'user' => $user, 'error' => null);
+        return array('form' => $form->createView(), 'host' => $user->getPid(), 'club' => $club, 'user' => $user);
     }
 }

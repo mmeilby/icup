@@ -6,14 +6,11 @@ parameters:
     database_user:     root
     database_password: ~
 
-    mailer_transport:  smtp
-    mailer_host:       localhost
-    mailer_user:       mmeilby@gmail.com
+    mailer_transport:  gmail
+    mailer_host:       null
+    mailer_user:       ~
     mailer_password:   ~
 
-    security_editor_password: ~
-    security_password: ~
-    
     locale:            da
     secret:            ~
 

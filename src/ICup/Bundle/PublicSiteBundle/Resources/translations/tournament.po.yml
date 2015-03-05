@@ -74,6 +74,10 @@ FORM:
           NAME: Tournoi
           EDITION: Edycja
           DESCRIPTION: Opis
+      STATUS:
+          1: This tournament is open for enrollments. Groups and matches may be incomplete or missing.
+          2: This tournament is live - check out the latest results.
+          3: This is a completed tournament. You can review the winners and hall of fame.
 
 # Statistics page translations
     STATISTICS:

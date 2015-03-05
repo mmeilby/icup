@@ -1,23 +1,18 @@
 {% extends "ICupPublicSiteBundle:Masters:edit.html.twig" %}
 {% trans_default_domain "club" %}
 
+{% import 'ICupPublicSiteBundle:Masters:tournament.html.twig' as tformatter %}
+
+{% block widebody %}
+{{ tformatter.mypage(currentuser) }}
+{% endblock %}
+
 {% block body %}
-<div class="panel panel-info">
-    <div class="panel-heading"><b>{{ 'FORM.MYPAGE.TITLE'|trans|upper }}</b></div>
-    <div class="panel-body lead">
-        {{ currentuser.name }} ({{ currentuser.username|upper }})
-    </div>
-    <div class="panel-body">
-        {{ host.name|upper }}<br />
-        <b>
-{% if currentuser.role == 4 %}
-            {% trans %}FORM.MYPAGE.EDITOR_ADMIN{% endtrans %}
-{% else %}
-            {% trans %}FORM.MYPAGE.EDITOR{% endtrans %}
-{% endif %}
-        </b><br />
-        {% trans %}FORM.MYPAGE.SECTION.EDITOR.CAPTION{% endtrans %}
-    </div>
+<p class="lead">
+    {{ host.name|upper }}
+</p>
+<div class="panel panel-default">
+    <div class="panel-heading"><b>{% trans %}FORM.MYPAGE.SECTION.EDITOR.CAPTION{% endtrans %}</b></div>
     <table class="table table-striped">
         <thead>
             <tr>
@@ -74,10 +69,8 @@
     </table>
 </div>
 {% if tournaments|length > 0 and currentuser.role == 4 %}
-<p>
-    <a href="{{ path('_edit_tournament_add', { 'hostid': host.id }) }}">
-        {% trans %}FORM.MYPAGE.SECTION.EDITOR.NOTOURNAMENT{% endtrans %}
-    </a>
-</p>
+<a class="btn btn-primary btn-lg" href="{{ path('_edit_tournament_add', { 'hostid': host.id }) }}">
+    <span class="fa fa-file"></span>&nbsp;{% trans %}FORM.MYPAGE.SECTION.EDITOR.NOTOURNAMENT{% endtrans %}
+</a>
 {% endif %}
 {% endblock %}

@@ -1,14 +1,14 @@
-{% extends "ICupPublicSiteBundle:Masters:standard.html.twig" %}
+{% extends "ICupPublicSiteBundle:Masters:edit.html.twig" %}
 
 {% form_theme form 'ICupPublicSiteBundle:Default:layout.script.html.twig' %}
-{% trans_default_domain "club" %}
+{% trans_default_domain "admin" %}
 
 {% block body %}
     <h2 style="margin-bottom: 0">
         <i class="fa fa-cogs"></i>&nbsp;{{ 'FORM.NEWPASS.TITLE'|trans|upper }}
     </h2>
     <p>
-        {{ user.name }} ({{ user.username|upper }})
+        {{ user.name|upper }}
     </p>
     <div class="row">
         <div class="col-md-8">

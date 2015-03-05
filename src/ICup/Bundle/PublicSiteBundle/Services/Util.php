@@ -14,6 +14,7 @@ use Symfony\Component\DependencyInjection\ContainerInterface;
 use Doctrine\ORM\EntityManager;
 use Monolog\Logger;
 use Symfony\Component\HttpFoundation\RedirectResponse;
+use RuntimeException;
 
 class Util
 {
@@ -135,24 +136,8 @@ class Util
             throw new RuntimeException("This controller is not available for anonymous users");
         }
         if (!($thisuser instanceof User)) {
-            // Logged in with default admin - prepare an admin user
-            $username = $thisuser->getUsername();
-            $admin = $this->logic->getUserByName($username);
-            if ($admin == null) {
-                $admin = new User();
-                $admin->setName($username);
-                $admin->setUsername($username);
-                $admin->setRole(User::$ADMIN);
-                $admin->setStatus(User::$SYSTEM);
-                $admin->setEmail('');
-                $admin->setPid(0);
-                $admin->setCid(0);
-                $this->generatePassword($admin, $username);
-                $this->em->persist($admin);
-                $this->em->flush();
-                $this->logger->addNotice("Default admin created: " . $admin->getUsername() . ":" . $admin->getId());
-            }
-            $thisuser = $admin;
+            // Logged in with default admin - not allowed
+            throw new RuntimeException("This controller is not available for default admins");
         }
         return $thisuser;
     }
@@ -162,7 +147,7 @@ class Util
      * @param User $user
      */
     public function isAdminUser(User $user) {
-        return $this->entity->isLocalAdmin($user) || $user->isAdmin();
+        return $user->isAdmin();
     }
 
     /**

@@ -5,9 +5,34 @@ namespace ICup\Bundle\PublicSiteBundle\Controller\General;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use ICup\Bundle\PublicSiteBundle\Entity\Doctrine\Enrollment;
+use ICup\Bundle\PublicSiteBundle\Entity\Doctrine\User;
 
 class UpgradeController extends Controller
 {
+    /**
+     * Route("/initdb")
+     */
+    public function initdb() {
+        $em = $this->getDoctrine()->getManager();
+        $username = "sa";
+        $admin = $this->get('logic')->getUserByName($username);
+        if ($admin == null) {
+            $admin = new User();
+            $admin->setName($username);
+            $admin->setUsername($username);
+            $admin->setRole(User::$ADMIN);
+            $admin->setStatus(User::$SYSTEM);
+            $admin->setEmail('');
+            $admin->setPid(0);
+            $admin->setCid(0);
+            $this->get('util')->generatePassword($admin, $username);
+            $em->persist($admin);
+            $em->flush();
+            $this->get('logger')->addNotice("Default admin created: " . $admin->getUsername() . ":" . $admin->getId());
+        }
+        return $this->redirect($this->generateUrl('_icup'));
+    }
+    
     /**
      * @Route("/admin/upgrade/2")
      */

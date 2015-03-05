@@ -1,0 +1,142 @@
+{% extends "ICupPublicSiteBundle:Masters:edit.html.twig" %}
+
+{% form_theme search_form 'ICupPublicSiteBundle:Default:layout.script.html.twig' %}
+{% trans_default_domain "admin" %}
+
+{% import 'ICupPublicSiteBundle:Masters:tournament.html.twig' as tformatter %}
+
+{% block body %}
+    <h2 style="margin-bottom: 0">
+        <i class="fa fa-cogs"></i>&nbsp;{{ 'FORM.DASHBOARD.TITLE'|trans|upper }}
+    </h2>
+    <p>
+{% if host is defined and host %}                
+        {{ host.name|upper }}
+{% endif %}
+    </p>
+    <div class="row">
+        <div class="col-sm-4">
+            <div class="list-group">
+{% if is_granted('ROLE_ADMIN') %}
+                <li class="list-group-item">
+                    <h3>{% trans %}FORM.DASHBOARD.SEARCHCAPTION{% endtrans %}</h3>
+                    {{ form(search_form) }}
+                </li>
+                <br />
+                <a class="list-group-item" href="{{ path('_edit_host_add') }}">
+                    <h3 class="list-group-item-heading">{% trans %}FORM.DASHBOARD.ADDHOST.CAPTION{% endtrans %}</h3>
+                    <p class="list-group-item-text">{% trans %}FORM.DASHBOARD.ADDHOST.DESCRIPTION{% endtrans %}</p>
+                </a>
+{% endif %}
+{% if host is defined and host %}                
+                <a class="list-group-item" href="{{ path('_edit_host_chg', { 'hostid': host.id }) }}">
+                    <h3 class="list-group-item-heading">{% trans %}FORM.DASHBOARD.HOST.CAPTION{% endtrans %}</h3>
+                    <p class="list-group-item-text">{% trans %}FORM.DASHBOARD.HOST.DESCRIPTION{% endtrans %}</p>
+                </a>
+                <a class="list-group-item"
+    {% if is_granted('ROLE_ADMIN') %}
+                   href="{{ path('_edit_editor_list', { 'hostid': host.id }) }}"
+    {% else %}
+                   href="{{ path('_edit_editors_list') }}"
+    {% endif %}
+                >
+                    <h3 class="list-group-item-heading">{% trans %}FORM.DASHBOARD.EDITORS.CAPTION{% endtrans %}</h3>
+                    <p class="list-group-item-text">{% trans %}FORM.DASHBOARD.EDITORS.DESCRIPTION{% endtrans %}</p>
+                </a>
+{% endif %}
+            </div>
+        </div>
+        <div class="col-sm-8">
+{% if tournaments is defined and tournaments %}
+            <div class="panel panel-default">
+                <div class="panel-heading"><h3>{% trans %}FORM.DASHBOARD.TOURNAMENTS.CAPTION{% endtrans %}</h3></div>
+                <table class="table table-striped">
+                    <thead>
+                        <tr>
+                            <td>{% trans %}FORM.DASHBOARD.TOURNAMENTS.LEGEND.NAME{% endtrans %}</td>
+                            <td>{% trans %}FORM.DASHBOARD.TOURNAMENTS.LEGEND.EDITION{% endtrans %}</td>
+                            <td>{% trans %}FORM.DASHBOARD.TOURNAMENTS.LEGEND.DESCRIPTION{% endtrans %}</td>
+                            <td>{% trans %}FORM.DASHBOARD.TOURNAMENTS.LEGEND.STATUS{% endtrans %}</td>
+                        </tr>
+                    </thead>
+                    <tbody>
+    {% for tournament in tournaments %}
+                        <tr>
+                            <td>
+        {% if is_granted('ROLE_EDITOR_ADMIN') %}
+                                <a href="{{ path('_edit_tournament_chg', { 'tournamentid': tournament.id }) }}">
+                                {{ tournament.name }}
+                                </a>
+        {% else %}
+                                {{ tournament.name }}
+        {% endif %}
+                            </td>
+                            <td>
+                                <a href="{{ path('_tournament_overview', { 'tournament': tournament.key }) }}">
+                                {{ tournament.edition }}
+                                </a>
+                            </td>
+                            <td>
+                                {{ tournament.description }}
+                            </td>
+                            <td>
+        {% if is_granted('ROLE_EDITOR_ADMIN') %}
+                                <a href="{{ path('_edit_event_list', { 'tournamentid': tournament.id }) }}">
+                                    <b>{{ ['FORM.DASHBOARD.TOURNAMENTS.STATUS.',tstat[tournament.id]]|join|trans }}</b>
+                                </a>
+        {% else %}
+                                <b>{{ ['FORM.DASHBOARD.TOURNAMENTS.STATUS.',tstat[tournament.id]]|join|trans }}</b>
+        {% endif %}
+                            </td>
+                        </tr>
+    {% else %}
+                        <tr>
+                            <td colspan="4">
+        {% if is_granted('ROLE_EDITOR_ADMIN') %}
+                                <a href="{{ path('_edit_tournament_add', { 'hostid': host.id }) }}">
+                                    {{'FORM.DASHBOARD.TOURNAMENTS.NOTOURNAMENT'|trans|upper}}
+                                </a>
+        {% endif %}
+                            </td>
+                        </tr>
+    {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+    {% if tournaments|length > 0 and is_granted('ROLE_EDITOR_ADMIN') %}
+            <a class="btn btn-primary btn-lg" href="{{ path('_edit_tournament_add', { 'hostid': host.id }) }}">
+                <span class="fa fa-file"></span>&nbsp;{% trans %}FORM.DASHBOARD.TOURNAMENTS.NOTOURNAMENT{% endtrans %}
+            </a>
+    {% endif %}
+            <p>&nbsp;</p>
+{% endif %}
+{% if not host is defined or not host %}                
+            <div class="list-group">
+                <div class="list-group-item list-group-item-warning">
+                    <h3>{% trans %}FORM.DASHBOARD.NOHOST{% endtrans %}</h3>
+                </div>
+            </div>
+{% endif %}
+{% if is_granted('ROLE_ADMIN') %}
+            <div class="row">
+                <div class="col-sm-6">
+                    <div class="list-group">
+                        <a class="list-group-item" href="{{ path('_edit_club_list') }}">
+                            <h3 class="list-group-item-heading">{% trans %}FORM.DASHBOARD.CLUBLIST.CAPTION{% endtrans %}</h3>
+                            <p class="list-group-item-text">{% trans %}FORM.DASHBOARD.CLUBLIST.DESCRIPTION{% endtrans %}</p>
+                        </a>
+                    </div>
+                </div>
+                <div class="col-sm-6">
+                    <div class="list-group">
+                        <a class="list-group-item" href="{{ path('_user_my_page_upload') }}">
+                            <h3 class="list-group-item-heading">{% trans %}FORM.DASHBOARD.UPLOAD.CAPTION{% endtrans %}</h3>
+                            <p class="list-group-item-text">{% trans %}FORM.DASHBOARD.UPLOAD.DESCRIPTION{% endtrans %}</p>
+                        </a>
+                    </div>
+                </div>
+            </div>
+{% endif %}
+        </div>
+    </div>
+{% endblock %}

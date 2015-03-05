@@ -1,0 +1,42 @@
+{% extends "ICupPublicSiteBundle:Masters:edit.html.twig" %}
+
+{% form_theme upload_form 'ICupPublicSiteBundle:Default:layout.script.html.twig' %}
+{% trans_default_domain "club" %}
+
+{% block header %}
+{% include 'ICupPublicSiteBundle:User:Blocks/mypage_admin_menu.html.twig' %}
+{% endblock %}
+
+{% import 'ICupPublicSiteBundle:Masters:tournament.html.twig' as tformatter %}
+
+{% block widebody %}
+{{ tformatter.mypage(currentuser) }}
+{% endblock %}
+
+{% block body %}
+<div class="panel panel-default">
+    <div class="panel-heading"><b>Upload file</b></div>
+    <div class="panel-body">
+        <form class="standard" action="{{ path('_user_my_page_upload') }}" method="post" {{ form_enctype(upload_form) }}>
+            {{ form_widget(upload_form) }}
+        </form>
+    </div>
+</div>
+<h2>Download file(s)</h2>
+{% if files is empty %}
+    <p>No files found, upload a file first.</p>
+{% else %}
+    <ul class="downloads">
+        {% for file in files %}
+            <li><a href="{{ cmf_media_download_url(file) }}" title="Download {{ file.name }}">{{ file.description }} (id: {{ file.id }})</a></li>
+        {% endfor %}
+    </ul>
+{% endif %}
+{% endblock %}
+{% block javascripts %}
+<script>
+    $("#file").fileinput({
+        'allowedFileExtensions' : ['jpg', 'png','gif','pdf'],
+    });
+</script>
+{% endblock %}

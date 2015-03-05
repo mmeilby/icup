@@ -330,7 +330,13 @@ class BusinessLogic
         return $this->entity->getTournamentRepo()->findOneBy(array('key' => $key));
     }
 
-    /* TODO: this function must restrict til available tournaments */
+    public function listHosts() {
+        return $this->entity->getHostRepo()
+                    ->findAll(array(),
+                              array('name' => 'asc'));
+    }
+    
+    /* TODO: this function must restrict to available tournaments */
     public function listAvailableTournaments() {
         return $this->entity->getTournamentRepo()
                     ->findAll(array(),
@@ -400,7 +406,7 @@ class BusinessLogic
         $qb = $this->em->createQuery(
                 "select g ".
                 "from ".$this->entity->getRepositoryPath('Group')." g ".
-                "where g.pid=:category and g.classification > 0 and g.classification < 8 ".
+                "where g.pid=:category and g.classification > 0 and g.classification < 6 ".
                 "order by g.classification asc, g.name asc");
         $qb->setParameter('category', $categoryid);
         return $qb->getResult();
@@ -410,7 +416,7 @@ class BusinessLogic
         $qb = $this->em->createQuery(
                 "select g ".
                 "from ".$this->entity->getRepositoryPath('Group')." g ".
-                "where g.pid=:category and g.classification > 7 ".
+                "where g.pid=:category and g.classification > 5 ".
                 "order by g.classification desc, g.name asc");
         $qb->setParameter('category', $categoryid);
         return $qb->getResult();

@@ -12,6 +12,40 @@
         <div>{{ tournament.name }}</div>
     </div>
 {% endmacro %}
+{% macro mypage(currentuser) %}
+    <div class="container visible-xs-block">
+        <h4 style="margin-bottom: 0">
+            <i class="fa fa-user"></i>&nbsp;{{ 'FORM.MYPAGE.TITLE'|trans([],'club')|upper }}
+        </h4>
+        <p class="small">
+            {{ currentuser.name }} ({{ currentuser.username|upper }})<br />
+            <b>
+{% if currentuser.role == 4 %}
+                {% trans from 'club' %}FORM.MYPAGE.EDITOR_ADMIN{% endtrans %}
+{% else %}
+                {% trans from 'club' %}FORM.MYPAGE.EDITOR{% endtrans %}
+{% endif %}
+            </b>
+        </p>
+    </div>
+    <div class="container hidden-xs">
+        <h2 style="margin-bottom: 0">
+            <i class="fa fa-user"></i>&nbsp;{{ 'FORM.MYPAGE.TITLE'|trans([],'club')|upper }}
+        </h2>
+        <p>
+            {{ currentuser.name }} ({{ currentuser.username|upper }})<br />
+            <b>
+{% if currentuser.role == 9 %}
+                {% trans from 'club' %}FORM.MYPAGE.ADMIN{% endtrans %}
+{% elseif currentuser.role == 4 %}
+                {% trans from 'club' %}FORM.MYPAGE.EDITOR_ADMIN{% endtrans %}
+{% elseif currentuser.role == 3 %}
+                {% trans from 'club' %}FORM.MYPAGE.EDITOR{% endtrans %}
+{% endif %}
+            </b>
+        </p>
+    </div>
+{% endmacro %}
 {# *******************************************
    DISPLAY MATCHLIST
    SMALL MOBILE DEVICES

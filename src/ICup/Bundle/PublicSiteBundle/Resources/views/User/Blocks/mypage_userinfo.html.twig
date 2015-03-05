@@ -8,44 +8,50 @@
                 <tbody>
                     <tr>
                         <td>
-                            <p><span class="label label-default">E-mail:</span><br />{{ currentuser.username|lower }}</p>
-                            <p><span class="label label-default">Klub:</span><br />
+                            <p>
+                                <span class="label label-default">Brugernavn:</span><br />
+                                {{ currentuser.username|lower }}
+                            </p>
+{% if currentuser.email %}
+                            <p>
+                                <span class="label label-default">E-mail:</span><br />
+                                {{ currentuser.email|lower }}
+                            </p>
+{% endif %}
+{% if club is defined and club %}
+                            <p>
+                                <span class="label label-default">Klub:</span><br />
                                 {{ formatter.displayclub(club, _context) }}
                             </p>
-                            <p><span class="label label-default">Rolle:</span><br />
-{% if currentuser.status == 4 %}
-    {% if currentuser.role == 2 %}
-                                {% trans %}FORM.MYPAGE.CLUBADMIN{% endtrans %}
-    {% else %}
+{% endif %}
+{% if host is defined and host %}
+                            <p>
+                                <span class="label label-default">Turneringsvært:</span><br />
+                                {{ host.name }}
+                            </p>
+{% endif %}
+                            <p>
+                                <span class="label label-default">Rolle:</span><br />
+{% if currentuser.role == 1 %}
+    {% if currentuser.status == 4 %}
                                 {% trans %}FORM.MYPAGE.CLUBUSER{% endtrans %}
-    {% endif %}
-{% else %}
+    {% else %}
                                 {% trans %}FORM.MYPAGE.PROSPECT{% endtrans %}
+    {% endif %}
+{% endif %}
+{% if currentuser.role == 2 %}
+                                {% trans %}FORM.MYPAGE.CLUBADMIN{% endtrans %}
+{% endif %}
+{% if currentuser.role == 3 %}
+                                {% trans %}FORM.MYPAGE.EDITOR{% endtrans %}
+{% endif %}
+{% if currentuser.role == 4 %}
+                                {% trans %}FORM.MYPAGE.EDITOR_ADMIN{% endtrans %}
+{% endif %}
+{% if currentuser.role == 9 %}
+                                {% trans %}FORM.MYPAGE.ADMIN{% endtrans %}
 {% endif %}
                             </p>
-                            <div class="btn-group dropup">
-                              <button type="button" class="btn btn-default">Profil handlinger</button>
-                              <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown">
-                                <span class="caret"></span>
-                                <span class="sr-only">Toggle Dropdown</span>
-                              </button>
-                              <ul class="dropdown-menu" role="menu">
-                                <li><a href="#">Skift kodeord</a></li>
-{% if currentuser.status == 4 %}
-    {% if currentuser.role == 2 %}
-        {% if prospectors is defined and prospectors|length > 0 %}
-                                <li class="divider"></li>
-                                <li><a href="{{ path('_user_my_page_users') }}">{% trans %}FORM.MYPAGE.PROSPECTS.AVAILABLE{% endtrans %}</a></li>
-        {% else %}
-                                <li class="divider"></li>
-                                <li><a href="{{ path('_user_my_page_users') }}">{% trans %}FORM.MYPAGE.USERS.LINK{% endtrans %}</a></li>
-        {% endif %}
-    {% endif %}
-{% else %}
-                                <li><a href="{{ path('_club_user_refuse') }}">Træk tilknytning tilbage</a></li>
-{% endif %}
-                              </ul>
-                            </div>
                         </td>
                     </tr>
                 </tbody>

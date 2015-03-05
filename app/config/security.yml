@@ -1,9 +1,5 @@
 security:
     encoders:
-        Symfony\Component\Security\Core\User\User:
-            algorithm: sha1
-            iterations: 1
-            encode_as_base64: false          
         ICup\Bundle\PublicSiteBundle\Entity\Doctrine\User:
             algorithm:  bcrypt
             iterations: 13
@@ -16,13 +12,6 @@ security:
         ROLE_ADMIN:        [ROLE_EDITOR_ADMIN, ROLE_CLUB_ADMIN, ROLE_ALLOWED_TO_SWITCH]
 
     providers:
-        chain_provider:
-            chain:
-                providers: [user_db, in_memory]
-        in_memory:
-            memory:
-                users:
-                    admin: { password: %security_password%, roles: [ 'ROLE_ADMIN' ] }
         user_db:
             entity: { class: ICup\Bundle\PublicSiteBundle\Entity\Doctrine\User, property: username }
 

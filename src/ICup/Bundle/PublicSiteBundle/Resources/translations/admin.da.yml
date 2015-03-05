@@ -11,6 +11,42 @@ FORM:
     BADGROUP: Den valgte pulje findes ikke
     BADTEAM: Holdet er ikke gyldigt
     NOTOURNAMENT: Turnering er ikke valgt
+  DASHBOARD:
+    TITLE: Kontrolpanel
+    SEARCHCAPTION: Vælg turneringsvært
+    HOSTS: Værter
+    NOHOST: Turneringsvært er ikke valgt
+    SHOW: Vis
+    DEFAULT: Vælg...
+    TOURNAMENTS:
+        CAPTION: Turneringer
+        LEGEND:
+          NAME: Turneringsnavn
+          EDITION: Udgave
+          DESCRIPTION: Beskrivelse
+          STATUS: Tilstand
+        STATUS:
+          0: Arkiveret
+          1: Tilmelding
+          2: Afvikles
+          3: Afsluttet
+          4: Under oprettelse
+        NOTOURNAMENT: Tilføj ny turnering
+    ADDHOST:
+        CAPTION: Tilføj vært
+        DESCRIPTION: Opret ny turneringsvært
+    HOST:
+        CAPTION: Tilpas vært
+        DESCRIPTION: Vedligehold oplysninger for denne vært.
+    EDITORS:
+        CAPTION: Vis redaktører
+        DESCRIPTION: Vis oversigt af tilknyttede redaktører og turneringsansvarlige for denne vært.
+    CLUBLIST:
+        CAPTION: Klubber
+        DESCRIPTION: Vis oversigt af alle oprettede klubber på tværs af turneringsværter.
+    UPLOAD:
+        CAPTION: Læg dokumenter op
+        DESCRIPTION: Læg dokumenter i arkivet som brugerne kan hente fra tilmeldingssiden.
   LISTHOSTS:
     TITLE: Vedligehold turneringer og værter
     CAPTION: Værter og turneringer
@@ -204,6 +240,10 @@ FORM:
   LISTEDITORS:
     TITLE: Vedligehold redaktører
     CAPTION: Redaktører og turneringsansvarlige
+    LEGEND:
+      USERNAME: Brugernavn
+      NAME: Navn
+      ROLE: Rolle
     NOUSER: Tilføj ny redaktør
   LISTCLUBS:
     TITLE: Vedligehold klubber
@@ -306,6 +346,19 @@ FORM:
       ADD: Fortryd oprettelse
       CHG: Fortryd ændringer
       DEL: Fortryd slet
+  NEWPASS: 
+    NOPASSWORD: Et kodeord skal angives.
+    BADPASSWORD: Det valgte kodeord er ikke gyldigt.
+    TITLE: Ændring af kodeord
+    CAPTION: Angiv nyt kodeord
+    PROMPT: >
+        Et kodeord bør bestå af mindst otte tegn, blandet store og små bogstaver samt tal.
+        Det valgte kodeord skal skrives ens i begge felter - bemærk at kodeordet skjules med prikker.
+    MAKEPWD: Dan et tilfældigt kodeord
+    PASSWORD: Kodeord
+    PASSWORD2: Gentag kodeord
+    SUBMIT: Angiv nyt kodeord
+    CANCEL: Fortryd ændringer
   MATCHIMPORTUNRES:
     TITLE: Påsæt hold til slutrunde
   QMATCHIMPORT:

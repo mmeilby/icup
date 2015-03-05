@@ -9,9 +9,6 @@ use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use ICup\Bundle\PublicSiteBundle\Services\Doctrine\TournamentSupport;
 use DateTime;
-use Symfony\Cmf\Bundle\MediaBundle\File\UploadFileHelperInterface;
-use PHPCR\Util\NodeHelper;
-use Symfony\Component\HttpFoundation\Request;
 
 /**
  * myPage - myICup - user's home page with context dependent content
@@ -25,21 +22,9 @@ class MyPageController extends Controller
      */
     public function myPageAction()
     {
-        
         $user = $this->get('util')->getCurrentUser();
-        try {
-            // If user is an admin user throw RedirectException and redirect to admin myPage
-            $this->redirectMyAdminPage($user);
-            // If user is an editor user throw RedirectException and redirect to editor myPage
-            $this->redirectMyEditorPage($user);
-            // If user is an unrelated user throw RedirectException and redirect to myPage for unrelated users
-            $this->redirectMyUserPage($user);
-            // At this point - user is a related club user/admin
-            return $this->getMyClubUserPage($user);
-        }
-        catch (RedirectException $e) {
-            return $e->getResponse();
-        }
+        $parms = $this->getMyPageParameters($user);
+        return $this->render('ICupPublicSiteBundle:User:mypage.html.twig', $parms);
     }
 
     /**
@@ -49,7 +34,6 @@ class MyPageController extends Controller
      */
     public function myPageUsersAction()
     {
-        
         $user = $this->get('util')->getCurrentUser();
         $clubid = $user->getCid();
         $this->get('util')->validateClubAdminUser($user, $clubid);
@@ -62,32 +46,22 @@ class MyPageController extends Controller
                       'currentuser' => $user));
     }
 
-    private function redirectMyAdminPage($user) {
-        if (!($user instanceof User)) {
-            // Controller is called by default admin
-            $rexp = new RedirectException();
-            $rexp->setResponse($this->render('ICupPublicSiteBundle:User:mypage_def_admin.html.twig'));
-            throw $rexp;
-        }
-        /* @var $user User */
+    private function redirectMyAdminPage(User $user) {
         if ($user->isAdmin()) {
-            $fileClass = 'Symfony\Cmf\Bundle\MediaBundle\Doctrine\Phpcr\File';
-            $dm = $this->get('doctrine_phpcr')->getManager('default');
-            $files = $dm->getRepository($fileClass)->findAll();
-            // Admins should get a different view
+            // Admins should get a dashboard
             $rexp = new RedirectException();
-            $rexp->setResponse($this->render('ICupPublicSiteBundle:User:mypage_admin.html.twig', array(
-                        'currentuser' => $user,
-                        'upload_form' => $this->getUploadForm()->createView(),
-                        'files' => $files,
-            )));
+            $rexp->setResponse($this->redirect($this->generateUrl('_edit_dashboard')));
             throw $rexp;
         }
     }
 
     private function redirectMyEditorPage(User $user) {
        if ($user->isEditor()) {
+            $rexp = new RedirectException();
+            $rexp->setResponse($this->redirect($this->generateUrl('_edit_dashboard')));
+            throw $rexp;
             /* @var $host Host */
+/*            
             $host = $this->get('entity')->getHostById($user->getPid());
             $users = $this->get('logic')->listUsersByHost($host->getId());
             $tournaments = $this->get('logic')->listTournaments($host->getId());
@@ -105,6 +79,7 @@ class MyPageController extends Controller
                                                    'users' => $users,
                                                    'currentuser' => $user)));
             throw $rexp;
+ */
         }
     }
     
@@ -118,26 +93,40 @@ class MyPageController extends Controller
         }
     }
 
-    private function getMyClubUserPage(User $user) {
-        $clubid = $user->getCid();
-        $club = $this->get('entity')->getClubById($clubid);
-        $users = $this->get('logic')->listUsersByClub($clubid);
-        $prospectors = array();
-        foreach ($users as $usr) {
-            if ($usr->getStatus() === User::$PRO) {
-                $prospectors[] = $usr;
+    private function getMyPageParameters(User $user) {
+        $parms = array();
+        if ($user->isClub() && $user->isRelated()) {
+            $clubid = $user->getCid();
+            $club = $this->get('entity')->getClubById($clubid);
+            $users = $this->get('logic')->listUsersByClub($clubid);
+            $prospectors = array();
+            foreach ($users as $usr) {
+                if ($usr->getStatus() === User::$PRO) {
+                    $prospectors[] = $usr;
+                }
             }
+            $parms = array_merge(
+                        array(
+                            'club' => $club,
+                            'prospectors' => $prospectors,
+                            'tournamentlist' => $this->getEnrollments($user)
+                        ),
+                        $this->listTeams($club)
+                     );
         }
-        $tournamentList = $this->getEnrollments($user);
-        // Redirect to my page
-        return $this->render('ICupPublicSiteBundle:User:mypage.html.twig',
-                array_merge(
-                    array('club' => $club,
-                          'prospectors' => $prospectors,
-                          'currentuser' => $user,
-                          'tournamentlist' => $tournamentList),
-                    $this->getTournaments(),
-                    $this->listTeams($club)));
+        elseif ($user->isEditor()) {
+            $host = $this->get('entity')->getHostById($user->getPid());
+            $users = $this->get('logic')->listUsersByHost($host->getId());
+            $parms = array(
+                        'host' => $host,
+                        'users' => $users,
+                        'tournamentlist' => $this->getEnrollments($user)
+                     );
+        }
+
+        return array_merge($parms,
+                           array('currentuser' => $user),
+                           $this->getTournaments());
     }
 
     private function listTeams($club)
@@ -215,45 +204,4 @@ class MyPageController extends Controller
         }
         return array('tournaments' => $tournamentList, 'statuslist' => $statusList);
     }
-    
-    private function getUploadForm() {
-        return $this->container->get('form.factory')->createNamedBuilder(null, 'form')
-                ->add('name', 'text', array('label' => 'FORM.CLUB.NAME', 'required' => false, 'disabled' => false, 'translation_domain' => 'admin'))
-                ->add('file', 'file', array('label' => 'FORM.CLUB.COUNTRY',
-                                            'required' => false,
-                                            'disabled' => false,
-                                            'translation_domain' => 'admin'))
-                ->getForm();
-    }
-    
-    /**
-     * Show myICup page for authenticated users
-     * @Route("/user/mypage/upload", name="_user_my_page_upload")
-     * @Method("POST")
-     */
-    public function uploadAction(Request $request) {
-        $form = $this->getUploadForm();
-        if ($request->isMethod('POST')) {
-            $form->bind($request);
-            if ($form->isValid()) {
-                /** @var UploadFileHelperInterface $uploadFileHelper */
-                $uploadFileHelper = $this->get('cmf_media.upload_file_helper');
-                $uploadedFile = $request->files->get('file');
-                $file = $uploadFileHelper->handleUploadedFile($uploadedFile);
-                $file->setDescription($request->get('name'));
-                // persist
-                $dm = $this->get('doctrine_phpcr')->getManager('default');
-                $parent = $dm->find(null, '/cms/media/enrollment');
-                if (!$parent) {
-                    NodeHelper::createPath($dm->getPhpcrSession(), '/cms/media/enrollment');
-                    $parent = $dm->find(null, '/cms/media/enrollment');
-                }
-                $file->setParent($parent);
-                $dm->persist($file);
-                $dm->flush();
-            }
-        }
-        return $this->redirect($this->generateUrl('_user_my_page'));
-    }
-
 }

@@ -4,11 +4,12 @@
 {% trans_default_domain "admin" %}
 
 {% block adminbody %}
-<div class="panel panel-success">
-    <div class="panel-heading"><b>{{ 'FORM.TEAMIMPORT.TITLE'|trans|upper }}</b></div>
-    <div class="panel-body lead">
-        {{ 'FORM.TEAMIMPORT.PROMPT'|trans }}
-    </div>
+    <h2 style="margin-bottom: 0">
+        <i class="fa fa-cogs"></i>&nbsp;
+        {% trans %}FORM.TEAMIMPORT.TITLE{% endtrans %}
+    </h2>
+    <p>{% trans %}FORM.TEAMIMPORT.PROMPT{% endtrans %}</p>
+<div class="panel panel-default">
     <div class="panel-body">
     {{ form(form) }}
     </div>

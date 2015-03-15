@@ -4,11 +4,12 @@
 {% trans_default_domain "admin" %}
 
 {% block adminbody %}
-<div class="panel panel-success">
-    <div class="panel-heading"><b>{{ 'FORM.MATCHIMPORT.TITLE'|trans|upper }}</b></div>
-    <div class="panel-body lead">
-        {{ 'FORM.MATCHIMPORT.PROMPT'|trans }}
-    </div>
+    <h2 style="margin-bottom: 0">
+        <i class="fa fa-cogs"></i>&nbsp;
+        {% trans %}FORM.MATCHIMPORT.TITLE{% endtrans %}
+    </h2>
+    <p>{% trans %}FORM.MATCHIMPORT.PROMPT{% endtrans %}</p>
+<div class="panel panel-default">
     <div class="panel-body">
     {{ form(form) }}
     </div>

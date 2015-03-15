@@ -1,9 +1,10 @@
 {% extends "ICupPublicSiteBundle:Masters:edit.html.twig" %}
 {% trans_default_domain "admin" %}
 
-{% block body %}
+{% block adminbody %}
     <h2 style="margin-bottom: 0">
-        <i class="fa fa-cogs"></i>&nbsp;{{ 'FORM.LISTEDITORS.TITLE'|trans|upper }}
+        <i class="fa fa-cogs"></i>&nbsp;
+        {% trans %}FORM.LISTEDITORS.TITLE{% endtrans %}
     </h2>
     <p>
         {{ host.name|upper }}

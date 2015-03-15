@@ -22,6 +22,7 @@ FORM:
         CAPTION: Turneringer
         LEGEND:
           NAME: Turneringsnavn
+          KEY: Identifikation
           EDITION: Udgave
           DESCRIPTION: Beskrivelse
           STATUS: Tilstand
@@ -32,6 +33,8 @@ FORM:
           3: Afsluttet
           4: Under oprettelse
         NOTOURNAMENT: Tilføj ny turnering
+    TOURNAMENTBOARD:
+        CAPTION: Administrer turnering
     ADDHOST:
         CAPTION: Tilføj vært
         DESCRIPTION: Opret ny turneringsvært
@@ -47,6 +50,31 @@ FORM:
     UPLOAD:
         CAPTION: Læg dokumenter op
         DESCRIPTION: Læg dokumenter i arkivet som brugerne kan hente fra tilmeldingssiden.
+  TOURNAMENTBOARD:
+    TITLE: Turneringspanel
+    TOURNAMENT:
+        CAPTION: Tilpas turnering
+        DESCRIPTION: Vedligehold oplysninger for denne tournering.
+    LISTSITES:
+        CAPTION: Lokaliteter og baner
+        DESCRIPTION: Vedligehold oplysninger om lokaliteter og baner.
+    LISTCATEGORIES:
+        CAPTION: Grupper og puljer
+        DESCRIPTION: Planlæg puljer og tilpas grupper
+    LISTCLUBS:
+        CAPTION: Tilmeldte klubber
+        DESCRIPTION: Vis tilmeldte klubber og håndter tilmeldinger
+    STATUS:
+        CAPTION: Turneringskalender
+        DESCRIPTION:
+          0: Denne turnering er arkiveret og kan ikke vises for almindelige brugere.
+          1: Denne turnering er åben for tilmelding fra forsiden.
+          2: Denne turnering afvikles nu og det er muligt at følge resultater fra forsiden.
+          3: Denne turnering er afsluttet. Kampe og placeringer vises hvis brugerne søger turneringen.
+          4: Turneringen er under oprettelse. Der mangler nødvendige oplysninger om puljer og grupper.
+    REPORT:
+        CAPTION: Indberet resultater
+        DESCRIPTION: Angiv kampresultatet for en eller flere kampe på en bane.
   LISTHOSTS:
     TITLE: Vedligehold turneringer og værter
     CAPTION: Værter og turneringer
@@ -468,3 +496,32 @@ FORM:
     CLUB: Klub
     EMAIL: E-mail
     PHONE: Tlf.
+  RESULTREPORT:
+    NONO: Et officielt kampnr. skal angives.
+    NOHOMESCORE: Mål scoret af hjemmeholdet skal angives.
+    NOAWAYSCORE: Mål scoret af udeholdet skal angives.
+    INVALIDMATCHNO: Kampnr. er ikke kendt for denne turnering.
+    INVALIDHOMESCORE: Mål scoret af hjemmeholdet er ikke anvendeligt.
+    INVALIDAWAYSCORE: Mål scoret af udeholdet er ikke anvendeligt.
+    MATCHNOTREADY: Det er ikke muligt at indberette et resultat til denne kamp. Kampen er ikke planlagt.
+    CANTCHANGE: Det er ikke muligt at indberette et resultat til denne kamp. Kampen er spillet og registreret med resultat.
+    TOOEARLY: Det er ikke muligt at indberette et resultat til denne kamp. Vent til kampen er spillet.
+    TITLE: Indberet resultat
+    PROMPT: Indtast resultatet for en kamp
+    TOURNAMENT: Turnering
+    MATCHNO: Kampnr.
+    HOME: Hjemmehold
+    AWAY: Udehold
+    EVENT: Event
+    EVENTTYPE:
+        MP: Kampen blev spillet
+        HD: Hjemmehold ulovligt
+        AD: Udehold ulovligt
+        NP: Kampen blev ikke spillet
+    HELP:
+        MATCHNO: Et officielt kampnr. som det fremgår af programmet
+        HOME: Antal mål scoret af hjemmeholdet
+        AWAY: Antal mål scoret af udeholdet
+    SUBMIT: Indberet resultat
+    CANCEL: Fortryd
+    

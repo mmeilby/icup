@@ -2,11 +2,14 @@
 {% trans_default_domain "admin" %}
 
 {% block adminbody %}
-<div class="panel panel-success">
-    <div class="panel-heading"><b>{{ 'FORM.LISTHOSTS.TITLE'|trans|upper }}</b></div>
+    <h2 style="margin-bottom: 0">
+        <i class="fa fa-cogs"></i>&nbsp;
+        {% trans %}FORM.LISTHOSTS.TITLE{% endtrans %}
+    </h2>
+    <p>{% trans %}FORM.LISTHOSTS.CAPTION_TMNT{% endtrans %}</p>
+<div class="panel panel-default">
     <div class="panel-body lead">
-        {{ host.name|upper }}<br />
-        {% trans %}FORM.LISTHOSTS.CAPTION_TNMT{% endtrans %}
+        {{ host.name|upper }}
     </div>
     <table class="table table-striped">
         <tbody>

@@ -1,18 +1,21 @@
 {% extends "ICupPublicSiteBundle:Masters:edit.html.twig" %}
 {% trans_default_domain "club" %}
 
-{% block body %}
-<div class="panel panel-success">
-    <div class="panel-heading"><b>{{ 'FORM.LISTENROLLED.TITLE'|trans|upper }}</b></div>
+{% block adminbody %}
+    <h2 style="margin-bottom: 0">
+        <i class="fa fa-cogs"></i>&nbsp;
+        {% trans %}FORM.LISTENROLLED.TITLE{% endtrans %}
+    </h2>
+    <p>{% trans %}FORM.LISTENROLLED.CAPTION{% endtrans %}</p>
+<div class="panel panel-default">
     <div class="panel-body lead">
-        <a href="{{ path('_edit_host_list') }}">
+        <a href="{{ path('_edit_tournamentboard', { 'tournamentid': tournament.id }) }}">
             {{ host.name|upper }} - {{ tournament.name|upper }}
         </a><br />
         <a href="{{ path('_host_list_clubs', { 'tournamentid': tournament.id }) }}">
             <img src="{{ imagepath }}/flags/{{ countries[club.country].flag }}" alt="{{ club.country|trans({},'lang') }}" title="{{ club.country|trans({},'lang') }}">
             {{ club.name }}
-        </a><br />
-        {% trans %}FORM.LISTENROLLED.CAPTION{% endtrans %}
+        </a>
     </div>
     <table class="table table-striped">
         <thead>

@@ -2,15 +2,18 @@
 {% trans_default_domain "admin" %}
 
 {% block adminbody %}
-<div class="panel panel-success">
-    <div class="panel-heading"><b>{{ 'FORM.LISTCATEGORIES.TITLE'|trans|upper }}</b></div>
+    <h2 style="margin-bottom: 0">
+        <i class="fa fa-cogs"></i>&nbsp;
+        {% trans %}FORM.LISTCATEGORIES.TITLE{% endtrans %}
+    </h2>
+    <p>{% trans %}FORM.LISTCATEGORIES.CAPTION{% endtrans %}</p>
+<div class="panel panel-default">
     <div class="panel-body lead">
-        <div class="col-lg-9">
-        <a href="{{ path('_edit_host_list') }}">{{ host.name|upper }}</a><br />
-        {{ tournament.name }}<br />
-        {% trans %}FORM.LISTCATEGORIES.CAPTION{% endtrans %}
+        <div class="col-lg-8">
+        <a href="{{ path('_edit_tournamentboard', { 'tournamentid': tournament.id }) }}">{{ host.name|upper }}</a><br />
+        {{ tournament.name }}
         </div>
-        <div class="col-lg-3">
+        <div class="col-lg-4 text-right">
 {% if is_granted('ROLE_ADMIN') %}
             <a href="{{ path('_admin_wipe_matches', {'tournamentid': tournament.id }) }}" class="btn btn-danger">
                 {% trans %}FORM.LISTCATEGORIES.BUTTON.WIPE{% endtrans %}

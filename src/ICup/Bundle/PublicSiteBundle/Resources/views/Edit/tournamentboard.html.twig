@@ -1,0 +1,91 @@
+{% extends "ICupPublicSiteBundle:Masters:edit.html.twig" %}
+
+{% trans_default_domain "admin" %}
+
+{% import 'ICupPublicSiteBundle:Masters:tournament.html.twig' as tformatter %}
+
+{% block adminbody %}
+    <h2 style="margin-bottom: 0">
+        <i class="fa fa-cogs"></i>&nbsp;{{ 'FORM.TOURNAMENTBOARD.TITLE'|trans|upper }}
+    </h2>
+    <p>
+{% if host is defined and host %}                
+        {{ tournament.name|upper }}
+{% endif %}
+    </p>
+    <div class="row">
+        <div class="col-sm-4">
+            <div class="list-group">
+                <a class="list-group-item" href="{{ path('_edit_tournament_chg', { 'tournamentid': tournament.id }) }}">
+                    <h3 class="list-group-item-heading">{% trans %}FORM.TOURNAMENTBOARD.TOURNAMENT.CAPTION{% endtrans %}</h3>
+                    <p class="list-group-item-text">{% trans %}FORM.TOURNAMENTBOARD.TOURNAMENT.DESCRIPTION{% endtrans %}</p>
+                </a>
+                <a class="list-group-item" href="{{ path('_edit_site_list', { 'tournamentid': tournament.id }) }}">
+                    <h3 class="list-group-item-heading">{% trans %}FORM.TOURNAMENTBOARD.LISTSITES.CAPTION{% endtrans %}</h3>
+                    <p class="list-group-item-text">{% trans %}FORM.TOURNAMENTBOARD.LISTSITES.DESCRIPTION{% endtrans %}</p>
+                </a>
+                <a class="list-group-item" href="{{ path('_edit_category_list', { 'tournamentid': tournament.id }) }}">
+                    <h3 class="list-group-item-heading">{% trans %}FORM.TOURNAMENTBOARD.LISTCATEGORIES.CAPTION{% endtrans %}</h3>
+                    <p class="list-group-item-text">{% trans %}FORM.TOURNAMENTBOARD.LISTCATEGORIES.DESCRIPTION{% endtrans %}</p>
+                </a>
+                <a class="list-group-item" href="{{ path('_host_list_clubs', { 'tournamentid': tournament.id }) }}">
+                    <h3 class="list-group-item-heading">{% trans %}FORM.TOURNAMENTBOARD.LISTCLUBS.CAPTION{% endtrans %}</h3>
+                    <p class="list-group-item-text">{% trans %}FORM.TOURNAMENTBOARD.LISTCLUBS.DESCRIPTION{% endtrans %}</p>
+                </a>    
+            </div>
+        </div>
+        <div class="col-sm-8">
+            <div class="panel panel-default">
+                <div class="panel-heading"><h3>{{ tournament.name }}</h3></div>
+                <table class="table table-striped">
+                    <thead>
+                        <tr>
+                            <td>{% trans %}FORM.DASHBOARD.TOURNAMENTS.LEGEND.KEY{% endtrans %}</td>
+                            <td>{% trans %}FORM.DASHBOARD.TOURNAMENTS.LEGEND.EDITION{% endtrans %}</td>
+                            <td>{% trans %}FORM.DASHBOARD.TOURNAMENTS.LEGEND.DESCRIPTION{% endtrans %}</td>
+                            <td>{% trans %}FORM.DASHBOARD.TOURNAMENTS.LEGEND.STATUS{% endtrans %}</td>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>
+                                <a href="{{ path('_tournament_overview', { 'tournament': tournament.key }) }}">
+                                    <b>{{ tournament.key }}</b>
+                                </a>
+                            </td>
+                            <td>
+                                {{ tournament.edition }}
+                            </td>
+                            <td>
+                                {{ tournament.description }}
+                            </td>
+                            <td>
+                                {{ ['FORM.DASHBOARD.TOURNAMENTS.STATUS.',tstat]|join|trans }}
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+    {% if is_granted('ROLE_EDITOR_ADMIN') %}
+            <div class="row">
+                <div class="col-sm-6">
+                    <div class="list-group">
+                        <a class="list-group-item" href="{{ path('_edit_event_list', { 'tournamentid': tournament.id }) }}">
+                            <h3 class="list-group-item-heading">{% trans %}FORM.TOURNAMENTBOARD.STATUS.CAPTION{% endtrans %}</h3>
+                            <p class="list-group-item-text">{{ ['FORM.TOURNAMENTBOARD.STATUS.DESCRIPTION.',tstat]|join|trans }}</p>
+                        </a>
+                    </div>
+                </div>
+                <div class="col-sm-6">
+                    <div class="list-group">
+                        <a class="list-group-item" href="{{ path('_edit_list_matches') }}">
+                            <h3 class="list-group-item-heading">{% trans %}FORM.TOURNAMENTBOARD.REPORT.CAPTION{% endtrans %}</h3>
+                            <p class="list-group-item-text">{% trans %}FORM.TOURNAMENTBOARD.REPORT.DESCRIPTION{% endtrans %}</p>
+                        </a>
+                    </div>
+                </div>
+            </div>
+{% endif %}
+        </div>
+    </div>
+{% endblock %}

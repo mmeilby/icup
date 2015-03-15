@@ -3,8 +3,13 @@
 {% trans_default_domain "admin" %}
 
 {% block adminbody %}
+    <h2 style="margin-bottom: 0">
+        <i class="fa fa-cogs"></i>&nbsp;
+        {% trans %}FORM.NEWCLUB.TITLE{% endtrans %}
+    </h2>
+    <p></p>
 <div class="col-lg-8">
-    <div class="panel panel-success">
+    <div class="panel panel-default">
         <div class="panel-heading"><b>{{ 'FORM.NEWCLUB.TITLE'|trans|upper }}</b></div>
         <div class="panel-body lead">
 {% if tournament is defined and tournament %}
@@ -17,7 +22,7 @@
     </div>
 </div>
 <div class="col-lg-4">
-    <div class="panel panel-success">
+    <div class="panel panel-default">
         <div class="panel-heading"><b>{{ 'FORM.NEWCLUB.CAPTION'|trans|upper }}</b></div>
         <div class="panel-body">
             <table>

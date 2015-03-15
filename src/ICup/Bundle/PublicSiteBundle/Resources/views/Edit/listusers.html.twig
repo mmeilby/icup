@@ -2,15 +2,18 @@
 {% trans_default_domain "admin" %}
 
 {% block adminbody %}
-<div class="panel panel-success">
-    <div class="panel-heading"><b>{{ 'FORM.LISTUSERS.TITLE'|trans|upper }}</b></div>
+    <h2 style="margin-bottom: 0">
+        <i class="fa fa-cogs"></i>&nbsp;
+        {% trans %}FORM.LISTUSERS.TITLE{% endtrans %}
+    </h2>
+    <p>{% trans %}FORM.LISTUSERS.CAPTION{% endtrans %}</p>
+<div class="panel panel-default">
     <div class="panel-body lead">
         <a href="{{ path('_edit_club_list') }}">{{ club.name }}</a>
         &nbsp;
         <img src="{{ imagepath }}/flags/{{ countries[club.country].flag }}"
              alt="{{ club.country|trans({},'lang') }}"
-             title="{{ club.country|trans({},'lang') }}"><br />
-        {% trans %}FORM.LISTUSERS.CAPTION{% endtrans %}
+             title="{{ club.country|trans({},'lang') }}">
     </div>
     <table class="table table-striped">
         <tbody>

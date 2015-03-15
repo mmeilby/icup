@@ -6,10 +6,13 @@
 {% import 'ICupPublicSiteBundle:Masters:club.html.twig' as formatter %}
 
 {% block adminbody %}
-<div class="panel panel-success">
-    <div class="panel-heading"><b>{{ 'FORM.CLUBMERGE.TITLE'|trans|upper }}</b></div>
+    <h2 style="margin-bottom: 0">
+        <i class="fa fa-university"></i>&nbsp;
+        {% trans %}FORM.CLUBMERGE.TITLE{% endtrans %}
+    </h2>
+    <p>{% trans %}FORM.CLUBMERGE.PROMPT{% endtrans %}</p>
+<div class="panel panel-default">
     <div class="panel-body">
-        <p class="lead">{{ 'FORM.CLUBMERGE.PROMPT'|trans }}</p>
         <p>
             <table>
                 <tr>
@@ -28,8 +31,6 @@
             </table>
         </p>
     </div>
-    <div class="panel-body">
-    {{ form(form) }}
-    </div>
 </div>
+{{ form(form) }}
 {% endblock %}

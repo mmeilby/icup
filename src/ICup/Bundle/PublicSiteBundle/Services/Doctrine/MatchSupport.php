@@ -178,7 +178,31 @@ class MatchSupport
         $results = $qb->getOneOrNullResult();
         return $results != null ? $results['results'] == 2 : false;
     }
- 
+
+    public function disqualify(&$relA, &$relB) {
+        $relA->setScore(6);
+        $relB->setScore(0);
+        $this->updatePoints($relA, $relB);
+    }
+
+    public function updatePoints(&$relA, &$relB) {
+        $looserPoints = 0;
+        $tiePoints = 1;
+        $winnerPoints = 3;
+        if ($relA->getScore() > $relB->getScore()) {
+            $relA->setPoints($winnerPoints);
+            $relB->setPoints($looserPoints);
+        }
+        else if ($relA->getScore() < $relB->getScore()) {
+            $relA->setPoints($looserPoints);
+            $relB->setPoints($winnerPoints);
+        }
+        else {
+            $relA->setPoints($tiePoints);
+            $relB->setPoints($tiePoints);
+        }
+    }
+    
     public function getMatchRelationByMatch($matchid, $away) {
         $qb = $this->em->createQuery(
                 "select r ".

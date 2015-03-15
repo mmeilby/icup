@@ -111,7 +111,7 @@ class MatchResultController extends Controller
             $relA = $relationslist['H'];
             $relB = $relationslist['A'];
             if ($relA->getScorevalid() && $relB->getScorevalid()) {
-                $this->updatePoints($relA, $relB);
+                $this->get('match')->updatePoints($relA, $relB);
                 $em->persist($relA);
                 $em->persist($relB);
             }
@@ -123,24 +123,6 @@ class MatchResultController extends Controller
             }
         }
         $em->flush();
-    }
-    
-    private function updatePoints(&$relA, &$relB) {
-        $looserPoints = 0;
-        $tiePoints = 1;
-        $winnerPoints = 3;
-        if ($relA->getScore() > $relB->getScore()) {
-            $relA->setPoints($winnerPoints);
-            $relB->setPoints($looserPoints);
-        }
-        else if ($relA->getScore() < $relB->getScore()) {
-            $relA->setPoints($looserPoints);
-            $relB->setPoints($winnerPoints);
-        }
-        else {
-            $relA->setPoints($tiePoints);
-            $relB->setPoints($tiePoints);
-        }
     }
     
     private function makeResultForm() {

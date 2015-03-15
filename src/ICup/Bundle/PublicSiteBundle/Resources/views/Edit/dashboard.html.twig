@@ -5,7 +5,7 @@
 
 {% import 'ICupPublicSiteBundle:Masters:tournament.html.twig' as tformatter %}
 
-{% block body %}
+{% block adminbody %}
     <h2 style="margin-bottom: 0">
         <i class="fa fa-cogs"></i>&nbsp;{{ 'FORM.DASHBOARD.TITLE'|trans|upper }}
     </h2>
@@ -63,35 +63,30 @@
     {% for tournament in tournaments %}
                         <tr>
                             <td>
-        {% if is_granted('ROLE_EDITOR_ADMIN') %}
-                                <a href="{{ path('_edit_tournament_chg', { 'tournamentid': tournament.id }) }}">
+                                <a href="{{ path('_tournament_overview', { 'tournament': tournament.key }) }}">
                                 {{ tournament.name }}
                                 </a>
-        {% else %}
-                                {{ tournament.name }}
-        {% endif %}
                             </td>
                             <td>
-                                <a href="{{ path('_tournament_overview', { 'tournament': tournament.key }) }}">
                                 {{ tournament.edition }}
-                                </a>
                             </td>
                             <td>
                                 {{ tournament.description }}
                             </td>
                             <td>
-        {% if is_granted('ROLE_EDITOR_ADMIN') %}
-                                <a href="{{ path('_edit_event_list', { 'tournamentid': tournament.id }) }}">
-                                    <b>{{ ['FORM.DASHBOARD.TOURNAMENTS.STATUS.',tstat[tournament.id]]|join|trans }}</b>
-                                </a>
-        {% else %}
                                 <b>{{ ['FORM.DASHBOARD.TOURNAMENTS.STATUS.',tstat[tournament.id]]|join|trans }}</b>
+                            </td>
+                            <td class="narrow-col">
+        {% if is_granted('ROLE_EDITOR_ADMIN') %}
+                                <a href="{{ path('_edit_tournamentboard', { 'tournamentid': tournament.id }) }}">
+                                    <span class="fa fa-cog" title="{% trans %}FORM.DASHBOARD.TOURNAMENTBOARD.CAPTION{% endtrans %}"></span>
+                                </a>
         {% endif %}
                             </td>
                         </tr>
     {% else %}
                         <tr>
-                            <td colspan="4">
+                            <td colspan="5">
         {% if is_granted('ROLE_EDITOR_ADMIN') %}
                                 <a href="{{ path('_edit_tournament_add', { 'hostid': host.id }) }}">
                                     {{'FORM.DASHBOARD.TOURNAMENTS.NOTOURNAMENT'|trans|upper}}

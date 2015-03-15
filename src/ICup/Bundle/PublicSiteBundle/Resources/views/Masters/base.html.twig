@@ -9,13 +9,9 @@
         {% if app.security is not null and is_granted('ROLE_ADMIN') %}
             {% include "CmfCreateBundle::includecssfiles.html.twig" %}
         {% endif %}
-        <link href="{{ asset( 'bundles/icuppublicsite/font-awesome-4.1.0/css/font-awesome.min.css' ) }}" rel="stylesheet" type="text/css" />
-<!--        
-        <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.1/css/bootstrap.min.css">
-        <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.1/css/bootstrap-theme.min.css">
--->
-        <link href="{{ asset( 'bundles/icuppublicsite/css/bootstrap.min.css' ) }}" rel="stylesheet" type="text/css" />
-        <link href="{{ asset( 'bundles/icuppublicsite/css/bootstrap-theme.min.css' ) }}" rel="stylesheet" type="text/css" />
+        <link href="{{ asset( 'bundles/icuppublicsite/font-awesome-4.3.0/css/font-awesome.min.css' ) }}" rel="stylesheet" type="text/css" />
+        <link href="{{ asset( 'bundles/icuppublicsite/bootstrap-3.3.2-dist/css/bootstrap.min.css' ) }}" rel="stylesheet" type="text/css" />
+        <link href="{{ asset( 'bundles/icuppublicsite/bootstrap-3.3.2-dist/css/bootstrap-theme.min.css' ) }}" rel="stylesheet" type="text/css" />
         <link href="{{ asset( 'bundles/icuppublicsite/bootstrap-fileinput-4.0.0/css/fileinput.min.css' ) }}" media="all" rel="stylesheet" type="text/css" />
         {% stylesheets '@ICupPublicSiteBundle/Resources/css/*' output="bundles/icuppublicsite/css/style.css" %}
             <link href="{{ asset_url }}" rel="stylesheet" type="text/css" />
@@ -29,13 +25,7 @@
         {% javascripts '@ICupPublicSiteBundle/Resources/js/jquery/*' output="bundles/icuppublicsite/js/jquery.min.js" %}
         <script type="text/javascript" src="{{ asset_url }}"></script>
         {% endjavascripts  %}
-{#        
-        <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.1/js/bootstrap.min.js"></script>
-        {% javascripts '@ICupPublicSiteBundle/Resources/js/bs/*' output="bundles/icuppublicsite/js/bootstrap.min.js" %}
-        <script type="text/javascript" src="{{ asset_url }}"></script>
-        {% endjavascripts  %}
-#}        
-        <script src="{{ asset('bundles/icuppublicsite/js/bootstrap.min.js') }}"></script>
+        <script src="{{ asset('bundles/icuppublicsite/bootstrap-3.3.2-dist/js/bootstrap.min.js') }}"></script>
         <script src="{{ asset('bundles/icuppublicsite/bootstrap-fileinput-4.0.0/js/fileinput.min.js') }}"></script>
         <script src="{{ asset('bundles/fosjsrouting/js/router.js') }}"></script>
         <script src="{{ path('fos_js_routing_js', {"callback": "fos.Router.setData"}) }}"></script>

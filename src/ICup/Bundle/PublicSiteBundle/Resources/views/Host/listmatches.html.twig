@@ -4,8 +4,12 @@
 {% import 'ICupPublicSiteBundle:Masters:club.html.twig' as formatter %}
 
 {% block adminbody %}
-<div class="panel panel-success">
-    <div class="panel-heading"><b>{{ 'FORM.LISTMATCHES.TITLE'|trans([],'admin')|upper }}</b></div>
+    <h2 style="margin-bottom: 0">
+        <i class="fa fa-cogs"></i>&nbsp;
+        {% trans from 'admin' %}FORM.LISTMATCHES.TITLE{% endtrans %}
+    </h2>
+    <p></p>
+<div class="panel panel-default">
     <div class="panel-body lead">
         <div class="col-lg-9">
             {{ tournament.name }}<br />

@@ -1,0 +1,17 @@
+{% extends "ICupPublicSiteBundle:Masters:edit.html.twig" %}
+
+{% form_theme form 'ICupPublicSiteBundle:Default:layout.script.html.twig' %}
+{% trans_default_domain "admin" %}
+
+{% block adminbody %}
+    <h2 style="margin-bottom: 0">
+        <i class="fa fa-calculator"></i>&nbsp;
+        {{ 'FORM.RESULTREPORT.TITLE'|trans }}
+    </h2>
+    <p>{{ 'FORM.RESULTREPORT.PROMPT'|trans }}</p>
+    <div class="row">
+        <div class="col-sm-6">
+            {{ form(form) }}
+        </div>
+    </div>
+{% endblock %}

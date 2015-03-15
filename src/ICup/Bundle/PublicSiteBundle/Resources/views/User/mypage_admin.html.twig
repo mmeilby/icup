@@ -17,7 +17,7 @@
     <div class="row">
         <div class="col-sm-4">
             <div class="list-group">
-                <a class="list-group-item" href="{{ path('_edit_host_list') }}">
+                <a class="list-group-item" href="{{ path('_edit_tournamentboard', { 'tournamentid': tournament.id }) }}">
                     <h3 class="list-group-item-heading">{% trans from 'menu' %}MENU.ADMIN.TOURNAMENT{% endtrans %}</h3>
                     <p class="list-group-item-text">Send invitation til deltagelse i denne undersøgelse.</p>
                 </a>

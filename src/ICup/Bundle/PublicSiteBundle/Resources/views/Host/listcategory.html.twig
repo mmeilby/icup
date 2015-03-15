@@ -2,10 +2,14 @@
 {% trans_default_domain "admin" %}
 
 {% block adminbody %}
-<div class="panel panel-success">
-    <div class="panel-heading"><b>{{ 'FORM.LISTGROUPS.TITLE'|trans|upper }}</b></div>
+    <h2 style="margin-bottom: 0">
+        <i class="fa fa-cogs"></i>&nbsp;
+        {% trans %}FORM.LISTGROUPS.TITLE{% endtrans %}
+    </h2>
+    <p></p>
+<div class="panel panel-default">
     <div class="panel-body lead">
-        <a href="{{ path('_edit_host_list') }}">
+        <a href="{{ path('_edit_tournamentboard', { 'tournamentid': tournament.id }) }}">
             {{ host.name|upper }} - {{ tournament.name|upper }}
         </a>
         <br />

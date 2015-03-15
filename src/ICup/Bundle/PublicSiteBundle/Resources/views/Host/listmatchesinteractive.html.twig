@@ -15,15 +15,16 @@
 {% endmacro %}
 
 {% block adminbody %}
-<p class="lead">
-    {% trans %}RESULTS{% endtrans %} {{ tournament.edition }}<br />
-</p>
+    <h2 style="margin-bottom: 0">
+        <i class="fa fa-cogs"></i>&nbsp;
+        {% trans %}FORM.EDITRESULTS.TITLE{% endtrans %}
+    </h2>
+    <p>
+        {% trans %}RESULTS{% endtrans %} {{ tournament.edition }}
+    </p>
 <p>
     <form action="{{ path('_edit_match_score_post') }}" method="post">
         <div class="panel panel-info">
-            <div class="panel-heading">
-                <b>{{ 'FORM.EDITRESULTS.TITLE'|trans|upper }}</b>
-            </div>
             <div class="panel-body">
                 <div class="row">
                     <div class="col-sm-6">

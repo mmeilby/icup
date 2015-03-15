@@ -31,10 +31,10 @@
             <li><a href="{{ path('_user_my_page') }}">{% trans from 'menu' %}MENU.ENROLLMENT.MYPAGE{% endtrans %}</a></li>
             <li><a href="{{ path('_user_chg_pass') }}">{% trans from 'menu' %}MENU.ADMIN.CHANGEPWD{% endtrans %}</a></li>
     {% if is_granted('ROLE_ADMIN') %}
-            <li><a href="{{ path('_edit_host_list') }}">{% trans from 'menu' %}MENU.ADMIN.TOURNAMENT{% endtrans %}</a></li>
+            <li><a href="{{ path('_edit_tournamentboard', { 'tournamentid': tournament.id }) }}">{% trans from 'menu' %}MENU.ADMIN.TOURNAMENT{% endtrans %}</a></li>
             <li><a href="{{ path('_edit_club_list') }}">{% trans from 'menu' %}MENU.ADMIN.TEAMS{% endtrans %}</a></li>
-<!--                <li><a href="{{ path('_edit_host_list') }}">{% trans from 'menu' %}MENU.ADMIN.PLAYERS{% endtrans %}</a></li>
-            <li><a href="{{ path('_edit_host_list') }}">{% trans from 'menu' %}MENU.ADMIN.REFEREES{% endtrans %}</a></li> -->
+<!--                <li><a href="{{ path('_edit_tournamentboard') }}">{% trans from 'menu' %}MENU.ADMIN.PLAYERS{% endtrans %}</a></li>
+            <li><a href="{{ path('_edit_tournamentboard') }}">{% trans from 'menu' %}MENU.ADMIN.REFEREES{% endtrans %}</a></li> -->
     {% elseif is_granted('ROLE_EDITOR_ADMIN') %}
             <li><a href="{{ path('_host_list_tournaments') }}">{% trans from 'menu' %}MENU.ADMIN.TOURNAMENT{% endtrans %}</a></li>
             <li><a href="{{ path('_edit_editors_list') }}">{% trans from 'menu' %}MENU.ADMIN.EDITORS{% endtrans %}</a></li>

@@ -148,4 +148,32 @@ FORM:
         LEGEND:
             NAME: Område
             EDITION: Navn
-        
+
+    RESULTREPORT:
+        NONO: Et officielt kampnr. skal angives.
+        NOHOMESCORE: Mål scoret af hjemmeholdet skal angives.
+        NOAWAYSCORE: Mål scoret af udeholdet skal angives.
+        INVALIDMATCHNO: Kampnr. er ikke kendt for denne turnering.
+        INVALIDHOMESCORE: Mål scoret af hjemmeholdet er ikke anvendeligt.
+        INVALIDAWAYSCORE: Mål scoret af udeholdet er ikke anvendeligt.
+        MATCHNOTREADY: Det er ikke muligt at indberette et resultat til denne kamp. Kampen er ikke planlagt.
+        CANTCHANGE: Det er ikke muligt at indberette et resultat til denne kamp. Kampen er spillet og registreret med resultat.
+        TOOEARLY: Det er ikke muligt at indberette et resultat til denne kamp. Vent til kampen er spillet.
+        TITLE: Indberet resultat
+        PROMPT: Indtast resultatet for en kamp
+        TOURNAMENT: Turnering
+        MATCHNO: Kampnr.
+        HOME: Hjemmehold
+        AWAY: Udehold
+        EVENT: Event
+        EVENTTYPE:
+            MP: Kampen blev spillet
+            HD: Hjemmehold ulovligt
+            AD: Udehold ulovligt
+            NP: Kampen blev ikke spillet
+        HELP:
+            MATCHNO: Et officielt kampnr. som det fremgår af programmet
+            HOME: Antal mål scoret af hjemmeholdet
+            AWAY: Antal mål scoret af udeholdet
+        SUBMIT: Indberet resultat
+        CANCEL: Fortryd

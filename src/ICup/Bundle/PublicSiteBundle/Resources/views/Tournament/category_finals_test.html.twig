@@ -30,7 +30,7 @@
         <a href="{{ path('_showcategory_finals', { 'categoryid': category.id }) }}">{{ 'FINALS'|trans|upper }}</a>
     </li>
 </ul>
-{% if champions|length > 0 %}
+{% if grouplist|length > 0 %}
 <div class="panel hidden-xs">
     {% set cols = 5 + 6*(pyramid.levels-1) %}
     <table class="finals">

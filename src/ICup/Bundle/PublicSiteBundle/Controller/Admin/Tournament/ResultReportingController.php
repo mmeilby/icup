@@ -3,6 +3,7 @@ namespace ICup\Bundle\PublicSiteBundle\Controller\Admin\Tournament;
 
 use ICup\Bundle\PublicSiteBundle\Entity\Doctrine\Match;
 use ICup\Bundle\PublicSiteBundle\Services\Doctrine\TournamentSupport;
+use ICup\Bundle\PublicSiteBundle\Services\Util;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
@@ -24,12 +25,15 @@ class ResultReportingController extends Controller
     public function reportAction(Request $request) {
         /* @var $utilService Util */
         $utilService = $this->get('util');
-        $returnUrl = $utilService->getReferer();
+        $returnUrl = $this->get('router')->generate('_icup');
 
         $resultForm = new ResultForm();
-        $tournament = $utilService->getTournament();
-        if ($tournament != null) {
-            $resultForm->setTournament($tournament->getId());
+        $tournamentKey = $utilService->getTournamentKey();
+        if ($tournamentKey != '_') {
+            $tournament = $this->get('logic')->getTournamentByKey($tournamentKey);;
+            if ($tournament != null) {
+                $resultForm->setTournament($tournament->getId());
+            }
         }
         $resultForm->setEvent(ResultForm::$EVENT_MATCH_PLAYED);
         $form = $this->makeResultForm($resultForm);
@@ -95,7 +99,7 @@ class ResultReportingController extends Controller
         foreach ($eventList as $event => $id) {
             $eventList[$event] = 
                 $this->get('translator')
-                     ->trans('FORM.RESULTREPORT.EVENTTYPE.'.$id, array(), 'admin');
+                     ->trans('FORM.RESULTREPORT.EVENTTYPE.'.$id, array(), 'tournament');
         }
         
         $formDef = $this->createFormBuilder($resultForm);
@@ -104,34 +108,34 @@ class ResultReportingController extends Controller
                                                     'empty_value' => false,
                                                     'required' => false,
                                                     'icon' => 'fa fa-lg fa-university',
-                                                    'translation_domain' => 'admin'));
+                                                    'translation_domain' => 'tournament'));
         $formDef->add('matchno', 'text', array('label' => 'FORM.RESULTREPORT.MATCHNO',
                                                'required' => false,
                                                'help' => 'FORM.RESULTREPORT.HELP.MATCHNO',
                                                'icon' => 'fa fa-lg fa-calendar',
-                                               'translation_domain' => 'admin'));
+                                               'translation_domain' => 'tournament'));
         $formDef->add('scoreA', 'text', array('label' => 'FORM.RESULTREPORT.HOME',
                                               'required' => false,
                                                'help' => 'FORM.RESULTREPORT.HELP.HOME',
                                               'icon' => 'fa fa-lg fa-home',
-                                              'translation_domain' => 'admin'));
+                                              'translation_domain' => 'tournament'));
         $formDef->add('scoreB', 'text', array('label' => 'FORM.RESULTREPORT.AWAY',
                                               'required' => false,
                                                'help' => 'FORM.RESULTREPORT.HELP.AWAY',
                                               'icon' => 'fa fa-lg fa-picture-o',
-                                              'translation_domain' => 'admin'));
+                                              'translation_domain' => 'tournament'));
         $formDef->add('event', 'choice', array('label' => 'FORM.RESULTREPORT.EVENT',
                                                'choices' => $eventList,
                                                'empty_value' => false,
                                                'required' => false,
                                                'icon' => 'fa fa-lg fa-bolt',
-                                               'translation_domain' => 'admin'));
+                                               'translation_domain' => 'tournament'));
         $formDef->add('cancel', 'submit', array('label' => 'FORM.RESULTREPORT.CANCEL',
-                                                'translation_domain' => 'admin',
+                                                'translation_domain' => 'tournament',
                                                 'buttontype' => 'btn btn-default',
                                                 'icon' => 'fa fa-times'));
         $formDef->add('save', 'submit', array('label' => 'FORM.RESULTREPORT.SUBMIT',
-                                                'translation_domain' => 'admin',
+                                                'translation_domain' => 'tournament',
                                                 'icon' => 'fa fa-check'));
         return $formDef->getForm();
     }
@@ -144,14 +148,14 @@ class ResultReportingController extends Controller
          * Check for blank fields
          */
         if ($resultForm->getMatchno() == null || trim($resultForm->getMatchno()) == '') {
-            $form->addError(new FormError($this->get('translator')->trans('FORM.RESULTREPORT.NONO', array(), 'admin')));
+            $form->addError(new FormError($this->get('translator')->trans('FORM.RESULTREPORT.NONO', array(), 'tournament')));
         }
         if ($resultForm->getEvent() == ResultForm::$EVENT_MATCH_PLAYED) {
             if ($resultForm->getScoreA() == null || trim($resultForm->getScoreA()) == '') {
-                $form->addError(new FormError($this->get('translator')->trans('FORM.RESULTREPORT.NOHOMESCORE', array(), 'admin')));
+                $form->addError(new FormError($this->get('translator')->trans('FORM.RESULTREPORT.NOHOMESCORE', array(), 'tournament')));
             }
             if ($resultForm->getScoreB() == null || trim($resultForm->getScoreB()) == '') {
-                $form->addError(new FormError($this->get('translator')->trans('FORM.RESULTREPORT.NOAWAYSCORE', array(), 'admin')));
+                $form->addError(new FormError($this->get('translator')->trans('FORM.RESULTREPORT.NOAWAYSCORE', array(), 'tournament')));
             }
         }
         if (!$form->isValid()) {
@@ -162,22 +166,22 @@ class ResultReportingController extends Controller
          */
         if ($resultForm->getEvent() == ResultForm::$EVENT_MATCH_PLAYED) {
             if ($resultForm->getScoreA() > 100 || $resultForm->getScoreA() < 0) {
-                $form->addError(new FormError($this->get('translator')->trans('FORM.RESULTREPORT.INVALIDHOMESCORE', array(), 'admin')));
+                $form->addError(new FormError($this->get('translator')->trans('FORM.RESULTREPORT.INVALIDHOMESCORE', array(), 'tournament')));
             }
             if ($resultForm->getScoreB() > 100 || $resultForm->getScoreB() < 0) {
-                $form->addError(new FormError($this->get('translator')->trans('FORM.RESULTREPORT.INVALIDAWAYSCORE', array(), 'admin')));
+                $form->addError(new FormError($this->get('translator')->trans('FORM.RESULTREPORT.INVALIDAWAYSCORE', array(), 'tournament')));
             }
         }
         /* @var $match Match */
         $match = $this->get('match')->getMatchByNo($resultForm->getTournament(), $resultForm->getMatchno());
         if ($match == null) {
-            $form->addError(new FormError($this->get('translator')->trans('FORM.RESULTREPORT.INVALIDMATCHNO', array(), 'admin')));
+            $form->addError(new FormError($this->get('translator')->trans('FORM.RESULTREPORT.INVALIDMATCHNO', array(), 'tournament')));
         }
         else if (!$this->get('match')->isMatchResultValid($match->getId())) {
-            $form->addError(new FormError($this->get('translator')->trans('FORM.RESULTREPORT.MATCHNOTREADY', array(), 'admin')));
+            $form->addError(new FormError($this->get('translator')->trans('FORM.RESULTREPORT.MATCHNOTREADY', array(), 'tournament')));
         }
         else if ($this->isScoreValid($match)) {
-            $form->addError(new FormError($this->get('translator')->trans('FORM.RESULTREPORT.CANTCHANGE', array(), 'admin')));
+            $form->addError(new FormError($this->get('translator')->trans('FORM.RESULTREPORT.CANTCHANGE', array(), 'tournament')));
         }
         else if ($resultForm->getEvent() == ResultForm::$EVENT_MATCH_PLAYED) {
             $today = new DateTime();
@@ -187,7 +191,7 @@ class ResultReportingController extends Controller
                                         $this->container->getParameter('db_time_format'),
                                         $match->getDate().'-'.$match->getTime());
             if ($matchdate > $today) {
-                $form->addError(new FormError($this->get('translator')->trans('FORM.RESULTREPORT.TOOEARLY', array(), 'admin')));
+                $form->addError(new FormError($this->get('translator')->trans('FORM.RESULTREPORT.TOOEARLY', array(), 'tournament')));
             }
         }
         return $form->isValid();

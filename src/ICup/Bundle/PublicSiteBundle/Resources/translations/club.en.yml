@@ -38,31 +38,30 @@ FORM:
     MSG: Here you can type a message, a question or maybe a great idea...
     SUBMIT: Submit message
   SELECTCLUB:
-    TITLE: Følg din klub
+    TITLE: Follow your club
     PROMPT: >
-            Du kan indstille resultater og kamplister til at vise den klub du ønsker at følge.
-            Hvis du gerne vil følge flere klubber kan du tilføje så mange du vil.
-            Find din klub ved at skrive klubbens navn. 
-            Hvis ikke den findes kan du forsøge med en del af klubbens navn.
-    CAPTION: Klubber du følger
-    LEGEND: Klubber
-    NOCLUBS: Ingen klubber passer til det indtastede. Prøv med en del af klubnavnet.
-    MORECLUBS: Mange klubber passer til det søgte (et udvalg er vist her) - fortsæt indtastning eller vælg en af klubberne.
-    INFO: Hvis du vil følge denne klub, skal du klikke her...
-    DEFAULT: Vælg...
-    NAME: Klubnavn
-    COUNTRY: Hjemland
+            You can arrange results and match lists to display only the information that include the clubs you want to follow.
+            You can follow as many clubs as you like. Just find the club by typing the name.
+            If you can not find a club then try typing a part of the name or spell the name differently.
+    CAPTION: Clubs you are following
+    LEGEND: Clubs
+    NOCLUBS: No club matches the name you typed. Try typing a different part of the name.
+    MORECLUBS: More clubs match the name you typed. A short list is shown here - try typing more letters or select one of the clubs shown.
+    INFO: If you like to follow this club - click here...
+    DEFAULT: Select...
+    NAME: Club name
+    COUNTRY: Residence
     HELP:
-      NAME: Skriv et par bogstaver af klubbens navn eller udfyld hele navnet
-    SUBMIT: Gem listen
-    CANCEL: Fortryd
+      NAME: Type a part of the name of the club. You can start with the first two letters.
+    SUBMIT: Save the list
+    CANCEL: Cancel
   ENROLLMENT:
-    DOCUMENTS: Dokumenter
-    DOWNLOAD: Hent
-    CLUB: Klubbens navn
-    ADDRESS: Klubbens adresse
-    CITY: Postnummer og by
-    COUNTRY: Land
+    DOCUMENTS: Documents
+    DOWNLOAD: Download
+    CLUB: Club name
+    ADDRESS: Club address
+    CITY: City
+    COUNTRY: Country
     PHONE: Telefon til klubbens administration eller bestyrelse
     FAX: Fax der kan benyttes i forbindelse med tilmeldingen
     SKYPE: Skype adresse hvis klubben benytter det
@@ -209,20 +208,20 @@ FORM:
       TEXT: Som holdleder eller klubansvarlig kan du oprette en gratis profil og tilmelde dine hold.
       LINK: Klik her for at oprette en gratis profil
   LOGIN:
-    TITLE: Log på
-    PROMPT: Log på med dit brugernavn hvis du har en profil.
-    USERNAME: Brugernavn
-    PASSWORD: Kodeord
+    TITLE: Log in
+    PROMPT: Log in using your username if you got a user profile
+    USERNAME: Username
+    PASSWORD: Password
     HELP:
-      USERNAME: Angiv dit brugernavn
-      PASSWORD: Tast dit kodeord (det vises med prikker)
-    LOGIN: Log på
-    LOSTPWD: Jeg mangler mit kodeord
+      USERNAME: Enter your username - might be your e-mail address
+      PASSWORD: Enter your password (shown with dots)
+    LOGIN: Log in
+    LOSTPWD: Lost password
     SECTION1:
-      HEADER: Mangler dit kodeord?
+      HEADER: Have you lost your password?
       TEXT: >
-            <p>Har du glemt dit kodeord kan du få tilsendt en e-mail med din kode.</p>
-            <p><em>Er det første gang du logger på skal du blot benytte din e-mail adresse som kode.</em></p>
+            <p>If you lost your password you can get an e-mail with a new password.</p>
+            <p><em>If this is your first time logging in use your e-mail address as your password.</em></p>
   MYPAGE:
     TITLE: My iCup
     USERS:

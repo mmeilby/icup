@@ -2,12 +2,21 @@ frontpage:
     section_1:
         title: Tag til Italien med din håndboldklub
         body: >
-            <p>Elsker du håndbold og vil du gerne deltage i et internationalt stævne til sommer - så er Interamnia World Cup det helt rigtige!</p>
-            <p><img alt="" src="/icup/web/bundles/icuppublicsite/images/IWC/logo-ing.png" style="border-style:solid; border-width:2px; float:right; height:200px; margin-left:5px; margin-right:5px; width:300px">Fra den 5. til den 11. juli afvikles dette fantastiske stævne ved Italiens østkyst - kun&nbsp;25 km fra Adriaterhavet - i den kønne klassiske by Teramo for foden af Italiens højeste bjerg Gran Sasso.</p>
-            <p>Med 200 hold fordelt på 50 lande der til sammen repræsenterer de fem kontinenter bliver stævnet et brag af en oplevelse.</p>
-            <p>På disse sider finder du al den information der er nødvendig for at komme videre og blive en del af oplevelsen til sommer. Har du brug for yderligere information finder du&nbsp;kontaktoplysninger i menuen.</p>
-            <p>Vediamo a Teramo</p>
-mypage:
+            <p>
+                Elsker du håndbold og vil du gerne deltage i et internationalt stævne til sommer - så er Interamnia World Cup det helt rigtige!
+            </p>
+            <p>
+                Fra den 5. til den 11. juli afvikles dette fantastiske stævne ved Italiens østkyst - kun 25 km fra Adriaterhavet - 
+                i den kønne klassiske by Teramo for foden af Italiens højeste bjerg Gran Sasso.
+            </p>
+            <p>
+                Med 200 hold fordelt på 50 lande der til sammen repræsenterer de fem kontinenter bliver stævnet et brag af en oplevelse.
+            </p>
+            <p>
+                På disse sider finder du al den information der er nødvendig for at komme videre og blive en del af oplevelsen til sommer.
+                Har du brug for yderligere information finder du kontaktoplysninger i menuen.
+            </p>
+            <p>Vediamo a Teramo</p>mypage:
     wellcome:
         title: Velkommen til mit iCup
         body: >
@@ -41,47 +50,48 @@ contact:
         title: Kontakt
         body: >
             <p>Hvis du har brug for mere information er du velkommen til at kontakte stævnets danske kontakt:</p>
-            <address>
+            <p>
                 <strong>Morten Meilby<br />
                 e-mail: mm@iserve.dk<br />
                 Tlf.: 40203500</strong>
-            </address>
+            </p>
             <p>Du kan også få hjælp til tilmelding.</p>
             <p>Kontakt til stævnekontoret i Teramo:</p>
-            <address>
+            <p>
                 <strong>INTERAMNIA WORLD CUP<br />
                 ORGANIZING COMMITTEE</strong><br />
                 Via V. Irelli 55<br />
                 64100 Teramo<br />
                 Italien<br />
-                Tlf.: +39 086 124 3375<br />
-                Fax: +39 086 124 7648<br />
+                <br />
+                Tlf.: +39 0861 266366<br />
+                Fax: +39 0861 412279<br />
+                <br />
                 Skype: interamniacup<br />
-                e-mail: coppaint@genesi.it<br />
+                e-mail: info@interamniaworldcup.com<br />
                 <a href="www.interamniaworldcup.com">www.interamniaworldcup.com</a><br />
                 <br />
                 <strong>FACEBOOK</strong><br />
                 Interamnia World Cup officielle Facebook side:<br />
                 <a href="http://www.facebook.com/InteramniaWorldCup">www.facebook.com/InteramniaWorldCup</a>
-            </address>
+            </p>
 enrollment:
     terms:
         title: Tilmelding 2015
         body: >
             <p>
-            Tilmelding sker ved indbetaling af holdgebyr samt depositum.
-            Deltagergebyr der dækker logi/forplejning betales efterfølgende.
-            Kvittering for indbetaling vedlægges tilmeldingsblanket.
+                Tilmelding sker ved indbetaling af holdgebyr samt depositum.
+                Deltagergebyr der dækker logi/forplejning betales efterfølgende.
+                Kvittering for indbetaling vedlægges tilmeldingsblanket.
             </p>
 
             <h4>HOLDGEBYR OG DEPOSITUM</h4>
-
             <p>
-            Tilmelding af hold kan ske frem til den 15. april 2015.
-            Men af hensyn til planlægning med de mange hold, der forventes at deltage til stævnet,
-            ydes der en reduktion i holdgebyret jo tidligere tilmelding sker.
-            Da det også er væsentligt for stævnet at have en repræsentativ deltagelse fra alle fem kontinenter vil hold
-            der tilmelder sig tidligt have en fordel for optagelse frem for hold der tilmelder sig senere.
+                Tilmelding af hold kan ske frem til den 15. april 2015.
+                Men af hensyn til planlægning med de mange hold, der forventes at deltage til stævnet, 
+                ydes der en reduktion i holdgebyret jo tidligere tilmelding sker.
+                Da det også er væsentligt for stævnet at have en repræsentativ deltagelse fra alle fem kontinenter vil hold
+                der tilmelder sig tidligt have en fordel for optagelse frem for hold der tilmelder sig senere.
             </p>
 
             <p>Tilmelding anses for at være bindende når tilmeldingsblanket er indsendt og holdgebyr samt depositum er overført til stævnets bankkonto.</p>
@@ -91,30 +101,31 @@ enrollment:
             <p>Hold der ønsker at bo på hotel skal betale 25% af de samlede hold- og deltagergebyr i depositum.</p>
 
             <p>Ved tilmelding inden:</p>
-            
             <p>
-            30. november 2014 er holdgebyret €100.<br />
-            10. februar 2015 er holdgebyret €200.<br />
-            15. april 2015 er holdgebyret €300.
+                30. november 2014 er holdgebyret €100.<br />
+                10. februar 2015 er holdgebyret €200.<br />
+                15. april 2015 er holdgebyret €300.
             </p>
-            
-            <h4>DELTAGERGEBYR</h4>
 
+            <h4>DELTAGERGEBYR</h4>
             <p>Deltagergebyr (fratrukket depositum) skal være overført senest den 15. maj 2015.</p>
 
             <p>Deltagergebyr betales af mindst 15 personer for hvert hold – altså både spillere, trænere og officials.</p>
 
-            <p>Deltagergebyret afhænger af valg af opholdssted og forplejning.
-               Hold der ikke gør brug af stævnets tilbud om ophold eller forplejning kan nøjes med at betale €20 per deltager i deltagergebyr.</p>
+            <p>
+                Deltagergebyret afhænger af valg af opholdssted og forplejning.
+                Hold der ikke gør brug af stævnets tilbud om ophold eller forplejning kan nøjes med at betale €20 per deltager i deltagergebyr.
+            </p>
 
             <h4>TRANSPORT</h4>
-
-            <p>Transport til og fra Rom kan ske på egen hånd med offentlige transportmidler
-            (stævnets sekretariat giver gerne nærmere oplysninger herom) eller med stævnebus.</p>
+            <p>
+                Transport til og fra Rom kan ske på egen hånd med offentlige transportmidler
+                (stævnets sekretariat giver gerne nærmere oplysninger herom) eller med stævnebus.
+            </p>
 
             <p>
-            <strong>Offentlig transport</strong><br />
-            Gaspari Agency Travel kører mellem Rom og Teramo - for pladsreservation besøg www.gasparionline.it
+                <strong>Offentlig transport</strong><br />
+                Gaspari Agency Travel kører mellem Rom og Teramo - for pladsreservation besøg www.gasparionline.it
             </p>
 
             <p>Prisen for offentlig transport er €38 per person tur/retur.</p>
@@ -123,8 +134,8 @@ enrollment:
             Stævnets sekretariat hjælper også gerne med transport fra disse lufthavne.</p>
 
             <p>
-            <strong>Stævnebus</strong><br />
-            Prisen for en gruppe på op til 50 personer tur/retur med stævnebus er €1800. Turen skal bestilles ved tilmelding og inkluderer en guide/tolk.
+                <strong>Stævnebus</strong><br />
+                Prisen for en gruppe på op til 50 personer tur/retur med stævnebus er €1800. Turen skal bestilles ved tilmelding og inkluderer en guide/tolk.
             </p>
 
             <p>Hvis to klubber kan køre med samme bus halveres prisen.</p>
@@ -134,123 +145,116 @@ enrollment:
         title: Muligheder for ophold
         body: >
             <p>Ophold under stævnet kan ske på skoler, i telt eller på hotel. Der er faste priser på disse typer ophold som er beskrevet
-               herunder.</p>
+                herunder.</p>
             <p>Udlejningshuse, lejligheder, turistbyer ved havet og agritourisms er andre former for ophold som kan arrangeres via
-               stævnets serkretariat som står til rådighed for yderligere oplysninger.</p>
+                stævnets serkretariat som står til rådighed for yderligere oplysninger.</p>
             <div class="panel panel-default">
-              <div class="panel-heading"><i class="fa fa-university fa-2x"></i>&nbsp;OPHOLD VED TERAMO</div>
-              <div class="panel-body">
-                For ophold i Teramo er det muligt at tilkøbe frokost og aftensmad.
-                Måltiderne serveres på restaurant fra aften den 4. juli til aften den 11. juli og koster €150 per person.
-                Ekstra måltider kan tilkøbes for €10 per styk.
-              </div>
-              <div class="table-responsive">
-                <table class="table table-condensed">
-                  <thead>
-                    <td></td><td></td><td>Pris per person</td><td>Tillæg per ekstra dag</td><td>Ankomst</td><td>Afrejse</td><td></td>
-                  </thead>
-                  <tbody>
-                  <tr>
-                    <td>A</td><td>Skole i Teramo uden senge</td><td>€50</td><td>€5</td><td>4/7</td><td>12/7</td>
-                    <td>Hvert hold vil have et rum til deres rådighed.</td>
-                  </tr>
-                  <tr>
-                    <td>B</td><td>Skole i Teramo med senge</td><td>€80</td><td>€10</td><td>4/7</td><td>12/7</td>
-                    <td>Hvert hold vil have et rum til deres rådighed med senge med madras og lagen.</td>
-                  </tr>
-                  <tr>
-                    <td>C</td><td>Eget telt i Teramo</td><td>€30</td><td>€5</td><td>4/7</td><td>12/7</td>
-                    <td></td>
-                  </tr>
-                  <tr>
-                    <td>E</td><td>Hotel ved Teramo</td><td>€400</td><td>€50</td><td>4/7</td><td>12/7</td>
-                    <td>Opholdet er inkluderet morgenmad samt frokost og aftensmad (aftensmad ved ankomst og morgenmad ved afrejse).
-                    Der er tillæg på €100 for enkeltværelser.</td>
-                  </tr>
-                  </tbody>
-                </table>
-              </div>
-            </div>            
+                <div class="panel-heading"><i class="fa fa-university fa-2x"></i>&nbsp;OPHOLD VED TERAMO</div>
+                <div class="panel-body">
+                    For ophold i Teramo er det muligt at tilkøbe frokost og aftensmad.
+                    Måltiderne serveres på restaurant fra aften den 4. juli til aften den 11. juli og koster €150 per person.
+                    Ekstra måltider kan tilkøbes for €10 per styk.
+                </div>
+                <div class="table-responsive">
+                    <table class="table table-condensed">
+                        <thead>
+                            <td></td><td></td><td>Pris per person</td><td>Tillæg per ekstra dag</td><td>Ankomst</td><td>Afrejse</td><td></td>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td>A</td><td>Skole i Teramo uden senge</td><td>€50</td><td>€5</td><td>4/7</td><td>12/7</td>
+                                <td>Hvert hold vil have et rum til deres rådighed.</td>
+                            </tr>
+                            <tr>
+                                <td>B</td><td>Skole i Teramo med senge</td><td>€80</td><td>€10</td><td>4/7</td><td>12/7</td>
+                                <td>Hvert hold vil have et rum til deres rådighed med senge med madras og lagen.</td>
+                            </tr>
+                            <tr>
+                                <td>C</td><td>Eget telt i Teramo</td><td>€30</td><td>€5</td><td>4/7</td><td>12/7</td>
+                                <td></td>
+                            </tr>
+                            <tr>
+                                <td>E</td><td>Hotel ved Teramo</td><td>€400</td><td>€50</td><td>4/7</td><td>12/7</td>
+                                <td>Opholdet er inkluderet morgenmad samt frokost og aftensmad (aftensmad ved ankomst og morgenmad ved afrejse).
+                                Der er tillæg på €100 for enkeltværelser.</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
             <div class="panel panel-default">
-              <div class="panel-heading"><i class="fa fa-leaf fa-2x"></i>&nbsp;OPHOLD VED KYSTEN</div>
-              <div class="panel-body">
-                <p>Bemærk at klubber der vælger at bo ved havet selv skal sørge for transport til og fra Teramo.</p>
-              </div>
-              <div class="table-responsive">
-                <table class="table table-condensed">
-                  <thead>
-                    <td></td><td></td><td>Pris per person</td><td>Tillæg per ekstra dag</td><td>Ankomst</td><td>Afrejse</td><td></td>
-                  </thead>
-                  <tbody>
-                  <tr>
-                    <td>D</td><td>Eget telt på teltplads ved kysten</td><td>€55</td><td>€8</td><td>4/7</td><td>12/7</td>
-                    <td>Der vil være mulighed for at benytte teltpladsens facilliteter samt den nærliggende strand.</td>
-                  </tr>
-                  <tr>
-                    <td>F</td><td>Hotel ved kysten</td><td>€400</td><td>€50</td><td>4/7</td><td>12/7</td>
-                    <td>Opholdet er inkluderet morgenmad samt frokost og aftensmad (aftensmad ved ankomst og morgenmad ved afrejse).
-                    Der er tillæg på €100 for enkeltværelser.</td>
-                  </tr>
-                  </tbody>
-                </table>
-              </div>
-            </div>            
+                <div class="panel-heading"><i class="fa fa-leaf fa-2x"></i>&nbsp;OPHOLD VED KYSTEN</div>
+                <div class="panel-body">
+                    <p>Bemærk at klubber der vælger at bo ved havet selv skal sørge for transport til og fra Teramo.</p>
+                </div>
+                <div class="table-responsive">
+                    <table class="table table-condensed">
+                        <thead>
+                            <td></td><td></td><td>Pris per person</td><td>Tillæg per ekstra dag</td><td>Ankomst</td><td>Afrejse</td><td></td>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td>D</td><td>Eget telt på teltplads ved kysten</td><td>€55</td><td>€8</td><td>4/7</td><td>12/7</td>
+                                <td>Der vil være mulighed for at benytte teltpladsens facilliteter samt den nærliggende strand.</td>
+                            </tr>
+                            <tr>
+                                <td>F</td><td>Hotel ved kysten</td><td>€400</td><td>€50</td><td>4/7</td><td>12/7</td>
+                                <td>Opholdet er inkluderet morgenmad samt frokost og aftensmad (aftensmad ved ankomst og morgenmad ved afrejse).
+                                Der er tillæg på €100 for enkeltværelser.</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
     address:
         title: ADRESSE OPLYSNINGER
         body: >
             <p>Adressen til stævnets sekretariat hvortil tilmeldingsblanket og kvittering skal sendes er følgende:</p>
 
-            <address>
+            <p>
             <strong>INTERAMNIA WORLD CUP<br />
             ORGANIZING COMMITTEE</strong><br />
             Via V. Irelli 55<br />
             64100 Teramo<br />
             Italien<br />
             <br />
-            Tlf.: +39 086 124 3375<br />
-            Fax: +39 086 124 7648<br />
+            Tlf.: +39 0861 266366<br />
+            Fax: +39 0861 412279<br />
             <br />
             Skype: interamniacup<br />
-            e-mail: coppaint@genesi.it<br />
+            e-mail: info@interamniaworldcup.com<br />
             <a href="www.interamniaworldcup.com">www.interamniaworldcup.com</a><br />
             <br />
             <strong>FACEBOOK</strong><br />
             Interamnia World Cup officielle Facebook side:<br />
             <a href="http://www.facebook.com/InteramniaWorldCup">www.facebook.com/InteramniaWorldCup</a>
-            </address>
+            </p>
     paymentterms:
         title: BETALINGSBETINGELSER
         body: >
             <p>Alle indbetalinger skal foretages som udenlandsk bankoverførsel i euro til følgende bankkonto inden de anviste frister:</p>
-
             <p>
-            Banca Tercas<br />
-            Teramo afdeling (Branch in Teramo)<br />
-            Konto:	CC0900053052<br />
-            IBAN:	IT05 B 06060 15300 CC0900053052<br />
-            SWIFT:	TERCIT 3TXXX
+               Banca Tercas<br />
+               Teramo afdeling (Branch in Teramo)<br />
+               Konto:	CC0900053052<br />
+               IBAN:	IT05 B 06060 15300 CC0900053052<br />
+               SWIFT:	TERCIT 3TXXX
             </p>
             <p>
-            Adviseringstekst:<br />
-            INTERAMNIA WORLD CUP
+               Adviseringstekst:<br />
+               INTERAMNIA WORLD CUP
             </p>
-
             <p>Bemærk at kvittering for betaling SKAL fremsendes sammen med tilmeldingsblanket for at tilmeldingen accepteres.</p>
-
             <p>Tilmeldingsblanket skal udfyldes komplet og underskrives af en tegningsberetiget for klubben.</p>        
 
             <h4>BEKRÆFTELSE</h4>
-
             <p>Når stævnets sekretariat har modtaget og godkendt tilmelding fremsendes en bekræftelse sidst i april 2015
             sammen med detaljeret information om stævnet.</p>
 
             <h4>REGLER FOR AFBUD</h4>
-
             <p>Et hold der ikke kan deltage i stævnet vil ikke kunne få de indbetalte beløb refunderet.</p>
-
             <p>Dog vil hold der med en rimelig begrundelse melder afbud skriftligt til stævnets sekretariat inden den 10. juni 2015
             kunne få depositum (gælder ikke depositum for hotelophold) og eventuelle deltagergebyr refunderet.</p>
-
             <p>Holdgebyr vil i alle tilfælde være tabt for hold der ikke deltager.</p>
 information:
     intro:

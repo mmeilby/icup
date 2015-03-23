@@ -50,6 +50,9 @@ FORM:
     UPLOAD:
         CAPTION: Læg dokumenter op
         DESCRIPTION: Læg dokumenter i arkivet som brugerne kan hente fra tilmeldingssiden.
+  UPLOAD:
+    NAME: Titel
+    FILE: Dokument
   TOURNAMENTBOARD:
     TITLE: Turneringspanel
     TOURNAMENT:

@@ -2,13 +2,10 @@
 namespace ICup\Bundle\PublicSiteBundle\Controller\Admin\Dashboard;
 
 use ICup\Bundle\PublicSiteBundle\Entity\Doctrine\Host;
-use ICup\Bundle\PublicSiteBundle\Entity\Doctrine\User;
-use ICup\Bundle\PublicSiteBundle\Exceptions\RedirectException;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
-use ICup\Bundle\PublicSiteBundle\Services\Doctrine\TournamentSupport;
 use DateTime;
 use Symfony\Cmf\Bundle\MediaBundle\File\UploadFileHelperInterface;
 use PHPCR\Util\NodeHelper;
@@ -86,38 +83,10 @@ class DashboardController extends Controller
     
     /**
      * Show myICup page for club admin users
-     * @Route("/host/dashboard/tournament", name="_tournament_dashboard")
-     * @Method("GET")
-     */
-    public function tournamentDashboardAction()
-    {
-        
-    }
-    
-    /**
-     * Show myICup page for club admin users
      * @Route("/admin/dashboard/upload", name="_admin_dashboard_upload")
-     * @Method("GET")
      */
-    public function myPageUploadAction()
+    public function uploadAction(Request $request)
     {
-        $user = $this->get('util')->getCurrentUser();
-        $fileClass = 'Symfony\Cmf\Bundle\MediaBundle\Doctrine\Phpcr\File';
-        $dm = $this->get('doctrine_phpcr')->getManager('default');
-        $files = $dm->getRepository($fileClass)->findAll();
-        return $this->render('ICupPublicSiteBundle:User:mypage_admin.html.twig', array(
-                    'currentuser' => $user,
-                    'upload_form' => $this->getUploadForm()->createView(),
-                    'files' => $files,
-        ));
-    }
-
-    /**
-     * Show myICup page for authenticated users
-     * @Route("/user/mypage/upload", name="_user_my_page_upload")
-     * @Method("POST")
-     */
-    public function uploadAction(Request $request) {
         $form = $this->getUploadForm();
         if ($request->isMethod('POST')) {
             $form->bind($request);
@@ -138,67 +107,32 @@ class DashboardController extends Controller
                 $dm->persist($file);
                 $dm->flush();
             }
+            return $this->redirect($this->generateUrl('_edit_dashboard'));
         }
-        return $this->redirect($this->generateUrl('_user_my_page'));
+        else {
+            $user = $this->get('util')->getCurrentUser();
+            $fileClass = 'Symfony\Cmf\Bundle\MediaBundle\Doctrine\Phpcr\File';
+            $dm = $this->get('doctrine_phpcr')->getManager('default');
+            $files = $dm->getRepository($fileClass)->findAll();
+            return $this->render('ICupPublicSiteBundle:Edit:dashboard_upload.html.twig', array(
+                        'currentuser' => $user,
+                        'upload_form' => $form->createView(),
+                        'files' => $files,
+            ));
+        }
     }
 
     private function getUploadForm() {
 //        return $this->container->get('form.factory')->createNamedBuilder(null, 'form')
         return $this->createFormBuilder()
-                ->add('name', 'text', array('label' => 'FORM.CLUB.NAME', 'required' => false, 'disabled' => false, 'translation_domain' => 'admin'))
-                ->add('file', 'file', array('label' => 'FORM.CLUB.COUNTRY',
+                ->add('name', 'text', array('label' => 'FORM.UPLOAD.NAME',
+                                            'required' => false,
+                                            'disabled' => false,
+                                            'translation_domain' => 'admin'))
+                ->add('file', 'file', array('label' => 'FORM.UPLOAD.FILE',
                                             'required' => false,
                                             'disabled' => false,
                                             'translation_domain' => 'admin'))
                 ->getForm();
-    }
-    
-    private function redirectMyEditorPage(User $user) {
-       if ($user->isEditor()) {
-            /* @var $host Host */
-            $host = $this->get('entity')->getHostById($user->getPid());
-            $users = $this->get('logic')->listUsersByHost($host->getId());
-            $tournaments = $this->get('logic')->listTournaments($host->getId());
-            $tstat = array();
-            $today = new DateTime();
-            foreach ($tournaments as $tournament) {
-                $tstat[$tournament->getId()] = $this->get('tmnt')->getTournamentStatus($tournament->getId(), $today);
-            }
-            // Editors should get a different view
-            $rexp = new RedirectException();
-            $rexp->setResponse($this->render('ICupPublicSiteBundle:User:mypage_editor.html.twig',
-                                             array('host' => $host,
-                                                   'tournaments' => $tournaments,
-                                                   'tstat' => $tstat,
-                                                   'users' => $users,
-                                                   'currentuser' => $user)));
-            throw $rexp;
-        }
-    }
-    
-    private function getTournaments() {
-        $tournaments = $this->get('logic')->listAvailableTournaments();
-        $tournamentList = array();
-        $keyList = array(
-            TournamentSupport::$TMNT_ENROLL => 'enroll',
-            TournamentSupport::$TMNT_GOING => 'active',
-            TournamentSupport::$TMNT_DONE => 'done',
-            TournamentSupport::$TMNT_ANNOUNCE => 'announce'
-        );
-        $statusList = array(
-            'enroll' => array(),
-            'active' => array(),
-            'done' => array(),
-            'announce' => array()
-        );
-        $today = new DateTime();
-        foreach ($tournaments as $tournament) {
-            $stat = $this->get('tmnt')->getTournamentStatus($tournament->getId(), $today);
-            if ($stat != TournamentSupport::$TMNT_HIDE) {
-                $tournamentList[$tournament->getId()] = array('tournament' => $tournament, 'status' => $stat);
-                $statusList[$keyList[$stat]][] = $tournament;
-            }
-        }
-        return array('tournaments' => $tournamentList, 'statuslist' => $statusList);
     }
 }

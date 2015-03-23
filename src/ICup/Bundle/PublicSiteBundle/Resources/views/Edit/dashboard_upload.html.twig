@@ -3,10 +3,6 @@
 {% form_theme upload_form 'ICupPublicSiteBundle:Default:layout.script.html.twig' %}
 {% trans_default_domain "club" %}
 
-{% block header %}
-{% include 'ICupPublicSiteBundle:User:Blocks/mypage_admin_menu.html.twig' %}
-{% endblock %}
-
 {% import 'ICupPublicSiteBundle:Masters:tournament.html.twig' as tformatter %}
 
 {% block widebody %}
@@ -17,7 +13,7 @@
 <div class="panel panel-default">
     <div class="panel-heading"><b>Upload file</b></div>
     <div class="panel-body">
-        <form class="standard" action="{{ path('_user_my_page_upload') }}" method="post" {{ form_enctype(upload_form) }}>
+        <form class="standard" action="{{ path('_admin_dashboard_upload') }}" method="post" {{ form_enctype(upload_form) }}>
             {{ form_widget(upload_form) }}
         </form>
     </div>

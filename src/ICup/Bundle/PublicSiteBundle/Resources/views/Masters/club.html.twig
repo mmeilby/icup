@@ -4,7 +4,7 @@
         {% if team.rank != '' %}
                     <small>&nbsp;</small><br />
         {% endif %}
-                    <img src="{{ context.imagepath }}/flags/{{ context.countries[team.country].flag }}"
+                    <img src="{{ asset(['bundles/icuppublicsite/images/flags/',context.countries[team.country].flag]|join) }}"
                          alt="{{ team.country|trans({},'lang') }}"
                          title="{{ team.country|trans({},'lang') }}">
                 </td>
@@ -30,7 +30,7 @@
             <small>{{ hteam.rank }}</small><br />
         {% endif %}
             <span class="text-nowrap">
-                <img src="{{ context.imagepath }}/flags/{{ context.countries[hteam.country].flag }}"
+                <img src="{{ asset(['bundles/icuppublicsite/images/flags/',context.countries[hteam.country].flag]|join) }}"
                      alt="{{ hteam.country|trans({},'lang') }}"
                      title="{{ hteam.country|trans({},'lang') }}"
                      class="flag"
@@ -47,7 +47,7 @@
         {% if ateam.rank != '' %}
             <small>{{ ateam.rank }}</small><br />
         {% endif %}
-            <img src="{{ context.imagepath }}/flags/{{ context.countries[ateam.country].flag }}"
+            <img src="{{ asset(['bundles/icuppublicsite/images/flags/',context.countries[ateam.country].flag]|join) }}"
                  alt="{{ ateam.country|trans({},'lang') }}"
                  title="{{ ateam.country|trans({},'lang') }}"
                  class="flag"
@@ -64,7 +64,7 @@
 
 {% macro displayteam(team, context) %}
     <span class="text-nowrap">
-        <img src="{{ context.imagepath }}/flags/{{ context.countries[team.country].flag }}"
+        <img src="{{ asset(['bundles/icuppublicsite/images/flags/',context.countries[team.country].flag]|join) }}"
              alt="{{ team.country|trans({},'lang') }}"
              title="{{ team.country|trans({},'lang') }}"
              class="flag"
@@ -77,7 +77,7 @@
 
 {% macro displayclub(club, context) %}
     <span class="text-nowrap">
-        <img src="{{ context.imagepath }}/flags/{{ context.countries[club.country].flag }}"
+        <img src="{{ asset(['bundles/icuppublicsite/images/flags/',context.countries[club.country].flag]|join) }}"
              alt="{{ club.country|trans({},'lang') }}"
              title="{{ club.country|trans({},'lang') }}"
              class="flag"

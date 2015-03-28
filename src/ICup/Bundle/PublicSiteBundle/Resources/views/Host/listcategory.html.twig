@@ -31,7 +31,7 @@
             <tbody>
         {% for team in group.teams %}
                 <tr>
-                    <td class="flag"><img src="{{ imagepath }}/flags/{{ countries[team.country].flag }}" alt="{{ team.country|trans({},'lang') }}" title="{{ team.country|trans({},'lang') }}"></td>
+                    <td class="flag"><img src="{{ asset(['bundles/icuppublicsite/images/flags/',countries[team.country].flag]|join) }}" alt="{{ team.country|trans({},'lang') }}" title="{{ team.country|trans({},'lang') }}"></td>
                     <td><a href="{{ path('_host_assign_del', { 'teamid': team.id, 'groupid': group.group.id }) }}">{{ team.name }}</a></td>
                 </tr>
         {% endfor %}
@@ -69,7 +69,7 @@
             <tbody>
     {% for team in unassigned %}
                 <tr>
-                    <td class="flag"><img src="{{ imagepath }}/flags/{{ countries[team.country].flag }}" alt="{{ team.country|trans({},'lang') }}" title="{{ team.country|trans({},'lang') }}"></td>
+                    <td class="flag"><img src="{{ asset(['bundles/icuppublicsite/images/flags/',countries[team.country].flag]|join) }}" alt="{{ team.country|trans({},'lang') }}" title="{{ team.country|trans({},'lang') }}"></td>
                     <td>
         {% if not selectedgroup is null %}
                         <a href="{{ path('_host_assign_add', { 'teamid': team.id, 'groupid': selectedgroup.id }) }}">{{ team.name }}</a>

@@ -94,11 +94,15 @@ class FrontpageController extends Controller
             $form = $this->makeContactForm(new Contact());
         }
 
+        $dm = $this->get('doctrine_phpcr')->getManager('default');
+        $image = $dm->find(null, '/cms/media/images/Ter-amo8.png');
+        
         return array('form' => $form->createView(),
                      'tournaments' => $tournamentList,
                      'statuslist' => $statusList,
                      'matchlist' => $shortMatches,
-                     'teaserlist' => $teaserList);
+                     'teaserlist' => $teaserList,
+                     'image' => $image);
     }
     
     public function getClubList(Request $request) {

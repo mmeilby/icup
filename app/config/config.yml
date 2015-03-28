@@ -39,7 +39,6 @@ twig:
     debug:            %kernel.debug%
     strict_variables: %kernel.debug%
     globals:
-        imagepath: /icup/web/bundles/icuppublicsite/images
         supported_locales: { en: 'GBR', it: 'ITA', fr: 'FRA', de: 'DEU', es: 'ESP', po: 'POL', da: 'DNK' }
         
 # Assetic Configuration

@@ -13,7 +13,7 @@
             {{ host.name|upper }} - {{ tournament.name|upper }}
         </a><br />
         <a href="{{ path('_host_list_clubs', { 'tournamentid': tournament.id }) }}">
-            <img src="{{ imagepath }}/flags/{{ countries[club.country].flag }}" alt="{{ club.country|trans({},'lang') }}" title="{{ club.country|trans({},'lang') }}">
+            <img src="{{ asset(['bundles/icuppublicsite/images/flags/',countries[club.country].flag]|join) }}" alt="{{ club.country|trans({},'lang') }}" title="{{ club.country|trans({},'lang') }}">
             {{ club.name }}
         </a>
     </div>

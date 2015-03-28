@@ -4,10 +4,10 @@
     <div class="col-lg-6 hidden-xs">
         <div class="jumbotron"
              style="
-    background-image: url('{{ imagepath }}/IWC/bg.jpg');
+    background-image: url('{{ asset('bundles/icuppublicsite/images/IWC/bg.jpg') }}');
     background-size: cover;
     background-repeat: no-repeat;">
-            <img src="{{ imagepath }}/IWC/logo.png" alt="{{ tournament.name }} logo" class="img-responsive" />
+            <img src="{{ asset('bundles/icuppublicsite/images/IWC/logo.png') }}" alt="{{ tournament.name }} logo" class="img-responsive" />
             <h1>{{ tournament.edition }}</h1>
             <p class="lead">{{ tournament.name }}</p>
         </div>

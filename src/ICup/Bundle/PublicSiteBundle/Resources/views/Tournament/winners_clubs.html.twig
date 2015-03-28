@@ -39,7 +39,7 @@
             <td>
                 <table>
                     <tr>
-                        <td class="flag"><img src="{{ imagepath }}/flags/{{ countries[country].flag }}" alt="{{ country|trans({},'lang') }}" title="{{ country|trans({},'lang') }}"></td>
+                        <td class="flag"><img src="{{ asset(['bundles/icuppublicsite/images/flags/',countries[country].flag]|join) }}" alt="{{ country|trans({},'lang') }}" title="{{ country|trans({},'lang') }}"></td>
                         <td>{{ ranks.club }}</td>
                     </tr>
                 </table>

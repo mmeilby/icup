@@ -33,11 +33,11 @@
     <body role="document">
         {% block header %}{% endblock %}
         {% block banner %}
-        <div style="background-image: url('{{ imagepath }}/IWC/bg.jpg');
+        <div style="background-image: url('{{ asset('bundles/icuppublicsite/images/IWC/bg.jpg') }}');
                     background-size: cover;
                     background-repeat: no-repeat;">
             <div class="container" style="padding-top: 10px; padding-bottom: 10px;">
-                <img src="{{ imagepath }}/IWC/logo.png" alt="logo" class="img-responsive" />
+                <img src="{{ asset('bundles/icuppublicsite/images/IWC/logo.png') }}" alt="logo" class="img-responsive" />
             </div>
         </div>
         {% endblock %}

@@ -41,7 +41,7 @@
                 {% endif %}
             {% endif %}
             {% if halloffame[key]['country'] in countries|keys %}
-                            <img src="{{ imagepath }}/flags/{{ countries[halloffame[key]['country']].flag }}" 
+                            <img src="{{ asset(['bundles/icuppublicsite/images/flags/',countries[halloffame[key]['country']].flag]|join) }}" 
                                  alt="{{ halloffame[key]['country']|trans({},'lang') }}" 
                                  title="{{ halloffame[key]['country']|trans({},'lang') }}"
                                  class="flag"

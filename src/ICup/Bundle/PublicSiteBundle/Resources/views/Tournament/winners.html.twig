@@ -8,7 +8,7 @@
     {% for team in teams %}
         <tr>
         {% if team.matches > 0 %}
-            <td class="flag"><img src="{{ context.imagepath }}/flags/{{ context.countries[team.country].flag }}" alt="{{ team.country|trans({},'lang') }}" title="{{ team.country|trans({},'lang') }}"></td>
+            <td class="flag"><img src="{{ asset(['bundles/icuppublicsite/images/flags/',context.countries[team.country].flag]|join) }}" alt="{{ team.country|trans({},'lang') }}" title="{{ team.country|trans({},'lang') }}"></td>
             <td><a href="{{ path('_showteam', { 'teamid': team.id, 'groupid': team.group }) }}">{{ team.name }}</a></td>
         {% endif %}
         </tr>

@@ -39,7 +39,7 @@
     {% for country,teamlist in countrylist %}
                 <div class="panel panel-default">
                     <div class="panel-heading">
-                        <img src="{{ imagepath }}/flags/{{ countries[country].flag }}"
+                        <img src="{{ asset(['bundles/icuppublicsite/images/flags/',countries[country].flag]|join) }}"
                              alt="{{ country|trans({},'lang') }}"
                              title="{{ country|trans({},'lang') }}"
                              class="flag"

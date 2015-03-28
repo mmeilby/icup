@@ -26,7 +26,7 @@
                     <div class="col-xs-9">
                         <h4 class="list-group-item-heading">{{ club.club.name }}</h4>
                         <p class="list-group-item-text">
-                            <img src="{{ imagepath }}/flags/{{ countries[club.club.country].flag }}"
+                            <img src="{{ asset(['bundles/icuppublicsite/images/flags/',countries[club.club.country].flag]|join) }}"
                                  alt="{{ club.club.country|trans({},'lang') }}"
                                  title="{{ club.club.country|trans({},'lang') }}"
                                  class="flag"

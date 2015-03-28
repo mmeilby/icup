@@ -15,7 +15,7 @@
 <div class="panel panel-default">
     <div class="panel-heading">
         <a href="{{ path('_tournament_clubs', { 'tournament': tournament.key }) }}">
-            <img src="{{ imagepath }}/flags/{{ countries[club.country].flag }}"
+            <img src="{{ asset(['bundles/icuppublicsite/images/flags/',countries[club.country].flag]|join) }}"
                  alt="{{ club.country|trans({},'lang') }}"
                  title="{{ club.country|trans({},'lang') }}"
                  class="flag"

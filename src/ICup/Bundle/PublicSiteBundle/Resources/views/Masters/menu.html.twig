@@ -56,7 +56,7 @@
                 {% set lang = ['LANG.',local|upper]|join|trans({}, 'common') %}
                         <li>
                             <a href="{{ path('_switch', { 'locale': local }) }}">
-                                <img src="{{ imagepath }}/flags/{{ flag }}"
+                                <img src="{{ asset(['bundles/icuppublicsite/images/flags/',flag]|join) }}"
                                      alt="{{ lang }}"
                                      title="{% trans %}MENU.LANGCHOICE.CHOOSELANG{% endtrans %}: {{ lang }}"
                                      class="flag"

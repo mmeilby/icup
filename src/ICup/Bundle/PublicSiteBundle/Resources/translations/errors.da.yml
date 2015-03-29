@@ -1,5 +1,8 @@
 ERROR:
   CLICKFORMORE: Klik her for at komme tilbage...
+  NOACCESS:
+    TITLE: Ingen adgang
+    SOLUTION: Du har ikke adgang til dette område. Kontakt en administrator hvis du mangler adgang.
   NOTOURNAMENT:
     TITLE: Vælg en turnering
     SOLUTION: Det er nødvendigt at vælge en turnering for at se turneringsspecifikke oplysninger. Benyt det følgende link for at se en turneringsoversigt.

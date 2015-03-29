@@ -1,17 +1,17 @@
 {% trans_default_domain "errors" %}
 
 {% macro showerror(error) %}
-    <div class="panel panel-danger">
-        <div class="panel-heading"><b>{{ ['ERROR',error,'TITLE']|join('.')|trans }}</b></div>
-        <div class="panel-body lead">
-            {{ ['ERROR',error,'SOLUTION']|join('.')|trans }}
-        </div>
-        <div class="panel-body">
-    {% if redirect is defined %}
-            <a href="{{ redirect }}">{% trans %}ERROR.CLICKFORMORE{% endtrans %}</a>
-    {% else %}
-            <a href="{{ path('_icup') }}">{% trans %}ERROR.CLICKFORMORE{% endtrans %}</a>
-    {% endif %}
-        </div>
-    </div>
+    <h2 style="margin-bottom: 0">
+        <i class="fa fa-bomb"></i>&nbsp;{{ ['ERROR',error,'TITLE']|join('.')|trans }}
+    </h2>
+    <p>
+        {{ ['ERROR',error,'SOLUTION']|join('.')|trans }}
+    </p>
+    <p>
+{% if redirect is defined %}
+        <a href="{{ redirect }}">{% trans %}ERROR.CLICKFORMORE{% endtrans %}</a>
+{% else %}
+        <a href="{{ path('_icup') }}">{% trans %}ERROR.CLICKFORMORE{% endtrans %}</a>
+{% endif %}
+    </p>
 {% endmacro %}

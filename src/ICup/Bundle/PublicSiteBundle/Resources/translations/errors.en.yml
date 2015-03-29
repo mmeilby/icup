@@ -1,5 +1,8 @@
 ERROR:
   CLICKFORMORE: Click here to return...
+  NOACCESS:
+    TITLE: No access
+    SOLUTION: You are not allowed to access this area. Please contact an administrator to get required authorization.
   NOTOURNAMENT:
     TITLE: Select a tournament
     SOLUTION: You are required to choose a tournament in order to view tournament related pages.

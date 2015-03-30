@@ -226,7 +226,22 @@ FORM:
     TITLE: My iCup
     USERS:
       TITLE: My iCup users
-      LINK: Vedligehold klubbrugere
+      LINK: Maintain club users
+      DESCRIPTION: Maintain users attached to the club and connect new users
+    CHGPASS:
+      LINK: Change password
+      DESCRIPTION: Choose new password for log in
+    REFUSE:
+      LINK: Cancel connection to the club
+      DESCRIPTION: Revoke your connection if you no longer want to be a part of the club community
+    DASHBOARD:
+      LINK: Administration
+      DESCRIPTION: Open dashboard for tournament planning and administration
+    USERNAME: Username
+    EMAIL: E-mail
+    CLUB: Club
+    HOST: Host
+    ROLE: Role
     EDITOR: Editor
     EDITOR_ADMIN: Editor administrator
     ADMIN: Administrator
@@ -320,7 +335,10 @@ FORM:
     BADPASSWORD: The password is not valid.
     NOTEQUAL: Please retype the password properly. The typed passwords are not equal.
     TITLE: Change password
-    PROMPT: A password should contain ...
+    CAPTION: Enter new password
+    PROMPT: >
+        A password should contain at least 8 characters, mixed case and digits.
+        You must type the password equal in both fields - mind that the passwords are shown with dots.
     PASSWORD: Password
     PASSWORD2: Retype password
     SUBMIT: Change password

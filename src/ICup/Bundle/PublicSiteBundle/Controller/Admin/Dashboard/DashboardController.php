@@ -91,16 +91,16 @@ class DashboardController extends Controller
         $form = $this->getUploadForm($fileForm);
         $form->handleRequest($request);
         if ($form->isValid()) {
+            $paths = array('files' => 'files', 'images' => 'images', 'downloads' => 'enrollment');
             if ($fileForm->getPath() == 'images') {
                 /** @var UploadFileHelperInterface $uploadFileHelper */
                 $uploadFileHelper = $this->get('cmf_media.upload_image_helper');
-                $path = '/cms/media/images';
             }
             else {
                 /** @var UploadFileHelperInterface $uploadFileHelper */
                 $uploadFileHelper = $this->get('cmf_media.upload_file_helper');
-                $path = '/cms/media/'.$fileForm->getPath();
             }
+            $path = '/cms/media/'.$paths[$fileForm->getPath()];
             $uploadedFile = $request->files->get('form');
             $file = $uploadFileHelper->handleUploadedFile($uploadedFile['file']);
             $file->setDescription($fileForm->getName());
@@ -127,6 +127,21 @@ class DashboardController extends Controller
         ));
     }
 
+    /**
+     * Show myICup page for club admin users
+     * @Route("/admin/dashboard/upload/delete/{file}", name="_admin_dashboard_upload_delete")
+     */
+    public function uploadDeleteAction(Request $request, $file)
+    {
+        $dm = $this->get('doctrine_phpcr')->getManager('default');
+        $doc = $dm->find(null, urldecode($file));
+        if ($doc) {
+            $dm->remove($doc);
+            $dm->flush();
+        }
+        return $this->redirect($this->generateUrl('_admin_dashboard_upload'));
+    }
+
     private function getUploadForm(FileForm $fileForm) {
         return $this->createFormBuilder($fileForm)
                 ->add('name', 'text', array('label' => 'FORM.UPLOAD.NAME',
@@ -135,7 +150,7 @@ class DashboardController extends Controller
                                             'translation_domain' => 'admin'))
                 ->add('path', 'choice', array('label' => 'FORM.UPLOAD.PATH',
                                             'required' => false,
-                                            'choices' => array('files' => 'FILES', 'images' => 'IMAGES', 'enrollment' => 'DOWNLOADS'),
+                                            'choices' => array('files' => 'FORM.UPLOAD.FILES', 'images' => 'FORM.UPLOAD.IMAGES', 'downloads' => 'FORM.UPLOAD.DOWNLOADS'),
                                             'empty_value' => false,
                                             'disabled' => false,
                                             'translation_domain' => 'admin'))

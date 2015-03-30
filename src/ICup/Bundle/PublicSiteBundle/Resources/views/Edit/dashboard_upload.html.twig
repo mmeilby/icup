@@ -1,33 +1,42 @@
 {% extends "ICupPublicSiteBundle:Masters:edit.html.twig" %}
 
 {% form_theme upload_form 'ICupPublicSiteBundle:Default:layout.script.html.twig' %}
-{% trans_default_domain "club" %}
+{% trans_default_domain "admin" %}
 
 {% import 'ICupPublicSiteBundle:Masters:tournament.html.twig' as tformatter %}
 
-{% block widebody %}
-{{ tformatter.mypage(currentuser) }}
-{% endblock %}
-
-{% block body %}
-<div class="panel panel-default">
-    <div class="panel-heading"><b>Upload file</b></div>
-    <div class="panel-body">
-        <form class="standard" action="{{ path('_admin_dashboard_upload') }}" method="post" {{ form_enctype(upload_form) }}>
-            {{ form_widget(upload_form) }}
-        </form>
+{% block adminbody %}
+    <h2 style="margin-bottom: 0">
+        <i class="fa fa-cogs"></i>&nbsp;{{ 'FORM.DASHBOARD.TITLE'|trans|upper }}
+    </h2>
+    <p>
+        {% trans %}FORM.UPLOAD.TITLE{% endtrans %}
+    </p>
+    <div class="row">
+        <div class="col-md-6">
+            <form class="standard" action="{{ path('_admin_dashboard_upload') }}" method="post" {{ form_enctype(upload_form) }}>
+                {{ form_widget(upload_form) }}
+            </form>
+        </div>
+        <div class="col-md-6">
+            <h2>{% trans %}FORM.UPLOAD.LIST{% endtrans %}</h2>
+        {% if files is empty %}
+            <p>{% trans %}FORM.UPLOAD.NODOCUMENTS{% endtrans %}</p>
+        {% else %}
+            <div class="list-group">
+            {% for file in files %}
+                <a class="list-group-item" href="{{ path('_admin_dashboard_upload_delete', { 'file': file.id|escape('url') }) }}" title="{% trans %}FORM.UPLOAD.FETCH{% endtrans %} {{ file.name }}">
+                    <h3 class="list-group-item-heading">{{ file.description }}</h3>
+                    <p class="list-group-item-text">{{ cmf_media_download_url(file) }}</p>
+{% if file.extension != 'pdf' %}                    
+                    <p><img class="imagine" src="{{ cmf_media_display_url(file, { imagine_filter: 'image_upload_thumbnail' }) }}" alt="{{ file.description }}" /></p>
+{% endif %}                    
+                </a>
+            {% endfor %}
+            </div>
+        {% endif %}
+        </div>
     </div>
-</div>
-<h2>Download file(s)</h2>
-{% if files is empty %}
-    <p>No files found, upload a file first.</p>
-{% else %}
-    <ul class="downloads">
-        {% for file in files %}
-            <li><a href="{{ cmf_media_download_url(file) }}" title="Download {{ file.name }}">{{ file.description }} (id: {{ file.id }})</a></li>
-        {% endfor %}
-    </ul>
-{% endif %}
 {% endblock %}
 {% block javascripts %}
 <script>

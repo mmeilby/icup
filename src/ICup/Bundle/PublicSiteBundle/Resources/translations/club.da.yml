@@ -240,6 +240,11 @@ FORM:
     DASHBOARD:
       LINK: Administration
       DESCRIPTION: Åbn kontrolpanel for planlægning af turnering
+    USERNAME: Brugernavn
+    EMAIL: E-mail
+    CLUB: Klub
+    HOST: Turneringsvært
+    ROLE: Rolle
     EDITOR: Redaktør
     EDITOR_ADMIN: Turneringsansvarlig
     ADMIN: Administrator
@@ -338,7 +343,9 @@ FORM:
     NOTEQUAL: Kodeordet er ikke gentaget korrekt - de indtastede kodeord er ikke ens.
     TITLE: Skift kodeord
     CAPTION: Angiv nyt kodeord
-    PROMPT: Et kodeord bør indeholde ...
+    PROMPT: >
+        Et kodeord bør bestå af mindst otte tegn, blandet store og små bogstaver samt tal.
+        Det valgte kodeord skal skrives ens i begge felter - bemærk at kodeordet skjules med prikker.
     PASSWORD: Kodeord
     PASSWORD2: Gentag kodeord
     SUBMIT: Skift kodeord

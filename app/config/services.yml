@@ -51,7 +51,7 @@ services:
           # properties
           - { %tournament_table%: [name, edition], %club_table%: [name] }
           # functions
-          - [ cycle ]
+          - [ cycle, asset ]
         public: false
 
     custom.twig.extension.sandbox:

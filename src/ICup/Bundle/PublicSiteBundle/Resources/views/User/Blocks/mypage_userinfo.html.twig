@@ -9,29 +9,29 @@
                     <tr>
                         <td>
                             <p>
-                                <span class="label label-default">Brugernavn:</span><br />
+                                <span class="label label-default">{% trans %}FORM.MYPAGE.USERNAME{% endtrans %}</span><br />
                                 {{ currentuser.username|lower }}
                             </p>
 {% if currentuser.email %}
                             <p>
-                                <span class="label label-default">E-mail:</span><br />
+                                <span class="label label-default">{% trans %}FORM.MYPAGE.EMAIL{% endtrans %}</span><br />
                                 {{ currentuser.email|lower }}
                             </p>
 {% endif %}
 {% if club is defined and club %}
                             <p>
-                                <span class="label label-default">Klub:</span><br />
+                                <span class="label label-default">{% trans %}FORM.MYPAGE.CLUB{% endtrans %}</span><br />
                                 {{ formatter.displayclub(club, _context) }}
                             </p>
 {% endif %}
 {% if host is defined and host %}
                             <p>
-                                <span class="label label-default">Turneringsvært:</span><br />
+                                <span class="label label-default">{% trans %}FORM.MYPAGE.HOST{% endtrans %}</span><br />
                                 {{ host.name }}
                             </p>
 {% endif %}
                             <p>
-                                <span class="label label-default">Rolle:</span><br />
+                                <span class="label label-default">{% trans %}FORM.MYPAGE.ROLE{% endtrans %}</span><br />
 {% if currentuser.role == 1 %}
     {% if currentuser.status == 4 %}
                                 {% trans %}FORM.MYPAGE.CLUBUSER{% endtrans %}

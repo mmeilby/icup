@@ -17,6 +17,7 @@
             fjs.parentNode.insertBefore(js, fjs);
         }(document, 'script', 'facebook-jssdk'));
     </script>
+<!--
     <script type="text/javascript">
         window.___gcfg = {lang: 'da'};
         (function() {
@@ -25,17 +26,10 @@
           var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(po, s);
         })();
     </script>
+-->
 {% endblock %}
 
 {% block body %}
-    {% for flashMessage in app.session.flashbag.get('msgsent') %}
-    <div class="alert alert-success alert-dismissible" role="alert">
-        <button type="button" class="close" data-dismiss="alert">
-            <span aria-hidden="true">&times;</span><span class="sr-only">Close</span>
-        </button>
-        {{ flashMessage|trans }}
-    </div>
-    {% endfor %}
     {% for tournament in statuslist.active %}
     <div class="row">
 {# *******************************************
@@ -56,13 +50,21 @@
             <div>{{ tournament.edition }} - {{ tournament.name }}</div>
             <hr />
         </div>
+        {% for flashMessage in app.session.flashbag.get('msgsent') %}
+        <div class="col-md-12">
+            <div class="alert alert-success alert-dismissible" role="alert">
+                <button type="button" class="close" data-dismiss="alert">
+                    <span aria-hidden="true">&times;</span><span class="sr-only">Close</span>
+                </button>
+                {{ flashMessage|trans }}
+            </div>
+        </div>
+        {% endfor %}
         <div class="col-md-8 hidden-xs">
             {{ tformatter.listmatches(matchlist, _context) }}
         </div>
         <div class="col-md-4 hidden-xs hidden-sm">
-            <img class="img-responsive img-rounded" src="{{ path('cmf_media_image_display', { 'path': 'cms/media/images/Ter-amo8.png' }) }}" alt="Top banner image" />
-            <h2>{% trans %}FORM.FRONTPAGE.BLOCK1.TITLE{% endtrans %}</h2>
-            <p class="lead">{% trans %}FORM.FRONTPAGE.BLOCK1.DESCRIPTION{% endtrans %}</p>
+            {{ sonata_block_render({'name': '/cms/content/blocks/frontpage/follow_club'}) }}
             <p>
                 <a class="btn btn-success btn-lg" href="{{ path('_club_select') }}" role="button">{% trans %}FORM.FRONTPAGE.BLOCK1.LEARNMORE{% endtrans %}&nbsp;<i class="fa fa-angle-double-right"></i></a>
             </p>
@@ -73,6 +75,24 @@
    ALL DEVICES
    ******************************************* #}
         <div class="col-md-4">
+            <div class="list-group">
+                <div class="list-group-item">
+                    <i class="fa fa-facebook-official fa-5x text-primary"></i>&nbsp;
+                    <div class="fb-like"
+                         data-href="http://icup.dk"
+                         data-layout="box_count"
+                         data-action="like"
+                         data-show-faces="true"
+                         data-share="true">
+                    </div>
+        <!--            
+                    <div class="g-plusone"
+                         data-size="medium"
+                         data-href="http://icup.dk">
+                    </div>
+        -->
+                </div>
+            </div>
             <div class="list-group">
                 <a class="list-group-item" href="{{ path('_show_matches', {'tournament': tournament.key}) }}">
                     <h4 class="list-group-item-heading">{% trans %}FORM.FRONTPAGE.BLOCK3.LEARNMORE{% endtrans %}</h4>
@@ -93,29 +113,10 @@
     </div>
     {% else %}
     <div class="row">
-        <div class="col-md-8">
+        <div class="col-md-12">
             {{ sonata_block_render({'name': '/cms/content/blocks/frontpage/section_1'}) }}
-            <div class="fb-like"
-                 data-href="http://icup.dk"
-                 data-layout="box_count"
-                 data-action="like"
-                 data-show-faces="true"
-                 data-share="true">
-            </div>
-<!--            
-            <div class="g-plusone"
-                 data-size="medium"
-                 data-href="http://icup.dk">
-            </div>
--->
-        </div>
-{% if image is not null %}            
-        <div class="col-md-4">            
-            <br />
-            <img class="img-responsive img-rounded" src="{{ path('cmf_media_image_display', { 'path': 'cms/media/images/Ter-amo8.png' }) }}" alt="Top banner image" />
         </div>
     </div>
-{% endif %}
     {% endfor %}
 {# *******************************************
    INFO BANNERS

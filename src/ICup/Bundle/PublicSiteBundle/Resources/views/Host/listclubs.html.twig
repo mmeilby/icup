@@ -10,13 +10,13 @@
 <div class="panel panel-default">
     <div class="panel-body">
         <div class="row">
-            <div class="col-lg-8 lead">
+            <div class="col-lg-7 lead">
                 <a href="{{ path('_edit_tournamentboard', { 'tournamentid': tournament.id }) }}">
                     {{ host.name|upper }}
                 </a><br />
                 {{ tournament.name }}
             </div>
-            <div class="col-lg-4 lead">
+            <div class="col-lg-5 lead">
                 <a href="{{ path('_host_club_new', {'tournamentid': tournament.id }) }}" class="btn btn-info">
                     {% trans %}FORM.CLUB.TITLE.ADD{% endtrans %}
                 </a>

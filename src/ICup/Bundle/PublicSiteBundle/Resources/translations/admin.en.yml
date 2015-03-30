@@ -11,6 +11,81 @@ FORM:
     BADGROUP: The group does not exist
     BADTEAM: The team is not valid
     NOTOURNAMENT: No tournament selected
+  DASHBOARD:
+    TITLE: Dashboard
+    SEARCHCAPTION: Select host
+    HOSTS: Hosts
+    NOHOST: Please select a host
+    SHOW: Select
+    DEFAULT: Select...
+    TOURNAMENTS:
+        CAPTION: Tournaments
+        LEGEND:
+          NAME: Name
+          KEY: Short name
+          EDITION: Edition
+          DESCRIPTION: Description
+          STATUS: Status
+        STATUS:
+          0: Archived
+          1: Enrolling
+          2: Ongoing
+          3: Completed
+          4: Under construction
+        NOTOURNAMENT: Add new tournament
+    TOURNAMENTBOARD:
+        CAPTION: Maintain tournament
+    ADDHOST:
+        CAPTION: Add host
+        DESCRIPTION: Add new host
+    HOST:
+        CAPTION: Modify host
+        DESCRIPTION: Change information for current host
+    EDITORS:
+        CAPTION: List editors
+        DESCRIPTION: Show list of editors added to the current host
+    CLUBLIST:
+        CAPTION: List clubs
+        DESCRIPTION: Show list of all clubs created
+    UPLOAD:
+        CAPTION: Upload documents
+        DESCRIPTION: Upload documents and images in the archive
+  UPLOAD:
+    TITLE: Upload documents and images in the archive
+    NAME: Title
+    PATH: Document type
+    FILE: File
+    FETCH: Fetch
+    FILES: Files
+    IMAGES: Images
+    DOWNLOADS: Documents
+    LIST: Document list
+    NODOCUMENTS: There are no documents in the archive
+  TOURNAMENTBOARD:
+    TITLE: Tournament dashboard
+    TOURNAMENT:
+        CAPTION: Modify tournament
+        DESCRIPTION: Maintain information for this tournament
+    LISTSITES:
+        CAPTION: Sites and playgrounds
+        DESCRIPTION: Maintain information of sites and playgrounds
+    LISTCATEGORIES:
+        CAPTION: Categories and groups
+        DESCRIPTION: Plan groups and maintain categories
+    LISTCLUBS:
+        CAPTION: Enrolled clubs
+        DESCRIPTION: Show enrolled clubs and handle new requests
+    STATUS:
+        CAPTION: Tournament calendar
+        DESCRIPTION:
+          0: This tournament is archived and will not be visible for normal users
+          1: This tournament is open for enrollment, announced at the frontpage
+          2: This tournament is live and match results are displayed at the frontpage
+          3: This tournament is completed. Group results and winners are availble along with statistics
+          4: Tournament is under construction. Required plans are not yet ready.
+    REPORT:
+        CAPTION: Report results
+        DESCRIPTION: Report match results for matches played at a specific playground
   LISTHOSTS:
     TITLE: Hosts and tournaments administration
     CAPTION: Hosts and tournaments
@@ -204,6 +279,10 @@ FORM:
   LISTEDITORS:
     TITLE: Editor administration
     CAPTION: Editors and editor administrators
+    LEGEND:
+      USERNAME: Username
+      NAME: Name
+      ROLE: Role
     NOUSER: Add new editor
   LISTCLUBS:
     TITLE: Club administration
@@ -306,6 +385,20 @@ FORM:
       ADD: Cancel
       CHG: Cancel changes
       DEL: Cancel
+  NEWPASS: 
+    NOPASSWORD: You must enter a password.
+    BADPASSWORD: The password is not valid.
+    NOTEQUAL: Please retype the password properly. The typed passwords are not equal.
+    TITLE: Change password
+    CAPTION: Enter new password
+    PROMPT: >
+        A password should contain at least 8 characters, mixed case and digits.
+        You must type the password equal in both fields - mind that the passwords are shown with dots.
+    MAKEPWD: Generate password
+    PASSWORD: Password
+    PASSWORD2: Retype password
+    SUBMIT: Change password
+    CANCEL: Cancel
   MATCHIMPORTUNRES:
     TITLE: Assign teams for elimination round
   QMATCHIMPORT:

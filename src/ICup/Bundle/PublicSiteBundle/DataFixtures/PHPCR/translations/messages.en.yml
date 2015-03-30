@@ -18,6 +18,14 @@ frontpage:
                 If you should need more information you will find contact information from the menu.
             </p>
             <p>Vediamo a Teramo</p>
+    follow_club:
+        title: Follow your club
+        body: >
+            <p>
+                Are you a parent or a player.
+                Here you can tune in on the results from your club.
+                Just follow this link and select the club you want to follow.
+            </p>
 mypage:
     wellcome:
         title: Welcome to my iCup

@@ -51,8 +51,16 @@ FORM:
         CAPTION: Læg dokumenter op
         DESCRIPTION: Læg dokumenter i arkivet som brugerne kan hente fra tilmeldingssiden.
   UPLOAD:
+    TITLE: Læg dokumenter og billeder i arkiv 
     NAME: Titel
+    PATH: Dokumenttype
     FILE: Dokument
+    FETCH: Hent
+    FILES: Filer
+    IMAGES: Billeder
+    DOWNLOADS: Dokumenter
+    LIST: Dokumentoversigt
+    NODOCUMENTS: Der er ingen dokumenter i arkivet
   TOURNAMENTBOARD:
     TITLE: Turneringspanel
     TOURNAMENT:

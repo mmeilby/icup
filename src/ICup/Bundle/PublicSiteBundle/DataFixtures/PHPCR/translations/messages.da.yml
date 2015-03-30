@@ -17,23 +17,28 @@ frontpage:
                 Har du brug for yderligere information finder du kontaktoplysninger i menuen.
             </p>
             <p>Vediamo a Teramo</p>
+    follow_club:
+        title: Følg din klub
+        body: >
+            <p>
+                Er du forældre eller spiller kan du følge holdene fra din klub.
+                Du skal blot vælge holdene her.
+                Så ser du automatisk resultater og stillinger for klubbens hold.
+            </p>
 mypage:
     wellcome:
         title: Velkommen til mit iCup
         body: >
-            <p>Elsker du håndbold og vil du gerne deltage i et internationalt stævne til sommer - så er Interamnia World Cup det helt rigtige!</p>
-            <p><img alt="" src="/icup/web/bundles/icuppublicsite/images/IWC/Teramo8.png" style="border-style:solid; border-width:2px; float:right; height:300px; margin-left:5px; margin-right:5px; width:200px">Fra den 5. til den 11. juli afvikles dette fantastiske stævne ved Italiens østkyst - kun&nbsp;25 km fra Adriaterhavet - i den kønne klassiske by Teramo for foden af Italiens højeste bjerg Gran Sasso.</p>
-            <p>Med 200 hold fordelt på 50 lande der til sammen repræsenterer de fem kontinenter bliver stævnet et brag af en oplevelse.</p>
-            <p>På disse sider finder du al den information der er nødvendig for at komme videre og blive en del af oplevelsen til sommer. Har du brug for yderligere information finder du&nbsp;kontaktoplysninger i menuen.</p>
-            <p>Vediamo a Teramo</p>
+            <p>TBA</p>
     section_1:
         title: Mit iCup
         body: >
-            <p>Elsker du håndbold og vil du gerne deltage i et internationalt stævne til sommer - så er Interamnia World Cup det helt rigtige!</p>
-            <p><img alt="" src="/icup/web/bundles/icuppublicsite/images/IWC/Teramo8.png" style="border-style:solid; border-width:2px; float:right; height:300px; margin-left:5px; margin-right:5px; width:200px">Fra den 5. til den 11. juli afvikles dette fantastiske stævne ved Italiens østkyst - kun&nbsp;25 km fra Adriaterhavet - i den kønne klassiske by Teramo for foden af Italiens højeste bjerg Gran Sasso.</p>
-            <p>Med 200 hold fordelt på 50 lande der til sammen repræsenterer de fem kontinenter bliver stævnet et brag af en oplevelse.</p>
-            <p>På disse sider finder du al den information der er nødvendig for at komme videre og blive en del af oplevelsen til sommer. Har du brug for yderligere information finder du&nbsp;kontaktoplysninger i menuen.</p>
-            <p>Vediamo a Teramo</p>
+            <p>TBA</p>
+            <img alt="Top banner image"
+                 src="/icup/web/bundles/icuppublicsite/images/IWC/Ter-amo8.png"
+                 class="img-responsive img-rounded"
+                 style="border-style:solid; border-width:2px; float:right; height:300px;
+                        margin-left:5px; margin-right:5px; width:200px">
 connectclub:
     follower:
         title: Ny club?

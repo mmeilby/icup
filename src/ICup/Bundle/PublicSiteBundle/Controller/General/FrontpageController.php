@@ -147,7 +147,9 @@ class FrontpageController extends Controller
         else {
             $recv = array();
             foreach ($admins as $admin) {
-                $recv[$admin->getEmail()] = $admin->getName();
+                if ($admin->getEmail() != '' && $admin->getName() != '') {
+                    $recv[$admin->getEmail()] = $admin->getName();
+                }
             }
         }
         $mailbody = $this->renderView('ICupPublicSiteBundle:Email:infomail.html.twig', $contact->getArray());

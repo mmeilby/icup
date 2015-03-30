@@ -9,7 +9,7 @@
     <p>{% trans %}FORM.LISTEVENTS.CAPTION{% endtrans %}</p>
 <div class="panel panel-default">
     <div class="panel-body lead">
-        <a href="{{ path('_user_my_page') }}">
+        <a href="{{ path('_edit_tournamentboard', { 'tournamentid': tournament.id }) }}">
             {{ host.name|upper }}
         </a><br />
         {{ tournament.name }}

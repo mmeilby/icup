@@ -74,3 +74,16 @@ fos_rest:
         formats:
             json: true
 
+liip_imagine:
+    resolvers:
+       default:
+          web_path: ~
+
+    filter_sets:
+        cache: ~
+        # define the filter to be used with the image preview
+        image_upload_thumbnail:
+            data_loader: cmf_media_doctrine_phpcr
+            filters:
+                thumbnail: { size: [100, 100], mode: outbound }
+                

@@ -1,6 +1,7 @@
 {% extends "ICupPublicSiteBundle:Masters:standard.html.twig" %}
 {% trans_default_domain "tournament" %}
 
+{% import 'ICupPublicSiteBundle:Masters:club.html.twig' as formatter %}
 {% import 'ICupPublicSiteBundle:Masters:tournament.html.twig' as tformatter %}
 
 {% block widebody %}
@@ -8,18 +9,19 @@
 {% endblock %}
 
 {% block body %}
-<p>&nbsp;</p>
-<ul class="nav nav-pills" role="tablist">
-    <li>
-        <a href="{{ path('_tournament_winners', {'tournament': tournament.key }) }}">{{ 'WINNERS'|trans|upper }}</a>
-    </li>
-    <li class="active">
-        <a href="{{ path('_tournament_winners_countries', {'tournament': tournament.key }) }}">{{ 'WINNING_COUNTRIES'|trans|upper }}</a>
-    </li>
-    <li>
-        <a href="{{ path('_tournament_winners_clubs', {'tournament': tournament.key }) }}">{{ 'WINNING_CLUBS'|trans|upper }}</a>
-    </li>
-</ul>
+<div class="hidden-xs" style="margin-top: 10px;">
+    <ul class="nav nav-pills" role="tablist">
+        <li>
+            <a href="{{ path('_tournament_winners', {'tournament': tournament.key }) }}">{{ 'WINNERS'|trans|upper }}</a>
+        </li>
+        <li class="active">
+            <a href="{{ path('_tournament_winners_countries', {'tournament': tournament.key }) }}">{{ 'WINNING_COUNTRIES'|trans|upper }}</a>
+        </li>
+        <li>
+            <a href="{{ path('_tournament_winners_clubs', {'tournament': tournament.key }) }}">{{ 'WINNING_CLUBS'|trans|upper }}</a>
+        </li>
+    </ul>
+</div>
 <p class="lead" />
 {% if championlist|length > 0 %}
 <table class="table table-striped">
@@ -34,15 +36,9 @@
     </thead>
     <tbody>
     {% for ranks in championlist %}
-        {% set country = ranks.country %}
         <tr>
             <td>
-                <table>
-                    <tr>
-                        <td class="flag"><img src="{{ asset(['bundles/icuppublicsite/images/flags/',countries[country].flag]|join) }}" alt="{{ country|trans({},'lang') }}" title="{{ country|trans({},'lang') }}"></td>
-                        <td>{{ country|trans({},'lang') }}</td>
-                    </tr>
-                </table>
+                {{ formatter.displayclub({'country': ranks.country, 'name': ranks.country|trans({},'lang')|upper }, _context) }}
             </td>
             <td class="text-center">
                 {{ ranks.first|length }}

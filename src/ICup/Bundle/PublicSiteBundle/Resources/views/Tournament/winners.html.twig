@@ -1,85 +1,86 @@
 {% extends "ICupPublicSiteBundle:Masters:standard.html.twig" %}
 {% trans_default_domain "tournament" %}
 
-{% import _self as formatter %}
+{% import 'ICupPublicSiteBundle:Masters:club.html.twig' as formatter %}
+{% import 'ICupPublicSiteBundle:Masters:tournament.html.twig' as tformatter %}
+{% import _self as self %}
 
 {% macro club(teams, context) %}
-    <table>
     {% for team in teams %}
-        <tr>
         {% if team.matches > 0 %}
-            <td class="flag"><img src="{{ asset(['bundles/icuppublicsite/images/flags/',context.countries[team.country].flag]|join) }}" alt="{{ team.country|trans({},'lang') }}" title="{{ team.country|trans({},'lang') }}"></td>
-            <td><a href="{{ path('_showteam', { 'teamid': team.id, 'groupid': team.group }) }}">{{ team.name }}</a></td>
+            {{ context.formatter.displayteam(team, context) }}<br />
         {% endif %}
-        </tr>
+    {% else %}
+        <br />
     {% endfor %}
-    {% if teams|length == 0 %}
-        <tr>
-            <td class="flag">&nbsp;</td>
-            <td>&nbsp;</td>
-        </tr>
-    {% endif %}
-    </table>
 {% endmacro %}
         
-{% import 'ICupPublicSiteBundle:Masters:tournament.html.twig' as tformatter %}
-
 {% block widebody %}
 {{ tformatter.title(tournament) }}
 {% endblock %}
 
 {% block body %}
-<p>&nbsp;</p>
-<ul class="nav nav-pills" role="tablist">
-    <li class="active">
-        <a href="{{ path('_tournament_winners', {'tournament': tournament.key }) }}">{{ 'WINNERS'|trans|upper }}</a>
-    </li>
-    <li>
-        <a href="{{ path('_tournament_winners_countries', {'tournament': tournament.key }) }}">{{ 'WINNING_COUNTRIES'|trans|upper }}</a>
-    </li>
-    <li>
-        <a href="{{ path('_tournament_winners_clubs', {'tournament': tournament.key }) }}">{{ 'WINNING_CLUBS'|trans|upper }}</a>
-    </li>
-</ul>
+<div class="hidden-xs" style="margin-top: 10px;">
+    <ul class="nav nav-pills" role="tablist">
+        <li class="active">
+            <a href="{{ path('_tournament_winners', {'tournament': tournament.key }) }}">{{ 'WINNERS'|trans|upper }}</a>
+        </li>
+        <li>
+            <a href="{{ path('_tournament_winners_countries', {'tournament': tournament.key }) }}">{{ 'WINNING_COUNTRIES'|trans|upper }}</a>
+        </li>
+        <li>
+            <a href="{{ path('_tournament_winners_clubs', {'tournament': tournament.key }) }}">{{ 'WINNING_CLUBS'|trans|upper }}</a>
+        </li>
+    </ul>
+</div>
+<div class="visible-xs-block" style="margin-top: 10px;">
+    <h4>{{ 'WINNERS'|trans|upper }}</h4>
+</div>
 <p class="lead" />
-{% if championlist|length > 0 %}
-<table class="table table-striped">
-    <thead>
-        <tr>
-            <td>{% trans %}CATEGORY{% endtrans %}</td>
-            <td class="winner_first">{% trans %}FIRST{% endtrans %}</td>
-            <td class="winner_second">{% trans %}SECOND{% endtrans %}</td>
-            <td class="winner_third">{% trans %}THIRD{% endtrans %}</td>
-            <td class="winner_forth">{% trans %}FORTH{% endtrans %}</td>
-        </tr>
-    </thead>
-    <tbody>
+<div class="list-group">
     {% for category in championlist %}
         {% set group = category.group %}
-        <tr>
-            <td>
-                <a href="{{ path('_showcategory_finals', {'tournament': tournament.key, 'categoryid': group.catid }) }}"
-                   title="{{ ['GENDER.',
-                    group.gender,
-                    group.class]|join|transchoice(group.age, { '%age%': group.age },'tournament') }}">
-                    <b>{{ group.category }}</b>
-                </a>
-            </td>
-            <td>{{ formatter.club(category.first, _context) }}</td>
-            <td>{{ formatter.club(category.second, _context) }}</td>
-            <td>{{ formatter.club(category.third, _context) }}</td>
-            <td>{{ formatter.club(category.forth, _context) }}</td>
-        </tr>
-    {% endfor %}
-    </tbody>
-</table>
-{% else %}
-<div class="panel panel-warning">
-    <div class="panel-heading">
-        <b>
-            {% trans %}NOWINNERS{% endtrans %}
-        </b>
+    <a class="list-group-item active"
+       href="{{ path('_showcategory_finals', {'tournament': tournament.key, 'categoryid': group.catid }) }}">
+        <h4 class="list-group-item-heading">
+            {% trans %}CATEGORY{% endtrans %} {{ group.category }}
+        </h4>
+        <p class="list-group-item-text">
+            {{ ['GENDER.',
+                group.gender,
+                group.class]|join|transchoice(group.age, { '%age%': group.age },'tournament') }}<br />
+        </p>
+    </a>
+    <div class="list-group-item">    
+        <p class="list-group-item-text">
+            <div class="row">
+                <div class="col-md-3 col-sm-6">
+                    <h4><b><i class="fa fa-trophy"></i>&nbsp;{% trans %}FIRST{% endtrans %}</b></h4>
+                    {{ self.club(category.first, _context) }}
+                </div>
+                <div class="col-md-3 col-sm-6">
+                    <h4>{% trans %}SECOND{% endtrans %}</h4>
+                    {{ self.club(category.second, _context) }}
+                </div>
+                <div class="col-md-3 col-sm-6">
+                    <h4>{% trans %}THIRD{% endtrans %}</h4>
+                    {{ self.club(category.third, _context) }}
+                </div>
+                <div class="col-md-3 col-sm-6">
+                    <h4>{% trans %}FORTH{% endtrans %}</h4>
+                    {{ self.club(category.forth, _context) }}
+                </div>
+            </div>
+        </p>
     </div>
+    {% else %}
+    <div class="panel panel-warning">
+        <div class="panel-heading">
+            <b>
+                {% trans %}NOWINNERS{% endtrans %}
+            </b>
+        </div>
+    </div>
+    {% endfor %}
 </div>
-{% endif %}
 {% endblock %}

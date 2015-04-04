@@ -16,19 +16,24 @@
         category.gender,
         category.classification]|join|transchoice(category.age, { '%age%': category.age },'tournament') }}
 </p>
-<ul class="nav nav-tabs" role="tablist">
-    <li>
-        <a href="{{ path('_showcategory', { 'categoryid': category.id }) }}">{{ 'PRELIMINARY'|trans|upper }}</a>
-    </li>
-    <li class="active">
-        <a href="{{ path('_showcategory_classification', { 'categoryid': category.id }) }}">{{ 'CLASSIFICATION'|trans|upper }}</a>
-    </li>
-    {% if finals > 0 %}
-    <li>
-        <a href="{{ path('_showcategory_finals', { 'categoryid': category.id }) }}">{{ 'FINALS'|trans|upper }}</a>
-    </li>
-    {% endif %}
-</ul>
+<div class="hidden-xs">
+    <ul class="nav nav-tabs" role="tablist">
+        <li>
+            <a href="{{ path('_showcategory', { 'categoryid': category.id }) }}">{{ 'PRELIMINARY'|trans|upper }}</a>
+        </li>
+        <li class="active">
+            <a href="{{ path('_showcategory_classification', { 'categoryid': category.id }) }}">{{ 'CLASSIFICATION'|trans|upper }}</a>
+        </li>
+        {% if finals > 0 %}
+        <li>
+            <a href="{{ path('_showcategory_finals', { 'categoryid': category.id }) }}">{{ 'FINALS'|trans|upper }}</a>
+        </li>
+        {% endif %}
+    </ul>
+</div>
+<div class="visible-xs-block">
+    <h4>{{ 'CLASSIFICATION'|trans|upper }}</h4>
+</div>
 {% if grouplist|length > 0 %}
 <p class="lead" />
 <div class="row">
@@ -70,6 +75,17 @@
         </div>
     </div>
 {% endfor %}
+</div>
+<div class="visible-xs-block">
+    <nav>
+        <ul class="pager">
+        {% if finals > 0 %}
+            <li class="next"><a href="{{ path('_showcategory_finals', { 'categoryid': category.id }) }}">{{ 'FINALS'|trans|upper }} <span aria-hidden="true">&rarr;</span></a></li>
+        {% else %}
+            <li class="next"><a href="{{ path('_showcategory', { 'categoryid': category.id }) }}">{{ 'PRELIMINARY'|trans|upper }} <span aria-hidden="true">&rarr;</span></a></li>
+        {% endif %}
+        </ul>
+    </nav>
 </div>
 {% else %}
 <div class="panel panel-warning">

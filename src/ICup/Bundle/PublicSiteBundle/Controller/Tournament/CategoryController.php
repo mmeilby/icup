@@ -124,7 +124,7 @@ class CategoryController extends Controller
         $finals = array(
             'teams' => $teams,
             'levels' => 0,
-            'bronze' => $pyramid['B']
+            'bronze' => array_key_exists('B', $pyramid) ? $pyramid['B'] : null
         );
         $this->populateResults($finals, $pyramid['F'], 0, 'F');
         return $finals;

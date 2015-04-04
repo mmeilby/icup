@@ -17,19 +17,24 @@
         category.gender,
         category.classification]|join|transchoice(category.age, { '%age%': category.age },'tournament') }}
 </p>
-<ul class="nav nav-tabs" role="tablist">
-    <li>
-        <a href="{{ path('_showcategory', { 'categoryid': category.id }) }}">{{ 'PRELIMINARY'|trans|upper }}</a>
-    </li>
-    {% if classifications > 0 %}
-    <li>
-        <a href="{{ path('_showcategory_classification', { 'categoryid': category.id }) }}">{{ 'CLASSIFICATION'|trans|upper }}</a>
-    </li>
-    {% endif %}
-    <li class="active">
-        <a href="{{ path('_showcategory_finals', { 'categoryid': category.id }) }}">{{ 'FINALS'|trans|upper }}</a>
-    </li>
-</ul>
+<div class="hidden-xs">
+    <ul class="nav nav-tabs" role="tablist">
+        <li>
+            <a href="{{ path('_showcategory', { 'categoryid': category.id }) }}">{{ 'PRELIMINARY'|trans|upper }}</a>
+        </li>
+        {% if classifications > 0 %}
+        <li>
+            <a href="{{ path('_showcategory_classification', { 'categoryid': category.id }) }}">{{ 'CLASSIFICATION'|trans|upper }}</a>
+        </li>
+        {% endif %}
+        <li class="active">
+            <a href="{{ path('_showcategory_finals', { 'categoryid': category.id }) }}">{{ 'FINALS'|trans|upper }}</a>
+        </li>
+    </ul>
+</div>
+<div class="visible-xs-block">
+    <h4>{{ 'FINALS'|trans|upper }}</h4>
+</div>
 {% if grouplist|length > 0 %}
 <div class="panel hidden-xs">
     {% set cols = 5 + 6*(pyramid.levels-1) %}
@@ -82,7 +87,7 @@
                     {{ formatter.club(record.left.team, record.left.group, _context) }}
                 </table>
             </td>
-            <td class="line"></td>
+            <td class="line">&nbsp;</td>
         {% if pyramid.levels == 1 %}
             <td rowspan="2" class="hscore">
                 <span title="{{ formatter.match(pyramid.F, _context) }}">{{ pyramid.F.home.score }}-{{ pyramid.F.away.score }}</span>
@@ -100,7 +105,7 @@
             {% endif %}
             <td class="line{{ loop.index0%2 == 1 ? ' vliner' : '' }}"></td>
         {% endif %}
-            <td class="line"></td>
+            <td class="line">&nbsp;</td>
             <td rowspan="2" class="rightteam">
                 <table>
                     {{ formatter.club(record.right.team, record.right.group, _context) }}
@@ -109,19 +114,21 @@
         </tr>
         <tr>
             <td></td>
-            <td class="{{ loop.index0%2 == 0 ? 'vlinel' : '' }}"></td>
             {% if pyramid.levels == 1 %}
-                {{ formatter.td(cols-7) }}
+                {{ formatter.td(cols-5) }}
             {% elseif pyramid.levels == 3 and loop.index0 > 0 and loop.index < loop.length %}
+                <td class="{{ loop.index0%2 == 0 ? 'vlinel' : '' }}"></td>
                 {{ formatter.td(2) }}
                 <td class="vlinel"></td>
                 {{ formatter.td(cols-12) }}
                 <td class="vliner"></td>
                 {{ formatter.td(2) }}
+                <td class="{{ loop.index0%2 == 0 ? 'vliner' : '' }}"></td>
             {% else %}
+                <td class="{{ loop.index0%2 == 0 ? 'vlinel' : '' }}"></td>
                 {{ formatter.td(cols-6) }}
+                <td class="{{ loop.index0%2 == 0 ? 'vliner' : '' }}"></td>
             {% endif %}
-            <td class="{{ loop.index0%2 == 0 ? 'vliner' : '' }}"></td>
             <td></td>
         </tr>
         <tr>
@@ -214,6 +221,13 @@
         </div>
     </div>
 {% endfor %}
+</div>
+<div class="visible-xs-block">
+    <nav>
+        <ul class="pager">
+            <li class="next"><a href="{{ path('_showcategory', { 'categoryid': category.id }) }}">{{ 'PRELIMINARY'|trans|upper }} <span aria-hidden="true">&rarr;</span></a></li>
+        </ul>
+    </nav>
 </div>
 {% else %}
 <div class="panel panel-warning">

@@ -22,6 +22,9 @@
         </li>
     </ul>
 </div>
+<div class="visible-xs-block" style="margin-top: 10px;">
+    <h4>{{ 'WINNING_CLUBS'|trans|upper }}</h4>
+</div>
 <p class="lead" />
 {% if championlist|length > 0 %}
 <table class="table table-striped">
@@ -56,6 +59,13 @@
     {% endfor %}
     </tbody>
 </table>
+<div class="visible-xs-block">
+    <nav>
+        <ul class="pager">
+            <li class="next"><a href="{{ path('_tournament_winners', {'tournament': tournament.key }) }}">{{ 'WINNERS'|trans|upper }} <span aria-hidden="true">&rarr;</span></a></li>
+        </ul>
+    </nav>
+</div>
 {% else %}
 <div class="panel panel-warning">
     <div class="panel-heading">

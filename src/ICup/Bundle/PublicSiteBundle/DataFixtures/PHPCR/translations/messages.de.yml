@@ -1,1 +1,528 @@
-# ---
+frontpage:
+    section_1:
+        title: Play handball in Italy
+        body: >
+            <p>
+                Are you fund of playing handball and would you love to participate in an international tournament this summer?<br />
+                In that case you should join the Interamnia World Cup!
+            </p>
+            <p>
+                In the beginning of July you can attend this fabulous tournament at the adriatic coast of Italy - just 25 km from the beach.
+                Situatated close to the majestic mountain - the Gran Sasso.
+            </p>
+            <p>
+                You can be a part of games represented by 200 teams from more than 50 countries. You will not want to miss one moment from this Cup.
+            </p>
+            <p>
+                On these pages you will find all the information you might need to enroll and enjoy the tournament this summer.
+                If you should need more information you will find contact information from the menu.
+            </p>
+            <p>Vediamo a Teramo</p>
+    follow_club:
+        title: Follow your club
+        body: >
+            <p>
+                Are you a parent or a player.
+                Here you can tune in on the results from your club.
+                Just follow this link and select the club you want to follow.
+            </p>
+mypage:
+    wellcome:
+        title: Welcome to my iCup
+        body: >
+            <p>TBA</p>
+    section_1:
+        title: My iCup
+        body: >
+            <p>TBA</p>
+connectclub:
+    follower:
+        title: Connecting to a new club?
+        body: >
+            <p>
+                You are about to connect your profile with a club.
+                It is important that you search thoroughly for the club to ensure that you don't connect with the wrong club.
+            </p>
+            <ul>
+                <li>
+                    <strong>If you want to connect with a club</strong>
+                    to follow the teams, you must connect with an existing club profile.
+                    If you create a new club profile you will not be able to be a part of the club as you intent to.
+                </li>
+                <li>
+                    <strong>If you are a club official</strong>
+                    and want to enroll teams for a tournament you should connect your profile with an existing club.
+                    Only if you know your club has not been created here you should add a new club profile.
+                </li>
+            </ul>
+            <p>
+                <strong>When you search for a club</strong><br>
+                If you write two or more letters of the name of the club you will get a list of possible clubs that match your pattern.
+                You will be able to select one of three matching clubs. If you can not find the club you search for try to add more letters.
+            </p>
+            <p>
+                <u>If you can not find the club you search for</u> then type the full name of the club and click the button <em>Connect club</em>.
+                This way you will create a new club profile with you as the administrator.
+                You can easily transfer this role to other users connected to the club.
+            </p>
+contact:
+    address:
+        title: Contact
+        body: >
+            <p>If you should need more information please contact the office in Teramo:</p>
+            <p>
+                <strong>INTERAMNIA WORLD CUP</strong><br />
+                <strong>ORGANIZING COMMITTEE</strong><br />
+                Via V. Irelli 55<br />
+                64100 Teramo<br />
+                Italy<br />
+                <br />
+                Office: +39 0861 266366<br />
+                Fax: +39 0861 412279<br />
+                <br />
+                Skype: interamniacup<br />
+                e-mail: info@interamniaworldcup.com<br />
+                <a href="www.interamniaworldcup.com">www.interamniaworldcup.com</a><br />
+                <br />
+                <strong>FACEBOOK</strong><br />
+                Interamnia World Cup official Facebook page:<br />
+                <a href="http://www.facebook.com/InteramniaWorldCup">www.facebook.com/InteramniaWorldCup</a>
+            </p>
+enrollment:
+    terms:
+        title: Enrollment 2015
+        body: >
+            <p>Clubs can make their participation official according to the following deadlines:</p>
+
+            <p>(1st option)<br />
+            By November 30th, 2014 euro 500.00 per team.</p>
+            <ul>
+                <li>Enrollment fee: euro 100.00</li>
+                <li>Lodging and expenses deposit: euro 400.00</li>
+            </ul>
+
+            <p>(2nd option)<br />
+            By February 10th, 2015 euro 600.00 per team.</p>
+            <ul>
+                <li>Enrollment fee: euro 200.00</li>
+                <li>Lodging and expenses deposit: euro 400.00</li>
+            </ul>
+
+            <p>(3rd option)<br />
+            By April 15th, 2015 euro 700.00 per team.</p>
+            <ul>
+                <li>Enrollmentfee: euro 300.00</li>
+                <li>Lodging and expenses deposit: euro 400.00</li>
+            </ul>
+
+            <p>ENROLLMENT</p>
+            <p>
+                Considering the great participation of teams foreseen, so as to fulfil the logistic and organizative aspects in the best way possible,
+                three enrollment options with some reductions have been foreseen for the teams who will enroll first.
+                Furthermore, they will have the priority, as well as the certainty of being accepted in the tournament.
+            </p>
+
+            <p>Enrollment (1st option)<br />
+            The enrollment form and a euro 500.00 deposit must be received by November 30th, 2014. This will cover:<br />
+            Enrollment fee: euro 100.00<br />
+            Deposit for room and board: euro 400.00 (the deposit amount will be deducted from the total amount due for room and board)<br />
+            The final payment of the remaining amount due for room and board will be due by May 15th, 2015.</p>
+
+            <p>Enrollment (2nd option)<br />
+            The enrollment form and a euro 600.00 deposit must be received by February 10th, 2015. This will cover:<br />
+            Enrollment fee: euro 200.00<br />
+            Deposit for room and board: euro 400.00 (the deposit amount will be deducted from the total amount due for room and board)<br />
+            The final payment of the remaining amount due for room and board will be due by May 15th, 2015.</p>
+
+            <p>Enrollment (3rd option)<br />
+            The enrollment form and a euro 700.00 deposit must be received by April 15th, 2015. This will cover:<br />
+            Enrollment fee: euro 300.00<br />
+            Deposit for room and board: euro 400.00 (the deposit amount will be deducted from the total amount due for room and board)<br />
+            The final payment of the remaining amount due for room and board will be due by May 15th, 2015.</p>
+
+            <p>Please note the following:</p>
+            <p>
+                Those clubs choosing the hotel stay will have to send a 25% deposit of the total cost
+                within 15 days of the option being made by the Organization, in order to confirm their reservation.
+                This amount will be calculated in the total amount for room and board expenses and it will not be refunded in case of the club's withdrawal
+                from the tournament.
+            </p>
+    accomodation:
+        title: Accomodation
+        body: >
+            <p>ROOM AND BOARD</p>
+            <p>The Organization offers the following options for room and board:</p>
+
+            <p>LODGING IN TERAMO</p>
+            <p>SCHOOL IN TERAMO (WITHOUT BEDDING ARRANGEMENTS) -euro 50.00 per person.
+            The cost includes the overnight stay from July 4th to July 11th included.
+            Each team will have one room available.</p>
+            <p>The cost for any extra night is euro 5.00 per night Availability: 80 teams.</p>
+
+            <p>SCHOOL IN TERAMO (WITH BEDDING ARRANGEMENTS) -euro 80.00 per person.
+            The cost includes the overnight stay from July 4th to July 11th included. Each team will have one room available equipped solely with folding beds,
+            mattresses and sheets. NO PILLOWS.</p>
+            <p>The cost for any extra night is euro 10.00 per night Availability: 50 teams</p>
+
+            <p>TENT IN TERAMO (tent brought by the participants &amp;ndash; without bed- ding arrangements) - euro 30.00 per person.
+            The cost includes the overnight on a campsite ground from the night of July 4th to the night of July 11th included.</p>
+            <p>The cost for any extra night is euro 5.00 per night Availability: 50 teams</p>
+
+            <p>LODGING AT A BEACH LOCATION</p>
+            <p>TENT IN CAMPSITE (Tent brought by the participants - without bedding arrangements) - euro 55.00 per person.
+            The cost includes the overnight on a campsite ground from the night of July 4th to the night of July 11th included.
+            The participants will have the possibility to utilize all the campsite facilities,
+            included the use of the swimming pool and the access to the beach nearby.
+            They will be also allowed to take part in any initiatives promoted by the campsite organization.</p>
+            <p>The cost for any extra night is euro 8.00 per night Availability: 80 teams</p>
+
+            <p>BOARD</p>
+            <p>RESTAURANT IN TERAMO - euro 150,00 per person. The cost in- cludes two daily meals, with the exception of breakfast,
+            from the dinner on the 4th of July to the dinner of the 11th of July included. Any extra meal will be euro 10.00 per meal per person.</p>
+
+            <p>ROOM AND BOARD</p>
+            <p>ROOM AND BOARD IN HOTELS IN TERAMO OR NEARBY AREAS - euro 400,00 per person.
+            The cost includes the overnight stay, breakfast and two daily meals, from the dinner on the 4th of July to the breakfast of the 12th of July included.
+            For any extended stay, the cost of euro 50.00 per extra night per person will be applied. Single room supplement: euro 100,00</p>
+            <p>Availability: 17 teams in hotels in Teramo 20 teams in nearby hotels .</p>
+
+            <p>ROOM AND BOARD IN HOTELS AT THE SEASIDE*</p>
+            <p>
+                ROOM AND BOARD IN HOTELS AT THE SEASIDE* - euro 400,00 per person.
+                The cost includes the overnight stay, breakfast and two daily meals,
+                from the dinner on the 4th of July to the breakfast of the 12th of July included.
+                The participants will have the possibility to utilize all the hotel facilities, included the use of the swimming pool,
+                if any, and the access to the beach nearby, if any. They will be also allowed to take part in any initiatives promoted by the hotel organization.
+            </p>
+            <p>For any extended stay, the cost of euro 50.00 per extra night per person will be applied.
+            Single room supplement: euro 100,00 Availability: 100 teams<br />
+            * Clubs must have their own means of trasportation.</p>
+
+            <p>It is also possible to opt for the following lodging solutions:<br />
+            4-STAR HOTELS<br />
+            COUNTRY HOUSES<br />
+            AGRITOURISMS</p>
+
+            <p>RESIDENCES<br />
+            Detailed information will be provided upon request</p>
+
+            <p>INDEPENDENT TEAMS</p>
+            <p>INDEPENDENT TEAMS -euro 20.00 per person. Those teams who prefer to find their own accommodation without any help from the Organization,
+            will have to pay the above mentioned amount, be- sides the participation fee.</p>
+
+            <p>PLEASE NOTE THE FOLLOWING:</p>
+            <p>Clubs opting for room and board outside Teramo must have their own means of trasportation..<br />
+            Each participating team must be composed by a mininum of 15 people, including players, coaches and chaperones.</p>
+
+            <p>BUS SERVICES EUROPE - ITALY</p>
+            <p>
+                Baltour - Eurolines Italia Tour Operator handles international connection by bus with the 26 nations listed below
+                (Information related to the routes can be viewed on the website: www.eurolines.it).<br />
+                Albania; Austria; Belgium; Belarus; Bulgaria; Estonia; France; Germany; Great Britain; Latvia; Lithuania; Macedonia; Moldavia;
+                Holland, Portugal; Czech Republic; Romania; Russia; Serbia; Slovakia; Spain; Switzerland; Ukraine; Hungary.
+            </p>
+
+            <p>TRASPORTATION TO AND FROM ROME AIRPORT</p>
+            <p>
+                It is possible to organize the transfer to and from Rome airport:
+                With public transportation (tickets can be purchased at the cost of euro 19 per person one-way/single)<br />
+                With transportation made available by the Organization.
+            </p>
+
+            <p>
+                The fee for each club (for a maximum capacity of 50 people) is euro 900.00 one-way/single trip.
+                The reservation must be made upon enrollment.
+                The clubs must send their detailed flight information no later than three days before their arrival.
+            </p>
+
+            <p>
+                The service includes a chaperon and an interpreter.<br />
+                If there is the possibility to accommodate two teams from two diffe- rent clubs, the cost will then be euro 450.00 per team.
+            </p>
+
+            <p>TRASPORTATION TO AND FROM PESCARA AIRPORT</p>
+            <p>
+                These are the following routes to and from Pescara (km. 55 from Teramo):
+                Barcelona, Berlin, Brussels, Bucarest, Crete, Eindhoven, Frankfurt, Kiev, Lviv, London, Nice, Oslo, Palma de Mallorca, Paris, Tirana, Toronto
+            </p>
+
+            <p>TRASPORTATION TO AND FROM ANCONA AIRPORT</p>
+            <p>
+                These are the following routes to and from Ancona (Km. 125 from Teramo):
+                Brussels, Bucarest, Crete, Dusseldorf, Ibiza, London, Munich, Monastir, Moscow, Palma de Mallorca, Rhodes, Sharm El Sheik, Timisoara, Tirana.
+            </p>
+
+            <p>
+                The Organization is available to provide transfers to and from either airport
+                and will communicate the transfer costs to those clubs who are interested.
+            </p>
+
+            <p>EXCURSIONS</p>
+            <p>
+                Baltour Tour Operator will be happy to organize excursions to cities of art, such as Rome, Venice, and Florence.<br />
+                Details will be made available upon request.
+            </p>
+    address:
+        title: Address
+        body: >
+            <p>
+                <strong>INTERAMNIA WORLD CUP</strong><br />
+                <strong>SEGRETERIA ORGANIZZATIVA</strong>
+            </p>
+            <p>
+                Via V. Irelli, 55<br />
+                64100 Teramo (Italy)
+            </p>
+            <p>
+                Tel. +39 0861 266366<br />
+                Fax +39 0861 412279
+            </p>
+            <p>
+                Skype: interamniacup<br />
+                e-mail: info@interamniaworldcup.com www.interamniaworldcup.com
+            </p>
+            <p>
+                FACEBOOK<br />
+                Interamnia World Cup Official Page<br />
+                http://www.facebook.com/InteramniaWorldCup
+            </p>
+    paymentterms:
+        title: Payment terms
+        body: >
+            <p>PAYMENT METHOD</p>
+            <p>The above mentioned fees, as well as the balance shall be wired to the following account:</p>
+            <p>
+                Banca Tercas - Sede di Teramo<br />
+                INTERAMNIA WORLD CUP<br />
+                Bank Account: CC0900053052<br />
+                IBAN: IT05 B 06060 15300 CC0900053052<br />
+                SWIFT: TERCIT 3TXXX
+            </p>
+
+            <p>ENROLLMENT PROCEDURE</p>
+            <p>
+                The duly compiled enrollment form and the payment receipt of the above mentioned fees shall be mailed to<br />
+                Interamnia World Cup<br />
+                Via V. Irelli, 55<br />
+                64100 Teramo (Italy)<br />
+                or e-mailed to info@interamniaworldcup.com by November 30th, 2014 (1st option); February 10th, 2015 (2nd option); April 15th, 2015 (3rd option)
+            </p>
+
+            <p>Enrollment forms without the payment receipts will be rejected.</p>
+
+            <p>All the forms must be duly and legibly compiled and must by signed by the President of the clubs.</p>
+
+            <p>PARTICIPATION WITHDRAWAL</p>
+            <p>
+                Should the club be unable to participate in the tournament, the amount already submitted will not be reimbursed.<br />
+                To obtain the room and board reimbursement,
+                with the exception of the hotel deposit payment and of the enrolment fees the club shall inform in writing and with a justified reason
+                the Organizative committee of the inability to participate by June 10th, 2015.
+            </p>
+information:
+    intro:
+        title: The Interamnia World Cup for the 43rd time
+        body: >
+            <p>
+                Interamnia - means between rivers - and refers to the position of Teramo, surrounded by the rivers Tordino og Vezzola.
+                In the streets of this beautyfull classic italian city, the 43rd edition of the great tournament known as the unofficial world championsship
+                for young people will take place this summer.
+            </p>
+            <p>
+                Since 1973 this event has been ongoing every summer creating an amazing experience for girls and boys in the age of 12-18 years.
+                And should you be one of those kids wanting to go back even though you have passed 18 - don't worry - now the tournament is open
+                for senior teams as well.
+            </p>
+            <p>
+                The tournament makes a perfect place for team building and offers a lot of great experiences with new friends from forreign countries
+                in the lovely italian city life. This handball event has evolved during the last 42 years and is today a multi cultural event
+                for young people from all over the world.
+            </p>
+            <p>
+                Accomodated at public schools, playing in the streets and on city squares - it all tributes to a better understanding and respect
+                of other young people no matter where they come from, no matter what color or relegion they have.
+            </p>
+    price:
+        title: How much does it cost to participate?
+        body: >
+            <p>The participation cost depends on several things:</p>
+            <ul>
+                <li>Will you arrive with bus or airplane?</li>
+                <li>How do you expect to stay - in tent, on public school or at hotel?</li>
+            </ul>
+            <p>
+                If you travel from a european country you should expect expenses for about € 500 covering transport and tournament fee.
+                This also covers the expense for staying at a public school or on camping at the beach.
+            </p>
+            <p>
+                Depending on how much you drink and eat you should be able to eat out every day using less than € 20 each day.
+                But don't forget the breakfast if you are used to that. Anyway, a simple bread from the local baker may be sufficient for you.
+            </p>
+    firsttime:
+        title: First time in Teramo?
+        body: >
+            <p>If this is your first time to Teramo you should be excited!</p>
+            <p>
+                Maybe you have a lot of questions and you may find some answers here.
+                As an official for the group you should visit the tournament office as soon as you arrive to Teramo.
+                From the office you will be guided to your accomodation and you will receive a box of information covering anything you need to know
+                about the Interamnia World Cup and Teramo.
+            </p>
+            <p>
+                The tournament office you will find just behind the main square Piazza Martiri della Libertà.
+                Look for the street Via Nico Palma at Corso Cerulli.
+            </p>
+    advices:
+        title: A simple advice
+        body: >
+            <p>The Interamnia World Cup is played in Teramo - a cosy city with an ancient core easy to overlook and find your way within.</p>
+            <p>Players can walk on their own - maybe to dine at one of the nice restaurants - and then later return to the main square at Campo 1.</p>
+            <p>However it is advisable to agree on some simple rules.</p>
+            <p>Some teams use a set of rules common for all activities with the club - others - have no polices for summer camps in Italy.</p>
+            <p>In general, when players walk in small groups everything work out fine.</p>
+    matches:
+        title: How many matches will I play?
+        body: >
+            <p>
+                Usually the groups are assigned six teams.
+                So in most cases the team will play at least five matches.
+                Should the team qualify for elimination rounds even more matches will be played.
+            </p>
+            <p>
+                A team that does not qualify and wants to play more matches should try to arrange friendly matches.
+                Ask the tournament office for help to arrange these matches. They will arrange the playground and referees as well.
+            </p>
+    packing:
+        title: Packing list
+        body: >
+            <p>
+                If you at this point feel ready to leave for Teramo and join the Interamnia World Cup,
+                you will find here a simple suggestion of things you can bring with you.
+            </p>
+            <p>Allow yourself to be inspired by the following list:</p>
+            <ul>
+                <li>Passport (also needed for documentation before each match)</li>
+                <li>Health ensurance</li>
+                <li>Money (euro) and a purse</li>
+                <li>Toothbrush, paste and other stuff</li>
+                <li>Two towels (one for bath and one for the beach/pool)</li>
+                <li>Swimsuit</li>
+                <li>Backpack/bag</li>
+                <li>Shoes for the game - outdoor use</li>
+                <li>Socks for the game</li>
+                <li>T-shirts for leasure time and dress for evening use</li>
+                <li>Shoes or sandals for leasure time</li>
+                <li>Sunblocker</li>
+                <li>Food for the trip (if you travel by airplane)</li>
+            </ul>
+    accomodation:
+        title: Addresses
+        body: >
+            <p>Accomodation will usualy take place on public schools in Teramo or on Camping on the beach in Giulianova.</p>
+            <p>Here you will find addresses of some of the places:</p>
+            <address>
+                <strong>Teramo</strong><br />
+                <br />
+                Scuola Media "Zippilli"<br />
+                Via G. De Vincentiis<br />
+                64100 Teramo<br />
+                <br />
+                Scuola Savini<br />
+                Via Giosué Carducci 39<br />
+                64100 Teramo<br />
+                <br />
+                Scuola<br />
+                Via V. Cerulli Irelli 15<br />
+                64100 Teramo<br />
+                <br />
+                Scuola Media D'Alessandro<br />
+                Via del Tiro a Segno<br />
+                64100 Teramo<br />
+                <br />
+                <strong>Giulianova</strong><br />
+                <br />
+                Stork Camping Village<br />
+                Via del Mare, 11<br />
+                64026 Roseto degli Abruzzi (TE)<br />
+                Tel.: +39 085 893 7076<br />
+                Fax: +39 085 893 7542<br />
+                E-mail: info@campingstork.it<br />
+                Web: www.campingstork.com<br />
+                <br />
+                Tam Tam Camping<br />
+                Lungomare Rodi<br />
+                64022 Giulianova Lido (TE)<br />
+                Tel.: +39 085 800 3563<br />
+                Fax: +39 085 800 3563<br />
+                E-mail: info@campingtamtam.it<br />
+                Web: www.campingtamtam.it
+            </address>
+    dining:
+        title: Eating out
+        body: >
+            <p>
+                In Teramo you will find a lot of restaurants and fastfood places with different price and quality.
+                The following places can be recommended for a fair price and good quality - and certainly an authentic italian atmosphere.
+            </p>
+            <p>
+                Don't forget to reserve a table if you expect to eat out the whole team.
+            </p>
+            <address>
+                El Gato<br />
+                Via Della Banca, 1<br />
+                64100 Teramo<br />
+                Tlf.: +39 0861 247880<br />
+                <br />
+                La Clessidra<br />
+                Via Vezzola, 12<br />
+                64100 Teramo<br />
+                Tlf.: +39 0861 245347<br />
+                <br />
+                I Carati di Bacco<br />
+                Via Torre Bruciata, 23<br />
+                64100 Teramo<br />
+                Tlf.: +39 0861 243019<br />
+                <br />
+                Ristorante Antico Cantinone<br />
+                Via Ciotti, 5<br />
+                64100 Teramo<br />
+                Tlf.: +39 0861 248863
+            </address>
+    matchtime:
+        title: Match time
+        body: >
+            <table>
+            <thead>
+                <td>Category</td><td>Match time</td>
+            </thead>
+            <tr>
+                <td>U30 and U21 national teams</td><td>2 x 30 min</td>
+            </tr>
+            <tr>
+                <td>U21</td><td>2 x 20 min</td>
+            </tr>
+            <tr>
+                <td>U12-U18</td><td>2 x 15 min</td>
+            </tr>
+            </table>
+    playgrounds:
+        title: Playgrounds
+        body: >
+            <p>
+                CAMPO 1 - Piazza Martiri della Libertà<br />
+                CAMPO 2 - Palestra Molinari<br />
+                CAMPO 3 - Via G.B. Campano<br />
+                CAMPO 4 - C.R.A.L. Telecom<br />
+                CAMPO 5 - Scuola Media D'Alessandro<br />
+                CAMPO 6 - Palestra I.T.I.S.<br />
+                CAMPO 7 - Pista Pattinaggio Acquaviva<br />
+                CAMPO 8 - Via L. Tripoti<br />
+                CAMPO 9 - Scuola Media Molinari<br />
+                CAMPO 10 - Pala Giorgio Binchi<br />
+                CAMPO 11 - Palestra I.P.C.<br />
+                CAMPO 12 - Palasport, San Nicoló<br />
+                CAMPO 13 - Giulianova<br />
+                CAMPO 14 - Pineto<br />
+                CAMPO 15 - Rocca Santa Maria<br />
+                CAMPO 16 - S. Egidio
+            </p>

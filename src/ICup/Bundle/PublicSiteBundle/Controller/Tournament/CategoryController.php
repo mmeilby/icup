@@ -55,7 +55,7 @@ class CategoryController extends Controller
     
     /**
      * @Route("/tmnt/ctgr/{categoryid}/fnls", name="_showcategory_finals")
-     * @Template("ICupPublicSiteBundle:Tournament:category_finals_test.html.twig")
+     * @Template("ICupPublicSiteBundle:Tournament:category_finals.html.twig")
      */
     public function listFinalsAction($categoryid)
     {

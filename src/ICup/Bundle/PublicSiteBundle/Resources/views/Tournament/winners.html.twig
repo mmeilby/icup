@@ -41,7 +41,7 @@
 <div class="list-group">
     {% for category in championlist %}
         {% set group = category.group %}
-    <a class="list-group-item list-group-item-warning"
+    <a class="list-group-item bg-table-row"
        href="{{ path('_showcategory_finals', {'tournament': tournament.key, 'categoryid': group.catid }) }}">
         <h4 class="list-group-item-heading">
             {% trans %}CATEGORY{% endtrans %} {{ group.category }}
@@ -56,15 +56,15 @@
         <p class="list-group-item-text">
             <div class="row">
                 <div class="col-md-3 col-sm-6">
-                    <h4><span class="label label-danger"><i class="fa fa-trophy"></i>&nbsp;{% trans %}FIRST{% endtrans %}</span></h4>
+                    <h4><span class="label bg-yellow"><i class="fa fa-trophy"></i>&nbsp;{% trans %}FIRST{% endtrans %}</span></h4>
                     {{ self.club(category.first, _context) }}
                 </div>
                 <div class="col-md-3 col-sm-6">
-                    <h4><span class="label label-warning">{% trans %}SECOND{% endtrans %}</span></h4>
+                    <h4><span class="label bg-silver">{% trans %}SECOND{% endtrans %}</span></h4>
                     {{ self.club(category.second, _context) }}
                 </div>
                 <div class="col-md-3 col-sm-6">
-                    <h4><span class="label label-primary">{% trans %}THIRD{% endtrans %}</span></h4>
+                    <h4><span class="label bg-orange">{% trans %}THIRD{% endtrans %}</span></h4>
                     {{ self.club(category.third, _context) }}
                 </div>
                 <div class="col-md-3 col-sm-6">

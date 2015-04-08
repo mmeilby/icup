@@ -1,15 +1,26 @@
 {% macro title(tournament) %}
     <div class="container visible-xs-block">
         <h4 style="margin-bottom: 0;">
-            <i class="fa fa-flag"></i>&nbsp;{% trans from 'tournament' %}RESULTS{% endtrans %} {{ tournament.edition }}
+            <a href="{{ path('_tournament_overview', {'tournament': tournament.key}) }}"><i class="fa fa-flag"></i>&nbsp;{% trans from 'tournament' %}RESULTS{% endtrans %} {{ tournament.edition }}</a>
         </h4>
         <div class="small">{{ tournament.name }}</div>
     </div>
     <div class="container hidden-xs">
-        <h2 style="margin-bottom: 0;">
-            <i class="fa fa-flag"></i>&nbsp;{% trans from 'tournament' %}RESULTS{% endtrans %} {{ tournament.edition }}
-        </h2>
-        <div>{{ tournament.name }}</div>
+        <div class="row">
+            <div class="col-xs-6">
+                <h2 style="margin-bottom: 0;">
+                    <i class="fa fa-flag"></i>&nbsp;{% trans from 'tournament' %}RESULTS{% endtrans %} {{ tournament.edition }}
+                </h2>
+                <div>{{ tournament.name }}</div>
+            </div>
+            <div class="col-xs-6">
+                <nav>
+                    <ul class="pager">
+                        <li class="next"><a href="{{ path('_tournament_overview', {'tournament': tournament.key }) }}">{{ tournament.name }} <span aria-hidden="true">&rarr;</span></a></li>
+                    </ul>
+                </nav>
+            </div>
+        </div>
     </div>
 {% endmacro %}
 {% macro mypage(currentuser) %}

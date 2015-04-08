@@ -25,6 +25,13 @@ frontpage:
                 Du skal blot vælge holdene her.
                 Så ser du automatisk resultater og stillinger for klubbens hold.
             </p>
+overview:
+    section_1:
+        title: Tag til Italien med din håndboldklub
+        body: >
+            <p>
+                TBD
+            </p>
 mypage:
     wellcome:
         title: Velkommen til mit iCup

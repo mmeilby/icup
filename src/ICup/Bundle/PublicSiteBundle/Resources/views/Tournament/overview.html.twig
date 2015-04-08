@@ -1,15 +1,87 @@
 {% extends "ICupPublicSiteBundle:Masters:standard.html.twig" %}
 {% trans_default_domain "tournament" %}
 
+{% import 'ICupPublicSiteBundle:Masters:club.html.twig' as formatter %}
 {% import 'ICupPublicSiteBundle:Masters:tournament.html.twig' as tformatter %}
 
 {% block widebody %}
+<div id="fb-root"></div>
+<script>
+    (function(d, s, id) {
+        var js, fjs = d.getElementsByTagName(s)[0];
+        if (d.getElementById(id)) return;
+        js = d.createElement(s); js.id = id;
+        js.src = "//connect.facebook.net/da_DK/sdk.js#xfbml=1&version=v2.0";
+        fjs.parentNode.insertBefore(js, fjs);
+    }(document, 'script', 'facebook-jssdk'));
+</script>
 {{ tformatter.title(tournament) }}
 {% endblock %}
 
 {% block body %}
+<p class="lead" />
+<div class="row">
+{# *******************************************
+   SMALL MOBILE DEVICES
+   ******************************************* #}
+    <div class="col-md-12 visible-xs-block">
+        {{ tformatter.listmatchesxs(matchlist, _context) }}
+    </div>
+{# *******************************************
+   OTHER DEVICES
+   ******************************************* #}
+    <div class="col-md-8 hidden-xs">
+        {{ tformatter.listmatches(matchlist, _context) }}
+    </div>
+    <div class="col-md-4">
+        <div class="list-group">
+            <div class="list-group-item">
+                <i class="fa fa-facebook-official fa-5x text-primary"></i>&nbsp;
+                <div class="fb-like"
+                     data-href="http://icup.dk"
+                     data-layout="box_count"
+                     data-action="like"
+                     data-show-faces="true"
+                     data-share="true">
+                </div>
+            </div>
+        </div>
+        <div class="list-group">
+    {% for teaser in teaserlist %}
+            <a class="list-group-item" href="{{ teaser.path }}">
+                <h4 class="list-group-item-heading">{{ teaser.titletext|trans }}</h4>
+                <p class="list-group-item-text">{{ teaser.text|trans }}</p>
+            </a>
+    {% endfor %}
+        </div>
+    </div>
+</div>
+{% if newsstream|length > 0 %}
+<div class="row">
+    <div class="col-md-12">
+        <p class="lead">{% trans %}FORM.NEWS.TITLE{% endtrans %}</p>
+        <div class="list-group">
+    {% for news in newsstream %}
+            <a class="list-group-item" href="{{ news.path }}">
+                <h4 class="list-group-item-heading">
+                    {{ 'FORMAT.LONGDATE'|transchoice(news.date|date('j'), {
+                            '%week%': ['WEEK.',news.date|date('D')|upper]|join|trans([],'messages')|capitalize,
+                            '%day%': news.date|date('j'),
+                            '%month%': ['MONTH.',news.date|date('M')|upper]|join|trans([],'messages'),
+                            '%year%': ''}, 'messages') }}
+                </h4>
+                <p class="list-group-item-text">{{ news.text }}</p>
+            </a>
+    {% endfor %}
+        </div>
+    </div>
+</div>
+{% endif %}
+{% endblock %}
+
+{#
     {% set tournamentid = tournament.id %}
     {% sandbox %}
         {% include [['@db', tournamentid]|join(':'), 'ICupPublicSiteBundle:Tournament:overview.default.html.twig'] ignore missing %}
     {% endsandbox %}
-{% endblock %}
+#}

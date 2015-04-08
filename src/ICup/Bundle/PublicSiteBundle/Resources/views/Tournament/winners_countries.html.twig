@@ -28,6 +28,7 @@
 <p class="lead" />
 {% if championlist|length > 0 %}
 <table class="table table-striped">
+    <!--
     <thead>
         <tr>
             <td></td>
@@ -37,25 +38,36 @@
             <td class="winner_forth text-center">{% trans %}FORTH{% endtrans %}</td>
         </tr>
     </thead>
+    -->
     <tbody>
     {% for ranks in championlist %}
-        <tr>
-            <td>
-                {{ formatter.displayclub({'country': ranks.country, 'name': ranks.country|trans({},'lang')|upper }, _context) }}
-            </td>
-            <td class="text-center">
-                {{ ranks.first|length }}
-            </td>
-            <td class="text-center">
-                {{ ranks.second|length }}
-            </td>
-            <td class="text-center">
-                {{ ranks.third|length }}
-            </td>
-            <td class="text-center">
-                {{ ranks.forth|length }}
-            </td>
-        </tr>
+        <tr><td>
+        <div class="row">
+            <div class="col-xs-12 col-sm-4">
+                {{ formatter.displayclub({'country': ranks.country, 'name': ranks.country|trans({},'lang')|upper }, _context) }}<br />
+            </div>
+            <div class="col-xs-3 col-sm-2 text-center">
+                {% for team in ranks.first %}
+                    <span title="{{ team.club }}"><i class="fa fa-trophy yellow"></i></span>
+                {% endfor %}
+            </div>
+            <div class="col-xs-3 col-sm-2 text-center">
+                {% for team in ranks.second %}
+                    <span title="{{ team.club }}"><i class="fa fa-trophy silver"></i></span>
+                {% endfor %}
+            </div>
+            <div class="col-xs-3 col-sm-2 text-center">
+                {% for team in ranks.third %}
+                    <span title="{{ team.club }}"><i class="fa fa-trophy orange"></i></span>
+                {% endfor %}
+            </div>
+            <div class="col-xs-3 col-sm-2 text-center">
+                {% for team in ranks.forth %}
+                    <span title="{{ team.club }}"><i class="fa fa-trophy"></i></span>
+                {% endfor %}
+            </div>
+        </div>
+        </td></tr>
     {% endfor %}
     </tbody>
 </table>

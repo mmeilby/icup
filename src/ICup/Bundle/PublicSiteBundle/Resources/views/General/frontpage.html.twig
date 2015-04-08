@@ -17,16 +17,6 @@
             fjs.parentNode.insertBefore(js, fjs);
         }(document, 'script', 'facebook-jssdk'));
     </script>
-<!--
-    <script type="text/javascript">
-        window.___gcfg = {lang: 'da'};
-        (function() {
-          var po = document.createElement('script'); po.type = 'text/javascript'; po.async = true;
-          po.src = 'https://apis.google.com/js/plusone.js';
-          var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(po, s);
-        })();
-    </script>
--->
     {% if statuslist.active|length == 0 %}
     <div class="navy">
         <div class="container">
@@ -93,16 +83,10 @@
                          data-show-faces="true"
                          data-share="true">
                     </div>
-        <!--            
-                    <div class="g-plusone"
-                         data-size="medium"
-                         data-href="http://icup.dk">
-                    </div>
-        -->
                 </div>
             </div>
             <div class="list-group">
-                <a class="list-group-item" href="{{ path('_show_matches', {'tournament': tournament.key}) }}">
+                <a class="list-group-item" href="{{ path('_tournament_overview', {'tournament': tournament.key}) }}">
                     <h4 class="list-group-item-heading">{% trans %}FORM.FRONTPAGE.BLOCK3.LEARNMORE{% endtrans %}</h4>
                     <p class="list-group-item-text">{% trans %}FORM.FRONTPAGE.BLOCK3.DESCRIPTION{% endtrans %}</p>
                 </a>
@@ -127,6 +111,19 @@
    ******************************************* #}
 {% set spaceleft = 8 - ((statuslist.enroll|length * 4) + (statuslist.done|length * 4)) %}
     <div class="row">
+        <div class="col-md-12">
+            <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+            <!-- icup.dk -->
+            <ins class="adsbygoogle"
+                 style="display:block"
+                 data-ad-client="ca-pub-4146313161751000"
+                 data-ad-slot="6977199688"
+                 data-ad-format="auto"></ins>
+            <script>
+            (adsbygoogle = window.adsbygoogle || []).push({});
+            </script>
+            <hr />
+        </div>
 {% if spaceleft > 0 %}
         <div class="col-md-{{ spaceleft / 2 }}"></div>
 {% endif %}

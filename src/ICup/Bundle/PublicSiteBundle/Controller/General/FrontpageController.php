@@ -85,13 +85,21 @@ class FrontpageController extends Controller
         $form = $this->makeContactForm(new Contact());
         $form->handleRequest($request);
         if ($form->isValid()) {
-            $this->sendMail($form->getData());
-            $request->getSession()->getFlashBag()->add(
-                'msgsent',
-                'FORM.FRONTPAGE.MSGSENT'
-            );
-            // clear form
-            $form = $this->makeContactForm(new Contact());
+            if (stripos($form->getData()->getMsg(), "http:") === FALSE) {
+                $this->sendMail($form->getData());
+                $request->getSession()->getFlashBag()->add(
+                    'msgsent',
+                    'FORM.FRONTPAGE.MSGSENT'
+                );
+                // clear form
+                $form = $this->makeContactForm(new Contact());
+            }
+            else {
+                $request->getSession()->getFlashBag()->add(
+                    'msgnotsent',
+                    'FORM.FRONTPAGE.MSGINVALID'
+                );
+            }
         }
 
         $dm = $this->get('doctrine_phpcr')->getManager('default');

@@ -1,0 +1,14 @@
+# Twig Configuration - match strategy database
+twig:
+    globals:
+        strategies:
+            S2: [ AB ]
+            S3: [ AB,CA,BC ]
+            S4: [ AB,CA,BC,AD,BD,DC ]
+            S5: [ AB,CA,BC,AD,BD,DC,EA,EB,CE,DE]
+            S6: [ AB,CA,BC,AD,BD,DC,EA,EB,CE,DE,FA,FB,CF,DF,EF ]
+            S7: [ AB,CA,BC,AD,BD,DC,EA,EB,CE,DE,FA,FB,CF,DF,EF,AG,BG,GC,GD,GE,FG ]
+            S8: [ AB,CA,BC,AD,BD,DC,EA,EB,CE,DE,FA,FB,CF,DF,EF,AG,BG,GC,GD,GE,FG,HA,HB,CH,DH,EH,HF,GH ]
+
+            S4: [ AB,CA,AD,BC,DB,CD ]
+            S5: [ AB,CA,AD,EA,BC,DB,BE,CD,EC,DE]

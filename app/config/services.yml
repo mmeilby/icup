@@ -117,6 +117,12 @@ services:
           - "@service_container"
           - "@logger"
 
+    planning:
+        class: "ICup\\Bundle\\PublicSiteBundle\\Services\\MatchPlanning"
+        arguments:
+          - "@logic"
+          - "@logger"
+
     util:
         class: "ICup\\Bundle\\PublicSiteBundle\\Services\\Util"
         arguments:

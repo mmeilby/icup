@@ -2,6 +2,7 @@ FORM:
   TITLE: iCup tilmelding
   FRONTPAGE:
     MSGSENT: Din forespørgsel er blevet sendt. Du kan forvente at få svar på den adresse eller nummer du har angivet.
+    MSGINVALID: Din forespørgsel er ikke blevet sendt. Beskeden må ikke indeholde links.
     BLOCK1:
         TITLE: Følg din klub
         DESCRIPTION: >

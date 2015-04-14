@@ -58,6 +58,16 @@
             </div>
         </div>
         {% endfor %}
+        {% for flashMessage in app.session.flashbag.get('msgnotsent') %}
+        <div class="col-md-12">
+            <div class="alert alert-danger alert-dismissible" role="alert">
+                <button type="button" class="close" data-dismiss="alert">
+                    <span aria-hidden="true">&times;</span><span class="sr-only">Close</span>
+                </button>
+                {{ flashMessage|trans }}
+            </div>
+        </div>
+        {% endfor %}
         <div class="col-md-8 hidden-xs">
             {{ tformatter.listmatches(matchlist, _context) }}
         </div>
@@ -184,7 +194,7 @@
    SEND MAIL BANNER
    ALL DEVICES
    ******************************************* #}
-    <div class="jumbotron">
+    <div class="jumbotron bg-aqua navy">
         <div class="container">
             <h2>{% trans %}FORM.FRONTPAGE.SENDMAIL{% endtrans %}</h2>
             <p>

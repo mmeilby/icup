@@ -54,19 +54,4 @@ class RestClubController extends Controller
         }
         return new Response(json_encode($result));
     }
-    
-    /**
-     * Select a group and unfold it for manipulation
-     * @Route("/rest/select/{groupid}", name="_rest_select_group")
-     */
-    public function selectAssignAction($groupid) {
-        // Validate that user is logged in...
-        $this->get('util')->getCurrentUser();
-        
-        $matches = $this->get('planning')->populateGroup($groupid);
-        foreach ($matches as $match) {
-            echo $match->getTeamA()."-".$match->getTeamB()."<br />";
-        }
-        return new Response(json_encode($matches));
-    }
 }

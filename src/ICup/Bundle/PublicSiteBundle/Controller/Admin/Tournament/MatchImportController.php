@@ -29,7 +29,37 @@ class MatchImportController extends Controller
         $tournament = $this->get('entity')->getTournamentById($tournamentid);
         $utilService->validateEditorAdminUser($user, $tournament->getPid());
 
+        $imp = "";
+        $categories = $this->get('logic')->listCategories($tournamentid);
+        $categoryList = array();
+        foreach ($categories as $category) {
+            $categoryList[$category->getId()] = $category->getName();
+        }
+        $groups = $this->get('logic')->listGroupsByTournament($tournamentid);
+        foreach ($groups as $group) {
+            if ($group->getClassification() > 0) {
+                continue; 
+            }
+            $teams = $this->get('logic')->listTeamsByGroup($group->getId());
+            $teamList = array();
+            /* @var $team TeamInfo */
+            foreach ($teams as $team) {
+                $teamList[$team->id] = $team;
+            }
+            // MATCHNO FIELD TIME CAT GRP [TEAM A (ITA)] [TEAM B "DIV" (DNK)]
+            $matches = $this->get('planning')->populateGroup($group->getId());
+            foreach ($matches as $match) {
+                $imp = $imp . "MATCHNO FIELD TIME "
+                            . $categoryList[$group->getPid()] . " "
+                            . $group->getName() . " "
+                            . $teamList[$match->getTeamA()]->name . " (" . $teamList[$match->getTeamA()]->country . ") "
+                            . $teamList[$match->getTeamB()]->name . " (" . $teamList[$match->getTeamB()]->country . ")"
+                            . "\n";
+            }
+        }
+        
         $matchImport = new MatchImport();
+        $matchImport->setImport($imp);
         $form = $this->makeImportForm($matchImport);
         $form->handleRequest($request);
         if ($form->get('cancel')->isClicked()) {

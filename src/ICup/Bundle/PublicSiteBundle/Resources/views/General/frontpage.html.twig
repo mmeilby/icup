@@ -17,6 +17,32 @@
             fjs.parentNode.insertBefore(js, fjs);
         }(document, 'script', 'facebook-jssdk'));
     </script>
+    <div class="container">
+        <div class="row">
+            {% for flashMessage in app.session.flashbag.get('msgsent') %}
+            <div class="col-md-12">
+                <p>&nbsp;</p>
+                <div class="alert alert-success alert-dismissible" role="alert">
+                    <button type="button" class="close" data-dismiss="alert">
+                        <span aria-hidden="true">&times;</span><span class="sr-only">Close</span>
+                    </button>
+                    {{ flashMessage|trans }}
+                </div>
+            </div>
+            {% endfor %}
+            {% for flashMessage in app.session.flashbag.get('msgnotsent') %}
+            <div class="col-md-12">
+                <p>&nbsp;</p>
+                <div class="alert alert-danger alert-dismissible" role="alert">
+                    <button type="button" class="close" data-dismiss="alert">
+                        <span aria-hidden="true">&times;</span><span class="sr-only">Close</span>
+                    </button>
+                    {{ flashMessage|trans }}
+                </div>
+            </div>
+            {% endfor %}
+        </div>
+    </div>
     {% if statuslist.active|length == 0 %}
     <div class="navy">
         <div class="container">
@@ -48,26 +74,6 @@
             <div>{{ tournament.edition }} - {{ tournament.name }}</div>
             <hr />
         </div>
-        {% for flashMessage in app.session.flashbag.get('msgsent') %}
-        <div class="col-md-12">
-            <div class="alert alert-success alert-dismissible" role="alert">
-                <button type="button" class="close" data-dismiss="alert">
-                    <span aria-hidden="true">&times;</span><span class="sr-only">Close</span>
-                </button>
-                {{ flashMessage|trans }}
-            </div>
-        </div>
-        {% endfor %}
-        {% for flashMessage in app.session.flashbag.get('msgnotsent') %}
-        <div class="col-md-12">
-            <div class="alert alert-danger alert-dismissible" role="alert">
-                <button type="button" class="close" data-dismiss="alert">
-                    <span aria-hidden="true">&times;</span><span class="sr-only">Close</span>
-                </button>
-                {{ flashMessage|trans }}
-            </div>
-        </div>
-        {% endfor %}
         <div class="col-md-8 hidden-xs">
             {{ tformatter.listmatches(matchlist, _context) }}
         </div>
@@ -194,7 +200,7 @@
    SEND MAIL BANNER
    ALL DEVICES
    ******************************************* #}
-    <div class="jumbotron bg-aqua navy">
+    <div class="jumbotron bg-silver navy">
         <div class="container">
             <h2>{% trans %}FORM.FRONTPAGE.SENDMAIL{% endtrans %}</h2>
             <p>

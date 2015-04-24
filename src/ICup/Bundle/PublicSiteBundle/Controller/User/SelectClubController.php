@@ -37,7 +37,8 @@ class SelectClubController extends Controller
             $clubs = $session->get(SelectClubController::$ENV_CLUB_LIST);
         }
         else {
-            $clubs = $this->getClubList($request);
+            $clubs = $utilService->getClubList();
+            $session->set(SelectClubController::$ENV_CLUB_LIST, $clubs);
         }
         // Prepare default data for form
         $clubFormData = $this->getClubDefaults($request);
@@ -45,7 +46,7 @@ class SelectClubController extends Controller
         $form->handleRequest($request);
         if ($form->get('cancel')->isClicked()) {
             // Reset club list to last known list
-            $this->getClubList($request);
+            $session->set(SelectClubController::$ENV_CLUB_LIST, $utilService->getClubList());
             return $this->redirect($this->generateUrl('_icup'));
         }
         elseif ($form->isValid()) {
@@ -117,29 +118,6 @@ class SelectClubController extends Controller
                       time() + 60*60*24*365
            )
         );
-    }
-    
-    public function getClubList(Request $request) {
-        $clubs = array();
-        $club_list = $request->cookies->get(SelectClubController::$ENV_CLUB_LIST, '');
-        foreach (explode(':', $club_list) as $club_ident) {
-            $club_ident_array = explode('|', $club_ident);
-            $name = $club_ident_array[0];
-            if (count($club_ident_array) > 1) {
-                $countryCode = $club_ident_array[1];
-            }
-            else {
-                $countryCode = 'EUR';
-            }
-            $club = $this->get('logic')->getClubByName($name, $countryCode);
-            if ($club) {
-                $clubs[$club->getId()] = array('club' => $club, 'selected' => true);
-            }
-        }
-        /* @var $session Session */
-        $session = $request->getSession();
-        $session->set(SelectClubController::$ENV_CLUB_LIST, $clubs);
-        return $clubs;
     }
     
     private function getClubDefaults(Request $request) {

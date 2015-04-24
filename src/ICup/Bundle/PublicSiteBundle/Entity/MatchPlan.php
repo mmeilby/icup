@@ -7,7 +7,7 @@ use ICup\Bundle\PublicSiteBundle\Entity\Doctrine\Group;
 use ICup\Bundle\PublicSiteBundle\Entity\Doctrine\Playground;
 use ICup\Bundle\PublicSiteBundle\Entity\Doctrine\Team;
 
-class MatchPlanning
+class MatchPlan
 {
     /**
      * @var Category $id

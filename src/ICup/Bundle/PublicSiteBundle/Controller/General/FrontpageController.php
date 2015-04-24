@@ -34,7 +34,7 @@ class FrontpageController extends Controller
             'done' => array(),
             'announce' => array()
         );
-        $club_list = $this->getClubList($request);
+        $club_list = $this->get('util')->getClubList();
         $today = new DateTime();
         $shortMatches = array();
         $teaserList = array();
@@ -111,26 +111,6 @@ class FrontpageController extends Controller
                      'matchlist' => $shortMatches,
                      'teaserlist' => $teaserList,
                      'image' => $image);
-    }
-    
-    public function getClubList(Request $request) {
-        $clubs = array();
-        $club_list = $request->cookies->get(SelectClubController::$ENV_CLUB_LIST, '');
-        foreach (explode(':', $club_list) as $club_ident) {
-            $club_ident_array = explode('|', $club_ident);
-            $name = $club_ident_array[0];
-            if (count($club_ident_array) > 1) {
-                $countryCode = $club_ident_array[1];
-            }
-            else {
-                $countryCode = 'EUR';
-            }
-            $club = $this->get('logic')->getClubByName($name, $countryCode);
-            if ($club) {
-                $clubs[] = $club->getId();
-            }
-        }
-        return $clubs;
     }
     
     private function makeContactForm(Contact $contact) {

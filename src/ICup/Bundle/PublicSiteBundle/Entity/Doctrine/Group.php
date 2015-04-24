@@ -36,13 +36,6 @@ class Group
     private $name;
 
     /**
-     * @var integer $playingtime
-     *
-     * @ORM\Column(name="playingtime", type="integer", nullable=false)
-     */
-    private $playingtime;
-
-    /**
      * @var integer $classification
      *   0: Grundspil
      *   1: Playoff
@@ -109,29 +102,6 @@ class Group
     public function getName()
     {
         return $this->name;
-    }
-
-    /**
-     * Set playing time
-     *
-     * @param integer $playingtime
-     * @return Group
-     */
-    public function setPlayingtime($playingtime)
-    {
-        $this->playingtime = $playingtime;
-    
-        return $this;
-    }
-
-    /**
-     * Get playing time
-     *
-     * @return integer 
-     */
-    public function getPlayingtime()
-    {
-        return $this->playingtime;
     }
 
     /**

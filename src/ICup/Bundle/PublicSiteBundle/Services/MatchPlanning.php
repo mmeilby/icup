@@ -6,6 +6,7 @@ use ICup\Bundle\PublicSiteBundle\Entity\TeamStat;
 use ICup\Bundle\PublicSiteBundle\Services\Doctrine\BusinessLogic;
 use ICup\Bundle\PublicSiteBundle\Entity\TeamInfo;
 use ICup\Bundle\PublicSiteBundle\Entity\Match;
+use ICup\Bundle\PublicSiteBundle\Entity\MatchPlan;
 use Monolog\Logger;
 
 class MatchPlanning
@@ -29,6 +30,30 @@ class MatchPlanning
      * @param Integer $groupid The group to sort
      * @return array A list of TeamStat objects ordered by match results and ordering
      */
+    public function populateTournament($tournamentid, $doublematch = false) {
+        $matchPlanList = array();
+        $categories = $this->logic->listCategories($tournamentid);
+        $categoryList = array();
+        foreach ($categories as $category) {
+            $categoryList[$category->getId()] = $category;
+        }
+        $groups = $this->listGroups($tournamentid);
+        foreach ($groups as $group) {
+            $matches = $this->populateGroup($group->getId(), $doublematch);
+            foreach ($matches as $match) {
+                $match->setCategory($categoryList[$group->getPid()]);
+                $match->setGroup($group);
+                $matchPlanList[] = $match;
+            }
+        }
+        return $matchPlanList;
+    }
+    
+    /**
+     * Order teams in group by match results
+     * @param Integer $groupid The group to sort
+     * @return array A list of TeamStat objects ordered by match results and ordering
+     */
     public function populateGroup($groupid, $doublematch = false) {
         $matches = array();
         $teams = $this->logic->listTeamsByGroup($groupid);
@@ -40,10 +65,9 @@ class MatchPlanning
             foreach ($teams as $teamB) {
                 if (($teamA->id != $teamB->id) && !array_key_exists($teamB->id, $check)) {
                     $switch = $idx%2 == 0 || $doublematch;
-                    $match = new Match();
-                    $match->setPid($groupid);
-                    $match->setTeamA($switch ? $teamA->id : $teamB->id);
-                    $match->setTeamB($switch ? $teamB->id : $teamA->id);
+                    $match = new MatchPlan();
+                    $match->setTeamA($switch ? $teamA : $teamB);
+                    $match->setTeamB($switch ? $teamB : $teamA);
                     $matches[] = $match;
                     $idx++;
                 }
@@ -53,6 +77,23 @@ class MatchPlanning
             }
         }
         return $matches;
+    }
+
+    /**
+     * Order teams in group by match results
+     * @param Integer $groupid The group to sort
+     * @return array A list of TeamStat objects ordered by match results and ordering
+     */
+    private function listGroups($tournamentid) {
+        $groupList = array();
+        $groups = $this->logic->listGroupsByTournament($tournamentid);
+        foreach ($groups as $group) {
+            if ($group->getClassification() > 0) {
+                continue; 
+            }
+            $groupList[$group->getId()] = $group;
+        }
+        return $groupList;
     }
     
     /**

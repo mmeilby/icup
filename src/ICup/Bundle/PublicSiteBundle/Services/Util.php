@@ -11,17 +11,15 @@ use Symfony\Component\HttpFoundation\Session;
 use ICup\Bundle\PublicSiteBundle\Exceptions\ValidationException;
 use ICup\Bundle\PublicSiteBundle\Exceptions\RedirectException;
 use Symfony\Component\DependencyInjection\ContainerInterface;
-use Doctrine\ORM\EntityManager;
 use Monolog\Logger;
 use Symfony\Component\HttpFoundation\RedirectResponse;
+use ICup\Bundle\PublicSiteBundle\Controller\User\SelectClubController;
 use RuntimeException;
 
 class Util
 {
     /* @var $container ContainerInterface */
     protected $container;
-    /* @var $em EntityManager */
-    protected $em;
     /* @var $logger Logger */
     protected $logger;
    /* @var $entity Entity */
@@ -34,7 +32,6 @@ class Util
         $this->container = $container;
         $this->entity = $container->get('entity');
         $this->logic = $container->get('logic');
-        $this->em = $container->get('doctrine')->getManager();
         $this->logger = $logger;
     }
 
@@ -55,7 +52,7 @@ class Util
 
     public function getReferer() {
         /* @var $request Request */
-        $request = $this->container->get('request');
+        $request = $this->container->get('request_stack')->getCurrentRequest();
         if ($request->isMethod('GET')) {
             $returnUrl = $request->headers->get('referer');
             $session = $request->getSession();
@@ -68,9 +65,31 @@ class Util
         return $returnUrl;
     }
 
+    public function getClubList() {
+        $clubs = array();
+        /* @var $request Request */
+        $request = $this->container->get('request_stack')->getCurrentRequest();
+        $club_list = $request->cookies->get(SelectClubController::$ENV_CLUB_LIST, '');
+        foreach (explode(':', $club_list) as $club_ident) {
+            $club_ident_array = explode('|', $club_ident);
+            $name = $club_ident_array[0];
+            if (count($club_ident_array) > 1) {
+                $countryCode = $club_ident_array[1];
+            }
+            else {
+                $countryCode = 'EUR';
+            }
+            $club = $this->logic->getClubByName($name, $countryCode);
+            if ($club) {
+                $clubs[] = $club->getId();
+            }
+        }
+        return $clubs;
+    }
+    
     public function getTournamentKey() {
         /* @var $request Request */
-        $request = $this->container->get('request');
+        $request = $this->container->get('request_stack')->getCurrentRequest();
         /* @var $session Session */
         $session = $request->getSession();
         return $session->get('Tournament', '_');
@@ -79,7 +98,7 @@ class Util
     public function setTournamentKey($tournament)
     {
         /* @var $request Request */
-        $request = $this->container->get('request');
+        $request = $this->container->get('request_stack')->getCurrentRequest();
         /* @var $session Session */
         $session = $request->getSession();
         $session->set('Tournament', $tournament);

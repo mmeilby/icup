@@ -22,9 +22,8 @@ class OverviewController extends Controller
             return $this->redirect($this->generateUrl('_tournament_select'));
         }
         
-        $club_list = $this->getClubList($request);
+        $club_list = $this->get('util')->getClubList();
         $today = new DateTime();
-//        $today = new DateTime('2014-07-06 20:15:00');
 
         if (count($club_list) > 0) {
             $matchList = $this->get('match')->listMatchesByTournament($tournament->getId(), $club_list);
@@ -90,25 +89,4 @@ class OverviewController extends Controller
                      'matchlist' => $shortMatches,
                      'teaserlist' => $teaserList);
     }
-    
-    public function getClubList(Request $request) {
-        $clubs = array();
-        $club_list = $request->cookies->get(SelectClubController::$ENV_CLUB_LIST, '');
-        foreach (explode(':', $club_list) as $club_ident) {
-            $club_ident_array = explode('|', $club_ident);
-            $name = $club_ident_array[0];
-            if (count($club_ident_array) > 1) {
-                $countryCode = $club_ident_array[1];
-            }
-            else {
-                $countryCode = 'EUR';
-            }
-            $club = $this->get('logic')->getClubByName($name, $countryCode);
-            if ($club) {
-                $clubs[] = $club->getId();
-            }
-        }
-        return $clubs;
-    }
-    
 }

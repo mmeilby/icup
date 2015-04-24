@@ -1,12 +1,9 @@
 <?php
 namespace ICup\Bundle\PublicSiteBundle\Controller\Tournament;
 
-use ICup\Bundle\PublicSiteBundle\Entity\Doctrine\Group;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
-use Symfony\Component\HttpFoundation\Request;
-use ICup\Bundle\PublicSiteBundle\Controller\User\SelectClubController;
 use DateTime;
 
 class MatchController extends Controller
@@ -16,14 +13,14 @@ class MatchController extends Controller
      * @Route("/tmnt/m/list/{tournament}", name="_show_matches")
      * @Template("ICupPublicSiteBundle:Tournament:matchlist.html.twig")
      */
-    public function listMatchesAction($tournament, Request $request) {
+    public function listMatchesAction($tournament) {
         $this->get('util')->setTournamentKey($tournament);
         $tournament = $this->get('util')->getTournament();
         if ($tournament == null) {
             return $this->redirect($this->generateUrl('_tournament_select'));
         }
 
-        $club_list = $this->getClubList($request);
+        $club_list = $this->get('util')->getClubList();
         $today = new DateTime();
 //        $today = new DateTime('2014-07-06 20:15:00');
 
@@ -48,25 +45,4 @@ class MatchController extends Controller
                      'matchlist' => $matches,
                      'shortmatchlist' => $shortMatches);
     }
-    
-    public function getClubList(Request $request) {
-        $clubs = array();
-        $club_list = $request->cookies->get(SelectClubController::$ENV_CLUB_LIST, '');
-        foreach (explode(':', $club_list) as $club_ident) {
-            $club_ident_array = explode('|', $club_ident);
-            $name = $club_ident_array[0];
-            if (count($club_ident_array) > 1) {
-                $countryCode = $club_ident_array[1];
-            }
-            else {
-                $countryCode = 'EUR';
-            }
-            $club = $this->get('logic')->getClubByName($name, $countryCode);
-            if ($club) {
-                $clubs[] = $club->getId();
-            }
-        }
-        return $clubs;
-    }
-    
 }

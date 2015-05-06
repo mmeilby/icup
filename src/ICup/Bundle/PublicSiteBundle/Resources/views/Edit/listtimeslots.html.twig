@@ -1,0 +1,61 @@
+{% extends "ICupPublicSiteBundle:Masters:edit.html.twig" %}
+{% trans_default_domain "admin" %}
+
+{% block adminbody %}
+    <h2 style="margin-bottom: 0">
+        <i class="fa fa-cogs"></i>&nbsp;
+        {% trans %}FORM.LISTTIMESLOTS.TITLE{% endtrans %}
+    </h2>
+    <p>{% trans %}FORM.LISTTIMESLOTS.CAPTION{% endtrans %}</p>
+<div class="panel panel-default">
+    <div class="panel-body lead">
+        <a href="{{ path('_edit_tournamentboard', { 'tournamentid': tournament.id }) }}">
+            {{ host.name|upper }}
+        </a><br />
+        {{ tournament.name }}
+    </div>
+    <table class="table table-striped">
+        <tbody>
+    {% for timeslot in timeslots %}
+            <tr>
+                <td colspan="2">
+                    <a href="{{ path('_edit_timeslot_chg', { 'timeslotid': timeslot.id }) }}">
+                    {{ timeslot.name|upper }}
+                    </a>    
+                </td>
+                <td class="narrow-col">
+                    <a href="{{ path('_edit_timeslot_add', { 'tournamentid': tournament.id }) }}">
+                        <span class="glyphicon glyphicon-file"></span>
+                    </a>    
+                </td>
+                <td class="narrow-col">
+                    <a href="{{ path('_edit_timeslot_chg', { 'timeslotid': timeslot.id }) }}">
+                        <span class="glyphicon glyphicon-edit"></span>
+                    </a>    
+                </td>
+                <td class="narrow-col">
+                    <a href="{{ path('_edit_timeslot_del', { 'timeslotid': timeslot.id }) }}">
+                        <span class="glyphicon glyphicon-remove"></span>
+                    </a>    
+                </td>
+            </tr>
+    {% else %}
+            <tr>
+                <td class="lead" colspan="2">
+                    <a href="{{ path('_edit_timeslot_add', { 'tournamentid': tournament.id }) }}">
+                    {{'FORM.LISTTIMESLOTS.NOTIMESLOT'|trans|upper}}
+                    </a>    
+                </td>
+                <td class="narrow-col">
+                    <a href="{{ path('_edit_timeslot_add', { 'tournamentid': tournament.id }) }}">
+                        <span class="glyphicon glyphicon-file"></span>
+                    </a>    
+                </td>
+                <td></td>
+                <td></td>
+            </tr>
+    {% endfor %}
+        </tbody>
+    </table>
+</div>
+{% endblock %}

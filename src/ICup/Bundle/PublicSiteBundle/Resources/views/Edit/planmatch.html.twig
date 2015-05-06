@@ -1,0 +1,88 @@
+{% extends "ICupPublicSiteBundle:Masters:edit.html.twig" %}
+{% trans_default_domain "admin" %}
+
+{% import 'ICupPublicSiteBundle:Masters:club.html.twig' as formatter %}
+{% import 'ICupPublicSiteBundle:Masters:tournament.html.twig' as tformatter %}
+{% import 'ICupPublicSiteBundle:Masters:planning.html.twig' as mformatter %}
+
+{% block adminbody %}
+    <h2 style="margin-bottom: 0">
+        <i class="fa fa-university"></i>&nbsp;
+        {% trans %}FORM.MATCHPLANNING.TITLE{% endtrans %}
+    </h2>
+    <p>{% trans %}FORM.MATCHPLANNING.CAPTION{% endtrans %}</p>
+    <div class="panel panel-default">
+        <div class="panel-body lead">
+            <a href="{{ path('_edit_tournamentboard', { 'tournamentid': tournament.id }) }}">
+                {{ host.name|upper }}
+                <br />
+                {{ tournament.name }}
+            </a>
+        </div>
+    </div>
+    {% if unassigned|length > 0 %}
+    <div class="panel panel-danger">
+        <div class="panel-heading">
+            <h4>{% trans %}FORM.MATCHPLANNING.PLANNINGINCOMPLETE{% endtrans %}</h4>
+        {% for categoryinfo in unassigned %}
+            <div class="row">
+                <div class="col-xs-4">
+                    {% trans from "tournament" %}CATEGORY{% endtrans %} {{ categoryinfo.category.name|upper }} -
+                    {{ ['GENDER.',
+                        categoryinfo.category.gender,
+                        categoryinfo.category.classification]|join|transchoice(categoryinfo.category.age, { '%age%': categoryinfo.category.age },'tournament') }}
+                </div>
+                <div class="col-xs-1 text-right">
+                    {{ categoryinfo.matchcount }}
+                </div>
+            </div>
+        {% endfor %}
+        <p></p>
+        </div>
+    </div>
+    {% endif %}
+    <table class="table table-striped">
+        <thead>
+            <tr>
+                <td>{% trans from "tournament" %}LEGEND.PLAYGROUND{% endtrans %}</td>
+                <td>{% trans from "tournament" %}LEGEND.CATEGORY{% endtrans %}</td>
+                <td class="narrow-col">{% trans from "tournament" %}LEGEND.TIME{% endtrans %}</td>
+            </tr>
+        </thead>
+        <tbody>
+    {% for tsset in available_timeslots %}
+            <tr><td class="bg-warning" colspan="3">
+                    {{ 'FORMAT.LONGDATE'|transchoice(tsset[0].slotschedule|date('j'), {
+                            '%week%': ['WEEK.',tsset[0].slotschedule|date('D')|upper]|join|trans([],'messages')|capitalize,
+                            '%day%': tsset[0].slotschedule|date('j'),
+                            '%month%': ['MONTH.',tsset[0].slotschedule|date('M')|upper]|join|trans([],'messages'),
+                            '%year%': tsset[0].slotschedule|date('Y')}, 'messages') }}
+            </td></tr>
+        {% for timeslot in tsset|sort %}
+            <tr>
+                <td>{{ timeslot.playground.name }}</td>
+                <td>{{ timeslot.timeslot.name }}</td>
+                <td class="text-right">{{ timeslot.slot_time_left }}</td>
+            </tr>
+        {% endfor %}
+    {% endfor %}
+        </tbody>
+    </table>
+    <p>&nbsp;</p>
+    {% if matchlist|length > 0 %}
+    <div class="hidden-xs">
+        {{ mformatter.listmatches(matchlist, _context) }}
+    </div>
+    <div class="visible-xs-block">
+        {{ mformatter.listmatchesxs(matchlist, _context) }}
+    </div>
+    {% else %}
+    <div class="panel panel-warning">
+        <div class="panel-heading">
+            <b>
+                {% trans from 'tournament' %}TOURNAMENTNOTREADY{% endtrans %}
+            </b>
+        </div>
+    </div>
+    {% endif %}
+{% endblock %}

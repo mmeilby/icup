@@ -1,0 +1,36 @@
+{% extends "ICupPublicSiteBundle:Masters:edit.html.twig" %}
+
+{% form_theme form 'ICupPublicSiteBundle:Default:layout.script.html.twig' %}
+{% trans_default_domain "admin" %}
+
+{% import 'ICupPublicSiteBundle:Masters:club.html.twig' as formatter %}
+
+{% block adminbody %}
+    <h2 style="margin-bottom: 0">
+        <i class="fa fa-university"></i>&nbsp;
+        {% trans %}FORM.COPYPLAYGROUND.TITLE{% endtrans %}
+    </h2>
+    <p>{% trans %}FORM.COPYPLAYGROUND.PROMPT{% endtrans %}</p>
+<div class="panel panel-default">
+    <div class="panel-body">
+        <p>
+            <table>
+                <tr>
+                    <td class="bg-danger box-margin">
+                        {{ 'FORM.COPYPLAYGROUND.SOURCEPLAYGROUND'|trans }}<br />
+                        {{ source_playground.name }}
+                    </td>
+                    <td class="narrow-col lead box-margin">
+                        <span class="glyphicon glyphicon-circle-arrow-right"></span>
+                    </td>
+                    <td class="bg-success box-margin">
+                        {{ 'FORM.COPYPLAYGROUND.TARGETPLAYGROUND'|trans }}<br />
+                        <strong>{{ target_playground.name }}</strong>
+                    </td>
+                </tr>
+            </table>
+        </p>
+    </div>
+</div>
+{{ form(form) }}
+{% endblock %}

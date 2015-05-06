@@ -4,60 +4,80 @@
 {% block adminbody %}
     <h2 style="margin-bottom: 0">
         <i class="fa fa-cogs"></i>&nbsp;
-        {% trans %}FORM.LISTTOURNAMENTS.TITLE{% endtrans %}
+        {% trans %}FORM.LISTSITES.TITLE{% endtrans %}
     </h2>
-    <p>{% trans %}FORM.LISTTOURNAMENTS.CAPTION{% endtrans %}</p>
-<div class="panel panel-default">
-    <div class="panel-body lead">
-        <a href="{{ path('_edit_tournamentboard', { 'tournamentid': tournament.id }) }}">
-            {{ host.name|upper }}
-        </a><br />
-        {{ tournament.name }}
-    </div>
-    <table class="table table-striped">
-        <tbody>
-{% if sites|length > 0 %}
+    <p>{% trans %}FORM.LISTSITES.CAPTION{% endtrans %}</p>
+    <div class="panel panel-default">
+        <div class="panel-body">
+            <div class="row">
+                <div class="col-lg-7 lead">
+                    <a href="{{ path('_edit_tournamentboard', { 'tournamentid': tournament.id }) }}">
+                        {{ host.name|upper }}
+                    </a><br />
+                    {{ tournament.name }}
+                </div>
+                <div class="col-lg-5 lead text-right">
+                    <a href="{{ path('_edit_import_tournament', {'tournamentid': tournament.id, 'import': 'sites' }) }}" class="btn btn-info">
+                        {% trans %}FORM.TOURNAMENTIMPORT.CAPTION{% endtrans %}
+                    </a>
+                </div>
+            </div>
+        </div>
+        <table class="table table-striped">
+            <tbody>
     {% for site in sites %}
             <tr>
-                <td class="lead" colspan="2">
+                <td class="bg-warning" colspan="2">
                     <a href="{{ path('_edit_site_chg', { 'siteid': site.id }) }}">
-                    {{ site.name|upper }}
+                        <strong>{{ site.name|upper }}</strong>
                     </a>    
                 </td>
-                <td class="narrow-col">
+                <td class="narrow-col bg-warning"></td>
+                <td class="narrow-col bg-warning">
                     <a href="{{ path('_edit_site_add', { 'tournamentid': tournament.id }) }}">
-                        <span class="glyphicon glyphicon-file"></span>
+                        <span class="fa fa-file"></span>
                     </a>    
                 </td>
-                <td class="narrow-col">
+                <td class="narrow-col bg-warning">
                     <a href="{{ path('_edit_site_chg', { 'siteid': site.id }) }}">
-                        <span class="glyphicon glyphicon-edit"></span>
+                        <span class="fa fa-pencil"></span>
                     </a>    
                 </td>
-                <td class="narrow-col">
+                <td class="narrow-col bg-warning">
                     <a href="{{ path('_edit_site_del', { 'siteid': site.id }) }}">
-                        <span class="glyphicon glyphicon-remove"></span>
+                        <span class="fa fa-times"></span>
                     </a>    
                 </td>
+                <td class="narrow-col bg-warning"></td>
             </tr>
         {% if site.id in playgrounds|keys %}
             {% for playground in playgrounds[site.id] %}
             <tr>
                 <td class="narrow-col"></td>
-                <td><a href="{{ path('_edit_playground_chg', { 'playgroundid': playground.id }) }}">{{ playground.name }}</a></td>
+                <td>
+                    <a href="{{ path('_edit_playground_chg', { 'playgroundid': playground.id }) }}">{{ playground.name }}</a>
+                </td>
+                <td id="_playground_{{ playground.id }}" class="narrow-col" draggable="true" ondragstart="drag(event)" ondrop="drop(event)" ondragover="allowDrop(event)">
+                    <span class="fa fa-database"></span>
+                </td>
                 <td class="narrow-col">
                     <a href="{{ path('_edit_playground_add', { 'siteid': site.id }) }}">
-                        <span class="glyphicon glyphicon-file"></span>
+                        <span class="fa fa-file"></span>
                     </a>    
                 </td>
                 <td class="narrow-col">
                     <a href="{{ path('_edit_playground_chg', { 'playgroundid': playground.id }) }}">
-                        <span class="glyphicon glyphicon-edit"></span>
+                        <span class="fa fa-pencil"></span>
                     </a>    
                 </td>
                 <td class="narrow-col">
                     <a href="{{ path('_edit_playground_del', { 'playgroundid': playground.id }) }}">
-                        <span class="glyphicon glyphicon-remove"></span>
+                        <span class="fa fa-times"></span>
+                    </a>    
+                </td>
+                <td class="narrow-col">
+                    <a href="{{ path('_edit_playground_attr_list', { 'playgroundid': playground.id }) }}">
+                        <span class="fa fa-cog"></span>
                     </a>    
                 </td>
             </tr>
@@ -65,34 +85,103 @@
         {% else %}
             <tr>
                 <td></td>
-                <td><a href="{{ path('_edit_playground_add', { 'siteid': site.id }) }}">{{'FORM.LISTTOURNAMENTS.NOPLAYGROUND'|trans|upper}}</a></td>
+                <td>
+                    <a href="{{ path('_edit_playground_add', { 'siteid': site.id }) }}">
+                        {{'FORM.LISTSITES.NOPLAYGROUND'|trans|upper}}
+                    </a>
+                </td>
                 <td class="narrow-col">
                     <a href="{{ path('_edit_playground_add', { 'siteid': site.id }) }}">
-                        <span class="glyphicon glyphicon-file"></span>
+                        <span class="fa fa-file"></span>
                     </a>    
                 </td>
+                <td></td>
+                <td></td>
                 <td></td>
                 <td></td>
             </tr>
         {% endif %}
-    {% endfor %}
-{% else %}
+    {% else %}
             <tr>
-                <td class="lead" colspan="2">
+                <td colspan="2">
                     <a href="{{ path('_edit_site_add', { 'tournamentid': tournament.id }) }}">
-                    {{'FORM.LISTTOURNAMENTS.NOSITE'|trans|upper}}
+                        {{'FORM.LISTSITES.NOSITE'|trans|upper}}
                     </a>    
                 </td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
                 <td class="narrow-col">
                     <a href="{{ path('_edit_site_add', { 'tournamentid': tournament.id }) }}">
-                        <span class="glyphicon glyphicon-file"></span>
+                        <span class="fa fa-file"></span>
                     </a>    
                 </td>
-                <td></td>
-                <td></td>
             </tr>
-{% endif %}
-        </tbody>
-    </table>
-</div>
+    {% endfor %}
+            </tbody>
+        </table>
+    </div>
+{% endblock %}
+{% block javascripts %}
+    <script type="text/javascript">
+        function allowDrop(ev) {
+            ev.preventDefault();
+        }
+
+        function drag(ev) {
+            ev.dataTransfer.setData("Source", ev.target.id);
+        }
+
+        function drop(ev) {
+            ev.preventDefault();
+            var merge_source = ev.dataTransfer.getData("Source");
+            var merge_target = ev.target.parentNode.id;
+            var source_club = null;
+            var target_club = null;
+            var makeAlertBox = function(alerttext) {
+                return '<div class="alert alert-warning alert-dismissible" role="alert">'+
+                            '<button type="button" class="close" data-dismiss="alert">'+
+                                '<span aria-hidden="true">&times;</span>'+
+                                '<span class="sr-only">Close</span>'+
+                            '</button>'+
+                            '<strong>Warning!</strong> '+
+                            alerttext+
+                       '</div>';
+            };
+            $.when(
+                $.getJSON(Routing.generate('_rest_get_playground', { 'playgroundid': merge_source.substring(12) }))
+                    .done(function( playground ) {
+                        source_playground = playground;
+                    })
+                    .fail(function( jqxhr, textStatus, error ) {
+                        $( 'div.panel' ).before(
+                            makeAlertBox('Problem getting info for playground<br />'+
+                                         'Playground id: '+merge_source.substring(12)));
+                    })
+                    .always(function() {
+                    }),
+                $.getJSON(Routing.generate('_rest_get_playground', { 'playgroundid': merge_target.substring(12) }))
+                    .done(function( playground ) {
+                        target_playground = playground;
+                    })
+                    .fail(function( jqxhr, textStatus, error ) {
+                        $( 'div.panel' ).before(
+                            makeAlertBox('Problem getting info for playground<br />'+
+                                         'Playground id: '+merge_target.substring(12)));
+                    })
+                    .always(function() {
+                    }))
+            .then(function() {
+                if (source_playground !== null && target_playground !== null) {
+                    if (source_playground.id === target_playground.id) {
+                        // do nothing
+                    }
+                    else {
+                        location.href=Routing.generate('_edit_playground_copy', { 'playgroundid': target_playground.id, 'sourceplaygroundid': source_playground.id });
+                    }
+                }
+            });                    
+        }
+    </script>
 {% endblock %}

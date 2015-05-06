@@ -105,6 +105,9 @@ class CategoryController extends Controller
             elseif ($this->get('logic')->listEnrolledByCategory($category->getId()) != null) {
                 $form->addError(new FormError($this->get('translator')->trans('FORM.CATEGORY.ENROLLEDEXIST', array(), 'admin')));
             }
+            elseif ($this->get('logic')->listPARelationsByCategory($category->getId()) != null) {
+                $form->addError(new FormError($this->get('translator')->trans('FORM.CATEGORY.PARELATIONSEXIST', array(), 'admin')));
+            }
             else {
                 $em = $this->getDoctrine()->getManager();
                 $em->remove($category);
@@ -123,6 +126,7 @@ class CategoryController extends Controller
         $formDef->add('gender', 'choice', array('label' => 'FORM.CATEGORY.GENDER', 'required' => false, 'choices' => $gender, 'empty_value' => 'FORM.CATEGORY.DEFAULT', 'disabled' => $action == 'del', 'translation_domain' => 'admin'));
         $formDef->add('classification', 'choice', array('label' => 'FORM.CATEGORY.CLASSIFICATION', 'required' => false, 'choices' => $classifications, 'empty_value' => 'FORM.CATEGORY.DEFAULT', 'disabled' => $action == 'del', 'translation_domain' => 'admin'));
         $formDef->add('age', 'text', array('label' => 'FORM.CATEGORY.AGE', 'required' => false, 'disabled' => $action == 'del', 'translation_domain' => 'admin'));
+        $formDef->add('matchtime', 'text', array('label' => 'FORM.CATEGORY.MATCHTIME', 'required' => false, 'disabled' => $action == 'del', 'translation_domain' => 'admin'));
         $formDef->add('cancel', 'submit', array('label' => 'FORM.CATEGORY.CANCEL.'.strtoupper($action),
                                                 'translation_domain' => 'admin',
                                                 'buttontype' => 'btn btn-default',
@@ -146,6 +150,9 @@ class CategoryController extends Controller
             }
             if ($category->getAge() == null || trim($category->getAge()) == '') {
                 $form->addError(new FormError($this->get('translator')->trans('FORM.CATEGORY.NOAGE', array(), 'admin')));
+            }
+            if ($category->getMatchtime() == null || trim($category->getMatchtime()) == '') {
+                $form->addError(new FormError($this->get('translator')->trans('FORM.CATEGORY.NOMATCHTIME', array(), 'admin')));
             }
         }
         return $form->isValid();

@@ -120,7 +120,7 @@ services:
     planning:
         class: "ICup\\Bundle\\PublicSiteBundle\\Services\\MatchPlanning"
         arguments:
-          - "@logic"
+          - "@service_container"
           - "@logger"
 
     util:

@@ -9,9 +9,7 @@
         <i class="fa fa-cogs"></i>&nbsp;{{ 'FORM.TOURNAMENTBOARD.TITLE'|trans|upper }}
     </h2>
     <p>
-{% if host is defined and host %}                
         {{ tournament.name|upper }}
-{% endif %}
     </p>
     <div class="row">
         <div class="col-sm-4">
@@ -27,6 +25,10 @@
                 <a class="list-group-item" href="{{ path('_edit_category_list', { 'tournamentid': tournament.id }) }}">
                     <h3 class="list-group-item-heading">{% trans %}FORM.TOURNAMENTBOARD.LISTCATEGORIES.CAPTION{% endtrans %}</h3>
                     <p class="list-group-item-text">{% trans %}FORM.TOURNAMENTBOARD.LISTCATEGORIES.DESCRIPTION{% endtrans %}</p>
+                </a>
+                <a class="list-group-item" href="{{ path('_edit_timeslot_list', { 'tournamentid': tournament.id }) }}">
+                    <h3 class="list-group-item-heading">{% trans %}FORM.TOURNAMENTBOARD.LISTTIMESLOTS.CAPTION{% endtrans %}</h3>
+                    <p class="list-group-item-text">{% trans %}FORM.TOURNAMENTBOARD.LISTTIMESLOTS.DESCRIPTION{% endtrans %}</p>
                 </a>
                 <a class="list-group-item" href="{{ path('_host_list_clubs', { 'tournamentid': tournament.id }) }}">
                     <h3 class="list-group-item-heading">{% trans %}FORM.TOURNAMENTBOARD.LISTCLUBS.CAPTION{% endtrans %}</h3>
@@ -73,6 +75,10 @@
                         <a class="list-group-item" href="{{ path('_edit_event_list', { 'tournamentid': tournament.id }) }}">
                             <h3 class="list-group-item-heading">{% trans %}FORM.TOURNAMENTBOARD.STATUS.CAPTION{% endtrans %}</h3>
                             <p class="list-group-item-text">{{ ['FORM.TOURNAMENTBOARD.STATUS.DESCRIPTION.',tstat]|join|trans }}</p>
+                        </a>
+                        <a class="list-group-item" href="{{ path('_edit_match_planning', { 'tournamentid': tournament.id }) }}">
+                            <h3 class="list-group-item-heading">{% trans %}FORM.TOURNAMENTBOARD.PLANNING.CAPTION{% endtrans %}</h3>
+                            <p class="list-group-item-text">{% trans %}FORM.TOURNAMENTBOARD.PLANNING.DESCRIPTION{% endtrans %}</p>
                         </a>
                     </div>
                 </div>

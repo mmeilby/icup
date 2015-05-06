@@ -9,12 +9,15 @@
     <p>{% trans %}FORM.LISTCATEGORIES.CAPTION{% endtrans %}</p>
 <div class="panel panel-default">
     <div class="panel-body lead">
-        <div class="col-lg-8">
+        <div class="col-lg-6">
         <a href="{{ path('_edit_tournamentboard', { 'tournamentid': tournament.id }) }}">{{ host.name|upper }}</a><br />
         {{ tournament.name }}
         </div>
-        <div class="col-lg-4 text-right">
-{% if is_granted('ROLE_ADMIN') %}
+        <div class="col-lg-6 text-right">
+            <a href="{{ path('_edit_import_tournament', {'tournamentid': tournament.id, 'import': 'categories' }) }}" class="btn btn-info">
+                {% trans %}FORM.TOURNAMENTIMPORT.CAPTION{% endtrans %}
+            </a>
+{% if is_granted('ROLE_ADMIN') and categories|length > 0 %}
             <a href="{{ path('_admin_wipe_matches', {'tournamentid': tournament.id }) }}" class="btn btn-danger">
                 {% trans %}FORM.LISTCATEGORIES.BUTTON.WIPE{% endtrans %}
             </a>
@@ -39,17 +42,17 @@
                 </td>
                 <td class="narrow-col">
                     <a href="{{ path('_edit_category_add', { 'tournamentid': tournament.id }) }}">
-                        <span class="glyphicon glyphicon-file" title="{% trans %}FORM.CATEGORY.TITLE.ADD{% endtrans %}"></span>
+                        <span class="fa fa-file" title="{% trans %}FORM.CATEGORY.TITLE.ADD{% endtrans %}"></span>
                     </a>    
                 </td>
                 <td class="narrow-col">
                     <a href="{{ path('_edit_category_chg', { 'categoryid': category.id }) }}">
-                        <span class="glyphicon glyphicon-edit" title="{% trans %}FORM.CATEGORY.TITLE.CHG{% endtrans %}"></span>
+                        <span class="fa fa-pencil" title="{% trans %}FORM.CATEGORY.TITLE.CHG{% endtrans %}"></span>
                     </a>    
                 </td>
                 <td class="narrow-col">
                     <a href="{{ path('_edit_category_del', { 'categoryid': category.id }) }}">
-                        <span class="glyphicon glyphicon-remove" title="{% trans %}FORM.CATEGORY.TITLE.DEL{% endtrans %}"></span>
+                        <span class="fa fa-times" title="{% trans %}FORM.CATEGORY.TITLE.DEL{% endtrans %}"></span>
                     </a>    
                 </td>
                 <td class="narrow-col">
@@ -80,17 +83,17 @@
                 <td><a href="{{ path('_edit_group_chg', { 'groupid': group.id }) }}">{% trans from "tournament" %}GROUP{% endtrans %} {{ group.name }}</a></td>
                 <td class="narrow-col">
                     <a href="{{ path('_edit_group_add', { 'categoryid': category.id }) }}">
-                        <span class="glyphicon glyphicon-file" title="{% trans %}FORM.GROUP.TITLE.ADD{% endtrans %}"></span>
+                        <span class="fa fa-file" title="{% trans %}FORM.GROUP.TITLE.ADD{% endtrans %}"></span>
                     </a>    
                 </td>
                 <td class="narrow-col">
                     <a href="{{ path('_edit_group_chg', { 'groupid': group.id }) }}">
-                        <span class="glyphicon glyphicon-edit" title="{% trans %}FORM.GROUP.TITLE.CHG{% endtrans %}"></span>
+                        <span class="fa fa-pencil" title="{% trans %}FORM.GROUP.TITLE.CHG{% endtrans %}"></span>
                     </a>    
                 </td>
                 <td class="narrow-col">
                     <a href="{{ path('_edit_group_del', { 'groupid': group.id }) }}">
-                        <span class="glyphicon glyphicon-remove" title="{% trans %}FORM.GROUP.TITLE.DEL{% endtrans %}"></span>
+                        <span class="fa fa-times" title="{% trans %}FORM.GROUP.TITLE.DEL{% endtrans %}"></span>
                     </a>    
                 </td>
                 <td class="narrow-col"></td>
@@ -109,7 +112,7 @@
                 <td><a href="{{ path('_edit_group_add', { 'categoryid': category.id }) }}">{{'FORM.LISTCATEGORIES.NOGROUP'|trans|upper}}</a></td>
                 <td class="narrow-col">
                     <a href="{{ path('_edit_group_add', { 'categoryid': category.id }) }}">
-                        <span class="glyphicon glyphicon-file" title="{% trans %}FORM.GROUP.TITLE.ADD{% endtrans %}"></span>
+                        <span class="fa fa-file" title="{% trans %}FORM.GROUP.TITLE.ADD{% endtrans %}"></span>
                     </a>    
                 </td>
                 <td></td>
@@ -123,22 +126,22 @@
     {% endfor %}
 {% else %}
             <tr>
-                <td class="lead" colspan="2">
+                <td colspan="2">
                     <a href="{{ path('_edit_category_add', { 'tournamentid': tournament.id }) }}">
                     {{'FORM.LISTCATEGORIES.NOCATEGORY'|trans|upper}}
                     </a>    
                 </td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
                 <td class="narrow-col">
                     <a href="{{ path('_edit_category_add', { 'tournamentid': tournament.id }) }}">
-                        <span class="glyphicon glyphicon-file" title="{% trans %}FORM.CATEGORY.TITLE.ADD{% endtrans %}"></span>
+                        <span class="fa fa-file" title="{% trans %}FORM.CATEGORY.TITLE.ADD{% endtrans %}"></span>
                     </a>    
                 </td>
-                <td></td>
-                <td></td>
-                <td></td>
-                <td></td>
-                <td></td>
-                <td></td>
             </tr>
 {% endif %}
         </tbody>

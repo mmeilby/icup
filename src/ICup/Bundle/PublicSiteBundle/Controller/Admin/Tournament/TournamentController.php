@@ -117,6 +117,12 @@ class TournamentController extends Controller
             elseif ($this->get('logic')->listCategories($tournament->getId()) != null) {
                 $form->addError(new FormError($this->get('translator')->trans('FORM.TOURNAMENT.CATEGORIESEXIST', array(), 'admin')));
             }
+            elseif ($this->get('logic')->listTimeslots($tournament->getId()) != null) {
+                $form->addError(new FormError($this->get('translator')->trans('FORM.TOURNAMENT.TIMESLOTSEXIST', array(), 'admin')));
+            }
+            elseif (count($this->get('tmnt')->listEventsByTournament($tournament->getId())) > 0) {
+                $form->addError(new FormError($this->get('translator')->trans('FORM.TOURNAMENT.EVENTSEXIST', array(), 'admin')));
+            }
             else {
                 $em = $this->getDoctrine()->getManager();
                 $em->remove($tournament);

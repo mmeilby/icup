@@ -6,6 +6,7 @@ use ICup\Bundle\PublicSiteBundle\Entity\Doctrine\Category;
 use ICup\Bundle\PublicSiteBundle\Entity\Doctrine\Group;
 use ICup\Bundle\PublicSiteBundle\Entity\Doctrine\Playground;
 use ICup\Bundle\PublicSiteBundle\Entity\Doctrine\Team;
+use DateTime;
 
 class MatchPlan
 {
@@ -57,6 +58,9 @@ class MatchPlan
      */
     private $teamB;
 
+    private $db_date_format = "Ymd";
+    private $db_time_format = "Hi";
+    
     /**
      * Set category
      *
@@ -239,5 +243,11 @@ class MatchPlan
     public function getTeamB()
     {
         return $this->teamB;
+    }
+    
+    public function getSchedule() {
+        return DateTime::createFromFormat(
+                    $this->db_date_format.'-'.$this->db_time_format,
+                    $this->date.'-'.$this->time);
     }
 }

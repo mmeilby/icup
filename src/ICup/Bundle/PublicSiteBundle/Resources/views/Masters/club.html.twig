@@ -1,7 +1,7 @@
 {% macro club(team, group, context) %}
     {% if team.id > 0 %}
                 <td class="flag">
-        {% if team.rank != '' %}
+        {% if team.rank is defined and team.rank != '' %}
                     <small>&nbsp;</small><br />
         {% endif %}
                     <img src="{{ asset(['bundles/icuppublicsite/images/flags/',context.countries[team.country].flag]|join) }}"
@@ -9,7 +9,7 @@
                          title="{{ team.country|trans({},'lang') }}">
                 </td>
                 <td>
-        {% if team.rank != '' %}
+        {% if team.rank is defined and team.rank != '' %}
                     <small>{{ team.rank }}</small><br />
         {% endif %}
                     <a href="{{ path('_showteam_all', { 'teamid': team.id }) }}">
@@ -26,7 +26,7 @@
         
 {% macro clubxs(hteam, ateam, group, context) %}
     {% if hteam.id > 0 %}
-        {% if hteam.rank != '' %}
+        {% if hteam.rank is defined and hteam.rank != '' %}
             <small>{{ hteam.rank }}</small><br />
         {% endif %}
             <span class="text-nowrap">
@@ -44,7 +44,7 @@
     {% endif %}
             <br />
     {% if ateam.id > 0 %}
-        {% if ateam.rank != '' %}
+        {% if ateam.rank is defined and ateam.rank != '' %}
             <small>{{ ateam.rank }}</small><br />
         {% endif %}
             <img src="{{ asset(['bundles/icuppublicsite/images/flags/',context.countries[ateam.country].flag]|join) }}"

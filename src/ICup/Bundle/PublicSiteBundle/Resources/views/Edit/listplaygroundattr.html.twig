@@ -1,0 +1,91 @@
+{% extends "ICupPublicSiteBundle:Masters:edit.html.twig" %}
+{% trans_default_domain "admin" %}
+
+{% block adminbody %}
+    <h2 style="margin-bottom: 0">
+        <i class="fa fa-cogs"></i>&nbsp;
+        {% trans %}FORM.LISTPLAYGROUNDATTRS.TITLE{% endtrans %}
+    </h2>
+    <p>{% trans %}FORM.LISTPLAYGROUNDATTRS.CAPTION{% endtrans %}</p>
+<div class="panel panel-default">
+    <div class="panel-body lead">
+        <a href="{{ path('_edit_tournamentboard', { 'tournamentid': tournament.id }) }}">
+            {{ host.name|upper }}
+            <br />
+            {{ tournament.name }}
+        </a>
+        <br />
+        <a href="{{ path('_edit_site_list', { 'tournamentid': tournament.id }) }}">
+            {{ playground.name }}
+        </a>
+    </div>
+    <table class="table table-striped">
+        <tbody>
+    {% for attr in attributes %}
+            <tr>
+                <td colspan="2">
+                    <a href="{{ path('_edit_pattr_chg', { 'playgroundattributeid': attr.id }) }}">
+                        {{ 'FORMAT.LONGDATE'|transchoice(attr.start|date('j'), {
+                                '%week%': ['WEEK.',attr.start|date('D')|upper]|join|trans([],'messages')|capitalize,
+                                '%day%': attr.start|date('j'),
+                                '%month%': ['MONTH.',attr.start|date('M')|upper]|join|trans([],'messages'),
+                                '%year%': attr.start|date('Y')}, 'messages') }}
+                    </a>    
+                </td>
+                <td>
+                    {{ attr.timeslot }}
+                </td>
+                <td>
+                    {{ attr.start|date('FORMAT.TIME'|trans([],'messages')) }}
+                </td>
+                <td>
+                    {{ attr.end|date('FORMAT.TIME'|trans([],'messages')) }}
+                </td>
+                <td>
+                    <a href="{{ path('_edit_list_parel', { 'playgroundattributeid': attr.id }) }}">
+            {% if attr.categories|length > 0 %}
+                        {{ attr.categories|join(',') }}
+            {% else %}
+                        <span class="fa fa-cogs"></span>
+            {% endif %}
+                    </a>
+                </td>
+                <td class="narrow-col">
+                    <a href="{{ path('_edit_pattr_add', { 'playgroundid': playground.id }) }}">
+                        <span class="fa fa-file"></span>
+                    </a>    
+                </td>
+                <td class="narrow-col">
+                    <a href="{{ path('_edit_pattr_chg', { 'playgroundattributeid': attr.id }) }}">
+                        <span class="fa fa-pencil"></span>
+                    </a>    
+                </td>
+                <td class="narrow-col">
+                    <a href="{{ path('_edit_pattr_del', { 'playgroundattributeid': attr.id }) }}">
+                        <span class="fa fa-times"></span>
+                    </a>    
+                </td>
+            </tr>
+    {% else %}
+            <tr>
+                <td colspan="2">
+                    <a href="{{ path('_edit_pattr_add', { 'playgroundid': playground.id }) }}">
+                        {{'FORM.LISTPLAYGROUNDATTRS.NOATTR'|trans|upper}}
+                    </a>    
+                </td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td class="narrow-col">
+                    <a href="{{ path('_edit_pattr_add', { 'playgroundid': playground.id }) }}">
+                        <span class="fa fa-file"></span>
+                    </a>    
+                </td>
+            </tr>
+    {% endfor %}
+        </tbody>
+    </table>
+</div>
+{% endblock %}

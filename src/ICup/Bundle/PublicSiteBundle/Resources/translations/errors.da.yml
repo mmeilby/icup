@@ -42,6 +42,15 @@ ERROR:
   INVALIDPLAYGROUND:
     TITLE: Der er problemer med den valgte bane
     SOLUTION: Den valgte bane findes ikke. Benyt det følgende link for at kunne vælge en bane der findes.
+  INVALIDPLAYGROUNDATTRIBUTE:
+    TITLE: Der er et teknisk problem med den valgte bane
+    SOLUTION: Problemet er optaget til analyse. Benyt det følgende link for at komme videre.
+  INVALIDPARELATION:
+    TITLE: Der er et teknisk problem med den valgte bane
+    SOLUTION: Problemet er optaget til analyse. Benyt det følgende link for at komme videre.
+  INVALIDTIMESLOT:
+    TITLE: Der er problemer med den valgte periode
+    SOLUTION: Den valgte periode findes ikke. Benyt det følgende link for at kunne vælge en periode der findes.
   INVALIDHOST:
     TITLE: Der er problemer med den valgte turneringsvært
     SOLUTION: Den valgte turneringsvært findes ikke. Benyt det følgende link for at kunne vælge en turneringsvært der findes.
@@ -102,4 +111,10 @@ ERROR:
   INVALIDROLECHANGE:
     TITLE: Det er ikke muligt at ændre brugerprofilen
     SOLUTION: Den ønskede ændring af brugerprofilen skifter brugerens rolle, hvilket ikke er muligt.
+  NOTTHESAMETOURNAMENT:
+    TITLE: Kategori og banepræference deler ikke samme turnering
+    SOLUTION: Kategorien skal tilhøre samme turnering som banepræferencen.
+  CATEGORYISNOTASSIGNED:
+    TITLE: Du kan ikke fjerne kategorien fra banepræferencen
+    SOLUTION: Kategorien er ikke fordelt til denne bane i turneringen.
       

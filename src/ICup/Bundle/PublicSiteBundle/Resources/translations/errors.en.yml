@@ -2,7 +2,7 @@ ERROR:
   CLICKFORMORE: Click here to return...
   NOACCESS:
     TITLE: No access
-    SOLUTION: You are not allowed to access this area. Please contact an administrator to get required authorization.
+    SOLUTION: You are not allowed to access this area. Please contact an administrator to grant required authorization.
   NOTOURNAMENT:
     TITLE: Select a tournament
     SOLUTION: You are required to choose a tournament in order to view tournament related pages.
@@ -34,7 +34,7 @@ ERROR:
     TITLE: There is a technical problem with a match
     SOLUTION: A non existing match was referenced.
   INVALIDMATCHRELATION:
-    TITLE: There is a technical pronlem with a match result
+    TITLE: There is a technical problem with a match result
     SOLUTION: A non existing match result was referenced.
   INVALIDSITE:
     TITLE: The site is not valid
@@ -42,6 +42,15 @@ ERROR:
   INVALIDPLAYGROUND:
     TITLE: The playground is not valid
     SOLUTION: The specified playground does not exist.
+  INVALIDPLAYGROUNDATTRIBUTE:
+    TITLE: There is a technical problem with a playground
+    SOLUTION: A non existing playground attribute was referenced.
+  INVALIDPARELATION:
+    TITLE: There is a technical problem with a playground
+    SOLUTION: A non existing relation between category and playground was referenced.
+  INVALIDTIMESLOT:
+    TITLE: The timeslot is not valid
+    SOLUTION: The specified timeslot does not exist.
   INVALIDHOST:
     TITLE: The host is not valid
     SOLUTION: The specified host does not exist.
@@ -102,4 +111,10 @@ ERROR:
   INVALIDROLECHANGE:
     TITLE: Changing the user profile is not allowed
     SOLUTION: You are about to change the user role, which is not allowed. 
+  NOTTHESAMETOURNAMENT:
+    TITLE: Category and playground attribute does not share tournament
+    SOLUTION: Category and playground attribute must refer to the same tournament.
+  CATEGORYISNOTASSIGNED:
+    TITLE: The category can not be unassigned
+    SOLUTION: The category is not assigned to this playground attribute.
       

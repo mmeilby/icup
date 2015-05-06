@@ -72,6 +72,9 @@ FORM:
     LISTCATEGORIES:
         CAPTION: Categories and groups
         DESCRIPTION: Plan groups and maintain categories
+    LISTTIMESLOTS:
+        CAPTION: Timeslots
+        DESCRIPTION: Define logical timeslots for all playgrounds
     LISTCLUBS:
         CAPTION: Enrolled clubs
         DESCRIPTION: Show enrolled clubs and handle new requests
@@ -83,6 +86,9 @@ FORM:
           2: This tournament is live and match results are displayed at the frontpage
           3: This tournament is completed. Group results and winners are availble along with statistics
           4: Tournament is under construction. Required plans are not yet ready.
+    PLANNING:
+        CAPTION: Plan tournament schedule
+        DESCRIPTION: Plan matches for each category
     REPORT:
         CAPTION: Report results
         DESCRIPTION: Report match results for matches played at a specific playground
@@ -126,6 +132,8 @@ FORM:
     KEYEXIST: The tournament key is already in use by another tournament.
     CATEGORIESEXIST: Categories are defined for this tournament. The tournament can not be removed.
     SITESEXIST: Sites are defined for this tournament. The tournament can not be removed.
+    TIMESLOTSEXIST: Timeslots are defined for this tournament. The tournament can not be removed.
+    EVENTSEXIST: Events are defined for this tournament. The tournament can not be removed.
     TITLE:
       ADD: Add new tournament
       CHG: Modify tournament
@@ -146,7 +154,7 @@ FORM:
       ADD: Cancel
       CHG: Cancel changes
       DEL: Cancel
-  LISTTOURNAMENTS:
+  LISTSITES:
     TITLE: Tournament administration
     CAPTION: Sites and playgrounds
     NOSITE: Add new site
@@ -193,6 +201,106 @@ FORM:
       ADD: Cancel
       CHG: Cancel changes
       DEL: Cancel
+  COPYPLAYGROUND:
+    TITLE: Copy playground preferences
+    PROMPT: Timeslots and preferences will be copied to the selected playground. Existing preferences at same date and time will not be changed.
+    SOURCEPLAYGROUND: Source playground
+    TARGETPLAYGROUND: Target playground
+    SUBMIT: Copy preferences
+    CANCEL: Cancel copy
+  LISTPLAYGROUNDATTRS:
+    TITLE: Tournament administration
+    CAPTION: Playground preferences
+    NOATTR: Add new preference
+  PLAYGROUNDATTR:
+    DEFAULT: No timeslot selected
+    TITLE:
+      ADD: Add new preference
+      CHG: Modify preference
+      DEL: REMOVE PREFERENCE
+    PROMPT:
+      ADD: Please enter information about the new preference.
+      CHG: Change information for this preference.
+      DEL: The following preference will be removed. You can not undo this action.
+    TIMESLOT:
+      PROMPT: Timeslot
+      HELP: The timeslot this preference is related to
+    DATE:
+      PROMPT: Date
+      HELP: Match date this preference relates to
+    START:
+      PROMPT: Matches start
+      HELP: Earliest time of match start for this preference
+    END:
+      PROMPT: Matches end
+      HELP: Latest time of match end for this preference
+    SUBMIT:
+      ADD: Add new preference
+      CHG: Save information
+      DEL: REMOVE PREFERENCE
+    CANCEL:
+      ADD: Cancel
+      CHG: Cancel changes
+      DEL: Cancel
+  LISTTIMESLOTS:
+    TITLE: Tournament administration
+    CAPTION: Timeslots
+    NOTIMESLOT: Add new timeslot
+  TIMESLOT:
+    NONAME: A name of the timeslot is mandatory.
+    PLAYGROUNDSEXIST: Playground preferences are related to this timeslot. The timeslot can not be removed.
+    TITLE:
+      ADD: Add new timeslot
+      CHG: Modify timeslot
+      DEL: REMOVE TIMESLOT
+    PROMPT:
+      ADD: Please enter information about the new timeslot.
+      CHG: Change information for this timeslot.
+      DEL: The following timeslot will be removed. You can not undo this action.
+    NAME:
+      PROMPT: Name
+      HELP: A descriptive name for the timeslot
+    CAPACITY:
+      PROMPT: Match capacity
+      HELP: The maximum number of matches a team can play in this timeslot each day.
+    RESTPERIOD:
+      PROMPT: Restitution time
+      HELP: The smallest time of restitution (in minutes) a team must rest between two matches.
+    PENALTY:
+      PROMPT: Avoid transport?
+      HELP: Check this if matches for one team should be planned at the same site.
+    SUBMIT:
+      ADD: Add new timeslot
+      CHG: Save information
+      DEL: REMOVE TIMESLOT
+    CANCEL:
+      ADD: Cancel
+      CHG: Cancel changes
+      DEL: Cancel
+  LISTPARELS:
+    TITLE: Tournament administration
+    CAPTION: Preferences - categories preferred to play at this playground
+    ASSIGNED: Preferred categories
+    UNASSIGNED: Other categories
+    FINALS: Final matches?
+    MATCHTIME: Match time
+    UNIT: min.
+  MATCHPLANNING:
+    TITLE: Tournament administration
+    CAPTION: Plan matches
+    PLANNINGINCOMPLETE: It was not possible to plan all matches
+  TOURNAMENTIMPORT:
+    TITLE: Tournament administration
+    CAPTION: Copy information from another tournament
+    PROMPT:
+      SITES: Copy sites, playgrounds, preferences, categories, and groups
+      CATEGORIES: Copy categories and groups
+    DEFAULT: Select a tournament...
+    TOURNAMENT:
+      PROMPT: Source tournament
+      HELP: Select the tournament to copy information
+    SUBMIT: Copy information
+    CANCEL: Cancel
   LISTCATEGORIES:
     TITLE: Tournament administration
     CAPTION: Categories and groups
@@ -207,8 +315,10 @@ FORM:
     NOGENDER: The gender preference is mandatory.
     NOCLASSIFICATION: The classification of age is mandatory. 
     NOAGE: Age limit is mandatory.
+    NOMATCHTIME: Match time is mandatory (expressed in minutes).
     GROUPSEXIST: Groups are defined for this category. The category can not be removed.
     ENROLLEDEXIST: Teams are enrolled for this category. The category can not be removed.
+    PARELATIONSEXIST: Playground preferences are defined for this category. The category can not be removed.
     TITLE:
       ADD: Add new category
       CHG: Modify category
@@ -227,6 +337,7 @@ FORM:
       UNDER: Age UNDER
       OVER: Age OVER
     AGE: Age limit
+    MATCHTIME: Matchtime
     SUBMIT:
       ADD: Add category
       CHG: Save information

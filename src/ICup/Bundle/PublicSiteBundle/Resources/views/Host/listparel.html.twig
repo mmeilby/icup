@@ -1,0 +1,84 @@
+{% extends "ICupPublicSiteBundle:Masters:edit.html.twig" %}
+{% trans_default_domain "admin" %}
+
+{% block adminbody %}
+    <h2 style="margin-bottom: 0">
+        <i class="fa fa-cogs"></i>&nbsp;
+        {% trans %}FORM.LISTPARELS.TITLE{% endtrans %}
+    </h2>
+    <p>{% trans %}FORM.LISTPARELS.CAPTION{% endtrans %}</p>
+<div class="panel panel-default">
+    <div class="panel-body lead">
+        <a href="{{ path('_edit_tournamentboard', { 'tournamentid': tournament.id }) }}">
+            {{ host.name|upper }} - {{ tournament.name|upper }}
+        </a>
+        <br />
+        <a href="{{ path('_edit_site_list', {'tournamentid': tournament.id }) }}">
+            {{ playground.name }}
+        </a>
+        <br />
+        <a href="{{ path('_edit_playground_attr_list', {'playgroundid': playground.id }) }}">
+            {{ 'FORMAT.LONGDATE'|transchoice(attr_schedule|date('j'), {
+                    '%week%': ['WEEK.',attr_schedule|date('D')|upper]|join|trans([],'messages')|capitalize,
+                    '%day%': attr_schedule|date('j'),
+                    '%month%': ['MONTH.',attr_schedule|date('M')|upper]|join|trans([],'messages'),
+                    '%year%': attr_schedule|date('Y')}, 'messages') }}
+        </a>
+    </div>
+</div>
+<div class="col-md-6">
+    <div class="panel panel-default">
+        <div class="panel-heading"><b>{{ 'FORM.LISTPARELS.ASSIGNED'|trans|upper }}</b></div>
+        <table class="table table-striped">
+            <tbody>
+        {% for category in assignedlist %}
+                <tr>
+                    <td>
+                        <div class="row">
+                            <div class="col-md-4">
+                                <a href="{{ path('_edit_parel_unassign', { 'categoryid': category.id, 'playgroundattributeid': attribute.id }) }}">
+                                    {% trans from 'tournament' %}CATEGORY{% endtrans %} {{ category.name }}<br />
+                                    {{ ['GENDER.',
+                                        category.gender,
+                                        category.classification]|join|transchoice(category.age, { '%age%': category.age },'tournament') }}
+                                </a>
+                            </div>
+                            <div class="col-md-4">
+                                {% trans %}FORM.LISTPARELS.MATCHTIME{% endtrans %}:<br />
+                                {{ category.matchtime }} {% trans %}FORM.LISTPARELS.UNIT{% endtrans %}
+                            </div>
+                            <div class="col-md-4">
+                                {% if category.finals %}
+                                    {% trans %}FORM.LISTPARELS.FINALS{% endtrans %}
+                                {% endif %}
+                            </div>
+                        </div>
+                    </td>
+                </tr>
+        {% endfor %}
+            </tbody>
+        </table>
+    </div>
+</div>
+<div class="col-md-6">
+    <div class="panel panel-default">
+        <div class="panel-heading"><b>{{ 'FORM.LISTPARELS.UNASSIGNED'|trans|upper }}</b></div>
+        <table class="table table-striped">
+            <tbody>
+    {% for category in unassignedlist %}
+                <tr>
+                    <td>
+                        <a href="{{ path('_edit_parel_assign', { 'categoryid': category.id, 'playgroundattributeid': attribute.id }) }}">
+                            {% trans from 'tournament' %}CATEGORY{% endtrans %} {{ category.name }}<br />
+                            {{ ['GENDER.',
+                                category.gender,
+                                category.classification]|join|transchoice(category.age, { '%age%': category.age },'tournament') }}
+                        </a>
+                    </td>
+                </tr>
+    {% endfor %}
+            </tbody>
+        </table>
+    </div>
+</div>
+{% endblock %}

@@ -57,6 +57,14 @@ class Category
     private $age;
 
     /**
+     * @var integer $matchtime
+     * Matches played in this category durate for the specified time in minutes
+     * Note: this amount includes all breaks - before, during, and after the match
+     * @ORM\Column(name="matchtime", type="integer", nullable=false)
+     */
+    private $matchtime;
+
+    /**
      * Get id
      *
      * @return integer 
@@ -179,5 +187,28 @@ class Category
     public function getAge()
     {
         return $this->age;
+    }
+    
+    /**
+     * Set category default match time
+     *
+     * @param integer $matchtime
+     * @return Category
+     */
+    public function setMatchtime($matchtime)
+    {
+        $this->matchtime = $matchtime;
+    
+        return $this;
+    }
+
+    /**
+     * Get category default match time
+     *
+     * @return integer 
+     */
+    public function getMatchtime()
+    {
+        return $this->matchtime;
     }
 }

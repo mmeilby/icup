@@ -1,0 +1,18 @@
+{% extends "ICupPublicSiteBundle:Masters:edit.html.twig" %}
+
+{% form_theme form 'ICupPublicSiteBundle:Default:layout.script.html.twig' %}
+{% trans_default_domain "admin" %}
+
+{% block adminbody %}
+    <h2 style="margin-bottom: 0">
+        <i class="fa fa-university"></i>&nbsp;
+        {% trans %}FORM.TOURNAMENTIMPORT.TITLE{% endtrans %}
+    </h2>
+    <p>{% trans %}FORM.TOURNAMENTIMPORT.CAPTION{% endtrans %}</p>
+    <p>{{ ['FORM.TOURNAMENTIMPORT.PROMPT.',action]|join|upper|trans }}</p>
+<div class="panel panel-default">
+    <div class="panel-body">
+    {{ form(form) }}
+    </div>
+</div>
+{% endblock %}

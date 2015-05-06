@@ -11,6 +11,9 @@ use ICup\Bundle\PublicSiteBundle\Entity\Doctrine\Host;
 use ICup\Bundle\PublicSiteBundle\Entity\Doctrine\Match;
 use ICup\Bundle\PublicSiteBundle\Entity\Doctrine\MatchRelation;
 use ICup\Bundle\PublicSiteBundle\Entity\Doctrine\Playground;
+use ICup\Bundle\PublicSiteBundle\Entity\Doctrine\PlaygroundAttribute;
+use ICup\Bundle\PublicSiteBundle\Entity\Doctrine\PARelation;
+use ICup\Bundle\PublicSiteBundle\Entity\Doctrine\Timeslot;
 use ICup\Bundle\PublicSiteBundle\Entity\Doctrine\Site;
 use ICup\Bundle\PublicSiteBundle\Entity\Doctrine\Team;
 use ICup\Bundle\PublicSiteBundle\Entity\Doctrine\Template;
@@ -153,6 +156,45 @@ class BusinessLogic
         $this->em->flush();
     }
 
+    public function assignCategory($categoryid, $playgroundattributeid, $matchtime, $finals) {
+        // Verify that the category and playground share the same tournament
+        $this->verifyRelation($categoryid, $playgroundattributeid);
+        
+        $parel = new PARelation();
+        $parel->setPid($playgroundattributeid);
+        $parel->setCid($categoryid);
+        $parel->setFinals($finals);
+        $parel->setMatchtime($matchtime);
+        $this->em->persist($parel);
+        $this->em->flush();
+        return $parel;
+    }
+    
+    public function removeAssignedCategory($categoryid, $playgroundattributeid) {
+        // Verify that the category and playground share the same tournament
+        $this->verifyRelation($categoryid, $playgroundattributeid);
+
+        $parel = $this->entity->getPARelationRepo()->findOneBy(array('pid' => $playgroundattributeid, 'cid' => $categoryid));
+        if ($parel == null) {
+            throw new ValidationException("CATEGORYISNOTASSIGNED", "Category is not assigned - pattr=".$playgroundattributeid.", category=".$categoryid);
+        }
+        $this->em->remove($parel);
+        $this->em->flush();
+        return $parel;
+    }
+
+    private function verifyRelation($categoryid, $playgroundattributeid) {
+        /* @var $category Category */
+        $category = $this->entity->getCategoryById($categoryid);
+        $pattr = $this->entity->getPlaygroundAttributeById($playgroundattributeid);
+        $playground = $this->entity->getPlaygroundById($pattr->getPid());
+        $site = $this->entity->getSiteById($playground->getPid());
+        // Verify that the category and playground share the same tournament
+        if ($site->getPid() != $category->getPid()) {
+            throw new ValidationException("NOTTHESAMETOURNAMENT", "Category and playground does not share the same tournament - pattr=".$playgroundattributeid.", category=".$categoryid);
+        }
+    }    
+    
     public function assignEnrolled($teamid, $groupid) {
         $group = $this->entity->getGroupById($groupid);
         // Verify that the team is not assigned to any group
@@ -328,6 +370,50 @@ class BusinessLogic
     
     public function getTournamentByKey($key) {
         return $this->entity->getTournamentRepo()->findOneBy(array('key' => $key));
+    }
+
+    public function listTimeslots($tournamentid) {
+        return $this->entity->getTimeslotRepo()->findBy(array('pid' => $tournamentid), array('name' => 'asc'));
+    }
+
+    public function listPlaygroundAttributes($playgroundid) {
+        return $this->entity->getPlaygroundAttributeRepo()->findBy(array('pid' => $playgroundid), array('date' => 'asc', 'start' => 'asc'));
+    }
+
+    public function listPlaygroundAttributesByTournament($tournamentid) {
+        $qb = $this->em->createQuery(
+                "select a ".
+                "from ".$this->entity->getRepositoryPath('PlaygroundAttribute')." a, ".
+                        $this->entity->getRepositoryPath('Playground')." p, ".
+                        $this->entity->getRepositoryPath('Site')." s ".
+                "where s.pid=:tournament and p.pid=s.id and a.pid=p.id ".
+                "order by a.pid asc, a.date asc, a.start asc");
+        $qb->setParameter('tournament', $tournamentid);
+        return $qb->getResult();
+    }
+
+    public function getPlaygroundAttribute($playgroundid, $date, $start) {
+        return $this->entity->getPlaygroundAttributeRepo()->findOneBy(array('pid' => $playgroundid, 'date' => $date, 'start' => $start));
+    }
+
+    public function listPARelations($playgroundattributeid) {
+        return $this->entity->getPARelationRepo()->findBy(array('pid' => $playgroundattributeid), array('id' => 'asc'));
+    }
+
+    public function listPACategories($playgroundattributeid) {
+        $qb = $this->em->createQuery(
+                "select c ".
+                "from ".$this->entity->getRepositoryPath('Category')." c, ".
+                        $this->entity->getRepositoryPath('PARelation')." p ".
+                "where p.cid=c.id and ".
+                      "p.pid=:pattr ".
+                "order by p.id");
+        $qb->setParameter('pattr', $playgroundattributeid);
+        return $qb->getResult();
+    }
+
+    public function listPARelationsByCategory($categoryid) {
+        return $this->entity->getPARelationRepo()->findBy(array('cid' => $categoryid), array('id' => 'asc'));
     }
 
     public function listHosts() {

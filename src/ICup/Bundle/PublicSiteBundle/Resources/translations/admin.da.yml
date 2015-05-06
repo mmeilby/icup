@@ -72,6 +72,9 @@ FORM:
     LISTCATEGORIES:
         CAPTION: Grupper og puljer
         DESCRIPTION: Planlæg puljer og tilpas grupper
+    LISTTIMESLOTS:
+        CAPTION: Perioder
+        DESCRIPTION: Kategoriser spilletid på banerne i perioder
     LISTCLUBS:
         CAPTION: Tilmeldte klubber
         DESCRIPTION: Vis tilmeldte klubber og håndter tilmeldinger
@@ -83,6 +86,9 @@ FORM:
           2: Denne turnering afvikles nu og det er muligt at følge resultater fra forsiden.
           3: Denne turnering er afsluttet. Kampe og placeringer vises hvis brugerne søger turneringen.
           4: Turneringen er under oprettelse. Der mangler nødvendige oplysninger om puljer og grupper.
+    PLANNING:
+        CAPTION: Planlæg turnering
+        DESCRIPTION: Lad systemet planlægge turnerings kampe
     REPORT:
         CAPTION: Indberet resultater
         DESCRIPTION: Angiv kampresultatet for en eller flere kampe på en bane.
@@ -124,8 +130,10 @@ FORM:
     NOEDITION: Et udgave skal angives.
     CANTCHANGEKEY: Der findes allerede en anden turnering med samme identifikation.
     KEYEXIST: Der findes allerede en anden turnering med samme identifikation.
-    CATEGORIESEXIST: Der er planlagt kampe til denne bane. Banen kan ikke fjernes.
-    SITESEXIST: Der er planlagt kampe til denne bane. Banen kan ikke fjernes.
+    CATEGORIESEXIST: Der findes grupper knyttet til turneringen. Turneringen kan ikke fjernes.
+    SITESEXIST: Der findes baner knyttet til turneringen. Turneringen kan ikke fjernes.
+    TIMESLOTSEXIST: Der findes perioder til denne turnering. Turneringen kan ikke fjernes.
+    EVENTSEXIST: Der er en tidsplan for denne turnering. Turneringen kan ikke fjernes.
     TITLE:
       ADD: Tilføj ny turnering
       CHG: Rediger turnering
@@ -146,7 +154,7 @@ FORM:
       ADD: Fortryd oprettelse
       CHG: Fortryd ændringer
       DEL: Fortryd slet
-  LISTTOURNAMENTS:
+  LISTSITES:
     TITLE: Vedligehold turnering
     CAPTION: Lokaliteter og baner
     NOSITE: Tilføj ny lokalitet
@@ -193,6 +201,106 @@ FORM:
       ADD: Fortryd oprettelse
       CHG: Fortryd ændringer
       DEL: Fortryd slet
+  COPYPLAYGROUND:
+    TITLE: Kopier præferencer
+    PROMPT: Baneperioder og tider kopieres til den valgte bane. Eksisterende præferencer med samme dato og starttid berøres ikke.
+    SOURCEPLAYGROUND: Bane der kopieres fra
+    TARGETPLAYGROUND: Bane der modtager nye præferencer
+    SUBMIT: Kopier præferencer
+    CANCEL: Fortryd kopiering
+  LISTPLAYGROUNDATTRS:
+    TITLE: Vedligehold turnering
+    CAPTION: Banepræferencer
+    NOATTR: Tilføj ny banepræference
+  PLAYGROUNDATTR:
+    DEFAULT: Ingen periode tilknyttet
+    TITLE:
+      ADD: Tilføj ny banepræference
+      CHG: Rediger banepræference
+      DEL: SLET BANEPRÆFERENCE
+    PROMPT:
+      ADD: Indtast præference for banen.
+      CHG: Ret præference for banen.
+      DEL: Følgende banepræference vil bliver slettet.
+    TIMESLOT:
+      PROMPT: Periode
+      HELP: Den periode som banepræferencen er knyttet til
+    DATE:
+      PROMPT: Dato
+      HELP: Kampdato hvor præferencen gælder
+    START:
+      PROMPT: Starttidspunkt
+      HELP: Først kamptidspunkt for denne præference
+    END:
+      PROMPT: Afslutningstidspunkt
+      HELP: Seneste afslutningstidspunkt af den sidste kamp for denne præference
+    SUBMIT:
+      ADD: Tilføj ny banepræference
+      CHG: Gem banepræference
+      DEL: SLET BANEPRÆFERENCE
+    CANCEL:
+      ADD: Fortryd oprettelse
+      CHG: Fortryd ændringer
+      DEL: Fortryd slet
+  LISTTIMESLOTS:
+    TITLE: Vedligehold turnering
+    CAPTION: Perioder
+    NOTIMESLOT: Tilføj ny periode
+  TIMESLOT:
+    NONAME: Et navn på perioden skal angives.
+    PLAYGROUNDSEXIST: Der er knyttet banertider til denne periode. Perioden kan ikke fjernes.
+    TITLE:
+      ADD: Tilføj ny periode
+      CHG: Rediger periode
+      DEL: SLET PERIODE
+    PROMPT:
+      ADD: Indtast oplysninger på perioden.
+      CHG: Ret oplysninger på perioden.
+      DEL: Følgende periode vil bliver slettet.
+    NAME:
+      PROMPT: Navn
+      HELP: Beskrivelse af perioden
+    CAPACITY:
+      PROMPT: Kamp begrænsning
+      HELP: Største antal kampe et hold kan tildeles i denne periode hver dag
+    RESTPERIOD:
+      PROMPT: Hviletid
+      HELP: Mindste tid (i minutter) et hold skal hvile mellem to kampe i denne periode
+    PENALTY:
+      PROMPT: Undgå rejsetid
+      HELP: Begræns kampe på flere spillesteder (lokaliteter) i denne periode?
+    SUBMIT:
+      ADD: Tilføj ny periode
+      CHG: Gem periode
+      DEL: SLET PERIODE
+    CANCEL:
+      ADD: Fortryd oprettelse
+      CHG: Fortryd ændringer
+      DEL: Fortryd slet
+  LISTPARELS:
+    TITLE: Vedligehold turnering
+    CAPTION: Banepræferencer - kategorifordeling
+    ASSIGNED: Fordelte kategorier
+    UNASSIGNED: Øvrige kategorier
+    FINALS: Finalekampe
+    MATCHTIME: Periodelængde
+    UNIT: min.
+  MATCHPLANNING:
+    TITLE: Vedligehold turnering
+    CAPTION: Planlæg kampe
+    PLANNINGINCOMPLETE: Det er ikke muligt at planlægge alle kampe
+  TOURNAMENTIMPORT:
+    TITLE: Vedligehold turnering
+    CAPTION: Indlæs fra turnering
+    PROMPT:
+      SITES: Indlæs baner, lokaliteter og præferencer
+      CATEGORIES: Indlæs grupper og puljer
+    DEFAULT: Vælg en turnering...
+    TOURNAMENT:
+      PROMPT: Turnering der indlæses fra
+      HELP: Vælg den turnering som skal danne grundlag for kopiering
+    SUBMIT: Indlæs oplysninger
+    CANCEL: Fortryd
   LISTCATEGORIES:
     TITLE: Vedligehold turnering
     CAPTION: Grupper og puljer
@@ -207,8 +315,10 @@ FORM:
     NOGENDER: Gruppens forudsætning for køn for de tilmeldte hold skal angives.
     NOCLASSIFICATION: Alderskategori for gruppen skal angives.
     NOAGE: Aldersgrænse skal angives (i antal år).
+    NOMATCHTIME: Kampperiode skal angives (i antal minutter).
     GROUPSEXIST: Der er knyttet puljer til denne gruppe. Gruppen kan ikke fjernes.
     ENROLLEDEXIST: Der er tilmeldt hold til denne gruppe. Gruppen kan ikke fjernes.
+    PARELATIONSEXIST: Der er banepræferencer knyttet til denne gruppe. Gruppen kan ikke fjernes.
     TITLE:
       ADD: Tilføj ny gruppe
       CHG: Rediger gruppe
@@ -227,6 +337,7 @@ FORM:
       UNDER: Alder højest (U)
       OVER: Alder mindst (O)
     AGE: Aldersgrænse
+    MATCHTIME: Kampperiode
     SUBMIT:
       ADD: Tilføj ny gruppe
       CHG: Gem gruppe
@@ -388,6 +499,7 @@ FORM:
   NEWPASS: 
     NOPASSWORD: Et kodeord skal angives.
     BADPASSWORD: Det valgte kodeord er ikke gyldigt.
+    NOTEQUAL: Indtast kodeordet nøjagtigt ens i de to felter. Det indtastede er ikke ens.
     TITLE: Ændring af kodeord
     CAPTION: Angiv nyt kodeord
     PROMPT: >

@@ -508,4 +508,93 @@ class TournamentSupport
         $qbm->setParameter('tournament', $tournamentid);
         $qbm->getResult();
     }
+    
+    public function wipeCategories($tournamentid) {
+        // wipe groups
+        $qbg = $this->em->createQuery(
+                "delete from ".$this->entity->getRepositoryPath('Group')." g ".
+                "where g.pid in (select c.id ".
+                                "from ".$this->entity->getRepositoryPath('Category')." c ".
+                                "where c.pid=:tournament)");
+        $qbg->setParameter('tournament', $tournamentid);
+        $qbg->getResult();
+        // wipe playground attribute relations
+        $qbp = $this->em->createQuery(
+                "delete from ".$this->entity->getRepositoryPath('PARelation')." p ".
+                "where p.cid in (select c.id ".
+                                "from ".$this->entity->getRepositoryPath('Category')." c ".
+                                "where c.pid=:tournament)");
+        $qbp->setParameter('tournament', $tournamentid);
+        $qbp->getResult();
+        // wipe categories
+        $qbc = $this->em->createQuery(
+                "delete from ".$this->entity->getRepositoryPath('Category')." c ".
+                "where c.pid=:tournament");
+        $qbc->setParameter('tournament', $tournamentid);
+        $qbc->getResult();
+    }
+    
+    public function wipeSites($tournamentid) {
+        // wipe playground attribute relations
+        $qbr = $this->em->createQuery(
+                "delete from ".$this->entity->getRepositoryPath('PARelation')." r ".
+                "where r.pid in (select a.id ".
+                                "from ".$this->entity->getRepositoryPath('Site')." s, ".
+                                        $this->entity->getRepositoryPath('Playground')." p, ".
+                                        $this->entity->getRepositoryPath('PlaygroundAttribute')." a ".
+                                "where s.pid=:tournament and p.pid=s.id and a.pid=p.id)");
+        $qbr->setParameter('tournament', $tournamentid);
+        $qbr->getResult();
+        // wipe playground attributes
+        $qbm = $this->em->createQuery(
+                "delete from ".$this->entity->getRepositoryPath('PlaygroundAttribute')." a ".
+                "where a.pid in (select p.id ".
+                                "from ".$this->entity->getRepositoryPath('Site')." s, ".
+                                        $this->entity->getRepositoryPath('Playground')." p ".
+                                "where s.pid=:tournament and p.pid=s.id)");
+        $qbm->setParameter('tournament', $tournamentid);
+        $qbm->getResult();
+        // wipe playgrounds
+        $qbg = $this->em->createQuery(
+                "delete from ".$this->entity->getRepositoryPath('Playground')." p ".
+                "where p.pid in (select s.id ".
+                                "from ".$this->entity->getRepositoryPath('Site')." s ".
+                                "where s.pid=:tournament)");
+        $qbg->setParameter('tournament', $tournamentid);
+        $qbg->getResult();
+        // wipe sites
+        $qbc = $this->em->createQuery(
+                "delete from ".$this->entity->getRepositoryPath('Site')." s ".
+                "where s.pid=:tournament");
+        $qbc->setParameter('tournament', $tournamentid);
+        $qbc->getResult();
+    }
+    
+    public function wipeTournament($tournamentid) {
+        $this->wipeQMatches($tournamentid);
+        $this->wipeMatches($tournamentid);
+        $this->wipeTeams($tournamentid);
+        $this->wipeCategories($tournamentid);
+        $this->wipeSites($tournamentid);
+        // wipe timeslots
+        $qbs = $this->em->createQuery(
+                "delete from ".$this->entity->getRepositoryPath('Timeslot')." t ".
+                "where t.pid=:tournament");
+        $qbs->setParameter('tournament', $tournamentid);
+        $qbs->getResult();
+        // wipe events
+        $qbe = $this->em->createQuery(
+                "delete from ".$this->entity->getRepositoryPath('Event')." e ".
+                "where e.pid=:tournament");
+        $qbe->setParameter('tournament', $tournamentid);
+        $qbe->getResult();
+        // wipe tournament
+        $qbt = $this->em->createQuery(
+                "delete from ".$this->entity->getRepositoryPath('Tournament')." t ".
+                "where t.id=:tournament");
+        $qbt->setParameter('tournament', $tournamentid);
+        $qbt->getResult();
+    }
+    
+    
 }

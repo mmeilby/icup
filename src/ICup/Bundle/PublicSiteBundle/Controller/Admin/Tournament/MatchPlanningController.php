@@ -12,67 +12,42 @@ class MatchPlanningController extends Controller
 {
     /**
      * List the latest matches for a tournament
-     * @Route("/edit/m/plan/{tournamentid}", name="_plan_matches")
-     * @Template("ICupPublicSiteBundle:Tournament:matchlist.html.twig")
+     * @Route("/edit/m/plan/{tournamentid}", name="_edit_match_planning")
+     * @Template("ICupPublicSiteBundle:Edit:planmatch.html.twig")
      */
     public function listMatchesAction($tournamentid) {
+        /* @var $utilService Util */
+        $utilService = $this->get('util');
+        /* @var $user User */
+        $user = $utilService->getCurrentUser();
         $tournament = $this->get('entity')->getTournamentById($tournamentid);
+        $utilService->validateEditorAdminUser($user, $tournament->getPid());
 
-        $club_list = $this->get('util')->getClubList();
-        $today = new DateTime();
-//        $today = new DateTime('2014-07-06 20:15:00');
-
-        $matchList = $this->get('planning')->populateTournament($tournamentid);
-/*        
-        if (count($club_list) > 0) {
-            $matchList = $this->get('match')->listMatchesByTournament($tournament->getId(), $club_list);
-        }
-        else {
-            $matchList = $this->get('match')->listMatchesLimitedWithTournament($tournament->getId(), $today, 10, 6);
-        }
- * 
- */
-        $matchno = 1;
-        $matches = array();
-        foreach ($matchList as $matchplan) {
-            $match = array(
-                'id' => 0,
-                'matchno' => $matchno++,
-                'schedule' => new DateTime('2014-07-06 20:15:00'),
-/*                DateTime::createFromFormat(
-                        $this->container->getParameter('db_date_format').
-                        '-'.
-                        $this->container->getParameter('db_time_format'),
-                        $homeMatch['date'].'-'.$homeMatch['time']), */
-                'playground' => array('no' => '1',
-                                      'name' => 'Playground',
-                                      'id' => 0),
-                'category' => array('name' => $matchplan->getCategory()->getName(),
-                                    'id' => $matchplan->getCategory()->getId()),
-                'group' => array('name' => $matchplan->getGroup()->getName(),
-                                 'id' => $matchplan->getGroup()->getId()),
-                'home' => array('rid' => 0,
-                                'clubid' => 0,
-                                'id' => $matchplan->getTeamA()->id,
-                                'name' => $matchplan->getTeamA()->name,
-                                'country' => $matchplan->getTeamA()->country,
-                                'score' => '',
-                                'points' => '',
-                                'rank' => ''),
-                'away' => array('rid' => 0,
-                                'clubid' => 0,
-                                'id' => $matchplan->getTeamB()->id,
-                                'name' => $matchplan->getTeamB()->name,
-                                'country' => $matchplan->getTeamB()->country,
-                                'score' => '',
-                                'points' => '',
-                                'rank' => '')
-            );
-            $matches[date_format($match['schedule'], "Y/m/d")][] = $match;
-        }
+        $matchList = $this->get('planning')->populateTournament($tournament->getId());
+        $masterplan = $this->get('planning')->planTournament($tournament->getId(), $matchList);
         
-        return array('tournament' => $tournament,
+        $matches = array();
+        foreach ($masterplan['plan'] as $match) {
+            $matches[date_format($match->getSchedule(), "Y/m/d")][] = $match;
+        }
+        $unassignedCategories = array();
+        foreach ($masterplan['unassigned'] as $categoryCount) {
+            $unassignedCategories[] = array(
+                'category' => reset($categoryCount),
+                'matchcount' => count($categoryCount)
+            );
+        }
+        $timeslots = array();
+        foreach ($masterplan['available_timeslots'] as $ts) {
+            $timeslots[date_format($ts['slotschedule'], "Y/m/d")][] = $ts;
+        }
+
+        $host = $this->get('entity')->getHostById($tournament->getPid());
+        return array('host' => $host,
+                     'tournament' => $tournament,
                      'matchlist' => $matches,
-                     'shortmatchlist' => $matches);
+                     'shortmatchlist' => $matches,
+                     'unassigned' => $unassignedCategories,
+                     'available_timeslots' => $timeslots);
     }
 }

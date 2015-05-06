@@ -7,10 +7,10 @@ use Doctrine\ORM\Mapping as ORM;
 /**
  * ICup\Bundle\PublicSiteBundle\Entity\Doctrine\Category
  *
- * @ORM\Table(name="playgroundattributes",uniqueConstraints={@ORM\UniqueConstraint(name="IdxByDate", columns={"pid", "date"})})
+ * @ORM\Table(name="playgroundattributes",uniqueConstraints={@ORM\UniqueConstraint(name="IdxByDate", columns={"pid", "date", "start"})})
  * @ORM\Entity
  */
-class PlaygroundAttributes
+class PlaygroundAttribute
 {
     /**
      * @var integer $id

@@ -51,13 +51,6 @@ class PARelation
     private $matchtime;
 
     /**
-     * @var integer $order
-     * Order of assignment of matches for playgrounds - low numbers have highest priority
-     * @ORM\Column(name="order", type="integer", nullable=false)
-     */
-    private $order;
-
-    /**
      * Get id
      *
      * @return integer 
@@ -114,6 +107,29 @@ class PARelation
     }
     
     /**
+     * Set match level
+     *
+     * @param boolean $final
+     * @return PARelation
+     */
+    public function setFinals($final)
+    {
+        $this->finals = $final ? 'Y' : 'N';
+    
+        return $this;
+    }
+
+    /**
+     * Get match level
+     *
+     * @return boolean 
+     */
+    public function getFinals()
+    {
+        return $this->finals == 'Y';
+    }
+    
+    /**
      * Set match time
      *
      * @param integer $matchtime
@@ -134,28 +150,5 @@ class PARelation
     public function getMatchtime()
     {
         return $this->matchtime;
-    }
-
-    /**
-     * Set order
-     *
-     * @param integer $order
-     * @return PARelation
-     */
-    public function setOrder($order)
-    {
-        $this->order = $order;
-    
-        return $this;
-    }
-
-    /**
-     * Get order
-     *
-     * @return integer 
-     */
-    public function getOrder()
-    {
-        return $this->order;
     }
 }

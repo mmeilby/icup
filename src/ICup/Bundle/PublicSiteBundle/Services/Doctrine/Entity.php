@@ -11,9 +11,11 @@ use ICup\Bundle\PublicSiteBundle\Entity\Doctrine\Host;
 use ICup\Bundle\PublicSiteBundle\Entity\Doctrine\Match;
 use ICup\Bundle\PublicSiteBundle\Entity\Doctrine\MatchRelation;
 use ICup\Bundle\PublicSiteBundle\Entity\Doctrine\Playground;
+use ICup\Bundle\PublicSiteBundle\Entity\Doctrine\PlaygroundAttribute;
+use ICup\Bundle\PublicSiteBundle\Entity\Doctrine\PARelation;
+use ICup\Bundle\PublicSiteBundle\Entity\Doctrine\Timeslot;
 use ICup\Bundle\PublicSiteBundle\Entity\Doctrine\Site;
 use ICup\Bundle\PublicSiteBundle\Entity\Doctrine\Team;
-use ICup\Bundle\PublicSiteBundle\Entity\Doctrine\Template;
 use ICup\Bundle\PublicSiteBundle\Entity\Doctrine\Tournament;
 use ICup\Bundle\PublicSiteBundle\Entity\Doctrine\User;
 use ICup\Bundle\PublicSiteBundle\Exceptions\ValidationException;
@@ -124,6 +126,30 @@ class Entity
      */
     public function getPlaygroundRepo() {
         return $this->getRepository('Playground');
+    }
+    
+    /**
+     * Get the PlaygroundAttribute entity repository
+     * @return \Doctrine\ORM\EntityRepository
+     */
+    public function getPlaygroundAttributeRepo() {
+        return $this->getRepository('PlaygroundAttribute');
+    }
+    
+    /**
+     * Get the PARelation entity repository
+     * @return \Doctrine\ORM\EntityRepository
+     */
+    public function getPARelationRepo() {
+        return $this->getRepository('PARelation');
+    }
+    
+    /**
+     * Get the Timeslot entity repository
+     * @return \Doctrine\ORM\EntityRepository
+     */
+    public function getTimeslotRepo() {
+        return $this->getRepository('Timeslot');
     }
     
     /**
@@ -320,12 +346,57 @@ class Entity
      * @throws ValidationException
      */
     public function getPlaygroundById($playgroundid) {
-        /* @var $category Category */
+        /* @var $playground Playground */
         $playground = $this->getPlaygroundRepo()->find($playgroundid);
         if ($playground == null) {
             throw new ValidationException("BADPLAYGROUND", "Unknown playgroundid=".$playgroundid);
         }
         return $playground;
+    }
+    
+    /**
+     * Get the playground attribute from the playground attribute id
+     * @param $playgroundattributeid
+     * @return PlaygroundAttribute
+     * @throws ValidationException
+     */
+    public function getPlaygroundAttributeById($playgroundattributeid) {
+        /* @var $playgroundattribute PlaygroundAttribute */
+        $playgroundattribute = $this->getPlaygroundAttributeRepo()->find($playgroundattributeid);
+        if ($playgroundattribute == null) {
+            throw new ValidationException("BADPLAYGROUNDATTRIBUTE", "Unknown playgroundattributeid=".$playgroundattributeid);
+        }
+        return $playgroundattribute;
+    }
+    
+    /**
+     * Get the playground attribute relation from the parelation id
+     * @param $parelationid
+     * @return PARelation
+     * @throws ValidationException
+     */
+    public function getPARelationById($parelationid) {
+        /* @var $parelation PARelation */
+        $parelation = $this->getPARelationRepo()->find($parelationid);
+        if ($parelation == null) {
+            throw new ValidationException("BADPARELATION", "Unknown parelationid=".$parelationid);
+        }
+        return $parelation;
+    }
+    
+    /**
+     * Get the timeslot from the timeslot id
+     * @param $timeslotid
+     * @return Timeslot
+     * @throws ValidationException
+     */
+    public function getTimeslotById($timeslotid) {
+        /* @var $timeslot Timeslot */
+        $timeslot = $this->getTimeslotRepo()->find($timeslotid);
+        if ($timeslot == null) {
+            throw new ValidationException("BADTIMESLOT", "Unknown timeslotid=".$timeslotid);
+        }
+        return $timeslot;
     }
     
     /**

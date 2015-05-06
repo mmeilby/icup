@@ -1,9 +1,7 @@
 <?php
 namespace ICup\Bundle\PublicSiteBundle\Controller\Rest\Tournament;
 
-use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
-use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 
@@ -22,7 +20,7 @@ class RestClubController extends Controller
         $country = $this->get('translator')->trans($club->getCountry(), array(), 'lang');
         return new Response(json_encode(
             array('id' => $club->getId(),
-                  'name' => $club->getname(),
+                  'name' => $club->getName(),
                   'country' => $country,
                   'country_code' => $club->getCountry())
                 ));

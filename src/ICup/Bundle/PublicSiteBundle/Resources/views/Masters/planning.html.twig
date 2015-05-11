@@ -3,23 +3,12 @@
    SMALL MOBILE DEVICES
    ******************************************* #}
 {% macro listmatchesxs(matchlist, context) %}
-    {% set playground_defined = 0 %}
-    {% for matchset in matchlist %}
-        {% for match in matchset %}
-            {% if match.playground.id != "" %}
-                {% set playground_defined = 1 %}
-            {% endif %}
-        {% endfor %}
-    {% endfor %}
-    
 <table class="table table-striped">
     <thead>
         <tr>
             <td class="narrow-col">
                 {% trans from "tournament" %}LEGEND.TIME{% endtrans %}<br />
-            {% if playground_defined %}                
                 {% trans from "tournament" %}LEGEND.PLAYGROUND{% endtrans %}
-            {% endif %}
             </td>
             <td>
                 {% trans from "tournament" %}LEGEND.HOMETEAM{% endtrans %}<br />
@@ -40,9 +29,7 @@
         <tr>
             <td class="narrow-col">
                 {{ match.schedule|date('FORMAT.TIME'|trans([],'messages')) }}<br />
-            {% if playground_defined %}                
                 <a href="{{ path('_showplayground_full', { 'playgroundid': match.playground.id }) }}" title="{{ match.playground.name }}">{{ match.playground.no }}</a>
-            {% endif %}    
             </td>
             <td>{{ context.formatter.clubxs(match.teamA, match.teamB, match.group.id, context) }}</td>
         </tr>

@@ -68,3 +68,7 @@ A:hover.nolink {
 .bg-table-row {
     background-color: #f9f9f9;
 }
+
+.bootstrap-switch {
+    display: block;
+}

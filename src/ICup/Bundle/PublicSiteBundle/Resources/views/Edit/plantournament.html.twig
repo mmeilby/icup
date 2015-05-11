@@ -1,0 +1,23 @@
+{% extends "ICupPublicSiteBundle:Masters:edit.html.twig" %}
+
+{% form_theme form 'ICupPublicSiteBundle:Default:layout.script.html.twig' %}
+{% trans_default_domain "admin" %}
+
+{% block adminbody %}
+    <h2 style="margin-bottom: 0">
+        <i class="fa fa-university"></i>&nbsp;
+        {% trans %}FORM.MATCHPLANNING.TITLE{% endtrans %}
+    </h2>
+    <p>{% trans %}FORM.MATCHPLANNING.CAPTION{% endtrans %}</p>
+<div class="panel panel-default">
+    <div class="panel-body">
+    {{ form(form) }}
+    </div>
+</div>
+{% endblock %}
+{% block javascripts %}
+    <script type="text/javascript">
+        $("[type='checkbox']").bootstrapSwitch('onText', '{% trans %}FORM.MATCHPLANNING.SWITCH.ON{% endtrans %}');
+        $("[type='checkbox']").bootstrapSwitch('offText', '{% trans %}FORM.MATCHPLANNING.SWITCH.OFF{% endtrans %}');
+    </script>
+{% endblock %}

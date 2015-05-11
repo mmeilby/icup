@@ -2,30 +2,18 @@
 
 namespace ICup\Bundle\PublicSiteBundle\Services\Doctrine;
 
+use DateTime;
+use Doctrine\ORM\EntityManager;
 use ICup\Bundle\PublicSiteBundle\Entity\Doctrine\Category;
-use ICup\Bundle\PublicSiteBundle\Entity\Doctrine\Club;
 use ICup\Bundle\PublicSiteBundle\Entity\Doctrine\Enrollment;
-use ICup\Bundle\PublicSiteBundle\Entity\Doctrine\Group;
 use ICup\Bundle\PublicSiteBundle\Entity\Doctrine\GroupOrder;
-use ICup\Bundle\PublicSiteBundle\Entity\Doctrine\Host;
-use ICup\Bundle\PublicSiteBundle\Entity\Doctrine\Match;
-use ICup\Bundle\PublicSiteBundle\Entity\Doctrine\MatchRelation;
-use ICup\Bundle\PublicSiteBundle\Entity\Doctrine\Playground;
-use ICup\Bundle\PublicSiteBundle\Entity\Doctrine\PlaygroundAttribute;
 use ICup\Bundle\PublicSiteBundle\Entity\Doctrine\PARelation;
-use ICup\Bundle\PublicSiteBundle\Entity\Doctrine\Timeslot;
-use ICup\Bundle\PublicSiteBundle\Entity\Doctrine\Site;
 use ICup\Bundle\PublicSiteBundle\Entity\Doctrine\Team;
-use ICup\Bundle\PublicSiteBundle\Entity\Doctrine\Template;
-use ICup\Bundle\PublicSiteBundle\Entity\Doctrine\Tournament;
 use ICup\Bundle\PublicSiteBundle\Entity\Doctrine\User;
 use ICup\Bundle\PublicSiteBundle\Entity\TeamInfo;
 use ICup\Bundle\PublicSiteBundle\Exceptions\ValidationException;
-use Symfony\Component\DependencyInjection\ContainerInterface;
-use Doctrine\ORM\EntityManager;
 use Monolog\Logger;
-use ICup\Bundle\PublicSiteBundle\Services\Doctrine\Entity;
-use DateTime;
+use Symfony\Component\DependencyInjection\ContainerInterface;
 
 class BusinessLogic
 {
@@ -400,6 +388,15 @@ class BusinessLogic
         return $this->entity->getPARelationRepo()->findBy(array('pid' => $playgroundattributeid), array('id' => 'asc'));
     }
 
+    public function removePARelations($playgroundattributeid) {
+        // wipe playground attribute relations
+        $qbr = $this->em->createQuery(
+            "delete from ".$this->entity->getRepositoryPath('PARelation')." p ".
+            "where p.pid=:pattr");
+        $qbr->setParameter('pattr', $playgroundattributeid);
+        $qbr->getResult();
+    }
+
     public function listPACategories($playgroundattributeid) {
         $qb = $this->em->createQuery(
                 "select c ".
@@ -407,7 +404,7 @@ class BusinessLogic
                         $this->entity->getRepositoryPath('PARelation')." p ".
                 "where p.cid=c.id and ".
                       "p.pid=:pattr ".
-                "order by p.id");
+                "order by c.classification asc, c.age desc, c.gender asc");
         $qb->setParameter('pattr', $playgroundattributeid);
         return $qb->getResult();
     }

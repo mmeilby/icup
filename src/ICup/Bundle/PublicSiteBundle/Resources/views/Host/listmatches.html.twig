@@ -16,7 +16,7 @@
             {% trans %}RESULTS{% endtrans %} {{ tournament.edition }}<br />
             {% trans %}GROUP{% endtrans %} {{ group.name }} - 
                         {{ ['GROUPCLASS.',group.classification]|join|trans }} - 
-                        {{ group.playingtime }} {% trans %}MINUTES{% endtrans %}
+                        {{ category.matchtime }} {% trans %}MINUTES{% endtrans %}
         </div>
         <div class="col-lg-3">
             <a href="{{ path('_showcategory', { 'categoryid': category.id }) }}">

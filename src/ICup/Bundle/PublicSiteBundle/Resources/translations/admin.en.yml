@@ -214,6 +214,13 @@ FORM:
     NOATTR: Add new preference
   PLAYGROUNDATTR:
     DEFAULT: No timeslot selected
+    NODATE: The preference date is mandatory.
+    BADDATE: The preference date is not valid.
+    NOSTART: The preference start of day is mandatory.
+    BADSTART: The preference start of day is not valid.
+    NOEND: The preference end of day is mandatory.
+    BADEND: The preference end of day is not valid.
+    NOTIMESLOT: A timeslot for this preference must be chosen.
     TITLE:
       ADD: Add new preference
       CHG: Modify preference
@@ -287,8 +294,27 @@ FORM:
     UNIT: min.
   MATCHPLANNING:
     TITLE: Tournament administration
-    CAPTION: Plan matches
-    PLANNINGINCOMPLETE: It was not possible to plan all matches
+    CAPTION: Schedule matches
+    PLANNINGINCOMPLETE: It was not possible to schedule all matches
+    DOUBLEMATCH:
+      PROMPT: Plan for both home and away playground
+      HELP: If you plan with both home and away playground every team will play twice against same opponent
+    PREFERPG:
+      PROMPT: Fill playground first
+      HELP: With this option a team will experience more matches on the same playground
+    FINALS:
+      PROMPT: Schedule finals
+      HELP: Choose to schedule preliminary matches or finals
+    SWITCH:
+      ON: YES
+      OFF: NO
+    DOWNLOAD: Download match schedule as textfile
+    SAVE: Accept and save match schedule
+    VIEW: Match schedule
+    RESULT: Dashboard
+    PLAN_SAVED: The match schedule has been accepted and registered for the tournament
+    SUBMIT: Schedule matches
+    CANCEL: Cancel
   TOURNAMENTIMPORT:
     TITLE: Tournament administration
     CAPTION: Copy information from another tournament

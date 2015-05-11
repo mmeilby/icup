@@ -214,6 +214,13 @@ FORM:
     NOATTR: Tilføj ny banepræference
   PLAYGROUNDATTR:
     DEFAULT: Ingen periode tilknyttet
+    NODATE: En dato for banepræferencen skal angives.
+    BADDATE: Dato for banepræference er ikke gyldig.
+    NOSTART: Tidspunkt for periodestart skal angives.
+    BADSTART: Tidspunkt for periodestart er ikke gyldigt.
+    NOEND: Tidspunkt for periodeophør skal angives.
+    BADEND: Tidspunkt for periodeophør er ikke gyldigt.
+    NOTIMESLOT: Der skal vælges en periode for denne banepræference.
     TITLE:
       ADD: Tilføj ny banepræference
       CHG: Rediger banepræference
@@ -230,10 +237,10 @@ FORM:
       HELP: Kampdato hvor præferencen gælder
     START:
       PROMPT: Starttidspunkt
-      HELP: Først kamptidspunkt for denne præference
+      HELP: Første kamptidspunkt for denne præference
     END:
-      PROMPT: Afslutningstidspunkt
-      HELP: Seneste afslutningstidspunkt af den sidste kamp for denne præference
+      PROMPT: Ophørstidspunkt
+      HELP: Seneste ophørstidspunkt af den sidste kamp for denne præference
     SUBMIT:
       ADD: Tilføj ny banepræference
       CHG: Gem banepræference
@@ -289,6 +296,25 @@ FORM:
     TITLE: Vedligehold turnering
     CAPTION: Planlæg kampe
     PLANNINGINCOMPLETE: Det er ikke muligt at planlægge alle kampe
+    DOUBLEMATCH:
+      PROMPT: Planlæg med returkampe
+      HELP: Hvis der spilles med returkampe kommer hvert hold til at spille to gange mod samme modstander
+    PREFERPG:
+      PROMPT: Fyld baner først
+      HELP: Hvis baner fyldes først vil en klub opleve at spille på den samme bane når det er muligt
+    FINALS:
+      PROMPT: Planlæg finalekampe
+      HELP: Planlæg finalekampe eller grundspil
+    SWITCH:
+      ON: JA
+      OFF: NEJ
+    DOWNLOAD: Hent kampplan som tekstfil
+    SAVE: Godkend og gem kampplan
+    VIEW: Kampplan
+    RESULT: Oversigt
+    PLAN_SAVED: Kampplanen er godkendt og registreret for turneringen.
+    SUBMIT: Planlæg kampe
+    CANCEL: Fortryd
   TOURNAMENTIMPORT:
     TITLE: Vedligehold turnering
     CAPTION: Indlæs fra turnering

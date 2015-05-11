@@ -1,13 +1,11 @@
 <?php
 namespace ICup\Bundle\PublicSiteBundle\Controller\Admin\Tournament;
 
-use ICup\Bundle\PublicSiteBundle\Entity\Doctrine\User;
 use ICup\Bundle\PublicSiteBundle\Entity\Doctrine\PlaygroundAttribute;
+use ICup\Bundle\PublicSiteBundle\Entity\Doctrine\User;
 use ICup\Bundle\PublicSiteBundle\Entity\PAttrForm;
-use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
-use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
-use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use ICup\Bundle\PublicSiteBundle\Services\Util;
+use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\Form\FormError;
 use Symfony\Component\HttpFoundation\Request;
 
@@ -106,15 +104,6 @@ class PlaygroundAttributeController extends Controller
             return $this->redirect($returnUrl);
         }
         if ($form->isValid()) {
-/*            
-            if ($this->get('logic')->listPlaygrounds($pattr->getId()) != null) {
-                $form->addError(new FormError($this->get('translator')->trans('FORM.PLAYGROUNDATTR.PLAYGROUNDSEXIST', array(), 'admin')));
-            }
-            else {
-                $this->delPAttr($pattr);
-                return $this->redirect($returnUrl);
-            }
- */
             $this->delPAttr($pattr);
             return $this->redirect($returnUrl);
         }
@@ -138,10 +127,7 @@ class PlaygroundAttributeController extends Controller
 
     private function delPAttr(PlaygroundAttribute $pattr) {
         $em = $this->getDoctrine()->getManager();
-        $paRelations = $this->get('logic')->listPARelations($pattr->getId());
-        foreach ($paRelations as $paRelation) {
-            $em->remove($paRelation);
-        }
+        $this->get('logic')->removePARelations($pattr->getId());
         $em->remove($pattr);
         $em->flush();
     }
@@ -224,12 +210,39 @@ class PlaygroundAttributeController extends Controller
 
     private function checkForm($form, PAttrForm $pattrForm) {
         if ($form->isValid()) {
-/*            
-            if ($pattr->getName() == null || trim($pattr->getName()) == '') {
-                $form->addError(new FormError($this->get('translator')->trans('FORM.PLAYGROUNDATTR.NONAME', array(), 'admin')));
-                return false;
+            if ($pattrForm->getTimeslot() == null) {
+                $form->addError(new FormError($this->get('translator')->trans('FORM.PLAYGROUNDATTR.NOTIMESLOT', array(), 'admin')));
             }
-*/
+            if ($pattrForm->getDate() == null || trim($pattrForm->getDate()) == '') {
+                $form->addError(new FormError($this->get('translator')->trans('FORM.PLAYGROUNDATTR.NODATE', array(), 'admin')));
+            }
+            else {
+                date_create_from_format($this->get('translator')->trans('FORMAT.DATE'), $pattrForm->getDate());
+                $date_errors = date_get_last_errors();
+                if ($date_errors['error_count'] > 0) {
+                    $form->addError(new FormError($this->get('translator')->trans('FORM.PLAYGROUNDATTR.BADDATE', array(), 'admin')));
+                }
+            }
+            if ($pattrForm->getStart() == null || trim($pattrForm->getStart()) == '') {
+                $form->addError(new FormError($this->get('translator')->trans('FORM.PLAYGROUNDATTR.NOSTART', array(), 'admin')));
+            }
+            else {
+                date_create_from_format($this->get('translator')->trans('FORMAT.TIME'), $pattrForm->getStart());
+                $date_errors = date_get_last_errors();
+                if ($date_errors['error_count'] > 0) {
+                    $form->addError(new FormError($this->get('translator')->trans('FORM.PLAYGROUNDATTR.BADSTART', array(), 'admin')));
+                }
+            }
+            if ($pattrForm->getEnd() == null || trim($pattrForm->getEnd()) == '') {
+                $form->addError(new FormError($this->get('translator')->trans('FORM.PLAYGROUNDATTR.NOEND', array(), 'admin')));
+            }
+            else {
+                date_create_from_format($this->get('translator')->trans('FORMAT.TIME'), $pattrForm->getEnd());
+                $date_errors = date_get_last_errors();
+                if ($date_errors['error_count'] > 0) {
+                    $form->addError(new FormError($this->get('translator')->trans('FORM.PLAYGROUNDATTR.BADEND', array(), 'admin')));
+                }
+            }
             return true;
         }
         return false;

@@ -1,0 +1,50 @@
+{% extends "ICupPublicSiteBundle:Masters:edit.html.twig" %}
+{% trans_default_domain "admin" %}
+
+{% import 'ICupPublicSiteBundle:Masters:club.html.twig' as formatter %}
+{% import 'ICupPublicSiteBundle:Masters:tournament.html.twig' as tformatter %}
+{% import 'ICupPublicSiteBundle:Masters:planning.html.twig' as mformatter %}
+
+{% block adminbody %}
+    <h2 style="margin-bottom: 0">
+        <i class="fa fa-university"></i>&nbsp;
+        {% trans %}FORM.MATCHPLANNING.TITLE{% endtrans %}
+    </h2>
+    <p>{% trans %}FORM.MATCHPLANNING.CAPTION{% endtrans %}</p>
+    <p class="lead">
+        <a href="{{ path('_edit_tournamentboard', { 'tournamentid': tournament.id }) }}">
+            {{ host.name|upper }}
+            <br />
+            {{ tournament.name }}
+        </a>
+    </p>
+    <ul class="nav nav-tabs" role="tablist">
+        <li>
+            <a href="{{ path('_edit_match_planning_result', { 'tournamentid': tournament.id }) }}">
+                <span class="fa fa-bullseye"></span>&nbsp;{% trans %}FORM.MATCHPLANNING.RESULT{% endtrans %}
+            </a>
+        </li>
+        <li class="active">
+            <a href="{{ path('_edit_match_planning_view', { 'tournamentid': tournament.id }) }}">
+                <span class="fa fa-calendar"></span>&nbsp;{% trans %}FORM.MATCHPLANNING.VIEW{% endtrans %}
+            </a>
+        </li>
+    </ul>
+    <p>&nbsp;</p>
+    {% if matchlist|length > 0 %}
+    <div class="hidden-xs">
+        {{ mformatter.listmatches(matchlist, _context) }}
+    </div>
+    <div class="visible-xs-block">
+        {{ mformatter.listmatchesxs(matchlist, _context) }}
+    </div>
+    {% else %}
+    <div class="panel panel-warning">
+        <div class="panel-heading">
+            <b>
+                {% trans from 'tournament' %}TOURNAMENTNOTREADY{% endtrans %}
+            </b>
+        </div>
+    </div>
+    {% endif %}
+{% endblock %}

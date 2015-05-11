@@ -4,6 +4,7 @@
 /app/bootstrap.php.cache
 /bin/
 /nbproject/
+/.idea/
 /vendor/
 /web/bundles/
 /web/css/

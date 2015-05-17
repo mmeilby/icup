@@ -1,6 +1,7 @@
 <?php
 namespace ICup\Bundle\PublicSiteBundle\Controller\Admin\Tournament;
 
+use ICup\Bundle\PublicSiteBundle\Entity\Doctrine\Date;
 use ICup\Bundle\PublicSiteBundle\Entity\Doctrine\Event;
 use ICup\Bundle\PublicSiteBundle\Entity\Doctrine\User;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
@@ -128,7 +129,7 @@ class EventController extends Controller
         $event->setEvent($eventForm->getEvent());
         $dateformat = $this->get('translator')->trans('FORMAT.DATE');
         $eventdate = date_create_from_format($dateformat, $eventForm->getDate());
-        $event->setDate(date_format($eventdate, $this->container->getParameter('db_date_format')));
+        $event->setDate(Date::getDate($eventdate));
     }
     
     private function copyEventForm(Event $event) {
@@ -137,7 +138,7 @@ class EventController extends Controller
         $eventForm->setPid($event->getPId());
         $eventForm->setEvent($event->getEvent());
         $dateformat = $this->get('translator')->trans('FORMAT.DATE');
-        $eventdate = date_create_from_format($this->container->getParameter('db_date_format'), $event->getDate());
+        $eventdate = Date::getDateTime($event->getDate());
         $eventForm->setDate(date_format($eventdate, $dateformat));
         return $eventForm;
     }
@@ -184,9 +185,8 @@ class EventController extends Controller
             $form->addError(new FormError($this->get('translator')->trans('FORM.EVENT.NODATE', array(), 'admin')));
         }
         else {
-            date_create_from_format($this->get('translator')->trans('FORMAT.DATE'), $eventForm->getDate());
-            $date_errors = date_get_last_errors();
-            if ($date_errors['error_count'] > 0) {
+            $date = date_create_from_format($this->get('translator')->trans('FORMAT.DATE'), $eventForm->getDate());
+            if ($date === false) {
                 $form->addError(new FormError($this->get('translator')->trans('FORM.EVENT.BADDATE', array(), 'admin')));
             }
         }

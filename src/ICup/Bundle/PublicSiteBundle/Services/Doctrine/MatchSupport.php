@@ -2,6 +2,7 @@
 
 namespace ICup\Bundle\PublicSiteBundle\Services\Doctrine;
 
+use ICup\Bundle\PublicSiteBundle\Entity\Doctrine\Date;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 use Doctrine\ORM\EntityManager;
 use Monolog\Logger;
@@ -245,7 +246,7 @@ class MatchSupport
         $qb->setParameter('tournament', $tournamentid);
         $matchList = array();
         foreach ($qb->getResult() as $date) {
-            $matchdate = date_create_from_format($this->container->getParameter('db_date_format'), $date['date']);
+            $matchdate = Date::getDateTime($date['date']);
             $matchList[] = $matchdate;
         }
         return $matchList;

@@ -2,6 +2,7 @@
 
 namespace ICup\Bundle\PublicSiteBundle\Services\Doctrine;
 
+use ICup\Bundle\PublicSiteBundle\Entity\Doctrine\Date;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 use Doctrine\ORM\EntityManager;
 use Monolog\Logger;
@@ -41,7 +42,7 @@ class TournamentSupport
         $qb->setParameter('tournament', $tournamentid);
         $eventList = array();
         foreach ($qb->getResult() as $event) {
-            $eventdate = date_create_from_format($this->container->getParameter('db_date_format'), $event['date']);
+            $eventdate = Date::getDateTime($event['date']);
             $event['schedule'] = $eventdate;
             $eventList[] = $event;
         }
@@ -87,7 +88,7 @@ class TournamentSupport
         $qb->setParameter('stop', $stop);
         $status = $default;
         foreach ($qb->getResult() as $event) {
-            $eventdate = date_create_from_format($this->container->getParameter('db_date_format'), $event['date']);
+            $eventdate = Date::getDateTime($event['date']);
             if ($event['event'] == $start) {
                 if ($date < $eventdate) {
                     $status = false;
@@ -120,7 +121,7 @@ class TournamentSupport
         $qb->setParameter('etype', $eventType);
         $event = $qb->getOneOrNullResult();
         if ($event != null) {
-            $eventdate = date_create_from_format($this->container->getParameter('db_date_format'), $event['date']);
+            $eventdate = Date::getDateTime($event['date']);
             $status = $date >= $eventdate;
         }
         else {

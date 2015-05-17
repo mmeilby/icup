@@ -29,6 +29,11 @@
                 <span class="fa fa-calendar"></span>&nbsp;{% trans %}FORM.MATCHPLANNING.VIEW{% endtrans %}
             </a>
         </li>
+        <li>
+            <a href="{{ path('_edit_match_planning_advice', { 'tournamentid': tournament.id }) }}">
+                <span class="fa fa-lightbulb-o"></span>&nbsp;{% trans %}FORM.MATCHPLANNING.ADVICE{% endtrans %}
+            </a>
+        </li>
     </ul>
     <p>&nbsp;</p>
     {% for flashMessage in app.session.flashbag.get('data_saved') %}
@@ -44,7 +49,7 @@
     {% if unassigned|length > 0 %}
     <div class="panel panel-danger">
         <div class="panel-heading">
-            <h4>{% trans %}FORM.MATCHPLANNING.PLANNINGINCOMPLETE{% endtrans %}</h4>
+            <h4><span class="fa fa-exclamation-triangle"></span>&nbsp;{% trans %}FORM.MATCHPLANNING.PLANNINGINCOMPLETE{% endtrans %}</h4>
         {% for categoryinfo in unassigned %}
             <div class="row">
                 <div class="col-xs-4">
@@ -83,11 +88,11 @@
         <tbody>
     {% for tsset in available_timeslots %}
             <tr><td class="bg-warning" colspan="4">
-                    {{ 'FORMAT.LONGDATE'|transchoice(tsset[0].slotschedule|date('j'), {
-                            '%week%': ['WEEK.',tsset[0].slotschedule|date('D')|upper]|join|trans([],'messages')|capitalize,
-                            '%day%': tsset[0].slotschedule|date('j'),
-                            '%month%': ['MONTH.',tsset[0].slotschedule|date('M')|upper]|join|trans([],'messages'),
-                            '%year%': tsset[0].slotschedule|date('Y')}, 'messages') }}
+                    {{ 'FORMAT.LONGDATE'|transchoice(tsset[0].schedule|date('j'), {
+                            '%week%': ['WEEK.',tsset[0].schedule|date('D')|upper]|join|trans([],'messages')|capitalize,
+                            '%day%': tsset[0].schedule|date('j'),
+                            '%month%': ['MONTH.',tsset[0].schedule|date('M')|upper]|join|trans([],'messages'),
+                            '%year%': tsset[0].schedule|date('Y')}, 'messages') }}
             </td></tr>
         {% for timeslot in tsset %}
             <tr>
@@ -102,7 +107,7 @@
                     {% endif %}
                     </a>
                 </td>
-                <td class="text-right">{{ timeslot.slot_time_left }}</td>
+                <td class="text-right">{{ timeslot.timeleft }}</td>
             </tr>
         {% endfor %}
     {% endfor %}

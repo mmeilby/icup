@@ -1,6 +1,7 @@
 <?php
 namespace ICup\Bundle\PublicSiteBundle\Controller\Admin\Tournament;
 
+use ICup\Bundle\PublicSiteBundle\Entity\Doctrine\Date;
 use ICup\Bundle\PublicSiteBundle\Entity\Doctrine\Match;
 use ICup\Bundle\PublicSiteBundle\Entity\Doctrine\QMatchRelation;
 use ICup\Bundle\PublicSiteBundle\Entity\Doctrine\User;
@@ -143,12 +144,11 @@ class QMatchRelationController extends Controller
         $matchForm->setId($match->getId());
         $matchForm->setPid($match->getPId());
         $matchForm->setMatchno($match->getMatchno());
+        $matchdate = Date::getDateTime($match->getDate(), $match->getTime());
         $dateformat = $this->get('translator')->trans('FORMAT.DATE');
-        $matchdate = date_create_from_format($this->container->getParameter('db_date_format'), $match->getDate());
         $matchForm->setDate(date_format($matchdate, $dateformat));
         $timeformat = $this->get('translator')->trans('FORMAT.TIME');
-        $matchtime = date_create_from_format($this->container->getParameter('db_time_format'), $match->getTime());
-        $matchForm->setTime(date_format($matchtime, $timeformat));
+        $matchForm->setTime(date_format($matchdate, $timeformat));
         $matchForm->setPlayground($match->getPlayground());
         $homeRel = $this->get('match')->getQMatchRelationByMatch($match->getId(), false);
         if ($homeRel != null) {

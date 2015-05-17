@@ -1,0 +1,100 @@
+{% extends "ICupPublicSiteBundle:Masters:edit.html.twig" %}
+{% trans_default_domain "admin" %}
+
+{% import 'ICupPublicSiteBundle:Masters:club.html.twig' as formatter %}
+{% import 'ICupPublicSiteBundle:Masters:tournament.html.twig' as tformatter %}
+{% import 'ICupPublicSiteBundle:Masters:planning.html.twig' as mformatter %}
+
+{% block adminbody %}
+    <h2 style="margin-bottom: 0">
+        <i class="fa fa-university"></i>&nbsp;
+        {% trans %}FORM.MATCHPLANNING.TITLE{% endtrans %}
+    </h2>
+    <p>{% trans %}FORM.MATCHPLANNING.CAPTION{% endtrans %}</p>
+    <p class="lead">
+        <a href="{{ path('_edit_tournamentboard', { 'tournamentid': tournament.id }) }}">
+            {{ host.name|upper }}
+            <br />
+            {{ tournament.name }}
+        </a>
+    </p>
+    <ul class="nav nav-tabs" role="tablist">
+        <li>
+            <a href="{{ path('_edit_match_planning_result', { 'tournamentid': tournament.id }) }}">
+                <span class="fa fa-bullseye"></span>&nbsp;{% trans %}FORM.MATCHPLANNING.RESULT{% endtrans %}
+            </a>
+        </li>
+        <li>
+            <a href="{{ path('_edit_match_planning_view', { 'tournamentid': tournament.id }) }}">
+                <span class="fa fa-calendar"></span>&nbsp;{% trans %}FORM.MATCHPLANNING.VIEW{% endtrans %}
+            </a>
+        </li>
+        <li class="active">
+            <a href="{{ path('_edit_match_planning_advice', { 'tournamentid': tournament.id }) }}">
+                <span class="fa fa-lightbulb-o"></span>&nbsp;{% trans %}FORM.MATCHPLANNING.ADVICE{% endtrans %}
+            </a>
+        </li>
+    </ul>
+    <p>&nbsp;</p>
+    <table class="table table-striped">
+        <thead>
+        <tr>
+            <td class="narrow-col">{% trans from "tournament" %}LEGEND.CATEGORY{% endtrans %}<br />
+                {% trans from "tournament" %}LEGEND.GROUP{% endtrans %}</td>
+            <td class="flag"></td>
+            <td>{% trans from "tournament" %}LEGEND.HOMETEAM{% endtrans %}</td>
+            <td class="flag"></td>
+            <td>{% trans from "tournament" %}LEGEND.AWAYTEAM{% endtrans %}</td>
+            <td class="narrow-col"></td>
+            <td class="narrow-col"></td>
+        </tr>
+        </thead>
+        <tbody>
+        {% for matchset in advices %}
+            <tr>
+                <td class="narrow-col">
+                    <a href="{{ path('_showcategory', { 'categoryid': matchset.match.category.id }) }}"
+                       title="{{ 'CATEGORY'|trans([],'tournament') }} {{ matchset.match.category.name|upper }} - {{ ['GENDER.',
+                       matchset.match.category.gender,
+                       matchset.match.category.classification]|join|transchoice(matchset.match.category.age, { '%age%': matchset.match.category.age },'tournament') }}">
+                        {{ matchset.match.category.name }}</a><br />
+                    {{ matchset.match.group.name }}</td>
+                {{ formatter.club(matchset.match.teamA, matchset.match.group.id, _context) }}
+                {{ formatter.club(matchset.match.teamB, matchset.match.group.id, _context) }}
+                <td></td>
+                <td></td>
+            </tr>
+            {% for altset in matchset.alternatives %}
+                {% if altset|length > 0  %}
+            <tr>
+                <td colspan="7">
+                    {{ 'FORMAT.LONGDATE'|transchoice(altset[0].schedule|date('j'), {
+                        '%week%': ['WEEK.',altset[0].schedule|date('D')|upper]|join|trans([],'messages')|capitalize,
+                        '%day%': altset[0].schedule|date('j'),
+                        '%month%': ['MONTH.',altset[0].schedule|date('M')|upper]|join|trans([],'messages'),
+                        '%year%': altset[0].schedule|date('Y')}, 'messages') }}
+                </td>
+            </tr>
+                    {% for timeslot in altset %}
+            <tr>
+                <td></td>
+                <td colspan="2">{{ timeslot.playground.name }}</td>
+                <td colspan="2">{{ timeslot.timeslot.name }}</td>
+                <td>
+                    <a href="{{ path('_edit_list_parel', { 'playgroundattributeid': timeslot.id }) }}">
+                        {% if timeslot.categories|length > 0 %}
+                            {{ timeslot.categories|join(',') }}
+                        {% else %}
+                            <span class="fa fa-cogs"></span>
+                        {% endif %}
+                    </a>
+                </td>
+                <td class="text-right">{{ timeslot.timeleft }}</td>
+            </tr>
+                    {% endfor %}
+                {% endif %}
+            {% endfor %}
+        {% endfor %}
+        </tbody>
+    </table>
+{% endblock %}

@@ -29,6 +29,11 @@
                 <span class="fa fa-calendar"></span>&nbsp;{% trans %}FORM.MATCHPLANNING.VIEW{% endtrans %}
             </a>
         </li>
+        <li>
+            <a href="{{ path('_edit_match_planning_advice', { 'tournamentid': tournament.id }) }}">
+                <span class="fa fa-lightbulb-o"></span>&nbsp;{% trans %}FORM.MATCHPLANNING.ADVICE{% endtrans %}
+            </a>
+        </li>
     </ul>
     <p>&nbsp;</p>
     {% if matchlist|length > 0 %}

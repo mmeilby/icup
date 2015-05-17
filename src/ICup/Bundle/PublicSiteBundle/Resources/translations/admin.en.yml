@@ -221,6 +221,7 @@ FORM:
     NOEND: The preference end of day is mandatory.
     BADEND: The preference end of day is not valid.
     NOTIMESLOT: A timeslot for this preference must be chosen.
+    BADTIME: Start and end of day must define a continuous period of time for the specified day. This is not the case.
     TITLE:
       ADD: Add new preference
       CHG: Modify preference
@@ -312,6 +313,7 @@ FORM:
     SAVE: Accept and save match schedule
     VIEW: Match schedule
     RESULT: Dashboard
+    ADVICE: Advices
     PLAN_SAVED: The match schedule has been accepted and registered for the tournament
     SUBMIT: Schedule matches
     CANCEL: Cancel

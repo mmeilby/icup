@@ -3,6 +3,7 @@
 namespace ICup\Bundle\PublicSiteBundle\Entity\Doctrine;
 
 use Doctrine\ORM\Mapping as ORM;
+use DateTime;
 
 /**
  * ICup\Bundle\PublicSiteBundle\Entity\Doctrine\Category
@@ -179,5 +180,22 @@ class PlaygroundAttribute
     public function getEnd()
     {
         return $this->end;
+    }
+
+    public function setStartSchedule(DateTime $startdate) {
+        $this->date = Date::getDate($startdate);
+        $this->start = Date::getTime($startdate);
+    }
+
+    public function getStartSchedule() {
+        return Date::getDateTime($this->date, $this->start);
+    }
+
+    public function setEndSchedule(DateTime $enddate) {
+        $this->end = Date::getTime($enddate);
+    }
+
+    public function getEndSchedule() {
+        return Date::getDateTime($this->date, $this->end);
     }
 }

@@ -1,6 +1,7 @@
 <?php
 namespace ICup\Bundle\PublicSiteBundle\Controller\Admin\Tournament;
 
+use ICup\Bundle\PublicSiteBundle\Entity\Doctrine\Date;
 use ICup\Bundle\PublicSiteBundle\Entity\Doctrine\PlaygroundAttribute;
 use ICup\Bundle\PublicSiteBundle\Entity\Doctrine\User;
 use ICup\Bundle\PublicSiteBundle\Entity\PAttrForm;
@@ -139,12 +140,12 @@ class PlaygroundAttributeController extends Controller
         $pattr->setTimeslot($timeslotid != null ? $timeslotid : 0);
         $dateformat = $this->get('translator')->trans('FORMAT.DATE');
         $matchdate = date_create_from_format($dateformat, $pattrForm->getDate());
-        $pattr->setDate(date_format($matchdate, $this->container->getParameter('db_date_format')));
+        $pattr->setDate(Date::getDate($matchdate));
         $timeformat = $this->get('translator')->trans('FORMAT.TIME');
         $starttime = date_create_from_format($timeformat, $pattrForm->getStart());
-        $pattr->setStart(date_format($starttime, $this->container->getParameter('db_time_format')));
+        $pattr->setStart(Date::getTime($starttime));
         $endtime = date_create_from_format($timeformat, $pattrForm->getEnd());
-        $pattr->setEnd(date_format($endtime, $this->container->getParameter('db_time_format')));
+        $pattr->setEnd(Date::getTime($endtime));
     }
     
     private function copyPAttrForm(PlaygroundAttribute $pattr) {
@@ -152,13 +153,12 @@ class PlaygroundAttributeController extends Controller
         $pattrForm->setId($pattr->getId());
         $pattrForm->setPid($pattr->getPId());
         $pattrForm->setTimeslot($pattr->getTimeslot());
+        $matchdate = $pattr->getStartSchedule();
         $dateformat = $this->get('translator')->trans('FORMAT.DATE');
-        $matchdate = date_create_from_format($this->container->getParameter('db_date_format'), $pattr->getDate());
         $pattrForm->setDate(date_format($matchdate, $dateformat));
         $timeformat = $this->get('translator')->trans('FORMAT.TIME');
-        $starttime = date_create_from_format($this->container->getParameter('db_time_format'), $pattr->getStart());
-        $pattrForm->setStart(date_format($starttime, $timeformat));
-        $endtime = date_create_from_format($this->container->getParameter('db_time_format'), $pattr->getEnd());
+        $pattrForm->setStart(date_format($matchdate, $timeformat));
+        $endtime = $pattr->getEndSchedule();
         $pattrForm->setEnd(date_format($endtime, $timeformat));
         $pattrForm->setCategories($this->get('logic')->listPACategories($pattr->getId()));
         return $pattrForm;
@@ -219,9 +219,8 @@ class PlaygroundAttributeController extends Controller
                 $form->addError(new FormError($this->get('translator')->trans('FORM.PLAYGROUNDATTR.NODATE', array(), 'admin')));
             }
             else {
-                date_create_from_format($this->get('translator')->trans('FORMAT.DATE'), $pattrForm->getDate());
-                $date_errors = date_get_last_errors();
-                if ($date_errors['error_count'] > 0) {
+                $date = date_create_from_format($this->get('translator')->trans('FORMAT.DATE'), $pattrForm->getDate());
+                if ($date === false) {
                     $form->addError(new FormError($this->get('translator')->trans('FORM.PLAYGROUNDATTR.BADDATE', array(), 'admin')));
                 }
             }
@@ -229,9 +228,8 @@ class PlaygroundAttributeController extends Controller
                 $form->addError(new FormError($this->get('translator')->trans('FORM.PLAYGROUNDATTR.NOSTART', array(), 'admin')));
             }
             else {
-                date_create_from_format($this->get('translator')->trans('FORMAT.TIME'), $pattrForm->getStart());
-                $date_errors = date_get_last_errors();
-                if ($date_errors['error_count'] > 0) {
+                $start = date_create_from_format($this->get('translator')->trans('FORMAT.TIME'), $pattrForm->getStart());
+                if ($start === false) {
                     $form->addError(new FormError($this->get('translator')->trans('FORM.PLAYGROUNDATTR.BADSTART', array(), 'admin')));
                 }
             }
@@ -239,13 +237,17 @@ class PlaygroundAttributeController extends Controller
                 $form->addError(new FormError($this->get('translator')->trans('FORM.PLAYGROUNDATTR.NOEND', array(), 'admin')));
             }
             else {
-                date_create_from_format($this->get('translator')->trans('FORMAT.TIME'), $pattrForm->getEnd());
-                $date_errors = date_get_last_errors();
-                if ($date_errors['error_count'] > 0) {
+                $end = date_create_from_format($this->get('translator')->trans('FORMAT.TIME'), $pattrForm->getEnd());
+                if ($end === false) {
                     $form->addError(new FormError($this->get('translator')->trans('FORM.PLAYGROUNDATTR.BADEND', array(), 'admin')));
                 }
             }
-            return true;
+            if ($form->isValid()) {
+                if ($end->getTimestamp() <= $start->getTimestamp()) {
+                    $form->addError(new FormError($this->get('translator')->trans('FORM.PLAYGROUNDATTR.BADTIME', array(), 'admin')));
+                }
+            }
+            return $form->isValid();
         }
         return false;
     }

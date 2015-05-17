@@ -221,6 +221,7 @@ FORM:
     NOEND: Tidspunkt for periodeophør skal angives.
     BADEND: Tidspunkt for periodeophør er ikke gyldigt.
     NOTIMESLOT: Der skal vælges en periode for denne banepræference.
+    BADTIME: Periodestart og ophør skal passe sammen. Bemærk at perioden skal specificeres indenfor samme dag.
     TITLE:
       ADD: Tilføj ny banepræference
       CHG: Rediger banepræference
@@ -312,6 +313,7 @@ FORM:
     SAVE: Godkend og gem kampplan
     VIEW: Kampplan
     RESULT: Oversigt
+    ADVICE: Løsninger
     PLAN_SAVED: Kampplanen er godkendt og registreret for turneringen.
     SUBMIT: Planlæg kampe
     CANCEL: Fortryd

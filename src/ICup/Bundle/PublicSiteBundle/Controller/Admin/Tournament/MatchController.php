@@ -1,6 +1,7 @@
 <?php
 namespace ICup\Bundle\PublicSiteBundle\Controller\Admin\Tournament;
 
+use ICup\Bundle\PublicSiteBundle\Entity\Doctrine\Date;
 use ICup\Bundle\PublicSiteBundle\Entity\Doctrine\Match;
 use ICup\Bundle\PublicSiteBundle\Entity\Doctrine\MatchRelation;
 use ICup\Bundle\PublicSiteBundle\Entity\Doctrine\User;
@@ -163,10 +164,10 @@ class MatchController extends Controller
         $match->setMatchno($matchForm->getMatchno());
         $dateformat = $this->get('translator')->trans('FORMAT.DATE');
         $matchdate = date_create_from_format($dateformat, $matchForm->getDate());
-        $match->setDate(date_format($matchdate, $this->container->getParameter('db_date_format')));
+        $match->setDate(Date::getDate($matchdate));
         $timeformat = $this->get('translator')->trans('FORMAT.TIME');
         $matchtime = date_create_from_format($timeformat, $matchForm->getTime());
-        $match->setTime(date_format($matchtime, $this->container->getParameter('db_time_format')));
+        $match->setTime(Date::getTime($matchtime));
         $match->setPlayground($matchForm->getPlayground());
     }
     
@@ -175,12 +176,11 @@ class MatchController extends Controller
         $matchForm->setId($match->getId());
         $matchForm->setPid($match->getPId());
         $matchForm->setMatchno($match->getMatchno());
+        $matchdate = Date::getDateTime($match->getDate(), $match->getTime());
         $dateformat = $this->get('translator')->trans('FORMAT.DATE');
-        $matchdate = date_create_from_format($this->container->getParameter('db_date_format'), $match->getDate());
         $matchForm->setDate(date_format($matchdate, $dateformat));
         $timeformat = $this->get('translator')->trans('FORMAT.TIME');
-        $matchtime = date_create_from_format($this->container->getParameter('db_time_format'), $match->getTime());
-        $matchForm->setTime(date_format($matchtime, $timeformat));
+        $matchForm->setTime(date_format($matchdate, $timeformat));
         $matchForm->setPlayground($match->getPlayground());
         return $matchForm;
     }
@@ -225,9 +225,8 @@ class MatchController extends Controller
             $form->addError(new FormError($this->get('translator')->trans('FORM.MATCH.NODATE', array(), 'admin')));
         }
         else {
-            date_create_from_format($this->get('translator')->trans('FORMAT.DATE'), $matchForm->getDate());
-            $date_errors = date_get_last_errors();
-            if ($date_errors['error_count'] > 0) {
+            $date = date_create_from_format($this->get('translator')->trans('FORMAT.DATE'), $matchForm->getDate());
+            if ($date === false) {
                 $form->addError(new FormError($this->get('translator')->trans('FORM.MATCH.BADDATE', array(), 'admin')));
             }
         }
@@ -235,9 +234,8 @@ class MatchController extends Controller
             $form->addError(new FormError($this->get('translator')->trans('FORM.MATCH.NOTIME', array(), 'admin')));
         }
         else {
-            date_create_from_format($this->get('translator')->trans('FORMAT.TIME'), $matchForm->getTime());
-            $date_errors = date_get_last_errors();
-            if ($date_errors['error_count'] > 0) {
+            $time = date_create_from_format($this->get('translator')->trans('FORMAT.TIME'), $matchForm->getTime());
+            if ($time === false) {
                 $form->addError(new FormError($this->get('translator')->trans('FORM.MATCH.BADTIME', array(), 'admin')));
             }
         }

@@ -18,10 +18,13 @@ class ListClubController extends Controller
     {
         $clubs = $this->get('logic')->listClubs();
         $teamList = array();
+        $countries = $this->get('util')->getCountries();
         foreach ($clubs as $club) {
             $country = $club->getCountry();
-            $teams = $this->get('logic')->listTeamsByClub($club->getId());
-            $teamList[$country][$club->getId()] = array('club' => $club, 'teams' => $teams);
+            if (array_search($country, $countries)) {
+                $teams = $this->get('logic')->listTeamsByClub($club->getId());
+                $teamList[$country][$club->getId()] = array('club' => $club, 'teams' => $teams);
+            }
         }
         return array('teams' => $teamList);
     }
@@ -35,8 +38,6 @@ class ListClubController extends Controller
     public function listClubsActionEditor($tournamentid) {
         /* @var $utilService Util */
         $utilService = $this->get('util');
-        
-
         /* @var $user User */
         $user = $utilService->getCurrentUser();
         $tournament = $this->get('entity')->getTournamentById($tournamentid);
@@ -46,11 +47,14 @@ class ListClubController extends Controller
         $clubs = $this->get('logic')->listEnrolled($tournament->getId());
         $teamcount = 0;
         $teamList = array();
+        $countries = $utilService->getCountries();
         foreach ($clubs as $clb) {
             $club = $clb['club'];
             $country = $club->getCountry();
-            $teamList[$country][$club->getId()] = $clb;
-            $teamcount++;
+            if (array_search($country, $countries)) {
+                $teamList[$country][$club->getId()] = $clb;
+                $teamcount++;
+            }
         }
 
         $teamcount /= 2;

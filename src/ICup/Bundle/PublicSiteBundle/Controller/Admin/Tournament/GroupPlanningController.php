@@ -129,7 +129,35 @@ class GroupPlanningController extends Controller
         $tournament = $this->get('entity')->getTournamentById($category->getPid());
         $utilService->validateEditorAdminUser($user, $tournament->getPid());
 
+        if ($this->get('logic')->isTeamActive($groupid, $teamid)) {
+            $groupOrder = $this->get('logic')->assignVacant($groupid, $user->getId());
+            $this->get('logic')->moveMatches($groupid, $teamid, $groupOrder->getCid());
+        }
         $this->get('logic')->removeEnrolled($teamid, $groupid);
         return $this->redirect($returnUrl);
     }
+
+    /**
+     * Assigns a vacant spot to a specific group
+     * @Route("/edit/assign/vacant/{groupid}", name="_host_assign_vacant")
+     * @Method("GET")
+     */
+    public function addVacantAction($groupid) {
+        /* @var $utilService Util */
+        $utilService = $this->get('util');
+
+        $returnUrl = $utilService->getReferer();
+        /* @var $user User */
+        $user = $utilService->getCurrentUser();
+        /* @var $group Group */
+        $group = $this->get('entity')->getGroupById($groupid);
+        /* @var $category Category */
+        $category = $this->get('entity')->getCategoryById($group->getPid());
+        $tournament = $this->get('entity')->getTournamentById($category->getPid());
+        $utilService->validateEditorAdminUser($user, $tournament->getPid());
+
+        $this->get('logic')->assignVacant($groupid, $user->getId());
+        return $this->redirect($returnUrl);
+    }
+
 }

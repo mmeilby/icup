@@ -9,16 +9,29 @@
     <p></p>
 <div class="panel panel-default">
     <div class="panel-body lead">
-        <a href="{{ path('_edit_tournamentboard', { 'tournamentid': tournament.id }) }}">
-            {{ host.name|upper }} - {{ tournament.name|upper }}
-        </a>
-        <br />
-        <a href="{{ path('_edit_category_list', {'tournamentid': tournament.id }) }}">
-            {% trans from 'tournament' %}CATEGORY{% endtrans %} {{ category.name }}<br />
-            {{ ['GENDER.',
+        <div class="col-lg-6">
+            <a href="{{ path('_edit_tournamentboard', { 'tournamentid': tournament.id }) }}">
+                {{ host.name|upper }}
+            </a>
+            <br />
+            {{ tournament.name }}
+            <br />
+            <a href="{{ path('_edit_category_list', {'tournamentid': tournament.id }) }}">
+                {% trans from 'tournament' %}CATEGORY{% endtrans %} {{ category.name }}<br />
+                {{ ['GENDER.',
                 category.gender,
                 category.classification]|join|transchoice(category.age, { '%age%': category.age },'tournament') }}
-        </a>
+            </a>
+        </div>
+        <div class="col-lg-6 text-right">
+    {% if grouplist|length > 0 %}
+            <a class="btn btn-primary btn-lg" href="{{ path('_host_assign_vacant', { 'groupid': selectedgroup.id }) }}">
+                <span class="fa fa-archive"></span>&nbsp;{% trans %}FORM.LISTGROUPS.ADD_VACANT{% endtrans %}
+            </a>
+    {% endif %}
+    {% if is_granted('ROLE_ADMIN') %}
+    {% endif %}
+        </div>
     </div>
 </div>
 {% if grouplist|length > 0 %}
@@ -31,7 +44,11 @@
             <tbody>
         {% for team in group.teams %}
                 <tr>
-                    <td class="flag"><img src="{{ asset(['bundles/icuppublicsite/images/flags/',countries[team.country].flag]|join) }}" alt="{{ team.country|trans({},'lang') }}" title="{{ team.country|trans({},'lang') }}"></td>
+                    <td class="flag">
+            {% if team.country in countries|keys %}
+                        <img src="{{ asset(['bundles/icuppublicsite/images/flags/',countries[team.country].flag]|join) }}" alt="{{ team.country|trans({},'lang') }}" title="{{ team.country|trans({},'lang') }}">
+            {% endif %}
+                    </td>
                     <td><a href="{{ path('_host_assign_del', { 'teamid': team.id, 'groupid': group.group.id }) }}">{{ team.name }}</a></td>
                 </tr>
         {% endfor %}
@@ -69,7 +86,11 @@
             <tbody>
     {% for team in unassigned %}
                 <tr>
-                    <td class="flag"><img src="{{ asset(['bundles/icuppublicsite/images/flags/',countries[team.country].flag]|join) }}" alt="{{ team.country|trans({},'lang') }}" title="{{ team.country|trans({},'lang') }}"></td>
+                    <td class="flag">
+        {% if team.country in countries|keys %}
+                        <img src="{{ asset(['bundles/icuppublicsite/images/flags/',countries[team.country].flag]|join) }}" alt="{{ team.country|trans({},'lang') }}" title="{{ team.country|trans({},'lang') }}">
+        {% endif %}
+                    </td>
                     <td>
         {% if not selectedgroup is null %}
                         <a href="{{ path('_host_assign_add', { 'teamid': team.id, 'groupid': selectedgroup.id }) }}">{{ team.name }}</a>

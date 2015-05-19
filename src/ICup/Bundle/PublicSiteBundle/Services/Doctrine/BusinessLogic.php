@@ -5,6 +5,7 @@ namespace ICup\Bundle\PublicSiteBundle\Services\Doctrine;
 use DateTime;
 use Doctrine\ORM\EntityManager;
 use ICup\Bundle\PublicSiteBundle\Entity\Doctrine\Category;
+use ICup\Bundle\PublicSiteBundle\Entity\Doctrine\Club;
 use ICup\Bundle\PublicSiteBundle\Entity\Doctrine\Enrollment;
 use ICup\Bundle\PublicSiteBundle\Entity\Doctrine\GroupOrder;
 use ICup\Bundle\PublicSiteBundle\Entity\Doctrine\PARelation;
@@ -35,7 +36,7 @@ class BusinessLogic
     }
     
     public function addEnrolled($categoryid, $clubid, $userid) {
-        $club = $this->get('entity')->getClubById($clubid);
+        $club = $this->entity->getClubById($clubid);
         $qb = $this->em->createQuery(
                 "select e ".
                 "from ".$this->entity->getRepositoryPath('Enrollment')." e, ".
@@ -196,7 +197,29 @@ class BusinessLogic
         $this->em->flush();
         return $groupOrder;
     }
-    
+
+    private static $VACANT_CLUB_NAME = "VACANT";
+    private static $VACANT_CLUB_COUNTRYCODE = "[V]";
+
+    public function assignVacant($groupid, $userid) {
+        $group = $this->entity->getGroupById($groupid);
+        $club = $this->getClubByName(BusinessLogic::$VACANT_CLUB_NAME, BusinessLogic::$VACANT_CLUB_COUNTRYCODE);
+        if ($club == null) {
+            $club = new Club();
+            $club->setName(BusinessLogic::$VACANT_CLUB_NAME);
+            $club->setCountry(BusinessLogic::$VACANT_CLUB_COUNTRYCODE);
+            $this->em->persist($club);
+            $this->em->flush();
+        }
+        $enrolled = $this->addEnrolled($group->getPid(), $club->getId(), $userid);
+        $groupOrder = new GroupOrder();
+        $groupOrder->setCid($enrolled->getCid());
+        $groupOrder->setPid($groupid);
+        $this->em->persist($groupOrder);
+        $this->em->flush();
+        return $groupOrder;
+    }
+
     public function removeEnrolled($teamid, $groupid) {
         // Verify that the team is assigned to the group
         $qb = $this->em->createQuery(
@@ -217,6 +240,20 @@ class BusinessLogic
         $this->em->remove($groupOrder);
         $this->em->flush();
         return $groupOrder;
+    }
+
+    public function moveMatches($groupid, $teamid, $target_teamid) {
+        $qb = $this->em->createQuery(
+            "update ".$this->entity->getRepositoryPath('MatchRelation')." r set r.cid=:target ".
+            "where r.id in (".
+            "select rx.id ".
+                "from ".$this->entity->getRepositoryPath('MatchRelation')." rx, ".
+                        $this->entity->getRepositoryPath('Match')." m ".
+                "where rx.pid=m.id and m.pid=:group and rx.cid=:team)");
+        $qb->setParameter('group', $groupid);
+        $qb->setParameter('team', $teamid);
+        $qb->setParameter('target', $target_teamid);
+        $qb->getResult();
     }
 
     public function isTeamActive($groupid, $teamid) {
@@ -455,7 +492,7 @@ class BusinessLogic
                 "from ".$this->entity->getRepositoryPath('Group')." g, ".
                         $this->entity->getRepositoryPath('Category')." c ".
                 "where c.pid=:tournament and g.pid=c.id ".
-                "order by g.name asc");
+                "order by g.classification asc, g.name asc");
         $qb->setParameter('tournament', $tournamentid);
         return $qb->getResult();
     }
@@ -636,7 +673,7 @@ class BusinessLogic
     }
     
     public function getTeamName($clubName, $division) {
-        $teamName = $clubName;
+        $teamName = $this->container->get('translator')->trans($clubName, array(), 'teamname');
         if ($division != '') {
             $teamName.= ' "'.$division.'"';
         }

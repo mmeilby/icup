@@ -89,9 +89,18 @@ FORM:
     PLANNING:
         CAPTION: Planlæg turnering
         DESCRIPTION: Lad systemet planlægge turnerings kampe
+    MATCHIMPORT:
+        CAPTION: Indlæs kampplan
+        DESCRIPTION: Indtast kampplan for en dag
+    QMATCHIMPORT:
+        CAPTION: Indlæs kampplan til slutrunde
+        DESCRIPTION: Indtast kampplan for en dag
+    MATCHIMPORTUNRES:
+        CAPTION: Påsæt hold til slutrunde
+        DESCRIPTION: Specificer hold der har kvalificeret sig til slutrunden
     REPORT:
         CAPTION: Indberet resultater
-        DESCRIPTION: Angiv kampresultatet for en eller flere kampe på en bane.
+        DESCRIPTION: Angiv kampresultatet for en eller flere kampe på en bane
   LISTHOSTS:
     TITLE: Vedligehold turneringer og værter
     CAPTION: Værter og turneringer
@@ -378,6 +387,7 @@ FORM:
     TITLE: Placering af hold
     NOGROUP: Ingen puljer
     UNASSIGNED: Ikke placerede hold
+    ADD_VACANT: Tilføj ledig plads
   GROUP:
     DEFAULT: Vælg...
     NONAME: Et puljenavn skal angives.

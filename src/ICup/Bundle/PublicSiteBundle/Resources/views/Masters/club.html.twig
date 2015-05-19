@@ -4,9 +4,11 @@
         {% if team.rank is defined and team.rank != '' %}
                     <small>&nbsp;</small><br />
         {% endif %}
+        {% if team.country in context.countries|keys %}
                     <img src="{{ asset(['bundles/icuppublicsite/images/flags/',context.countries[team.country].flag]|join) }}"
                          alt="{{ team.country|trans({},'lang') }}"
                          title="{{ team.country|trans({},'lang') }}">
+        {% endif %}
                 </td>
                 <td>
         {% if team.rank is defined and team.rank != '' %}
@@ -30,11 +32,13 @@
             <small>{{ hteam.rank }}</small><br />
         {% endif %}
             <span class="text-nowrap">
+        {% if hteam.country in context.countries|keys %}
                 <img src="{{ asset(['bundles/icuppublicsite/images/flags/',context.countries[hteam.country].flag]|join) }}"
                      alt="{{ hteam.country|trans({},'lang') }}"
                      title="{{ hteam.country|trans({},'lang') }}"
                      class="flag"
                      >
+        {% endif %}
                 <a href="{{ path('_showteam_all', { 'teamid': hteam.id }) }}">
                     {{ hteam.name }}
                 </a>
@@ -47,11 +51,13 @@
         {% if ateam.rank is defined and ateam.rank != '' %}
             <small>{{ ateam.rank }}</small><br />
         {% endif %}
+        {% if ateam.country in context.countries|keys %}
             <img src="{{ asset(['bundles/icuppublicsite/images/flags/',context.countries[ateam.country].flag]|join) }}"
                  alt="{{ ateam.country|trans({},'lang') }}"
                  title="{{ ateam.country|trans({},'lang') }}"
                  class="flag"
                  >
+        {% endif %}
             <a href="{{ path('_showteam_all', { 'teamid': ateam.id }) }}">
                 <span class="text-nowrap">
                     {{ ateam.name }}
@@ -64,11 +70,13 @@
 
 {% macro displayteam(team, context) %}
     <span class="text-nowrap">
+    {% if team.country in context.countries|keys %}
         <img src="{{ asset(['bundles/icuppublicsite/images/flags/',context.countries[team.country].flag]|join) }}"
              alt="{{ team.country|trans({},'lang') }}"
              title="{{ team.country|trans({},'lang') }}"
              class="flag"
              >
+    {% endif %}
         <a href="{{ path('_showteam_all', { 'teamid': team.id }) }}">
             {{ team.name }}
         </a>
@@ -77,11 +85,13 @@
 
 {% macro displayclub(club, context) %}
     <span class="text-nowrap">
+    {% if team.country in context.countries|keys %}
         <img src="{{ asset(['bundles/icuppublicsite/images/flags/',context.countries[club.country].flag]|join) }}"
              alt="{{ club.country|trans({},'lang') }}"
              title="{{ club.country|trans({},'lang') }}"
              class="flag"
              >
+    {% endif %}
         {{ club.name }}
     </span>
 {% endmacro %}
@@ -93,7 +103,7 @@
 {% endmacro %}
 
 {% macro match(match, context) %}
-{% trans from 'tournament' %}LEGEND.NO{% endtrans %}: {{ match.matchno }} - {{ ['GROUPCLASS.',match.group.classification]|join|trans([],'tournament') }}{% if match.group.classification < 9 %} {{ match.group.name }}{% endif %}                        
+{% trans from 'tournament' %}LEGEND.NO{% endtrans %}: {{ match.matchno }} - {{ ['GROUPCLASS.',match.group.classification]|join|trans([],'tournament') }}{% if match.group.classification < 9 %} {{ match.group.name }}{% endif %}
 {{ 'FORMAT.LONGDATE'|transchoice(match.schedule|date('j'), {
     '%week%': ['WEEK.',match.schedule|date('D')|upper]|join|trans([],'messages')|capitalize,
     '%day%': match.schedule|date('j'),

@@ -80,6 +80,14 @@
                             <h3 class="list-group-item-heading">{% trans %}FORM.TOURNAMENTBOARD.PLANNING.CAPTION{% endtrans %}</h3>
                             <p class="list-group-item-text">{% trans %}FORM.TOURNAMENTBOARD.PLANNING.DESCRIPTION{% endtrans %}</p>
                         </a>
+                        <a class="list-group-item" href="{{ path('_edit_import_match', { 'tournamentid': tournament.id }) }}">
+                            <h3 class="list-group-item-heading">{% trans %}FORM.TOURNAMENTBOARD.MATCHIMPORT.CAPTION{% endtrans %}</h3>
+                            <p class="list-group-item-text">{% trans %}FORM.TOURNAMENTBOARD.MATCHIMPORT.DESCRIPTION{% endtrans %}</p>
+                        </a>
+                        <a class="list-group-item" href="{{ path('_edit_import_qmatch', { 'tournamentid': tournament.id }) }}">
+                            <h3 class="list-group-item-heading">{% trans %}FORM.TOURNAMENTBOARD.QMATCHIMPORT.CAPTION{% endtrans %}</h3>
+                            <p class="list-group-item-text">{% trans %}FORM.TOURNAMENTBOARD.QMATCHIMPORT.DESCRIPTION{% endtrans %}</p>
+                        </a>
                     </div>
                 </div>
                 <div class="col-sm-6">
@@ -88,10 +96,14 @@
                             <h3 class="list-group-item-heading">{% trans %}FORM.TOURNAMENTBOARD.REPORT.CAPTION{% endtrans %}</h3>
                             <p class="list-group-item-text">{% trans %}FORM.TOURNAMENTBOARD.REPORT.DESCRIPTION{% endtrans %}</p>
                         </a>
+                        <a class="list-group-item" href="{{ path('_edit_import_match_unres', { 'tournamentid': tournament.id }) }}">
+                            <h3 class="list-group-item-heading">{% trans %}FORM.TOURNAMENTBOARD.MATCHIMPORTUNRES.CAPTION{% endtrans %}</h3>
+                            <p class="list-group-item-text">{% trans %}FORM.TOURNAMENTBOARD.MATCHIMPORTUNRES.DESCRIPTION{% endtrans %}</p>
+                        </a>
                     </div>
                 </div>
             </div>
-{% endif %}
+    {% endif %}
         </div>
     </div>
 {% endblock %}

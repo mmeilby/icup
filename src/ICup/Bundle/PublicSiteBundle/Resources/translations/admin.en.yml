@@ -89,6 +89,15 @@ FORM:
     PLANNING:
         CAPTION: Plan tournament schedule
         DESCRIPTION: Plan matches for each category
+    MATCHIMPORT:
+        CAPTION: Import match plan
+        DESCRIPTION: Import match schedule for a specific day
+    QMATCHIMPORT:
+        CAPTION: Import match plan for elimination round
+        DESCRIPTION: Import match schedule for a specific day
+    MATCHIMPORTUNRES:
+        CAPTION: Assign teams for elimination round
+        DESCRIPTION: Specify teams elegible for elimination round
     REPORT:
         CAPTION: Report results
         DESCRIPTION: Report match results for matches played at a specific playground
@@ -378,6 +387,7 @@ FORM:
     TITLE: Team group assignment
     NOGROUP: There a no groups
     UNASSIGNED: Unassigned teams
+    ADD_VACANT: Assign vacant spot
   GROUP:
     DEFAULT: Please select...
     NONAME: The group must be given a name.

@@ -41,7 +41,8 @@
         "nelmio/alice": "1.*",
         "liip/imagine-bundle": "1.0.4",
         "sonata-project/core-bundle": "~2.2",
-        "sonata-project/admin-bundle": "2.4.x-dev",
+        "sonata-project/block-bundle": "2.2.13",
+        "sonata-project/admin-bundle": "~2.2",
         "kartik-v/bootstrap-fileinput": "dev-master"
     },
     "require-dev": {

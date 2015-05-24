@@ -95,6 +95,7 @@ class MatchPlanning
     public function planTournament($tournamentid, $matchList, PlanningOptions $options) {
         $result = $this->setupCriteria($tournamentid, $matchList, $options);
         $this->plan($result);
+
         if ($result->unresolved() > 0) {
             $this->replan_1run($result);
         }
@@ -309,6 +310,7 @@ class MatchPlanning
         $cnt_last = -1;
         $grace = 0;
         $unplaceable = array();
+        /* @var $match MatchPlan */
         while ($match = $result->nextUnresolved()) {
             $cnt = $result->unresolved();
             if ($cnt == $cnt_last) {
@@ -351,6 +353,7 @@ class MatchPlanning
                 /* Both teams must be allowed to play now */
                 if ($result->getTeamCheck()->isCapacity($match, $date, $pa->getTimeslot())) {
                     $matchlist = $pa->getMatchlist();
+                    /* @var $replan_match MatchPlan */
                     foreach ($matchlist as $idx => $replan_match) {
 //                        $rparel = $parels[$replan_match->getCategory()->getId()];
                         if ($replan_match->getCategory()->getMatchtime() == $match->getCategory()->getMatchtime()) {
@@ -377,14 +380,16 @@ class MatchPlanning
             $date = Date::getDate($pa->getSchedule());
             /* Find a candidate for replacement */
             $matchlist = $pa->getMatchlist();
+            /* @var $replan_match MatchPlan */
             foreach ($matchlist as $idx => $replan_match) {
-                if ($this->teamsMatch($match, $replan_match)) {
+                if (!$replan_match->isFixed() && $this->teamsMatch($match, $replan_match)) {
                     $result->getTeamCheck()->freeCapacity($replan_match, $date, $pa->getTimeslot());
                     if ($result->getTeamCheck()->isCapacity($match, $date, $pa->getTimeslot())) {
                         $result->getTeamCheck()->reserveCapacity($match, $date, $pa->getTimeslot());
                         $match->setDate($date);
                         $match->setTime($replan_match->getTime());
                         $match->setPlayground($replan_match->getPlayground());
+                        $match->setFixed(true);
                         $matchlist[$idx] = $match;
                         $pa->setMatchlist($matchlist);
                         $result->rewind();

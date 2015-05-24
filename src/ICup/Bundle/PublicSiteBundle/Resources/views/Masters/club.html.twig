@@ -85,7 +85,7 @@
 
 {% macro displayclub(club, context) %}
     <span class="text-nowrap">
-    {% if team.country in context.countries|keys %}
+    {% if club.country in context.countries|keys %}
         <img src="{{ asset(['bundles/icuppublicsite/images/flags/',context.countries[club.country].flag]|join) }}"
              alt="{{ club.country|trans({},'lang') }}"
              title="{{ club.country|trans({},'lang') }}"

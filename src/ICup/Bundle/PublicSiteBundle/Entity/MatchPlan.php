@@ -3,6 +3,7 @@
 namespace ICup\Bundle\PublicSiteBundle\Entity;
 
 use ICup\Bundle\PublicSiteBundle\Entity\Doctrine\Category;
+use ICup\Bundle\PublicSiteBundle\Entity\Doctrine\Date;
 use ICup\Bundle\PublicSiteBundle\Entity\Doctrine\Group;
 use ICup\Bundle\PublicSiteBundle\Entity\Doctrine\Playground;
 use ICup\Bundle\PublicSiteBundle\Entity\Doctrine\Team;
@@ -58,9 +59,12 @@ class MatchPlan
      */
     private $teamB;
 
-    private $db_date_format = "Ymd";
-    private $db_time_format = "Hi";
-    
+    /**
+     * @var boolean $fixed
+     * Indicates this match to be fixed - not available for change
+     */
+    private $fixed;
+
     /**
      * Set category
      *
@@ -244,10 +248,24 @@ class MatchPlan
     {
         return $this->teamB;
     }
-    
+
+    /**
+     * @return boolean
+     */
+    public function isFixed()
+    {
+        return $this->fixed;
+    }
+
+    /**
+     * @param boolean $fixed
+     */
+    public function setFixed($fixed)
+    {
+        $this->fixed = $fixed;
+    }
+
     public function getSchedule() {
-        return DateTime::createFromFormat(
-                    $this->db_date_format.'-'.$this->db_time_format,
-                    $this->date.'-'.$this->time);
+        return Date::getDateTime($this->date, $this->time);
     }
 }

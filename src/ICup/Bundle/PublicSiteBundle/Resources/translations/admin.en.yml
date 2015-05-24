@@ -323,6 +323,7 @@ FORM:
     VIEW: Match schedule
     RESULT: Dashboard
     ADVICE: Advices
+    SOLVEXCHG: No timeslots fit the requirements for this match. Try to exchange timeslot with other matches from the group.
     PLAN_SAVED: The match schedule has been accepted and registered for the tournament
     SUBMIT: Schedule matches
     CANCEL: Cancel

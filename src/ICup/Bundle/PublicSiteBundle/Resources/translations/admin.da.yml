@@ -323,6 +323,7 @@ FORM:
     VIEW: Kampplan
     RESULT: Oversigt
     ADVICE: Løsninger
+    SOLVEXCHG: Der er ingen perioder der passer til denne kamp. Forsøg at bytte andre kampe fra puljen med denne kamp.
     PLAN_SAVED: Kampplanen er godkendt og registreret for turneringen.
     SUBMIT: Planlæg kampe
     CANCEL: Fortryd

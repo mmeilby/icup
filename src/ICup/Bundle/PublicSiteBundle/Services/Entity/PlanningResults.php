@@ -61,6 +61,19 @@ class PlanningResults
 
     public function mark()
     {
+        usort($this->timeslots, function (PlaygroundAttribute $ats1, PlaygroundAttribute $ats2) {
+            $p1 = $ats1->getTimeleft() - $ats2->getTimeleft();
+            $p2 = $ats2->getPlayground()->getNo() - $ats1->getPlayground()->getNo();
+            $p3 = $ats2->getTimeslot()->getId() - $ats1->getTimeslot()->getId();
+            $p4 = 0;
+            if ($p1 == 0 && $p2 == 0 && $p3 == 0 && $p4 == 0) {
+                return 0;
+            } elseif ($p1 < 0 || ($p1 == 0 && $p2 < 0) || ($p1 == 0 && $p2 == 0 && $p3 < 0) || ($p1 == 0 && $p2 == 0 && $p3 == 0 && $p4 < 0)) {
+                return 1;
+            } else {
+                return -1;
+            }
+        });
         array_push($this->timeslots, null);
     }
 

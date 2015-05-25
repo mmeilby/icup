@@ -78,22 +78,17 @@
                 <table class="table table-striped">
                     <thead>
                         <tr>
-                            <td class="narrow-col">{% trans from "tournament" %}LEGEND.CATEGORY{% endtrans %}<br />
-                                {% trans from "tournament" %}LEGEND.GROUP{% endtrans %}</td>
-                            <td class="flag"></td>
-                            <td>{% trans from "tournament" %}LEGEND.HOMETEAM{% endtrans %}</td>
-                            <td class="flag"></td>
-                            <td>{% trans from "tournament" %}LEGEND.AWAYTEAM{% endtrans %}</td>
-                            <td class="narrow-col"></td>
-                            <td class="narrow-col"></td>
+                            <td>{% trans %}FORM.MATCHPLANNING.PLAYGROUND{% endtrans %}</td>
+                            <td>{% trans %}FORM.MATCHPLANNING.TIMESLOT{% endtrans %}</td>
+                            <td class="text-left">{% trans %}FORM.MATCHPLANNING.PATTRS{% endtrans %}</td>
+                            <td class="text-right">{% trans %}FORM.MATCHPLANNING.TIMELEFT{% endtrans %}</td>
                         </tr>
                     </thead>
                     <tbody>
             {% for timeslot in altset %}
                         <tr>
-                            <td></td>
-                            <td colspan="2">{{ timeslot.playground.name }}</td>
-                            <td colspan="2">{{ timeslot.timeslot.name }}</td>
+                            <td>{{ timeslot.playground.name }}</td>
+                            <td>{{ timeslot.timeslot.name }}</td>
                             <td>
                                 <a href="{{ path('_edit_list_parel', { 'playgroundattributeid': timeslot.id }) }}">
                 {% if timeslot.categories|length > 0 %}

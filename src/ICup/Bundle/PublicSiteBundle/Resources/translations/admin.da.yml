@@ -325,6 +325,10 @@ FORM:
     ADVICE: Løsninger
     SOLVEXCHG: Der er ingen perioder der passer til denne kamp. Forsøg at bytte andre kampe fra puljen med denne kamp.
     PLAN_SAVED: Kampplanen er godkendt og registreret for turneringen.
+    PLAYGROUND: Bane
+    TIMESLOT: Periode
+    PATTRS: Fordelte kategorier
+    TIMELEFT: Resterende tid
     SUBMIT: Planlæg kampe
     CANCEL: Fortryd
   TOURNAMENTIMPORT:

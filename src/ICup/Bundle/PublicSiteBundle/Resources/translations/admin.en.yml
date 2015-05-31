@@ -320,10 +320,12 @@ FORM:
       OFF: NO
     DOWNLOAD: Download match schedule as textfile
     SAVE: Accept and save match schedule
+    OPTIONS: Planning options
     VIEW: Match schedule
     RESULT: Dashboard
     ADVICE: Advices
-    SOLVEXCHG: No timeslots fit the requirements for this match. Try to exchange timeslot with other matches from the group.
+    SOLVEXCHG: No timeslots fit the requirements for this match. Try to exchange timeslot with another match from the group.
+    SOLVEXPND: This match requires more time than available. Expand a timeslot to make space for this match.
     PLAN_SAVED: The match schedule has been accepted and registered for the tournament
     PLAYGROUND: Playground
     TIMESLOT: Timeslot

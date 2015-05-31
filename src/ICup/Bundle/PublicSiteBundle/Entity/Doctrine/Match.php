@@ -38,14 +38,14 @@ class Match
     
     /**
      * @var string $time
-     * Match start time - HH:MM
+     * Match start time - Hi
      * @ORM\Column(name="time", type="string", length=5, nullable=false)
      */
     private $time;
 
     /**
      * @var string $date
-     * Match start date - DD/MM/YYYY
+     * Match start date - Ymd
      * @ORM\Column(name="date", type="string", length=10, nullable=false)
      */
     private $date;

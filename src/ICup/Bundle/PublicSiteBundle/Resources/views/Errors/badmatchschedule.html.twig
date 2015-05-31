@@ -1,0 +1,6 @@
+{% extends "ICupPublicSiteBundle:Masters:edit.html.twig" %}
+{% import 'ICupPublicSiteBundle:Masters:error.html.twig' as error %}
+
+{% block adminbody %}
+    {{ error.showerror('INVALIDMATCHSCHEDULE') }}
+{% endblock %}

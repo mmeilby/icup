@@ -266,7 +266,7 @@ class MatchSupport
         $qb->setParameter('tournament', $tournamentid);
         return $qb->getResult();
     }
-    
+
     public function listMatchesByGroupPlayground($groupid, $playgroundid) {
         $matchList = $this->queryMatchListWithGroupPlayground($groupid, $playgroundid);
         $qmatchList = $this->queryQMatchListWithGroupPlayground($groupid, $playgroundid);

@@ -51,6 +51,12 @@ ERROR:
   INVALIDTIMESLOT:
     TITLE: Der er problemer med den valgte periode
     SOLUTION: Den valgte periode findes ikke. Benyt det følgende link for at kunne vælge en periode der findes.
+  INVALIDMATCHSCHEDULE:
+    TITLE: Der er et teknisk problem med planlægning af en kamp
+    SOLUTION: Problemet er optaget til analyse. Benyt det følgende link for at komme videre.
+  INVALIDMATCHALTERNATIVE:
+    TITLE: Der er et teknisk problem med planlægning af en kamp
+    SOLUTION: Problemet er optaget til analyse. Benyt det følgende link for at komme videre.
   INVALIDHOST:
     TITLE: Der er problemer med den valgte turneringsvært
     SOLUTION: Den valgte turneringsvært findes ikke. Benyt det følgende link for at kunne vælge en turneringsvært der findes.

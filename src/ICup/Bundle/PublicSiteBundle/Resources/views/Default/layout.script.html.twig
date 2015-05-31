@@ -82,3 +82,26 @@
     </div>
 {% endspaceless %}
 {% endblock form_rows %}
+
+{% block checkbox_label -%}
+    {# Do no display the label if widget is not defined in order to prevent double label rendering #}
+    {% if widget is defined %}
+        {% if required %}
+            {% set label_attr = label_attr|merge({class: (label_attr.class|default('') ~ ' required')|trim}) %}
+        {% endif %}
+        {% if parent_label_class is defined %}
+            {% set label_attr = label_attr|merge({class: (label_attr.class|default('') ~ ' ' ~ parent_label_class)|trim}) %}
+        {% endif %}
+        {% if label is not sameas(false) and label is empty %}
+            {% set label = name|humanize %}
+        {% endif %}
+        {%- set label_attr = label_attr|merge({class: (label_attr.class|default('') ~ ' control-label')|trim}) -%}
+        <h5{% for attrname, attrvalue in label_attr %} {{ attrname }}="{{ attrvalue }}"{% endfor %}>
+            {{- label is not sameas(false) ? label|trans({}, translation_domain) -}}
+            {% if form.vars.help is defined %}
+                <span data-toggle="tooltip" data-placement="right" title="{{- form.vars.help|trans({}, translation_domain) -}}">&nbsp;<i class="fa fa-info-circle"></i></span>
+            {% endif %}
+        </h5>
+        {{- widget|raw -}}
+    {% endif %}
+{%- endblock checkbox_label %}

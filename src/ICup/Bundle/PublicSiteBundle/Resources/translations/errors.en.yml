@@ -51,6 +51,12 @@ ERROR:
   INVALIDTIMESLOT:
     TITLE: The timeslot is not valid
     SOLUTION: The specified timeslot does not exist.
+  INVALIDMATCHSCHEDULE:
+    TITLE: There is a technical problem with a match schedule
+    SOLUTION: A non existing match schedule was referenced.
+  INVALIDMATCHALTERNATIVE:
+    TITLE: There is a technical problem with a match schedule
+    SOLUTION: A non existing match alternative was referenced.
   INVALIDHOST:
     TITLE: The host is not valid
     SOLUTION: The specified host does not exist.

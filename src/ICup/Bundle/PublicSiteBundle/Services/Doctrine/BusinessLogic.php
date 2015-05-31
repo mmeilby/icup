@@ -450,6 +450,31 @@ class BusinessLogic
         return $this->entity->getPARelationRepo()->findBy(array('cid' => $categoryid), array('id' => 'asc'));
     }
 
+    public function listMatchSchedules($tournamentid) {
+        return $this->entity->getMatchScheduleRepo()->findBy(array('pid' => $tournamentid), array('paid' => 'desc'));
+    }
+
+    public function listMatchAlternatives($matchscheduleid) {
+        return $this->entity->getMatchAlternativeRepo()->findBy(array('pid' => $matchscheduleid), array('paid' => 'asc'));
+    }
+
+    public function removeMatchSchedules($tournamentid) {
+        // wipe matchalternatives
+        $qba = $this->em->createQuery(
+            "delete from ".$this->entity->getRepositoryPath('MatchAlternative')." m ".
+            "where m.pid in (select ms.id ".
+                            "from ".$this->entity->getRepositoryPath('MatchSchedule')." ms ".
+                            "where ms.pid=:tournament)");
+        $qba->setParameter('tournament', $tournamentid);
+        $qba->getResult();
+        // wipe matchschedules
+        $qbr = $this->em->createQuery(
+            "delete from ".$this->entity->getRepositoryPath('MatchSchedule')." m ".
+            "where m.pid=:tournament");
+        $qbr->setParameter('tournament', $tournamentid);
+        $qbr->getResult();
+    }
+
     public function listHosts() {
         return $this->entity->getHostRepo()
                     ->findAll(array(),

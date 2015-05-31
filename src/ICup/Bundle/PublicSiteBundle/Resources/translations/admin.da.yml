@@ -320,10 +320,12 @@ FORM:
       OFF: NEJ
     DOWNLOAD: Hent kampplan som tekstfil
     SAVE: Godkend og gem kampplan
+    OPTIONS: Indstillinger
     VIEW: Kampplan
     RESULT: Oversigt
     ADVICE: Løsninger
-    SOLVEXCHG: Der er ingen perioder der passer til denne kamp. Forsøg at bytte andre kampe fra puljen med denne kamp.
+    SOLVEXCHG: Ingen perioder passer for denne kamp. Forsøg at bytte andre kampe fra puljen med denne kamp.
+    SOLVEXPND: Der er ikke ledig plads til denne kamp. Forsøg at udvide en periode så der bliver plads til kampen.
     PLAN_SAVED: Kampplanen er godkendt og registreret for turneringen.
     PLAYGROUND: Bane
     TIMESLOT: Periode

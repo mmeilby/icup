@@ -42,30 +42,29 @@
     </ul>
     <p>&nbsp;</p>
     <div class="list-group">
-{% for matchset in advices %}
-        <a class="list-group-item" href="{{ path('_edit_match_planning_solve', { 'tournamentid': tournament.id, 'matchid': matchset.id }) }}">
+        <div class="list-group-item">
             <div class="list-group-item-heading">
                 <div class="row">
                     <div class="col-sm-3">
                         <strong>
-                        {{ 'CATEGORY'|trans([],'tournament') }} {{ matchset.match.category.name|upper }} - {{ ['GENDER.',
-                           matchset.match.category.gender,
-                           matchset.match.category.classification]|join|transchoice(matchset.match.category.age, { '%age%': matchset.match.category.age },'tournament') }}
+                        {{ 'CATEGORY'|trans([],'tournament') }} {{ match.category.name|upper }} - {{ ['GENDER.',
+                           match.category.gender,
+                           match.category.classification]|join|transchoice(match.category.age, { '%age%': match.category.age },'tournament') }}
                         </strong>
                     </div>
                     <div class="col-sm-1">
                         <strong>
-                        {{ 'GROUP'|trans([],'tournament') }} {{ matchset.match.group.name }}
+                        {{ 'GROUP'|trans([],'tournament') }} {{ match.group.name }}
                         </strong>
                     </div>
                     <div class="col-sm-4">
                         <strong>
-                        {{ formatter.displayclub(matchset.match.teamA, _context) }}
+                        {{ formatter.displayclub(match.teamA, _context) }}
                         </strong>
                     </div>
                     <div class="col-sm-4">
                         <strong>
-                        {{ formatter.displayclub(matchset.match.teamB, _context) }}
+                        {{ formatter.displayclub(match.teamB, _context) }}
                         </strong>
                     </div>
                 </div>
@@ -122,4 +121,13 @@
         </a>
 {% endfor %}
     </div>
+#}
+{% endblock %}
+
+{% block javascripts %}
+<script type="text/javascript">
+    $(function onLoad() {
+        $('#modal').modal('show');
+    });
+</script>
 {% endblock %}

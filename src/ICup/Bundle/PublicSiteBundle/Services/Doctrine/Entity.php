@@ -9,7 +9,9 @@ use ICup\Bundle\PublicSiteBundle\Entity\Doctrine\Group;
 use ICup\Bundle\PublicSiteBundle\Entity\Doctrine\GroupOrder;
 use ICup\Bundle\PublicSiteBundle\Entity\Doctrine\Host;
 use ICup\Bundle\PublicSiteBundle\Entity\Doctrine\Match;
+use ICup\Bundle\PublicSiteBundle\Entity\Doctrine\MatchAlternative;
 use ICup\Bundle\PublicSiteBundle\Entity\Doctrine\MatchRelation;
+use ICup\Bundle\PublicSiteBundle\Entity\Doctrine\MatchSchedule;
 use ICup\Bundle\PublicSiteBundle\Entity\Doctrine\Playground;
 use ICup\Bundle\PublicSiteBundle\Entity\Doctrine\PlaygroundAttribute;
 use ICup\Bundle\PublicSiteBundle\Entity\Doctrine\PARelation;
@@ -151,7 +153,23 @@ class Entity
     public function getTimeslotRepo() {
         return $this->getRepository('Timeslot');
     }
-    
+
+    /**
+     * Get the MatchSchedule entity repository
+     * @return \Doctrine\ORM\EntityRepository
+     */
+    public function getMatchScheduleRepo() {
+        return $this->getRepository('MatchSchedule');
+    }
+
+    /**
+     * Get the MatchAlternatives entity repository
+     * @return \Doctrine\ORM\EntityRepository
+     */
+    public function getMatchAlternativeRepo() {
+        return $this->getRepository('MatchAlternative');
+    }
+
     /**
      * Get the Site entity repository
      * @return \Doctrine\ORM\EntityRepository
@@ -398,7 +416,37 @@ class Entity
         }
         return $timeslot;
     }
-    
+
+    /**
+     * Get the match schedule from the matchschedule id
+     * @param $matchscheduleid
+     * @return MatchSchedule
+     * @throws ValidationException
+     */
+    public function getMatchScheduleById($matchscheduleid) {
+        /* @var $matchschedule MatchSchedule */
+        $matchschedule = $this->getMatchScheduleRepo()->find($matchscheduleid);
+        if ($matchschedule == null) {
+            throw new ValidationException("BADMATCHSCHEDULE", "Unknown matchscheduleid=".$matchscheduleid);
+        }
+        return $matchschedule;
+    }
+
+    /**
+     * Get the match alternatives from the matchalternative id
+     * @param $matchalternativeid
+     * @return MatchAlternative
+     * @throws ValidationException
+     */
+    public function getMatchAlternativeById($matchalternativeid) {
+        /* @var $matchalternative MatchAlternative */
+        $matchalternative = $this->getMatchAlternativeRepo()->find($matchalternativeid);
+        if ($matchalternative == null) {
+            throw new ValidationException("BADMATCHALTERNATIVE", "Unknown matchalternativeid=".$matchalternativeid);
+        }
+        return $matchalternative;
+    }
+
     /**
      * Get the site from the site id
      * @param $siteid
@@ -458,5 +506,4 @@ class Entity
         }
         return $event;
     }
-    
 }

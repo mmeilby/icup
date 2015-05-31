@@ -2,6 +2,10 @@
 
 namespace ICup\Bundle\PublicSiteBundle\Services\Entity;
 
+use DateTime;
+use ICup\Bundle\PublicSiteBundle\Entity\Doctrine\Timeslot;
+use ICup\Bundle\PublicSiteBundle\Entity\Doctrine\Playground;
+
 class PlaygroundAttribute
 {
     /**
@@ -12,7 +16,7 @@ class PlaygroundAttribute
 
     /**
      * @var integer $pid
-     * Relation to Playground - pid=playground.id 
+     * Relation to Playground - pid=playground.id
      */
     private $playground;
 
@@ -46,7 +50,7 @@ class PlaygroundAttribute
      * Set id
      *
      * @param integer $id
-     * @return PAttrForm
+     * @return PlaygroundAttribute
      */
     public function setId($id)
     {
@@ -69,7 +73,7 @@ class PlaygroundAttribute
      * Set parent id - related tournament
      *
      * @param Playground $playground
-     * @return PAttrForm
+     * @return PlaygroundAttribute
      */
     public function setPlayground($playground)
     {
@@ -92,7 +96,7 @@ class PlaygroundAttribute
      * Set child id - related timeslot
      *
      * @param Timeslot $timeslot
-     * @return PAttrForm
+     * @return PlaygroundAttribute
      */
     public function setTimeslot($timeslot)
     {
@@ -104,7 +108,7 @@ class PlaygroundAttribute
     /**
      * Get child id - related timeslot
      *
-     * @return Timeslot 
+     * @return Timeslot
      */
     public function getTimeslot()
     {
@@ -125,7 +129,7 @@ class PlaygroundAttribute
      * Set related categories
      *
      * @param array $categories
-     * @return PAttrForm
+     * @return PlaygroundAttribute
      */
     public function setCategories($categories)
     {
@@ -138,7 +142,7 @@ class PlaygroundAttribute
      * Set date
      *
      * @param DateTime $date
-     * @return PAttrForm
+     * @return PlaygroundAttribute
      */
     public function setSchedule($schedule)
     {
@@ -150,7 +154,7 @@ class PlaygroundAttribute
     /**
      * Get date
      *
-     * @return DateTime 
+     * @return DateTime
      */
     public function getSchedule()
     {
@@ -161,7 +165,7 @@ class PlaygroundAttribute
      * Set start time
      *
      * @param integer $start
-     * @return PAttrForm
+     * @return PlaygroundAttribute
      */
     public function setTimeleft($timeleft)
     {

@@ -6,7 +6,7 @@ use ICup\Bundle\PublicSiteBundle\Entity\Doctrine\Category;
 use ICup\Bundle\PublicSiteBundle\Entity\Doctrine\Date;
 use ICup\Bundle\PublicSiteBundle\Entity\Doctrine\Group;
 use ICup\Bundle\PublicSiteBundle\Entity\Doctrine\Playground;
-use ICup\Bundle\PublicSiteBundle\Entity\Doctrine\Team;
+use ICup\Bundle\PublicSiteBundle\Entity\TeamInfo;
 use DateTime;
 
 class MatchPlan
@@ -48,13 +48,13 @@ class MatchPlan
     private $matchno;
 
     /**
-     * @var Team $teamA
+     * @var TeamInfo $teamA
      * Relation to home team
      */
     private $teamA;
     
     /**
-     * @var Team $teamB
+     * @var TeamInfo $teamB
      * Relation to away team
      */
     private $teamB;
@@ -206,7 +206,7 @@ class MatchPlan
     /**
      * Set home team
      *
-     * @param Team $teamA
+     * @param TeamInfo $teamA
      * @return MatchPlanning
      */
     public function setTeamA($teamA)
@@ -219,7 +219,7 @@ class MatchPlan
     /**
      * Get home team
      *
-     * @return Team 
+     * @return TeamInfo
      */
     public function getTeamA()
     {
@@ -229,7 +229,7 @@ class MatchPlan
     /**
      * Set away team
      *
-     * @param Team $teamB
+     * @param TeamInfo $teamB
      * @return MatchPlanning
      */
     public function setTeamB($teamB)
@@ -242,7 +242,7 @@ class MatchPlan
     /**
      * Get away team
      *
-     * @return Team 
+     * @return TeamInfo
      */
     public function getTeamB()
     {

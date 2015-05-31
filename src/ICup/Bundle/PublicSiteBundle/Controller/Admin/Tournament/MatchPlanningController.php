@@ -1,8 +1,12 @@
 <?php
 namespace ICup\Bundle\PublicSiteBundle\Controller\Admin\Tournament;
 
+use ICup\Bundle\PublicSiteBundle\Entity\Doctrine\Date;
 use ICup\Bundle\PublicSiteBundle\Entity\Doctrine\Match;
 use ICup\Bundle\PublicSiteBundle\Entity\Doctrine\MatchRelation;
+use ICup\Bundle\PublicSiteBundle\Entity\Doctrine\MatchSchedule;
+use ICup\Bundle\PublicSiteBundle\Entity\Doctrine\PlaygroundAttribute;
+use ICup\Bundle\PublicSiteBundle\Exceptions\ValidationException;
 use ICup\Bundle\PublicSiteBundle\Services\Entity\PlaygroundAttribute as PA;
 use ICup\Bundle\PublicSiteBundle\Entity\MatchPlan;
 use ICup\Bundle\PublicSiteBundle\Services\Entity\PlanningOptions;
@@ -32,8 +36,8 @@ class MatchPlanningController extends Controller
         }
         if ($form->isValid()) {
             $options = $form->getData();
-            $matchList = $this->get('planning')->populateTournament($tournament->getId(), $options);
-            return $this->render("ICupPublicSiteBundle:Edit:planmatch.html.twig", $this->planTournament($request, $tournament, $matchList, $options));
+            $this->get('planning')->planTournament($tournament->getId(), $options);
+            return $this->redirect($this->generateUrl("_edit_match_planning_result", array('tournamentid' => $tournament->getId())));
         }
         $host = $this->get('entity')->getHostById($tournament->getPid());
         return array('form' => $form->createView(), 'host' => $host, 'tournament' => $tournament);
@@ -69,72 +73,46 @@ class MatchPlanningController extends Controller
         return $formDef->getForm();
     }
     
-    private function planTournament(Request $request, $tournament, $matchList, $options) {
-        $masterplan = $this->get('planning')->planTournament($tournament->getId(), $matchList, $options);
-        $session = $request->getSession();
-        $session->set('icup.matchplanning.masterplan', $masterplan);
-        
-        $matches = array();
-        foreach ($masterplan['plan'] as $match) {
-            $matches[date_format($match->getSchedule(), "Y/m/d")][] = $match;
-        }
-
-        $timeslots = array();
-        /* @var $ts PA */
-        foreach ($masterplan['available_timeslots'] as $ts) {
-            $timeslots[date_format($ts->getSchedule(), "Y/m/d")][] = $ts;
-        }
-
-        $host = $this->get('entity')->getHostById($tournament->getPid());
-        return array('host' => $host,
-                     'tournament' => $tournament,
-                     'unassigned' => $masterplan['unassigned_by_category'],
-                     'available_timeslots' => $timeslots);
-    }
-    
     /**
      * List the latest matches for a tournament
      * @Route("/edit/m/result/plan/{tournamentid}", name="_edit_match_planning_result")
      * @Template("ICupPublicSiteBundle:Edit:planmatch.html.twig")
      */
-    public function resultMatchesAction($tournamentid, Request $request) {
+    public function resultMatchesAction($tournamentid) {
         $tournament = $this->checkArgs($tournamentid);
-        
-        $session = $request->getSession();
-        $masterplan = $session->get('icup.matchplanning.masterplan', array('plan' => array(), 'unassigned_by_category' => array(), 'available_timeslots' => array()));
+        $result = $this->get('planning')->getSchedule($tournamentid);
 
         $matches = array();
-        foreach ($masterplan['plan'] as $match) {
-            $matches[date_format($match->getSchedule(), "Y/m/d")][] = $match;
+        /* @var $match MatchPlan */
+        foreach ($result['matches'] as $match) {
+            $matches[$match->getDate()][] = $match;
         }
 
         $timeslots = array();
-        foreach ($masterplan['available_timeslots'] as $ts) {
+        foreach ($result['timeslots'] as $ts) {
             $timeslots[date_format($ts->getSchedule(), "Y/m/d")][] = $ts;
         }
 
+        $unassigned_by_category = $result['unassigned_by_category'];
         $host = $this->get('entity')->getHostById($tournament->getPid());
         return array('host' => $host,
                      'tournament' => $tournament,
-                     'unassigned' => $masterplan['unassigned_by_category'],
+                     'unassigned' => $unassigned_by_category,
                      'available_timeslots' => $timeslots);
     }
-    
+
     /**
      * List the latest matches for a tournament
      * @Route("/edit/m/save/plan/{tournamentid}", name="_edit_match_planning_save")
-     * @Template("ICupPublicSiteBundle:Edit:planmatch.html.twig")
+     * @Method("GET")
      */
     public function saveMatchesAction($tournamentid, Request $request) {
         $tournament = $this->checkArgs($tournamentid);
-        
-        $session = $request->getSession();
-        $masterplan = $session->get('icup.matchplanning.masterplan', array('plan' => array(), 'unassigned_by_category' => array(), 'available_timeslots' => array()));
+        $result = $this->get('planning')->getSchedule($tournamentid);
 
         $em = $this->getDoctrine()->getManager();
-        $matches = array();
         /* @var $match MatchPlan */
-        foreach ($masterplan['plan'] as $match) {
+        foreach ($result['matches'] as $match) {
             $matchrec = new Match();
             $matchrec->setMatchno($match->getMatchno());
             $matchrec->setDate($match->getDate());
@@ -163,8 +141,6 @@ class MatchPlanningController extends Controller
 
             $em->persist($resultreqA);
             $em->persist($resultreqB);
-
-            $matches[date_format($match->getSchedule(), "Y/m/d")][] = $match;
         }
         $em->flush();
 
@@ -172,17 +148,7 @@ class MatchPlanningController extends Controller
             'data_saved',
             'FORM.MATCHPLANNING.PLAN_SAVED'
         );
-        
-        $timeslots = array();
-        foreach ($masterplan['available_timeslots'] as $ts) {
-            $timeslots[date_format($ts->getSchedule(), "Y/m/d")][] = $ts;
-        }
-
-        $host = $this->get('entity')->getHostById($tournament->getPid());
-        return array('host' => $host,
-                     'tournament' => $tournament,
-                     'unassigned' => $masterplan['unassigned_by_category'],
-                     'available_timeslots' => $timeslots);
+        return $this->redirect($this->generateUrl("_edit_match_planning_result", array('tournamentid' => $tournament->getId())));
     }
     
     /**
@@ -190,15 +156,14 @@ class MatchPlanningController extends Controller
      * @Route("/edit/m/view/plan/{tournamentid}", name="_edit_match_planning_view")
      * @Template("ICupPublicSiteBundle:Edit:planmatchlist.html.twig")
      */
-    public function viewMatchesAction($tournamentid, Request $request) {
+    public function viewMatchesAction($tournamentid) {
         $tournament = $this->checkArgs($tournamentid);
-        
-        $session = $request->getSession();
-        $masterplan = $session->get('icup.matchplanning.masterplan', array('plan' => array()));
+        $result = $this->get('planning')->getSchedule($tournamentid);
 
         $matches = array();
-        foreach ($masterplan['plan'] as $match) {
-            $matches[date_format($match->getSchedule(), "Y/m/d")][] = $match;
+        /* @var $match MatchPlan */
+        foreach ($result['matches'] as $match) {
+            $matches[$match->getDate()][] = $match;
         }
 
         $host = $this->get('entity')->getHostById($tournament->getPid());
@@ -213,16 +178,38 @@ class MatchPlanningController extends Controller
      * @Route("/edit/m/advice/plan/{tournamentid}", name="_edit_match_planning_advice")
      * @Template("ICupPublicSiteBundle:Edit:planmatchadvice.html.twig")
      */
-    public function listAdvicesAction($tournamentid, Request $request) {
+    public function listAdvicesAction($tournamentid) {
         $tournament = $this->checkArgs($tournamentid);
-
-        $session = $request->getSession();
-        $masterplan = $session->get('icup.matchplanning.masterplan', array('advices' => array()));
+        $result = $this->get('planning')->getSchedule($tournamentid);
 
         $host = $this->get('entity')->getHostById($tournament->getPid());
-        return array('host' => $host,
+        return array(
+            'host' => $host,
             'tournament' => $tournament,
-            'advices' => $masterplan['advices']);
+            'advices' => $result['advices']);
+    }
+
+    /**
+     * List the latest matches for a tournament
+     * @Route("/edit/m/solve/plan/{tournamentid}/{matchid}", name="_edit_match_planning_solve")
+     * @Template("ICupPublicSiteBundle:Edit:planmatchadvice.html.twig")
+     */
+    public function solveAction($tournamentid, $matchid) {
+        $tournament = $this->checkArgs($tournamentid);
+        $result = $this->get('planning')->getSchedule($tournamentid);
+
+        foreach ($result['advices'] as $advice) {
+            if ($advice['id'] == $matchid) {
+                $match = $advice['match'];
+                $alternatives = $advice['alternatives'];
+                break;
+            }
+        }
+        $host = $this->get('entity')->getHostById($tournament->getPid());
+        return array(
+            'host' => $host,
+            'tournament' => $tournament,
+            'advices' => $result['advices']);
     }
 
     /**
@@ -230,14 +217,12 @@ class MatchPlanningController extends Controller
      * @Route("/edit/m/download/plan/{tournamentid}", name="_edit_match_planning_download")
      * @Method("GET")
      */
-    public function downloadFileAction($tournamentid, Request $request)
+    public function downloadFileAction($tournamentid)
     {
         $tournament = $this->checkArgs($tournamentid);
-        
-        $session = $request->getSession();
-        $masterplan = $session->get('icup.matchplanning.masterplan', array('plan' => array(), 'unassigned' => array()));
-        
-        $outputar = $this->getResponses($masterplan);
+        $result = $this->get('planning')->getSchedule($tournamentid);
+
+        $outputar = $this->getResponses($result);
         $tmpfname = tempnam("/tmp", "icup_match_plan_");
 
         $fp = fopen($tmpfname, "w");
@@ -255,12 +240,13 @@ class MatchPlanningController extends Controller
         return $response;
     }
     
-    private function getResponses($masterplan) {
+    private function getResponses($result) {
         $outputar = array("matchno;date;time;category;group;playground;teamA;teamB");
         /* @var $match MatchPlan */
-        foreach ($masterplan['plan'] as $match) {
-            $date = date_format($match->getSchedule(), "j-n-Y");
-            $time = date_format($match->getSchedule(), "G.i");
+        foreach ($result['matches'] as $match) {
+            $schedule = Date::getDateTime($match->getDate(), $match->getTime());
+            $date = date_format($schedule, "j-n-Y");
+            $time = date_format($schedule, "G.i");
             $outputstr = $match->getMatchno().';'.$date.';'.$time.
                     ';"'.$match->getCategory()->getName().
                     '";"'.$match->getGroup()->getName().
@@ -270,16 +256,13 @@ class MatchPlanningController extends Controller
                     '"';
             $outputar[] = $outputstr;
         }
-        if (count($masterplan['unassigned']) > 0) {
+        if (count($result['unassigned']) > 0) {
             $outputar[] = ";;;;;;;";
-            foreach ($masterplan['unassigned'] as $match) {
-                $date = date_format($match->getSchedule(), "j-n-Y");
-                $time = date_format($match->getSchedule(), "G.i");
-                $outputstr = $match->getMatchno().';'.$date.';'.$time.
-                        ';"'.$match->getCategory()->getName().
+            foreach ($result['unassigned'] as $match) {
+                $outputstr =
+                        ';;;"'.$match->getCategory()->getName().
                         '";"'.$match->getGroup()->getName().
-                        '";"'.$match->getPlayground()->getNo().
-                        '";"'.str_replace('"', "'", $match->getTeamA()->getName())." (".$match->getTeamA()->getCountry().")".
+                        '";;"'.str_replace('"', "'", $match->getTeamA()->getName())." (".$match->getTeamA()->getCountry().")".
                         '";"'.str_replace('"', "'", $match->getTeamB()->getName())." (".$match->getTeamB()->getCountry().")".
                         '"';
                 $outputar[] = $outputstr;
@@ -287,7 +270,7 @@ class MatchPlanningController extends Controller
         }
         $outputar[] = ";;;;;;;";
         $tid = array();
-        foreach ($masterplan['plan'] as $match) {
+        foreach ($result['matches'] as $match) {
             if (!array_key_exists($match->getTeamA()->getId(), $tid)) {
                 $outputstr = '"'.$match->getCategory()->getName().
                         '";"'.$match->getGroup()->getName().

@@ -32,6 +32,13 @@ class LocaleListener implements EventSubscriberInterface
         /* @var $request Request */
         $request = $event->getRequest();
         if (!$request->hasPreviousSession()) {
+            $language = $request->getPreferredLanguage($this->supported_locales);
+            if (FALSE === array_search($language, $this->supported_locales)) {
+                $request->setLocale($this->defaultLocale);
+            }
+            else {
+                $request->setLocale($language);
+            }
             return;
         }
 

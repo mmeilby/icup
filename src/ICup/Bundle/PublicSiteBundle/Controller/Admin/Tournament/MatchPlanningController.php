@@ -197,19 +197,8 @@ class MatchPlanningController extends Controller
     public function solveAction($tournamentid, $matchid) {
         $tournament = $this->checkArgs($tournamentid);
         $result = $this->get('planning')->getSchedule($tournamentid);
-
-        foreach ($result['advices'] as $advice) {
-            if ($advice['id'] == $matchid) {
-                $match = $advice['match'];
-                $alternatives = $advice['alternatives'];
-                break;
-            }
-        }
-        $host = $this->get('entity')->getHostById($tournament->getPid());
-        return array(
-            'host' => $host,
-            'tournament' => $tournament,
-            'advices' => $result['advices']);
+        $this->get('planning')->solveMatch($tournamentid, $matchid, $result);
+        return $this->redirect($this->generateUrl("_edit_match_planning_result", array('tournamentid' => $tournament->getId())));
     }
 
     /**

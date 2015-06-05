@@ -1,6 +1,7 @@
 FORM:
   TITLE: iCup registration
   FRONTPAGE:
+    TITLE: The most international handball tournament in Teramo - Italy
     MSGSENT: Your request for more information has been submitted. You will receive a response shortly.
     MSGINVALID: Your request was not submitted. The message should not contain any links.
     BLOCK1:

@@ -267,6 +267,15 @@ class MatchPlanning
         );
     }
 
+    public function solveMatch($tournamentid, $matchid, $result) {
+        foreach ($result['advices'] as $advice) {
+            if ($advice['id'] == $matchid) {
+                //
+                break;
+            }
+        }
+    }
+
     /**
      * @param $tournamentid
      * @param PlanningOptions $options

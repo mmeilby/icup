@@ -28,6 +28,14 @@ services:
         tags:
             - { name: kernel.event_subscriber }
             
+    kernel.listener.authentication.listener:
+        class: ICup\Bundle\PublicSiteBundle\EventListener\AuthenticationListener
+        arguments:
+          - "@service_container"
+          - "@logger"
+        tags:
+            - { name: kernel.event_subscriber }
+
     form.type_extension.field:
         class: "ICup\\Bundle\\PublicSiteBundle\\Form\\Extension\\FieldTypeExtension"
         tags:

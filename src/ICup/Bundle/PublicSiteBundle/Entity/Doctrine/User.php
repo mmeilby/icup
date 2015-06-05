@@ -3,6 +3,7 @@
 namespace ICup\Bundle\PublicSiteBundle\Entity\Doctrine;
 
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Security\Core\User\AdvancedUserInterface;
 use Symfony\Component\Security\Core\User\UserInterface;
 
 /**
@@ -11,7 +12,7 @@ use Symfony\Component\Security\Core\User\UserInterface;
  * @ORM\Table(name="users",uniqueConstraints={@ORM\UniqueConstraint(name="IdxByUser", columns={"username"})})
  * @ORM\Entity
  */
-class User implements UserInterface
+class User implements AdvancedUserInterface
 {
     public static $CLUB = 1;
     public static $CLUB_ADMIN = 2;
@@ -96,6 +97,13 @@ class User implements UserInterface
      * @ORM\Column(name="password", type="string", length=128, nullable=false)
      */
     private $password;
+
+    /**
+     * @var integer $attempts
+     * Number of failed login attempts since last successfull login
+     * @ORM\Column(name="attempts", type="integer", nullable=false)
+     */
+    private $attempts;
 
     /**
      * Get id
@@ -419,9 +427,76 @@ class User implements UserInterface
      */
     public function eraseCredentials()
     {
-//        unset($this->password);
     }
-    
+
+    /**
+     * INTERFACE IMPLEMENTATION
+     * Checks whether the user's account has expired.
+     *
+     * Internally, if this method returns false, the authentication system
+     * will throw an AccountExpiredException and prevent login.
+     *
+     * @return bool true if the user's account is non expired, false otherwise
+     *
+     * @see AccountExpiredException
+     */
+    public function isAccountNonExpired() {
+        return true;
+    }
+
+    /**
+     * INTERFACE IMPLEMENTATION
+     * Checks whether the user is locked.
+     *
+     * Internally, if this method returns false, the authentication system
+     * will throw a LockedException and prevent login.
+     *
+     * @return bool true if the user is not locked, false otherwise
+     *
+     * @see LockedException
+     */
+    public function isAccountNonLocked() {
+        return $this->attempts < 3;
+    }
+
+    /**
+     * INTERFACE IMPLEMENTATION
+     * Checks whether the user's credentials (password) has expired.
+     *
+     * Internally, if this method returns false, the authentication system
+     * will throw a CredentialsExpiredException and prevent login.
+     *
+     * @return bool true if the user's credentials are non expired, false otherwise
+     *
+     * @see CredentialsExpiredException
+     */
+    public function isCredentialsNonExpired() {
+        return true;
+    }
+
+    /**
+     * INTERFACE IMPLEMENTATION
+     * Checks whether the user is enabled.
+     *
+     * Internally, if this method returns false, the authentication system
+     * will throw a DisabledException and prevent login.
+     *
+     * @return bool true if the user is enabled, false otherwise
+     *
+     * @see DisabledException
+     */
+    public function isEnabled() {
+        return true;
+    }
+
+    public function loginFailed() {
+        $this->attempts++;
+    }
+
+    public function loginSucceeded() {
+        $this->attempts = 0;
+    }
+
     public function dump() {
         return "User: id=".$this->getId().
                 ", usr=".$this->getUsername().

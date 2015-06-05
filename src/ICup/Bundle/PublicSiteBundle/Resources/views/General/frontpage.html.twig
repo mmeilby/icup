@@ -44,12 +44,12 @@
         </div>
     </div>
     {% if statuslist.active|length == 0 %}
-    <div class="navy">
-        <div class="container">
+        <h1 class="text-center navy" style="margin-bottom: 20px;">{% trans %}FORM.FRONTPAGE.TITLE{% endtrans %}</h1>
+        <img src="{{ asset('bundles/icuppublicsite/images/IWC/cover.jpg') }}" alt="logo" class="img-responsive" />
+        <div class="container navy" style="padding-top: 10px; padding-bottom: 10px;">
             {{ sonata_block_render({'name': '/cms/content/blocks/frontpage/section_1'}) }}
         </div>
-    </div>
-    <hr />        
+        <hr />
     {% endif %}
 {% endblock %}
 

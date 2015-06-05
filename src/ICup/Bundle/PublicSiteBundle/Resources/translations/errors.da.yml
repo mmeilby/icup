@@ -1,4 +1,6 @@
 ERROR:
+  BAD_CREDENTIALSX: Forkert brugernavn eller kodeord
+  USER_ACCOUNT_IS_LOCKEDX: Brugerprofilen er låst. Kontakt administrator
   CLICKFORMORE: Klik her for at komme tilbage...
   NOACCESS:
     TITLE: Ingen adgang

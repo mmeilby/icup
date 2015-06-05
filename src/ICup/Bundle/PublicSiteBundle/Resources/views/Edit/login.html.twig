@@ -4,10 +4,16 @@
 {% trans_default_domain "club" %}
 
 {% block adminbody %}
-    <h2>{% trans %}FORM.LOGIN.TITLE{% endtrans %}</h2>
+    <h2 style="margin-bottom: 0">
+        <i class="fa fa-users"></i>&nbsp;
+        {% trans %}FORM.LOGIN.TITLE{% endtrans %}
+    </h2>
     <p>{% trans %}FORM.LOGIN.PROMPT{% endtrans %}</p>
 {% if tournament is defined and tournament %}
     <p><span class="label label-default">{{ tournament.name }}</span></p>
+{% endif %}
+{% if error is defined and error %}
+    <h2><span class="label label-danger"><i class="fa fa-user-secret"></i>&nbsp;{{ ['ERROR',error.message|replace(' ','_')|replace('.','X')|upper]|join('.')|trans([],'errors') }}</span></h2>
 {% endif %}
     <div class="row">
         <div class="col-sm-7">

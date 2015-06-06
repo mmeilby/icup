@@ -5,6 +5,7 @@ namespace ICup\Bundle\PublicSiteBundle\Entity\Doctrine;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Security\Core\User\AdvancedUserInterface;
 use Symfony\Component\Security\Core\User\UserInterface;
+use DateTime;
 
 /**
  * ICup\Bundle\PublicSiteBundle\Entity\Doctrine\User
@@ -104,6 +105,20 @@ class User implements AdvancedUserInterface
      * @ORM\Column(name="attempts", type="integer", nullable=false)
      */
     private $attempts;
+
+    /**
+     * @var string $enabled
+     * Set to Y if account is enabled
+     * @ORM\Column(name="enabled", type="string", length=1, nullable=false)
+     */
+    private $enabled;
+
+    /**
+     * @var DateTime $lastLogin
+     *
+     * @ORM\Column(name="lastlogin", type="datetime", nullable=true)
+     */
+    private $lastLogin;
 
     /**
      * Get id
@@ -456,7 +471,7 @@ class User implements AdvancedUserInterface
      * @see LockedException
      */
     public function isAccountNonLocked() {
-        return $this->attempts < 3;
+        return $this->attempts < 5;
     }
 
     /**
@@ -486,7 +501,42 @@ class User implements AdvancedUserInterface
      * @see DisabledException
      */
     public function isEnabled() {
-        return true;
+        return $this->enabled != 'N';
+    }
+
+    /**
+     * @param string $enabled
+     */
+    public function setEnabled($enabled) {
+        $this->enabled = $enabled ? 'Y' : 'N';
+    }
+
+    /**
+     * @return int
+     */
+    public function getAttempts() {
+        return $this->attempts;
+    }
+
+    /**
+     * @param int $attempts
+     */
+    public function setAttempts($attempts) {
+        $this->attempts = $attempts;
+    }
+
+    /**
+     * @return DateTime
+     */
+    public function getLastLogin() {
+        return $this->lastLogin;
+    }
+
+    /**
+     * @param DateTime $lastLogin
+     */
+    public function setLastLogin($lastLogin) {
+        $this->lastLogin = $lastLogin;
     }
 
     public function loginFailed() {
@@ -495,6 +545,7 @@ class User implements AdvancedUserInterface
 
     public function loginSucceeded() {
         $this->attempts = 0;
+        $this->lastLogin = new DateTime();
     }
 
     public function dump() {
@@ -505,6 +556,8 @@ class User implements AdvancedUserInterface
                 ", cid=".$this->getCid().
                 ", pid=".$this->getPid().
                 ", role=".$this->getRole().
-                ", status=".$this->getStatus();
+                ", status=".$this->getStatus().
+                ", locked=".($this->isAccountNonLocked() ? 'N' : 'Y').
+                ". enabled=".($this->isEnabled() ? 'Y' : 'N');
     }
 }

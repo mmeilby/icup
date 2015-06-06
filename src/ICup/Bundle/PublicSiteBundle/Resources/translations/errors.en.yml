@@ -1,6 +1,7 @@
 ERROR:
   BAD_CREDENTIALSX: Invalid username or password
   USER_ACCOUNT_IS_LOCKEDX: The user account is locked. Please contact the administrator
+  USER_ACCOUNT_IS_DISABLEDX: The user account is disabled. Please contact the administrator
   CLICKFORMORE: Click here to return...
   NOACCESS:
     TITLE: No access

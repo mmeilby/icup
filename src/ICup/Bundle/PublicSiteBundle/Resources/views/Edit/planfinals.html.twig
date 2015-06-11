@@ -1,0 +1,89 @@
+{% extends "ICupPublicSiteBundle:Masters:edit.html.twig" %}
+
+{% form_theme form 'ICupPublicSiteBundle:Default:layout.script.html.twig' %}
+{% trans_default_domain "admin" %}
+
+{% import 'ICupPublicSiteBundle:Masters:club.html.twig' as formatter %}
+
+{% block adminbody %}
+    <h2 style="margin-bottom: 0">
+        <i class="fa fa-university"></i>&nbsp;
+        {% trans %}FORM.CLUBMERGE.TITLE{% endtrans %}
+    </h2>
+    <p>{% trans %}FORM.CLUBMERGE.PROMPT{% endtrans %}</p>
+    <div class="row">
+        <div class="col-sm-6">
+            <h3>En pulje</h3>
+            <div class="radio">
+                <label>
+                    <input type="radio" name="optionsRadios" id="optionsRadios1" value="option1" checked>
+                    Fire bedst placerede hold går til semifinale
+                </label>
+            </div>
+            <div class="radio">
+                <label>
+                    <input type="radio" name="optionsRadios" id="optionsRadios2" value="option2">
+                    To bedst placerede hold går til finale
+                </label>
+            </div>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-sm-6">
+            <h3>To puljer</h3>
+            <div class="radio">
+                <label>
+                    <input type="radio" name="optionsRadios" id="optionsRadios1" value="option1" checked>
+                    Fire bedst placerede hold går til kvartfinale
+                </label>
+            </div>
+            <div class="radio">
+                <label>
+                    <input type="radio" name="optionsRadios" id="optionsRadios2" value="option2">
+                    To bedst placerede hold går til semifinale
+                </label>
+            </div>
+            <div class="radio disabled">
+                <label>
+                    <input type="radio" name="optionsRadios" id="optionsRadios3" value="option3" disabled>
+                    Puljevindere går til finale
+                </label>
+            </div>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-sm-6">
+            <h3>Tre puljer</h3>
+            <div class="radio">
+                <label>
+                    <input type="radio" name="optionsRadios" id="optionsRadios1" value="option1" checked>
+                    Puljevindere går til semifinale, pulje 2-ere mødes i playoff
+                </label>
+            </div>
+            <div class="radio">
+                <label>
+                    <input type="radio" name="optionsRadios" id="optionsRadios2" value="option2">
+                    To bedst placerede hold går til kvartfinale, pulje 3-ere og 4-ere går i playoff
+                </label>
+            </div>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-sm-6">
+            <h3>Fire puljer</h3>
+            <div class="radio">
+                <label>
+                    <input type="radio" name="optionsRadios" id="optionsRadios1" value="option1" checked>
+                    To bedst placerede hold går til kvartfinale
+                </label>
+            </div>
+            <div class="radio">
+                <label>
+                    <input type="radio" name="optionsRadios" id="optionsRadios2" value="option2">
+                    Puljevindere går til semifinale
+                </label>
+            </div>
+        </div>
+    </div>
+    {{ form(form) }}
+{% endblock %}

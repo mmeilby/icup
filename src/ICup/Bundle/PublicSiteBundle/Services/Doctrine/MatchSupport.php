@@ -3,6 +3,10 @@
 namespace ICup\Bundle\PublicSiteBundle\Services\Doctrine;
 
 use ICup\Bundle\PublicSiteBundle\Entity\Doctrine\Date;
+use ICup\Bundle\PublicSiteBundle\Entity\Doctrine\QMatchRelation;
+use ICup\Bundle\PublicSiteBundle\Entity\MatchPlan;
+use ICup\Bundle\PublicSiteBundle\Entity\QMatch;
+use ICup\Bundle\PublicSiteBundle\Entity\TeamInfo;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 use Doctrine\ORM\EntityManager;
 use Monolog\Logger;
@@ -23,6 +27,8 @@ class MatchSupport
    /* @var $entity BusinessLogic */
     protected $logic;
 
+    private $sort_matches;
+
     public function __construct(ContainerInterface $container, Logger $logger)
     {
         $this->container = $container;
@@ -30,20 +36,27 @@ class MatchSupport
         $this->logic = $container->get('logic');
         $this->em = $container->get('doctrine')->getManager();
         $this->logger = $logger;
-    }
-    
-    static function reorderMatch($match1, $match2) {
-        if ($match1['schedule'] == $match2['schedule']) {
-            return 0;
-        }
-        elseif ($match1['schedule'] > $match2['schedule']) {
-            return 1;
-        }
-        else {
-            return -1;
-        }
+        $this->sort_matches =
+            function ($match1, $match2) {
+                if ($match1['schedule'] == $match2['schedule']) {
+                    return 0;
+                }
+                elseif ($match1['schedule'] > $match2['schedule']) {
+                    return 1;
+                }
+                else {
+                    return -1;
+                }
+            };
     }
 
+    /**
+     * @return callable
+     */
+    public function getSortMatches() {
+        return $this->sort_matches;
+    }
+    
     private function prepareAndSort($matchdata, $qmatchdata = array(), $club_list = array()) {
         // Collect match relations as matches
         $matchList = array();
@@ -65,7 +78,7 @@ class MatchSupport
             }
         }
         // Sort the matches based on schedule
-        usort($matches, array("ICup\Bundle\PublicSiteBundle\Services\Doctrine\MatchSupport", "reorderMatch"));
+        usort($matches, $this->sort_matches);
         return $matches;
     }
     
@@ -704,7 +717,7 @@ class MatchSupport
             }
         }
         // Sort the matches based on schedule
-        usort($matches, array("ICup\Bundle\PublicSiteBundle\Services\Doctrine\MatchSupport", "reorderMatch"));
+        usort($matches, $this->sort_matches);
         return $matches;
     }
 
@@ -759,5 +772,70 @@ class MatchSupport
                 'points' => '',
                 'rank' => '')
         );
+    }
+
+    public function listOpenQMatchesByTournament($tournamentid) {
+        $qb = $this->em->createQuery(
+            "select m.id as mid,m.matchno,m.date,m.time,".
+            "p.id as pid,".
+            "g.id as gid,".
+            "q.id as rid,q.awayteam,q.rank,gq.id as rgrp ".
+            "from ".$this->entity->getRepositoryPath('QMatchRelation')." q, ".
+                    $this->entity->getRepositoryPath('MatchRelation')." r, ".
+                    $this->entity->getRepositoryPath('Match')." m, ".
+                    $this->entity->getRepositoryPath('Group')." g, ".
+                    $this->entity->getRepositoryPath('Category')." cat, ".
+                    $this->entity->getRepositoryPath('Playground')." p, ".
+                    $this->entity->getRepositoryPath('Group')." gq ".
+            "where cat.pid=:tournament and ".
+            "g.pid=cat.id and ".
+            "m.pid=g.id and ".
+            "p.id=m.playground and ".
+            "q.pid=m.id and ".
+            "q.cid=gq.id and ".
+            "(select count(r.pid) from matchrelations r where r.pid=m.id) = 0 ".
+            "order by m.id");
+        $qb->setParameter('tournament', $tournamentid);
+        // Collect match relations as matches
+        $matchList = array();
+        foreach ($qb->getResult() as $qmatch) {
+            $matchList[$qmatch['matchno']][$qmatch['awayteam']=='Y'?'A':'H'] = $qmatch;
+        }
+        // Prepare match list for output
+        $matches = array();
+        foreach ($matchList as $matchRelList) {
+            // There must be two relations for each match - otherwise ignore the match
+            if (count($matchRelList) == 2) {
+                $match = new QMatch();
+                $match->setId($matchRelList['H']['mid']);
+                $match->setMatchno($matchRelList['H']['matchno']);
+                $match->setPid($matchRelList['H']['gid']);
+                $match->setPlayground($matchRelList['H']['pid']);
+                $match->setDate($matchRelList['H']['date']);
+                $match->setTime($matchRelList['H']['time']);
+                $match->setGroupA($matchRelList['H']['rgrp']);
+                $match->setGroupB($matchRelList['A']['rgrp']);
+                $match->setRankA($matchRelList['H']['rank']);
+                $match->setRankB($matchRelList['A']['rank']);
+                $matches[] = $match;
+            }
+        }
+        // Sort the matches based on schedule
+        usort($matches, function (QMatch $match1, QMatch $match2) {
+            $p1 = $match2->getPid() - $match1->getPid();
+            $p2 = $match2->getDate() - $match1->getDate();
+            $p3 = $match2->getPlayground() - $match1->getPlayground();
+            $p4 = $match2->getTime() - $match1->getTime();
+            if ($p1==0 && $p2==0 && $p3==0 && $p4==0) {
+                return 0;
+            }
+            elseif ($p1 < 0 || ($p1==0 && $p2 < 0) || ($p1==0 && $p2==0 && $p3 < 0) || ($p1==0 && $p2==0 && $p3==0 && $p4 < 0)) {
+                return 1;
+            }
+            else {
+                return -1;
+            }
+        });
+        return $matches;
     }
 }

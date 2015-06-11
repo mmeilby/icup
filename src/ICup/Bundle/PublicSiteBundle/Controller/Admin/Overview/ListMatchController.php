@@ -36,7 +36,7 @@ class ListMatchController extends Controller
         $mmatches = $this->get('match')->listMatchesByGroup($groupid);
         $umatches = $this->get('match')->listMatchesUnfinished($groupid);
         $sortedMatches = array_merge($umatches, $mmatches);
-        usort($sortedMatches, array("ICup\Bundle\PublicSiteBundle\Services\Doctrine\MatchSupport", "reorderMatch"));
+        usort($sortedMatches, $this->get('match')->getSortMatches());
         $matches = array();
         foreach ($sortedMatches as $match) {
             $matches[date_format($match['schedule'], "Y/m/d")][] = $match;

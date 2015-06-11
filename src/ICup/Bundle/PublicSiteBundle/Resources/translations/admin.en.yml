@@ -307,17 +307,20 @@ FORM:
     CAPTION: Schedule matches
     PLANNINGINCOMPLETE: It was not possible to schedule all matches
     DOUBLEMATCH:
-      PROMPT: Plan for both home and away playground
-      HELP: If you plan with both home and away playground every team will play twice against same opponent
+      PROMPT: Plan for Double Round Robin tournament
+      HELP: If you plan for Double Round Robin every team will play twice against same opponent
     PREFERPG:
       PROMPT: Fill playground first
-      HELP: With this option a team will experience more matches on the same playground
+      HELP: With this option each team will experience more matches on the same playground
     FINALS:
       PROMPT: Schedule finals
       HELP: Choose to schedule preliminary matches or finals
     SWITCH:
       ON: YES
       OFF: NO
+    TEAMS: Teams
+    MATCHES: Matches
+    NOTEAMS: No teams
     DOWNLOAD: Download match schedule as textfile
     SAVE: Accept and save match schedule
     OPTIONS: Planning options

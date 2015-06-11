@@ -30,7 +30,7 @@ class ListEventController extends Controller
 
         $host = $this->get('entity')->getHostById($tournament->getPid());
         $events = $this->get('tmnt')->listEventsByTournament($tournamentid);
-        usort($events, array("ICup\Bundle\PublicSiteBundle\Services\Doctrine\MatchSupport", "reorderMatch"));
+        usort($events, $this->get('match')->getSortMatches());
         return array('host' => $host,
                      'tournament' => $tournament,
                      'eventlist' => $events

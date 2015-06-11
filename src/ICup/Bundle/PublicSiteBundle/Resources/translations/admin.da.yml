@@ -318,6 +318,9 @@ FORM:
     SWITCH:
       ON: JA
       OFF: NEJ
+    TEAMS: Hold
+    MATCHES: Kampe
+    NOTEAMS: Ingen hold
     DOWNLOAD: Hent kampplan som tekstfil
     SAVE: Godkend og gem kampplan
     OPTIONS: Indstillinger

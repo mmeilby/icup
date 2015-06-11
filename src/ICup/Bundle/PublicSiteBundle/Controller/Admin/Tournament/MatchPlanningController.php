@@ -1,7 +1,9 @@
 <?php
 namespace ICup\Bundle\PublicSiteBundle\Controller\Admin\Tournament;
 
+use ICup\Bundle\PublicSiteBundle\Entity\Doctrine\Category;
 use ICup\Bundle\PublicSiteBundle\Entity\Doctrine\Date;
+use ICup\Bundle\PublicSiteBundle\Entity\Doctrine\Group;
 use ICup\Bundle\PublicSiteBundle\Entity\Doctrine\Match;
 use ICup\Bundle\PublicSiteBundle\Entity\Doctrine\MatchRelation;
 use ICup\Bundle\PublicSiteBundle\Entity\Doctrine\MatchSchedule;
@@ -40,7 +42,20 @@ class MatchPlanningController extends Controller
             return $this->redirect($this->generateUrl("_edit_match_planning_result", array('tournamentid' => $tournament->getId())));
         }
         $host = $this->get('entity')->getHostById($tournament->getPid());
-        return array('form' => $form->createView(), 'host' => $host, 'tournament' => $tournament);
+        $categoryList = array();
+        $categories = $this->get('logic')->listCategories($tournamentid);
+        /* @var $category Category */
+        foreach ($categories as $category) {
+            $categoryList[$category->getId()] = array('category' => $category, 'group' => array());
+            $groups = $this->get('logic')->listGroups($category->getId());
+            /* @var $group Group */
+            foreach ($groups as $group) {
+                $teams = count($this->get('logic')->listTeamsByGroup($group->getId()));
+                $categoryList[$category->getId()]['group'][] = array('obj' => $group, 'cnt' => $teams);
+            }
+        }
+
+        return array('form' => $form->createView(), 'host' => $host, 'tournament' => $tournament, 'catlist' => $categoryList);
     }
     
     private function makePlanForm() {

@@ -4,7 +4,9 @@ namespace ICup\Bundle\PublicSiteBundle\Services;
 use DateInterval;
 use DateTime;
 use Doctrine\ORM\EntityManager;
+use ICup\Bundle\PublicSiteBundle\Entity\Doctrine\Category;
 use ICup\Bundle\PublicSiteBundle\Entity\Doctrine\Date;
+use ICup\Bundle\PublicSiteBundle\Entity\Doctrine\Group;
 use ICup\Bundle\PublicSiteBundle\Entity\Doctrine\MatchAlternative;
 use ICup\Bundle\PublicSiteBundle\Entity\Doctrine\MatchSchedule;
 use ICup\Bundle\PublicSiteBundle\Entity\MatchPlan;
@@ -46,6 +48,7 @@ class MatchPlanning
      * @return array
      */
     public function planTournament($tournamentid, PlanningOptions $options) {
+        $options->setFinals(false);
         $matchList = $this->populateTournament($tournamentid, $options);
         $result = $this->setupCriteria($tournamentid, $matchList, $options);
         $this->plan($result);
@@ -62,7 +65,6 @@ class MatchPlanning
 
         $this->logic->removeMatchSchedules($tournamentid);
 
-//        $result->sortTimeslots();
         /* @var $pa PA */
         foreach ($result->getTimeslots() as $pa) {
             /* @var $match MatchPlan */
@@ -444,7 +446,7 @@ class MatchPlanning
      * @return array
      */
     private function replan_1run(PlanningResults $result) {
-//        echo "unresolved=".$result->unresolved()."<br />";
+        $this->logger->addDebug("unresolved=".$result->unresolved());
         $unplaceable = array();
         while ($match = $result->nextUnresolved()) {
             $slot_found = $this->planMatch($result, $match, true);
@@ -459,7 +461,7 @@ class MatchPlanning
     }
 
     private function replan_2run(PlanningResults $result) {
-//        echo "unresolved=".$result->unresolved()."<br />";
+        $this->logger->addDebug("unresolved=".$result->unresolved());
         $grace_max = $result->unresolved()*2;
         $cnt_last = -1;
         $grace = 0;
@@ -477,10 +479,10 @@ class MatchPlanning
             if (!$slot_found) {
                 $new_match = $this->replanMatch($result, $match);
                 if ($new_match) {
-                    //                    echo "Swapped #".$new_match->getMatchno()." with #".$match->getMatchno()."<br />";
+                    $this->logger->addDebug("Swapped #" . $new_match->getMatchno() . " with #" . $match->getMatchno());
                     $result->appendUnresolved($new_match);
                 } else {
-                    //                echo "Unplaceable #".$match->getMatchno()."<br />";
+                    $this->logger->addDebug("Unplaceable #" . $match->getMatchno());
                     $unplaceable[] = $match;
                 }
             }
@@ -495,7 +497,7 @@ class MatchPlanning
     }
 
     private function replan_3run(PlanningResults $result) {
-//        echo "unresolved=".$result->unresolved()."<br />";
+        $this->logger->addDebug("unresolved=".$result->unresolved());
         $grace_max = $result->unresolved()*10;
         $cnt_last = -1;
         $grace = 0;
@@ -514,10 +516,10 @@ class MatchPlanning
             if (!$slot_found) {
                 $new_match = $this->findAngel($result, $match);
                 if ($new_match) {
-//                    echo "Swapped #" . $new_match->getMatchno() . " with #" . $match->getMatchno() . "<br />";
+                    $this->logger->addDebug("Swapped #" . $new_match->getMatchno() . " with #" . $match->getMatchno());
                     $result->appendUnresolved($new_match);
                 } else {
-//                    echo "Unplaceable #" . $match->getMatchno() . "<br />";
+                    $this->logger->addDebug("Unplaceable #" . $match->getMatchno());
                     $unplaceable[] = $match;
                 }
             }
@@ -534,30 +536,25 @@ class MatchPlanning
     private function replanMatch(PlanningResults $result, $match) {
         $result->mark();
         while ($pa = $result->cycleTimeslot()) {
-            $parels = $pa->getCategories();
-//            if (array_key_exists($match->getCategory()->getId(), $parels)) {
-//                $parel = $parels[$match->getCategory()->getId()];
-                $date = Date::getDate($pa->getSchedule());
-                /* Both teams must be allowed to play now */
-                if ($result->getTeamCheck()->isCapacity($match, $date, $pa->getTimeslot())) {
-                    $matchlist = $pa->getMatchlist();
-                    /* @var $replan_match MatchPlan */
-                    foreach ($matchlist as $idx => $replan_match) {
-//                        $rparel = $parels[$replan_match->getCategory()->getId()];
-                        if ($replan_match->getCategory()->getMatchtime() == $match->getCategory()->getMatchtime()) {
-                            $result->getTeamCheck()->reserveCapacity($match, $date, $pa->getTimeslot());
-                            $match->setDate($date);
-                            $match->setTime($replan_match->getTime());
-                            $match->setPlayground($replan_match->getPlayground());
-                            $matchlist[$idx] = $match;
-                            $pa->setMatchlist($matchlist);
-                            $result->getTeamCheck()->freeCapacity($replan_match, $date, $pa->getTimeslot());
-                            $result->rewind();
-                            return $replan_match;
-                        }
+            $date = Date::getDate($pa->getSchedule());
+            /* Both teams must be allowed to play now */
+            if ($result->getTeamCheck()->isCapacity($match, $date, $pa->getTimeslot())) {
+                $matchlist = $pa->getMatchlist();
+                /* @var $replan_match MatchPlan */
+                foreach ($matchlist as $idx => $replan_match) {
+                    if ($replan_match->getCategory()->getMatchtime() == $match->getCategory()->getMatchtime()) {
+                        $result->getTeamCheck()->reserveCapacity($match, $date, $pa->getTimeslot());
+                        $match->setDate($date);
+                        $match->setTime($replan_match->getTime());
+                        $match->setPlayground($replan_match->getPlayground());
+                        $matchlist[$idx] = $match;
+                        $pa->setMatchlist($matchlist);
+                        $result->getTeamCheck()->freeCapacity($replan_match, $date, $pa->getTimeslot());
+                        $result->rewind();
+                        return $replan_match;
                     }
                 }
-//            }
+            }
         }
         return null;
     }
@@ -602,9 +599,9 @@ class MatchPlanning
     }
 
     /**
-     * Order teams in group by match results
-     * @param Integer $tournamentid The group to sort
-     * @return array A list of TeamStat objects ordered by match results and ordering
+     * List groups assigned to eliminating rounds
+     * @param Integer $tournamentid The tournament to list groups
+     * @return array A list of Group objects from all categories assigned to eliminating rounds
      */
     private function listGroups($tournamentid) {
         $groupList = array();
@@ -618,6 +615,11 @@ class MatchPlanning
         return $groupList;
     }
 
+    /**
+     * Map any database object with its id
+     * @param array $records List of objects to map
+     * @return array A list of objects mapped with object ids (id => object)
+     */
     private function map($records) {
         $recordList = array();
         foreach ($records as $record) {

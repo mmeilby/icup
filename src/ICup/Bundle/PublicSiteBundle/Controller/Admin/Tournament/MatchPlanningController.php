@@ -125,44 +125,49 @@ class MatchPlanningController extends Controller
         $tournament = $this->checkArgs($tournamentid);
         $result = $this->get('planning')->getSchedule($tournamentid);
 
-        $em = $this->getDoctrine()->getManager();
-        /* @var $match MatchPlan */
-        foreach ($result['matches'] as $match) {
-            $matchrec = new Match();
-            $matchrec->setMatchno($match->getMatchno());
-            $matchrec->setDate($match->getDate());
-            $matchrec->setTime($match->getTime());
-            $matchrec->setPid($match->getGroup()->getId());
-            $matchrec->setPlayground($match->getPlayground()->getId());
+        // Only if tournament has not been started we are allowed to wipe the teams
+        if ($this->get('tmnt')->getTournamentStatus($tournamentid, new DateTime()) == TournamentSupport::$TMNT_ENROLL) {
+            $this->get('tmnt')->wipeMatches($tournamentid);
 
-            $em->persist($matchrec);
+            $em = $this->getDoctrine()->getManager();
+            /* @var $match MatchPlan */
+            foreach ($result['matches'] as $match) {
+                $matchrec = new Match();
+                $matchrec->setMatchno($match->getMatchno());
+                $matchrec->setDate($match->getDate());
+                $matchrec->setTime($match->getTime());
+                $matchrec->setPid($match->getGroup()->getId());
+                $matchrec->setPlayground($match->getPlayground()->getId());
+
+                $em->persist($matchrec);
+                $em->flush();
+
+                $resultreqA = new MatchRelation();
+                $resultreqA->setPid($matchrec->getId());
+                $resultreqA->setCid($match->getTeamA()->getId());
+                $resultreqA->setAwayteam(false);
+                $resultreqA->setScorevalid(false);
+                $resultreqA->setScore(0);
+                $resultreqA->setPoints(0);
+
+                $resultreqB = new MatchRelation();
+                $resultreqB->setPid($matchrec->getId());
+                $resultreqB->setCid($match->getTeamB()->getId());
+                $resultreqB->setAwayteam(true);
+                $resultreqB->setScorevalid(false);
+                $resultreqB->setScore(0);
+                $resultreqB->setPoints(0);
+
+                $em->persist($resultreqA);
+                $em->persist($resultreqB);
+            }
             $em->flush();
 
-            $resultreqA = new MatchRelation();
-            $resultreqA->setPid($matchrec->getId());
-            $resultreqA->setCid($match->getTeamA()->getId());
-            $resultreqA->setAwayteam(false);
-            $resultreqA->setScorevalid(false);
-            $resultreqA->setScore(0);
-            $resultreqA->setPoints(0);
-
-            $resultreqB = new MatchRelation();
-            $resultreqB->setPid($matchrec->getId());
-            $resultreqB->setCid($match->getTeamB()->getId());
-            $resultreqB->setAwayteam(true);
-            $resultreqB->setScorevalid(false);
-            $resultreqB->setScore(0);
-            $resultreqB->setPoints(0);
-
-            $em->persist($resultreqA);
-            $em->persist($resultreqB);
+            $request->getSession()->getFlashBag()->add(
+                'data_saved',
+                'FORM.MATCHPLANNING.PLAN_SAVED'
+            );
         }
-        $em->flush();
-
-        $request->getSession()->getFlashBag()->add(
-            'data_saved',
-            'FORM.MATCHPLANNING.PLAN_SAVED'
-        );
         return $this->redirect($this->generateUrl("_edit_match_planning_result", array('tournamentid' => $tournament->getId())));
     }
     

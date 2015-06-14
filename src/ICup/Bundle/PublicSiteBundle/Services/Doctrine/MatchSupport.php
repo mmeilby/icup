@@ -625,39 +625,46 @@ class MatchSupport
         $qmatchList = $this->queryQMatchListWithTournament($tournamentid);
         return $this->prepareAndSort($matchList, $qmatchList, $club_list);
     }
-/*
-    private function queryMatchNearestDayWithTournament($tournamentid, $matchdate, $club_set = "") {
-        $qb = $this->em->createQuery(
-                "select distinct m.date,m.time ".
-                "from ".$this->entity->getRepositoryPath('Match')." m, ".
-                        $this->entity->getRepositoryPath('Group')." g, ".
-                        $this->entity->getRepositoryPath('Category')." cat, ".
-                        $this->entity->getRepositoryPath('MatchRelation')." r, ".
-                        $this->entity->getRepositoryPath('Team')." t, ".
-                        $this->entity->getRepositoryPath('Club')." c ".
-                "where cat.pid=:tournament and ".
-                      "g.pid=cat.id and ".
-                      "m.pid=g.id and ".
-                      "r.pid=m.id and ".
-                      "t.id=r.cid and ".
-                      "c.id=t.pid ".
-                      $club_set.
-                "order by m.date desc,m.time desc");
-        $qb->setParameter('tournament', $tournamentid);
-        $results = $qb->getResult();
-        $date = $matchdate;
-        foreach ($results as $rec) {
-            $date = DateTime::createFromFormat(
-                        $this->container->getParameter('db_date_format').
-                        '-'.
-                        $this->container->getParameter('db_time_format'),
-                        $rec['date'].'-'.$rec['time']);
-            if ($date <= $matchdate) break;
-        }
-        return $date;
+
+    public function listMatchesByDate($tournamentid, $date) {
+        $matchList = $this->queryMatchListWithTournament($tournamentid, Date::getDate($date));
+        $qmatchList = $this->queryQMatchListWithTournament($tournamentid, Date::getDate($date));
+        return $this->prepareAndSort($matchList, $qmatchList, array());
     }
-*/   
-    private function queryMatchListWithTournament($tournamentid) {
+
+    /*
+        private function queryMatchNearestDayWithTournament($tournamentid, $matchdate, $club_set = "") {
+            $qb = $this->em->createQuery(
+                    "select distinct m.date,m.time ".
+                    "from ".$this->entity->getRepositoryPath('Match')." m, ".
+                            $this->entity->getRepositoryPath('Group')." g, ".
+                            $this->entity->getRepositoryPath('Category')." cat, ".
+                            $this->entity->getRepositoryPath('MatchRelation')." r, ".
+                            $this->entity->getRepositoryPath('Team')." t, ".
+                            $this->entity->getRepositoryPath('Club')." c ".
+                    "where cat.pid=:tournament and ".
+                          "g.pid=cat.id and ".
+                          "m.pid=g.id and ".
+                          "r.pid=m.id and ".
+                          "t.id=r.cid and ".
+                          "c.id=t.pid ".
+                          $club_set.
+                    "order by m.date desc,m.time desc");
+            $qb->setParameter('tournament', $tournamentid);
+            $results = $qb->getResult();
+            $date = $matchdate;
+            foreach ($results as $rec) {
+                $date = DateTime::createFromFormat(
+                            $this->container->getParameter('db_date_format').
+                            '-'.
+                            $this->container->getParameter('db_time_format'),
+                            $rec['date'].'-'.$rec['time']);
+                if ($date <= $matchdate) break;
+            }
+            return $date;
+        }
+    */
+    private function queryMatchListWithTournament($tournamentid, $date = null) {
         $qb = $this->em->createQuery(
                 "select m.id as mid,m.matchno,m.date,m.time,".
                        "p.id as pid,p.no,p.name as playground,".
@@ -679,12 +686,13 @@ class MatchSupport
                       "r.pid=m.id and ".
                       "t.id=r.cid and ".
                       "c.id=t.pid ".
+                      ($date ? "and m.date='".$date."' " : "").
                 "order by m.id");
         $qb->setParameter('tournament', $tournamentid);
         return $qb->getResult();
     }
     
-    private function queryQMatchListWithTournament($tournamentid) {
+    private function queryQMatchListWithTournament($tournamentid, $date = null) {
         $qb = $this->em->createQuery(
                 "select m.id as mid,m.matchno,m.date,m.time,".
                        "p.id as pid,p.no,p.name as playground,".
@@ -703,6 +711,7 @@ class MatchSupport
                       "p.id=m.playground and ".
                       "q.pid=m.id and ".
                       "q.cid=gq.id ".
+                      ($date ? "and m.date='".$date."' " : "").
                 "order by m.id");
         $qb->setParameter('tournament', $tournamentid);
         return $qb->getResult();

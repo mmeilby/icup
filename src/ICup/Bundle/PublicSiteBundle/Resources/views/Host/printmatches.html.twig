@@ -1,0 +1,122 @@
+{% extends "ICupPublicSiteBundle:Masters:edit.html.twig" %}
+{% trans_default_domain "tournament" %}
+
+{% import _self as this %}
+{% import 'ICupPublicSiteBundle:Masters:club.html.twig' as formatter %}
+
+{% macro club(team, group, context) %}
+    {% if team.id > 0 %}
+        {% if team.rank is defined and team.rank != '' %}
+            <small>{{ team.rank }}</small>
+        {% endif %}
+            <span class="text-nowrap">
+                {{ team.name }} ({{ team.country|trans({},'lang') }})
+            </span>
+    {% else %}
+        {{ team.rank }}
+    {% endif %}
+{% endmacro %}
+
+{% block adminbody %}
+    <h2 style="margin-bottom: 0">
+        <i class="fa fa-cogs"></i>&nbsp;
+        {% trans from 'admin' %}FORM.TOURNAMENTBOARD.MATCHPRINT.CAPTION{% endtrans %}
+    </h2>
+    <p>
+        {% trans %}RESULTS{% endtrans %} {{ tournament.edition }}
+    </p>
+    <p>
+        <div class="panel panel-info">
+            <div class="panel-body">
+                <div class="row">
+                    <div class="col-sm-6">
+                        <a href="{{ path('_edit_tournamentboard', { 'tournamentid': tournament.id }) }}">{{ host.name|upper }}</a><br />
+                        {{ tournament.name }}
+                    </div>
+                    <div class="col-sm-6">
+                        <select id="form_matchdate" class="form-control">
+                    {% for mdate in dates %}
+                        {% if mdate|date('d-m-Y') == matchdate|date('d-m-Y') %}
+                            <option value="{{mdate|date('d-m-Y')}}" selected>
+                        {% else %}
+                            <option value="{{mdate|date('d-m-Y')}}">
+                        {% endif %}
+                            {{ 'FORMAT.LONGDATE'|transchoice(mdate|date('j'), {
+                                '%week%': ['WEEK.',mdate|date('D')|upper]|join|trans([],'messages')|capitalize,
+                                '%day%': mdate|date('j'),
+                                '%month%': ['MONTH.',mdate|date('M')|upper]|join|trans([],'messages'),
+                                '%year%': mdate|date('Y')}, 'messages') }}
+                            </option>
+                    {% endfor %}
+                        </select>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </p>
+    {% set slotid = 0 %}
+    {% set playgroundid = 0 %}
+    {% for match in matchlist %}
+        {% if slotid != match.timeslot.id %}
+            <div class="row">
+                <div class="col-sm-12 text-center">
+                    <h3>
+                        {{ 'FORMAT.LONGDATE'|transchoice(match.schedule|date('j'), {
+                            '%week%': ['WEEK.',match.schedule|date('D')|upper]|join|trans([],'messages')|capitalize,
+                            '%day%': match.schedule|date('j'),
+                            '%month%': ['MONTH.',match.schedule|date('M')|upper]|join|trans([],'messages'),
+                            '%year%': match.schedule|date('Y')}, 'messages') }} -
+                        {{ match.timeslot.name }}
+                    </h3>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-sm-3">
+                    <div class="row">
+                        <div class="col-sm-2">{% trans %}LEGEND.NO{% endtrans %}</div>
+                        <div class="col-sm-4 text-right">{% trans %}LEGEND.TIME{% endtrans %}</div>
+                        <div class="col-sm-3 text-center">{% trans %}LEGEND.CATEGORY{% endtrans %}</div>
+                        <div class="col-sm-3 text-center">{% trans %}LEGEND.GROUP{% endtrans %}</div>
+                    </div>
+                </div>
+                <div class="col-sm-3">{% trans %}LEGEND.HOMETEAM{% endtrans %}</div>
+                <div class="col-sm-3">{% trans %}LEGEND.AWAYTEAM{% endtrans %}</div>
+                <div class="col-sm-3 text-center">{% trans %}LEGEND.RESULT{% endtrans %}</div>
+            </div>
+            {% set slotid = match.timeslot.id %}
+            {% set playgroundid = 0 %}
+        {% endif %}
+        {% if playgroundid != match.playground.id %}
+            <div class="row"><div class="col-sm-12"><h4>{{ match.playground.name }}</h4></div></div>
+            {% set playgroundid = match.playground.id %}
+        {% endif %}
+            <div class="row">
+                <div class="col-sm-3">
+                    <div class="row">
+                        <div class="col-sm-2">{{ match.matchno }}</div>
+                        <div class="col-sm-4 text-right">{{ match.schedule|date('FORMAT.TIME'|trans([],'messages')) }}</div>
+                        <div class="col-sm-3 text-center">{{ match.category.name }}</div>
+                        <div class="col-sm-3 text-center">{{ match.group.name }}</div>
+                    </div>
+                </div>
+                <div class="col-sm-3">{{ this.club(match.home, match.group, _context) }}</div>
+                <div class="col-sm-3">{{ this.club(match.away, match.group, _context) }}</div>
+                <div class="col-sm-3 text-center">{{ match.home.score }} - {{ match.away.score }}</div>
+            </div>
+    {% endfor %}
+{% endblock %}
+{% block javascripts %}
+    <script type="text/javascript">
+        $(function onLoad() {
+            $('select#form_matchdate').change(OnChangeDate);
+        });
+        function OnChangeDate() {
+            mdate = $('select#form_matchdate').val();
+            if (mdate !== null) {
+                var url = "{{ path('_edit_matchlist_print', { 'tournamentid': tournament.id, 'date': 'mdate' }) }}";
+                url = url.replace('mdate', mdate);
+                $(location).attr('href', url);
+            }
+        };
+    </script>
+{% endblock %}

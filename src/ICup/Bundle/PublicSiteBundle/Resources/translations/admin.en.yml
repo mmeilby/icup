@@ -101,6 +101,9 @@ FORM:
     REPORT:
         CAPTION: Report results
         DESCRIPTION: Report match results for matches played at a specific playground
+    MATCHPRINT:
+        CAPTION: Print match report
+        DESCRIPTION: Show match report for a specific day for output
   LISTHOSTS:
     TITLE: Hosts and tournaments administration
     CAPTION: Hosts and tournaments
@@ -336,6 +339,30 @@ FORM:
     TIMELEFT: Remaining time
     SUBMIT: Schedule matches
     CANCEL: Cancel
+  QMATCHPLANNING:
+    TITLE: Tournament administration
+    CAPTION: Schedule elimination matches
+    PLANNINGINCOMPLETE: It was not possible to schedule all matches
+    TEAMS: Teams
+    GROUP:
+      ONE: One group
+      TWO: Two groups
+      THREE: Three groups
+      FOUR: Four groups
+    RADIO:
+      GROUP1:
+        OPTION1: Top four teams qualify for semifinal
+        OPTION2: Top two teams qualify for final
+      GROUP2:
+        OPTION1: Top four teams qualify for quater final
+        OPTION2: Top two teams qualify for semifinal
+        OPTION3: Group winners quaify for final
+      GROUP3:
+        OPTION1: Group winners qualify for semifinal, group 2nd place qualify for playoff
+        OPTION2: Top two teams qualify for quater final, group 3rd and 4th place qualify for playoff
+      GROUP4:
+        OPTION1: Top two teams qualify for quater final
+        OPTION2: Group winners quaify for semifinal
   TOURNAMENTIMPORT:
     TITLE: Tournament administration
     CAPTION: Copy information from another tournament

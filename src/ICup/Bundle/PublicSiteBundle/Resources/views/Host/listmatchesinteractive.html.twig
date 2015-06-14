@@ -28,6 +28,13 @@
             <div class="panel-body">
                 <div class="row">
                     <div class="col-sm-6">
+                        <a href="{{ path('_edit_tournamentboard', { 'tournamentid': tournament.id }) }}">{{ host.name|upper }}</a><br />
+                        {{ tournament.name }}
+                    </div>
+                </div>
+                <p>&nbsp;</p>
+                <div class="row">
+                    <div class="col-sm-6">
                         <select id="form_playground"  class="form-control">
                     {% for field in playgrounds %}
                             <option value="{{field.id}}"
@@ -42,7 +49,7 @@
                         <select id="form_matchdate" class="form-control">
                     {% for mdate in dates %}
                             <option value="{{mdate|date('d-m-Y')}}"
-                    {% if mdate == matchdate %}
+                    {% if mdate|date('d-m-Y') == matchdate|date('d-m-Y') %}
                                     selected
                     {% endif %}
                                     >

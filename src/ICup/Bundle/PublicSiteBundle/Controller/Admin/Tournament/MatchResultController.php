@@ -2,6 +2,7 @@
 namespace ICup\Bundle\PublicSiteBundle\Controller\Admin\Tournament;
 
 use DateTime;
+use ICup\Bundle\PublicSiteBundle\Exceptions\ValidationException;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;

@@ -101,6 +101,9 @@ FORM:
     REPORT:
         CAPTION: Indberet resultater
         DESCRIPTION: Angiv kampresultatet for en eller flere kampe på en bane
+    MATCHPRINT:
+        CAPTION: Udskriv kampliste
+        DESCRIPTION: Vis kampliste for en dag til udskrift
   LISTHOSTS:
     TITLE: Vedligehold turneringer og værter
     CAPTION: Værter og turneringer
@@ -336,6 +339,30 @@ FORM:
     TIMELEFT: Resterende tid
     SUBMIT: Planlæg kampe
     CANCEL: Fortryd
+  QMATCHPLANNING:
+    TITLE: Vedligehold turnering
+    CAPTION: Planlæg finalekampe
+    PLANNINGINCOMPLETE: Det er ikke muligt at planlægge alle kampe
+    TEAMS: Hold
+    GROUP:
+      ONE: En pulje
+      TWO: To puljer
+      THREE: Tre puljer
+      FOUR: Fire puljer
+    RADIO:
+      GROUP1:
+        OPTION1: Fire bedst placerede hold går til semifinale
+        OPTION2: To bedst placerede hold går til finale
+      GROUP2:
+        OPTION1: Fire bedst placerede hold går til kvartfinale
+        OPTION2: To bedst placerede hold går til semifinale
+        OPTION3: Puljevindere går til finale
+      GROUP3:
+        OPTION1: Puljevindere går til semifinale, pulje 2-ere mødes i playoff
+        OPTION2: To bedst placerede hold går til kvartfinale, pulje 3-ere og 4-ere går i playoff
+      GROUP4:
+        OPTION1: To bedst placerede hold går til kvartfinale
+        OPTION2: Puljevindere går til semifinale
   TOURNAMENTIMPORT:
     TITLE: Vedligehold turnering
     CAPTION: Indlæs fra turnering

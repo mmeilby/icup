@@ -29,11 +29,17 @@ class MatchPrintController extends Controller
         $utilService->validateEditorAdminUser($user, $tournament->getPid());
 
         $eventdates = $this->get('match')->listMatchCalendar($tournament->getId());
-        $matchDate = $eventdates[0];
+        $matchDate = null;
         foreach ($eventdates as $eventdate) {
             if (date_format($eventdate, "d-m-Y") == $date) {
                 $matchDate = $eventdate;
                 break;
+            }
+        }
+        if ($matchDate == null) {
+            $matchDate = DateTime::createFromFormat('d-m-Y', $date);
+            if ($matchDate == null) {
+                throw new ValidationException("INVALIDDATE", "Match date invalid: date=".$date);
             }
         }
 

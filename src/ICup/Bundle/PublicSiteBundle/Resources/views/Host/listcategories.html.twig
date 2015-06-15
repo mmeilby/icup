@@ -27,14 +27,6 @@
                 <a href="{{ path('_edit_import_tournament', {'tournamentid': tournament.id, 'import': 'categories' }) }}" class="btn btn-info">
                     {% trans %}FORM.TOURNAMENTIMPORT.CAPTION{% endtrans %}
                 </a>
-{% if is_granted('ROLE_ADMIN') and categories|length > 0 %}
-                <a href="{{ path('_admin_wipe_matches', {'tournamentid': tournament.id }) }}" class="btn btn-danger">
-                    {% trans %}FORM.LISTCATEGORIES.BUTTON.WIPE{% endtrans %}
-                </a>
-                <a href="{{ path('_admin_wipe_qmatches', {'tournamentid': tournament.id }) }}" class="btn btn-danger">
-                    {% trans %}FORM.LISTCATEGORIES.BUTTON.QWIPE{% endtrans %}
-                </a>
-{% endif %}    
             </div>
         </div>
     </div>

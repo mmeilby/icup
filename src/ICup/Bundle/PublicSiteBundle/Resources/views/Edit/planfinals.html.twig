@@ -7,83 +7,51 @@
 
 {% block adminbody %}
     <h2 style="margin-bottom: 0">
-        <i class="fa fa-university"></i>&nbsp;
-        {% trans %}FORM.CLUBMERGE.TITLE{% endtrans %}
+        <i class="fa fa-cogs"></i>&nbsp;
+        {% trans %}FORM.QMATCHPLANNING.TITLE{% endtrans %}
     </h2>
-    <p>{% trans %}FORM.CLUBMERGE.PROMPT{% endtrans %}</p>
+    <p>{% trans %}FORM.QMATCHPLANNING.CAPTION{% endtrans %}</p>
     <div class="row">
-        <div class="col-sm-6">
-            <h3>En pulje</h3>
-            <div class="radio">
-                <label>
-                    <input type="radio" name="optionsRadios" id="optionsRadios1" value="option1" checked>
-                    Fire bedst placerede hold går til semifinale
-                </label>
-            </div>
-            <div class="radio">
-                <label>
-                    <input type="radio" name="optionsRadios" id="optionsRadios2" value="option2">
-                    To bedst placerede hold går til finale
-                </label>
-            </div>
+        <div class="col-lg-6 lead">
+            <a href="{{ path('_edit_tournamentboard', { 'tournamentid': tournament.id }) }}">
+                {{ host.name|upper }}
+            </a>
+            <br />
+            {{ tournament.name }}
+            <br />
+            <a href="{{ path('_edit_category_list', {'tournamentid': tournament.id }) }}">
+                {% trans from 'tournament' %}CATEGORY{% endtrans %} {{ category.name }}<br />
+                {{ ['GENDER.',
+                category.gender,
+                category.classification]|join|transchoice(category.age, { '%age%': category.age },'tournament') }}
+            </a>
+        </div>
+        <div class="col-lg-6 text-right">
+            {% if is_granted('ROLE_ADMIN') %}
+            {% endif %}
         </div>
     </div>
     <div class="row">
         <div class="col-sm-6">
-            <h3>To puljer</h3>
-            <div class="radio">
-                <label>
-                    <input type="radio" name="optionsRadios" id="optionsRadios1" value="option1" checked>
-                    Fire bedst placerede hold går til kvartfinale
-                </label>
-            </div>
-            <div class="radio">
-                <label>
-                    <input type="radio" name="optionsRadios" id="optionsRadios2" value="option2">
-                    To bedst placerede hold går til semifinale
-                </label>
-            </div>
-            <div class="radio disabled">
-                <label>
-                    <input type="radio" name="optionsRadios" id="optionsRadios3" value="option3" disabled>
-                    Puljevindere går til finale
-                </label>
-            </div>
+            {{ form(form) }}
         </div>
-    </div>
-    <div class="row">
         <div class="col-sm-6">
-            <h3>Tre puljer</h3>
-            <div class="radio">
-                <label>
-                    <input type="radio" name="optionsRadios" id="optionsRadios1" value="option1" checked>
-                    Puljevindere går til semifinale, pulje 2-ere mødes i playoff
-                </label>
+            <div class="row">
+                <div class="col-sm-2"></div>
+                <div class="col-sm-2 text-center">
+                    {% trans %}FORM.QMATCHPLANNING.TEAMS{% endtrans %}
+                </div>
             </div>
-            <div class="radio">
-                <label>
-                    <input type="radio" name="optionsRadios" id="optionsRadios2" value="option2">
-                    To bedst placerede hold går til kvartfinale, pulje 3-ere og 4-ere går i playoff
-                </label>
-            </div>
+            {% for group in groupList %}
+                <div class="row">
+                    <div class="col-sm-2">
+                        <span class="label label-primary">{% trans from "tournament" %}GROUP{% endtrans %} {{ group.group.name }}</span>
+                    </div>
+                    <div class="col-sm-2 text-center">
+                        {{ group.count }}
+                    </div>
+                </div>
+            {% endfor %}
         </div>
     </div>
-    <div class="row">
-        <div class="col-sm-6">
-            <h3>Fire puljer</h3>
-            <div class="radio">
-                <label>
-                    <input type="radio" name="optionsRadios" id="optionsRadios1" value="option1" checked>
-                    To bedst placerede hold går til kvartfinale
-                </label>
-            </div>
-            <div class="radio">
-                <label>
-                    <input type="radio" name="optionsRadios" id="optionsRadios2" value="option2">
-                    Puljevindere går til semifinale
-                </label>
-            </div>
-        </div>
-    </div>
-    {{ form(form) }}
 {% endblock %}

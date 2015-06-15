@@ -103,6 +103,14 @@
                 <div class="col-sm-3">{{ this.club(match.away, match.group, _context) }}</div>
                 <div class="col-sm-3 text-center">{{ match.home.score }} - {{ match.away.score }}</div>
             </div>
+    {% else %}
+        <div class="panel panel-warning">
+            <div class="panel-heading">
+                <b>
+                    {% trans %}TOURNAMENTNOTREADY{% endtrans %}
+                </b>
+            </div>
+        </div>
     {% endfor %}
 {% endblock %}
 {% block javascripts %}

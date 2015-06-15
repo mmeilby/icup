@@ -35,20 +35,36 @@ class QMatchPlanningController extends Controller
         $tournament = $this->get('entity')->getTournamentById($category->getPid());
         $utilService->validateEditorAdminUser($user, $tournament->getPid());
 
+        $groupList = array();
+        $groups = $this->get('logic')->listGroups($category->getId());
+        /* @var $group Group */
+        foreach ($groups as $group) {
+            $teams = count($this->get('logic')->listTeamsByGroup($group->getId()));
+            if ($teams > 0) {
+                $groupList[] = array('group' => $group, 'count' => $teams);
+            }
+        }
+        $host = $this->get('entity')->getHostById($tournament->getPid());
+        $matchForm = array('strategy' => 'option1');
 //        $matchForm = $this->copyMatchForm($match);
         $formDef = $this->createFormBuilder();
-        $form = $formDef->getForm();
-//        $form = $this->makeMatchForm($matchForm, $category->getId(), 'chg');
+//        $form = $formDef->getForm();
+        $form = $this->makeMatchForm($matchForm, $category->getId(), count($groupList));
         $form->handleRequest($request);
-//        if ($form->get('cancel')->isClicked()) {
-//            return $this->redirect($returnUrl);
-//        }
+        if ($form->get('cancel')->isClicked()) {
+            return $this->redirect($returnUrl);
+        }
 //        if ($this->checkForm($form, $matchForm)) {
 //            $this->chgMatch($matchForm, $match);
 //            return $this->redirect($returnUrl);
 //        }
 //        $playground = $this->get('entity')->getPlaygroundById($match->getPlayground());
-        return array('form' => $form->createView());
+        return array(
+            'form' => $form->createView(),
+            'host' => $host,
+            'tournament' => $tournament,
+            'category' => $category,
+            'groupList' => $groupList);
     }
     
     /**
@@ -154,32 +170,72 @@ class QMatchPlanningController extends Controller
         return $matchForm;
     }
 
-    private function makeMatchForm(MatchForm $matchForm, $categoryid, $action) {
+    private function makeMatchForm($matchForm, $categoryid, $noofgroups) {
         $groups = $this->get('logic')->listGroupsByCategory($categoryid);
         $groupnames = array();
         foreach ($groups as $group) {
             $groupnames[$group->getId()] = $group->getName();
         }
 
-        $show = $action != 'del';
+        $show = true;
         
         $formDef = $this->createFormBuilder($matchForm);
-        $formDef->add('groupA', 'choice', array('label' => 'FORM.MATCH.QHOME.GROUP',
-            'choices' => $groupnames, 'empty_value' => 'FORM.MATCH.DEFAULT',
-            'required' => false, 'disabled' => !$show, 'translation_domain' => 'admin'));
-        $formDef->add('rankA', 'text', array('label' => 'FORM.MATCH.QHOME.RANK',
-            'required' => false, 'disabled' => !$show, 'translation_domain' => 'admin'));
-        $formDef->add('groupB', 'choice', array('label' => 'FORM.MATCH.QAWAY.GROUP',
-            'choices' => $groupnames, 'empty_value' => 'FORM.MATCH.DEFAULT',
-            'required' => false, 'disabled' => !$show, 'translation_domain' => 'admin'));
-        $formDef->add('rankB', 'text', array('label' => 'FORM.MATCH.QAWAY.RANK',
-            'required' => false, 'disabled' => !$show, 'translation_domain' => 'admin'));
+        switch ($noofgroups) {
+            case 1: {
+                $formDef->add('strategy', 'choice', array(
+                    'label' => 'FORM.QMATCHPLANNING.GROUP.ONE',
+                    'placeholder' => false,
+                    'choices' => array('option1' => 'FORM.QMATCHPLANNING.RADIO.GROUP1.OPTION1', 'option2' => 'FORM.QMATCHPLANNING.RADIO.GROUP1.OPTION2'),
+                    'required' => false,
+                    'disabled' => !$show,
+                    'translation_domain' => 'admin',
+                    'expanded' => true,
+                    'multiple' => false));
+                break;
+            }
+            case 2: {
+                $formDef->add('strategy', 'choice', array(
+                    'label' => 'FORM.QMATCHPLANNING.GROUP.TWO',
+                    'placeholder' => false,
+                    'choices' => array('option1' => 'FORM.QMATCHPLANNING.RADIO.GROUP2.OPTION1', 'option2' => 'FORM.QMATCHPLANNING.RADIO.GROUP2.OPTION2', 'option3' => 'FORM.QMATCHPLANNING.RADIO.GROUP2.OPTION3'),
+                    'required' => false,
+                    'disabled' => !$show,
+                    'translation_domain' => 'admin',
+                    'expanded' => true,
+                    'multiple' => false));
+                break;
+            }
+            case 3: {
+                $formDef->add('strategy', 'choice', array(
+                    'label' => 'FORM.QMATCHPLANNING.GROUP.THREE',
+                    'placeholder' => false,
+                    'choices' => array('option1' => 'FORM.QMATCHPLANNING.RADIO.GROUP3.OPTION1', 'option2' => 'FORM.QMATCHPLANNING.RADIO.GROUP3.OPTION2'),
+                    'required' => false,
+                    'disabled' => !$show,
+                    'translation_domain' => 'admin',
+                    'expanded' => true,
+                    'multiple' => false));
+                break;
+            }
+            case 4: {
+                $formDef->add('strategy', 'choice', array(
+                    'label' => 'FORM.QMATCHPLANNING.GROUP.FOUR',
+                    'placeholder' => false,
+                    'choices' => array('option1' => 'FORM.QMATCHPLANNING.RADIO.GROUP4.OPTION1', 'option2' => 'FORM.QMATCHPLANNING.RADIO.GROUP4.OPTION2'),
+                    'required' => false,
+                    'disabled' => !$show,
+                    'translation_domain' => 'admin',
+                    'expanded' => true,
+                    'multiple' => false));
+                break;
+            }
+        }
 
-        $formDef->add('cancel', 'submit', array('label' => 'FORM.MATCH.CANCEL.'.strtoupper($action),
+        $formDef->add('cancel', 'submit', array('label' => 'FORM.MATCH.CANCEL.CHG',
                                                 'translation_domain' => 'admin',
                                                 'buttontype' => 'btn btn-default',
                                                 'icon' => 'fa fa-times'));
-        $formDef->add('save', 'submit', array('label' => 'FORM.MATCH.SUBMIT.'.strtoupper($action),
+        $formDef->add('save', 'submit', array('label' => 'FORM.MATCH.SUBMIT.CHG',
                                                 'translation_domain' => 'admin',
                                                 'icon' => 'fa fa-check'));
         return $formDef->getForm();

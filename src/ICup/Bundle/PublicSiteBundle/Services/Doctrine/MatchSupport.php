@@ -249,13 +249,11 @@ class MatchSupport
 
     public function listMatchCalendar($tournamentid) {
         $qb = $this->em->createQuery(
-                "select distinct m.date ".
-                "from ".$this->entity->getRepositoryPath('Category')." cat, ".
-                        $this->entity->getRepositoryPath('Group')." g, ".
-                        $this->entity->getRepositoryPath('Match')." m ".
-                "where cat.pid=:tournament and ".
-                        "m.pid=g.id and ".
-                        "g.pid=cat.id");
+                "select distinct a.date ".
+                "from ".$this->entity->getRepositoryPath('PlaygroundAttribute')." a, ".
+                        $this->entity->getRepositoryPath('Playground')." p, ".
+                        $this->entity->getRepositoryPath('Site')." s ".
+                "where s.pid=:tournament and p.pid=s.id and a.pid=p.id");
         $qb->setParameter('tournament', $tournamentid);
         $matchList = array();
         foreach ($qb->getResult() as $date) {

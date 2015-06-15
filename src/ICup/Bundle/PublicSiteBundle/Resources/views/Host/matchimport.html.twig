@@ -4,14 +4,29 @@
 {% trans_default_domain "admin" %}
 
 {% block adminbody %}
-    <h2 style="margin-bottom: 0">
-        <i class="fa fa-cogs"></i>&nbsp;
-        {% trans %}FORM.MATCHIMPORT.TITLE{% endtrans %}
-    </h2>
-    <p>{% trans %}FORM.MATCHIMPORT.PROMPT{% endtrans %}</p>
-<div class="panel panel-default">
-    <div class="panel-body">
-    {{ form(form) }}
+    <div class="row">
+        <div class="col-lg-6">
+            <h2 style="margin-bottom: 0">
+                <i class="fa fa-cogs"></i>&nbsp;
+                {% trans %}FORM.MATCHIMPORT.TITLE{% endtrans %}
+            </h2>
+            <p>{% trans %}FORM.MATCHIMPORT.PROMPT{% endtrans %}</p>
+        </div>
+        <div class="col-lg-6 text-right">
+            <p>&nbsp;</p>
+            {% if is_granted('ROLE_EDITOR_ADMIN') %}
+                <a href="{{ path('_admin_wipe_matches', {'tournamentid': tournament.id }) }}" class="btn btn-danger">
+                    {% trans %}FORM.LISTCATEGORIES.BUTTON.WIPE{% endtrans %}
+                </a>
+                <a href="{{ path('_admin_wipe_qmatches', {'tournamentid': tournament.id }) }}" class="btn btn-danger">
+                    {% trans %}FORM.LISTCATEGORIES.BUTTON.QWIPE{% endtrans %}
+                </a>
+            {% endif %}
+        </div>
     </div>
-</div>
+    <div class="panel panel-default">
+        <div class="panel-body">
+        {{ form(form) }}
+        </div>
+    </div>
 {% endblock %}

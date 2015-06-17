@@ -17,6 +17,6 @@ class LocaleController extends Controller
         $session = $request->getSession();
         $session->set('_locale', $locale);
         $referer = $request->headers->get('referer');
-        return new RedirectResponse($referer);
+        return new RedirectResponse(empty($referer) ? $this->generateUrl('_icup') : $referer);
     }
 }

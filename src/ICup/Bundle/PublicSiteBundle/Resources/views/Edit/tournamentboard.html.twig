@@ -92,7 +92,7 @@
                 </div>
                 <div class="col-sm-6">
                     <div class="list-group">
-                        <a class="list-group-item" href="{{ path('_edit_list_matches') }}">
+                        <a class="list-group-item" href="{{ path('_edit_list_matches', { 'tournamentid': tournament.id }) }}">
                             <h3 class="list-group-item-heading">{% trans %}FORM.TOURNAMENTBOARD.REPORT.CAPTION{% endtrans %}</h3>
                             <p class="list-group-item-text">{% trans %}FORM.TOURNAMENTBOARD.REPORT.DESCRIPTION{% endtrans %}</p>
                         </a>

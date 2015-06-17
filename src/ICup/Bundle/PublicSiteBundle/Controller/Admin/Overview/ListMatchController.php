@@ -51,16 +51,16 @@ class ListMatchController extends Controller
     
     /**
      * List the matches available for a playground on a given day
-     * @Route("/host/list/matches", name="_edit_list_matches")
+     * @Route("/host/list/matches/{tournamentid}", name="_edit_list_matches")
      * @Method("GET")
      */
-    public function listMatchAction(Request $request) {
+    public function listMatchAction($tournamentid, Request $request) {
         /* @var $utilService Util */
         $utilService = $this->get('util');
         
         /* @var $user User */
         $user = $utilService->getCurrentUser();
-        $tournament = $utilService->getTournament();
+        $tournament = $this->get('entity')->getTournamentById($tournamentid);
         $utilService->validateEditorAdminUser($user, $tournament->getPid());
 
         $date = $this->getSelectedDate($tournament->getId(), $request);

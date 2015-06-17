@@ -37,6 +37,8 @@ class UserController extends Controller
                 $form->addError(new FormError($this->get('translator')->trans('FORM.USER.NAMEEXIST', array(), 'admin')));
             }
             else {
+                $user->setAttempts(0);
+                $user->setEnabled(true);
                 $user->setCid($clubid);
                 $user->setPid(0);
                 $this->get('util')->generatePassword($user);
@@ -76,6 +78,8 @@ class UserController extends Controller
                 $form->addError(new FormError($this->get('translator')->trans('FORM.USER.NAMEEXIST', array(), 'admin')));
             }
             else {
+                $user->setAttempts(0);
+                $user->setEnabled(true);
                 $user->setCid(0);
                 $user->setPid($hostid);
                 $this->get('util')->generatePassword($user);
@@ -110,6 +114,8 @@ class UserController extends Controller
                 $form->addError(new FormError($this->get('translator')->trans('FORM.USER.NAMEEXIST', array(), 'admin')));
             }
             else {
+                $user->setAttempts(0);
+                $user->setEnabled(true);
                 $user->setCid(0);
                 $user->setPid(0);
                 $this->get('util')->generatePassword($user);

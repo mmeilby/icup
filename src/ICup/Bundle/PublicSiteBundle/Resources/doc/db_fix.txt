@@ -1,0 +1,19 @@
+Create default admin:
+    INSERT INTO users(name,username,password,role,status,email,pid,cid,attempts,enabled)
+    VALUES('sa','sa','$2y$13$uWPA4MfROONUiEPf8ctCSebfQiZ3mnqJpvlrekJ6S59At7R6kJQ3i',9,9,'',0,0,0,'Y')
+
+Update enrollments:
+    INSERT INTO enrollments(cid,pid,uid,date)
+      SELECT t.id, c.id AS category, u.id AS uid, '20130701' AS date
+      FROM categories c, groups g, grouporders o, teams t, users u
+      WHERE g.pid=c.id AND g.classification = 0 AND o.pid=g.id AND o.cid=t.id AND u.name='admin' AND
+            t.id NOT IN (SELECT e.cid FROM enrollments e WHERE e.pid=c.id)
+      ORDER BY c.id
+
+Update playgroundattributes:
+    INSERT INTO timeslots(pid, name, capacity, restperiod, penalty) VALUES (4,'Default',1,30,'Y');
+    INSERT INTO playgroundattributes(timeslot,pid,date,start,end)
+      select t.id, p.id, m.date, min(m.time), max(m.time)
+      from matches m, playgrounds p, sites s, timeslots t
+      where m.playground=p.id and p.pid=s.id and s.pid=4 and t.pid=4
+      GROUP BY p.id,m.date

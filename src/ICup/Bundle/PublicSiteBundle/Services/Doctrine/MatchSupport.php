@@ -39,7 +39,7 @@ class MatchSupport
         $this->sort_matches =
             function ($match1, $match2) {
                 if ($match1['schedule'] == $match2['schedule']) {
-                    return 0;
+                    return $match1['playground']['no'] - $match2['playground']['no'];
                 }
                 elseif ($match1['schedule'] > $match2['schedule']) {
                     return 1;

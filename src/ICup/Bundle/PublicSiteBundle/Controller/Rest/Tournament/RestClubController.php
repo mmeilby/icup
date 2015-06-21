@@ -13,9 +13,6 @@ class RestClubController extends Controller
      */
     public function restGetClubAction($clubid)
     {
-        // Validate that user is logged in...
-        $this->get('util')->getCurrentUser();
-        
         $club = $this->get('entity')->getClubById($clubid);
         $country = $this->get('translator')->trans($club->getCountry(), array(), 'lang');
         return new Response(json_encode(
@@ -35,9 +32,6 @@ class RestClubController extends Controller
      */
     public function restListClubsAction($pattern, $countrycode)
     {
-        // Validate that user is logged in...
-        $this->get('util')->getCurrentUser();
-
         $clubs = $this->get('logic')->listClubsByPattern($pattern, $countrycode);
         $result = array();
         foreach ($clubs as $club) {

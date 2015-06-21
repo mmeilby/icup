@@ -131,7 +131,12 @@
     </table>
     <p>&nbsp;</p>
             {% endif %}
-    <h3>{{ match.timeslot.name }}</h3>
+    <h3 style="margin-bottom: 0;">{{ match.timeslot.name }}</h3>
+    {{ 'FORMAT.LONGDATE'|transchoice(match.schedule|date('j'), {
+        '%week%': ['WEEK.',match.schedule|date('D')|upper]|join|trans([],'messages')|capitalize,
+        '%day%': match.schedule|date('j'),
+        '%month%': ['MONTH.',match.schedule|date('M')|upper]|join|trans([],'messages'),
+        '%year%': match.schedule|date('Y')}, 'messages') }}
     <hr />
             {% set slotid = match.timeslot.id %}
             {% set playgroundid = 0 %}
@@ -181,7 +186,7 @@
 {% endif %}
 {% endmacro %}
 {# *******************************************
-   PRINT MATCHLIST
+   DISPLAY MATCHLIST
    OTHER DEVICES
    ******************************************* #}
 {% macro listmatches(matchlist, context) %}
@@ -254,7 +259,12 @@
     </table>
     <p>&nbsp;</p>
             {% endif %}
-    <h3>{{ match.timeslot.name }}</h3>
+    <h3 style="margin-bottom: 0;">{{ match.timeslot.name }}</h3>
+    {{ 'FORMAT.LONGDATE'|transchoice(match.schedule|date('j'), {
+        '%week%': ['WEEK.',match.schedule|date('D')|upper]|join|trans([],'messages')|capitalize,
+        '%day%': match.schedule|date('j'),
+        '%month%': ['MONTH.',match.schedule|date('M')|upper]|join|trans([],'messages'),
+        '%year%': match.schedule|date('Y')}, 'messages') }}
     <hr />
             {% set slotid = match.timeslot.id %}
             {% set playgroundid = 0 %}

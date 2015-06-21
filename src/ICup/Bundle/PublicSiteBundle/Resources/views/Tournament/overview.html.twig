@@ -4,22 +4,6 @@
 {% import 'ICupPublicSiteBundle:Masters:club.html.twig' as formatter %}
 {% import 'ICupPublicSiteBundle:Masters:tournament.html.twig' as tformatter %}
 
-{% import _self as this %}
-
-{% macro club(team, group, context) %}
-    {% if team.id > 0 %}
-        {% if team.rank is defined and team.rank != '' %}
-            <small>{{ team.rank }}</small><br />
-        {% endif %}
-        <span class="text-nowrap">
-                {{ team.name }} ({{ team.country|trans({},'lang') }})
-            </span>
-    {% else %}
-        {{ team.rank }}
-    {% endif %}
-{% endmacro %}
-
-
 {% block widebody %}
 <div id="fb-root"></div>
 <script>

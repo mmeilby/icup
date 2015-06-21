@@ -36,8 +36,7 @@
                 <img src="{{ asset(['bundles/icuppublicsite/images/flags/',context.countries[hteam.country].flag]|join) }}"
                      alt="{{ hteam.country|trans({},'lang') }}"
                      title="{{ hteam.country|trans({},'lang') }}"
-                     class="flag"
-                     >
+                     class="flag">&nbsp;
         {% endif %}
                 <a href="{{ path('_showteam_all', { 'teamid': hteam.id }) }}">
                     {{ hteam.name }}
@@ -55,8 +54,7 @@
             <img src="{{ asset(['bundles/icuppublicsite/images/flags/',context.countries[ateam.country].flag]|join) }}"
                  alt="{{ ateam.country|trans({},'lang') }}"
                  title="{{ ateam.country|trans({},'lang') }}"
-                 class="flag"
-                 >
+                 class="flag">&nbsp;
         {% endif %}
             <a href="{{ path('_showteam_all', { 'teamid': ateam.id }) }}">
                 <span class="text-nowrap">
@@ -68,14 +66,34 @@
     {% endif %}
 {% endmacro %}
 
+{% macro clubspan(team, group, context) %}
+    {% if team.id > 0 %}
+        {% if team.rank is defined and team.rank != '' %}
+            <small>{{ team.rank }}</small><br />
+        {% endif %}
+        <span class="text-nowrap">
+        {% if team.country in context.countries|keys %}
+            <img src="{{ asset(['bundles/icuppublicsite/images/flags/',context.countries[team.country].flag]|join) }}"
+                 alt="{{ team.country|trans({},'lang') }}"
+                 title="{{ team.country|trans({},'lang') }}"
+                 class="flag">&nbsp;
+        {% endif %}
+            <a href="{{ path('_showteam_all', { 'teamid': team.id }) }}">
+                {{ team.name }}
+            </a>
+        </span>
+    {% else %}
+        {{ team.rank }}
+    {% endif %}
+{% endmacro %}
+
 {% macro displayteam(team, context) %}
     <span class="text-nowrap">
     {% if team.country in context.countries|keys %}
         <img src="{{ asset(['bundles/icuppublicsite/images/flags/',context.countries[team.country].flag]|join) }}"
              alt="{{ team.country|trans({},'lang') }}"
              title="{{ team.country|trans({},'lang') }}"
-             class="flag"
-             >
+             class="flag">&nbsp;
     {% endif %}
         <a href="{{ path('_showteam_all', { 'teamid': team.id }) }}">
             {{ team.name }}
@@ -89,8 +107,7 @@
         <img src="{{ asset(['bundles/icuppublicsite/images/flags/',context.countries[club.country].flag]|join) }}"
              alt="{{ club.country|trans({},'lang') }}"
              title="{{ club.country|trans({},'lang') }}"
-             class="flag"
-             >
+             class="flag">&nbsp;
     {% endif %}
         {{ club.name }}
     </span>

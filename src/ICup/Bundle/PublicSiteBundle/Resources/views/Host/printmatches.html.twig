@@ -7,7 +7,7 @@
 {% macro club(team, group, context) %}
     {% if team.id > 0 %}
         {% if team.rank is defined and team.rank != '' %}
-            <small>{{ team.rank }}</small>
+            <small>{{ team.rank }}</small><br />
         {% endif %}
             <span class="text-nowrap">
                 {{ team.name }} ({{ team.country|trans({},'lang') }})

@@ -118,7 +118,70 @@
 </table>
 {% endmacro %}
 {# *******************************************
-   DISPLAY MATCHLIST
+   PRINT MATCHLIST
+   SMALL MOBILE DEVICES
+   ******************************************* #}
+{% macro printmatchessx(matchlist, context) %}
+    {% set slotid = 0 %}
+    {% set playgroundid = -1 %}
+    {% for match in matchlist %}
+        {% if slotid != match.timeslot.id %}
+            {% if slotid > 0 %}
+        </tbody>
+    </table>
+    <p>&nbsp;</p>
+            {% endif %}
+    <h3>{{ match.timeslot.name }}</h3>
+    <hr />
+            {% set slotid = match.timeslot.id %}
+            {% set playgroundid = 0 %}
+        {% endif %}
+        {% if playgroundid != match.playground.id %}
+            {% if playgroundid > 0 %}
+        </tbody>
+    </table>
+            {% endif %}
+    <a href="{{ path('_showplayground_full', { 'playgroundid': match.playground.id }) }}" title="{{ match.playground.name }}">
+        <h4>{{ match.playground.name }}</h4>
+    </a>
+    <table class="table table-striped">
+        <thead>
+            <tr>
+                <td class="narrow-col" style="vertical-align: middle">
+                    {% trans from "tournament" %}LEGEND.TIME{% endtrans %}<br />
+                    {% trans from "tournament" %}LEGEND.CATEGORY{% endtrans %}<br />
+                    {% trans from "tournament" %}LEGEND.GROUP{% endtrans %}
+                </td>
+                <td style="vertical-align: middle">
+                    {% trans from "tournament" %}LEGEND.HOMETEAM{% endtrans %}<br />
+                    {% trans from "tournament" %}LEGEND.AWAYTEAM{% endtrans %}
+                </td>
+                <td class="narrow-col" style="vertical-align: middle">{% trans from "tournament" %}LEGEND.RESULT{% endtrans %}</td>
+            </tr>
+        </thead>
+        <tbody>
+            {% set playgroundid = match.playground.id %}
+        {% endif %}
+        <tr>
+            <td class="narrow-col" style="vertical-align: middle">
+                {{ match.schedule|date('FORMAT.TIME'|trans([],'messages')) }}<br />
+                <a href="{{ path('_showcategory', { 'categoryid': match.category.id }) }}">{{ match.category.name }}</a><br />
+                {{ match.group.name }}
+            </td>
+            <td style="vertical-align: middle">
+                {{ context.formatter.clubspan(match.home, match.group.id, context) }}<br />
+                {{ context.formatter.clubspan(match.away, match.group.id, context) }}
+            </td>
+            <td class="narrow-col text-nowrap" style="vertical-align: middle">{{ match.home.score }}-{{ match.away.score }}</td>
+        </tr>
+    {% endfor %}
+    {% if matchlist|length > 0 %}
+    </tbody>
+    </table>
+{% endif %}
+{% endmacro %}
+{# *******************************************
+   PRINT MATCHLIST
    OTHER DEVICES
    ******************************************* #}
 {% macro listmatches(matchlist, context) %}
@@ -176,4 +239,81 @@
     {% endfor %}
     </tbody>
 </table>
+{% endmacro %}
+{# *******************************************
+   PRINT MATCHLIST
+   OTHER DEVICES
+   ******************************************* #}
+{% macro printmatches(matchlist, context) %}
+    {% set slotid = 0 %}
+    {% set playgroundid = -1 %}
+    {% for match in matchlist %}
+        {% if slotid != match.timeslot.id %}
+            {% if slotid > 0 %}
+        </tbody>
+    </table>
+    <p>&nbsp;</p>
+            {% endif %}
+    <h3>{{ match.timeslot.name }}</h3>
+    <hr />
+            {% set slotid = match.timeslot.id %}
+            {% set playgroundid = 0 %}
+        {% endif %}
+        {% if playgroundid != match.playground.id %}
+            {% if playgroundid > 0 %}
+        </tbody>
+    </table>
+            {% endif %}
+    <a href="{{ path('_showplayground_full', { 'playgroundid': match.playground.id }) }}" title="{{ match.playground.name }}">
+        <h4>{{ match.playground.name }}</h4>
+    </a>
+    <table class="table table-striped">
+        <thead>
+            <tr>
+                <td class="narrow-col">{% trans from "tournament" %}LEGEND.NO{% endtrans %}</td>
+                <td class="narrow-col">{% trans from "tournament" %}LEGEND.TIME{% endtrans %}</td>
+                <td class="narrow-col">
+                    {% trans from "tournament" %}LEGEND.CATEGORY{% endtrans %}<br />
+                    {% trans from "tournament" %}LEGEND.GROUP{% endtrans %}
+                </td>
+                <td>
+                    <div class="row">
+                        <div class="col-xs-6">
+                            {% trans from "tournament" %}LEGEND.HOMETEAM{% endtrans %}
+                        </div>
+                        <div class="col-xs-6">
+                            {% trans from "tournament" %}LEGEND.AWAYTEAM{% endtrans %}
+                        </div>
+                    </div>
+                </td>
+                <td class="narrow-col">{% trans from "tournament" %}LEGEND.RESULT{% endtrans %}</td>
+            </tr>
+        </thead>
+        <tbody>
+            {% set playgroundid = match.playground.id %}
+        {% endif %}
+        <tr>
+            <td class="narrow-col">{{ match.matchno }}</td>
+            <td class="narrow-col">{{ match.schedule|date('FORMAT.TIME'|trans([],'messages')) }}</td>
+            <td class="narrow-col">
+                <a href="{{ path('_showcategory', { 'categoryid': match.category.id }) }}">{{ match.category.name }}</a><br />
+                {{ match.group.name }}
+            </td>
+            <td>
+                <div class="row">
+                    <div class="col-xs-6">
+                        {{ context.formatter.clubspan(match.home, match.group.id, context) }}
+                    </div>
+                    <div class="col-xs-6">
+                        {{ context.formatter.clubspan(match.away, match.group.id, context) }}
+                    </div>
+                </div>
+            </td>
+            <td class="narrow-col text-nowrap">{{ match.home.score }}-{{ match.away.score }}</td>
+        </tr>
+    {% endfor %}
+    {% if matchlist|length > 0 %}
+            </tbody>
+        </table>
+    {% endif %}
 {% endmacro %}

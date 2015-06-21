@@ -19,7 +19,7 @@ class MatchPrintController extends Controller
      * @Template("ICupPublicSiteBundle:Host:printmatches.html.twig")
      * @Method("GET")
      */
-    public function listAction($tournamentid, $date, Request $request)
+    public function listAction($tournamentid, $date)
     {
         /* @var $utilService Util */
         $utilService = $this->get('util');
@@ -29,21 +29,12 @@ class MatchPrintController extends Controller
         $user = $utilService->getCurrentUser();
         $utilService->validateEditorAdminUser($user, $tournament->getPid());
 
-        $eventdates = $this->get('match')->listMatchCalendar($tournament->getId());
-        $matchDate = null;
-        foreach ($eventdates as $eventdate) {
-            if (date_format($eventdate, "d-m-Y") == $date) {
-                $matchDate = $eventdate;
-                break;
-            }
-        }
+        $matchDate = DateTime::createFromFormat('d-m-Y', $date);
         if ($matchDate == null) {
-            $matchDate = DateTime::createFromFormat('d-m-Y', $date);
-            if ($matchDate == null) {
-                throw new ValidationException("INVALIDDATE", "Match date invalid: date=".$date);
-            }
+            throw new ValidationException("INVALIDDATE", "Match date invalid: date=".$date);
         }
-
+        $matchDate = $this->get('match')->getMatchDate($tournament->getId(), $matchDate);
+        $eventdates = $this->get('match')->listMatchCalendar($tournament->getId());
         $timeslots = $this->map($this->get('logic')->listTimeslots($tournament->getId()));
         $pattrs = $this->get('logic')->listPlaygroundAttributesByTournament($tournament->getId());
         $pattrList = array();
@@ -87,6 +78,7 @@ class MatchPrintController extends Controller
                 return -1;
             }
         });
+
         return array(
             'host' => $host,
             'tournament' => $tournament,

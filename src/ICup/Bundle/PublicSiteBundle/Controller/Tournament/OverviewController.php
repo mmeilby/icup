@@ -1,6 +1,7 @@
 <?php
 namespace ICup\Bundle\PublicSiteBundle\Controller\Tournament;
 
+use ICup\Bundle\PublicSiteBundle\Services\Util;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
@@ -14,34 +15,62 @@ class OverviewController extends Controller
      * @Route("/tmnt/vw/{tournament}", name="_tournament_overview")
      * @Template("ICupPublicSiteBundle:Tournament:overview.html.twig")
      */
-    public function overviewAction(Request $request, $tournament)
+    public function overviewAction($tournament)
     {
-        $this->get('util')->setTournamentKey($tournament);
-        $tournament = $this->get('util')->getTournament();
+        /* @var $utilService Util */
+        $utilService = $this->get('util');
+        $utilService->setTournamentKey($tournament);
+        $tournament = $utilService->getTournament();
         if ($tournament == null) {
             return $this->redirect($this->generateUrl('_tournament_select'));
         }
         
-        $club_list = $this->get('util')->getClubList();
         $today = new DateTime();
+        $matchDate = $this->get('match')->getMatchDate($tournament->getId(), $today);
+        $timeslots = $this->map($this->get('logic')->listTimeslots($tournament->getId()));
+        $pattrs = $this->get('logic')->listPlaygroundAttributesByTournament($tournament->getId());
+        $pattrList = array();
+        /* @var $pattr PlaygroundAttribute */
+        foreach ($pattrs as $pattr) {
+            $pattrList[$pattr->getPid()][] = $pattr;
+        }
 
-        if (count($club_list) > 0) {
-            $matchList = $this->get('match')->listMatchesByTournament($tournament->getId(), $club_list);
+        $club_list = $utilService->getClubList();
+        $matches = $this->get('match')->listMatchesByDate($tournament->getId(), $matchDate, $club_list);
+        $matchList = array();
+        foreach ($matches as $match) {
+            $slotid = 0;
+            foreach ($pattrList[$match['playground']['id']] as $pattr) {
+                /* @var $diffstart \DateInterval */
+                $diffstart = $pattr->getStartSchedule()->getTimestamp() - $match['schedule']->getTimestamp();
+                /* @var $diffend \DateInterval */
+                $diffend = $pattr->getEndSchedule()->getTimestamp() - $match['schedule']->getTimestamp();
+                if ($diffend >= 0 && $diffstart <= 0) {
+                    $slotid = $pattr->getTimeslot();
+                    $match['timeslot'] = $timeslots[$slotid];
+                    $matchList[] = $match;
+                    break;
+                }
+            }
+            if (!$slotid) {
+                $match['timeslot'] = $timeslots[array_rand($timeslots)];
+                $matchList[] = $match;
+            }
         }
-        else {
-            $matchList = $this->get('match')->listMatchesLimitedWithTournament($tournament->getId(), $today, 10, 6);
-        }
-        $matches = array();
-        foreach ($matchList as $match) {
-            $matches[date_format($match['schedule'], "Y/m/d")][] = $match;
-        }
-        
-        $shortMatchList = $matchList;
-        $shortMatches = array();
-        foreach ($shortMatchList as $match) {
-            $shortMatches[date_format($match['schedule'], "Y/m/d")][] = $match;
-        }
-        
+        usort($matchList, function ($match1, $match2) {
+            $p1 = $match2['timeslot']->getId() - $match1['timeslot']->getId();
+            $p2 = $match2['playground']['no'] - $match1['playground']['no'];
+            $p3 = $match2['schedule']->getTimestamp() - $match1['schedule']->getTimestamp();
+            $p4 = 0;
+            if ($p1 == 0 && $p2 == 0 && $p3 == 0 && $p4 == 0) {
+                return 0;
+            } elseif ($p1 < 0 || ($p1 == 0 && $p2 < 0) || ($p1 == 0 && $p2 == 0 && $p3 < 0) || ($p1 == 0 && $p2 == 0 && $p3 == 0 && $p4 < 0)) {
+                return 1;
+            } else {
+                return -1;
+            }
+        });
+
         $newsStream = array(
 /*            
             array(
@@ -84,9 +113,27 @@ class OverviewController extends Controller
             )
         );
 
-        return array('tournament' => $tournament,
-                     'newsstream' => $newsStream,
-                     'matchlist' => $shortMatches,
-                     'teaserlist' => $teaserList);
+        $host = $this->get('entity')->getHostById($tournament->getPid());
+        return array(
+            'host' => $host,
+            'tournament' => $tournament,
+            'matchdate' => $matchDate,
+            'newsstream' => $newsStream,
+            'matchlist' => $matchList,
+            'teaserlist' => $teaserList
+        );
+    }
+
+    /**
+     * Map any database object with its id
+     * @param array $records List of objects to map
+     * @return array A list of objects mapped with object ids (id => object)
+     */
+    private function map($records) {
+        $recordList = array();
+        foreach ($records as $record) {
+            $recordList[$record->getId()] = $record;
+        }
+        return $recordList;
     }
 }

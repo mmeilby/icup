@@ -247,6 +247,20 @@ class MatchSupport
         return $matchRel != null ? $matchRel->getCid() : 0;
     }
 
+    public function getMatchDate($tournamentid, DateTime $date) {
+        $diffmin = $date->getTimestamp();
+        $event = $date;
+        $eventdates = $this->listMatchCalendar($tournamentid);
+        foreach ($eventdates as $eventdate) {
+            $diff = $eventdate->getTimestamp() - $date->getTimestamp();
+            if ($diffmin > abs($diff)) {
+                $event = $eventdate;
+                $diffmin = abs($diff);
+            }
+        }
+        return $event;
+    }
+
     public function listMatchCalendar($tournamentid) {
         $qb = $this->em->createQuery(
                 "select distinct a.date ".
@@ -624,10 +638,10 @@ class MatchSupport
         return $this->prepareAndSort($matchList, $qmatchList, $club_list);
     }
 
-    public function listMatchesByDate($tournamentid, $date) {
+    public function listMatchesByDate($tournamentid, $date, $club_list = array()) {
         $matchList = $this->queryMatchListWithTournament($tournamentid, Date::getDate($date));
         $qmatchList = $this->queryQMatchListWithTournament($tournamentid, Date::getDate($date));
-        return $this->prepareAndSort($matchList, $qmatchList, array());
+        return $this->prepareAndSort($matchList, $qmatchList, $club_list);
     }
 
     /*

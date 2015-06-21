@@ -75,16 +75,17 @@
     <thead>
         <tr>
             <td class="narrow-col">
-                {% trans from "tournament" %}LEGEND.TIME{% endtrans %}<br />
-            {% if playground_defined %}                
-                {% trans from "tournament" %}LEGEND.PLAYGROUND{% endtrans %}
+                {% trans from "tournament" %}LEGEND.CATEGORY{% endtrans %}<br />
+                {% trans from "tournament" %}LEGEND.TIME{% endtrans %}
+            {% if playground_defined %}
+                <br />{% trans from "tournament" %}LEGEND.PLAYGROUND{% endtrans %}
             {% endif %}
             </td>
-            <td>
+            <td style="vertical-align: middle">
                 {% trans from "tournament" %}LEGEND.HOMETEAM{% endtrans %}<br />
                 {% trans from "tournament" %}LEGEND.AWAYTEAM{% endtrans %}
             </td>
-            <td class="narrow-col">{% trans from "tournament" %}LEGEND.RESULT{% endtrans %}</td>
+            <td class="narrow-col" style="vertical-align: middle">{% trans from "tournament" %}LEGEND.RESULT{% endtrans %}</td>
         </tr>
     </thead>
     <tbody>
@@ -99,13 +100,17 @@
     {% for match in matchset %}
         <tr>
             <td class="narrow-col">
-                {{ match.schedule|date('FORMAT.TIME'|trans([],'messages')) }}<br />
-            {% if playground_defined %}                
-                <a href="{{ path('_showplayground_full', { 'playgroundid': match.playground.id }) }}" title="{{ match.playground.name }}">{{ match.playground.no }}</a>
+                <a href="{{ path('_showcategory', { 'categoryid': match.category.id }) }}">{{ match.category.name }}</a> - {{ match.group.name }}
+                <br />
+                {{ match.schedule|date('FORMAT.TIME'|trans([],'messages')) }}
+            {% if playground_defined %}
+                <br /><a href="{{ path('_showplayground_full', { 'playgroundid': match.playground.id }) }}" title="{{ match.playground.name }}">{{ match.playground.no }}</a>
             {% endif %}    
             </td>
-            <td>{{ context.formatter.clubxs(match.home, match.away, match.group.id, context) }}</td>
-            <td class="narrow-col text-nowrap">{{ match.home.score }}-{{ match.away.score }}</td>
+            <td style="vertical-align: middle">
+                {{ context.formatter.clubxs(match.home, match.away, match.group.id, context) }}
+            </td>
+            <td class="narrow-col text-nowrap" style="vertical-align: middle">{{ match.home.score }}-{{ match.away.score }}</td>
         </tr>
     {% endfor %}
 {% endfor %}

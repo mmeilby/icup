@@ -1,6 +1,7 @@
 <?php
 namespace ICup\Bundle\PublicSiteBundle\Controller\Admin\Tournament;
 
+use ICup\Bundle\PublicSiteBundle\Entity\Doctrine\Date;
 use ICup\Bundle\PublicSiteBundle\Entity\Doctrine\Match;
 use ICup\Bundle\PublicSiteBundle\Entity\Doctrine\QMatchRelation;
 use ICup\Bundle\PublicSiteBundle\Entity\MatchImport;
@@ -69,17 +70,15 @@ class QMatchImportController extends Controller
         if ($form->isValid()) {
             if ($matchImport->getDate() == null || trim($matchImport->getDate()) == '') {
                 $form->addError(new FormError($this->get('translator')->trans('FORM.MATCHIMPORT.NODATE', array(), 'admin')));
-                return false;
             }
-            date_parse_from_format("j-n-Y", $matchImport->getDate());
-            $date_errors = date_get_last_errors();
-            if ($date_errors['error_count'] > 0) {
-                $form->addError(new FormError($this->get('translator')->trans('FORM.MATCHIMPORT.BADDATE', array(), 'admin')));
-                return false;
+            else {
+                $date = date_create_from_format($this->get('translator')->trans('FORMAT.DATE'), $matchImport->getDate());
+                if ($date === false) {
+                    $form->addError(new FormError($this->get('translator')->trans('FORM.MATCHIMPORT.BADDATE', array(), 'admin')));
+                }
             }
-            return true;
         }
-        return false;
+        return $form->isValid();
     }
 
     /**
@@ -178,17 +177,16 @@ class QMatchImportController extends Controller
     }
 
     private function commitImport($parseObj, $date) {
-        $matchdate = date_create_from_format("j-n-Y", $date);
-        $matchtime = date_create_from_format("G:i", $parseObj['time']);
-        $date_errors = date_get_last_errors();
-        if ($date_errors['error_count'] > 0) {
+        $matchdate = date_create_from_format($this->get('translator')->trans('FORMAT.DATE'), $date);
+        $matchtime = date_create_from_format($this->get('translator')->trans('FORMAT.TIME'), $parseObj['time']);
+        if ($matchdate === false || $matchtime === false) {
             throw new ValidationException("BADDATE", "date=".$date." time=".$parseObj['time']);
         }
-        
+
         $matchrec = new Match();
         $matchrec->setMatchno($parseObj['id']);
-        $matchrec->setDate(date_format($matchdate, $this->container->getParameter('db_date_format')));
-        $matchrec->setTime(date_format($matchtime, $this->container->getParameter('db_time_format')));
+        $matchrec->setDate(Date::getDate($matchdate));
+        $matchrec->setTime(Date::getTime($matchtime));
         $matchrec->setPid($parseObj['groupid']);
         $matchrec->setPlayground($parseObj['playgroundid']);
 

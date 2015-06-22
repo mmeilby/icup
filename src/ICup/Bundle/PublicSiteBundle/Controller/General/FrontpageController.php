@@ -45,7 +45,7 @@ class FrontpageController extends Controller
                 $statusList[$keyList[$stat]][] = $tournament;
             }
             if ($stat == TournamentSupport::$TMNT_GOING) {
-                $shortMatchList = $this->get('match')->listMatchesLimitedWithTournament($tournament->getId(), $today, 10, 3, $club_list);
+                $shortMatchList = $this->get('match')->listMatchesLimitedWithTournament($tournament->getId(), $today, 10, 3, array_keys($club_list));
                 $shortMatches = array();
                 foreach ($shortMatchList as $match) {
                     $shortMatches[date_format($match['schedule'], "Y/m/d")][] = $match;
@@ -105,12 +105,15 @@ class FrontpageController extends Controller
         $dm = $this->get('doctrine_phpcr')->getManager('default');
         $image = $dm->find(null, '/cms/media/images/Ter-amo8.png');
         
-        return array('form' => $form->createView(),
-                     'tournaments' => $tournamentList,
-                     'statuslist' => $statusList,
-                     'matchlist' => $shortMatches,
-                     'teaserlist' => $teaserList,
-                     'image' => $image);
+        return array(
+            'form' => $form->createView(),
+            'tournaments' => $tournamentList,
+            'statuslist' => $statusList,
+            'matchlist' => $shortMatches,
+            'teaserlist' => $teaserList,
+            'image' => $image,
+            'club_list' => $club_list
+        );
     }
     
     private function makeContactForm(Contact $contact) {

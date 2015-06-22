@@ -73,6 +73,6 @@ A:hover.nolink {
     display: block;
 }
 
-.form-control {
+DIV.form-control {
     height: 100%;
 }

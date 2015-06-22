@@ -37,7 +37,7 @@ class SelectClubController extends Controller
             $clubs = $session->get(SelectClubController::$ENV_CLUB_LIST);
         }
         else {
-            $clubs = $utilService->getClubList();
+            $clubs = $this->getClubList($request);
             $session->set(SelectClubController::$ENV_CLUB_LIST, $clubs);
         }
         // Prepare default data for form
@@ -46,7 +46,7 @@ class SelectClubController extends Controller
         $form->handleRequest($request);
         if ($form->get('cancel')->isClicked()) {
             // Reset club list to last known list
-            $session->set(SelectClubController::$ENV_CLUB_LIST, $utilService->getClubList());
+            $session->set(SelectClubController::$ENV_CLUB_LIST, $this->getClubList($request));
             return $this->redirect($this->generateUrl('_icup'));
         }
         elseif ($form->isValid()) {
@@ -119,7 +119,27 @@ class SelectClubController extends Controller
            )
         );
     }
-    
+
+    private function getClubList(Request $request) {
+        $clubs = array();
+        $club_list = $request->cookies->get(SelectClubController::$ENV_CLUB_LIST, '');
+        foreach (explode(':', $club_list) as $club_ident) {
+            $club_ident_array = explode('|', $club_ident);
+            $name = $club_ident_array[0];
+            if (count($club_ident_array) > 1) {
+                $countryCode = $club_ident_array[1];
+            }
+            else {
+                $countryCode = 'EUR';
+            }
+            $club = $this->get('logic')->getClubByName($name, $countryCode);
+            if ($club) {
+                $clubs[$club->getId()] = array('club' => $club, 'selected' => true);
+            }
+        }
+        return $clubs;
+    }
+
     private function getClubDefaults(Request $request) {
         // Prepare current language selection for preset of country
         $country = $request->get('country');

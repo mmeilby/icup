@@ -81,7 +81,7 @@ class Util
             }
             $club = $this->logic->getClubByName($name, $countryCode);
             if ($club) {
-                $clubs[] = $club->getId();
+                $clubs[$club->getId()] = $club;
             }
         }
         return $clubs;

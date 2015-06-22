@@ -20,12 +20,10 @@ class MatchController extends Controller
             return $this->redirect($this->generateUrl('_tournament_select'));
         }
 
-        $club_list = $this->get('util')->getClubList();
         $today = new DateTime();
-//        $today = new DateTime('2014-07-06 20:15:00');
-
+        $club_list = $this->get('util')->getClubList();
         if (count($club_list) > 0) {
-            $matchList = $this->get('match')->listMatchesByTournament($tournament->getId(), $club_list);
+            $matchList = $this->get('match')->listMatchesByTournament($tournament->getId(), array_keys($club_list));
         }
         else {
             $matchList = $this->get('match')->listMatchesLimitedWithTournament($tournament->getId(), $today, 10, 6);

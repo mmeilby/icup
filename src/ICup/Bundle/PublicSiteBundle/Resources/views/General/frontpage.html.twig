@@ -77,18 +77,31 @@
         <div class="col-md-8 hidden-xs">
             {{ tformatter.listmatches(matchlist, _context) }}
         </div>
-        <div class="col-md-4 hidden-xs hidden-sm">
-            {{ sonata_block_render({'name': '/cms/content/blocks/frontpage/follow_club'}) }}
-            <p>
-                <a class="btn btn-success btn-lg" href="{{ path('_club_select') }}" role="button">{% trans %}FORM.FRONTPAGE.BLOCK1.LEARNMORE{% endtrans %}&nbsp;<i class="fa fa-angle-double-right"></i></a>
-            </p>
-            <br />
-        </div>
 {# *******************************************
    MORE OPTIONS
    ALL DEVICES
    ******************************************* #}
         <div class="col-md-4">
+            <div class="hidden-xs hidden-sm">
+                {{ sonata_block_render({'name': '/cms/content/blocks/frontpage/follow_club'}) }}
+                <p>
+                    <a class="btn btn-success btn-lg" href="{{ path('_club_select') }}" role="button">{% trans %}FORM.FRONTPAGE.BLOCK1.LEARNMORE{% endtrans %}&nbsp;<i class="fa fa-angle-double-right"></i></a>
+                </p>
+            </div>
+            {% if club_list|length > 0 %}
+                <table class="table table-striped">
+                    <thead>
+                    <tr><td><h4>{% trans %}FORM.FRONTPAGE.BLOCK1.TABLETITLE{% endtrans %}</h4></td></tr>
+                    </thead>
+                    <tbody>
+                    {% for club in club_list %}
+                        <tr><td><strong>{{ formatter.displayclub(club, _context) }}</strong></td></tr>
+                    {% endfor %}
+                    </tbody>
+                </table>
+            {% else %}
+                <br class="hidden-xs hidden-sm" />
+            {% endif %}
             <div class="list-group">
                 <div class="list-group-item">
                     <i class="fa fa-facebook-official fa-5x text-primary"></i>&nbsp;

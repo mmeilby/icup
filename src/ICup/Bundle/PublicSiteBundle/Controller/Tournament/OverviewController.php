@@ -35,15 +35,14 @@ class OverviewController extends Controller
             $pattrList[$pattr->getPid()][] = $pattr;
         }
 
-        $club_list = $utilService->getClubList();
-        $matches = $this->get('match')->listMatchesByDate($tournament->getId(), $matchDate, $club_list);
+        $matches = $this->get('match')->listMatchesByDate($tournament->getId(), $matchDate);
         $matchList = array();
         foreach ($matches as $match) {
             $slotid = 0;
             foreach ($pattrList[$match['playground']['id']] as $pattr) {
-                /* @var $diffstart \DateInterval */
+                /* @var $diffstart DateInterval */
                 $diffstart = $pattr->getStartSchedule()->getTimestamp() - $match['schedule']->getTimestamp();
-                /* @var $diffend \DateInterval */
+                /* @var $diffend DateInterval */
                 $diffend = $pattr->getEndSchedule()->getTimestamp() - $match['schedule']->getTimestamp();
                 if ($diffend >= 0 && $diffstart <= 0) {
                     $slotid = $pattr->getTimeslot();

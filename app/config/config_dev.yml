@@ -12,11 +12,13 @@ web_profiler:
 monolog:
     handlers:
         main:
-            type:  stream
+            type:  rotating_file
+            max_files: 2
             path:  %kernel.logs_dir%/%kernel.environment%.log
             level: debug
         essential:
-            type:  stream
+            type:  rotating_file
+            max_files: 2
             path:  %kernel.logs_dir%/%kernel.environment%_ess.log
             level: notice
         firephp:

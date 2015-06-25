@@ -19,9 +19,26 @@ monolog:
     handlers:
         main:
             type:         fingers_crossed
-            action_level: error
-            handler:      nested
-        nested:
-            type:  stream
-            path:  %kernel.logs_dir%/%kernel.environment%.log
-            level: debug
+            action_level: critical
+            handler:      grouped
+            excluded_404s:
+                - ^/index.php
+        grouped:
+            type:         group
+            members:      [streamed, buffered]
+        streamed:
+            type:         rotating_file
+            path:         %kernel.logs_dir%/%kernel.environment%.log
+            # max number of log files to keep
+            # defaults to zero, which means infinite files
+            max_files:    10
+            level:        debug
+        buffered:
+            type:         buffer
+            handler:      swift
+        swift:
+            type:         swift_mailer
+            from_email:   mmeilby@gmail.com
+            to_email:     mm@iserve.dk
+            subject:      iCup error log
+            level:        error

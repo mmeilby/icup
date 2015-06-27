@@ -132,7 +132,7 @@ class MatchSupport
             $matchRec['division'] = '';
             $matchRec['scorevalid'] = 'N';
             $matchRec['id'] = -1;
-            $matchRec['country'] = 'EUR';
+            $matchRec['country'] = 'UNK';
             $matchRec['rgrp'] = $qmatch['rgrp'];
             $matchRec['qid'] = $qmatch['rgrp']*10 + $qmatch['rank'];
 //            $groupid = $qmatch['rgrp'];

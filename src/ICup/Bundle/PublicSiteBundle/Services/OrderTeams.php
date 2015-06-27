@@ -5,21 +5,29 @@ use ICup\Bundle\PublicSiteBundle\Entity\Doctrine\MatchRelation;
 use ICup\Bundle\PublicSiteBundle\Entity\TeamInfo;
 use ICup\Bundle\PublicSiteBundle\Entity\TeamStat;
 use ICup\Bundle\PublicSiteBundle\Services\Doctrine\BusinessLogic;
+use ICup\Bundle\PublicSiteBundle\Services\Doctrine\MatchSupport;
 use Monolog\Logger;
+use Symfony\Component\DependencyInjection\ContainerInterface;
 
 class OrderTeams
 {
+    /* @var $container ContainerInterface */
+    protected $container;
     /* @var $logic BusinessLogic */
     protected $logic;
+    /* @var $match MatchSupport */
+    protected $match;
     /* @var $logger Logger */
     protected $logger;
 
     private $order_by_points;
     private $order_by_goals;
 
-    public function __construct(BusinessLogic $logic, Logger $logger)
+    public function __construct(ContainerInterface $container, Logger $logger)
     {
-        $this->logic = $logic;
+        $this->container = $container;
+        $this->logic = $container->get('logic');
+        $this->match = $container->get('match');
         $this->logger = $logger;
         $this->order_by_points =
             function (TeamStat $team1, TeamStat $team2) {
@@ -58,6 +66,24 @@ class OrderTeams
     }
 
     /**
+     * Order teams in finals group by match results
+     * Teams are decided by result or if no results are present the rank requirement is returned
+     * @param Integer $groupid The group to sort
+     * @return array A list of TeamStat objects ordered by match results and ordering
+     */
+    public function sortGroupFinals($groupid) {
+        $results = $this->match->listMatchesByGroup($groupid);
+        $teamMap = array();
+        foreach ($results as $match) {
+            $this->addTeam($match['home'], $groupid, $teamMap);
+            $this->addTeam($match['away'], $groupid, $teamMap);
+        }
+        $teamResults = $this->logic->getTeamResultsByGroup($groupid);
+        $this->traverseMatches($teamMap, $teamResults);
+        return $this->sortList($teamMap, $teamResults);
+    }
+
+    /**
      * Order teams in group by match results
      * @param Integer $groupid The group to sort
      * @return array A list of TeamStat objects ordered by match results and ordering or null if group is not completed
@@ -83,6 +109,26 @@ class OrderTeams
             $teamMap[$team->getId()] = $stat;
         }
         return $teamMap;
+    }
+
+    private function addTeam($team, $groupid, &$teamMap) {
+        if ($team['id'] > 0) {
+            $tid = $team['id'];
+            $name = $team['name'];
+        }
+        else {
+            $tid = -$team['qid'];
+            $name = $team['rank'];
+        }
+        if (!array_key_exists($tid, $teamMap)) {
+            $stat = new TeamStat();
+            $stat->setId($tid);
+            $stat->setClub($name);
+            $stat->setName($name);
+            $stat->setCountry($team['country']);
+            $stat->setGroup($groupid);
+            $teamMap[$stat->getId()] = $stat;
+        }
     }
 
     private function traverseMatches($teamMap, $teamResults) {

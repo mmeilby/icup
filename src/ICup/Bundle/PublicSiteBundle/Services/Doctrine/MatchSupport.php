@@ -133,6 +133,8 @@ class MatchSupport
             $matchRec['scorevalid'] = 'N';
             $matchRec['id'] = -1;
             $matchRec['country'] = 'EUR';
+            $matchRec['rgrp'] = $qmatch['rgrp'];
+            $matchRec['qid'] = $qmatch['rgrp']*10 + $qmatch['rank'];
 //            $groupid = $qmatch['rgrp'];
 //            $teamStatList = $this->container->get('orderTeams')->sortGroup($groupid);
         }
@@ -161,6 +163,8 @@ class MatchSupport
             'score' => $valid ? $rel['score'] : '',
             'points' => $valid ? $rel['points'] : '',
             'rank' => $this->getValue($rel, 'rank'),
+            'qid' => $this->getValue($rel, 'qid'),
+            'rgrp' => $this->getValue($rel, 'rgrp'),
         );
     }
 

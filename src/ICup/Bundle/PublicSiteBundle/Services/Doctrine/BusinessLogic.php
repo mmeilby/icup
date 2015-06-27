@@ -647,7 +647,63 @@ class BusinessLogic
         }
         return $teamsList;
     }
-    
+
+    public function listTeamsByGroupFinals($groupid) {
+        $qb = $this->em->createQuery(
+            "select distinct t.id,t.name,t.division,c.name as club,c.country ".
+            "from ".$this->entity->getRepositoryPath('MatchRelation')." r, ".
+                    $this->entity->getRepositoryPath('Match')." m, ".
+                    $this->entity->getRepositoryPath('Team')." t, ".
+                    $this->entity->getRepositoryPath('Club')." c ".
+            "where m.pid=:group and ".
+            "r.pid=m.id and ".
+            "r.cid=t.id and ".
+            "t.pid=c.id ".
+            "order by t.id");
+        $qb->setParameter('group', $groupid);
+        $teamsList = array();
+        foreach ($qb->getResult() as $team) {
+            $teamInfo = new TeamInfo();
+            $teamInfo->id = $team['id'];
+            $teamInfo->name = $this->getTeamName($team['name'], $team['division']);
+            $teamInfo->club = $team['club'];
+            $teamInfo->country = $team['country'];
+            $teamInfo->group = $groupid;
+            $teamsList[] = $teamInfo;
+        }
+        $qb = $this->em->createQuery(
+            "select q.id as rid,q.awayteam,q.rank,g.id as rgrp,g.name as gname,g.classification ".
+            "from ".$this->entity->getRepositoryPath('QMatchRelation')." q, ".
+            $this->entity->getRepositoryPath('Match')." m, ".
+            $this->entity->getRepositoryPath('Group')." g ".
+            "where m.pid=:group and ".
+            "q.pid=m.id and ".
+            "q.cid=g.id ".
+            "order by m.id, q.awayteam");
+        $qb->setParameter('group', $groupid);
+        foreach ($qb->getResult() as $qmatch) {
+            if ($qmatch['classification'] > 0) {
+                $groupname = $this->container->get('translator')->trans('GROUPCLASS.'.$qmatch['classification'], array(), 'tournament');
+            }
+            else {
+                $groupname = $this->container->get('translator')->trans('GROUP', array(), 'tournament');
+            }
+            $rankTxt = $this->container->get('translator')->
+            transChoice('RANK', $qmatch['rank'],
+                array('%rank%' => $qmatch['rank'],
+                    '%group%' => strtolower($groupname).' '.$qmatch['gname']), 'tournament');
+
+            $teamInfo = new TeamInfo();
+            $teamInfo->id = $qmatch['rgrp'].'-'.$qmatch['rank'];
+            $teamInfo->name = $rankTxt;
+            $teamInfo->club = $rankTxt;
+            $teamInfo->country = "EUR";
+            $teamInfo->group = $groupid;
+            $teamsList[] = $teamInfo;
+        }
+        return $teamsList;
+    }
+
     public function listTeamsByClub($clubid) {
         $qb = $this->em->createQuery(
                 "select t ".

@@ -146,6 +146,6 @@ services:
     orderTeams:
         class: "ICup\\Bundle\\PublicSiteBundle\\Services\\OrderTeams"
         arguments:
-          - "@logic"
+          - "@service_container"
           - "@logger"
         

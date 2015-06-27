@@ -42,7 +42,7 @@ class CategoryController extends Controller
         $groups = $this->get('logic')->listGroupsClassification($categoryid);
         $groupList = array();
         foreach ($groups as $group) {
-            $teamsList = $this->get('orderTeams')->sortGroup($group->getId());
+            $teamsList = $this->get('orderTeams')->sortGroupFinals($group->getId());
             $groupList[$group->getId()] = array('group' => $group, 'teams' => $teamsList);
         }
         $grpf = $this->get('logic')->listGroupsFinals($categoryid);
@@ -66,11 +66,11 @@ class CategoryController extends Controller
         $pyramid = array();
         foreach ($groups as $group) {
             // make list for small devices
-            $teamsList = $this->get('orderTeams')->sortGroup($group->getId());
+            $teamsList = $this->get('orderTeams')->sortGroupFinals($group->getId());
             $groupList[$group->getId()] = array('group' => $group, 'teams' => $teamsList);
             // make list for larger devices
             $matchList = $this->get('Match')->listMatchesByGroup($group->getId());
-            $this->updateLists($pyramid, $group, $matchList);
+            $this->buildPyramid($pyramid, $group, $matchList);
         }
         // count number of playoff matches - if any - required to show the playoff tab
         $grpc = $this->get('logic')->listGroupsClassification($categoryid);
@@ -81,8 +81,16 @@ class CategoryController extends Controller
             'pyramid' => $this->fold($pyramid),     // list for larger devices
             'classifications' => count($grpc));
     }
-    
-    private function updateLists(&$pyramid, $group, $matchList) {
+
+    /**
+     * Build the elimination pyramid top-down
+     * Groups are expected to be populated in descending classification order:
+     *     final, 3/4 final, semifinals, 1/4 finals, ...
+     * @param $pyramid The elimination pyramid
+     * @param $group The new group to attach to the pyramid
+     * @param $matchList Matches for the new group to attach
+     */
+    private function buildPyramid(&$pyramid, $group, $matchList) {
         foreach ($matchList as &$match) {
             $match['group'] = $group;
             switch ($group->getClassification()) {
@@ -98,17 +106,40 @@ class CategoryController extends Controller
             }
         }
     }
-    
+
+    /**
+     * Crawl the elimination pyramid top-down and add match record as leaf
+     * If level is different from zero, search the pyramid for a matching branch
+     * If match has been played the matching branch should contain the team id of home or away team from the match
+     * If match has not been played the branch is decided from the qualifying requirements
+     * @param $pyramid The elimination pyramid
+     * @param $key Relative level (if from top of the pyramid: 0-semifinals, 1-1/4 finals, 2-1/8 finals, ...)
+     * @param $match The match to attach the level
+     */
     private function crawl(&$pyramid, $key, $match) {
+        // Is this the current leaf level?
         if ($key == 0) {
-            if ($pyramid['home']['id'] == $match['home']['id'] || $pyramid['home']['id'] == $match['away']['id']) {
+            // Yes - decide to which branch to add the leaf
+            if ($pyramid['home']['id'] > 0 && ($pyramid['home']['id'] == $match['home']['id'] || $pyramid['home']['id'] == $match['away']['id'])) {
+                // The match "contributes" to the home branch
                 $pyramid['home']['L'] = $match;
             }
-            elseif ($pyramid['away']['id'] == $match['home']['id'] || $pyramid['away']['id'] == $match['away']['id']) {
+            elseif ($pyramid['away']['id'] > 0 && ($pyramid['away']['id'] == $match['home']['id'] || $pyramid['away']['id'] == $match['away']['id'])) {
+                // The match "contributes" to the away branch
+                $pyramid['away']['L'] = $match;
+            }
+            // At this point either the match does not contribute to any branch or the upper level not been played
+            elseif ($pyramid['home']['id'] < 0 && $pyramid['home']['rgrp'] == $match['group']->getId()) {
+                // Upper level of the pyramid has not been played - however this match will contribute to that level
+                $pyramid['home']['L'] = $match;
+            }
+            elseif ($pyramid['away']['id'] < 0 && $pyramid['away']['rgrp'] == $match['group']->getId()) {
+                // Upper level of the pyramid has not been played - however this match will contribute to that level
                 $pyramid['away']['L'] = $match;
             }
         }
         else {
+            // Still on the branch - continue search in both home and away branch
             $this->crawl($pyramid['home']['L'], $key - 1, $match);
             $this->crawl($pyramid['away']['L'], $key - 1, $match);
         }
@@ -131,7 +162,7 @@ class CategoryController extends Controller
     }
     
     private function unfold($pyramid, $match) {
-        if (array_key_exists('L', $pyramid)) {
+        if (array_key_exists('L', $pyramid) && $pyramid['L']) {
             return array_merge(
                 $this->unfold($pyramid['L']['home'], $pyramid['L']),
                 $this->unfold($pyramid['L']['away'], $pyramid['L'])
@@ -149,10 +180,10 @@ class CategoryController extends Controller
         $finals[$wing] = array_merge(array_diff_key($pyramid, array('home' => '', 'away' => '')),
                                       array('home' => array_diff_key($pyramid['home'], array('L' => ''))),
                                       array('away' => array_diff_key($pyramid['away'], array('L' => ''))));
-        if (array_key_exists('L', $pyramid['home'])) {
+        if (array_key_exists('L', $pyramid['home']) && $pyramid['home']['L']) {
             $this->populateResults($finals, $pyramid['home']['L'], $level + 1, $wing.'H');
         }
-        if (array_key_exists('L', $pyramid['away'])) {
+        if (array_key_exists('L', $pyramid['away']) && $pyramid['away']['L']) {
             $this->populateResults($finals, $pyramid['away']['L'], $level + 1, $wing.'A');
         }
     }

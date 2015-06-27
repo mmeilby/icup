@@ -111,6 +111,9 @@ FORM:
 
     TEASER:
       TOURNAMENT:
+        MYMATCHES:
+          TITLE: Alle kampe du følger
+          DESC: Se den fulde liste af kampe for de klubber du følger.
         GROUPS:
           TITLE: Gruppe resultater
           DESC: Se sammensætningen af puljerne i en gruppe eller følg et hold fra gruppen.

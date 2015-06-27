@@ -79,6 +79,15 @@ class FrontpageController extends Controller
                     )
          */
                 );
+                if (count($club_list) > 0) {
+                    array_unshift($teaserList,
+                        array(
+                            'titletext' => 'FORM.TEASER.TOURNAMENT.MYMATCHES.TITLE',
+                            'text' => 'FORM.TEASER.TOURNAMENT.MYMATCHES.DESC',
+                            'path' => $this->generateUrl('_show_matches', array('tournament' => $tournament->getKey()))
+                        )
+                    );
+                }
             }
         }
 

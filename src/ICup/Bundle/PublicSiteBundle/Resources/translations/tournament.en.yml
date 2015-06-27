@@ -111,6 +111,9 @@ FORM:
 
     TEASER:
       TOURNAMENT:
+        MYMATCHES:
+          TITLE: The full list of matches
+          DESC: Watch all matches for the clubs you follow
         GROUPS:
           TITLE: Category results
           DESC: Watch the composition of categories or search the results for a team by the category.

@@ -9,7 +9,7 @@ class RestClubController extends Controller
 {
     /**
      * Get the club identified by club id
-     * @Route("/rest/admin/club/get/{clubid}", name="_rest_get_club", options={"expose"=true})
+     * @Route("/rest/club/get/{clubid}", name="_rest_get_club", options={"expose"=true})
      */
     public function restGetClubAction($clubid)
     {

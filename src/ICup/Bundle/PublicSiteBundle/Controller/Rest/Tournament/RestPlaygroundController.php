@@ -9,13 +9,10 @@ class RestPlaygroundController extends Controller
 {
     /**
      * Get the playground identified by playground id
-     * @Route("/rest/admin/playground/get/{playgroundid}", name="_rest_get_playground", options={"expose"=true})
+     * @Route("/rest/playground/get/{playgroundid}", name="_rest_get_playground", options={"expose"=true})
      */
     public function restGetPlaygroundAction($playgroundid)
     {
-        // Validate that user is logged in...
-        $this->get('util')->getCurrentUser();
-        
         $playground = $this->get('entity')->getPlaygroundById($playgroundid);
         return new Response(json_encode(
             array('id' => $playground->getId(),

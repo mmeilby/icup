@@ -18,15 +18,15 @@
 {% endmacro %}
 
 {% block adminbody %}
-    <h2 style="margin-bottom: 0">
+    <h2 class="hidden-print" style="margin-bottom: 0">
         <i class="fa fa-cogs"></i>&nbsp;
         {% trans from 'admin' %}FORM.TOURNAMENTBOARD.MATCHPRINT.CAPTION{% endtrans %}
     </h2>
-    <p>
+    <p class="hidden-print">
         {% trans %}RESULTS{% endtrans %} {{ tournament.edition }}
     </p>
-    <p>
-        <div class="panel panel-info">
+    <p class="hidden-print">
+        <div class="panel panel-info hidden-print">
             <div class="panel-body">
                 <div class="row">
                     <div class="col-sm-6">
@@ -73,15 +73,15 @@
             <div class="row">
                 <div class="col-sm-3">
                     <div class="row">
-                        <div class="col-sm-2">{% trans %}LEGEND.NO{% endtrans %}</div>
-                        <div class="col-sm-4 text-right">{% trans %}LEGEND.TIME{% endtrans %}</div>
-                        <div class="col-sm-3 text-center">{% trans %}LEGEND.CATEGORY{% endtrans %}</div>
-                        <div class="col-sm-3 text-center">{% trans %}LEGEND.GROUP{% endtrans %}</div>
+                        <div class="col-sm-2 small">{% trans %}LEGEND.NO{% endtrans %}</div>
+                        <div class="col-sm-4 text-right small">{% trans %}LEGEND.TIME{% endtrans %}</div>
+                        <div class="col-sm-3 text-center small">{% trans %}LEGEND.CATEGORY{% endtrans %}</div>
+                        <div class="col-sm-3 text-center small">{% trans %}LEGEND.GROUP{% endtrans %}</div>
                     </div>
                 </div>
-                <div class="col-sm-3">{% trans %}LEGEND.HOMETEAM{% endtrans %}</div>
-                <div class="col-sm-3">{% trans %}LEGEND.AWAYTEAM{% endtrans %}</div>
-                <div class="col-sm-3 text-center">{% trans %}LEGEND.RESULT{% endtrans %}</div>
+                <div class="col-sm-4 small">{% trans %}LEGEND.HOMETEAM{% endtrans %}</div>
+                <div class="col-sm-4 small">{% trans %}LEGEND.AWAYTEAM{% endtrans %}</div>
+                <div class="col-sm-1 text-center small">{% trans %}LEGEND.RESULT{% endtrans %}</div>
             </div>
             {% set slotid = match.timeslot.id %}
             {% set playgroundid = 0 %}
@@ -99,12 +99,12 @@
                         <div class="col-sm-3 text-center">{{ match.group.name }}</div>
                     </div>
                 </div>
-                <div class="col-sm-3">{{ this.club(match.home, match.group, _context) }}</div>
-                <div class="col-sm-3">{{ this.club(match.away, match.group, _context) }}</div>
-                <div class="col-sm-3 text-center">{{ match.home.score }} - {{ match.away.score }}</div>
+                <div class="col-sm-4">{{ this.club(match.home, match.group, _context) }}</div>
+                <div class="col-sm-4">{{ this.club(match.away, match.group, _context) }}</div>
+                <div class="col-sm-1 text-center">{{ match.home.score }}-{{ match.away.score }}</div>
             </div>
     {% else %}
-        <div class="panel panel-warning">
+        <div class="panel panel-warning hidden-print">
             <div class="panel-heading">
                 <b>
                     {% trans %}TOURNAMENTNOTREADY{% endtrans %}

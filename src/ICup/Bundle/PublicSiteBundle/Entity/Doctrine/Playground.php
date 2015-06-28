@@ -42,6 +42,12 @@ class Playground
      */
     private $name;
 
+    /**
+     * @var string $location
+     * Playground location for map support
+     * @ORM\Column(name="location", type="string", length=50, nullable=false)
+     */
+    private $location;
 
 
     /**
@@ -121,5 +127,28 @@ class Playground
     public function getName()
     {
         return $this->name;
+    }
+
+    /**
+     * Set location
+     *
+     * @param string $location
+     * @return Playground
+     */
+    public function setLocation($location)
+    {
+        $this->location = $location;
+
+        return $this;
+    }
+
+    /**
+     * Get location
+     *
+     * @return string
+     */
+    public function getLocation()
+    {
+        return $this->location;
     }
 }

@@ -220,7 +220,23 @@ class MatchSupport
             $relB->setPoints($tiePoints);
         }
     }
-    
+
+    public function getMatchRelationDetails($matchid, $away) {
+        $qb = $this->em->createQuery(
+            "select r.id as rid,r.awayteam,r.scorevalid,r.score,r.points,".
+            "t.id,t.name as team,t.division,c.country ".
+            "from ".$this->entity->getRepositoryPath('MatchRelation')." r, ".
+                    $this->entity->getRepositoryPath('Team')." t, ".
+                    $this->entity->getRepositoryPath('Club')." c ".
+            "where r.pid=:match and r.awayteam=:away and ".
+            "t.id=r.cid and ".
+            "c.id=t.pid ".
+            "order by r.awayteam");
+        $qb->setParameter('match', $matchid);
+        $qb->setParameter('away', $away ? 'Y' : 'N');
+        return $qb->getOneOrNullResult();
+    }
+
     public function getMatchRelationByMatch($matchid, $away) {
         $qb = $this->em->createQuery(
                 "select r ".
@@ -240,7 +256,7 @@ class MatchSupport
         $qb->setParameter('away', $away ? 'Y' : 'N');
         return $qb->getOneOrNullResult();
     }
-     
+
     public function getMatchHomeTeam($matchid) {
         $matchRel = $this->getMatchRelationByMatch($matchid, false);
         return $matchRel != null ? $matchRel->getCid() : 0;

@@ -111,7 +111,10 @@ FORM:
 
     TEASER: 
         TOURNAMENT: 
-            GROUPS: 
+            MYMATCHES:
+                TITLE: Partidos para todos los equipos que sigues
+                DESC: Obtener el resumen completo de todos los partidos con clubes que sigues
+            GROUPS:
                 TITLE: Categoría resultados 
                 DESC: Ver la composición de las categorías o buscar en los resultados para un equipo de la categoría. 
             PLAYGROUNDS: 

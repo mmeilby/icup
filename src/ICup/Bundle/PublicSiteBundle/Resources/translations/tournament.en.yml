@@ -112,8 +112,8 @@ FORM:
     TEASER:
       TOURNAMENT:
         MYMATCHES:
-          TITLE: The full list of matches
-          DESC: Watch all matches for the clubs you follow
+          TITLE: Matches for all the teams you follow
+          DESC: Get the complete overview of all the matches with clubs you follow
         GROUPS:
           TITLE: Category results
           DESC: Watch the composition of categories or search the results for a team by the category.
@@ -160,10 +160,11 @@ FORM:
         INVALIDHOMESCORE: Number of goals scored by the home team is invalid.
         INVALIDAWAYSCORE: Number of goals scored by the away team is invalid.
         MATCHNOTREADY: It is not possible to report a result for this match. The match is not planed yet.
-        CANTCHANGE: It is not possible to report a result for this match. The match is played and a result has been reported.
-        TOOEARLY: It is not possible to report a result for this match. Please wait until the match is completed.
+        CANTCHANGE: It is not possible to report a result for this match. A result for the match has been reported.
+        TOOEARLY: It is not possible to report a result for this match. Please wait until after match start.
         TITLE: Report result
         PROMPT: Enter the result for a match
+        SUCCESS: The match result has been reported
         TOURNAMENT: Tournament
         MATCHNO: Match no.
         HOME: Home team

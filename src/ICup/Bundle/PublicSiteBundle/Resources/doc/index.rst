@@ -12,3 +12,4 @@ To Do List
 Done List
 ---------
 1. Fejlrettelse - vis playoff og finaler korrekt før hold er fundet
+2. Forbedring af formular for indberetning af resultater

@@ -1,7 +1,9 @@
 <?php
 namespace ICup\Bundle\PublicSiteBundle\Controller\Admin\Tournament;
 
+use ICup\Bundle\PublicSiteBundle\Entity\Doctrine\Date;
 use ICup\Bundle\PublicSiteBundle\Entity\Doctrine\Match;
+use ICup\Bundle\PublicSiteBundle\Entity\Doctrine\MatchRelation;
 use ICup\Bundle\PublicSiteBundle\Services\Doctrine\TournamentSupport;
 use ICup\Bundle\PublicSiteBundle\Services\Util;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
@@ -23,27 +25,30 @@ class ResultReportingController extends Controller
      * @Template("ICupPublicSiteBundle:Host:reportresult.html.twig")
      */
     public function reportAction(Request $request) {
-        /* @var $utilService Util */
-        $utilService = $this->get('util');
         $returnUrl = $this->get('router')->generate('_icup');
 
         $resultForm = new ResultForm();
-        $tournamentKey = $utilService->getTournamentKey();
-        if ($tournamentKey != '_') {
-            $tournament = $this->get('logic')->getTournamentByKey($tournamentKey);;
-            if ($tournament != null) {
-                $resultForm->setTournament($tournament->getId());
-            }
-        }
-        $resultForm->setEvent(ResultForm::$EVENT_MATCH_PLAYED);
         $form = $this->makeResultForm($resultForm);
         $form->handleRequest($request);
         if ($form->get('cancel')->isClicked()) {
             return $this->redirect($returnUrl);
         }
         if ($this->checkForm($form, $resultForm)) {
-            $this->chgMatch($resultForm);
-            return $this->redirect($returnUrl);
+            /* @var $match Match */
+            $match = $this->chgMatch($resultForm);
+            $matchhomedetails = $this->get('match')->getMatchRelationDetails($match->getId(), false);
+            $matchhomedetails['name'] = $this->get('logic')->getTeamName($matchhomedetails['team'], $matchhomedetails['division']);
+            $matchawaydetails = $this->get('match')->getMatchRelationDetails($match->getId(), true);
+            $matchawaydetails['name'] = $this->get('logic')->getTeamName($matchawaydetails['team'], $matchawaydetails['division']);
+            $flashdata = array(
+                'match' => $match,
+                'schedule' => Date::getDateTime($match->getDate(), $match->getTime()),
+                'playground' => $this->get('entity')->getPlaygroundById($match->getPlayground()),
+                'home' => $matchhomedetails,
+                'away' => $matchawaydetails
+            );
+            $request->getSession()->getFlashBag()->add('matchupdated', $flashdata);
+            $form = $this->makeResultForm(new ResultForm());
         }
         return array('form' => $form->createView());
     }
@@ -55,9 +60,7 @@ class ResultReportingController extends Controller
         $awayRel = $this->get('match')->getMatchRelationByMatch($match->getId(), true);
         switch ($resultForm->getEvent()) {
             case ResultForm::$EVENT_MATCH_PLAYED:
-                $homeRel->setScorevalid(true);
                 $homeRel->setScore($resultForm->getScoreA());
-                $awayRel->setScorevalid(true);
                 $awayRel->setScore($resultForm->getScoreB());
                 $this->get('match')->updatePoints($homeRel, $awayRel);
                 break;
@@ -68,25 +71,35 @@ class ResultReportingController extends Controller
                 $this->get('match')->disqualify($homeRel, $awayRel);
                 break;
             case ResultForm::$EVENT_NOT_PLAYED:
-                $homeRel->setScorevalid(true);
                 $homeRel->setPoints(0);
                 $homeRel->setScore(0);
-                $awayRel->setScorevalid(true);
                 $awayRel->setPoints(0);
                 $awayRel->setScore(0);
                 break;
         }
+        $homeRel->setScorevalid(true);
+        $awayRel->setScorevalid(true);
         $em->flush();
+        return $match;
     }
 
     private function makeResultForm(ResultForm $resultForm) {
+        $tournamentKey = $this->get('util')->getTournamentKey();
+        if ($tournamentKey != '_') {
+            $tournament = $this->get('logic')->getTournamentByKey($tournamentKey);;
+            if ($tournament != null) {
+                $resultForm->setTournament($tournament->getId());
+            }
+        }
+        $resultForm->setEvent(ResultForm::$EVENT_MATCH_PLAYED);
+
         $tournaments = $this->get('logic')->listAvailableTournaments();
         $tournamentList = array();
         $today = new DateTime();
-        foreach ($tournaments as $tournament) {
-            $stat = $this->get('tmnt')->getTournamentStatus($tournament->getId(), $today);
+        foreach ($tournaments as $tmnt) {
+            $stat = $this->get('tmnt')->getTournamentStatus($tmnt->getId(), $today);
             if ($stat == TournamentSupport::$TMNT_GOING) {
-                $tournamentList[$tournament->getId()] = $tournament->getName();
+                $tournamentList[$tmnt->getId()] = $tmnt->getName();
             }
         }
 
@@ -96,6 +109,7 @@ class ResultReportingController extends Controller
             ResultForm::$EVENT_AWAY_DISQ => 'AD',
             ResultForm::$EVENT_NOT_PLAYED => 'NP'
         );
+
         foreach ($eventList as $event => $id) {
             $eventList[$event] = 
                 $this->get('translator')
@@ -177,19 +191,15 @@ class ResultReportingController extends Controller
         if ($match == null) {
             $form->addError(new FormError($this->get('translator')->trans('FORM.RESULTREPORT.INVALIDMATCHNO', array(), 'tournament')));
         }
-        else if (!$this->get('match')->isMatchResultValid($match->getId())) {
+        else if (!$this->isMatchValid($match)) {
             $form->addError(new FormError($this->get('translator')->trans('FORM.RESULTREPORT.MATCHNOTREADY', array(), 'tournament')));
         }
-        else if ($this->isScoreValid($match)) {
+        else if ($this->get('match')->isMatchResultValid($match->getId())) {
             $form->addError(new FormError($this->get('translator')->trans('FORM.RESULTREPORT.CANTCHANGE', array(), 'tournament')));
         }
-        else if ($resultForm->getEvent() == ResultForm::$EVENT_MATCH_PLAYED) {
+        else {
             $today = new DateTime();
-            $matchdate = DateTime::createFromFormat(
-                                        $this->container->getParameter('db_date_format').
-                                        '-'.
-                                        $this->container->getParameter('db_time_format'),
-                                        $match->getDate().'-'.$match->getTime());
+            $matchdate = Date::getDateTime($match->getDate(), $match->getTime());
             if ($matchdate > $today) {
                 $form->addError(new FormError($this->get('translator')->trans('FORM.RESULTREPORT.TOOEARLY', array(), 'tournament')));
             }
@@ -197,9 +207,9 @@ class ResultReportingController extends Controller
         return $form->isValid();
     }
     
-    private function isScoreValid($match) {
+    private function isMatchValid($match) {
         $homeRel = $this->get('match')->getMatchRelationByMatch($match->getId(), false);
         $awayRel = $this->get('match')->getMatchRelationByMatch($match->getId(), true);
-        return $homeRel != null && $awayRel != null && $homeRel->getScorevalid() && $awayRel->getScorevalid();
+        return $homeRel != null && $awayRel != null;
     }
 }

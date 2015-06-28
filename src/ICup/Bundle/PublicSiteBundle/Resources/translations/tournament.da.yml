@@ -112,8 +112,8 @@ FORM:
     TEASER:
       TOURNAMENT:
         MYMATCHES:
-          TITLE: Alle kampe du følger
-          DESC: Se den fulde liste af kampe for de klubber du følger.
+          TITLE: Kampe med de hold du følger
+          DESC: Få det fulde overblik af kampene for de klubber du følger.
         GROUPS:
           TITLE: Gruppe resultater
           DESC: Se sammensætningen af puljerne i en gruppe eller følg et hold fra gruppen.
@@ -160,10 +160,11 @@ FORM:
         INVALIDHOMESCORE: Mål scoret af hjemmeholdet er ikke anvendeligt.
         INVALIDAWAYSCORE: Mål scoret af udeholdet er ikke anvendeligt.
         MATCHNOTREADY: Det er ikke muligt at indberette et resultat til denne kamp. Kampen er ikke planlagt.
-        CANTCHANGE: Det er ikke muligt at indberette et resultat til denne kamp. Kampen er spillet og registreret med resultat.
-        TOOEARLY: Det er ikke muligt at indberette et resultat til denne kamp. Vent til kampen er spillet.
+        CANTCHANGE: Det er ikke muligt at indberette et resultat til denne kamp. Der er allerede registreret et kampresultat.
+        TOOEARLY: Det er ikke muligt at indberette et resultat til denne kamp. Vent til efter kampstart.
         TITLE: Indberet resultat
         PROMPT: Indtast resultatet for en kamp
+        SUCCESS: Kampresultatet er registreret
         TOURNAMENT: Turnering
         MATCHNO: Kampnr.
         HOME: Hjemmehold
@@ -179,4 +180,4 @@ FORM:
             HOME: Antal mål scoret af hjemmeholdet
             AWAY: Antal mål scoret af udeholdet
         SUBMIT: Indberet resultat
-        CANCEL: Fortryd
+        CANCEL: Retur

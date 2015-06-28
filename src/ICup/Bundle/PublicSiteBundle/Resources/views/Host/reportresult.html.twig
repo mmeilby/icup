@@ -1,5 +1,7 @@
 {% extends "ICupPublicSiteBundle:Masters:edit.html.twig" %}
 
+{% import 'ICupPublicSiteBundle:Masters:club.html.twig' as formatter %}
+
 {% form_theme form 'ICupPublicSiteBundle:Default:layout.script.html.twig' %}
 {% trans_default_domain "tournament" %}
 
@@ -9,6 +11,52 @@
         {{ 'FORM.RESULTREPORT.TITLE'|trans }}
     </h2>
     <p>{{ 'FORM.RESULTREPORT.PROMPT'|trans }}</p>
+    {% for flashMessage in app.session.flashbag.get('matchupdated') %}
+    <div class="row">
+        <div class="col-md-12">
+            <p>&nbsp;</p>
+            <div class="alert alert-success alert-dismissible" role="alert">
+                <button type="button" class="close" data-dismiss="alert">
+                    <span aria-hidden="true">&times;</span><span class="sr-only">Close</span>
+                </button>
+                <strong>{% trans from "tournament" %}FORM.RESULTREPORT.SUCCESS{% endtrans %}</strong>
+                <table class="table table-responsive">
+                    <tbody>
+                        <tr>
+                            <td colspan="3">
+                                {{ 'FORMAT.LONGDATE'|transchoice(flashMessage.schedule|date('j'), {
+                                    '%week%': ['WEEK.',flashMessage.schedule|date('D')|upper]|join|trans([],'messages')|capitalize,
+                                    '%day%': flashMessage.schedule|date('j'),
+                                    '%month%': ['MONTH.',flashMessage.schedule|date('M')|upper]|join|trans([],'messages'),
+                                    '%year%': flashMessage.schedule|date('Y')}, 'messages') }}
+                            </td>
+                        </tr>
+                        <tr>
+                            <td class="narrow-col">
+                                {{ flashMessage.match.matchno }}
+                            </td>
+                            <td colspan="2">
+                                <a href="{{ path('_showplayground_full', { 'playgroundid': flashMessage.playground.id }) }}">{{ flashMessage.playground.name }}</a>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td class="narrow-col" style="vertical-align: middle">
+                                {{ flashMessage.schedule|date('FORMAT.TIME'|trans([],'messages')) }}
+                            </td>
+                            <td>
+                                {{ formatter.clubspan(flashMessage.home, 0, _context) }}<br />
+                                {{ formatter.clubspan(flashMessage.away, 0, _context) }}
+                            </td>
+                            <td class="narrow-col text-nowrap" style="vertical-align: middle">
+                                <strong>{{ flashMessage.home.score }}-{{ flashMessage.away.score }}</strong>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+    {% endfor %}
     <div class="row">
         <div class="col-sm-6">
             {{ form(form) }}

@@ -111,6 +111,9 @@ FORM:
 
     TEASER:
       TOURNAMENT:
+        MYMATCHES:
+          TITLE: Zestawienia dla wszystkich zespołów, które śledzisz
+          DESC: Pobierz kompletny przegląd wszystkich meczów z klubami, które śledzisz
         GROUPS:
           TITLE: Wyniki
           DESC: Zobacz rodzaje kategorii lub szukaj wyniku po nazwie drużyny i kategorii.  

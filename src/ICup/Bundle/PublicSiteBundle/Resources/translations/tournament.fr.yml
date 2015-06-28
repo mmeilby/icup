@@ -111,6 +111,9 @@ FORM:
 
     TEASER:
       TOURNAMENT:
+        MYMATCHES:
+          TITLE: Matches pour toutes les équipes que vous suivez
+          DESC: Obtenez la liste complète de tous les matches avec les clubs que vous suivez
         GROUPS:
           TITLE: Résultats
           DESC: Composition des catégories et résultats par équipes et par catégories.

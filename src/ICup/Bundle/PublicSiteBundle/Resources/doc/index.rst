@@ -1,6 +1,5 @@
 To Do List
 ----------
-2. Udskriv kampliste per dag som pdf
 3. Send genåbningsmail til postkasse ved låst konto
 4. Genåbn konto som turneringsansvarlig
 5. Vi seneste aktivitet/konto status på brugerlisten
@@ -13,3 +12,4 @@ Done List
 ---------
 1. Fejlrettelse - vis playoff og finaler korrekt før hold er fundet
 2. Forbedring af formular for indberetning af resultater
+3. Udskriv kampliste per dag som pdf - kampliste gjort printvenlig

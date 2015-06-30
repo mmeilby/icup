@@ -13,3 +13,4 @@ Done List
 1. Fejlrettelse - vis playoff og finaler korrekt før hold er fundet
 2. Forbedring af formular for indberetning af resultater
 3. Udskriv kampliste per dag som pdf - kampliste gjort printvenlig
+4. Forberedt nyhedstabel og lokation for baner

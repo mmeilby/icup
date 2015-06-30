@@ -12,6 +12,9 @@
     <p class="lead">
         {{ playground.name }}
     </p>
+{% if playground.location is not empty %}
+    <div id="map-canvas"></div>
+{% endif %}
 {% if matchlist|length > 0 %}
     <div class="hidden-xs">
         {{ tformatter.listmatches(matchlist, _context) }}
@@ -28,4 +31,41 @@
         </div>
     </div>
 {% endif %}
+{% endblock %}
+
+{% block meta %}
+    <style type="text/css">
+        html, body, #map-canvas { height: 200px; margin: 0; padding: 0;}
+    </style>
+    <script type="text/javascript"
+            src="https://maps.googleapis.com/maps/api/js?key=AIzaSyA1sKwFJvFiIc9I_9R34PhjknL3O9W61yA">
+    </script>
+{% endblock %}
+
+{% block javascripts %}
+    <script type="text/javascript">
+        function showPosition()
+        {
+        {% if playground.location is not empty %}
+            var myLatlng = new google.maps.LatLng({{ playground.location }});
+            var mapOptions = {
+                center: myLatlng,
+                zoom: 15,
+                mapTypeId: google.maps.MapTypeId.ROADMAP
+            };
+            var div = document.getElementById('map-canvas');
+            var map = new google.maps.Map(div, mapOptions);
+            var marker = new google.maps.Marker({
+                position: myLatlng,
+                map: map,
+                icon: {
+                    path: google.maps.SymbolPath.CIRCLE,
+                    scale: 10
+                },
+                title: "{{ playground.name }}"
+            });
+        {% endif %}
+        }
+        google.maps.event.addDomListener(window, 'load', showPosition());
+    </script>
 {% endblock %}

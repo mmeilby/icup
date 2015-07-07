@@ -86,6 +86,9 @@ FORM:
           2: Denne turnering afvikles nu og det er muligt at følge resultater fra forsiden.
           3: Denne turnering er afsluttet. Kampe og placeringer vises hvis brugerne søger turneringen.
           4: Turneringen er under oprettelse. Der mangler nødvendige oplysninger om puljer og grupper.
+    NEWS:
+        CAPTION: Administrer nyheder
+        DESCRIPTION: Udgiv nyheder om hold og kampe i turneringen
     PLANNING:
         CAPTION: Planlæg turnering
         DESCRIPTION: Lad systemet planlægge turnerings kampe
@@ -688,6 +691,47 @@ FORM:
     TITLE: Turneringskalender
     CAPTION: Hændelser for denne turnering
     NOEVENT: Tilføj hændelse til kalender
+  NEWS:
+    DEFAULT: Vælg...
+    NONO: Et nyhedsnr. skal vælges.
+    NONEWS: En gyldighedsperiode skal vælges.
+    NOLANGUAGE: Et sprog skal vælges.
+    NODATE: Dato for nyheden skal angives.
+    NOTITLE: En overskrift skal angives.
+    NOCONTEXT: Et indhold skal angives.
+    BADDATE: Dato for nyheden er ikke gyldig.
+    NEWSEXISTS: Dette nyhedsnr. er allerede angivet. Vælg venligst et andet nyhedsnr.
+    CANTCHANGENEWS: Det valgte nyhedsnr. er allerede i brug. Nyheden kan ikke rettes.
+    TITLE:
+      ADD: Tilføj nyhed
+      CHG: Rediger informationer om nyheden
+      DEL: FJERN NYHED
+    PROMPT:
+      ADD: Indtast oplysninger om nyheden.
+      CHG: Ret informationer om nyheden.
+      DEL: Følgende nyhed vil bliver slettet. Det er ikke muligt at fortryde når nyheden er fjernet.
+    NEWS: Nyhed
+    NO: Nyhedesnr.
+    LANGUAGE: Sprog
+    DATE: Dato for nyhed
+    TYPE: Gyldighed
+    TYPES:
+      1: Blivende nyhed
+      2: Tidsbegrænset nyhed
+    SUBJECT: Overskrift
+    CONTEXT: Indhold
+    SUBMIT:
+      ADD: Tilføj nyhed
+      CHG: Gem oplysninger
+      DEL: FJERN NYHED
+    CANCEL:
+      ADD: Fortryd oprettelse
+      CHG: Fortryd ændringer
+      DEL: Fortryd
+  LISTNEWS:
+    TITLE: Turneringsnyheder
+    CAPTION: Nyheder for denne turnering
+    NOEVENT: Skriv nyhed
   INFOEMAIL:
     TITLE: Forespørgsel på mere information
     NAME: Navn

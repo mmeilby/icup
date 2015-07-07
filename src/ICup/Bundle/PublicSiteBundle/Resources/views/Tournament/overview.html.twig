@@ -5,22 +5,22 @@
 {% import 'ICupPublicSiteBundle:Masters:tournament.html.twig' as tformatter %}
 
 {% block widebody %}
-<div id="fb-root"></div>
-<script>
-    (function(d, s, id) {
-        var js, fjs = d.getElementsByTagName(s)[0];
-        if (d.getElementById(id)) return;
-        js = d.createElement(s); js.id = id;
-        js.src = "//connect.facebook.net/da_DK/sdk.js#xfbml=1&version=v2.0";
-        fjs.parentNode.insertBefore(js, fjs);
-    }(document, 'script', 'facebook-jssdk'));
-</script>
-{{ tformatter.title(tournament) }}
+    <div id="fb-root"></div>
+    <script>
+        (function(d, s, id) {
+            var js, fjs = d.getElementsByTagName(s)[0];
+            if (d.getElementById(id)) return;
+            js = d.createElement(s); js.id = id;
+            js.src = "//connect.facebook.net/da_DK/sdk.js#xfbml=1&version=v2.0";
+            fjs.parentNode.insertBefore(js, fjs);
+        }(document, 'script', 'facebook-jssdk'));
+    </script>
+    {{ tformatter.title(tournament) }}
 {% endblock %}
 
 {% block body %}
-<p class="lead" />
-<div class="row">
+    <p class="lead" />
+    <div class="row">
 {# *******************************************
    SMALL MOBILE DEVICES
    ******************************************* #}
@@ -47,6 +47,23 @@
             </div>
         </div>
         <div class="list-group">
+    {% for news in newsgeneral %}
+            <a class="list-group-item list-group-item-warning" href="{{ news.nid }}">
+                <h4 class="list-group-item-heading">
+                    {{ news.title }}
+                </h4>
+                <p class="small">
+                    {{ 'FORMAT.LONGDATE'|transchoice(news.newsdate|date('j'), {
+                        '%week%': ['WEEK.',news.newsdate|date('D')|upper]|join|trans([],'messages')|capitalize,
+                        '%day%': news.newsdate|date('j'),
+                        '%month%': ['MONTH.',news.newsdate|date('M')|upper]|join|trans([],'messages'),
+                        '%year%': ''}, 'messages') }}
+                </p>
+                <p class="list-group-item-text">
+                    {{ news.context }}
+                </p>
+            </a>
+    {% endfor %}
     {% for teaser in teaserlist %}
             <a class="list-group-item" href="{{ teaser.path }}">
                 <h4 class="list-group-item-heading">{{ teaser.titletext|trans }}</h4>
@@ -56,27 +73,6 @@
         </div>
     </div>
 </div>
-{% if newsstream|length > 0 %}
-<div class="row">
-    <div class="col-md-12">
-        <p class="lead">{% trans %}FORM.NEWS.TITLE{% endtrans %}</p>
-        <div class="list-group">
-    {% for news in newsstream %}
-            <a class="list-group-item" href="{{ news.path }}">
-                <h4 class="list-group-item-heading">
-                    {{ 'FORMAT.LONGDATE'|transchoice(news.date|date('j'), {
-                            '%week%': ['WEEK.',news.date|date('D')|upper]|join|trans([],'messages')|capitalize,
-                            '%day%': news.date|date('j'),
-                            '%month%': ['MONTH.',news.date|date('M')|upper]|join|trans([],'messages'),
-                            '%year%': ''}, 'messages') }}
-                </h4>
-                <p class="list-group-item-text">{{ news.text }}</p>
-            </a>
-    {% endfor %}
-        </div>
-    </div>
-</div>
-{% endif %}
 {% endblock %}
 
 {#

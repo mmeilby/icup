@@ -11,13 +11,13 @@ use ICup\Bundle\PublicSiteBundle\Entity\Doctrine\User;
 /**
  * List the events scheduled for a tournament
  */
-class ListEventController extends Controller
+class ListNewsController extends Controller
 {
     /**
      * List the events available for a tournament
-     * @Route("/edit/event/list/{tournamentid}", name="_edit_event_list")
+     * @Route("/edit/news/list/{tournamentid}", name="_edit_news_list")
      * @Method("GET")
-     * @Template("ICupPublicSiteBundle:Host:listevents.html.twig")
+     * @Template("ICupPublicSiteBundle:Host:listnews.html.twig")
      */
     public function listAction($tournamentid) {
         /* @var $utilService Util */
@@ -29,13 +29,13 @@ class ListEventController extends Controller
         $utilService->validateEditorAdminUser($user, $tournament->getPid());
 
         $host = $this->get('entity')->getHostById($tournament->getPid());
-        $events = $this->get('tmnt')->listEventsByTournament($tournamentid);
-        usort($events,
-            function ($event1, $event2) {
-                if ($event1['schedule'] == $event2['schedule']) {
+        $news = $this->get('tmnt')->listNewsByTournament($tournamentid);
+        usort($news,
+            function ($news1, $news2) {
+                if ($news1['schedule'] == $news2['schedule']) {
                     return 0;
                 }
-                elseif ($event1['schedule'] > $event2['schedule']) {
+                elseif ($news1['schedule'] > $news2['schedule']) {
                     return 1;
                 }
                 else {
@@ -45,7 +45,7 @@ class ListEventController extends Controller
         );
         return array('host' => $host,
                      'tournament' => $tournament,
-                     'eventlist' => $events
+                     'newslist' => $news
                 );
     }
 }

@@ -1,0 +1,89 @@
+{% extends "ICupPublicSiteBundle:Masters:edit.html.twig" %}
+{% trans_default_domain "admin" %}
+
+{% block adminbody %}
+    <h2 style="margin-bottom: 0">
+        <i class="fa fa-cogs"></i>&nbsp;
+        {% trans %}FORM.LISTNEWS.TITLE{% endtrans %}
+    </h2>
+    <p>{% trans %}FORM.LISTNEWS.CAPTION{% endtrans %}</p>
+<div class="panel panel-default">
+    <div class="panel-body lead">
+        <a href="{{ path('_edit_tournamentboard', { 'tournamentid': tournament.id }) }}">
+            {{ host.name|upper }}
+        </a><br />
+        {{ tournament.name }}
+    </div>
+    <table class="table table-striped">
+        <thead>
+            <tr>
+                <td class="narrow-col">{% trans %}FORM.NEWS.NO{% endtrans %}</td>
+                <td>{% trans %}FORM.NEWS.SUBJECT{% endtrans %}</td>
+                <td>{% trans %}FORM.NEWS.LANGUAGE{% endtrans %}</td>
+                <td>{% trans %}FORM.NEWS.DATE{% endtrans %}</td>
+                <td>{% trans %}FORM.NEWS.TYPE{% endtrans %}</td>
+                <td class="narrow-col"></td>
+                <td class="narrow-col"></td>
+                <td class="narrow-col"></td>
+            </tr>
+        </thead>
+        <tbody>
+{% if newslist|length > 0 %}
+    {% for news in newslist %}
+            <tr>
+                <td class="narrow-col">
+                    {{ news.newsno }}
+                </td>
+                <td>
+                    <a href="{{ path('_edit_news_chg', { 'newsid': news.nid }) }}">
+                        {{ news.title }}
+                    </a>
+                </td>
+                <td>{{ ['LANG',news.language]|join('.')|upper|trans([],'common') }}</td>
+                <td>
+                    {{ 'FORMAT.LONGDATE'|transchoice(news.schedule|date('j'), {
+                        '%week%': ['WEEK.',news.schedule|date('D')|upper]|join|trans([],'messages')|capitalize,
+                        '%day%': news.schedule|date('j'),
+                        '%month%': ['MONTH.',news.schedule|date('M')|upper]|join|trans([],'messages'),
+                        '%year%': news.schedule|date('Y')}, 'messages') }}
+                </td>
+                <td>
+                    {{ ['FORM.NEWS.TYPES.',news.newstype]|join|trans }}
+                </td>
+                <td class="narrow-col">
+                    <a href="{{ path('_edit_news_add', { 'tournamentid': tournament.id }) }}">
+                        <span class="glyphicon glyphicon-file"></span>
+                    </a>    
+                </td>
+                <td class="narrow-col">
+                    <a href="{{ path('_edit_news_chg', { 'newsid': news.nid }) }}">
+                        <span class="glyphicon glyphicon-edit"></span>
+                    </a>    
+                </td>
+                <td class="narrow-col">
+                    <a href="{{ path('_edit_news_del', { 'newsid': news.nid }) }}">
+                        <span class="glyphicon glyphicon-remove"></span>
+                    </a>    
+                </td>
+            </tr>
+    {% endfor %}
+{% else %}
+            <tr>
+                <td class="lead" colspan="2">
+                    <a href="{{ path('_edit_news_add', { 'tournamentid': tournament.id }) }}">
+                    {{'FORM.LISTNEWS.NONEWS'|trans|upper}}
+                    </a>    
+                </td>
+                <td class="narrow-col">
+                    <a href="{{ path('_edit_news_add', { 'tournamentid': tournament.id }) }}">
+                        <span class="glyphicon glyphicon-file"></span>
+                    </a>    
+                </td>
+                <td></td>
+                <td></td>
+            </tr>
+{% endif %}
+        </tbody>
+    </table>
+</div>
+{% endblock %}

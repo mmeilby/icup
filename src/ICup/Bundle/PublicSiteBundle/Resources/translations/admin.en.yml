@@ -86,6 +86,9 @@ FORM:
           2: This tournament is live and match results are displayed at the frontpage
           3: This tournament is completed. Group results and winners are availble along with statistics
           4: Tournament is under construction. Required plans are not yet ready.
+    NEWS:
+        CAPTION: Handle news
+        DESCRIPTION: Post news from the tournament
     PLANNING:
         CAPTION: Plan tournament schedule
         DESCRIPTION: Plan matches for each category
@@ -688,6 +691,47 @@ FORM:
     TITLE: Event calendar
     CAPTION: Events for this tournament
     NOEVENT: Add event to calendar
+  NEWS:
+    DEFAULT: Please select...
+    NONO: A news no. is mandatory.
+    NONEWS: A period of validity is mandatory.
+    NOLANGUAGE: Choice of language is mandatory.
+    NODATE: The date of publishing is mandatory.
+    NOTITLE: The news headline is mandatory.
+    NOCONTEXT: The news context is mandatory.
+    BADDATE: The publishing date is not a valid date.
+    NEWSEXISTS: This news no. is in use for the chosen language. Please correct the no. or language.
+    CANTCHANGENEWS: This news no. is in use for the chosen language. You can not change this news record.
+    TITLE:
+      ADD: Add new news record
+      CHG: Modify news record
+      DEL: REMOVE NEWS RECORD
+    PROMPT:
+      ADD: Please enter information about the new news record.
+      CHG: Change information for this news record.
+      DEL: The following news record will be removed. You can not undo this action.
+    NEWS: News
+    NO: News no.
+    LANGUAGE: Language
+    DATE: Publishing date
+    TYPE: Validity
+    TYPES:
+      1: For ever
+      2: Limited time
+    SUBJECT: Headline
+    CONTEXT: Context
+    SUBMIT:
+      ADD: Add new news record
+      CHG: Modify news record
+      DEL: REMOVE NEWS RECORD
+    CANCEL:
+      ADD: Cancel
+      CHG: Cancel changes
+      DEL: Cancel
+  LISTNEWS:
+    TITLE: Tournament news
+    CAPTION: News and communique for this tournament
+    NOEVENT: Add news record
   INFOEMAIL:
     TITLE: Request for more information
     NAME: Name

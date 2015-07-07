@@ -118,6 +118,68 @@
 </table>
 {% endmacro %}
 {# *******************************************
+   DISPLAY MATCHLIST
+   OTHER DEVICES
+   ******************************************* #}
+{% macro listmatches(matchlist, context) %}
+    {% set playground_defined = 0 %}
+    {% for matchset in matchlist %}
+        {% for match in matchset %}
+            {% if match.playground.id != "" %}
+                {% set playground_defined = 1 %}
+            {% endif %}
+        {% endfor %}
+    {% endfor %}
+
+    <table class="table table-striped">
+        <thead>
+        <tr>
+            <td class="narrow-col">{% trans from "tournament" %}LEGEND.NO{% endtrans %}</td>
+            <td class="narrow-col">{% trans from "tournament" %}LEGEND.TIME{% endtrans %}<br />
+                {% if playground_defined %}
+                    {% trans from "tournament" %}LEGEND.PLAYGROUND{% endtrans %}
+                {% endif %}
+            </td>
+            <td class="narrow-col">{% trans from "tournament" %}LEGEND.CATEGORY{% endtrans %}<br />
+                {% trans from "tournament" %}LEGEND.GROUP{% endtrans %}</td>
+            <td class="flag"></td>
+            <td>{% trans from "tournament" %}LEGEND.HOMETEAM{% endtrans %}</td>
+            <td class="flag"></td>
+            <td>{% trans from "tournament" %}LEGEND.AWAYTEAM{% endtrans %}</td>
+            <td class="narrow-col">{% trans from "tournament" %}LEGEND.RESULT{% endtrans %}</td>
+        </tr>
+        </thead>
+        <tbody>
+        {% for matchset in matchlist %}
+            <tr><td class="bg-warning" colspan="8">
+                    {{ 'FORMAT.LONGDATE'|transchoice(matchset[0].schedule|date('j'), {
+                        '%week%': ['WEEK.',matchset[0].schedule|date('D')|upper]|join|trans([],'messages')|capitalize,
+                        '%day%': matchset[0].schedule|date('j'),
+                        '%month%': ['MONTH.',matchset[0].schedule|date('M')|upper]|join|trans([],'messages'),
+                        '%year%': matchset[0].schedule|date('Y')}, 'messages') }}
+                </td></tr>
+            {% for match in matchset %}
+                <tr>
+                    <td class="narrow-col">{{ match.matchno }}</td>
+                    <td class="narrow-col">{{ match.schedule|date('FORMAT.TIME'|trans([],'messages')) }}<br />
+                        {% if playground_defined %}
+                            <a href="{{ path('_showplayground_full', { 'playgroundid': match.playground.id }) }}" title="{{ match.playground.name }}">{{ match.playground.no }}</a>
+                        {% endif %}
+                    </td>
+                    <td class="narrow-col"><a href="{{ path('_showcategory', { 'categoryid': match.category.id }) }}">{{ match.category.name }}</a><br />
+                        {{ match.group.name }}</td>
+                    {{ context.formatter.club(match.home, match.group.id, context) }}
+                    {{ context.formatter.club(match.away, match.group.id, context) }}
+                    <td class="narrow-col text-nowrap">
+                        {{ match.home.score }}-{{ match.away.score }}
+                    </td>
+                </tr>
+            {% endfor %}
+        {% endfor %}
+        </tbody>
+    </table>
+{% endmacro %}
+{# *******************************************
    PRINT MATCHLIST
    SMALL MOBILE DEVICES
    ******************************************* #}
@@ -177,73 +239,18 @@
                 {{ context.formatter.clubspan(match.home, match.group.id, context) }}<br />
                 {{ context.formatter.clubspan(match.away, match.group.id, context) }}
             </td>
-            <td class="narrow-col text-nowrap" style="vertical-align: middle">{{ match.home.score }}-{{ match.away.score }}</td>
+            <td class="narrow-col text-nowrap" style="vertical-align: middle">
+                {{ match.home.score }}-{{ match.away.score }}
+            {% if match.news is defined and match.news|length > 0 %}
+                <br /><span class="orange" title="{{ match.news[0].name }}: {{ match.news[0].context }}"><i class="fa fa-warning"></i></span>
+            {% endif %}
+            </td>
         </tr>
     {% endfor %}
     {% if matchlist|length > 0 %}
     </tbody>
     </table>
 {% endif %}
-{% endmacro %}
-{# *******************************************
-   DISPLAY MATCHLIST
-   OTHER DEVICES
-   ******************************************* #}
-{% macro listmatches(matchlist, context) %}
-    {% set playground_defined = 0 %}
-    {% for matchset in matchlist %}
-        {% for match in matchset %}
-            {% if match.playground.id != "" %}
-                {% set playground_defined = 1 %}
-            {% endif %}
-        {% endfor %}
-    {% endfor %}
-    
-<table class="table table-striped">
-    <thead>
-        <tr>
-            <td class="narrow-col">{% trans from "tournament" %}LEGEND.NO{% endtrans %}</td>
-            <td class="narrow-col">{% trans from "tournament" %}LEGEND.TIME{% endtrans %}<br />
-            {% if playground_defined %}                
-                                   {% trans from "tournament" %}LEGEND.PLAYGROUND{% endtrans %}
-            {% endif %}
-            </td>
-            <td class="narrow-col">{% trans from "tournament" %}LEGEND.CATEGORY{% endtrans %}<br />
-                                   {% trans from "tournament" %}LEGEND.GROUP{% endtrans %}</td>
-            <td class="flag"></td>
-            <td>{% trans from "tournament" %}LEGEND.HOMETEAM{% endtrans %}</td>
-            <td class="flag"></td>
-            <td>{% trans from "tournament" %}LEGEND.AWAYTEAM{% endtrans %}</td>
-            <td class="narrow-col">{% trans from "tournament" %}LEGEND.RESULT{% endtrans %}</td>
-        </tr>
-    </thead>
-    <tbody>
-    {% for matchset in matchlist %}
-        <tr><td class="bg-warning" colspan="8">
-                {{ 'FORMAT.LONGDATE'|transchoice(matchset[0].schedule|date('j'), {
-                        '%week%': ['WEEK.',matchset[0].schedule|date('D')|upper]|join|trans([],'messages')|capitalize,
-                        '%day%': matchset[0].schedule|date('j'),
-                        '%month%': ['MONTH.',matchset[0].schedule|date('M')|upper]|join|trans([],'messages'),
-                        '%year%': matchset[0].schedule|date('Y')}, 'messages') }}
-        </td></tr>
-        {% for match in matchset %}
-        <tr>
-            <td class="narrow-col">{{ match.matchno }}</td>
-            <td class="narrow-col">{{ match.schedule|date('FORMAT.TIME'|trans([],'messages')) }}<br />
-            {% if playground_defined %}                
-                <a href="{{ path('_showplayground_full', { 'playgroundid': match.playground.id }) }}" title="{{ match.playground.name }}">{{ match.playground.no }}</a>
-            {% endif %}    
-            </td>
-            <td class="narrow-col"><a href="{{ path('_showcategory', { 'categoryid': match.category.id }) }}">{{ match.category.name }}</a><br />
-                {{ match.group.name }}</td>
-            {{ context.formatter.club(match.home, match.group.id, context) }}
-            {{ context.formatter.club(match.away, match.group.id, context) }}
-            <td class="narrow-col text-nowrap">{{ match.home.score }}-{{ match.away.score }}</td>
-        </tr>
-        {% endfor %}
-    {% endfor %}
-    </tbody>
-</table>
 {% endmacro %}
 {# *******************************************
    PRINT MATCHLIST
@@ -319,7 +326,12 @@
                     </div>
                 </div>
             </td>
-            <td class="narrow-col text-nowrap">{{ match.home.score }}-{{ match.away.score }}</td>
+            <td class="narrow-col text-nowrap">
+                {{ match.home.score }}-{{ match.away.score }}
+            {% if match.news is defined and match.news|length > 0 %}
+                <br /><span class="orange" title="{{ match.news[0].name }}: {{ match.news[0].context }}"><i class="fa fa-warning"></i></span>
+            {% endif %}
+            </td>
         </tr>
     {% endfor %}
     {% if matchlist|length > 0 %}

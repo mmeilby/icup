@@ -170,6 +170,41 @@ class TournamentSupport
         return $qb->getResult();
     }
 
+    public function listNewsByTournament($tournamentid) {
+        $qb = $this->em->createQuery(
+            "select n.id as nid,n.date,n.newstype,n.newsno,n.language,n.title,n.context,".
+                   "t.id,t.name,t.division,c.name as club,c.country,".
+                   "m.id as mid,m.matchno,m.date as matchdate,m.time as matchtime ".
+            "from ".$this->entity->getRepositoryPath('News')." n ".
+            "left outer join ".$this->entity->getRepositoryPath('Match')." m ".
+            "with n.mid=m.id ".
+            "left outer join ".$this->entity->getRepositoryPath('Team')." t ".
+            "with n.cid=t.id ".
+            "left outer join ".$this->entity->getRepositoryPath('Club')." c ".
+            "with t.pid=c.id ".
+            "where n.pid=:tournament ".
+            "order by n.newsno asc");
+        $qb->setParameter('tournament', $tournamentid);
+        $newsList = array();
+        foreach ($qb->getResult() as $news) {
+            $newsdate = Date::getDateTime($news['date']);
+            $news['schedule'] = $newsdate;
+            $newsList[] = $news;
+        }
+        return $newsList;
+    }
+
+    public function getNewsByNo($tournamentid, $newsno) {
+        $qb = $this->em->createQuery(
+            "select n " .
+            "from " . $this->entity->getRepositoryPath('News') . " n " .
+            "where n.pid=:tournament and " .
+            "n.newsno=:newsno");
+        $qb->setParameter('tournament', $tournamentid);
+        $qb->setParameter('newsno', $newsno);
+        return $qb->getResult();
+    }
+
     public function listTeamsByClub($tournamentid, $clubid) {
         $qb = $this->em->createQuery(
                 "select t.id,t.name,t.division,c.id as catid,c.name as category,c.classification,c.age,c.gender,g.id as groupid,g.name as grp ".
@@ -589,6 +624,12 @@ class TournamentSupport
                 "where e.pid=:tournament");
         $qbe->setParameter('tournament', $tournamentid);
         $qbe->getResult();
+        // wipe news
+        $qbn = $this->em->createQuery(
+            "delete from ".$this->entity->getRepositoryPath('News')." n ".
+            "where n.pid=:tournament");
+        $qbn->setParameter('tournament', $tournamentid);
+        $qbn->getResult();
         // wipe tournament
         $qbt = $this->em->createQuery(
                 "delete from ".$this->entity->getRepositoryPath('Tournament')." t ".
@@ -596,6 +637,4 @@ class TournamentSupport
         $qbt->setParameter('tournament', $tournamentid);
         $qbt->getResult();
     }
-    
-    
 }

@@ -12,6 +12,7 @@ use ICup\Bundle\PublicSiteBundle\Entity\Doctrine\Match;
 use ICup\Bundle\PublicSiteBundle\Entity\Doctrine\MatchAlternative;
 use ICup\Bundle\PublicSiteBundle\Entity\Doctrine\MatchRelation;
 use ICup\Bundle\PublicSiteBundle\Entity\Doctrine\MatchSchedule;
+use ICup\Bundle\PublicSiteBundle\Entity\Doctrine\News;
 use ICup\Bundle\PublicSiteBundle\Entity\Doctrine\Playground;
 use ICup\Bundle\PublicSiteBundle\Entity\Doctrine\PlaygroundAttribute;
 use ICup\Bundle\PublicSiteBundle\Entity\Doctrine\PARelation;
@@ -209,7 +210,15 @@ class Entity
     public function getEventRepo() {
         return $this->getRepository('Event');
     }
-    
+
+    /**
+     * Get the News entity repository
+     * @return \Doctrine\ORM\EntityRepository
+     */
+    public function getNewsRepo() {
+        return $this->getRepository('News');
+    }
+
     /**
      * Test if user is referring to the local admin - default user object
      * @param $user User object
@@ -505,5 +514,20 @@ class Entity
             throw new ValidationException("BADEVENT", "Unknown eventid=".$eventid);
         }
         return $event;
+    }
+
+    /**
+     * Get the news from the news id
+     * @param $newsid
+     * @return News
+     * @throws ValidationException
+     */
+    public function getNewsById($newsid) {
+        /* @var $news News */
+        $news = $this->getNewsRepo()->find($newsid);
+        if ($news == null) {
+            throw new ValidationException("BADNEWS", "Unknown newsid=".$newsid);
+        }
+        return $news;
     }
 }

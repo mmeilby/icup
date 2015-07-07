@@ -1,6 +1,7 @@
 <?php
 namespace ICup\Bundle\PublicSiteBundle\Controller\Tournament;
 
+use ICup\Bundle\PublicSiteBundle\Entity\Doctrine\Date;
 use ICup\Bundle\PublicSiteBundle\Services\Util;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
@@ -15,7 +16,7 @@ class OverviewController extends Controller
      * @Route("/tmnt/vw/{tournament}", name="_tournament_overview")
      * @Template("ICupPublicSiteBundle:Tournament:overview.html.twig")
      */
-    public function overviewAction($tournament)
+    public function overviewAction($tournament, Request $request)
     {
         /* @var $utilService Util */
         $utilService = $this->get('util');
@@ -35,14 +36,45 @@ class OverviewController extends Controller
             $pattrList[$pattr->getPid()][] = $pattr;
         }
 
+        $newsStream = $this->get('tmnt')->listNewsByTournament($tournament->getId());
+        $newsRef = array();
+        $newsRefTeam = array();
+        $newsGeneral = array();
+        $today = new DateTime();
+        foreach ($newsStream as $news) {
+            $news['newsdate'] = Date::getDateTime($news['date']);
+            if ($news['id'] > 0) {
+                $newsRefTeam[$news['id']][$news['newsno']][$news['language']] = $news;
+                continue;
+            }
+            if ($news['mid'] > 0) {
+                $newsRef[$news['mid']][$news['newsno']][$news['language']] = $news;
+                continue;
+            }
+            /* @var $diff \DateInterval */
+            $diff = $today->diff($news['newsdate']);
+            if ($diff->days < 2) {
+                $newsGeneral[$news['newsno']][$news['language']] = $news;
+            }
+        }
+
         $matches = $this->get('match')->listMatchesByDate($tournament->getId(), $matchDate);
         $matchList = array();
         foreach ($matches as $match) {
+            $matchNews = array();
+            if (array_key_exists($match['id'], $newsRef)) {
+                $matchNews = array_merge($matchNews, $this->getNews($newsRef[$match['id']], $request));
+            }
+            if (array_key_exists($match['home']['id'], $newsRefTeam)) {
+                $matchNews = array_merge($matchNews, $this->getNews($newsRefTeam[$match['home']['id']], $request));
+            }
+            if (array_key_exists($match['away']['id'], $newsRefTeam)) {
+                $matchNews = array_merge($matchNews, $this->getNews($newsRefTeam[$match['away']['id']], $request));
+            }
+            $match['news'] = $matchNews;
             $slotid = 0;
             foreach ($pattrList[$match['playground']['id']] as $pattr) {
-                /* @var $diffstart DateInterval */
                 $diffstart = $pattr->getStartSchedule()->getTimestamp() - $match['schedule']->getTimestamp();
-                /* @var $diffend DateInterval */
                 $diffend = $pattr->getEndSchedule()->getTimestamp() - $match['schedule']->getTimestamp();
                 if ($diffend >= 0 && $diffstart <= 0) {
                     $slotid = $pattr->getTimeslot();
@@ -70,20 +102,6 @@ class OverviewController extends Controller
             }
         });
 
-        $newsStream = array(
-/*            
-            array(
-                'date' => time(),
-                'text' => 'TEKNOELETTRONICA TERAMO disqualified due to use of players without license.',
-                'path' => $this->generateUrl('_tournament_overview', array('tournament' => $tournament->getKey()))
-            ),
-            array(
-                'date' => time(),
-                'text' => 'Dimitri Populos, SPE STROVOLOU, male U18 received red card for improper act to game officials.',
-                'path' => $this->generateUrl('_tournament_overview', array('tournament' => $tournament->getKey()))
-            )
-*/
-        );
         $teaserList = array(
             array(
                 'titletext' => 'FORM.TEASER.TOURNAMENT.GROUPS.TITLE',
@@ -118,11 +136,29 @@ class OverviewController extends Controller
             'tournament' => $tournament,
             'matchdate' => $matchDate,
             'newsstream' => $newsStream,
+            'newsgeneral' => $this->getNews($newsGeneral, $request),
             'matchlist' => $matchList,
             'teaserlist' => $teaserList
         );
     }
 
+    private function getNews($newsList, Request $request) {
+        $locale = $request->getLocale();
+        $defaultLocale = $request->getDefaultLocale();
+        $newsForLocale = array();
+        foreach ($newsList as $news) {
+            if (array_key_exists($locale, $news)) {
+                $newsForLocale[] = $news[$locale];
+            }
+            elseif (array_key_exists($defaultLocale, $news)) {
+                $newsForLocale[] = $news[$defaultLocale];
+            }
+            else {
+                $newsForLocale[] = $news[0];
+            }
+        }
+        return $newsForLocale;
+    }
     /**
      * Map any database object with its id
      * @param array $records List of objects to map

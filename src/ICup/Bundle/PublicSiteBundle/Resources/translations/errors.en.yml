@@ -69,6 +69,12 @@ ERROR:
   INVALIDUSER:
     TITLE: The user is not valid
     SOLUTION: The specified user does not exist.
+  INVALIDEVENT:
+    TITLE: The event is not valid
+    SOLUTION: The specified event does not exist.
+  INVALIDNEWS:
+    TITLE: The news is not valid
+    SOLUTION: The specified news does not exist.
   NOTEAMS:
     TITLE: No teams are enrolled this category
     SOLUTION: It is not possible to cancel enrollment - this club has no enrolled teams in the category

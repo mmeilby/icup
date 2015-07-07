@@ -69,6 +69,12 @@ ERROR:
   INVALIDUSER:
     TITLE: Der er problemer med den valgte bruger
     SOLUTION: Den valgte bruger findes ikke. Benyt det følgende link for at kunne vælge en bruger der findes.
+  INVALIDEVENT:
+    TITLE: Der er problemer med den hændelse
+    SOLUTION: Den valgte hændelse findes ikke. Benyt det følgende link for at kunne vælge en hændelse der findes.
+  INVALIDNEWS:
+    TITLE: Der er problemer med den valgte nyhed
+    SOLUTION: Den valgte nyhed findes ikke. Benyt det følgende link for at kunne vælge en nyhed der findes.
   NOTEAMS:
     TITLE: Der er ingen hold tilmeldt gruppen
     SOLUTION: Det er ikke muligt at afmelde et hold fra denne gruppe - klubben har slet ikke tilmedt sig gruppen.

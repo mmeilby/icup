@@ -179,7 +179,7 @@ class NewsController extends Controller
         }
         $languages = array();
         foreach ($this->get('util')->getSupportedLocales() as $locale) {
-            $language = $this->get('translator')->trans("LANG.".strtoupper($locale), array(), 'common');
+            $language = $this->get('translator')->trans("LANG_LOCAL.".strtoupper($locale), array(), 'common');
             $languages[$locale] = $language;
         }
         asort($languages);

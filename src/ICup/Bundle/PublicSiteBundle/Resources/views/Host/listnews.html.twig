@@ -39,7 +39,7 @@
                         {{ news.title }}
                     </a>
                 </td>
-                <td>{{ ['LANG',news.language]|join('.')|upper|trans([],'common') }}</td>
+                <td>{{ ['LANG_LOCAL',news.language]|join('.')|upper|trans([],'common') }}</td>
                 <td>
                     {{ 'FORMAT.LONGDATE'|transchoice(news.schedule|date('j'), {
                         '%week%': ['WEEK.',news.schedule|date('D')|upper]|join|trans([],'messages')|capitalize,

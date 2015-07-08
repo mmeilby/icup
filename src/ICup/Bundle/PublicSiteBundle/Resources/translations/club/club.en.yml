@@ -1,72 +1,30 @@
 FORM:
-  TITLE: iCup tilmelding
-  FRONTPAGE:
-    TITLE: Spil håndbold i Teramo - Italien
-    MSGSENT: Din forespørgsel er blevet sendt. Du kan forvente at få svar på den adresse eller nummer du har angivet.
-    MSGINVALID: Din forespørgsel er ikke blevet sendt. Beskeden må ikke indeholde links.
-    BLOCK1:
-        TITLE: Følg din klub
-        DESCRIPTION: >
-                     Er du forældre eller spiller kan du følge holdene fra din klub.
-                     Du skal blot vælge holdene her.
-                     Så ser du automatisk resultater og stillinger for klubbens hold.
-        LEARNMORE: Følg holdene
-        TABLETITLE: Hold du følger
-    BLOCK2:
-        TITLE: Holdtilmelding
-        DESCRIPTION: >
-                     Tilmelding af hold er mulig nu.
-                     Se hvilke betingelser der gælder og hvad prisen for at deltage er.
-        LEARNMORE: Tilmeld hold
-    BLOCK3:
-        TITLE: Aktuelle kampe
-        DESCRIPTION: >
-                     Hvilke kampe spilles lige nu. Se eller følg dagens resultater her.
-        LEARNMORE: Vis flere kampe
-    BLOCK4:
-        TITLE: Finalisterne
-        DESCRIPTION: >
-                     Hvem blev turneringens vindere? Se hvilke lande der fik pokaler med hjem.
-                     Under statistik finder du de største bedrifter i turneringen.
-        LEARNMORE: Læs mere om vinderne
-    BLOCK5:
-        TITLE: Information
-        DESCRIPTION: >
-                     Læs om det der er værd at vide om stævnet. Hvad koster det? Hvormange
-                     kampe spiller man? Hvad kan du pakke? Hvor bor og spiser man i Teramo?
-    SENDMAIL: Få mere information - udfyld og send
-    NAME: Dit navn
-    CLUB: Angiv hvilken klub du henvender dig på vegne af
-    PHONE: Et telefon nummer du kan kontaktes på
-    EMAIL: En e-mail adresse du vil modtage svar på
-    MSG: Skriv en besked, et spørgsmål eller en god ide her...
-    SUBMIT: Send besked
+  TITLE: iCup registration
   SELECTCLUB:
-    TITLE: Følg din klub
+    TITLE: Follow your club
     PROMPT: >
-            Du kan indstille resultater og kamplister til at vise den klub du ønsker at følge.
-            Hvis du gerne vil følge flere klubber kan du tilføje så mange du vil.
-            Find din klub ved at skrive klubbens navn. 
-            Hvis ikke den findes kan du forsøge med en del af klubbens navn.
-    CAPTION: Klubber du følger
-    LEGEND: Klubber
-    NOCLUBS: Ingen klubber passer til det indtastede. Prøv med en del af klubnavnet.
-    MORECLUBS: Mange klubber passer til det søgte (et udvalg er vist her) - fortsæt indtastning eller vælg en af klubberne.
-    INFO: Hvis du vil følge denne klub, skal du klikke her...
-    DEFAULT: Vælg...
-    NAME: Klubnavn
-    COUNTRY: Hjemland
+            You can arrange results and match lists to display only the information that include the clubs you want to follow.
+            You can follow as many clubs as you like. Just find the club by typing the name.
+            If you can not find a club then try typing a part of the name or spell the name differently.
+    CAPTION: Clubs you are following
+    LEGEND: Clubs
+    NOCLUBS: No club matches the name you typed. Try typing a different part of the name.
+    MORECLUBS: More clubs match the name you typed. A short list is shown here - try typing more letters or select one of the clubs shown.
+    INFO: If you like to follow this club - click here...
+    DEFAULT: Select...
+    NAME: Club name
+    COUNTRY: Residence
     HELP:
-      NAME: Skriv et par bogstaver af klubbens navn eller udfyld hele navnet
-    SUBMIT: Gem listen
-    CANCEL: Fortryd
+      NAME: Type a part of the name of the club. You can start with the first two letters.
+    SUBMIT: Save the list
+    CANCEL: Cancel
   ENROLLMENT:
-    DOCUMENTS: Dokumenter
-    DOWNLOAD: Hent
-    CLUB: Klubbens navn
-    ADDRESS: Klubbens adresse
-    CITY: Postnummer og by
-    COUNTRY: Land
+    DOCUMENTS: Documents
+    DOWNLOAD: Download
+    CLUB: Club name
+    ADDRESS: Club address
+    CITY: City
+    COUNTRY: Country
     PHONE: Telefon til klubbens administration eller bestyrelse
     FAX: Fax der kan benyttes i forbindelse med tilmeldingen
     SKYPE: Skype adresse hvis klubben benytter det
@@ -120,24 +78,24 @@ FORM:
     b_departure_date:
     b_departure_time:
   CLUB: 
-    WELLCOME: Velkommen til iCup
+    WELLCOME: Wellcome to iCup
     TITLE:
-      ADD: Tilmeld klub
-      CHG: Tilpas klubinformationer
-      DEL: FJERN KLUB FRA ICUP
+      ADD: Register club
+      CHG: Change informations
+      DEL: REMOVE CLUB FROM iCup
     PROMPT:
-      ADD: Klubben bliver registreret i iCup kluboversigt og får mulighed for at tilmelde hold til de åbne turneringer.
-      CHG: Ret klubinformationer. Ændring af login oplysninger skal foretages ved at følge linket.
-      DEL: Klubben fjernes fra kluboversigten og alle hold og kampe knyttet til klubbens aktiviteter slettes. Det er ikke muligt at fortryde når klubben er fjernet.
+      ADD: The club is registered in the iCup list of clubs and is allowed to enroll teams for the open tournaments.
+      CHG: Change club information. Change of log in information should be conducted using the link.
+      DEL: The club is removed from the list of clubs and all teams related are removed as well. You can not undo this action.
   NEWUSER:
-    TITLE: Opret personlig profil
+    TITLE: You have decided to register a new profile. Enter the following information.
     PROMPT: >
             Inden du begynder at følge en klub eller tilmelde hold, skal vi bruge nogle få oplysninger fra dig.
             Dit navn og e-mail adresse er nok til at danne en profil til dig.
             Start nu med at oprette din personlige profil.
     LOGIN: Jeg har en personlig profil - log på
     SECTION1:
-      HEADER: Første gang?
+      HEADER: First time?
       TEXT: >
             <p>Har du allerede en personlig profil kan du logge på direkte.</p>
             <p>Men har du bemærket at du øverst til højre i menuen finder menupunktet "Bruger Login"?
@@ -171,10 +129,10 @@ FORM:
             Nu er du næsten klar til at følge en klub eller tilmelde hold. 
             Find din klub ved at skrive klubbens navn. 
             Hvis ikke den findes kan du oprette den og blive administrator for klubben.
-    CAPTION: Resultat af søgning
-    LEGEND: Klubber
-    NOCLUBS: Ingen klubber passer til det indtastede. Opret klubben når du har tastet navnet fuldt ud.
-    MORECLUBS: Mange klubber passer til det søgte (et udvalg er vist her) - fortsæt indtastning eller vælg en af klubberne.
+    CAPTION: Search result
+    LEGEND: Clubs
+    NOCLUBS: No clubs match the pattern
+    MORECLUBS: There are clubs not shown here that match the pattern. Select one from the list or continue narrow the search.
     INFO: Hvis du vil knyttes til denne klub, skal du klikke her...
     ADVISE:
        TITLE: Ny klub?
@@ -213,50 +171,49 @@ FORM:
       TEXT: Som holdleder eller klubansvarlig kan du oprette en gratis profil og tilmelde dine hold.
       LINK: Klik her for at oprette en gratis profil
   LOGIN:
-    TITLE: Log på
-    PROMPT: Log på med dit brugernavn hvis du har en profil.
-    USERNAME: Brugernavn
-    PASSWORD: Kodeord
+    TITLE: Log in
+    PROMPT: Log in using your username if you got a user profile
+    USERNAME: Username
+    PASSWORD: Password
     HELP:
-      USERNAME: Angiv dit brugernavn
-      PASSWORD: Tast dit kodeord (det vises med prikker)
-    LOGIN: Log på
-    LOSTPWD: Jeg mangler mit kodeord
+      USERNAME: Enter your username - might be your e-mail address
+      PASSWORD: Enter your password (shown with dots)
+    LOGIN: Log in
+    LOSTPWD: Lost password
     SECTION1:
-      HEADER: Mangler dit kodeord?
+      HEADER: Have you lost your password?
       TEXT: >
-            <p>Har du glemt dit kodeord kan du få tilsendt en e-mail med din kode.</p>
-            <p><em>Er det første gang du logger på skal du blot benytte din e-mail adresse som kode.</em></p>
-
+            <p>If you lost your password you can get an e-mail with a new password.</p>
+            <p><em>If this is your first time logging in use your e-mail address as your password.</em></p>
   MYPAGE:
-    TITLE: Mit iCup
+    TITLE: My iCup
     USERS:
-      TITLE: Klubbrugere
-      LINK: Vedligehold klubbrugere
-      DESCRIPTION: Administrer klubbens brugere og luk nye tilkomne ind
+      TITLE: My iCup users
+      LINK: Maintain club users
+      DESCRIPTION: Maintain users attached to the club and connect new users
     CHGPASS:
-      LINK: Skift kodeord
-      DESCRIPTION: Angiv nyt kodeord som du bruger ved log ind
+      LINK: Change password
+      DESCRIPTION: Choose new password for log in
     REFUSE:
-      LINK: Træk tilknytning tilbage
-      DESCRIPTION: Fjern tilknytning til klub hvis du ikke længere vil følge klubben
+      LINK: Cancel connection to the club
+      DESCRIPTION: Revoke your connection if you no longer want to be a part of the club community
     DASHBOARD:
       LINK: Administration
-      DESCRIPTION: Åbn kontrolpanel for planlægning af turnering
-    USERNAME: Brugernavn
+      DESCRIPTION: Open dashboard for tournament planning and administration
+    USERNAME: Username
     EMAIL: E-mail
-    CLUB: Klub
-    HOST: Turneringsvært
-    ROLE: Rolle
-    EDITOR: Redaktør
-    EDITOR_ADMIN: Turneringsansvarlig
+    CLUB: Club
+    HOST: Host
+    ROLE: Role
+    EDITOR: Editor
+    EDITOR_ADMIN: Editor administrator
     ADMIN: Administrator
     DEFAULT_ADMIN: Standard administrator
-    CLUBUSER: Klubbruger
-    CLUBADMIN: Klubansvarlig
-    ATTACHEDTO: Tilknyttet
-    CAPTION: Klubbrugere tilknyttet %club%
-    ATTACHED: Tilknyttet
+    CLUBUSER: Club user
+    CLUBADMIN: Club administrator
+    ATTACHEDTO: Affiliated to
+    CAPTION: Users affiliated to %club%
+    ATTACHED: Affiliated
     CONNECT: Knyt brugeren til klubben
     DISCONNECT: Placer brugeren som ansøger til klubben
     PROMOTE: Gør bruger til ansvarlig
@@ -264,18 +221,18 @@ FORM:
     IGNORE: Placer bruger som følger af klubben
     IGNORED:
       CAPTION: Brugere der følger %club%
-    PROSPECT: Følger klubben
+    PROSPECT: Requested for membership
     PROSPECTS:
       CAPTION: Ansøgere til %club%
-      AVAILABLE: Der er ansøgere til klubben
+      AVAILABLE: Requests for membership are pending - show the list...
     DEFADM:
-      WARNING: <b>Skift kodeord for administrator</b><br />Standard administrator er ikke en sikker bruger. Benyt følgende link til at vælge et nyt kodeord til administrator brugeren.
-      LINK: Vælg nyt kodeord til administrator
+      WARNING: <b>Change password for administrator</b><br />Standard administrator is not a safe administrator. Please use the following link to change the password.
+      LINK: Add new password to administrator
     TOURNAMENTS:
       TITLE: Tilmeldte hold
-      CAPTION: Klubaktiviteter
-      TOURNAMENT: Turnering
-      TEAMS: Tilmeldte hold
+      CAPTION: Tournaments - open for enrollment
+      TOURNAMENT: Tournament
+      TEAMS: Enrolled teams
     GREETING:
       TITLE: Velkommen til %club%
       TEXT: >
@@ -318,46 +275,42 @@ FORM:
             Nulla dapibus ullamcorper lorem, sit amet posuere dui pulvinar eget.
             Sed pulvinar lacus nisi, id fermentum turpis imperdiet sit amet.
       
-      TITLE: Vælg en klub
-      TEXT: >
-            Din profil er ikke forbundet med en klub.
-            Det er tid til at forbinde med en eksisterende klub.
-            Du kan også vælge at oprette en ny klubprofil.
-            Klik på knappen for at forbinde med en ny eller eksisterende klub.
-      LINK: Forbind til klub
+      TITLE: Connect to a club
+      TEXT: Your profile is not connected to a club. It is time to affiliate with an existing club. Or you can create your own club profile to connect to. Follow the link to connect to or create a club.
+      LINK: Connect to a club
     SECTION:
       EDITOR:
-        CAPTION: Turneringer
+        CAPTION: Tournaments
         LEGEND:
-          NAME: Turneringsnavn
-          EDITION: Udgave
-          DESCRIPTION: Beskrivelse
-          STATUS: Tilstand
+          NAME: Name of tournament
+          EDITION: Edition
+          DESCRIPTION: Description
+          STATUS: State
         STATUS:
-          0: Arkiveret
-          1: Tilmelding
-          2: Afvikles
-          3: Afsluttet
-          4: Under oprettelse
-        NOTOURNAMENT: Tilføj ny turnering
+          0: Archived
+          1: Enroll
+          2: Started
+          3: Finished
+          4: Under construction
+        NOTOURNAMENT: Add new tournament
   NEWPASS: 
-    NOPASSWORD: Et kodeord skal angives.
-    BADPASSWORD: Det valgte kodeord er ikke gyldigt.
-    NOTEQUAL: Kodeordet er ikke gentaget korrekt - de indtastede kodeord er ikke ens.
-    TITLE: Skift kodeord
-    CAPTION: Angiv nyt kodeord
+    NOPASSWORD: You must enter a password.
+    BADPASSWORD: The password is not valid.
+    NOTEQUAL: Please retype the password properly. The typed passwords are not equal.
+    TITLE: Change password
+    CAPTION: Enter new password
     PROMPT: >
-        Et kodeord bør bestå af mindst otte tegn, blandet store og små bogstaver samt tal.
-        Det valgte kodeord skal skrives ens i begge felter - bemærk at kodeordet skjules med prikker.
-    PASSWORD: Kodeord
-    PASSWORD2: Gentag kodeord
-    SUBMIT: Skift kodeord
-    CANCEL: Fortryd ændringer
+        A password should contain at least 8 characters, mixed case and digits.
+        You must type the password equal in both fields - mind that the passwords are shown with dots.
+    PASSWORD: Password
+    PASSWORD2: Retype password
+    SUBMIT: Change password
+    CANCEL: Cancel
   LISTENROLLED:
-    TITLE: Vis tilmeldte hold til turneringen
-    CAPTION: Antal tilmeldte hold per gruppe
+    TITLE: Show enrolled teams for the tournament
+    CAPTION: No. of enrolled teams per category
   ERROR:
-    BACK: Videre...
-    NAMEEXIST: Klubnavn er allerede anvendt (tilknytning til eksisterende klub foretages af klubadministrator).
-    CANTCHANGENAME: Klubnavn er allerede anvendt. Dette navn kan ikke bruges.
-    NOTOURNAMENT: Turnering er ikke valgt
+    BACK: Back...
+    NAMEEXIST: The name of the club is in use by another club. Please connect or find a different name.
+    CANTCHANGENAME: The name of the club is in use by another club. You can not change the name.
+    NOTOURNAMENT: No tournament has been selected.

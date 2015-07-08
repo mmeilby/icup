@@ -7,3 +7,12 @@ LANG:
   IT: Italiano
   FR: Fraçais
   DE: Deutsch
+
+LANG_LOCAL:
+  EN: English
+  PO: Polish
+  ES: Spanish
+  DA: Danish
+  IT: Italian
+  FR: French
+  DE: German

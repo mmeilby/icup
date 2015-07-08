@@ -1,7 +1,7 @@
 {% extends "ICupPublicSiteBundle:Masters:standard.html.twig" %}
 
 {% form_theme form 'ICupPublicSiteBundle:Default:layout.script.html.twig' %}
-{% trans_default_domain "club" %}
+{% trans_default_domain "frontpage" %}
 
 {% import 'ICupPublicSiteBundle:Masters:club.html.twig' as formatter %}
 {% import 'ICupPublicSiteBundle:Masters:tournament.html.twig' as tformatter %}
@@ -179,7 +179,7 @@
                 <p>{% trans %}FORM.FRONTPAGE.BLOCK5.DESCRIPTION{% endtrans %}</p>
                 <p>
                     <a href="{{ path('_information') }}" role="button">
-                        <h3><span class="label label-default"><i class="fa fa-info-circle"></i>&nbsp;Information</span></h3>
+                        <h3><span class="label label-default"><i class="fa fa-info-circle"></i>&nbsp;{% trans %}FORM.FRONTPAGE.BLOCK5.TITLE{% endtrans %}</span></h3>
                     </a>
                 </p>
             </center>

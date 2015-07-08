@@ -2,6 +2,7 @@
 namespace ICup\Bundle\PublicSiteBundle\Controller\Tournament;
 
 use ICup\Bundle\PublicSiteBundle\Entity\Doctrine\Date;
+use ICup\Bundle\PublicSiteBundle\Entity\Doctrine\News;
 use ICup\Bundle\PublicSiteBundle\Services\Util;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
@@ -53,7 +54,7 @@ class OverviewController extends Controller
             }
             /* @var $diff \DateInterval */
             $diff = $today->diff($news['newsdate']);
-            if ($diff->days < 2) {
+            if ($news['newstype'] == News::$TYPE_PERMANENT || $diff->days < 2) {
                 $newsGeneral[$news['newsno']][$news['language']] = $news;
             }
         }
@@ -152,9 +153,6 @@ class OverviewController extends Controller
             }
             elseif (array_key_exists($defaultLocale, $news)) {
                 $newsForLocale[] = $news[$defaultLocale];
-            }
-            else {
-                $newsForLocale[] = $news[0];
             }
         }
         return $newsForLocale;

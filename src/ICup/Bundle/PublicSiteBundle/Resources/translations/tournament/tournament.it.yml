@@ -134,3 +134,50 @@ FORM:
         TITLE: Aggiornamento dei risultati
         SUBMIT: Salva i risultati
         CANCEL: Cancella le modifiche
+
+    CONTACT:
+        DATA:
+            PROGRAM: Development and design
+            TRANSLATION:
+                ITA: Italian translation
+                FRA: French translation
+                ENG: Text in english
+                POL: Polish translation
+                DAN: Danish translation
+        TITLE: Contact
+        SUBTITLE: Maintenance and development
+        DESCRIPTION: Contact
+        CAPTION: Special thanks to...
+        LEGEND:
+            NAME: Language
+            EDITION: Author
+
+    RESULTREPORT:
+        NONO: An official match no. is required.
+        NOHOMESCORE: Number of goals scored by the home team is required.
+        NOAWAYSCORE: Number of goals scored by the away team is required.
+        INVALIDMATCHNO: Match no. is not available for this tournament.
+        INVALIDHOMESCORE: Number of goals scored by the home team is invalid.
+        INVALIDAWAYSCORE: Number of goals scored by the away team is invalid.
+        MATCHNOTREADY: It is not possible to report a result for this match. The match is not planed yet.
+        CANTCHANGE: It is not possible to report a result for this match. A result for the match has been reported.
+        TOOEARLY: It is not possible to report a result for this match. Please wait until after match start.
+        TITLE: Report result
+        PROMPT: Enter the result for a match
+        SUCCESS: The match result has been reported
+        TOURNAMENT: Tournament
+        MATCHNO: Match no.
+        HOME: Home team
+        AWAY: Away team
+        EVENT: Event
+        EVENTTYPE:
+            MP: The match was played
+            HD: Home team lost
+            AD: Away team lost
+            NP: The match was canceled
+        HELP:
+            MATCHNO: An official match no. from the match schedule.
+            HOME: Number of goals scored by the home team.
+            AWAY: Number of goals scored by the away team.
+        SUBMIT: Report result
+        CANCEL: Cancel

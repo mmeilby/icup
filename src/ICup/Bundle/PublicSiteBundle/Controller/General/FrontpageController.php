@@ -110,30 +110,30 @@ class FrontpageController extends Controller
                 );
             }
         }
-
+/*
         $dm = $this->get('doctrine_phpcr')->getManager('default');
         $image = $dm->find(null, '/cms/media/images/Ter-amo8.png');
-        
+*/
         return array(
             'form' => $form->createView(),
             'tournaments' => $tournamentList,
             'statuslist' => $statusList,
             'matchlist' => $shortMatches,
             'teaserlist' => $teaserList,
-            'image' => $image,
+//            'image' => $image,
             'club_list' => $club_list
         );
     }
     
     private function makeContactForm(Contact $contact) {
         $formDef = $this->createFormBuilder($contact);
-        $formDef->add('name', 'text', array('label' => 'FORM.FRONTPAGE.NAME', 'phonestyle' => true, 'required' => false, 'disabled' => false, 'translation_domain' => 'club'));
-        $formDef->add('club', 'text', array('label' => 'FORM.FRONTPAGE.CLUB', 'phonestyle' => true, 'required' => false, 'disabled' => false, 'translation_domain' => 'club'));
-        $formDef->add('phone', 'text', array('label' => 'FORM.FRONTPAGE.PHONE', 'phonestyle' => true, 'required' => false, 'disabled' => false, 'translation_domain' => 'club'));
-        $formDef->add('email', 'text', array('label' => 'FORM.FRONTPAGE.EMAIL', 'phonestyle' => true, 'required' => false, 'disabled' => false, 'translation_domain' => 'club'));
-        $formDef->add('msg', 'textarea', array('label' => 'FORM.FRONTPAGE.MSG', 'phonestyle' => true, 'required' => false, 'disabled' => false, 'translation_domain' => 'club'));
+        $formDef->add('name', 'text', array('label' => 'FORM.FRONTPAGE.NAME', 'phonestyle' => true, 'required' => false, 'disabled' => false, 'translation_domain' => 'frontpage'));
+        $formDef->add('club', 'text', array('label' => 'FORM.FRONTPAGE.CLUB', 'phonestyle' => true, 'required' => false, 'disabled' => false, 'translation_domain' => 'frontpage'));
+        $formDef->add('phone', 'text', array('label' => 'FORM.FRONTPAGE.PHONE', 'phonestyle' => true, 'required' => false, 'disabled' => false, 'translation_domain' => 'frontpage'));
+        $formDef->add('email', 'text', array('label' => 'FORM.FRONTPAGE.EMAIL', 'phonestyle' => true, 'required' => false, 'disabled' => false, 'translation_domain' => 'frontpage'));
+        $formDef->add('msg', 'textarea', array('label' => 'FORM.FRONTPAGE.MSG', 'phonestyle' => true, 'required' => false, 'disabled' => false, 'translation_domain' => 'frontpage'));
         $formDef->add('send', 'submit', array('label' => 'FORM.FRONTPAGE.SUBMIT',
-                                                'translation_domain' => 'club',
+                                                'translation_domain' => 'frontpage',
                                                 'icon' => 'fa fa-envelope'));
         return $formDef->getForm();
     }

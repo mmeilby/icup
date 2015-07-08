@@ -1,0 +1,41 @@
+FORM:
+  FRONTPAGE:
+    TITLE: The most international handball tournament in Teramo - Italy
+    MSGSENT: Your request for more information has been submitted. You will receive a response shortly.
+    MSGINVALID: Your request was not submitted. The message should not contain any links.
+    BLOCK1:
+        TITLE: Follow your club
+        DESCRIPTION: >
+                     Are you a parent or a player. Here you can tune in on the results from your club.
+                     Just follow this link and select the club you want to follow.
+        LEARNMORE: Follow club
+        TABLETITLE: Selected clubs
+    BLOCK2:
+        TITLE: Enrolling
+        DESCRIPTION: >
+                     You can enroll the tournament now.
+                     Check out terms and price for your enrollment in the next tournament.
+        LEARNMORE: Enroll team
+    BLOCK3:
+        TITLE: Current matches
+        DESCRIPTION: >
+                     Interested in more results from your teams. Check it out here.
+        LEARNMORE: Show more matches
+    BLOCK4:
+        TITLE: The champions
+        DESCRIPTION: >
+                     Which teams became the winners of the tournament. Discover which countries went home with trophies.
+                     The statistics will tell you about the greatest performance in the Cup.
+        LEARNMORE: Read more about the winners
+    BLOCK5:
+        TITLE: Information
+        DESCRIPTION: >
+                     Here you will find all sorts of interesting information - good to know.
+                     Handy in every occasion when you travel to Teramo.
+    SENDMAIL: Receive more information - complete the form and submit
+    NAME: Your name
+    CLUB: Type the name of the club you represent or play for
+    PHONE: If you would like to receive a call type the number here
+    EMAIL: Your e-mail address to respond to
+    MSG: Here you can type a message, a question or maybe a great idea...
+    SUBMIT: Submit message

@@ -1,0 +1,42 @@
+FORM:
+  TITLE: Iscriviti al torneo
+  FRONTPAGE:
+    TITLE: Interamnia World Cup, Teramo - Italy
+    MSGSENT: La tua richiesta di informazioni e´stata inviata. Riceverai presto una risposta.
+    MSGINVALID: La tua richiesta non e´stata registrata. Il messaggio non deve contenere link.
+    BLOCK1:
+        TITLE: Segui la tua squadra
+        DESCRIPTION: >
+                     Sei un genitore o un atleta?. Qui puoi seguire la i risultati della tua squadra.
+                     Seleziona il link e segui la tua squadra.
+        LEARNMORE: Segui il tuo club.
+        TABLETITLE: Club selezionato
+    BLOCK2:
+        TITLE: Iscrizione
+        DESCRIPTION: >
+                     Iscriviti al torneo.
+                     Le informazioni e le condizioni per partecipare al prossimo torneo.
+        LEARNMORE: Iscrivi la tua squadra
+    BLOCK3:
+        TITLE: Le partite
+        DESCRIPTION: >
+                     Sei interessato ai risultati della tua squadra.
+        LEARNMORE: Guarda tutte la gare.
+    BLOCK4:
+        TITLE: I campioni
+        DESCRIPTION: >
+                     I vincitori del torneo. Scopri i paesi che hanno vinto il torneo.
+                     Le statistiche del torneo.
+        LEARNMORE: Maggiori dettagli sulle squadre vincenti.
+    BLOCK5:
+        TITLE: Informazioni
+        DESCRIPTION: >
+                     Qui potrai trovare tutte le informazioni necessarie.
+                     Organizza il tuo viaggio a Teramo.
+    SENDMAIL: Ricevi maggiori informazioni - compila il modulo e invialo
+    NAME: Nome
+    CLUB: Scrivi il nome del club
+    PHONE: Lascia il tuo numero di telefono per ricevere maggiori dettagli
+    EMAIL: Lascia il tuo indirizzo e-mail
+    MSG: Lasci qui il tuo messaggio, la tua richiesta o il tuo suggerimento...
+    SUBMIT: Lascia un messaggio

@@ -481,11 +481,15 @@ class BusinessLogic
                               array('name' => 'asc'));
     }
     
-    /* TODO: this function must restrict to available tournaments */
-    public function listAvailableTournaments() {
-        return $this->entity->getTournamentRepo()
-                    ->findAll(array(),
-                              array('name' => 'asc'));
+    public function listAvailableTournaments($hostid = 0) {
+        if ($hostid > 0) {
+            return $this->listTournaments($hostid);
+        }
+        else {
+            return $this->entity->getTournamentRepo()
+                ->findAll(array(),
+                    array('name' => 'asc'));
+        }
     }
     
     public function listTournaments($hostid) {

@@ -732,6 +732,18 @@ FORM:
     TITLE: Turneringsnyheder
     CAPTION: Nyheder for denne turnering
     NOEVENT: Skriv nyhed
+  CHANGEMATCH:
+    TITLE: Tilpas en kamp
+    PROMPT: Find en kamp ud fra kamp nr. og ret oplysninger
+    NONO: Et officielt kampnr. skal angives.
+    INVALIDMATCHNO: Kampnr. er ikke kendt for denne turnering.
+    CANTCHANGE: Det er ikke muligt at rette denne kamp. Der er allerede registreret et kampresultat.
+    TOURNAMENT: Turnering
+    MATCHNO: Kampnr.
+    HELP:
+        MATCHNO: Et officielt kampnr. som det fremgår af programmet
+    SUBMIT: Find kamp
+    CANCEL: Retur
   INFOEMAIL:
     TITLE: Forespørgsel på mere information
     NAME: Navn

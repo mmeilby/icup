@@ -1,0 +1,19 @@
+{% extends "ICupPublicSiteBundle:Masters:edit.html.twig" %}
+
+{% import 'ICupPublicSiteBundle:Masters:club.html.twig' as formatter %}
+
+{% form_theme form 'ICupPublicSiteBundle:Default:layout.script.html.twig' %}
+{% trans_default_domain "admin" %}
+
+{% block adminbody %}
+    <h2 style="margin-bottom: 0">
+        <i class="fa fa-pencil-square"></i>&nbsp;
+        {{ 'FORM.CHANGEMATCH.TITLE'|trans }}
+    </h2>
+    <p>{{ 'FORM.CHANGEMATCH.PROMPT'|trans }}</p>
+    <div class="row">
+        <div class="col-sm-6">
+            {{ form(form) }}
+        </div>
+    </div>
+{% endblock %}

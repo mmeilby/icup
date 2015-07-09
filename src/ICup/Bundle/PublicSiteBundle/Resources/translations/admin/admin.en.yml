@@ -732,6 +732,18 @@ FORM:
     TITLE: Tournament news
     CAPTION: News and communique for this tournament
     NOEVENT: Add news record
+  CHANGEMATCH:
+    TITLE: Change a match
+    PROMPT: Find the match from match no. and change information for that match
+    NONO: An official match no. is required.
+    INVALIDMATCHNO: Match no. is not available for this tournament.
+    CANTCHANGE: It is not possible to change this match. A result for the match has been reported.
+    TOURNAMENT: Tournament
+    MATCHNO: Match no.
+    HELP:
+        MATCHNO: An official match no. from the match schedule.
+    SUBMIT: Find match
+    CANCEL: Cancel
   INFOEMAIL:
     TITLE: Request for more information
     NAME: Name

@@ -22,11 +22,13 @@ class WinnersController extends Controller
         $championList = array();
         $groups = $this->get('tmnt')->listChampionsByTournament($tournament->getId());
         foreach ($groups as $group) {
-            $teamsList = $this->get('orderTeams')->sortGroup($group['id']);
-            $plcList = $grpclass[$group['classification']];
-            foreach ($teamsList as $i => $team) {
-                if ($i < 2) {
-                    $this->updateList($championList, $group['catid'], $plcList[$i], $group, $team);
+            $teamsList = $this->get('orderTeams')->sortCompletedGroup($group['id']);
+            if ($teamsList) {
+                $plcList = $grpclass[$group['classification']];
+                foreach ($teamsList as $i => $team) {
+                    if ($i < 2) {
+                        $this->updateList($championList, $group['catid'], $plcList[$i], $group, $team);
+                    }
                 }
             }
         }
@@ -48,15 +50,31 @@ class WinnersController extends Controller
         $championList = array();
         $groups = $this->get('tmnt')->listChampionsByTournament($tournament->getId());
         foreach ($groups as $group) {
-            $teamsList = $this->get('orderTeams')->sortGroup($group['id']);
-            $plcList = $grpclass[$group['classification']];
-            foreach ($teamsList as $i => $team) {
-                if ($i < 2) {
-                    $this->updateList($championList, $team->country, $plcList[$i], $group, $team);
+            $teamsList = $this->get('orderTeams')->sortCompletedGroup($group['id']);
+            if ($teamsList) {
+                $plcList = $grpclass[$group['classification']];
+                foreach ($teamsList as $i => $team) {
+                    if ($i < 2) {
+                        $this->updateList($championList, $team->country, $plcList[$i], $group, $team);
+                    }
                 }
             }
         }
-        usort($championList, array("ICup\Bundle\PublicSiteBundle\Controller\Tournament\WinnersController", "winnerOrder"));
+        usort($championList,
+            function (array $country1, array $country2) {
+                $order = array('first', 'second', 'third', 'forth');
+                foreach ($order as $i) {
+                    $o = count($country1[$i]) - count($country2[$i]);
+                    if ($o < 0) {
+                        return 1;
+                    }
+                    else if ($o > 0) {
+                        return -1;
+                    }
+                }
+                return 0;
+            }
+        );
         return array('tournament' => $tournament, 'championlist' => $championList);
     }
     
@@ -75,15 +93,31 @@ class WinnersController extends Controller
         $championList = array();
         $groups = $this->get('tmnt')->listChampionsByTournament($tournament->getId());
         foreach ($groups as $group) {
-            $teamsList = $this->get('orderTeams')->sortGroup($group['id']);
-            $plcList = $grpclass[$group['classification']];
-            foreach ($teamsList as $i => $team) {
-                if ($i < 2) {
-                    $this->updateList($championList, $team->club, $plcList[$i], $group, $team);
+            $teamsList = $this->get('orderTeams')->sortCompletedGroup($group['id']);
+            if ($teamsList) {
+                $plcList = $grpclass[$group['classification']];
+                foreach ($teamsList as $i => $team) {
+                    if ($i < 2) {
+                        $this->updateList($championList, $team->club, $plcList[$i], $group, $team);
+                    }
                 }
             }
         }
-        usort($championList, array("ICup\Bundle\PublicSiteBundle\Controller\Tournament\WinnersController", "winnerOrder"));
+        usort($championList,
+            function (array $club1, array $club2) {
+                $order = array('first', 'second', 'third', 'forth');
+                foreach ($order as $i) {
+                    $o = count($club1[$i]) - count($club2[$i]);
+                    if ($o < 0) {
+                        return 1;
+                    }
+                    else if ($o > 0) {
+                        return -1;
+                    }
+                }
+                return 0;
+            }
+        );
         return array('tournament' => $tournament, 'championlist' => $championList);
     }
 
@@ -100,19 +134,5 @@ class WinnersController extends Controller
             );
         }
         $list[$key][$order][] = $team;
-    }
-    
-    static function winnerOrder(array $country1, array $country2) {
-        $order = array('first', 'second', 'third', 'forth');
-        foreach ($order as $i) {
-            $o = count($country1[$i]) - count($country2[$i]);
-            if ($o < 0) {
-                return 1;
-            }
-            else if ($o > 0) {
-                return -1;
-            }
-        }
-        return 0;
     }
 }

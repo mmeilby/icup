@@ -114,6 +114,9 @@ FORM:
         MYMATCHES:
           TITLE: Matches for all the teams you follow
           DESC: Get the complete overview of all the matches with clubs you follow
+        MOREMATCHES:
+          TITLE: Scheduled matches
+          DESC: Show matches for the following match day.
         GROUPS:
           TITLE: Category results
           DESC: Watch the composition of categories or search the results for a team by the category.
@@ -144,6 +147,8 @@ FORM:
                 ENG: Text in english
                 POL: Polish translation
                 DAN: Danish translation
+                GER: German translation
+                ESP: Spanish translation
         TITLE: Contact
         SUBTITLE: Maintenance and development
         DESCRIPTION: Contact

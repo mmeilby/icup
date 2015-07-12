@@ -114,6 +114,9 @@ FORM:
         MYMATCHES:
           TITLE: Kampe med de hold du følger
           DESC: Få det fulde overblik af kampene for de klubber du følger.
+        MOREMATCHES:
+          TITLE: Næste dages kampe
+          DESC: Vis turneringsplanen for de følgende dage.
         GROUPS:
           TITLE: Gruppe resultater
           DESC: Se sammensætningen af puljerne i en gruppe eller følg et hold fra gruppen.
@@ -144,6 +147,8 @@ FORM:
                 ENG: Engelsk oversættelse
                 POL: Polsk oversættelse
                 DAN: Danske tekster
+                GER: Tysk oversættelse
+                ESP: Spansk oversættelse
         TITLE: Kontakt
         SUBTITLE: Driftsansvar og udviklingsteam
         DESCRIPTION: Kontakt

@@ -114,6 +114,9 @@ FORM:
         MYMATCHES:
           TITLE: Zestawienia dla wszystkich zespołów, które śledzisz
           DESC: Pobierz kompletny przegląd wszystkich meczów z klubami, które śledzisz
+        MOREMATCHES:
+          TITLE: Scheduled matches
+          DESC: Show matches for the following match day.
         GROUPS:
           TITLE: Wyniki
           DESC: Zobacz rodzaje kategorii lub szukaj wyniku po nazwie drużyny i kategorii.  
@@ -134,6 +137,55 @@ FORM:
         TITLE: Edytuj rezultaty
         SUBMIT: Sauvegarder les résulats
         CANCEL: Effacer les modifications
+
+    CONTACT:
+        DATA:
+            PROGRAM: Development and design
+            TRANSLATION:
+                ITA: Italian translation
+                FRA: French translation
+                ENG: English translation
+                POL: Text in polish
+                DAN: Danish translation
+                GER: German translation
+                ESP: Spanish translation
+        TITLE: Contact
+        SUBTITLE: Maintenance and development
+        DESCRIPTION: Contact
+        CAPTION: Special thanks to...
+        LEGEND:
+            NAME: Language
+            EDITION: Author
+
+    RESULTREPORT:
+        NONO: An official match no. is required.
+        NOHOMESCORE: Number of goals scored by the home team is required.
+        NOAWAYSCORE: Number of goals scored by the away team is required.
+        INVALIDMATCHNO: Match no. is not available for this tournament.
+        INVALIDHOMESCORE: Number of goals scored by the home team is invalid.
+        INVALIDAWAYSCORE: Number of goals scored by the away team is invalid.
+        MATCHNOTREADY: It is not possible to report a result for this match. The match is not planed yet.
+        CANTCHANGE: It is not possible to report a result for this match. A result for the match has been reported.
+        TOOEARLY: It is not possible to report a result for this match. Please wait until after match start.
+        TITLE: Report result
+        PROMPT: Enter the result for a match
+        SUCCESS: The match result has been reported
+        TOURNAMENT: Tournament
+        MATCHNO: Match no.
+        HOME: Home team
+        AWAY: Away team
+        EVENT: Event
+        EVENTTYPE:
+            MP: The match was played
+            HD: Home team lost
+            AD: Away team lost
+            NP: The match was canceled
+        HELP:
+            MATCHNO: An official match no. from the match schedule.
+            HOME: Number of goals scored by the home team.
+            AWAY: Number of goals scored by the away team.
+        SUBMIT: Report result
+        CANCEL: Cancel
 
 # Old translations
 LOGIN: Zaloguj się 

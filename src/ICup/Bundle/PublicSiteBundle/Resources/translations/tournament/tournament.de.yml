@@ -65,89 +65,124 @@ GENDER:
     MO: "[1, Inf[ Männlich über %age%" 
 
 FORM: 
-    SEL_TMNT: 
-        TITLE: iCup Turnier Auswahl 
-        SUBTITLE: Wählen Sie das Turnier, das Sie überprüfen möchten 
-        DESCRIPTION: Wenn Sie möchten, um Ergebnisse und Tabellen zu bewerten und wählen Sie dann ein Turnier aus der Liste. Klicken Sie einfach auf den Namen des Turniers, das Sie überprüfen möchten. 
-        CAPTION: Turniere 
-        LEGEND: 
-            NAME: Name des Turniers 
-            EDITION: Edition 
-            DESCRIPTION: Beschreibung 
-        STATUS: 
-            1: Dieses Turnier ist für Anmeldungen geöffnet. Gruppen und Spiele können unvollständig oder fehlt. 
-            2: Dieses Turnier ist live - hier die aktuellen Ergebnisse. 
-            3: Dies ist ein Turnier abgeschlossen. Sie können die Gewinner und Hall of Fame zu bewerten. 
+    SEL_TMNT:
+        TITLE: iCup Turnier Auswahl
+        SUBTITLE: Wählen Sie das Turnier, das Sie überprüfen möchten
+        DESCRIPTION: Wenn Sie möchten, um Ergebnisse und Tabellen zu bewerten und wählen Sie dann ein Turnier aus der Liste. Klicken Sie einfach auf den Namen des Turniers, das Sie überprüfen möchten.
+        CAPTION: Turniere
+        LEGEND:
+            NAME: Name des Turniers
+            EDITION: Edition
+            DESCRIPTION: Beschreibung
+        STATUS:
+            1: Dieses Turnier ist für Anmeldungen geöffnet. Gruppen und Spiele können unvollständig oder fehlt.
+            2: Dieses Turnier ist live - hier die aktuellen Ergebnisse.
+            3: Dies ist ein Turnier abgeschlossen. Sie können die Gewinner und Hall of Fame zu bewerten.
 
 # Statistics page translations
     STATISTICS:
-        TITLE: Das Turnier in Zahlen 
-        LEGEND: 
-            KEY: Die Fakten ... 
-            FIGURE: Die Zahlen 
-        KEY: 
-            COUNTRIES: Verschiedene Länder, die das Turnier 
-            CLUBS: Vereine eingeschrieben 
-            TEAMS: Teams die Teilnahme an der Vorrunde 
-            FEMALETEAMS: Frauenteams 
-            MALETEAMS: Männlich Teams 
-            ADULTTEAMS: Über 18 Teams 
-            CHILDTEAMS: Unter 18 Teams 
-            CATEGORIES: Kategorien im Turnier verfügbar 
-            GROUPS: Gruppen in der Vorrunde 
-            SITES: Sites in das Turnier verwendet 
-            PLAYGROUNDS: Spielplätze während des Turniers eingesetzt 
-            MATCHES: Spiele insgesamt gespielt 
-            GOALS: Ziele in allen Spielen fällt 
-            MOSTGOALS: Die meisten Tore eines Teams in einem Spiel erzielt 
-            MOSTTROPHYS: Die meisten Trophäen von einem Land gewonnen 
-            DAYS: Die Länge des Turniers in Tagen 
+        TITLE: Das Turnier in Zahlen
+        LEGEND:
+            KEY: Die Fakten ...
+            FIGURE: Die Zahlen
+        KEY:
+            COUNTRIES: Verschiedene Länder, die das Turnier
+            CLUBS: Vereine eingeschrieben
+            TEAMS: Teams die Teilnahme an der Vorrunde
+            FEMALETEAMS: Frauenteams
+            MALETEAMS: Männlich Teams
+            ADULTTEAMS: Über 18 Teams
+            CHILDTEAMS: Unter 18 Teams
+            CATEGORIES: Kategorien im Turnier verfügbar
+            GROUPS: Gruppen in der Vorrunde
+            SITES: Sites in das Turnier verwendet
+            PLAYGROUNDS: Spielplätze während des Turniers eingesetzt
+            MATCHES: Spiele insgesamt gespielt
+            GOALS: Ziele in allen Spielen fällt
+            MOSTGOALS: Die meisten Tore eines Teams in einem Spiel erzielt
+            MOSTTROPHYS: Die meisten Trophäen von einem Land gewonnen
+            DAYS: Die Länge des Turniers in Tagen
             MOSTTROPHYSBYCLUB: Die meisten Trophäen von einem Verein gewonnen
             MOSTGOALSTOTAL: Die meisten Tore eines Teams im Turnier erzielt
-        GROUP: 
-            TEAMS: Fakten über die Teams 
-            TOURNAMENT: Fakten über das Turnier 
-            TOP: Top Leistungen im Turnier 
+        GROUP:
+            TEAMS: Fakten über die Teams
+            TOURNAMENT: Fakten über das Turnier
+            TOP: Top Leistungen im Turnier
 
-    TEASER: 
-        TOURNAMENT: 
+    TEASER:
+        TOURNAMENT:
             MYMATCHES:
                 TITLE: Spiele für alle Teams die Sie folgen
                 DESC: Holen Sie sich den kompletten Überblick über alle Spiele mit Klubs Sie folgen
+            MOREMATCHES:
+                TITLE: Scheduled matches
+                DESC: Show matches for the following match day.
             GROUPS:
-                TITLE: Kategorie Ergebnisse 
-                DESC: Sehen Sie die Zusammensetzung der Kategorien oder suchen Sie die Ergebnisse für ein Team von der Kategorie. 
-            PLAYGROUNDS: 
-                TITLE: Spielplatz Überblick 
-                DESC: Verfolge die Spiele auf bestimmte Spielplätze. 
-            TEAMS: 
-                TITLE: Eingeschriebene Teams 
-                DESC: Finden Sie teilnehmenden Teams das Turnier und die Ergebnisse sehen. 
-            WINNERS: 
-                TITLE: Die Gewinner 
-                DESC: Entdecken Sie die Gewinner aus allen Kategorien von diesem Turnier und besuchen Sie die Hall of Fame. 
-            STATISTICS: 
-                TITLE: Mannschaftsstatistik 
-                DESC: Schauen Sie sich einige interessante Zahlen aus dem Turnier. 
+                TITLE: Kategorie Ergebnisse
+                DESC: Sehen Sie die Zusammensetzung der Kategorien oder suchen Sie die Ergebnisse für ein Team von der Kategorie.
+            PLAYGROUNDS:
+                TITLE: Spielplatz Überblick
+                DESC: Verfolge die Spiele auf bestimmte Spielplätze.
+            TEAMS:
+                TITLE: Eingeschriebene Teams
+                DESC: Finden Sie teilnehmenden Teams das Turnier und die Ergebnisse sehen.
+            WINNERS:
+                TITLE: Die Gewinner
+                DESC: Entdecken Sie die Gewinner aus allen Kategorien von diesem Turnier und besuchen Sie die Hall of Fame.
+            STATISTICS:
+                TITLE: Mannschaftsstatistik
+                DESC: Schauen Sie sich einige interessante Zahlen aus dem Turnier.
 
-    EDITRESULTS: 
+    EDITRESULTS:
         TITLE: Ergebnisse redigeren
-        SUBMIT: Ergebnisse speichern 
-        CANCEL: Änderungen verwerfen 
+        SUBMIT: Ergebnisse speichern
+        CANCEL: Änderungen verwerfen
 
-    CONTACT: 
-        DATA: 
-            PROGRAM: Entwicklung und Design 
-            TRANSLATION: 
-                ITA: Italienisch Übersetzung 
-                FRA: Französisch Übersetzung 
+    CONTACT:
+        DATA:
+            PROGRAM: Entwicklung und Design
+            TRANSLATION:
+                ITA: Italienisch Übersetzung
+                FRA: Französisch Übersetzung
                 ENG: Englisch Übersetzung
-                POL: Polnisch Übersetzung 
-                DAN: Dänisch Übersetzung 
-        TITLE: Kontakt 
-        SUBTITLE: Wartung und Entwicklung 
-        DESCRIPTION: Kontakt 
-        CAPTION: Besonderen Dank an ... 
-        LEGEND: 
-            NAME: Bereich 
+                POL: Polnisch Übersetzung
+                DAN: Dänisch Übersetzung
+                GER: Text in german
+                ESP: Spanish translation
+        TITLE: Kontakt
+        SUBTITLE: Wartung und Entwicklung
+        DESCRIPTION: Kontakt
+        CAPTION: Besonderen Dank an ...
+        LEGEND:
+            NAME: Bereich
             EDITION: Name
+
+    RESULTREPORT:
+        NONO: An official match no. is required.
+        NOHOMESCORE: Number of goals scored by the home team is required.
+        NOAWAYSCORE: Number of goals scored by the away team is required.
+        INVALIDMATCHNO: Match no. is not available for this tournament.
+        INVALIDHOMESCORE: Number of goals scored by the home team is invalid.
+        INVALIDAWAYSCORE: Number of goals scored by the away team is invalid.
+        MATCHNOTREADY: It is not possible to report a result for this match. The match is not planed yet.
+        CANTCHANGE: It is not possible to report a result for this match. A result for the match has been reported.
+        TOOEARLY: It is not possible to report a result for this match. Please wait until after match start.
+        TITLE: Report result
+        PROMPT: Enter the result for a match
+        SUCCESS: The match result has been reported
+        TOURNAMENT: Tournament
+        MATCHNO: Match no.
+        HOME: Home team
+        AWAY: Away team
+        EVENT: Event
+        EVENTTYPE:
+            MP: The match was played
+            HD: Home team lost
+            AD: Away team lost
+            NP: The match was canceled
+        HELP:
+            MATCHNO: An official match no. from the match schedule.
+            HOME: Number of goals scored by the home team.
+            AWAY: Number of goals scored by the away team.
+        SUBMIT: Report result
+        CANCEL: Cancel

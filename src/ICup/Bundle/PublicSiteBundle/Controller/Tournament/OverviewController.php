@@ -10,6 +10,7 @@ use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use ICup\Bundle\PublicSiteBundle\Controller\User\SelectClubController;
 use Symfony\Component\HttpFoundation\Request;
 use DateTime;
+use DateInterval;
 
 class OverviewController extends Controller
 {
@@ -17,7 +18,23 @@ class OverviewController extends Controller
      * @Route("/tmnt/vw/{tournament}", name="_tournament_overview")
      * @Template("ICupPublicSiteBundle:Tournament:overview.html.twig")
      */
-    public function overviewAction($tournament, Request $request)
+    public function overviewAction($tournament, Request $request) {
+        return $this->getOverviewResponse($tournament, new DateTime(), $request);
+    }
+
+    /**
+     * @Route("/tmnt/vw/{tournament}/{date}", name="_tournament_overview_date")
+     * @Template("ICupPublicSiteBundle:Tournament:overview.html.twig")
+     */
+    public function overviewDateAction($tournament, $date, Request $request) {
+        $matchDate = DateTime::createFromFormat('d-m-Y', $date);
+        if ($matchDate == null) {
+            throw new ValidationException("INVALIDDATE", "Match date invalid: date=".$date);
+        }
+        return $this->getOverviewResponse($tournament, $matchDate, $request);
+    }
+
+    private function getOverviewResponse($tournament, $date, Request $request)
     {
         /* @var $utilService Util */
         $utilService = $this->get('util');
@@ -26,9 +43,9 @@ class OverviewController extends Controller
         if ($tournament == null) {
             return $this->redirect($this->generateUrl('_tournament_select'));
         }
-        
-        $today = new DateTime();
-        $matchDate = $this->get('match')->getMatchDate($tournament->getId(), $today);
+
+        /* @var $matchDate DateTime */
+        $matchDate = $this->get('match')->getMatchDate($tournament->getId(), $date);
         $timeslots = $this->map($this->get('logic')->listTimeslots($tournament->getId()));
         $pattrs = $this->get('logic')->listPlaygroundAttributesByTournament($tournament->getId());
         $pattrList = array();
@@ -130,7 +147,20 @@ class OverviewController extends Controller
                 'path' => $this->generateUrl('_tournament_statistics', array('tournament' => $tournament->getKey()))
             )
         );
-
+        $thisDate = DateTime::createFromFormat(DateTime::ATOM, $matchDate->format(DateTime::ATOM));
+        $nextDate = $thisDate->add(new DateInterval("P1D"));
+        $nextMatchDate = $this->get('match')->getMatchDate($tournament->getId(), $nextDate);
+        /* @var $diff DateInterval */
+        $diff = $nextMatchDate->diff($matchDate);
+        if ($diff->days > 0) {
+            array_unshift($teaserList,
+                array(
+                    'titletext' => 'FORM.TEASER.TOURNAMENT.MOREMATCHES.TITLE',
+                    'text' => 'FORM.TEASER.TOURNAMENT.MOREMATCHES.DESC',
+                    'path' => $this->generateUrl('_tournament_overview_date', array('tournament' => $tournament->getKey(), 'date' => date_format($nextMatchDate, "d-m-Y")))
+                )
+            );
+        }
         $host = $this->get('entity')->getHostById($tournament->getPid());
         return array(
             'host' => $host,

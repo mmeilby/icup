@@ -1,6 +1,5 @@
 To Do List
 ----------
-Bladre i dagslisten over kampe
 Kampdetaljer som popup
 Rettelse - når kampnr. findes tilbydes swap af ????
 Grafisk brush-up af finale billedet på kategorisiden
@@ -13,6 +12,7 @@ Fejlrettelse - afmelding af ledig plads skal fjerne denne post fra teams
 Planlæg slutrunde kampe og puljer
 Færdiggørelse af planlæg indledende kampe
 Administrer kobling mellem nyheder og hold/kampe
+Registreringssystem for indrul
 
 IDEER
 -----
@@ -27,3 +27,4 @@ Forberedt nyhedstabel og lokation for baner
 Udviklet nyheder og åbnet for visning i matchlister
 Reorganisering af translations til mapper
 Ret en kamp ud fra kamp nr.
+Bladre i dagslisten over kampe

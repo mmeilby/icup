@@ -114,6 +114,9 @@ FORM:
         MYMATCHES:
           TITLE: Incontri per tutte le squadre che segui
           DESC: Prendi il quadro completo di tutte le partite con i club che segui
+        MOREMATCHES:
+          TITLE: Scheduled matches
+          DESC: Show matches for the following match day.
         GROUPS:
           TITLE: Risultati
           DESC: Guarda la composizione delle categorie o ricerca i risultati per squadra e categoria.
@@ -139,11 +142,13 @@ FORM:
         DATA:
             PROGRAM: Development and design
             TRANSLATION:
-                ITA: Italian translation
+                ITA: Text in italian
                 FRA: French translation
-                ENG: Text in english
+                ENG: English translation
                 POL: Polish translation
                 DAN: Danish translation
+                GER: German translation
+                ESP: Spanish translation
         TITLE: Contact
         SUBTITLE: Maintenance and development
         DESCRIPTION: Contact

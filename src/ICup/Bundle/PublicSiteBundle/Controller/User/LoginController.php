@@ -17,6 +17,11 @@ class LoginController extends Controller
      */
     public function loginAction(Request $request)
     {
+        if ($this->getUser() != null) {
+            // Controller is called by authenticated user - switch to "MyPage"
+            return $this->redirect($this->generateUrl('_user_my_page'));
+        }
+
         /* @var $utilService Util */
         $utilService = $this->get('util');
 

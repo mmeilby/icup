@@ -17,10 +17,10 @@
                 <span class="input-group-addon">
                     <i class="{{ form.vars.icon }}"></i>
                 </span>
-                {{ form_widget(form, { 'attr': {'class': 'form-control', 'placeholder': pholder|trans({}, translation_domain)}}) }}
+                {{ form_widget(form, { 'attr': {'class': 'form-control', 'placeholder': pholder}}) }}
             </div>
         {% else %}
-            {{ form_widget(form, { 'attr': {'class': 'form-control', 'placeholder': pholder|trans({}, translation_domain)}}) }}
+            {{ form_widget(form, { 'attr': {'class': 'form-control', 'placeholder': pholder}}) }}
         {% endif %}
     </div>
 {% endspaceless %}

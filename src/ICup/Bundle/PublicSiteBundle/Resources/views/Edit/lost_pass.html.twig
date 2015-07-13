@@ -1,0 +1,31 @@
+{% extends "ICupPublicSiteBundle:Masters:edit.html.twig" %}
+
+{% form_theme form 'ICupPublicSiteBundle:Default:layout.script.html.twig' %}
+{% trans_default_domain "club" %}
+
+{% block body %}
+    <h2 style="margin-bottom: 0">
+        <i class="fa fa-unlock-alt"></i>&nbsp;
+        {% trans %}FORM.LOSTPASS.TITLE{% endtrans %}
+    </h2>
+    <p>{% trans %}FORM.LOSTPASS.PROMPT{% endtrans %}</p>
+    <div class="row">
+    {% for flashMessage in app.session.flashbag.get('lostmsgsent') %}
+        <div class="col-md-12">
+            <p>&nbsp;</p>
+            <div class="alert alert-success alert-dismissible" role="alert">
+                <button type="button" class="close" data-dismiss="alert">
+                    <span aria-hidden="true">&times;</span><span class="sr-only">Close</span>
+                </button>
+                {{ flashMessage|trans }}
+            </div>
+        </div>
+    {% endfor %}
+    </div>
+    <div class="row">
+        <div class="col-sm-7">
+            {{ form(form) }}
+        </div>
+    </div>
+</div>
+{% endblock %}

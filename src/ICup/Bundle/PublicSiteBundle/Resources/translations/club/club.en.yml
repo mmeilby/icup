@@ -179,12 +179,36 @@ FORM:
       USERNAME: Enter your username - might be your e-mail address
       PASSWORD: Enter your password (shown with dots)
     LOGIN: Log in
-    LOSTPWD: Lost password
+    LOSTPWD: Reset password
     SECTION1:
       HEADER: Have you lost your password?
       TEXT: >
-            <p>If you lost your password you can get an e-mail with a new password.</p>
-            <p><em>If this is your first time logging in use your e-mail address as your password.</em></p>
+            <p>If you lost your password you can easely reset your password.
+               Is this the first time you log in, you need to reset your password as well.</p>
+            <p><em>Click the button to get instructions explaining how to reset your password.</em></p>
+  LOSTPASS:
+    TITLE: Reset password
+    PROMPT: Reset your password and allow you to log in after failed attempts
+    USERNAME: Username
+    HELP:
+      USERNAME: Enter your username - might be your e-mail address
+    SEND: Send
+    CANCEL: Cancel
+    NOUSERNAME: A valid user name is mandatory.
+    MSGSENT: Instructions how to reset your password has been sent to your e-mail.
+    MESSAGE:
+      META: Generated e-mail: Reset password instructions
+      TITLE: Reset your password instructions
+      BLOCK1: >
+              You receive this message because someone requested a password reset.
+              If you need to reset your password please follow the link below.
+              This link will bring you to the reset password page on icup.dk
+      LINK: Reset your password
+      BLOCK2: >
+              If you did not request a password reset simply ignore this message.
+              Your password will not be changed without your action.
+              However if you suspect your password to be compromised you should consider changing it.
+      REGARDS: Best regards<br />iCup.dk Support
   MYPAGE:
     TITLE: My iCup
     USERS:

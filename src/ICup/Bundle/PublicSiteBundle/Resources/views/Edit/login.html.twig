@@ -5,7 +5,7 @@
 
 {% block adminbody %}
     <h2 style="margin-bottom: 0">
-        <i class="fa fa-users"></i>&nbsp;
+        <i class="fa fa-lock"></i>&nbsp;
         {% trans %}FORM.LOGIN.TITLE{% endtrans %}
     </h2>
     <p>{% trans %}FORM.LOGIN.PROMPT{% endtrans %}</p>
@@ -18,6 +18,11 @@
     <div class="row">
         <div class="col-sm-7">
             {{ form(form) }}
+        </div>
+        <div class="col-sm-5">
+            <p>{% trans %}FORM.LOGIN.SECTION1.TEXT{% endtrans %}</p>
+            <p />
+            <a href="{{ path('_admin_lost_password') }}" class="btn btn-info" role="button">{% trans %}FORM.LOGIN.LOSTPWD{% endtrans %}&nbsp;<i class="fa fa-angle-double-right"></i></a>
         </div>
     </div>
 </div>

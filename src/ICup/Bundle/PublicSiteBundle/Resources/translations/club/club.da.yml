@@ -180,13 +180,37 @@ FORM:
       USERNAME: Angiv dit brugernavn
       PASSWORD: Tast dit kodeord (det vises med prikker)
     LOGIN: Log på
-    LOSTPWD: Jeg mangler mit kodeord
+    LOSTPWD: Nulstil dit kodeord
     SECTION1:
-      HEADER: Mangler dit kodeord?
+      HEADER: Mangler du dit kodeord?
       TEXT: >
-            <p>Har du glemt dit kodeord kan du få tilsendt en e-mail med din kode.</p>
-            <p><em>Er det første gang du logger på skal du blot benytte din e-mail adresse som kode.</em></p>
+            <p>Har du glemt dit kodeord kan du nemt få nulstillet dit kodeord.
+               Er det første gang du logger på, skal du også nulstille dit kodeord.</p>
+            <p><em>Klik på knappen for at få tilsendt instruktion der forklarer hvordan du nulstiller dit kodeord.</em></p>
 
+  LOSTPASS:
+    TITLE: Nulstil kodeord
+    PROMPT: Nulstil dit kodeord og få mulighed for at logge på efter for mange mislykkede forsøg.
+    USERNAME: Brugernavn
+    HELP:
+      USERNAME: Angiv dit brugernavn
+    SEND: Nulstil
+    CANCEL: Fortryd
+    NOUSERNAME: Et gyldigt brugernavn er nødvendigt.
+    MSGSENT: Instruktion der forklarer hvordan du nulstiller dit kodeord er sendt til din e-mail.
+    MESSAGE:
+      META: Systemdannet e-mail: Nulstil kodeord instruktion
+      TITLE: Nulstil dit kodeord - instruktion
+      BLOCK1: >
+              Du modtager denne meddelelse fordi nogen har bestilt nulstilling af dit kodeord.
+              Hvis du har brug for at nulstille dit kodeord skal du benytte følgende link.
+              Dette link vil bringe dig til en nulstil kodeord service på icup.dk
+      LINK: Nulstil dit kodeord
+      BLOCK2: >
+              Hvis du ikke har bedt om en nulstilling af dit kodeord skal du blot ignorere denne besked.
+              Dit kodeord vil ikke blive ændret uden din hjælp.
+              Hvis du mistænker nogen for at kende dit kodeord bør du overveje at ændre kodeord.
+      REGARDS: Med venlig hilsen<br />iCup.dk Support
   MYPAGE:
     TITLE: Mit iCup
     USERS:

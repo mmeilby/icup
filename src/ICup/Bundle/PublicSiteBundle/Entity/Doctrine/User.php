@@ -100,6 +100,13 @@ class User implements AdvancedUserInterface
     private $password;
 
     /**
+     * @var string $secret
+     *
+     * @ORM\Column(name="secret", type="string", length=50, nullable=false)
+     */
+    private $secret;
+
+    /**
      * @var integer $attempts
      * Number of failed login attempts since last successfull login
      * @ORM\Column(name="attempts", type="integer", nullable=false)
@@ -537,6 +544,20 @@ class User implements AdvancedUserInterface
      */
     public function setLastLogin($lastLogin) {
         $this->lastLogin = $lastLogin;
+    }
+
+    /**
+     * @return string
+     */
+    public function getSecret() {
+        return $this->secret;
+    }
+
+    /**
+     * @param string $secret
+     */
+    public function setSecret($secret) {
+        $this->secret = $secret;
     }
 
     public function loginFailed() {

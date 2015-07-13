@@ -22,6 +22,7 @@
                     <td>{% trans %}FORM.LISTEDITORS.LEGEND.USERNAME{% endtrans %}</td>
                     <td>{% trans %}FORM.LISTEDITORS.LEGEND.NAME{% endtrans %}</td>
                     <td>{% trans %}FORM.LISTEDITORS.LEGEND.ROLE{% endtrans %}</td>
+                    <td>{% trans %}FORM.LISTEDITORS.LEGEND.LOGIN{% endtrans %}</td>
                 </tr>
             </thead>
             <tbody>
@@ -43,12 +44,24 @@
                     <td class="user">
                         {{ user.name }}
                     </td>
-                    <td class="role">
+                    <td>
+                        <span class="label label-primary">
     {% if user.role == 3 %}
                         {{ 'FORM.MYPAGE.EDITOR'|trans({},'club') }}
     {% else %}
                         {{ 'FORM.MYPAGE.EDITOR_ADMIN'|trans({},'club') }}
     {% endif %}
+                        </span>
+                    </td>
+                    <td>
+                        {{ 'FORMAT.LONGDATE'|transchoice(user.lastlogin|date('j'), {
+                            '%week%': ['WEEK.',user.lastlogin|date('D')|upper]|join|trans([],'messages')|capitalize,
+                            '%day%': user.lastlogin|date('j'),
+                            '%month%': ['MONTH.',user.lastlogin|date('M')|upper]|join|trans([],'messages'),
+                            '%year%': user.lastlogin|date('Y')}, 'messages') }}
+                    </td>
+                    <td>
+                        <span><i class="fa {{ user.accountnonlocked ? 'fa-unlock' : 'fa-lock' }}"></i></span>
                     </td>
                     <td class="narrow-col">
                         <a href="{{ path('_edit_user_chg', { 'userid': user.id }) }}">
@@ -64,13 +77,13 @@
                     </td>
                     <td class="narrow-col">
                         <a href="{{ path('_edit_user_chg_pass', { 'userid': user.id }) }}">
-                            <span class="glyphicon glyphicon-lock"></span>
+                            <span class="fa fa-key"></span>
                         </a>    
                     </td>
                 </tr>
     {% else %}
                 <tr>
-                    <td class="user" colspan="6">
+                    <td class="user" colspan="4">
                         {{'FORM.LISTEDITORS.NOUSER'|trans|upper}}
                     </td>
                 </tr>

@@ -4,7 +4,6 @@ Kampdetaljer som popup
 Rettelse - når kampnr. findes tilbydes swap af ????
 Grafisk brush-up af finale billedet på kategorisiden
 Genåbn konto som turneringsansvarlig
-Vis seneste aktivitet/konto status på brugerlisten
 Overfør hold til en anden klub (indsæt nyt hold på samme plads i pulje)
 Fejlrettelse - afmelding af hold fra pulje hvor holdet har planlagte eller spillede kampe - giver fejl 500
 Fejlrettelse - afmelding af ledig plads skal fjerne denne post fra teams
@@ -28,3 +27,4 @@ Reorganisering af translations til mapper
 Ret en kamp ud fra kamp nr.
 Bladre i dagslisten over kampe
 Send genåbningsmail til postkasse ved låst konto
+Vis seneste aktivitet/konto status på brugerlisten

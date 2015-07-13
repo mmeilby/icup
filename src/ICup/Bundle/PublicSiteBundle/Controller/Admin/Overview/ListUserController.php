@@ -16,8 +16,6 @@ class ListUserController extends Controller
      */
     public function listUsersAction($clubid)
     {
-        
-        
         $club = $this->get('entity')->getClubById($clubid);
         $users = $this->get('logic')->listUsersByClub($clubid);
 

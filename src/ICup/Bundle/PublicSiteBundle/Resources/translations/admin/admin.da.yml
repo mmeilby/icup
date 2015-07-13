@@ -472,6 +472,7 @@ FORM:
       USERNAME: Brugernavn
       NAME: Navn
       ROLE: Rolle
+      LOGIN: Sidst logget på
     NOUSER: Tilføj ny redaktør
   LISTCLUBS:
     TITLE: Vedligehold klubber

@@ -472,6 +472,7 @@ FORM:
       USERNAME: Username
       NAME: Name
       ROLE: Role
+      LOGIN: Last log in
     NOUSER: Add new editor
   LISTCLUBS:
     TITLE: Club administration

@@ -98,6 +98,11 @@
                         {{ team.name }}
         {% endif %}
                     </td>
+                    <td>
+                        <a href="{{ path('_host_enroll_del', { 'teamid': team.id }) }}">
+                            <span class="fa fa-remove" title="{% trans %}FORM.CATEGORY.TITLE.DEL{% endtrans %}"></span>
+                        </a>
+                    </td>
                 </tr>
     {% endfor %}
             </tbody>

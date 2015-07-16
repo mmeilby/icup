@@ -1,12 +1,14 @@
 To Do List
 ----------
+Fejlrettelse - på hviledagen vises spillede kampe fremfor kommende kampe
+Fix - flyt kamp redigering fra gruppe administration - ny kamp redigerings administration
+Fix - opret menuadgang fra dashboard til ret kamp via kampnr.
+Fix - kamp redigering - valg af hold gøres fri - men validering af at valgte hold er fra samme gruppe.
+Fix - kamp redigering - valg af kamp via match dato / bane / gruppe - som ved resultat ændring.
 Kampdetaljer som popup
-Rettelse - når kampnr. findes tilbydes swap af ????
 Grafisk brush-up af finale billedet på kategorisiden
 Genåbn konto som turneringsansvarlig
 Overfør hold til en anden klub (indsæt nyt hold på samme plads i pulje)
-Fejlrettelse - afmelding af hold fra pulje hvor holdet har planlagte eller spillede kampe - giver fejl 500
-Fejlrettelse - afmelding af ledig plads skal fjerne denne post fra teams
 Planlæg slutrunde kampe og puljer
 Færdiggørelse af planlæg indledende kampe
 Administrer kobling mellem nyheder og hold/kampe
@@ -28,3 +30,7 @@ Ret en kamp ud fra kamp nr.
 Bladre i dagslisten over kampe
 Send genåbningsmail til postkasse ved låst konto
 Vis seneste aktivitet/konto status på brugerlisten
+Fejlrettelse - afmelding af hold fra pulje hvor holdet har planlagte eller spillede kampe - giver fejl 500
+Fix - teams skal have flag for ledig plads
+Fix - tilmelding af hold skal erstatte ledige pladser hvis de er defineret
+Fix - mulighed for at fjerne ledige poster fra grupperne (som ikke er tildelt en pulje)

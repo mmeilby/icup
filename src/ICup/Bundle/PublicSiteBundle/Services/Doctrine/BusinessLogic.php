@@ -6,6 +6,7 @@ use DateTime;
 use Doctrine\ORM\EntityManager;
 use ICup\Bundle\PublicSiteBundle\Entity\Doctrine\Category;
 use ICup\Bundle\PublicSiteBundle\Entity\Doctrine\Club;
+use ICup\Bundle\PublicSiteBundle\Entity\Doctrine\Date;
 use ICup\Bundle\PublicSiteBundle\Entity\Doctrine\Enrollment;
 use ICup\Bundle\PublicSiteBundle\Entity\Doctrine\GroupOrder;
 use ICup\Bundle\PublicSiteBundle\Entity\Doctrine\PARelation;
@@ -35,7 +36,7 @@ class BusinessLogic
         $this->logger = $logger;
     }
     
-    public function addEnrolled($categoryid, $clubid, $userid) {
+    public function addEnrolled($categoryid, $clubid, $userid, $vacant = false) {
         $club = $this->entity->getClubById($clubid);
         $qb = $this->em->createQuery(
                 "select e ".
@@ -62,9 +63,9 @@ class BusinessLogic
         else {
             $division = chr($noTeams + 65);
         }
-        
+
         return $this->enrollTeam($categoryid, $userid,
-                                 $clubid, $club->getName(), $division);
+                                 $clubid, $club->getName(), $division, $vacant);
     }
     
     public function deleteEnrolled($categoryid, $clubid) {
@@ -104,13 +105,56 @@ class BusinessLogic
 
         return $enroll;
     }
-    
+
+    public function removeEnrolled($teamid, $categoryid) {
+        // Verify that the team is not assigned to a group
+        if ($this->isTeamAssigned($categoryid, $teamid)) {
+            throw new ValidationException("TEAMASSIGNED", "Team was assigned previously - team=".$teamid.", category=".$categoryid);
+        }
+
+        $qb = $this->em->createQuery(
+            "select e ".
+            "from ".$this->entity->getRepositoryPath('Enrollment')." e ".
+            "where e.pid=:category and e.cid=:team");
+        $qb->setParameter('category', $categoryid);
+        $qb->setParameter('team', $teamid);
+        $enroll = $qb->getOneOrNullResult();
+        // Remove the team entity enrolled in this category
+        $team = $this->entity->getTeamById($teamid);
+        $clubid = $team->getPid();
+        $this->em->remove($team);
+        // Finally remove the enroll entity
+        $this->em->remove($enroll);
+        $this->em->flush();
+
+        $enrolled = $this->listEnrolledTeamsByCategory($categoryid, $clubid);
+        // When clubs have more than one team enrolled in a category
+        // the division must be defined for each team - A, B, C, ...
+        // However for single teams the division must be blank.
+        $noTeams = count($enrolled);
+        if ($noTeams == 1) {
+            // Only a single team is left enrolled for this club when change is committed
+            // Get this lone team and change division to blank
+            $team = array_shift($enrolled);
+            $team->setDivision('');
+        }
+        else {
+            foreach ($enrolled as $idx => $team) {
+                $division = chr($idx + 65);
+                $team->setDivision($division);
+            }
+        }
+        $this->em->flush();
+
+        return $enrolled;
+    }
+
     public function isTeamAssigned($categoryid, $teamid) {
         $qbt = $this->em->createQuery(
                 "select count(o) as teams ".
                 "from ".$this->entity->getRepositoryPath('Group')." g, ".
                         $this->entity->getRepositoryPath('GroupOrder')." o ".
-                "where g.pid=:category and ".
+                "where g.pid=:category and g.classification=0 and ".
                       "o.pid=g.id and ".
                       "o.cid=:team");
         $qbt->setParameter('category', $categoryid);
@@ -119,21 +163,22 @@ class BusinessLogic
         return $teamsAssigned != null ? $teamsAssigned['teams'] > 0 : false;
     }
     
-    public function enrollTeam($categoryid, $userid, $clubid, $name, $division) {
+    public function enrollTeam($categoryid, $userid, $clubid, $name, $division, $vacant = false) {
         $team = new Team();
         $team->setPid($clubid);
         $team->setName($name);
         $team->setColor('');
         $team->setDivision($division);
+        $team->setVacant($vacant);
         $this->em->persist($team);
         $this->em->flush();
-        
+
         $today = new DateTime();
         $enroll = new Enrollment();
         $enroll->setCid($team->getId());
         $enroll->setPid($categoryid);
         $enroll->setUid($userid);
-        $enroll->setDate($today->format($this->container->getParameter('db_date_format')));
+        $enroll->setDate(Date::getDate($today));
         $this->em->persist($enroll);
         $this->em->flush();
         return $enroll;
@@ -190,10 +235,19 @@ class BusinessLogic
         if ($this->isTeamAssigned($group->getPid(), $teamid)) {
             throw new ValidationException("TEAMASSIGNED", "Team was assigned previously - team=".$teamid.", category=".$group->getPid());
         }
-        $groupOrder = new GroupOrder();
-        $groupOrder->setCid($teamid);
-        $groupOrder->setPid($groupid);
-        $this->em->persist($groupOrder);
+        $groupOrder = $this->getFirstVacantAssigned($groupid);
+        if (!$groupOrder) {
+            $groupOrder = new GroupOrder();
+            $groupOrder->setPid($groupid);
+            $groupOrder->setCid($teamid);
+            $this->em->persist($groupOrder);
+        }
+        else {
+            $vacantTeamid = $groupOrder->getCid();
+            $this->moveMatches($groupid, $vacantTeamid, $teamid);
+
+            $groupOrder->setCid($teamid);
+        }
         $this->em->flush();
         return $groupOrder;
     }
@@ -211,7 +265,7 @@ class BusinessLogic
             $this->em->persist($club);
             $this->em->flush();
         }
-        $enrolled = $this->addEnrolled($group->getPid(), $club->getId(), $userid);
+        $enrolled = $this->addEnrolled($group->getPid(), $club->getId(), $userid, true);
         $groupOrder = new GroupOrder();
         $groupOrder->setCid($enrolled->getCid());
         $groupOrder->setPid($groupid);
@@ -220,7 +274,19 @@ class BusinessLogic
         return $groupOrder;
     }
 
-    public function removeEnrolled($teamid, $groupid) {
+    public function getFirstVacantAssigned($groupid) {
+        $qbt = $this->em->createQuery(
+            "select o ".
+            "from ".$this->entity->getRepositoryPath('GroupOrder')." o, ".
+                    $this->entity->getRepositoryPath('Team')." t ".
+            "where o.pid=:group and ".
+            "o.cid=t.id and t.vacant='Y'");
+        $qbt->setParameter('group', $groupid);
+        $vacantTeams = $qbt->getResult();
+        return array_shift($vacantTeams);
+    }
+
+    public function removeAssignment($teamid, $groupid) {
         // Verify that the team is assigned to the group
         $qb = $this->em->createQuery(
                 "select o ".
@@ -245,11 +311,10 @@ class BusinessLogic
     public function moveMatches($groupid, $teamid, $target_teamid) {
         $qb = $this->em->createQuery(
             "update ".$this->entity->getRepositoryPath('MatchRelation')." r set r.cid=:target ".
-            "where r.id in (".
-            "select rx.id ".
-                "from ".$this->entity->getRepositoryPath('MatchRelation')." rx, ".
-                        $this->entity->getRepositoryPath('Match')." m ".
-                "where rx.pid=m.id and m.pid=:group and rx.cid=:team)");
+            "where r.cid=:team and r.pid in (".
+            "select m.id ".
+                "from ".$this->entity->getRepositoryPath('Match')." m ".
+                "where m.pid=:group)");
         $qb->setParameter('group', $groupid);
         $qb->setParameter('team', $teamid);
         $qb->setParameter('target', $target_teamid);
@@ -268,7 +333,20 @@ class BusinessLogic
         $results = $qb->getOneOrNullResult();
         return $results != null ? $results['results'] > 0 : false;
     }
-    
+
+    public function isTeamInGame($groupid, $teamid) {
+        $qb = $this->em->createQuery(
+            "select count(r) as results ".
+            "from ".$this->entity->getRepositoryPath('MatchRelation')." r, ".
+                    $this->entity->getRepositoryPath('Match')." m ".
+            "where r.pid=m.id and m.pid=:group and r.cid=:team and r.scorevalid='Y'".
+            "order by r.pid");
+        $qb->setParameter('group', $groupid);
+        $qb->setParameter('team', $teamid);
+        $results = $qb->getOneOrNullResult();
+        return $results != null ? $results['results'] > 0 : false;
+    }
+
     public function listAnyEnrolledByClub($clubid) {
         $qb = $this->em->createQuery(
                 "select c.pid as tid,count(e) as enrolled ".
@@ -321,7 +399,7 @@ class BusinessLogic
         $qb->setParameter('club', $clubid);
         return $qb->getResult();
     }
-    
+
     public function listEnrolledTeamsByCategory($categoryid, $clubid) {
         $qb = $this->em->createQuery(
                 "select t ".

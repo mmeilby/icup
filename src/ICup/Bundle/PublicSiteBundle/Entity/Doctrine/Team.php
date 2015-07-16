@@ -49,7 +49,12 @@ class Team
      */
     private $division;
 
-
+    /**
+     * @var string $vacant
+     * Vacant team placeholder
+     * @ORM\Column(name="vacant", type="string", length=1, nullable=false)
+     */
+    private $vacant;
 
     /**
      * Get id
@@ -151,5 +156,19 @@ class Team
     public function getDivision()
     {
         return $this->division;
+    }
+
+    /**
+     * @return boolean
+     */
+    public function isVacant() {
+        return $this->vacant == 'Y';
+    }
+
+    /**
+     * @param boolean $vacant
+     */
+    public function setVacant($vacant) {
+        $this->vacant = $vacant ? 'Y' : 'N';
     }
 }

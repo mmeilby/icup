@@ -4,6 +4,7 @@ namespace ICup\Bundle\PublicSiteBundle\Controller\Admin\Tournament;
 use ICup\Bundle\PublicSiteBundle\Entity\Doctrine\User;
 use ICup\Bundle\PublicSiteBundle\Entity\Doctrine\Group;
 use ICup\Bundle\PublicSiteBundle\Entity\Doctrine\Category;
+use ICup\Bundle\PublicSiteBundle\Exceptions\ValidationException;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
@@ -129,11 +130,14 @@ class GroupPlanningController extends Controller
         $tournament = $this->get('entity')->getTournamentById($category->getPid());
         $utilService->validateEditorAdminUser($user, $tournament->getPid());
 
-        if ($this->get('logic')->isTeamActive($groupid, $teamid)) {
+        if ($this->get('logic')->isTeamInGame($groupid, $teamid)) {
+            throw new ValidationException("TEAMISACTIVE", "Team has matchresults - team=".$teamid.", group=".$groupid);
+        }
+        elseif ($this->get('logic')->isTeamActive($groupid, $teamid)) {
             $groupOrder = $this->get('logic')->assignVacant($groupid, $user->getId());
             $this->get('logic')->moveMatches($groupid, $teamid, $groupOrder->getCid());
         }
-        $this->get('logic')->removeEnrolled($teamid, $groupid);
+        $this->get('logic')->removeAssignment($teamid, $groupid);
         return $this->redirect($returnUrl);
     }
 
@@ -160,4 +164,25 @@ class GroupPlanningController extends Controller
         return $this->redirect($returnUrl);
     }
 
+    /**
+     * Removes a team enrolled to a specific category. The team must be unassigned.
+     * The divisions of the club in this category will be reassigned.
+     * @Route("/edit/enroll/del/{teamid}", name="_host_enroll_del")
+     * @Method("GET")
+     */
+    public function delEnrollAction($teamid) {
+        /* @var $utilService Util */
+        $utilService = $this->get('util');
+
+        $returnUrl = $utilService->getReferer();
+        /* @var $user User */
+        $user = $utilService->getCurrentUser();
+        /* @var $category Category */
+        $category = $this->get('logic')->getEnrolledCategory($teamid);
+        $tournament = $this->get('entity')->getTournamentById($category->getPid());
+        $utilService->validateEditorAdminUser($user, $tournament->getPid());
+
+        $this->get('logic')->removeEnrolled($teamid, $category->getId());
+        return $this->redirect($returnUrl);
+    }
 }

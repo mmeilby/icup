@@ -60,7 +60,11 @@
                 <tbody>
     {% for team in group.teams %}
                     <tr>
-                        <td class="flag"><img src="{{ asset(['bundles/icuppublicsite/images/flags/',countries[team.country].flag]|join) }}" alt="{{ team.country|trans({},'lang') }}" title="{{ team.country|trans({},'lang') }}"></td>
+                        <td class="flag">
+        {% if team.country in countries|keys %}
+                            <img src="{{ asset(['bundles/icuppublicsite/images/flags/',countries[team.country].flag]|join) }}" alt="{{ team.country|trans({},'lang') }}" title="{{ team.country|trans({},'lang') }}">
+        {% endif %}
+                        </td>
                         <td><a href="{{ path('_showteam', { 'teamid': team.id, 'groupid': group.group.id }) }}">{{ team.name }}</a></td>
                         <td class="narrow-col">{{ team.matches }}</td>
                         <td class="narrow-col">{{ team.score }}</td>

@@ -1,0 +1,753 @@
+# Form translations
+FORM:
+  ADMIN: Amministrazione iCup
+  ERROR:
+    BACK: Indietro...
+    BADHOST: L'host non esiste
+    BADTOURNAMENT: Il torneo non esiste
+    BADSITE: La pagina non esiste
+    BADPLAYGROUND: Il campo non esiste
+    BADCATEGORY: La categoria non esiste
+    BADGROUP: Il gruppo non esiste
+    BADTEAM: La squadra non è valida
+    NOTOURNAMENT: Nessun torneo selezionato
+  DASHBOARD:
+    TITLE: Pannello di amministrazione
+    SEARCHCAPTION: Seleziona l'host
+    HOSTS: Hosts
+    NOHOST: Please select a host
+    SHOW: Seleziona
+    DEFAULT: Seleziona...
+    TOURNAMENTS:
+        CAPTION: Tornei
+        LEGEND:
+          NAME: Nome
+          KEY: Nome
+          EDITION: Edizione
+          DESCRIPTION: Descrizione
+          STATUS: Stato
+        STATUS:
+          0: Archiviato
+          1: Iscrizione
+          2: In corso
+          3: Finito
+          4: In costruzione
+        NOTOURNAMENT: Aggiungi un nuovo torneo
+    TOURNAMENTBOARD:
+        CAPTION: Gestisci il torneo
+    ADDHOST:
+        CAPTION: Add host
+        DESCRIPTION: Add new host
+    HOST:
+        CAPTION: Modify host
+        DESCRIPTION: Change information for current host
+    EDITORS:
+        CAPTION: Lista degli utenti
+        DESCRIPTION: Mostra la lista degli utenti per l'host
+    CLUBLIST:
+        CAPTION: Lista dei club
+        DESCRIPTION: Mostra la lista dei club presenti
+    UPLOAD:
+        CAPTION: Upload documenti
+        DESCRIPTION: Carica documenti e immagini in archivio
+  UPLOAD:
+    TITLE: Carica documenti e immagini nell'archivio
+    NAME: Titolo
+    PATH: Tipo di documento
+    FILE: File
+    FETCH: Fetch
+    FILES: Files
+    IMAGES: Immagini
+    DOWNLOADS: Documenti
+    LIST: Lista documenti
+    NODOCUMENTS: Non ci sono documenti in archivio
+  TOURNAMENTBOARD:
+    TITLE: Pannello di amministrazione del torneo
+    TOURNAMENT:
+        CAPTION: Modifica il torneo
+        DESCRIPTION: Gestisci le informazioni sul torneo
+    LISTSITES:
+        CAPTION: Campi di gioco
+        DESCRIPTION: Gestisci le informazioni sui campi di gioco
+    LISTCATEGORIES:
+        CAPTION: Gategorie e gruppi
+        DESCRIPTION: Gestisci i gruppi e le categorie
+    LISTTIMESLOTS:
+        CAPTION: Periodi
+        DESCRIPTION: Definisce i tempi di gioco per tutti i campi
+    LISTCLUBS:
+        CAPTION: Clubs inscritti
+        DESCRIPTION: visualizza i club inscritti e gestisci le loro richieste
+    STATUS:
+        CAPTION: Il calendario del torneo
+        DESCRIPTION:
+          0: Il torneo è archiviato è non sarà visibile per l'utente normale
+          1: Il torneo è aperto per l'iscrizione, annunciato in home page
+          2: Il torneo è in corso e i risultati visualizzati in home page
+          3: Il torneo è completo. I risultati sono disponibili nella sezione statistiche
+          4: Il torneo è in fase di realizzazione. Il programma richiesto non è ancora pronto.
+    NEWS:
+        CAPTION: Gestisci le news
+        DESCRIPTION: Inserici una news
+    PLANNING:
+        CAPTION: Calendario gare
+        DESCRIPTION: Programma delle gare per ogni categoria
+    MATCHIMPORT:
+        CAPTION: Importa il programma delle gare
+        DESCRIPTION: Importa il programma delle gare per uno specifico giorno
+    QMATCHIMPORT:
+        CAPTION: Importa il programma delle gare per la fase eliminatoria
+        DESCRIPTION: Importa il programma delle gare per un giorno specifico
+    MATCHIMPORTUNRES:
+        CAPTION: Assegna le suadre per la fase eliminatoria
+        DESCRIPTION: Specify teams elegible for elimination round
+    REPORT:
+        CAPTION: Report dei risultati
+        DESCRIPTION: Report match results for matches played at a specific playground
+    MATCHPRINT:
+        CAPTION: Stampa il report dei risultati
+        DESCRIPTION: Show match report for a specific day for output
+  LISTHOSTS:
+    TITLE: Hosts and tournaments administration
+    CAPTION: Hosts and tournaments
+    CAPTION_TNMT: Tornei
+    NOTOURNAMENT: Aggiungi un nuovo torneo
+  LOGIN:
+    TITLE: Accedi
+    PROMPT: Se hai un profilo accedi usando il tuo username.
+    USERNAME: Username
+    PASSWORD: Password
+    LOGIN: Accedi
+  HOST:
+    NONAME: The host must be given a name.
+    TOURNAMENTSEXIST: There are tournaments defined for this host. The host can not be removed.
+    EDITORSEXIST: Editors are defined for this host. The host can not be removed.
+    TITLE:
+      ADD: Aggiungi un nuovo host
+      CHG: Modifica l'host
+      DEL: Elimina l'host
+    PROMPT:
+      ADD: Please enter information about the new host.
+      CHG: Modifica le informazioni per l'host
+      DEL: Il seguente host non verrà rimosso. Non potrai annullare l'azione.
+    NAME: Nome
+    SUBMIT:
+      ADD: Add host
+      CHG: Salva
+      DEL: REMOVE HOST
+    CANCEL:
+      ADD: Cancella
+      CHG: Cancella le modifiche
+      DEL: Cancella
+  TOURNAMENT:
+    NONAME: Il torneo deve avere un nome.
+    NOKEY: La chiave del torneo è obbligatoria.
+    NOEDITION: L'edizione del torneo è obbligatoria.
+    CANTCHANGEKEY: La chiave del torneo è già in uso.
+    KEYEXIST: La chiave del torneo è già in uso per altro torneo.
+    CATEGORIESEXIST: Le categorie sono state definite per il torneo. Il torneo non può essere rimosso.
+    SITESEXIST: I luoghi sono già stati definiti per il torneo. Il torneo non può essere rimosso.
+    TIMESLOTSEXIST: I periodi sono stati definiti per il torneo. Il torneo non può essere eliminato.
+    EVENTSEXIST: Gli eventi sono definiti per il torneo. Il torneo non può essere eliminato.
+    TITLE:
+      ADD: Aggiungi un nuovo torneo
+      CHG: Modifica il torneo
+      DEL: Rimuovi il torneo
+    PROMPT:
+      ADD: Inserisci le informazioni sul nuovo torneo.
+      CHG: Modifica le informazioni per il torneo.
+      DEL: Il seguente torneo verrà rimosso. Non potrai annullare l'azione.
+    NAME: Nome del torneo
+    KEY: Chiave usata per identificare il torneo
+    EDITION: Edizione
+    DESC: Descrizione
+    SUBMIT:
+      ADD: Aggiungi il torneo
+      CHG: Salva le informazioni
+      DEL: Rimuovi il torneo
+    CANCEL:
+      ADD: Cancella
+      CHG: Cancella le modifiche
+      DEL: Cancella
+  LISTSITES:
+    TITLE: Amministrazione torneo
+    CAPTION: Luoghi e campi di gioco
+    NOSITE: Aggiungi un nuovo luogo
+    NOPLAYGROUND: Aggiungi un nuovo campo di gioco
+  SITE:
+    NONAME: Il luogo deve avere un nome.
+    PLAYGROUNDSEXIST: I campi di gioco sono stati definiti per il luogo. Il luogo non può essere rimosso.
+    TITLE:
+      ADD: Aggiungi un nuovo luogo
+      CHG: Modifica luogo
+      DEL: Rimuovi luogo
+    PROMPT:
+      ADD: Aggiungi le informazioni sul nuovo luogo
+      CHG: Modifica le informazioni per il luogo.
+      DEL: Il seguente luogo verrà rimosso. L'azione non potrà essere annullata.
+    NAME: Nome del luogo
+    SUBMIT:
+      ADD: Aggiungi luogo
+      CHG: Salva
+      DEL: Rimuovi il luogo
+    CANCEL:
+      ADD: Cancella
+      CHG: Cancella le modifiche
+      DEL: Cancella
+  PLAYGROUND:
+    NONAME: Il campo deve avere un nome.
+    NONO: Il numero del campo è obbligatorio.
+    MATCHESEXIST: Le partite sono state definite su questo campo di gioco. Il campo di gioco non può essere rimosso.
+    TITLE:
+      ADD: Aggiungi un nuovo campo
+      CHG: Modifica il campo
+      DEL: Elimina il campo
+    PROMPT:
+      ADD: Inserisci le informazioni sul nuovo campo di gioco.
+      CHG: Modifica le informazioni del campo di gioco.
+      DEL: The following playground will be removed. L'azione non potrà essere annullata.
+    NAME: Nome del campo di gioco
+    NO: Campo no.
+    SUBMIT:
+      ADD: Aggiungi campo di gioco
+      CHG: Salva
+      DEL: Elimina il campo di gioco
+    CANCEL:
+      ADD: Elimina
+      CHG: Cancella le modifiche
+      DEL: Elimina
+  COPYPLAYGROUND:
+    TITLE: Copia le pereferenze del campo di gioco
+    PROMPT: Timeslots and preferences will be copied to the selected playground. Existing preferences at same date and time will not be changed.
+    SOURCEPLAYGROUND: Source playground
+    TARGETPLAYGROUND: Target playground
+    SUBMIT: Copia le preferenze
+    CANCEL: Elimina la copia
+  LISTPLAYGROUNDATTRS:
+    TITLE: Amministrazione torneo
+    CAPTION: Preferenze del campo di gioco
+    NOATTR: Aggiungi una preferenza
+  PLAYGROUNDATTR:
+    DEFAULT: Nessun periodo selezionato
+    NODATE: La data scelta è obbligatoria.
+    BADDATE: La data scelta non è valida.
+    NOSTART: The preference start of day is mandatory.
+    BADSTART: The preference start of day is not valid.
+    NOEND: The preference end of day is mandatory.
+    BADEND: The preference end of day is not valid.
+    NOTIMESLOT: A timeslot for this preference must be chosen.
+    BADTIME: Start and end of day must define a continuous period of time for the specified day. This is not the case.
+    TITLE:
+      ADD: Aggiungi una nuova preferenza.
+      CHG: Modifica la preferenza
+      DEL: Rimuovi la preferenza
+    PROMPT:
+      ADD: Please enter information about the new preference.
+      CHG: Change information for this preference.
+      DEL: The following preference will be removed. L'azione non potrà essere annullata.
+    TIMESLOT:
+      PROMPT: Periodo
+      HELP: The timeslot this preference is related to
+    DATE:
+      PROMPT: Data
+      HELP: Match date this preference relates to
+    START:
+      PROMPT: Inizio gare
+      HELP: Earliest time of match start for this preference
+    END:
+      PROMPT: Fine gara
+      HELP: Latest time of match end for this preference
+    SUBMIT:
+      ADD: Aggiungi una nuova preferenza
+      CHG: Salva
+      DEL: Rimuovi le preferenze
+    CANCEL:
+      ADD: Elimina
+      CHG: Cancella le modifiche
+      DEL: Elimina
+  LISTTIMESLOTS:
+    TITLE: Amministrazione torneo
+    CAPTION: Periodi
+    NOTIMESLOT: Aggiungi un nuovo periodo
+  TIMESLOT:
+    NONAME: Il nome dell periodo è obbligatorio.
+    PLAYGROUNDSEXIST: Playground preferences are related to this timeslot. Il periodo non può essere eliminato
+    TITLE:
+      ADD: Aggiungi un nuovo periodo
+      CHG: Modifica il periodo
+      DEL: Cancella il periodo
+    PROMPT:
+      ADD: Inserisci le informazioni sul periodo
+      CHG: Modifica le informazioni per il periodo selezionato.
+      DEL: Il seguente periodo verrà eliminato. Non potrai annullare l'operazione.
+    NAME:
+      PROMPT: Nome
+      HELP: Descrizione per il periodo
+    CAPACITY:
+      PROMPT: Match capacity
+      HELP: The maximum number of matches a team can play in this timeslot each day.
+    RESTPERIOD:
+      PROMPT: Tempo rimasto
+      HELP: The smallest time of restitution (in minutes) a team must rest between two matches.
+    PENALTY:
+      PROMPT: Avoid transport?
+      HELP: Check this if matches for one team should be planned at the same site.
+    SUBMIT:
+      ADD: Aggiungi un nuovo periodo
+      CHG: Save information
+      DEL: Rimuovi il periodo
+    CANCEL:
+      ADD: Elimina
+      CHG: Cancella le modifiche
+      DEL: Elimina
+  LISTPARELS:
+    TITLE: Amministrazione torneo
+    CAPTION: Preferenze - categorie preferite per giocare su questo campo
+    ASSIGNED: Categorie preferite
+    UNASSIGNED: Altre categorie
+    FINALS: Gare di finale
+    MATCHTIME: Orario gara
+    UNIT: min.
+  MATCHPLANNING:
+    TITLE: Amministrazione torneo
+    CAPTION: Calendario gare
+    PLANNINGINCOMPLETE: Non è stato possibile schedulare tutte le gare
+    DOUBLEMATCH:
+      PROMPT: Plan for Double Round Robin tournament
+      HELP: If you plan for Double Round Robin every team will play twice against same opponent
+    PREFERPG:
+      PROMPT: Fill playground first
+      HELP: With this option each team will experience more matches on the same playground
+    FINALS:
+      PROMPT: Programma delle finali
+      HELP: Scegli il programma della fase eliminatoria o delle finali
+    SWITCH:
+      ON: Si
+      OFF: No
+    TEAMS: Squadre
+    MATCHES: Partite
+    NOTEAMS: No teams
+    DOWNLOAD: Download il programma delle gare come file di testo
+    SAVE: Accetta e salva il calendario gare
+    OPTIONS: Opzioni
+    VIEW: Calendario gare
+    RESULT: Dashboard
+    ADVICE: Consigli
+    SOLVEXCHG: No timeslots fit the requirements for this match. Try to exchange timeslot with another match from the group.
+    SOLVEXPND: This match requires more time than available. Expand a timeslot to make space for this match.
+    PLAN_SAVED: The match schedule has been accepted and registered for the tournament
+    PLAYGROUND: Campo di gioco
+    TIMESLOT: Periodo
+    PATTRS: Categorie preferite
+    TIMELEFT: Tempo rimasto
+    SUBMIT: Programma delle gare
+    CANCEL: Elimina
+  QMATCHPLANNING:
+    TITLE: Amministrazione Torneo
+    CAPTION: Pianifica le gare eliminatorie
+    PLANNINGINCOMPLETE: Non è stato possibile pianificare tutte le gare
+    TEAMS: Squadre
+    GROUP:
+      ONE: Un gruppo
+      TWO: Due gruppi
+      THREE: Tre gruppi
+      FOUR: Quattro gruppi
+    RADIO:
+      GROUP1:
+        OPTION1: Top four teams qualify for semifinal
+        OPTION2: Top two teams qualify for final
+      GROUP2:
+        OPTION1: Top four teams qualify for quater final
+        OPTION2: Top two teams qualify for semifinal
+        OPTION3: Group winners quaify for final
+      GROUP3:
+        OPTION1: Group winners qualify for semifinal, group 2nd place qualify for playoff
+        OPTION2: Top two teams qualify for quater final, group 3rd and 4th place qualify for playoff
+      GROUP4:
+        OPTION1: Top two teams qualify for quater final
+        OPTION2: Group winners quaify for semifinal
+  TOURNAMENTIMPORT:
+    TITLE: Amministrazione del torneo
+    CAPTION: Copia le informazioni da altro torneo.
+    PROMPT:
+      SITES: Copia sito, campi di gioco, preferenze, categorie e gruppi
+      CATEGORIES: Copia le categorie e i gruppi
+    DEFAULT: Seleziona un torneo...
+    TOURNAMENT:
+      PROMPT: Source tournament
+      HELP: Seleziona il torneo per copiare le informazioni
+    SUBMIT: Copia le informazioni
+    CANCEL: Elimina
+  LISTCATEGORIES:
+    TITLE: Amministrazione del torneo
+    CAPTION: Categorie e Gruppi
+    NOCATEGORY: Aggiungi una nuova categoria
+    NOGROUP: Aggiungi un nuovo gruppo
+    BUTTON:
+      WIPE: Cancella tutte le gare
+      QWIPE: Cancella tutte le gare
+  CATEGORY:
+    DEFAULT: Seleziona...
+    NONAME: The category must be given a name.
+    NOGENDER: The gender preference is mandatory.
+    NOCLASSIFICATION: The classification of age is mandatory. 
+    NOAGE: Age limit is mandatory.
+    NOMATCHTIME: Match time is mandatory (expressed in minutes).
+    GROUPSEXIST: Groups are defined for this category. The category can not be removed.
+    ENROLLEDEXIST: Teams are enrolled for this category. The category can not be removed.
+    PARELATIONSEXIST: Playground preferences are defined for this category. La categoria non può essere rimossa.
+    TITLE:
+      ADD: Aggiungi una nuova categoria
+      CHG: Modifica la categoria
+      DEL: Elimina la categoria
+    PROMPT:
+      ADD: Inserisci le informazioni per la nuova categoria.
+      CHG: Modifica le informazioni per questa categoria.
+      DEL: La seguente categoria verrà rimossa. L'azione non potrà essere annullata.
+    NAME: Nome della categoria
+    GENDER: Sesso
+    SEX:
+      FEMALE: Donne
+      MALE: Uomini
+    CLASSIFICATION: Età
+    CLASS:
+      UNDER: Età UNDER
+      OVER: Età OVER
+    AGE: Limiti d'età
+    MATCHTIME: Orari
+    SUBMIT:
+      ADD: Aggiungi la categoria
+      CHG: Salva le informazioni
+      DEL: Elimina la categoria
+    CANCEL:
+      ADD: Elimina
+      CHG: Cancella le modifiche
+      DEL: Elimina
+  LISTGROUPS:
+    TITLE: Team group assignment
+    NOGROUP: There a no groups
+    UNASSIGNED: Squadre non assegnate
+    ADD_VACANT: Assign vacant spot
+  GROUP:
+    DEFAULT: Seleziona...
+    NONAME: Il gruppo deve avere un nome
+    NOCLASSIFICATION: La classifica del gruppo è obbligatoria.
+    ORDEREXIST: Le squadre sono state già assegnate al gruppo. Il gruppo non può essere rimosso.
+    MATCHESEXIST: Le partite sono già state programmate per il gruppo. Il gruppo non può essere rimosso.
+    TITLE:
+      ADD: Aggiungi un nuovo gruppo
+      CHG: Modifica il gruppo
+      DEL: Elimina il gruppo
+    PROMPT:
+      ADD: Aggiungi le informazioni sul nuovo gruppo.
+      CHG: Modifica le informazioni sul gruppo.
+      DEL: Il seguente gruppo verrà rimosso. L'azione non potrà essere annullata.
+    NAME: Nome del gruppo
+    TIME: Durata della gara in minuti
+    CLASSIFICATION: Classifica gruppo
+    CLASS:
+      0: Fase eliminatoria
+      1: Playoff
+#      2: 1/128 final
+#      3: 1/64 final
+#      4: 1/32 final
+#      5: 1/16 final
+      6: 1/8 final
+      7: 1/4 final
+      8: Semifinale
+      9: Bronze medal game
+      10: Final
+    SUBMIT:
+      ADD: Aggiugi gruppo
+      CHG: Salva le informazioni
+      DEL: Elimina gruppo
+    CANCEL:
+      ADD: Cancella
+      CHG: Cancella le modifiche
+      DEL: Cancella
+  LISTEDITORS:
+    TITLE: Editor administration
+    CAPTION: Editors and editor administrators
+    LEGEND:
+      USERNAME: Username
+      NAME: Nome
+      ROLE: Ruolo
+      LOGIN: Ultimo accesso
+    NOUSER: Aggiungi un nuovo editor
+  LISTCLUBS:
+    TITLE: Amministrazione club
+    CAPTION: Lista dei club per tutti i tornei
+    LEGEND: Club ordinati per paese
+    NOCLUB: Aggiungi un club
+    BUTTON:
+      WIPE: Pulisci tutte le squadre
+  CLUB: 
+    DEFAULT: Seleziona...
+    NONAME: Deve essere assegnato un nome al club.
+    NOCOUNTRY: The home of the club is mandatory.
+    NAMEEXIST: A different club has the same name. Consider to change the information of the existing club.
+    CANTCHANGENAME: A different club has the same name. Please use another name.
+    TEAMSEXIST: Sono state definite squadre per il club. Il club non può essere rimosso.
+    TITLE:
+      ADD: Aggiungi un nuovo club
+      CHG: Modifica il club
+      DEL: Cancella il club
+      SEL: Seleziona il club
+    PROMPT:
+      ADD: Inserisci le informazioni sul nuovo club.
+      CHG: Modifica le informazioni per il club.
+      DEL: TIl seguente club verrà eliminato. Non potrai annullare l'azione.
+      SEL: Please select club to connect to.
+    NAME: Nome del club
+    COUNTRY: Home (paese)
+    SUBMIT:
+      ADD: Aggiungi un club
+      CHG: Salva
+      DEL: Rimuovi il club
+      SEL: Attach club
+    CANCEL:
+      ADD: Cancel
+      CHG: Cancella le modifiche
+      DEL: Cancella
+      SEL: Elimina l'assegnazione
+  NEWCLUB:
+    TITLE: Aggiungi un nuovo club
+    CAPTION: Cerca i risultati
+    PROMPT: Assign new club using an active profile. Log in with your user name if you got a profile. Otherwise register a new profile for free.
+    LEGEND: Clubs
+    NOCLUBS: No clubs matches the pattern
+    MORECLUBS: There are clubs not shown here that match the pattern. Select one from the list or continue narrow the search.
+    INFO: If you want to choose a club from the list then click on the name of the club.
+  CLUBMERGE:
+    TITLE: Merge clubs
+    PROMPT: The following clubs will be merged and the last club listed will receive all teams and user profiles. The first club listed will be removed.
+    SOURCECLUB: The club to be removed
+    TARGETCLUB: The club to receive all teams and user profiles
+    SUBMIT: Merge clubs
+    CANCEL: Cancel merge
+  LISTUSERS:
+    TITLE: Amministrazione utente
+    CAPTION: Utenti
+    NOUSER: Aggiungi un nuovo utente
+  USER: 
+    DEFAULT: Seleziona...
+    NONAME: L'utente deve specificare un nome.
+    NOUSERNAME: Il campo username è obbligatorio.
+    NOEMAIL: La mail è obbligatoria.
+    NOPASSWORD: La password è obbligatoria.
+    NOSTATUS: Status of affiliation is mandatory.
+    NOROLE: Il ruolo utente è obbligatorio
+    NAMEEXIST: A different user is assigned this user name. Please choose a another.
+    CANTCHANGENAME: A different user is assigned this user name. You can not change the user name.
+    BADPASSWORD: La password non è valida.
+    CHOICE:
+      ROLE:
+        1: Club official
+        2: Club administrator
+        3: Editor
+        4: Editor administrator
+      STATUS:
+        1: Nuovo utente
+        2: Conferma l'utente
+        3: Candidato
+        4: Affiliato
+        5: Follower
+    TITLE:
+      ADD: Aggiungi un nuovo utente
+      CHG: Modifica l'utente
+      DEL: Rimuovi l'utente
+    PROMPT:
+      ADD: Inserisci le informazioni per il nuovo utente
+      CHG: Modifica le informazioni per l'utente
+      DEL: Il seguente utente verrà eliminato. You can not undo this action.
+    NAME: Name
+    EMAIL: E-mail
+    ROLE: Ruolo utente
+    STATUS: Status of affiliation
+    USERNAME: Username
+    PASSWORD: Password
+    PASSWORD2: Riscrivi la password
+    SUBMIT:
+      ADD: Aggiungi un nuovo utente
+      CHG: Salva
+      DEL: Elimina l'utente
+    CANCEL:
+      ADD: Elimina
+      CHG: Cancella le modifiche
+      DEL: Elimina
+  NEWPASS: 
+    NOPASSWORD: Devi inserire la password.
+    BADPASSWORD: La password non è valida.
+    NOTEQUAL: Please retype the password properly. The typed passwords are not equal.
+    TITLE: Cambio password
+    CAPTION: Inserisci una nuova password
+    PROMPT: >
+        La password deve contenere almeno 8 caratteri, maiuscole, minscole e numeri.
+        Devi inserire la password in ambedue i campi.
+    MAKEPWD: Genera la password
+    PASSWORD: Password
+    PASSWORD2: Riscrivi la password
+    SUBMIT: Cambio password
+    CANCEL: Cancella
+  MATCHIMPORTUNRES:
+    TITLE: Assign teams for elimination round
+  QMATCHIMPORT:
+    TITLE: Importa il programma delle gare per la fase eliminatoria
+  MATCHIMPORT: 
+    NODATE: Match schedule is required
+    BADDATE: The match schedule is not a valid date
+    TITLE: Importa il programma delle gare
+    PROMPT: Inserisci il programma delle gare per giorno
+    DATE: Date
+    IMPORT: Programma delle gare
+    SUBMIT: Importa
+    CANCEL: Cancella
+  TEAMIMPORT:
+    TITLE: Importa la lista delle squadre
+    PROMPT: Inserisci le squadre da inscrivere nel torneo
+    IMPORT: Lista delle squadre
+    SUBMIT: Importa
+    CANCEL: Cancella
+  MATCH:
+    DEFAULT: Seleziona...
+    NONO: Il numero di gara è obbligatorio.
+    NODATE: The match schedule is mandatory.
+    BADDATE: The match schedule is not a valid date.
+    NOTIME: La durata della gara è obbligatoria.
+    BADTIME: IL tempo di gioco per la gara non è valido.
+    NOPLAYGROUND: Il campo di gioco per la partita è obbligatorio.
+    NOHOMETEAM: La squadra di casa è obbligatoria.
+    NOHOMEGROUP: Il gruppo della squadra di casa è obbligatorio.
+    NOHOMERANK: Group rank for home team is mandatory.
+    NOAWAYTEAM: La squadra ospite è obbligatoria.
+    NOAWAYGROUP: Group for away team is mandatory.
+    NOAWAYRANK: Group rank for away team is mandatory.
+    NOEXISTS: This match no. is in use. Please correct the match no.
+    CANTCHANGENO: This match no. is in use. You can not change the match.
+    SAMETEAM: Home team and away team is the same. This is not acceptable.
+    CANTDELETE: La partita è stata giocata e il risultato inserito. Non puoi eliminare la gara.
+    TITLE:
+      ADD: Aggiungi una nuova gara
+      CHG: Modifica la gara
+      DEL: Elimina la gara
+    PROMPT:
+      ADD: Inserisci le informazioni sulla nuova gara.
+      CHG: Modifica le informazioni per questa gara.
+      DEL: La seguente gara verrà rimossa. You can not undo this action.
+    NO: Gara no.
+    DATE: Data
+    TIME: Ora
+    PLAYGROUND: Campo di gioco
+    HOME: Squadra di casa
+    QHOME:
+      GROUP: Gruppo (squadra di casa)
+      RANK: Classifica gruppo
+    AWAY: Squadra ospite
+    QAWAY:
+      GROUP: Gruppo (squadra ospite)
+      RANK: Classifica del gruppo
+    SUBMIT:
+      ADD: Aggiungi una gara
+      CHG: Salva le informazioni
+      DEL: Rimuovi la gara
+    CANCEL:
+      ADD: Elimina
+      CHG: Cancella le modifiche
+      DEL: Elimina
+  LISTMATCHES:
+    TITLE: Calendario gare
+    NOMATCH: Aggiungi una partita al calendario gare
+  EVENT:
+    DEFAULT: Seleziona...
+    NOEVENT: Il tipo di evento è obbligatorio.
+    NODATE: La data dell'evento è obbligatoria.
+    BADDATE: La data dell'evento non è valida.
+    EVENTEXISTS: This event is in use. Please correct the event type.
+    CANTCHANGEEVENT: This event is in use. You can not change the event.
+    TITLE:
+      ADD: Aggiungi un nuovo evento
+      CHG: Modifica l'evento
+      DEL: Rimuovi l'evento
+    PROMPT:
+      ADD: Per favore inserisci le informazioni sul nuovo evento.
+      CHG: Modifica le informazioni su questo evento.
+      DEL: Il seguente evento verrà rimosso. You can not undo this action.
+    EVENT: Evento
+    DATE: Data dell'evento
+    EVENTS:
+      1: Iscrizioni aperte
+      2: Iscrizione chiusa
+      3: Torneo iniziato
+      4: Torneo finito
+      9: Torneo archiviato
+    SUBMIT:
+      ADD: Aggiungi evento
+      CHG: Salva le informazioni
+      DEL: Rimuovi l'evento
+    CANCEL:
+      ADD: Elimina
+      CHG: Cancella le modifiche
+      DEL: Elimina
+  LISTEVENTS:
+    TITLE: Event calendar
+    CAPTION: Events for this tournament
+    NOEVENT: Aggiungi l'evento al calendario
+  NEWS:
+    DEFAULT: Seleziona...
+    NONO: A news no. è obbligatorio.
+    NONEWS: Il periodo di validità è obbligatorio.
+    NOLANGUAGE: La scelta della lingua è obbligatoria.
+    NODATE: La data di pubblicazione è obbligatoria.
+    NOTITLE: The news headline is mandatory.
+    NOCONTEXT: The news context is mandatory.
+    BADDATE: The publishing date is not a valid date.
+    NEWSEXISTS: This news no. is in use for the chosen language. Please correct the no. or language.
+    CANTCHANGENEWS: This news no. is in use for the chosen language. You can not change this news record.
+    TITLE:
+      ADD: Add new news record
+      CHG: Modify news record
+      DEL: REMOVE NEWS RECORD
+    PROMPT:
+      ADD: Please enter information about the new news record.
+      CHG: Change information for this news record.
+      DEL: The following news record will be removed. You can not undo this action.
+    NEWS: News
+    NO: News no.
+    LANGUAGE: Lingua
+    DATE: Data di pubblicazione
+    TYPE: Validità
+    TYPES:
+      1: For ever
+      2: Limited time
+    SUBJECT: Headline
+    CONTEXT: Context
+    SUBMIT:
+      ADD: Aggiungi una news
+      CHG: Modifica la news
+      DEL: Rimuovi la news
+    CANCEL:
+      ADD: Elimina
+      CHG: Cancella le modifiche
+      DEL: Elimina
+  LISTNEWS:
+    TITLE: News del torneo
+    CAPTION: News e comunicati del torneo
+    NOEVENT: Aggiungi una news
+  CHANGEMATCH:
+    TITLE: Cambia la gara
+    PROMPT: Find the match from match no. and change information for that match
+    NONO: Il numero di gara ufficiale è 
+    INVALIDMATCHNO: Il numero di gara non è disponibile per il torneo.
+    CANTCHANGE: Non è possibile cambiare questa gara. Il risultato della gara è stato registrato.
+    TOURNAMENT: Torneo
+    MATCHNO: Gara numero
+    HELP:
+        MATCHNO: An official match no. from the match schedule.
+    SUBMIT: Cerca la partita
+    CANCEL: Elimina
+  INFOEMAIL:
+    TITLE: Richiedi maggiori informazioni
+    NAME: Nome
+    CLUB: Club
+    EMAIL: E-mail
+    PHONE: Telefono

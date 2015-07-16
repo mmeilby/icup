@@ -7,7 +7,7 @@ FORM:
     BLOCK1:
         TITLE: Segui la tua squadra
         DESCRIPTION: >
-                     Sei un genitore o un atleta?. Qui puoi seguire la i risultati della tua squadra.
+                     Sei un genitore o un atleta? Segui i risultati della tua squadra.
                      Seleziona il link e segui la tua squadra.
         LEARNMORE: Segui il tuo club.
         TABLETITLE: Club selezionato
@@ -35,7 +35,7 @@ FORM:
                      Organizza il tuo viaggio a Teramo.
     SENDMAIL: Ricevi maggiori informazioni - compila il modulo e invialo
     NAME: Nome
-    CLUB: Scrivi il nome del club
+    CLUB: Scrivi il nome del tuo club
     PHONE: Lascia il tuo numero di telefono per ricevere maggiori dettagli
     EMAIL: Lascia il tuo indirizzo e-mail
     MSG: Lasci qui il tuo messaggio, la tua richiesta o il tuo suggerimento...

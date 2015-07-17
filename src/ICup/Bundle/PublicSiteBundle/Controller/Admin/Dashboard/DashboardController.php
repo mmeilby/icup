@@ -2,6 +2,7 @@
 namespace ICup\Bundle\PublicSiteBundle\Controller\Admin\Dashboard;
 
 use ICup\Bundle\PublicSiteBundle\Entity\Doctrine\Host;
+use ICup\Bundle\PublicSiteBundle\Entity\Doctrine\User;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
@@ -23,23 +24,25 @@ class DashboardController extends Controller
      */
     public function dashboardAction(Request $request)
     {
+        /* @var $user User */
         $user = $this->get('util')->getCurrentUser();
-        if ($user->isEditor()) {
+        if ($user->isAdmin()) {
+            // Get the host accessed lately by this user
             $hostid = $user->getPid();
-            $form = $this->getSearchForm($hostid);
-        }
-        else {
-            /* @var $session Session */
-            $session = $request->getSession();
-            $hostid = $session->get('Host', 0);
-            
             $form = $this->getSearchForm($hostid);
             $form->handleRequest($request);
             if ($form->isValid()) {
                 $formData = $form->getData();
                 $hostid = $formData['host'];
-                $session->set('Host', $hostid);
+                // Update accessed host
+                $user->setPid($hostid);
+                $em = $this->getDoctrine()->getManager();
+                $em->flush();
             }
+        }
+        else {
+            $hostid = $user->getPid();
+            $form = $this->getSearchForm($hostid);
         }
         
         $parameters = array(

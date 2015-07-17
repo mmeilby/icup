@@ -34,3 +34,4 @@ Fejlrettelse - afmelding af hold fra pulje hvor holdet har planlagte eller spill
 Fix - teams skal have flag for ledig plads
 Fix - tilmelding af hold skal erstatte ledige pladser hvis de er defineret
 Fix - mulighed for at fjerne ledige poster fra grupperne (som ikke er tildelt en pulje)
+Fix - sidst valgte turneringsvært gemmes på admin bruger (samme felt som turneringsansvarlige) og anvendes som udgangspunkt for valg af vært

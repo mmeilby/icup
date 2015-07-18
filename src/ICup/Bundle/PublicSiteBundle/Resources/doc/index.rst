@@ -1,6 +1,5 @@
 To Do List
 ----------
-Fejlrettelse - på hviledagen vises spillede kampe fremfor kommende kampe
 Fix - flyt kamp redigering fra gruppe administration - ny kamp redigerings administration
 Fix - opret menuadgang fra dashboard til ret kamp via kampnr.
 Fix - kamp redigering - valg af hold gøres fri - men validering af at valgte hold er fra samme gruppe.
@@ -35,3 +34,4 @@ Fix - teams skal have flag for ledig plads
 Fix - tilmelding af hold skal erstatte ledige pladser hvis de er defineret
 Fix - mulighed for at fjerne ledige poster fra grupperne (som ikke er tildelt en pulje)
 Fix - sidst valgte turneringsvært gemmes på admin bruger (samme felt som turneringsansvarlige) og anvendes som udgangspunkt for valg af vært
+Fejlrettelse - på hviledagen vises spillede kampe fremfor kommende kampe

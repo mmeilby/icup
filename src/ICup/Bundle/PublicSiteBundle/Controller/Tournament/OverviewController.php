@@ -3,6 +3,7 @@ namespace ICup\Bundle\PublicSiteBundle\Controller\Tournament;
 
 use ICup\Bundle\PublicSiteBundle\Entity\Doctrine\Date;
 use ICup\Bundle\PublicSiteBundle\Entity\Doctrine\News;
+use ICup\Bundle\PublicSiteBundle\Exceptions\ValidationException;
 use ICup\Bundle\PublicSiteBundle\Services\Util;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;

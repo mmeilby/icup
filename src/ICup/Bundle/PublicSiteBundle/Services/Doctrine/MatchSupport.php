@@ -268,17 +268,26 @@ class MatchSupport
     }
 
     public function getMatchDate($tournamentid, DateTime $date) {
-        $diffmin = $date->getTimestamp();
-        $event = $date;
-        $eventdates = $this->listMatchCalendar($tournamentid);
-        foreach ($eventdates as $eventdate) {
-            $diff = $eventdate->getTimestamp() - $date->getTimestamp();
-            if ($diffmin > abs($diff)) {
-                $event = $eventdate;
-                $diffmin = abs($diff);
-            }
+        $qb = $this->em->createQuery(
+            "select min(m.date) as date ".
+            "from ".$this->entity->getRepositoryPath('Match')." m, ".
+                    $this->entity->getRepositoryPath('Group')." g, ".
+                    $this->entity->getRepositoryPath('Category')." c ".
+            "where c.pid=:tournament and g.pid=c.id and m.pid=g.id and m.date>=:date");
+        $qb->setParameter('tournament', $tournamentid);
+        $qb->setParameter('date', Date::getDate($date));
+        $mdate = $qb->getOneOrNullResult();
+        if (!$mdate['date']) {
+            $qb = $this->em->createQuery(
+                "select max(m.date) as date ".
+                "from ".$this->entity->getRepositoryPath('Match')." m, ".
+                        $this->entity->getRepositoryPath('Group')." g, ".
+                        $this->entity->getRepositoryPath('Category')." c ".
+                "where c.pid=:tournament and g.pid=c.id and m.pid=g.id");
+            $qb->setParameter('tournament', $tournamentid);
+            $mdate = $qb->getOneOrNullResult();
         }
-        return $event;
+        return $mdate['date'] ? Date::getDateTime($mdate['date']) : null;
     }
 
     public function listMatchCalendar($tournamentid) {

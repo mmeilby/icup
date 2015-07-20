@@ -67,7 +67,7 @@ class Util
             $session = $request->getSession();
             $returnUrl = $session->get('icup.referer');
         }
-        return $returnUrl;
+        return $returnUrl ? $returnUrl : "/";
     }
 
     public function getClubList() {

@@ -66,6 +66,9 @@ FORM:
     TOURNAMENT:
         CAPTION: Modifica il torneo
         DESCRIPTION: Gestisci le informazioni sul torneo
+    TOURNAMENTOPTIONS:
+        CAPTION: Tournament options
+        DESCRIPTION: Modify rules and game planning for this tournament
     LISTSITES:
         CAPTION: Campi di gioco
         DESCRIPTION: Gestisci le informazioni sui campi di gioco

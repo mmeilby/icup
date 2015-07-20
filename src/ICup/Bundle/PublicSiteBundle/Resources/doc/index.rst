@@ -38,3 +38,4 @@ Fejlrettelse - på hviledagen vises spillede kampe fremfor kommende kampe
 Fix - flyt kamp redigering fra gruppe administration - ny kamp redigerings administration
 Fejlrettelse - intet response ved kald af login_check direkte
 NY - indstillinger for turnering - tournamentoptions
+Fejlrettelse - ved manglende referer henvises til forside i stedet

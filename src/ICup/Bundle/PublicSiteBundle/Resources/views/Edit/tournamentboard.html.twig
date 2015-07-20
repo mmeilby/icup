@@ -18,6 +18,10 @@
                     <h3 class="list-group-item-heading">{% trans %}FORM.TOURNAMENTBOARD.TOURNAMENT.CAPTION{% endtrans %}</h3>
                     <p class="list-group-item-text">{% trans %}FORM.TOURNAMENTBOARD.TOURNAMENT.DESCRIPTION{% endtrans %}</p>
                 </a>
+                <a class="list-group-item" href="{{ path('_edit_tournament_options', { 'tournamentid': tournament.id }) }}">
+                    <h3 class="list-group-item-heading">{% trans %}FORM.TOURNAMENTBOARD.TOURNAMENTOPTIONS.CAPTION{% endtrans %}</h3>
+                    <p class="list-group-item-text">{% trans %}FORM.TOURNAMENTBOARD.TOURNAMENTOPTIONS.DESCRIPTION{% endtrans %}</p>
+                </a>
                 <a class="list-group-item" href="{{ path('_edit_site_list', { 'tournamentid': tournament.id }) }}">
                     <h3 class="list-group-item-heading">{% trans %}FORM.TOURNAMENTBOARD.LISTSITES.CAPTION{% endtrans %}</h3>
                     <p class="list-group-item-text">{% trans %}FORM.TOURNAMENTBOARD.LISTSITES.DESCRIPTION{% endtrans %}</p>

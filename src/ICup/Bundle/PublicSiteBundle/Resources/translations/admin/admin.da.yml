@@ -66,6 +66,9 @@ FORM:
     TOURNAMENT:
         CAPTION: Tilpas turnering
         DESCRIPTION: Vedligehold oplysninger for denne tournering.
+    TOURNAMENTOPTIONS:
+        CAPTION: Turneringsindstillinger
+        DESCRIPTION: Vedligehold indstillinger for points, mål og turneringsplanlægning.
     LISTSITES:
         CAPTION: Lokaliteter og baner
         DESCRIPTION: Vedligehold oplysninger om lokaliteter og baner.
@@ -175,9 +178,9 @@ FORM:
     NOLP: Points for en tabt kamp skal angives
     NODS: Mål opnået ved taberdømt kamp skal angives
     TITLE:
-      CHG: Tilpas turneringsoplysninger
+      CHG: Tilpas turneringsindstillinger
     PROMPT:
-      CHG: Ret oplysninger om turneringen.
+      CHG: Ret indstillinger for points, mål og turneringsplanlægning.
     DRR:
       PROMPT: Turnering spilles med returkampe (double round robin)
       HELP: Hvis der spilles med returkampe kommer hvert hold til at spille to gange mod samme modstander (udebane og hjemmebane)

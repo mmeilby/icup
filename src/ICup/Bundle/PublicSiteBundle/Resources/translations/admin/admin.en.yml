@@ -66,6 +66,9 @@ FORM:
     TOURNAMENT:
         CAPTION: Modify tournament
         DESCRIPTION: Maintain information for this tournament
+    TOURNAMENTOPTIONS:
+        CAPTION: Tournament options
+        DESCRIPTION: Modify rules and game planning for this tournament
     LISTSITES:
         CAPTION: Sites and playgrounds
         DESCRIPTION: Maintain information of sites and playgrounds

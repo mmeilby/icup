@@ -169,6 +169,29 @@ FORM:
       ADD: Cancella
       CHG: Cancella le modifiche
       DEL: Cancella
+  TOURNAMENTOPTIONS:
+    NOWP: Points awarded for winning a match is mandatory
+    NOTP: Points awarded for a tie match is mandatory
+    NOLP: Points awarded for loosing a match is mandatory
+    NODS: Goals awarded by winning by default is mandatory
+    TITLE:
+      CHG: Update tournament options
+    PROMPT:
+      CHG: Update game options for this tournament
+    DRR:
+      PROMPT: This tournament uses Double Round Robin setup
+      HELP: If you plan for Double Round Robin every team will play twice against same opponent (home and away match)
+    WP: Number of points awarded for winning a match
+    TP: Number of points awarded for a tie match
+    LP: Number of points awarded for loosing a match
+    DS: Number of goals awarded for winning by default
+    SWITCH:
+      ON: YES
+      OFF: NO
+    SUBMIT:
+      CHG: Save information
+    CANCEL:
+      CHG: Cancel
   LISTSITES:
     TITLE: Amministrazione torneo
     CAPTION: Luoghi e campi di gioco
@@ -330,6 +353,7 @@ FORM:
     DOWNLOAD: Download il programma delle gare come file di testo
     SAVE: Accetta e salva il calendario gare
     OPTIONS: Opzioni
+    GROUPS: Plan groups
     VIEW: Calendario gare
     RESULT: Dashboard
     ADVICE: Consigli

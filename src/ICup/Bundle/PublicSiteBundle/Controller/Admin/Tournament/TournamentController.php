@@ -48,7 +48,7 @@ class TournamentController extends Controller
                 return $this->redirect($returnUrl);
             }
         }
-        return array('form' => $form->createView(), 'action' => 'add', 'tournament' => $tournament, 'error' => null);
+        return array('form' => $form->createView(), 'action' => 'add', 'tournament' => $tournament);
     }
     
     /**
@@ -80,12 +80,11 @@ class TournamentController extends Controller
             }
             else {
                 $em = $this->getDoctrine()->getManager();
-                $em->persist($tournament);
                 $em->flush();
                 return $this->redirect($returnUrl);
             }
         }
-        return array('form' => $form->createView(), 'action' => 'chg', 'tournament' => $tournament, 'error' => null);
+        return array('form' => $form->createView(), 'action' => 'chg', 'tournament' => $tournament);
     }
     
     /**
@@ -130,7 +129,7 @@ class TournamentController extends Controller
                 return $this->redirect($returnUrl);
             }
         }
-        return array('form' => $form->createView(), 'action' => 'del', 'tournament' => $tournament, 'error' => null);
+        return array('form' => $form->createView(), 'action' => 'del', 'tournament' => $tournament);
     }
     
     private function makeTournamentForm($tournament, $action) {

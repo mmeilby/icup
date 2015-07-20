@@ -169,6 +169,29 @@ FORM:
       ADD: Fortryd oprettelse
       CHG: Fortryd ændringer
       DEL: Fortryd slet
+  TOURNAMENTOPTIONS:
+    NOWP: Points for en vundet kamp skal angives
+    NOTP: Points for en uafgjort kamp skal angives
+    NOLP: Points for en tabt kamp skal angives
+    NODS: Mål opnået ved taberdømt kamp skal angives
+    TITLE:
+      CHG: Tilpas turneringsoplysninger
+    PROMPT:
+      CHG: Ret oplysninger om turneringen.
+    DRR:
+      PROMPT: Turnering spilles med returkampe (double round robin)
+      HELP: Hvis der spilles med returkampe kommer hvert hold til at spille to gange mod samme modstander (udebane og hjemmebane)
+    WP: Antal points opnået for en vundet kamp
+    TP: Antal points opnået for en uafgjort kamp
+    LP: Antal points opnået for en tabt kamp
+    DS: Antal mål tildelt det vindende hold ved en taberdømt kamp
+    SWITCH:
+      ON: JA
+      OFF: NEJ
+    SUBMIT:
+      CHG: Gem oplysninger
+    CANCEL:
+      CHG: Fortryd ændringer
   LISTSITES:
     TITLE: Vedligehold turnering
     CAPTION: Lokaliteter og baner
@@ -330,6 +353,7 @@ FORM:
     DOWNLOAD: Hent kampplan som tekstfil
     SAVE: Godkend og gem kampplan
     OPTIONS: Indstillinger
+    GROUPS: Planlæg puljer
     VIEW: Kampplan
     RESULT: Oversigt
     ADVICE: Løsninger

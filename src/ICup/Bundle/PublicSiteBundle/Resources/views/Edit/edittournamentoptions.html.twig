@@ -1,0 +1,24 @@
+{% extends "ICupPublicSiteBundle:Masters:edit.html.twig" %}
+
+{% form_theme form 'ICupPublicSiteBundle:Default:layout.script.html.twig' %}
+{% trans_default_domain "admin" %}
+
+{% block adminbody %}
+    <h2 style="margin-bottom: 0">
+        <i class="fa fa-cogs"></i>&nbsp;
+        {{ ['FORM.TOURNAMENTOPTIONS.TITLE.',action]|join|upper|trans }}
+    </h2>
+    <p>{{ ['FORM.TOURNAMENTOPTIONS.PROMPT.',action]|join|upper|trans }}</p>
+<div class="panel panel-default">
+    <div class="panel-body">
+    {{ form(form) }}
+    </div>
+</div>
+{% endblock %}
+{% block javascripts %}
+    <script type="text/javascript">
+        $("[type='checkbox']").bootstrapSwitch('onText', '{% trans %}FORM.TOURNAMENTOPTIONS.SWITCH.ON{% endtrans %}');
+        $("[type='checkbox']").bootstrapSwitch('offText', '{% trans %}FORM.TOURNAMENTOPTIONS.SWITCH.OFF{% endtrans %}');
+        $("[data-toggle='tooltip']").tooltip();
+    </script>
+{% endblock %}

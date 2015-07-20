@@ -55,6 +55,7 @@ class ResultReportingController extends Controller
     
     private function chgMatch(ResultForm $resultForm) {
         $em = $this->getDoctrine()->getManager();
+        $tournament = $this->get('entity')->getTournamentById($resultForm->getTournament());
         $match = $this->get('match')->getMatchByNo($resultForm->getTournament(), $resultForm->getMatchno());
         $homeRel = $this->get('match')->getMatchRelationByMatch($match->getId(), false);
         $awayRel = $this->get('match')->getMatchRelationByMatch($match->getId(), true);
@@ -62,13 +63,13 @@ class ResultReportingController extends Controller
             case ResultForm::$EVENT_MATCH_PLAYED:
                 $homeRel->setScore($resultForm->getScoreA());
                 $awayRel->setScore($resultForm->getScoreB());
-                $this->get('match')->updatePoints($homeRel, $awayRel);
+                $this->get('match')->updatePoints($tournament, $homeRel, $awayRel);
                 break;
             case ResultForm::$EVENT_HOME_DISQ:
-                $this->get('match')->disqualify($awayRel, $homeRel);
+                $this->get('match')->disqualify($tournament, $awayRel, $homeRel);
                 break;
             case ResultForm::$EVENT_AWAY_DISQ:
-                $this->get('match')->disqualify($homeRel, $awayRel);
+                $this->get('match')->disqualify($tournament, $homeRel, $awayRel);
                 break;
             case ResultForm::$EVENT_NOT_PLAYED:
                 $homeRel->setPoints(0);

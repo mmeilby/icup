@@ -2,6 +2,7 @@
 namespace ICup\Bundle\PublicSiteBundle\Controller\Admin\Tournament;
 
 use DateTime;
+use ICup\Bundle\PublicSiteBundle\Entity\Doctrine\Tournament;
 use ICup\Bundle\PublicSiteBundle\Exceptions\ValidationException;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
@@ -99,20 +100,20 @@ class MatchResultController extends Controller
             }
             $updatedRelations[$mr->getPid()][$mr->getAwayteam() ? 'A' : 'H'] = $mr;
         }
-        $this->commitMatchChanges($updatedRelations);
+        $this->commitMatchChanges($tournament, $updatedRelations);
         
         return $this->redirect($this->generateUrl('_edit_match_score',
                 array('playgroundid' => $playgroundid, 'date' => date_format($date, "d-m-Y"))));
     }    
     
-    private function commitMatchChanges($updatedRelations) {
+    private function commitMatchChanges(Tournament $tournament, $updatedRelations) {
         $em = $this->getDoctrine()->getManager();
 
         foreach ($updatedRelations as $relationslist) {
             $relA = $relationslist['H'];
             $relB = $relationslist['A'];
             if ($relA->getScorevalid() && $relB->getScorevalid()) {
-                $this->get('match')->updatePoints($relA, $relB);
+                $this->get('match')->updatePoints($tournament, $relA, $relB);
                 $em->persist($relA);
                 $em->persist($relB);
             }

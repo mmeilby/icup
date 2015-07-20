@@ -7,7 +7,7 @@ use Doctrine\ORM\Mapping as ORM;
 /**
  * ICup\Bundle\PublicSiteBundle\Entity\Doctrine\Tournament
  *
- * @ORM\Table(name="tournaments",uniqueConstraints={@ORM\UniqueConstraint(name="IdxByKeyName", columns={"keyname"})})
+ * @ORM\Table(name="tournaments")
  * @ORM\Entity
  */
 class Tournament
@@ -31,7 +31,7 @@ class Tournament
     /**
      * @var string $key
      * Tournament key used in references
-     * @ORM\Column(name="keyname", type="string", length=50, nullable=false)
+     * @ORM\Column(name="keyname", type="string", length=50, nullable=false, unique=true)
      */
     private $key;
 
@@ -55,6 +55,21 @@ class Tournament
      * @ORM\Column(name="description", type="string", length=250, nullable=false)
      */
     private $description;
+
+    /**
+     * @var TournamentOption $option
+     * Relation to TournamentOption - option_id=tournamentoption.id
+     * @ORM\OneToOne(targetEntity="TournamentOption", cascade={"persist", "remove"}, orphanRemoval=true)
+     */
+
+    private $option;
+
+    /**
+     * Tournament constructor.
+     */
+    public function __construct() {
+        $this->option = new TournamentOption();
+    }
 
     /**
      * Get id
@@ -179,5 +194,21 @@ class Tournament
     public function getDescription()
     {
         return $this->description;
+    }
+
+    /**
+     * @return TournamentOption
+     */
+    public function getOption() {
+        return $this->option;
+    }
+
+    /**
+     * @param TournamentOption $option
+     * @return Tournament
+     */
+    public function setOption($option) {
+        $this->option = $option;
+        return $this;
     }
 }

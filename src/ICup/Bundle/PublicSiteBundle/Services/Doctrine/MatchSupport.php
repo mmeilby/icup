@@ -4,6 +4,7 @@ namespace ICup\Bundle\PublicSiteBundle\Services\Doctrine;
 
 use ICup\Bundle\PublicSiteBundle\Entity\Doctrine\Date;
 use ICup\Bundle\PublicSiteBundle\Entity\Doctrine\QMatchRelation;
+use ICup\Bundle\PublicSiteBundle\Entity\Doctrine\Tournament;
 use ICup\Bundle\PublicSiteBundle\Entity\MatchPlan;
 use ICup\Bundle\PublicSiteBundle\Entity\QMatch;
 use ICup\Bundle\PublicSiteBundle\Entity\TeamInfo;
@@ -197,16 +198,16 @@ class MatchSupport
         return $results != null ? $results['results'] == 2 : false;
     }
 
-    public function disqualify(&$relA, &$relB) {
-        $relA->setScore(6);
+    public function disqualify(Tournament $tournament, &$relA, &$relB) {
+        $relA->setScore($tournament->getOption()->getDscore());
         $relB->setScore(0);
-        $this->updatePoints($relA, $relB);
+        $this->updatePoints($tournament, $relA, $relB);
     }
 
-    public function updatePoints(&$relA, &$relB) {
-        $looserPoints = 0;
-        $tiePoints = 1;
-        $winnerPoints = 3;
+    public function updatePoints(Tournament $tournament, &$relA, &$relB) {
+        $looserPoints = $tournament->getOption()->getLpoints();
+        $tiePoints = $tournament->getOption()->getTpoints();
+        $winnerPoints = $tournament->getOption()->getWpoints();
         if ($relA->getScore() > $relB->getScore()) {
             $relA->setPoints($winnerPoints);
             $relB->setPoints($looserPoints);

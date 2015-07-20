@@ -67,7 +67,7 @@ class Util
             $session = $request->getSession();
             $returnUrl = $session->get('icup.referer');
         }
-        return $returnUrl ? $returnUrl : "/";
+        return $returnUrl ? $returnUrl : $this->container->get('router')->generate('_icup');
     }
 
     public function getClubList() {

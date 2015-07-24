@@ -23,6 +23,11 @@
             </a>
         </li>
         <li>
+            <a href="{{ path('_edit_match_planning_groups', { 'tournamentid': tournament.id }) }}">
+                <span class="fa fa-cubes"></span>&nbsp;{% trans %}FORM.MATCHPLANNING.GROUPS{% endtrans %}
+            </a>
+        </li>
+        <li>
             <a href="{{ path('_edit_match_planning_result', { 'tournamentid': tournament.id }) }}">
                 <span class="fa fa-bullseye"></span>&nbsp;{% trans %}FORM.MATCHPLANNING.RESULT{% endtrans %}
             </a>
@@ -43,31 +48,6 @@
         <div class="col-sm-4">
             {{ form(form) }}
         </div>
-    {%  for catrec in catlist %}
-        <div class="col-sm-2">
-        <h4 style="margin-bottom: 0px">
-            {% trans from "tournament" %}CATEGORY{% endtrans %} {{ catrec.category.name|upper }}
-        </h4>
-        <p>
-        {{ ['GENDER.',
-        catrec.category.gender,
-        catrec.category.classification]|join|transchoice(catrec.category.age, { '%age%': catrec.category.age },'tournament') }}
-        </p>
-        {% for grprec in catrec.group %}
-            <p>
-                <span class="label label-primary">{% trans from "tournament" %}GROUP{% endtrans %} {{ grprec.obj.name }}</span><br />
-            {% if grprec.cnt > 0 %}
-                <small>
-                    {% trans %}FORM.MATCHPLANNING.TEAMS{% endtrans %}: {{ grprec.cnt }}<br />
-                    {% trans %}FORM.MATCHPLANNING.MATCHES{% endtrans %}: {{ grprec.cnt/2 * (grprec.cnt-1) }}
-                </small>
-            {% else %}
-                <small>{% trans %}FORM.MATCHPLANNING.NOTEAMS{% endtrans %}</small>
-            {% endif %}
-            </p>
-        {%  endfor %}
-        </div>
-    {%  endfor %}
     </div>
 {% endblock %}
 {% block javascripts %}

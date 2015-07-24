@@ -3,6 +3,7 @@
 namespace ICup\Bundle\PublicSiteBundle\Entity\Doctrine;
 
 use Doctrine\ORM\Mapping as ORM;
+use JsonSerializable;
 
 /**
  * ICup\Bundle\PublicSiteBundle\Entity\Doctrine\Group
@@ -10,7 +11,7 @@ use Doctrine\ORM\Mapping as ORM;
  * @ORM\Table(name="groups",uniqueConstraints={@ORM\UniqueConstraint(name="IdxByCatAndName", columns={"pid", "name"})})
  * @ORM\Entity
  */
-class Group
+class Group implements JsonSerializable
 {
     /**
      * @var integer $id
@@ -125,5 +126,17 @@ class Group
     public function getClassification()
     {
         return $this->classification;
+    }
+
+    /**
+     * (PHP 5 &gt;= 5.4.0)<br/>
+     * Specify data which should be serialized to JSON
+     * @link http://php.net/manual/en/jsonserializable.jsonserialize.php
+     * @return mixed data which can be serialized by <b>json_encode</b>,
+     * which is a value of any type other than a resource.
+     */
+    function jsonSerialize() {
+        $classes = array('ELIMINATION','PLAYOFF', '1/128', '1/64', '1/32', '1/16', '1/8', '1/4', 'SEMIFINAL', '3/4', 'FINAL');
+        return array("id" => $this->id, "name" => $this->name, "classification" => $classes[$this->classification]);
     }
 }

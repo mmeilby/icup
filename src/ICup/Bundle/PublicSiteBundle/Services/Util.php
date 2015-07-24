@@ -44,7 +44,12 @@ class Util
         $globals = $this->container->get('twig')->getGlobals();
         return array_keys($globals['countries']);
     }
-    
+
+    public function getFlag($country) {
+        $globals = $this->container->get('twig')->getGlobals();
+        return array_key_exists($country, $globals['countries']) ? $globals['countries'][$country]['flag'] : null;
+    }
+
     public function getCountryByLocale($locale) {
         $globals = $this->container->get('twig')->getGlobals();
         return $globals['supported_locales'][$locale];

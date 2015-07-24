@@ -357,9 +357,10 @@ FORM:
     SAVE: Godkend og gem kampplan
     OPTIONS: Indstillinger
     GROUPS: Planlæg puljer
-    VIEW: Kampplan
-    RESULT: Oversigt
+    VIEW: Kampoplæg
+    RESULT: Planlæg kampe
     ADVICE: Løsninger
+    MAINT: Tilpas kampplan
     SOLVEXCHG: Ingen perioder passer for denne kamp. Forsøg at bytte andre kampe fra puljen med denne kamp.
     SOLVEXPND: Der er ikke ledig plads til denne kamp. Forsøg at udvide en periode så der bliver plads til kampen.
     PLAN_SAVED: Kampplanen er godkendt og registreret for turneringen.
@@ -367,6 +368,18 @@ FORM:
     TIMESLOT: Periode
     PATTRS: Fordelte kategorier
     TIMELEFT: Resterende tid
+    CATEGORY: Gruppe
+    GROUP: Pulje
+    DATE: Kampdato
+    MATCHNO: Kampnr.
+    HELP:
+        MATCHNO: Et officielt kampnr. som det fremgår af programmet
+        DATE: En dato hvor der er planlagt kampe for denne turnering
+    DEFAULT: Vælg...
+    MOREMATCHES: Mange kampe passer til det søgte (et udvalg er vist her) - fortsæt indtastning eller vælg en af kampene.
+    NOMATCHES: Ingen kampe passer til det søgte. Prøv at åbne søgningen ved at fjerne et af de valgte kriterier.
+    MATCHESFOUND: Her ser du resultatet af søgningen. Rediger en kamp ved at klikke på linien med kampen.
+    INFO: <h4>Søg kamp</h4><p>Søg en kamp på kampnr. eller søg blandt alle kampe der spilles på en given dag, pulje og/eller bane. Du kan angive de oplysninger du har og vælge en kamp fra listen af kampe der passer til din søgning. For at angive en pulje skal du have valgt en gruppe først. Det er ikke muligt at søge på gruppe alene. Klik på en kamp når du har fundet den du søger.</p>
     SUBMIT: Planlæg kampe
     CANCEL: Fortryd
   QMATCHPLANNING:

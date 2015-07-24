@@ -58,10 +58,6 @@
                         <a href="{{ path('_edit_category_del', { 'categoryid': category.id }) }}">
                             <span class="fa fa-times" title="{% trans %}FORM.CATEGORY.TITLE.DEL{% endtrans %}"></span>
                         </a>
-                        &nbsp;
-                        <a href="{{ path('_host_list_groups', { 'categoryid': category.id }) }}">
-                            <span class="fa fa-cog" title="{% trans %}FORM.LISTGROUPS.TITLE{% endtrans %}"></span>
-                        </a>
                     </div>
                 </div>
             </div>
@@ -73,6 +69,8 @@
                             {% for group in groups[category.id] %}
                             <tr>
                                 <td><a href="{{ path('_edit_group_chg', { 'groupid': group.id }) }}">{% trans from "tournament" %}GROUP{% endtrans %} {{ group.name }}</a></td>
+                                <td>{{ ['GROUPCLASS',group.classification]|join('.')|trans([],'tournament') }}</td>
+                                <td>{{ category.matchtime }} {% trans from "tournament" %}MINUTES{% endtrans %}</td>
                                 <td class="narrow-col">
                                     <a href="{{ path('_edit_group_add', { 'categoryid': category.id }) }}">
                                         <span class="fa fa-file" title="{% trans %}FORM.GROUP.TITLE.ADD{% endtrans %}"></span>
@@ -88,24 +86,20 @@
                                         <span class="fa fa-times" title="{% trans %}FORM.GROUP.TITLE.DEL{% endtrans %}"></span>
                                     </a>
                                 </td>
-                                <td class="narrow-col">
-                                    <a href="{{ path('_edit_group_list_matches', { 'groupid': group.id }) }}">
-                                        <span class="fa fa-cog" title="{% trans %}FORM.LISTMATCHES.TITLE{% endtrans %}"></span>
-                                    </a>
-                                </td>
                             </tr>
                             {% endfor %}
                         {% else %}
                             <tr>
                                 <td><a href="{{ path('_edit_group_add', { 'categoryid': category.id }) }}">{{'FORM.LISTCATEGORIES.NOGROUP'|trans|upper}}</a></td>
+                                <td></td>
+                                <td></td>
                                 <td class="narrow-col">
                                     <a href="{{ path('_edit_group_add', { 'categoryid': category.id }) }}">
                                         <span class="fa fa-file" title="{% trans %}FORM.GROUP.TITLE.ADD{% endtrans %}"></span>
                                     </a>
                                 </td>
-                                <td></td>
-                                <td></td>
-                                <td></td>
+                                <td class="narrow-col"></td>
+                                <td class="narrow-col"></td>
                             </tr>
                         {% endif %}
                         </tbody>

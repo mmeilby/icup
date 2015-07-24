@@ -1,0 +1,208 @@
+{% extends "ICupPublicSiteBundle:Masters:edit.html.twig" %}
+
+{% form_theme form 'ICupPublicSiteBundle:Default:layout.script.html.twig' %}
+{% trans_default_domain "admin" %}
+
+{% block adminbody %}
+    <h2 style="margin-bottom: 0">
+        <i class="fa fa-university"></i>&nbsp;
+        {% trans %}FORM.MATCHPLANNING.TITLE{% endtrans %}
+    </h2>
+    <p>{% trans %}FORM.MATCHPLANNING.CAPTION{% endtrans %}</p>
+    <p class="lead">
+        <a href="{{ path('_edit_tournamentboard', { 'tournamentid': tournament.id }) }}">
+            {{ host.name|upper }}
+            <br />
+            {{ tournament.name }}
+        </a>
+    </p>
+    <ul class="nav nav-tabs" role="tablist">
+        <li>
+            <a href="{{ path('_edit_match_planning', { 'tournamentid': tournament.id }) }}">
+                <span class="fa fa-toggle-on"></span>&nbsp;{% trans %}FORM.MATCHPLANNING.OPTIONS{% endtrans %}
+            </a>
+        </li>
+        <li>
+            <a href="{{ path('_edit_match_planning_groups', { 'tournamentid': tournament.id }) }}">
+                <span class="fa fa-cubes"></span>&nbsp;{% trans %}FORM.MATCHPLANNING.GROUPS{% endtrans %}
+            </a>
+        </li>
+        <li>
+            <a href="{{ path('_edit_match_planning_result', { 'tournamentid': tournament.id }) }}">
+                <span class="fa fa-bullseye"></span>&nbsp;{% trans %}FORM.MATCHPLANNING.RESULT{% endtrans %}
+            </a>
+        </li>
+        <li>
+            <a href="{{ path('_edit_match_planning_view', { 'tournamentid': tournament.id }) }}">
+                <span class="fa fa-calendar"></span>&nbsp;{% trans %}FORM.MATCHPLANNING.VIEW{% endtrans %}
+            </a>
+        </li>
+        <li>
+            <a href="{{ path('_edit_match_planning_advice', { 'tournamentid': tournament.id }) }}">
+                <span class="fa fa-lightbulb-o"></span>&nbsp;{% trans %}FORM.MATCHPLANNING.ADVICE{% endtrans %}
+            </a>
+        </li>
+        <li class="active">
+            <a href="{{ path('_edit_match_maint', { 'tournamentid': tournament.id }) }}">
+                <span class="fa fa-wrench"></span>&nbsp;{% trans %}FORM.MATCHPLANNING.MAINT{% endtrans %}
+            </a>
+        </li>
+    </ul>
+    <p>&nbsp;</p>
+    <div class="row">
+        <div class="col-sm-5">
+            <p><a id="search" class="btn btn-default btn-lg" role="button">Søg kamp</a></p>
+            {{ form(form) }}
+        </div>
+        <div id="form_container" class="col-sm-7">
+        </div>
+    </div>
+{% endblock %}
+{% block javascripts %}
+    <script type="text/javascript">
+        $(function onLoad() {
+            // Enable Boostrap Switch
+//            $("[type='checkbox']").bootstrapSwitch('onText', '{% trans %}FORM.MATCHPLANNING.SWITCH.ON{% endtrans %}');
+//            $("[type='checkbox']").bootstrapSwitch('offText', '{% trans %}FORM.MATCHPLANNING.SWITCH.OFF{% endtrans %}');
+            // Enable tooltips
+//            $("[data-toggle='tooltip']").tooltip();
+            // Add warning block
+            $('#form_container').append("<div id='form_warning' role='alert'></div>");
+            $('#form_warning').addClass("alert alert-info").html("{% trans %}FORM.MATCHPLANNING.INFO{% endtrans %}");
+            // Add club list
+            $('#form_container').append("<div id='form_div'></div>");
+            $('#form_div').addClass("list-group");
+            // Add key awareness
+            $('#search').click(updateMatchList);
+//            $('input#form_matchno').keyup(updateMatchList);
+//            $('input#form_date').keyup(updateMatchList);
+//            $('select#form_group').change(updateMatchList);
+//            $('select#form_playground').change(updateMatchList);
+            $('select#form_category').change(updateGroupList);
+            // Initialize
+            updateGroupList();
+        });
+
+        function updateGroupList() {
+            $('select#form_group').html($("<option />").val(0).text("{% trans %}FORM.MATCHPLANNING.DEFAULT{% endtrans %}"));
+            $.getJSON(Routing.generate('_rest_list_groups',
+                            {
+                                'categoryid': $('select#form_category').val(),
+                            }),
+                    function readGroups(groups, status) {
+                        formGroup = $('select#form_group');
+                        $.each(groups, function(index, group) {
+                            formGroup.append($("<option />").val(group.id).text("{% trans from "tournament" %}GROUP{% endtrans %} "+group.name));
+                        });
+                    });
+//            updateMatchList();
+        };
+
+        function updateMatchList() {
+                $.getJSON(Routing.generate('_rest_search_match',
+                                {
+                                    'tournamentid': {{ tournament.id }},
+                                    'matchno': $('input#form_matchno').val(),
+                                    'date': $('input#form_date').val(),
+                                    'playground': $('select#form_playground').val(),
+                                    'group': $('select#form_group').val()
+                                }),
+                        function readMatches(data, status) {
+                            if (data.length > 0) {
+                                $('#form_div').html(buildTable(data));
+                                if (data.length > 15) {
+                                    $('#form_warning').html('{% trans %}FORM.MATCHPLANNING.MOREMATCHES{% endtrans %}');
+                                    $('#form_warning').addClass('alert-warning');
+                                    $('#form_warning').removeClass('alert-info alert-success');
+                                }
+                                else {
+                                    $('#form_warning').html('{% trans %}FORM.MATCHPLANNING.MATCHESFOUND{% endtrans %}');
+                                    $('#form_warning').addClass('alert-success');
+                                    $('#form_warning').removeClass('alert-info alert-warning');
+                                }
+                            }
+                            else {
+                                $('#form_div').html(buildDefault());
+                                $('#form_warning').html('{% trans %}FORM.MATCHPLANNING.NOMATCHES{% endtrans %}');
+                                $('#form_warning').addClass('alert-warning');
+                                $('#form_warning').removeClass('alert-info alert-success');
+                            }
+                        }
+                );
+        };
+
+        function buildTable(data) {
+            opt = buildDefault();
+            $.each(data,
+                    function updateDropDown(index, match) {
+                        if (index < 15) {
+                            var link = Routing.generate('_edit_match_chg',
+                                    {
+                                        'matchid': match.id
+                                    });
+                            opt += "<a class=\"list-group-item\" href=\""+link+"\">";
+                            opt += "<h4 class=\"list-group-item-heading\">"+
+                                        "<div class=\"row\">"+
+                                            "<div class=\"col-sm-1\">"+match.matchno+"</div>"+
+                                            "<div class=\"col-sm-11\">"+match.playground.name+"</div>"+
+                                        "</div>"+
+                                    "</h4>";
+                            opt += "<p class=\"list-group-item-text\">"+
+                                        "<div class=\"row\">"+
+                                            "<div class=\"col-sm-2\">"+
+                                                match.date+
+                                            "</div>"+
+                                            "<div class=\"col-sm-1 text-right\">"+
+                                                match.time+
+                                            "</div>"+
+                                            "<div class=\"col-sm-2\" />"+
+                                            "<div class=\"col-sm-4\">"+
+                                                "{% trans from 'tournament' %}CATEGORY{% endtrans %} "+
+                                                match.category.name+
+                                            "</div>"+
+                                            "<div class=\"col-sm-3\">"+
+                                                "{% trans from 'tournament' %}GROUP{% endtrans %} "+
+                                                match.group.name+
+                                            "</div>"+
+                                        "</div>"+
+                                        "<div class=\"row\">"+
+                                            "<div class=\"col-sm-5\">"+club(match.home)+"</div>"+
+                                            "<div class=\"col-sm-5\">"+club(match.away)+"</div>"+
+                                            "<div class=\"col-sm-2 text-center\">"+match.home.score+"-"+match.away.score+"</div>"+
+                                        "</div>"+
+                                    "</p>";
+                            opt += "</a>";
+                        }
+                    });
+            return opt;
+        };
+
+        function club(team) {
+            opt = '';
+            if (team.id > 0) {
+                if (team.rank != '') {
+                    opt += "<small>"+team.rank+"</small><br />";
+                }
+                opt += "<span class=\"text-nowrap\">";
+                if (team.flag != '') {
+                    link = "{{ asset('bundles/icuppublicsite/images/flags/') }}";
+                    opt += "<img src=\""+link+team.flag+"\" "+
+                                "alt=\""+team.country+"\" "+
+                                "title=\""+team.country+"\" "+
+                                "class=\"flag\">&nbsp;&nbsp;";
+
+                }
+                opt += team.name+"</span>";
+            }
+            else {
+                opt += team.rank;
+            }
+            return opt;
+        };
+
+        function buildDefault() {
+            opt = "";
+            return opt;
+        };
+    </script>
+{% endblock %}

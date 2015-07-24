@@ -1,9 +1,6 @@
 {% extends "ICupPublicSiteBundle:Masters:edit.html.twig" %}
-{% trans_default_domain "admin" %}
 
-{% import 'ICupPublicSiteBundle:Masters:club.html.twig' as formatter %}
-{% import 'ICupPublicSiteBundle:Masters:tournament.html.twig' as tformatter %}
-{% import 'ICupPublicSiteBundle:Masters:planning.html.twig' as mformatter %}
+{% trans_default_domain "admin" %}
 
 {% block adminbody %}
     <h2 style="margin-bottom: 0">
@@ -24,7 +21,7 @@
                 <span class="fa fa-toggle-on"></span>&nbsp;{% trans %}FORM.MATCHPLANNING.OPTIONS{% endtrans %}
             </a>
         </li>
-        <li>
+        <li class="active">
             <a href="{{ path('_edit_match_planning_groups', { 'tournamentid': tournament.id }) }}">
                 <span class="fa fa-cubes"></span>&nbsp;{% trans %}FORM.MATCHPLANNING.GROUPS{% endtrans %}
             </a>
@@ -34,7 +31,7 @@
                 <span class="fa fa-bullseye"></span>&nbsp;{% trans %}FORM.MATCHPLANNING.RESULT{% endtrans %}
             </a>
         </li>
-        <li class="active">
+        <li>
             <a href="{{ path('_edit_match_planning_view', { 'tournamentid': tournament.id }) }}">
                 <span class="fa fa-calendar"></span>&nbsp;{% trans %}FORM.MATCHPLANNING.VIEW{% endtrans %}
             </a>
@@ -44,22 +41,44 @@
                 <span class="fa fa-lightbulb-o"></span>&nbsp;{% trans %}FORM.MATCHPLANNING.ADVICE{% endtrans %}
             </a>
         </li>
+        <li>
+            <a href="{{ path('_edit_match_maint', { 'tournamentid': tournament.id }) }}">
+                <span class="fa fa-wrench"></span>&nbsp;{% trans %}FORM.MATCHPLANNING.MAINT{% endtrans %}
+            </a>
+        </li>
     </ul>
-    <p>&nbsp;</p>
-    {% if matchlist|length > 0 %}
-    <div class="hidden-xs">
-        {{ mformatter.listmatches(matchlist, _context) }}
-    </div>
-    <div class="visible-xs-block">
-        {{ mformatter.listmatchesxs(matchlist, _context) }}
-    </div>
-    {% else %}
-    <div class="panel panel-warning">
-        <div class="panel-heading">
-            <b>
-                {% trans from 'tournament' %}TOURNAMENTNOTREADY{% endtrans %}
-            </b>
+    <div class="row">
+{%  for catrec in catlist %}
+        <div class="col-sm-2">
+        <h4 style="margin-bottom: 0px">
+            {% trans from "tournament" %}CATEGORY{% endtrans %} {{ catrec.category.name|upper }}
+        </h4>
+        <p>
+        {{ ['GENDER.',
+        catrec.category.gender,
+        catrec.category.classification]|join|transchoice(catrec.category.age, { '%age%': catrec.category.age },'tournament') }}
+        </p>
+        <p>
+            <a class="btn btn-default" href="{{ path('_host_list_groups', { 'categoryid': catrec.category.id }) }}">
+                {% trans %}FORM.LISTGROUPS.TITLE{% endtrans %}
+            </a>
+        </p>
+    {% for grprec in catrec.group %}
+        <p>
+            <a href="{{ path('_edit_group_list_matches', { 'groupid': grprec.obj.id }) }}" title="{% trans %}FORM.LISTMATCHES.TITLE{% endtrans %}">
+                <span class="label label-primary">{% trans from "tournament" %}GROUP{% endtrans %} {{ grprec.obj.name }}</span>
+            </a><br />
+        {% if grprec.cnt > 0 %}
+            <small>
+                {% trans %}FORM.MATCHPLANNING.TEAMS{% endtrans %}: {{ grprec.cnt }}<br />
+                {% trans %}FORM.MATCHPLANNING.MATCHES{% endtrans %}: {{ grprec.cnt/2 * (grprec.cnt-1) }}
+            </small>
+        {% else %}
+            <small>{% trans %}FORM.MATCHPLANNING.NOTEAMS{% endtrans %}</small>
+        {% endif %}
+        </p>
+    {%  endfor %}
         </div>
+{%  endfor %}
     </div>
-    {% endif %}
 {% endblock %}

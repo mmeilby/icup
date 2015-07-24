@@ -8,6 +8,9 @@ use ICup\Bundle\PublicSiteBundle\Entity\Doctrine\Match;
 use ICup\Bundle\PublicSiteBundle\Entity\Doctrine\MatchRelation;
 use ICup\Bundle\PublicSiteBundle\Entity\Doctrine\MatchSchedule;
 use ICup\Bundle\PublicSiteBundle\Entity\Doctrine\PlaygroundAttribute;
+use ICup\Bundle\PublicSiteBundle\Entity\Doctrine\Tournament;
+use ICup\Bundle\PublicSiteBundle\Entity\MatchSearchForm;
+use ICup\Bundle\PublicSiteBundle\Entity\ResultForm;
 use ICup\Bundle\PublicSiteBundle\Exceptions\ValidationException;
 use ICup\Bundle\PublicSiteBundle\Services\Entity\PlaygroundAttribute as PA;
 use ICup\Bundle\PublicSiteBundle\Entity\MatchPlan;
@@ -25,7 +28,7 @@ class MatchPlanningController extends Controller
     /**
      * List the latest matches for a tournament
      * @Route("/edit/m/plan/{tournamentid}", name="_edit_match_planning")
-     * @Template("ICupPublicSiteBundle:Edit:plantournament.html.twig")
+     * @Template("ICupPublicSiteBundle:Edit:planoptions.html.twig")
      */
     public function planMatchesAction($tournamentid, Request $request) {
         $tournament = $this->checkArgs($tournamentid);
@@ -42,20 +45,7 @@ class MatchPlanningController extends Controller
             return $this->redirect($this->generateUrl("_edit_match_planning_result", array('tournamentid' => $tournament->getId())));
         }
         $host = $this->get('entity')->getHostById($tournament->getPid());
-        $categoryList = array();
-        $categories = $this->get('logic')->listCategories($tournamentid);
-        /* @var $category Category */
-        foreach ($categories as $category) {
-            $categoryList[$category->getId()] = array('category' => $category, 'group' => array());
-            $groups = $this->get('logic')->listGroups($category->getId());
-            /* @var $group Group */
-            foreach ($groups as $group) {
-                $teams = count($this->get('logic')->listTeamsByGroup($group->getId()));
-                $categoryList[$category->getId()]['group'][] = array('obj' => $group, 'cnt' => $teams);
-            }
-        }
-
-        return array('form' => $form->createView(), 'host' => $host, 'tournament' => $tournament, 'catlist' => $categoryList);
+        return array('form' => $form->createView(), 'host' => $host, 'tournament' => $tournament);
     }
     
     private function makePlanForm() {
@@ -87,7 +77,34 @@ class MatchPlanningController extends Controller
                                                 'icon' => 'fa fa-check'));
         return $formDef->getForm();
     }
-    
+
+    /**
+     * Plan assignment of teams to groups
+     * @Route("/edit/m/groups/plan/{tournamentid}", name="_edit_match_planning_groups")
+     * @Template("ICupPublicSiteBundle:Edit:plangroups.html.twig")
+     */
+    public function planGroupsAction($tournamentid, Request $request) {
+        /* @var $tournament Tournament */
+        $tournament = $this->checkArgs($tournamentid);
+        $host = $this->get('entity')->getHostById($tournament->getPid());
+        $categoryList = array();
+        $categories = $this->get('logic')->listCategories($tournamentid);
+        /* @var $category Category */
+        foreach ($categories as $category) {
+            $categoryList[$category->getId()] = array('category' => $category, 'group' => array());
+            $groups = $this->get('logic')->listGroups($category->getId());
+            /* @var $group Group */
+            foreach ($groups as $group) {
+                $teams = count($this->get('logic')->listTeamsByGroup($group->getId()));
+                $categoryList[$category->getId()]['group'][] = array('obj' => $group, 'cnt' => $teams);
+            }
+        }
+
+        return array('host' => $host,
+                     'tournament' => $tournament,
+                     'catlist' => $categoryList);
+    }
+
     /**
      * List the latest matches for a tournament
      * @Route("/edit/m/result/plan/{tournamentid}", name="_edit_match_planning_result")
@@ -300,5 +317,116 @@ class MatchPlanningController extends Controller
         $tournament = $this->get('entity')->getTournamentById($tournamentid);
         $utilService->validateEditorAdminUser($user, $tournament->getPid());
         return $tournament;
+    }
+
+    /**
+     * Change an existing match by number
+     * @Route("/edit/m/maint/plan/{tournamentid}", name="_edit_match_maint")
+     * @Template("ICupPublicSiteBundle:Edit:planmaint.html.twig")
+     */
+    public function matchMaintAction($tournamentid, Request $request) {
+        /* @var $utilService Util */
+        $utilService = $this->get('util');
+        $returnUrl = $utilService->getReferer();
+        /* @var $user User */
+        $user = $utilService->getCurrentUser();
+        $tournament = $this->get('entity')->getTournamentById($tournamentid);
+        $utilService->validateEditorAdminUser($user, $tournament->getPid());
+
+        $resultForm = new MatchSearchForm();
+        $resultForm->setTournament($tournament->getId());
+        $form = $this->makeResultForm($resultForm);
+        $form->handleRequest($request);
+/*
+        if ($form->get('cancel')->isClicked()) {
+            return $this->redirect($returnUrl);
+        }
+        if ($this->checkForm($form, $form->getData())) {
+            // @var $match Match
+            $match = $this->get('match')->getMatchByNo($tournament->getId(), $resultForm->getMatchno());
+            if ($match) {
+                return $this->redirect($this->generateUrl("_edit_match_chg", array("matchid" => $match->getId())));
+            }
+            $form->addError(new FormError($this->get('translator')->trans('FORM.MATCHPLANNING.INVALIDMATCHNO', array(), 'admin')));
+        }
+*/
+        $host = $this->get('entity')->getHostById($tournament->getPid());
+        return array('form' => $form->createView(), 'host' => $host, 'tournament' => $tournament);
+    }
+
+    private function makeResultForm(MatchSearchForm $resultForm) {
+        $categoryList = $this->get('logic')->listCategories($resultForm->getTournament());
+        $categories = array();
+        foreach ($categoryList as $category) {
+            $categories[$category->getId()] =
+                $this->get('translator')->trans('CATEGORY', array(), 'tournament')." ".
+                $category->getName()." - ".
+                $this->get('translator')->transChoice(
+                    'GENDER.'.$category->getGender().$category->getClassification(),
+                    $category->getAge(),
+                    array('%age%' => $category->getAge()),
+                    'tournament');
+        }
+        $playgroundList = $this->get('logic')->listPlaygroundsByTournament($resultForm->getTournament());
+        $playgrounds = array();
+        foreach ($playgroundList as $playground) {
+            $playgrounds[$playground->getId()] = $playground->getName();
+        }
+
+        $formDef = $this->createFormBuilder($resultForm);
+        $formDef->add('matchno', 'text', array('label' => 'FORM.MATCHPLANNING.MATCHNO',
+            'required' => false,
+            'help' => 'FORM.MATCHPLANNING.HELP.MATCHNO',
+            'icon' => 'fa fa-lg fa-tag',
+            'translation_domain' => 'admin'));
+        $formDef->add('date', 'text', array('label' => 'FORM.MATCHPLANNING.DATE',
+            'required' => false,
+            'help' => 'FORM.MATCHPLANNING.HELP.DATE',
+            'icon' => 'fa fa-lg fa-calendar',
+            'translation_domain' => 'admin'));
+        $formDef->add('category', 'choice', array('label' => 'FORM.MATCHPLANNING.CATEGORY',
+            'choices' => $categories, 'empty_value' => 'FORM.MATCHPLANNING.DEFAULT',
+            'required' => false,
+            'help' => 'FORM.MATCHPLANNING.HELP.CATEGORY',
+            'icon' => 'fa fa-lg fa-sitemap',
+            'translation_domain' => 'admin'));
+        $formDef->add('group', 'choice', array('label' => 'FORM.MATCHPLANNING.GROUP',
+            'choices' => array(), 'empty_value' => 'FORM.MATCHPLANNING.DEFAULT',
+            'required' => false,
+            'help' => 'FORM.MATCHPLANNING.HELP.GROUP',
+            'icon' => 'fa fa-lg fa-bookmark',
+            'translation_domain' => 'admin'));
+        $formDef->add('playground', 'choice', array('label' => 'FORM.MATCHPLANNING.PLAYGROUND',
+            'choices' => $playgrounds, 'empty_value' => 'FORM.MATCHPLANNING.DEFAULT',
+            'required' => false,
+            'help' => 'FORM.MATCHPLANNING.HELP.PLAYGROUND',
+            'icon' => 'fa fa-lg fa-futbol-o',
+            'translation_domain' => 'admin'));
+        return $formDef->getForm();
+    }
+
+    private function checkForm($form, MatchSearchForm $resultForm) {
+        if (!$form->isValid()) {
+            return false;
+        }
+        /*
+         * Check for blank fields
+         */
+        if ($resultForm->getMatchno() == null || trim($resultForm->getMatchno()) == '') {
+            $form->addError(new FormError($this->get('translator')->trans('FORM.MATCHPLANNING.NONO', array(), 'admin')));
+            return false;
+        }
+        /*
+         * Check for valid contents
+         */
+        /* @var $match Match */
+        $match = $this->get('match')->getMatchByNo($resultForm->getTournament(), $resultForm->getMatchno());
+        if ($match == null) {
+            $form->addError(new FormError($this->get('translator')->trans('FORM.MATCHPLANNING.INVALIDMATCHNO', array(), 'admin')));
+        }
+        else if ($this->get('match')->isMatchResultValid($match->getId())) {
+            $form->addError(new FormError($this->get('translator')->trans('FORM.MATCHPLANNING.CANTCHANGE', array(), 'admin')));
+        }
+        return $form->isValid();
     }
 }

@@ -25,6 +25,11 @@
             </a>
         </li>
         <li>
+            <a href="{{ path('_edit_match_planning_groups', { 'tournamentid': tournament.id }) }}">
+                <span class="fa fa-cubes"></span>&nbsp;{% trans %}FORM.MATCHPLANNING.GROUPS{% endtrans %}
+            </a>
+        </li>
+        <li>
             <a href="{{ path('_edit_match_planning_result', { 'tournamentid': tournament.id }) }}">
                 <span class="fa fa-bullseye"></span>&nbsp;{% trans %}FORM.MATCHPLANNING.RESULT{% endtrans %}
             </a>

@@ -56,7 +56,7 @@ class MatchController extends Controller
     
     /**
      * Change information of an existing match
-     * @Route("/edit/match/chg/{matchid}", name="_edit_match_chg")
+     * @Route("/edit/match/chg/{matchid}", name="_edit_match_chg", options={"expose"=true})
      * @Template("ICupPublicSiteBundle:Host:editmatch.html.twig")
      */
     public function chgAction($matchid, Request $request) {

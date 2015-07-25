@@ -3,15 +3,50 @@
 {% form_theme form 'ICupPublicSiteBundle:Default:layout.script.html.twig' %}
 {% trans_default_domain "admin" %}
 
+{% import 'ICupPublicSiteBundle:Masters:club.html.twig' as formatter %}
+
 {% block adminbody %}
     <h2 style="margin-bottom: 0">
         <i class="fa fa-cogs"></i>&nbsp;
         {{ ['FORM.MATCH.TITLE.',action]|join|upper|trans }}
     </h2>
     <p>{{ ['FORM.MATCH.PROMPT.',action]|join|upper|trans }}</p>
-<div class="panel panel-default">
-    <div class="panel-body">
-    {{ form(form) }}
+    <div class="panel panel-default">
+        <div class="panel-body lead">
+            <div class="row">
+                <div class="col-lg-9">
+                    {{ tournament.name }}<br />
+                    {% trans from 'tournament' %}GROUP{% endtrans %} {{ group.name }} -
+                    {{ ['GROUPCLASS.',group.classification]|join|trans({}, 'tournament') }} -
+                    {{ category.matchtime }} {% trans from 'tournament' %}MINUTES{% endtrans %}
+                </div>
+                <div class="col-lg-3">
+                    <a href="{{ path('_showcategory', { 'categoryid': category.id }) }}">
+                        {% trans from 'tournament' %}CATEGORY{% endtrans %} {{ category.name }}
+                    </a><br />
+                    {{ ['GENDER.',
+                    category.gender,
+                    category.classification]|join|transchoice(category.age, { '%age%': category.age },'tournament') }}
+                </div>
+            </div>
+        {% if teamA is defined and teamA and teamB is defined and teamB %}
+            <div class="row">
+                <div class="col-lg-3">
+                    {{ formatter.club(teamA, group.id, _context) }}
+                </div>
+                <div class="col-lg-3">
+                    {{ formatter.club(teamB, group.id, _context) }}
+                </div>
+            {% if action == 'chg' %}
+                <div class="col-lg-6">
+                    <a href="{{ path('_edit_matchrel_chg', { 'matchid': match.id }) }}" class="btn btn-default" role="button">{% trans %}FORM.MATCH.DETAILS{% endtrans %}</a>
+                </div>
+            {% endif %}
+            </div>
+        {% endif %}
+        </div>
+        <div class="panel-body">
+        {{ form(form) }}
+        </div>
     </div>
-</div>
 {% endblock %}

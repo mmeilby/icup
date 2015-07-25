@@ -53,11 +53,7 @@ class MatchRelationController extends Controller
                      'match' => $match,
                      'playground' => $playground,
                      'action' => 'chg',
-                     'schedule' => DateTime::createFromFormat(
-                                        $this->container->getParameter('db_date_format').
-                                        '-'.
-                                        $this->container->getParameter('db_time_format'),
-                                        $match->getDate().'-'.$match->getTime()));
+                     'schedule' => Date::getDateTime($match->getDate(), $match->getTime()));
     }
     
     /**
@@ -94,11 +90,7 @@ class MatchRelationController extends Controller
                      'match' => $match,
                      'playground' => $playground,
                      'action' => 'del',
-                     'schedule' => DateTime::createFromFormat(
-                                        $this->container->getParameter('db_date_format').
-                                        '-'.
-                                        $this->container->getParameter('db_time_format'),
-                                        $match->getDate().'-'.$match->getTime()));
+                     'schedule' => Date::getDateTime($match->getDate(), $match->getTime()));
     }
 
     /**
@@ -135,11 +127,7 @@ class MatchRelationController extends Controller
                      'match' => $match,
                      'playground' => $playground,
                      'action' => 'chg',
-                     'schedule' => DateTime::createFromFormat(
-                                        $this->container->getParameter('db_date_format').
-                                        '-'.
-                                        $this->container->getParameter('db_time_format'),
-                                        $match->getDate().'-'.$match->getTime()));
+                     'schedule' => Date::getDateTime($match->getDate(), $match->getTime()));
     }
 
     private function chgMatch(MatchForm $matchForm, Match &$match) {

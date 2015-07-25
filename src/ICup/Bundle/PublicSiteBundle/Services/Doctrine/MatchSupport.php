@@ -30,8 +30,8 @@ class MatchSupport
 
     private $sort_matches;
 
-    public static $HOME = true;
-    public static $AWAY = false;
+    public static $HOME = false;
+    public static $AWAY = true;
 
     public function __construct(ContainerInterface $container, Logger $logger)
     {
@@ -383,7 +383,7 @@ class MatchSupport
         return $qb->getResult();
     }
 
-    public function listMatchesByGroupPlayground($groupid, $playgroundid, $date = null) {
+    public function listMatchesByGroupPlayground($groupid, $playgroundid, DateTime $date = null) {
         $matchList = $this->queryMatchListWithGroupPlayground($groupid, $playgroundid, $date ? Date::getDate($date) : null);
         $qmatchList = $this->queryQMatchListWithGroupPlayground($groupid, $playgroundid, $date ? Date::getDate($date) : null);
         return $this->prepareAndSort($matchList, $qmatchList);
@@ -446,7 +446,7 @@ class MatchSupport
         return $qb->getResult();
     }
     
-    public function listMatchesByGroup($groupid, $date = null) {
+    public function listMatchesByGroup($groupid, DateTime $date = null) {
         $matchList = $this->queryMatchList($groupid, $date ? Date::getDate($date) : null);
         $qmatchList = $this->queryQMatchList($groupid, $date ? Date::getDate($date) : null);
         return $this->prepareAndSort($matchList, $qmatchList);
@@ -505,7 +505,7 @@ class MatchSupport
         return $qb->getResult();
     }
     
-    public function listMatchesByPlaygroundDate($playgroundid, $date) {
+    public function listMatchesByPlaygroundDate($playgroundid, DateTime $date) {
         $matchList = $this->queryMatchListWithCategory($playgroundid, Date::getDate($date));
         $qmatchList = $this->queryQMatchListWithCategory($playgroundid, Date::getDate($date));
         return $this->prepareAndSort($matchList, $qmatchList);
@@ -763,7 +763,7 @@ class MatchSupport
         return $this->prepareAndSort($matchList, $qmatchList, $club_list);
     }
 
-    public function listMatchesByDate($tournamentid, $date, $club_list = array()) {
+    public function listMatchesByDate($tournamentid, DateTime $date, $club_list = array()) {
         $matchList = $this->queryMatchListWithTournament($tournamentid, Date::getDate($date));
         $qmatchList = $this->queryQMatchListWithTournament($tournamentid, Date::getDate($date));
         return $this->prepareAndSort($matchList, $qmatchList, $club_list);
@@ -826,7 +826,7 @@ class MatchSupport
      * OTHER..
      */
 
-    public function listMatchesLimitedWithTournament($tournamentid, $date, $before = 10, $after = 3, $club_list = array()) {
+    public function listMatchesLimitedWithTournament($tournamentid, DateTime $date, $before = 10, $after = 3, $club_list = array()) {
         $matchList = $this->listMatchesByTournament($tournamentid, $club_list);
         $matchesMaster = array();
         $maxElements = $before;

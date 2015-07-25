@@ -2,9 +2,12 @@
 namespace ICup\Bundle\PublicSiteBundle\Controller\Admin\Tournament;
 
 use ICup\Bundle\PublicSiteBundle\Entity\Doctrine\Date;
+use ICup\Bundle\PublicSiteBundle\Entity\Doctrine\Group;
 use ICup\Bundle\PublicSiteBundle\Entity\Doctrine\Match;
 use ICup\Bundle\PublicSiteBundle\Entity\Doctrine\MatchRelation;
+use ICup\Bundle\PublicSiteBundle\Entity\Doctrine\QMatchRelation;
 use ICup\Bundle\PublicSiteBundle\Entity\Doctrine\User;
+use ICup\Bundle\PublicSiteBundle\Services\Doctrine\MatchSupport;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
@@ -51,7 +54,12 @@ class MatchController extends Controller
                 return $this->redirect($returnUrl);
             }
         }
-        return array('form' => $form->createView(), 'action' => 'add', 'category' => $category);
+        return array(
+            'form' => $form->createView(),
+            'action' => 'add',
+            'tournament' => $tournament,
+            'category' => $category,
+            'group' => $group);
     }
     
     /**
@@ -89,7 +97,15 @@ class MatchController extends Controller
                 return $this->redirect($returnUrl);
             }
         }
-        return array('form' => $form->createView(), 'action' => 'chg', 'category' => $category);
+        return array(
+            'form' => $form->createView(),
+            'action' => 'chg',
+            'tournament' => $tournament,
+            'category' => $category,
+            'group' => $group,
+            'match' => $match,
+            'teamA' => $this->getDetails($match, MatchSupport::$HOME),
+            'teamB' => $this->getDetails($match, MatchSupport::$AWAY));
     }
     
     /**
@@ -120,7 +136,15 @@ class MatchController extends Controller
             $this->delMatch($match);
             return $this->redirect($returnUrl);
         }
-        return array('form' => $form->createView(), 'action' => 'del', 'category' => $category);
+        return array(
+            'form' => $form->createView(),
+            'action' => 'del',
+            'tournament' => $tournament,
+            'category' => $category,
+            'group' => $group,
+            'match' => $match,
+            'teamA' => $this->getDetails($match, MatchSupport::$HOME),
+            'teamB' => $this->getDetails($match, MatchSupport::$AWAY));
     }
 
     private function addMatch(MatchForm $matchForm) {
@@ -140,19 +164,19 @@ class MatchController extends Controller
 
     private function delMatch(Match $match) {
         $em = $this->getDoctrine()->getManager();
-        $homeRel = $this->get('match')->getMatchRelationByMatch($match->getId(), false);
+        $homeRel = $this->get('match')->getMatchRelationByMatch($match->getId(), MatchSupport::$HOME);
         if ($homeRel != null) {
             $em->remove($homeRel);
         }
-        $awayRel = $this->get('match')->getMatchRelationByMatch($match->getId(), true);
+        $awayRel = $this->get('match')->getMatchRelationByMatch($match->getId(), MatchSupport::$AWAY);
         if ($awayRel != null) {
             $em->remove($awayRel);
         }
-        $qhomeRel = $this->get('match')->getQMatchRelationByMatch($match->getId(), false);
+        $qhomeRel = $this->get('match')->getQMatchRelationByMatch($match->getId(), MatchSupport::$HOME);
         if ($homeRel != null) {
             $em->remove($qhomeRel);
         }
-        $qawayRel = $this->get('match')->getQMatchRelationByMatch($match->getId(), true);
+        $qawayRel = $this->get('match')->getQMatchRelationByMatch($match->getId(), MatchSupport::$AWAY);
         if ($awayRel != null) {
             $em->remove($qawayRel);
         }
@@ -243,5 +267,33 @@ class MatchController extends Controller
             $form->addError(new FormError($this->get('translator')->trans('FORM.MATCH.NOPLAYGROUND', array(), 'admin')));
         }
         return $form->isValid();
+    }
+
+    private function getDetails(Match $match, $away) {
+        $detail = array();
+        $details = $this->get('match')->getMatchRelationDetails($match->getId(), $away);
+        if ($details) {
+            $detail['id'] = $details['id'];
+            $detail['name'] = $this->get('logic')->getTeamName($details['team'], $details['division']);
+            $detail['country'] = $details['country'];
+        }
+        /* @var $qrel QMatchRelation */
+        $qrel = $this->get('match')->getQMatchRelationByMatch($match->getId(), $away);
+        if ($qrel) {
+            $group = $this->get('entity')->getGroupById($qrel->getCid());
+            if ($group->getClassification() > 0) {
+                $groupname = $this->get('translator')->trans('GROUPCLASS.'.$group->getClassification(), array(), 'tournament');
+            }
+            else {
+                $groupname = $this->get('translator')->trans('GROUP', array(), 'tournament');
+            }
+            $rankTxt = $this->get('translator')->transChoice('RANK', $qrel->getRank(),
+                    array('%rank%' => $qrel->getRank(),
+                          '%group%' => strtolower($groupname).' '.$group->getName()), 'tournament');
+            $detail['id'] = -1;
+            $detail['rank'] = $rankTxt;
+            $detail['rgrp'] = $qrel->getCid();
+        }
+        return count($detail) > 0 ? $detail : null;
     }
 }

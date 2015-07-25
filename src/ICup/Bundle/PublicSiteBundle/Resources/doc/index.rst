@@ -1,6 +1,5 @@
 To Do List
 ----------
-Fix - kamp redigering - valg af hold gøres fri - men validering af at valgte hold er fra samme gruppe.
 Kampdetaljer som popup - se checkbox definition for eksempel
 Grafisk brush-up af finale billedet på kategorisiden
 Genåbn konto som turneringsansvarlig
@@ -13,7 +12,6 @@ Registreringssystem for indrul
 IDEER
 -----
 Dommerpåsætning - dommernationaltet skal sikre at man ikke dømmer for eget land
-?? - opdater formular for gruppe og pulje redigering
 
 Done List
 ---------
@@ -39,3 +37,8 @@ NY - indstillinger for turnering - tournamentoptions
 Fejlrettelse - ved manglende referer henvises til forside i stedet
 Fix - opret menuadgang fra dashboard til ret kamp via kampnr.
 Fix - kamp redigering - valg af kamp via match dato / bane / gruppe - som ved resultat ændring.
+
+FORKASTET
+---------
+?? - opdater formular for gruppe og pulje redigering
+Fix - kamp redigering - valg af hold gøres fri - men validering af at valgte hold er fra samme gruppe.

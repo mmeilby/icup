@@ -44,6 +44,11 @@
                 <span class="fa fa-lightbulb-o"></span>&nbsp;{% trans %}FORM.MATCHPLANNING.ADVICE{% endtrans %}
             </a>
         </li>
+        <li>
+            <a href="{{ path('_edit_match_maint', { 'tournamentid': tournament.id }) }}">
+                <span class="fa fa-wrench"></span>&nbsp;{% trans %}FORM.MATCHPLANNING.MAINT{% endtrans %}
+            </a>
+        </li>
     </ul>
     <p>&nbsp;</p>
     {% for flashMessage in app.session.flashbag.get('data_saved') %}

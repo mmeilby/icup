@@ -32,14 +32,19 @@
         {% if teamA is defined and teamA and teamB is defined and teamB %}
             <div class="row">
                 <div class="col-lg-3">
-                    {{ formatter.club(teamA, group.id, _context) }}
+                    {{ formatter.clubspan(teamA, group.id, _context) }}
                 </div>
                 <div class="col-lg-3">
-                    {{ formatter.club(teamB, group.id, _context) }}
+                    {{ formatter.clubspan(teamB, group.id, _context) }}
                 </div>
             {% if action == 'chg' %}
                 <div class="col-lg-6">
+                {% if teamA.rank is defined and teamB.rank is defined  %}
+                    <a href="{{ path('_edit_qmatchrel_chg', { 'matchid': match.id }) }}" class="btn btn-default" role="button">{% trans %}FORM.MATCH.QDETAILS{% endtrans %}</a>
+                    &nbsp;<a href="{{ path('_edit_matchrel_upd', { 'matchid': match.id }) }}" class="btn btn-default" role="button">{% trans %}FORM.MATCH.DETAILS{% endtrans %}</a>
+                {% else %}
                     <a href="{{ path('_edit_matchrel_chg', { 'matchid': match.id }) }}" class="btn btn-default" role="button">{% trans %}FORM.MATCH.DETAILS{% endtrans %}</a>
+                {% endif %}
                 </div>
             {% endif %}
             </div>

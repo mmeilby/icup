@@ -377,6 +377,9 @@ FORM:
         DATE: En dato hvor der er planlagt kampe for denne turnering
     DEFAULT: Vælg...
     SEARCH: Søg kamp
+    ADD: Ny kamp
+    CHG: Tilpas kamp
+    DEL: Fjern kamp
     MOREMATCHES: Mange kampe passer til det søgte (et udvalg er vist her) - fortsæt indtastning eller vælg en af kampene.
     NOMATCHES: Ingen kampe passer til det søgte. Prøv at åbne søgningen ved at fjerne et af de valgte kriterier.
     MATCHESFOUND: Her ser du resultatet af søgningen. Rediger en kamp ved at klikke på linien med kampen.
@@ -668,6 +671,7 @@ FORM:
     SAMETEAM: Det samme hold er valgt som hjemmehold og udehold. Det er ikke muligt.
     CANTDELETE: Denne kamp er spillet og registreret med resultat. Det er ikke muligt at fjerne den her.
     DETAILS: Skift hold
+    QDETAILS: Tilpas kvalifikationskrav
     TITLE:
       ADD: Tilføj ny kamp
       CHG: Rediger kampinformationer

@@ -22,7 +22,7 @@ class MatchController extends Controller
 {
     /**
      * Add new match
-     * @Route("/edit/match/add/{groupid}", name="_edit_match_add")
+     * @Route("/edit/match/add/{groupid}", name="_edit_match_add", options={"expose"=true})
      * @Template("ICupPublicSiteBundle:Host:editmatch.html.twig")
      */
     public function addAction($groupid, Request $request) {
@@ -110,7 +110,7 @@ class MatchController extends Controller
     
     /**
      * Remove match from the register - including all related match results
-     * @Route("/edit/match/del/{matchid}", name="_edit_match_del")
+     * @Route("/edit/match/del/{matchid}", name="_edit_match_del", options={"expose"=true})
      * @Template("ICupPublicSiteBundle:Host:editmatch.html.twig")
      */
     public function delAction($matchid, Request $request) {
@@ -270,7 +270,7 @@ class MatchController extends Controller
     }
 
     private function getDetails(Match $match, $away) {
-        $detail = array();
+        $detail = array('id' => -1);
         $details = $this->get('match')->getMatchRelationDetails($match->getId(), $away);
         if ($details) {
             $detail['id'] = $details['id'];
@@ -290,7 +290,6 @@ class MatchController extends Controller
             $rankTxt = $this->get('translator')->transChoice('RANK', $qrel->getRank(),
                     array('%rank%' => $qrel->getRank(),
                           '%group%' => strtolower($groupname).' '.$group->getName()), 'tournament');
-            $detail['id'] = -1;
             $detail['rank'] = $rankTxt;
             $detail['rgrp'] = $qrel->getCid();
         }

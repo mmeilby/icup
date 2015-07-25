@@ -95,7 +95,7 @@ class MatchRelationController extends Controller
 
     /**
      * Update information of an existing match with qualifying relations
-     * @Route("/edit/matchrel/upd/{matchid}", name="_edit_matchrel_upd")
+     * @Route("/edit/matchrel/upd/{matchid}", name="_edit_matchrel_upd", options={"expose"=true})
      * @Template("ICupPublicSiteBundle:Host:editmatchrelation.html.twig")
      */
     public function matchfix($matchid, Request $request) {

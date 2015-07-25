@@ -51,7 +51,14 @@
     <p>&nbsp;</p>
     <div class="row">
         <div class="col-sm-5">
-            <p><a id="search" class="btn btn-default btn-lg" role="button">{% trans %}FORM.MATCHPLANNING.SEARCH{% endtrans %}</a></p>
+            <div class="row">
+                <div class="col-sm-6">
+                    <a id="search" class="btn btn-default btn-lg" role="button"><span class="fa fa-search"></span>&nbsp;{% trans %}FORM.MATCHPLANNING.SEARCH{% endtrans %}</a>
+                </div>
+                <div class="col-sm-6">
+                </div>
+            </div>
+            <hr />
             {{ form(form) }}
         </div>
         <div id="form_container" class="col-sm-7">
@@ -74,10 +81,6 @@
             $('#form_div').addClass("list-group");
             // Add key awareness
             $('#search').click(updateMatchList);
-//            $('input#form_matchno').keyup(updateMatchList);
-//            $('input#form_date').keyup(updateMatchList);
-//            $('select#form_group').change(updateMatchList);
-//            $('select#form_playground').change(updateMatchList);
             $('select#form_category').change(updateGroupList);
             // Initialize
             updateGroupList();
@@ -136,11 +139,19 @@
             $.each(data,
                     function updateDropDown(index, match) {
                         if (index < 15) {
-                            var link = Routing.generate('_edit_match_chg',
+                            var addlink = Routing.generate('_edit_match_add',
+                                    {
+                                        'groupid': match.group.id
+                                    });
+                            var chglink = Routing.generate('_edit_match_chg',
                                     {
                                         'matchid': match.id
                                     });
-                            opt += "<a class=\"list-group-item\" href=\""+link+"\">";
+                            var dellink = Routing.generate('_edit_match_del',
+                                    {
+                                        'matchid': match.id
+                                    });
+                            opt += "<div class=\"list-group-item\">";
                             opt += "<h4 class=\"list-group-item-heading\">"+
                                         "<div class=\"row\">"+
                                             "<div class=\"col-sm-1\">"+match.matchno+"</div>"+
@@ -171,7 +182,10 @@
                                             "<div class=\"col-sm-2 text-center\">"+match.home.score+"-"+match.away.score+"</div>"+
                                         "</div>"+
                                     "</p>";
-                            opt += "</a>";
+                            opt += "<a href=\""+addlink+"\" class=\"btn btn-default btn-sm\" role=\"button\"><span class=\"fa fa-file\"></span>&nbsp;{% trans %}FORM.MATCHPLANNING.ADD{% endtrans %}</a>&nbsp;";
+                            opt += "<a href=\""+chglink+"\" class=\"btn btn-default btn-sm\" role=\"button\"><span class=\"fa fa-pencil\"></span>&nbsp;{% trans %}FORM.MATCHPLANNING.CHG{% endtrans %}</a>&nbsp;";
+                            opt += "<a href=\""+dellink+"\" class=\"btn btn-danger btn-sm\" role=\"button\"><span class=\"fa fa-times\"></span>&nbsp;{% trans %}FORM.MATCHPLANNING.DEL{% endtrans %}</a>";
+                            opt += "</div>";
                         }
                     });
             return opt;

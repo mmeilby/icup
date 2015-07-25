@@ -63,14 +63,23 @@ class Util
     public function getReferer() {
         /* @var $request Request */
         $request = $this->container->get('request_stack')->getCurrentRequest();
+        $route = $request->get('_route');
+        if ($route) {
+            $key = 'icup.referer.'.$route;
+        }
+        else {
+            $key = 'icup.referer';
+        }
         if ($request->isMethod('GET')) {
             $returnUrl = $request->headers->get('referer');
             $session = $request->getSession();
-            $session->set('icup.referer', $returnUrl);
+            if (!$session->has($key)) {
+                $session->set($key, $returnUrl);
+            }
         }
         else {
             $session = $request->getSession();
-            $returnUrl = $session->get('icup.referer');
+            $returnUrl = $session->remove($key);
         }
         return $returnUrl ? $returnUrl : $this->container->get('router')->generate('_icup');
     }

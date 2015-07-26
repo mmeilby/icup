@@ -64,7 +64,7 @@ class QMatchRelationController extends Controller
     
     /**
      * Remove match relations from the register - including related match result
-     * @Deprecated
+     * @deprecated
      * @Route("/edit/qmatchrel/del/{matchid}", name="_edit_qmatchrel_del")
      * @Template("ICupPublicSiteBundle:Host:editmatchrelation.html.twig")
      */

@@ -14,7 +14,7 @@ use Symfony\Component\HttpFoundation\Request;
 use DateTime;
 
 /**
- * Maintain match result and team assignment
+ * Maintain team assignment for matches
  */
 class MatchRelationController extends Controller
 {
@@ -58,7 +58,7 @@ class MatchRelationController extends Controller
     
     /**
      * Remove match relations from the register - including related match result
-     * @Deprecated
+     * @deprecated
      * @Route("/edit/matchrel/del/{matchid}", name="_edit_matchrel_del")
      * @Template("ICupPublicSiteBundle:Host:editmatchrelation.html.twig")
      */

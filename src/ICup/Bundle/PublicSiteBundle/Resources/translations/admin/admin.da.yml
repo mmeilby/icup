@@ -380,9 +380,10 @@ FORM:
     ADD: Ny kamp
     CHG: Tilpas kamp
     DEL: Fjern kamp
-    MOREMATCHES: Mange kampe passer til det søgte (et udvalg er vist her) - fortsæt indtastning eller vælg en af kampene.
+    MOREMATCHES: Mange kampe passer til det søgte (et udvalg er vist her) - tilføj flere søgekriterier eller vælg en af kampene.
     NOMATCHES: Ingen kampe passer til det søgte. Prøv at åbne søgningen ved at fjerne et af de valgte kriterier.
-    MATCHESFOUND: Her ser du resultatet af søgningen. Rediger en kamp ved at klikke på linien med kampen.
+    MATCHFOUND: Følgende kamp passer til det søgte.
+    MATCHESFOUND: Følgende kampe passer til det søgte.
     INFO: <h4>Søg kamp</h4><p>Søg en kamp på kampnr. eller søg blandt alle kampe der spilles på en given dag, pulje og/eller bane. Du kan angive de oplysninger du har og vælge en kamp fra listen af kampe der passer til din søgning. For at angive en pulje skal du have valgt en gruppe først. Det er ikke muligt at søge på gruppe alene. Klik på en kamp når du har fundet den du søger.</p>
     SUBMIT: Planlæg kampe
     CANCEL: Fortryd

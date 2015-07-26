@@ -270,7 +270,7 @@ class MatchController extends Controller
     }
 
     private function getDetails(Match $match, $away) {
-        $detail = array('id' => -1);
+        $detail = array();
         $details = $this->get('match')->getMatchRelationDetails($match->getId(), $away);
         if ($details) {
             $detail['id'] = $details['id'];
@@ -290,6 +290,9 @@ class MatchController extends Controller
             $rankTxt = $this->get('translator')->transChoice('RANK', $qrel->getRank(),
                     array('%rank%' => $qrel->getRank(),
                           '%group%' => strtolower($groupname).' '.$group->getName()), 'tournament');
+            if (!array_key_exists('id', $detail)) {
+                $detail['id'] = -1;
+            }
             $detail['rank'] = $rankTxt;
             $detail['rgrp'] = $qrel->getCid();
         }

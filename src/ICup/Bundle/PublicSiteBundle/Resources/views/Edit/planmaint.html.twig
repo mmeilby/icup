@@ -119,7 +119,12 @@
                                     $('#form_warning').removeClass('alert-info alert-success');
                                 }
                                 else {
-                                    $('#form_warning').html('{% trans %}FORM.MATCHPLANNING.MATCHESFOUND{% endtrans %}');
+                                    if (data.length == 1) {
+                                        $('#form_warning').html('{% trans %}FORM.MATCHPLANNING.MATCHFOUND{% endtrans %}');
+                                    }
+                                    else {
+                                        $('#form_warning').html('{% trans %}FORM.MATCHPLANNING.MATCHESFOUND{% endtrans %}');
+                                    }
                                     $('#form_warning').addClass('alert-success');
                                     $('#form_warning').removeClass('alert-info alert-warning');
                                 }

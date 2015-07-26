@@ -5,6 +5,8 @@ use ICup\Bundle\PublicSiteBundle\Entity\Doctrine\Date;
 use ICup\Bundle\PublicSiteBundle\Entity\Doctrine\Match;
 use ICup\Bundle\PublicSiteBundle\Entity\Doctrine\QMatchRelation;
 use ICup\Bundle\PublicSiteBundle\Entity\Doctrine\User;
+use ICup\Bundle\PublicSiteBundle\Entity\Doctrine\Group;
+use ICup\Bundle\PublicSiteBundle\Services\Doctrine\MatchSupport;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
@@ -14,12 +16,12 @@ use Symfony\Component\HttpFoundation\Request;
 use DateTime;
 
 /**
- * List the categories and groups available
+ * Maintain qualifying match prerequisites
  */
 class QMatchRelationController extends Controller
 {
     /**
-     * Change information of an existing match
+     * Change prerequisites of an existing qualifying match
      * @Route("/edit/qmatchrel/chg/{matchid}", name="_edit_qmatchrel_chg")
      * @Template("ICupPublicSiteBundle:Host:editmatchrelation.html.twig")
      */
@@ -38,7 +40,7 @@ class QMatchRelationController extends Controller
         $utilService->validateEditorAdminUser($user, $tournament->getPid());
 
         $matchForm = $this->copyMatchForm($match);
-        $form = $this->makeMatchForm($matchForm, $category->getId(), 'chg');
+        $form = $this->makeMatchForm($matchForm, $category->getId(), $group->getClassification(), 'chg');
         $form->handleRequest($request);
         if ($form->get('cancel')->isClicked()) {
             return $this->redirect($returnUrl);
@@ -61,7 +63,8 @@ class QMatchRelationController extends Controller
     }
     
     /**
-     * Remove match from the register - including all related match results
+     * Remove match relations from the register - including related match result
+     * @Deprecated
      * @Route("/edit/qmatchrel/del/{matchid}", name="_edit_qmatchrel_del")
      * @Template("ICupPublicSiteBundle:Host:editmatchrelation.html.twig")
      */
@@ -79,7 +82,7 @@ class QMatchRelationController extends Controller
         $utilService->validateEditorAdminUser($user, $tournament->getPid());
 
         $matchForm = $this->copyMatchForm($match);
-        $form = $this->makeMatchForm($matchForm, $category->getId(), 'del');
+        $form = $this->makeMatchForm($matchForm, $category->getId(), $group->getClassification(), 'del');
         $form->handleRequest($request);
         if ($form->get('cancel')->isClicked()) {
             return $this->redirect($returnUrl);
@@ -103,7 +106,7 @@ class QMatchRelationController extends Controller
 
     private function chgMatch(MatchForm $matchForm, Match $match) {
         $em = $this->getDoctrine()->getManager();
-        $homeRel = $this->get('match')->getQMatchRelationByMatch($match->getId(), false);
+        $homeRel = $this->get('match')->getQMatchRelationByMatch($match->getId(), MatchSupport::$HOME);
         if ($homeRel == null) {
             $homeRel = new QMatchRelation();
             $homeRel->setPid($matchForm->getId());
@@ -112,7 +115,7 @@ class QMatchRelationController extends Controller
         }
         $homeRel->setCid($matchForm->getGroupA());
         $homeRel->setRank($matchForm->getRankA());
-        $awayRel = $this->get('match')->getQMatchRelationByMatch($match->getId(), true);
+        $awayRel = $this->get('match')->getQMatchRelationByMatch($match->getId(), MatchSupport::$AWAY);
         if ($awayRel == null) {
             $awayRel = new QMatchRelation();
             $awayRel->setPid($matchForm->getId());
@@ -128,11 +131,11 @@ class QMatchRelationController extends Controller
 
     private function delMatch(Match $match) {
         $em = $this->getDoctrine()->getManager();
-        $qhomeRel = $this->get('match')->getQMatchRelationByMatch($match->getId(), false);
+        $qhomeRel = $this->get('match')->getQMatchRelationByMatch($match->getId(), MatchSupport::$HOME);
         if ($qhomeRel != null) {
             $em->remove($qhomeRel);
         }
-        $qawayRel = $this->get('match')->getQMatchRelationByMatch($match->getId(), true);
+        $qawayRel = $this->get('match')->getQMatchRelationByMatch($match->getId(), MatchSupport::$AWAY);
         if ($qawayRel != null) {
             $em->remove($qawayRel);
         }
@@ -163,11 +166,15 @@ class QMatchRelationController extends Controller
         return $matchForm;
     }
 
-    private function makeMatchForm(MatchForm $matchForm, $categoryid, $action) {
+    private function makeMatchForm(MatchForm $matchForm, $categoryid, $classification, $action) {
         $groups = $this->get('logic')->listGroupsByCategory($categoryid);
         $groupnames = array();
         foreach ($groups as $group) {
-            $groupnames[$group->getId()] = $group->getName();
+            if ($group->getClassification() < $classification && $group->getClassification() < Group::$BRONZE) {
+                $groupnames[$group->getId()] =
+                    $this->get('translator')->trans('GROUP', array(), 'tournament')." ".
+                    $group->getName();
+            }
         }
 
         $show = $action != 'del';

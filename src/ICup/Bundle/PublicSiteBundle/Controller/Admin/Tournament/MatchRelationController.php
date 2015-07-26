@@ -14,12 +14,12 @@ use Symfony\Component\HttpFoundation\Request;
 use DateTime;
 
 /**
- * List the categories and groups available
+ * Maintain match result and team assignment
  */
 class MatchRelationController extends Controller
 {
     /**
-     * Change information of an existing match
+     * Change team assignment of an existing match
      * @Route("/edit/matchrel/chg/{matchid}", name="_edit_matchrel_chg")
      * @Template("ICupPublicSiteBundle:Host:editmatchrelation.html.twig")
      */
@@ -57,7 +57,8 @@ class MatchRelationController extends Controller
     }
     
     /**
-     * Remove match from the register - including all related match results
+     * Remove match relations from the register - including related match result
+     * @Deprecated
      * @Route("/edit/matchrel/del/{matchid}", name="_edit_matchrel_del")
      * @Template("ICupPublicSiteBundle:Host:editmatchrelation.html.twig")
      */
@@ -94,7 +95,7 @@ class MatchRelationController extends Controller
     }
 
     /**
-     * Update information of an existing match with qualifying relations
+     * Update team assignment for an existing qualifying match
      * @Route("/edit/matchrel/upd/{matchid}", name="_edit_matchrel_upd", options={"expose"=true})
      * @Template("ICupPublicSiteBundle:Host:editmatchrelation.html.twig")
      */

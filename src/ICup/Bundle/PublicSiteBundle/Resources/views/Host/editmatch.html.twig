@@ -48,6 +48,17 @@
                 </div>
             {% endif %}
             </div>
+        {% else %}
+            {% if action == 'chg' %}
+            <div class="row">
+                <div class="col-lg-6">
+                {% if group.classification > 0 %}
+                    <a href="{{ path('_edit_qmatchrel_chg', { 'matchid': match.id }) }}" class="btn btn-default" role="button">{% trans %}FORM.MATCH.QDETAILS{% endtrans %}</a>&nbsp;
+                {% endif %}
+                    <a href="{{ path('_edit_matchrel_chg', { 'matchid': match.id }) }}" class="btn btn-default" role="button">{% trans %}FORM.MATCH.DETAILS{% endtrans %}</a>
+                </div>
+            </div>
+            {% endif %}
         {% endif %}
         </div>
         <div class="panel-body">

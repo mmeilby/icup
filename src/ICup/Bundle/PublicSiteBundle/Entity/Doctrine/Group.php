@@ -13,6 +13,12 @@ use JsonSerializable;
  */
 class Group implements JsonSerializable
 {
+    public static $FINAL = 10;
+    public static $BRONZE = 9;
+    public static $SEMIFINAL = 8;
+    public static $PLAYOFF = 1;
+    public static $PRE = 0;
+
     /**
      * @var integer $id
      *

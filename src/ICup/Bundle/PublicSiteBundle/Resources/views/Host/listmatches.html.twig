@@ -42,17 +42,13 @@
                 <td class="narrow-col"></td>
                 <td class="narrow-col"></td>
                 <td class="narrow-col"></td>
-                <td class="narrow-col"></td>
-                <td class="narrow-col"></td>
-                <td class="narrow-col"></td>
-                <td class="narrow-col"></td>
             </tr>
         </thead>
         <tbody>
 {% if matchlist|length > 0 %}            
     {% for matchset in matchlist %}
         <tr>
-            <td class="lead" colspan="16">
+            <td class="lead" colspan="12">
                 {{ 'FORMAT.LONGDATE'|transchoice(matchset[0].schedule|date('j'), {
                         '%week%': ['WEEK.',matchset[0].schedule|date('D')|upper]|join|trans([],'messages')|capitalize,
                         '%day%': matchset[0].schedule|date('j'),
@@ -93,57 +89,6 @@
                         <span class="glyphicon glyphicon-remove"></span>
                     </a>    
                 </td>
-{% if match.home.id > 0 or match.away.id > 0 or match.home.rank != '' or match.away.rank != '' %}
-    {% if match.home.rank != '' or match.away.rank != '' %}
-                <td class="narrow-col">
-                    <a href="{{ path('_edit_matchrel_upd', { 'matchid': match.id }) }}">
-                        <span class="glyphicon glyphicon-edit"></span>
-                    </a>    
-                </td>
-    {% else %}
-                <td class="narrow-col">
-                    <a href="{{ path('_edit_matchrel_chg', { 'matchid': match.id }) }}">
-                        <span class="glyphicon glyphicon-edit"></span>
-                    </a>    
-                </td>
-    {% endif %}
-                <td class="narrow-col">
-                    <a href="{{ path('_edit_matchrel_del', { 'matchid': match.id }) }}">
-                        <span class="glyphicon glyphicon-remove"></span>
-                    </a>    
-                </td>
-                <td class="narrow-col">
-                    <a href="{{ path('_edit_qmatchrel_chg', { 'matchid': match.id }) }}">
-                        <span class="glyphicon glyphicon-edit"></span>
-                    </a>    
-                </td>
-                <td class="narrow-col">
-                    <a href="{{ path('_edit_qmatchrel_del', { 'matchid': match.id }) }}">
-                        <span class="glyphicon glyphicon-remove"></span>
-                    </a>    
-                </td>
-{% else %}
-    {% if match.home.rank != '' or match.away.rank != '' %}
-                <td class="narrow-col">
-                    <a href="{{ path('_edit_matchrel_upd', { 'matchid': match.id }) }}">
-                        <span class="glyphicon glyphicon-file"></span>
-                    </a>    
-                </td>
-    {% else %}
-                <td class="narrow-col">
-                    <a href="{{ path('_edit_matchrel_chg', { 'matchid': match.id }) }}">
-                        <span class="glyphicon glyphicon-file"></span>
-                    </a>    
-                </td>
-    {% endif %}
-                <td class="narrow-col"></td>
-                <td class="narrow-col">
-                    <a href="{{ path('_edit_qmatchrel_chg', { 'matchid': match.id }) }}">
-                        <span class="glyphicon glyphicon-file"></span>
-                    </a>    
-                </td>
-                <td class="narrow-col"></td>
-{% endif %}
         {% endfor %}
             </tr>
     {% endfor %}
@@ -159,7 +104,7 @@
                         <span class="glyphicon glyphicon-file"></span>
                     </a>    
                 </td>
-                <td colspan="6"></td>
+                <td colspan="2"></td>
             </tr>
 {% endif %}                    
         </tbody>

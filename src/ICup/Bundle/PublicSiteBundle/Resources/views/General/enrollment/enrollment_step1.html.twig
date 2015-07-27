@@ -29,8 +29,8 @@
         </p>
 <!--    
         <i class="fa fa-ticket fa-5x"></i>
-        <h2>{% trans %}FORM.FRONTPAGE.BLOCK2.TITLE{% endtrans %}</h2>
-        <p>{% trans %}FORM.FRONTPAGE.BLOCK2.DESCRIPTION{% endtrans %}</p>
+        <h2>{% trans from "frontpage" %}FORM.FRONTPAGE.BLOCK2.TITLE{% endtrans %}</h2>
+        <p>{% trans from "frontpage" %}FORM.FRONTPAGE.BLOCK2.DESCRIPTION{% endtrans %}</p>
         <p>
 {% if app.user == null %}
             <a href="{{ path('_ausr_new_user') }}" role="button">

@@ -1,6 +1,5 @@
 To Do List
 ----------
-Fejlrettelse - nulstil kodeord har forkert besked indhold - og link virker ikke
 Kampdetaljer som popup - se checkbox definition for eksempel
 Grafisk brush-up af finale billedet på kategorisiden
 Genåbn konto som turneringsansvarlig
@@ -42,6 +41,9 @@ Fix - kamp redigering - valg af kamp via match dato / bane / gruppe - som ved re
 Fix - kamp redigering er forenklet til valg af hold og valg af forudsætninger for kvalifikationskampe.
 Fix - Fjern kamprelationer er uønsket funktion og fjernes senere.
 Kopier turnering flyttes til turnerings dashboard - som een funktion der kopierer en hel turnering
+Fejlrettelse - nulstil kodeord har forkert besked indhold - og link virker ikke
+Glyphicon erstattet med Font Awesome
+Cookie consent javascript implementeret
 
 FORKASTET
 ---------

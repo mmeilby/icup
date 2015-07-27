@@ -3,18 +3,18 @@
 
 {% block body %}
 <h1>{% trans %}FORM.TITLE{% endtrans %}</h1>
-<p class="subtitle">{% trans %}FORM.LISTCLUB.TITLE{% endtrans %}</p>
+<p class="subtitle">{% trans %}FORM.MYPAGE.TITLE{% endtrans %}</p>
 <p>{{ currentuser.name }}<br />
 {% if currentuser.role == 2 %}
-{% trans %}FORM.LISTCLUB.CLUBADMIN{% endtrans %}
+{% trans %}FORM.MYPAGE.CLUBADMIN{% endtrans %}
 {% endif %}
 </p>
 {% if club is defined %}
-<p>{% trans %}FORM.LISTCLUB.ATTACHEDTO{% endtrans %}: {{ club.name }}</p>
+<p>{% trans %}FORM.MYPAGE.ATTACHEDTO{% endtrans %}: {{ club.name }}</p>
 {% endif %}
 {% if users is defined and users|length > 0 %}
 <table>
-    <caption>{% trans %}FORM.LISTCLUB.CAPTION{% endtrans %}</caption>
+    <caption>{% trans %}FORM.MYPAGE.CAPTION{% endtrans %}</caption>
     <thead>
         <tr>
             <td></td>
@@ -49,9 +49,9 @@
                 </a>
 {% else %}
     {% if user.role == 1 %}
-                {% trans %}FORM.LISTCLUB.CLUBUSER{% endtrans %}
+                {% trans %}FORM.MYPAGE.CLUBUSER{% endtrans %}
     {% else %}
-                {% trans %}FORM.LISTCLUB.CLUBADMIN{% endtrans %}
+                {% trans %}FORM.MYPAGE.CLUBADMIN{% endtrans %}
     {% endif %}
 {% endif %}
             </td>
@@ -62,13 +62,13 @@
                 +
                 </a>    
     {% else %}
-                {% trans %}FORM.LISTCLUB.ATTACHED{% endtrans %}
+                {% trans %}FORM.MYPAGE.ATTACHED{% endtrans %}
     {% endif %}
 {% else %}
     {% if user.status == 3 %}
-                {% trans %}FORM.LISTCLUB.PROSPECT{% endtrans %}
+                {% trans %}FORM.MYPAGE.PROSPECT{% endtrans %}
     {% else %}
-                {% trans %}FORM.LISTCLUB.ATTACHED{% endtrans %}
+                {% trans %}FORM.MYPAGE.ATTACHED{% endtrans %}
     {% endif %}
 {% endif %}
             </td>

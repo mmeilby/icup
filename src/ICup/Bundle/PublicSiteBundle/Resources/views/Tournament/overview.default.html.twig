@@ -26,7 +26,7 @@
 {% if newsstream|length > 0 %}
 <div class="row">
     <div class="col-lg-12">
-        <p class="lead">{% trans %}FORM.NEWS.TITLE{% endtrans %}</p>
+        <p class="lead">{% trans from "admin" %}FORM.LISTNEWS.TITLE{% endtrans %}</p>
         <div class="list-group">
     {% for news in newsstream %}
             <a class="list-group-item" href="{{ news.path }}">

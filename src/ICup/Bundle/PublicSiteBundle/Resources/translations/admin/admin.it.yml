@@ -117,7 +117,7 @@ FORM:
   LISTHOSTS:
     TITLE: Hosts and tournaments administration
     CAPTION: Hosts and tournaments
-    CAPTION_TNMT: Tornei
+    CAPTION_TMNT: Tornei
     NOTOURNAMENT: Aggiungi un nuovo torneo
   LOGIN:
     TITLE: Accedi
@@ -364,6 +364,7 @@ FORM:
     VIEW: Calendario gare
     RESULT: Dashboard
     ADVICE: Consigli
+    MAINT: Change matches
     SOLVEXCHG: No timeslots fit the requirements for this match. Try to exchange timeslot with another match from the group.
     SOLVEXPND: This match requires more time than available. Expand a timeslot to make space for this match.
     PLAN_SAVED: The match schedule has been accepted and registered for the tournament
@@ -371,6 +372,23 @@ FORM:
     TIMESLOT: Periodo
     PATTRS: Categorie preferite
     TIMELEFT: Tempo rimasto
+    CATEGORY: Category
+    GROUP: Group
+    DATE: Match date
+    MATCHNO: Match no.
+    HELP:
+        MATCHNO: Et officielt kampnr. som det fremgår af programmet
+        DATE: En dato hvor der er planlagt kampe for denne turnering
+    DEFAULT: Select...
+    SEARCH: Search match
+    ADD: New match
+    CHG: Change match
+    DEL: Remove match
+    MOREMATCHES: More matches do match your search criteria. A short list is shown here - try to add more criterias to narrow the search.
+    NOMATCHES: No matches do match your search criteria. Try to open the search by removing some of the criterias.
+    MATCHFOUND: The following match was found.
+    MATCHESFOUND: The following matches were found.
+    INFO: <h4>Search match</h4><p>Search a match by match no. or use the playground, match date, category and group to find a list of matches from which you can choose a match. To search by group you have to select a category first. It is not possible to search by category only. Click on the match you want to change from the list.</p>
     SUBMIT: Programma delle gare
     CANCEL: Elimina
   QMATCHPLANNING:
@@ -400,9 +418,7 @@ FORM:
   TOURNAMENTIMPORT:
     TITLE: Amministrazione del torneo
     CAPTION: Copia le informazioni da altro torneo.
-    PROMPT:
-      SITES: Copia sito, campi di gioco, preferenze, categorie e gruppi
-      CATEGORIES: Copia le categorie e i gruppi
+    PROMPT: Copia sito, campi di gioco, preferenze, categorie e gruppi
     DEFAULT: Seleziona un torneo...
     TOURNAMENT:
       PROMPT: Source tournament
@@ -657,6 +673,8 @@ FORM:
     CANTCHANGENO: This match no. is in use. You can not change the match.
     SAMETEAM: Home team and away team is the same. This is not acceptable.
     CANTDELETE: La partita è stata giocata e il risultato inserito. Non puoi eliminare la gara.
+    DETAILS: Change teams
+    QDETAILS: Change prerequisites
     TITLE:
       ADD: Aggiungi una nuova gara
       CHG: Modifica la gara
@@ -763,7 +781,7 @@ FORM:
   LISTNEWS:
     TITLE: News del torneo
     CAPTION: News e comunicati del torneo
-    NOEVENT: Aggiungi una news
+    NONEWS: Aggiungi una news
   CHANGEMATCH:
     TITLE: Cambia la gara
     PROMPT: Find the match from match no. and change information for that match

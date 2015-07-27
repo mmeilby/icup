@@ -10,9 +10,9 @@
     <caption>{% trans %}FORM.LISTENROLLED.CAPTION{% endtrans %}</caption>
     <thead>
         <tr>
-            <td>{% trans from "messages" %}CLASS{% endtrans %}</td>
-            <td colspan="4">{% trans from "messages" %}FEMALE{% endtrans %}</td>
-            <td colspan="4">{% trans from "messages" %}MALE{% endtrans %}</td>
+            <td>{% trans from "tournament" %}CLASS{% endtrans %}</td>
+            <td colspan="4">{% trans from "tournament" %}FEMALE{% endtrans %}</td>
+            <td colspan="4">{% trans from "tournament" %}MALE{% endtrans %}</td>
         </tr>
     </thead>
     <tbody>
@@ -30,7 +30,7 @@
         {% if femalecategorylist[i] is defined %}
                 <td>
                     <a href="{{ path('_showcategory', { 'categoryid': femalecategorylist[i].id }) }}">
-                        <b>{% trans from "messages" %}CATEGORY{% endtrans %} {{ femalecategorylist[i].name }}</b>
+                        <b>{% trans from "tournament" %}CATEGORY{% endtrans %} {{ femalecategorylist[i].name }}</b>
                     </a><br />
                         {{ ['GENDER.',
                             femalecategorylist[i].gender,
@@ -61,7 +61,7 @@
         {% if malecategorylist[i] is defined %}
                 <td>
                     <a href="{{ path('_showcategory', { 'categoryid': malecategorylist[i].id }) }}">
-                        <b>{% trans from "messages" %}CATEGORY{% endtrans %} {{ malecategorylist[i].name }}</b>
+                        <b>{% trans from "tournament" %}CATEGORY{% endtrans %} {{ malecategorylist[i].name }}</b>
                     </a><br />
                          {{ ['GENDER.',
                             malecategorylist[i].gender,

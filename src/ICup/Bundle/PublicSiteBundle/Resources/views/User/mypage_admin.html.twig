@@ -33,7 +33,7 @@
                 </a>
                 <br />
                 <a class="list-group-item" href="{{ path('_user_my_page_upload') }}">
-                    <h3 class="list-group-item-heading">{% trans %}Læg dokumenter op{% endtrans %}</h3>
+                    <h3 class="list-group-item-heading">{% trans %}FORM.DASHBOARD.UPLOAD.CAPTION{% endtrans %}</h3>
                     <p class="list-group-item-text">
                         Hent alle de afsluttede besvarelser for denne undersøgelse som en tekst fil.
                         Filen kan importeres i Excel.
@@ -52,7 +52,7 @@
                     <p class="list-group-item-text">
                         {{ ['FORM.DASHBOARD.TOURNAMENTS.STATUS.',tstat[tournament.id]]|join|trans }}
                     </p>
-                    <h4 class="list-group-item-text">{% trans %}FORM.DASHBOARD.TOURNAMENTS.EDITION{% endtrans %}: {{ tournament.edition }}</h4>
+                    <h4 class="list-group-item-text">{% trans %}FORM.DASHBOARD.TOURNAMENTS.LEGEND.EDITION{% endtrans %}: {{ tournament.edition }}</h4>
                     <p class="list-group-item-text">{{ tournament.description }}</p>
                 </a>
     {% endfor %}

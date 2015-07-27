@@ -117,7 +117,7 @@ FORM:
   LISTHOSTS:
     TITLE: Vedligehold turneringer og værter
     CAPTION: Værter og turneringer
-    CAPTION_TNMT: Turneringer
+    CAPTION_TMNT: Turneringer
     NOTOURNAMENT: Tilføj ny turnering
   LOGIN:
     TITLE: Log på
@@ -782,7 +782,7 @@ FORM:
   LISTNEWS:
     TITLE: Turneringsnyheder
     CAPTION: Nyheder for denne turnering
-    NOEVENT: Skriv nyhed
+    NONEWS: Skriv nyhed
   CHANGEMATCH:
     TITLE: Tilpas en kamp
     PROMPT: Find en kamp ud fra kamp nr. og ret oplysninger

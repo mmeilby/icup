@@ -1,6 +1,10 @@
 # Form translations
 FORM:
   ADMIN: iCup Turnerings Administration
+  COOKIE:
+    TITLE: Vi bruger cookies til at gøre vores indhold og annoncer mere personligt, til at vise dig funktioner fra de sociale medier og til at analysere vores trafik. Vi deler også oplysninger om din brug af vores website med vores partnere inden for annoncering på sociale medier og med vores analysepartnere.
+    DISMISS: Det er i orden!
+    MOREINFO: Få flere oplysninger
   ERROR:
     BACK: Videre...
     BADHOST: Den valgte turneringsvært findes ikke

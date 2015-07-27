@@ -18,7 +18,17 @@
             <link href="{{ asset_url }}" rel="stylesheet" type="text/css" />
         {% endstylesheets %}
         <link rel="icon" type="image/x-icon" href="{{ asset('favicon.ico') }}" />
-        <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
+        {# -- Begin Cookie Consent plugin by Silktide - http://silktide.com/cookieconsent -- #}
+        <script type="text/javascript">
+            window.cookieconsent_options = {
+                "message":"{% trans from 'admin' %}FORM.COOKIE.TITLE{% endtrans %}",
+                "dismiss":"{% trans from 'admin' %}FORM.COOKIE.DISMISS{% endtrans %}",
+                "learnMore":"{% trans from 'admin' %}FORM.COOKIE.MOREINFO{% endtrans %}",
+                "link":"{{ path("_icup") }}",
+                "theme":"dark-top"};
+        </script>
+        <script type="text/javascript" src="{{ asset('bundles/icuppublicsite/cookieconsent/cookieconsent.min.js') }}"></script>
+        {# -- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -- #}
         <!--[if lt IE 9]>
             <script src="{{ asset('bundles/icuppublicsite/html5shiv/html5shiv.min.js') }}"></script>
             <script src="{{ asset('bundles/icuppublicsite/html5shiv/respond.min.js') }}"></script>

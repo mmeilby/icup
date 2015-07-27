@@ -1,6 +1,10 @@
 # Form translations
 FORM:
   ADMIN: iCup Tournament Administration
+  COOKIE:
+    TITLE: This website uses cookies to ensure you get the best experience on our website
+    DISMISS: Got it!
+    MOREINFO: More info
   ERROR:
     BACK: Back...
     BADHOST: The host does not exist

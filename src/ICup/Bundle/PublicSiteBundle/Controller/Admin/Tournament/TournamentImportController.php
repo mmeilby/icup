@@ -18,19 +18,20 @@ class TournamentImportController extends Controller
 {
     /**
      * Copy objects from another tournament
-     * @Route("/edit/tournament/import/{tournamentid}/{import}", name="_edit_import_tournament")
+     * @Route("/edit/tournament/import/{hostid}", name="_edit_import_tournament")
      * @Template("ICupPublicSiteBundle:Edit:importtournament.html.twig")
      */
-    public function importAction($tournamentid, $import, Request $request) {
+    public function importAction($hostid, Request $request) {
         /* @var $utilService Util */
         $utilService = $this->get('util');
         $returnUrl = $utilService->getReferer();
         
         /* @var $user User */
         $user = $utilService->getCurrentUser();
-        $tournament = $this->get('entity')->getTournamentById($tournamentid);
-        $utilService->validateEditorAdminUser($user, $tournament->getPid());
-        
+        $utilService->validateEditorAdminUser($user, $hostid);
+
+        $tournament = new Tournament();
+        $tournament->setPid($hostid);
         $form = $this->makeImportForm($tournament);
         $form->handleRequest($request);
         if ($form->get('cancel')->isClicked()) {
@@ -40,14 +41,19 @@ class TournamentImportController extends Controller
             $formData = $form->getData();
             $tid = $formData['tournament'];
             if ($tid > 0) {
-                $this->importTournament($tid, $tournament, $import);
+                $source_tournament = $this->get('entity')->getTournamentById($tid);
+                if ($source_tournament->getPid() != $tournament->getPid()) {
+                    throw new ValidationException("NOTTHESAMETOURNAMENT",
+                        "Not allowed to import from different host, source=" . $source_tournament->getPid() . ", target=" . $tournament->getPid());
+                }
+                $this->importTournament($source_tournament, $tournament);
                 return $this->redirect($returnUrl);
             }
             else {
                 
             }
         }
-        return array('form' => $form->createView(), 'action' => $import);
+        return array('form' => $form->createView());
     }
     
     private function makeImportForm(Tournament $tournament) {
@@ -77,21 +83,31 @@ class TournamentImportController extends Controller
         return $formDef->getForm();
     }
     
-    private function importTournament($tid, Tournament $tournament, $import) {
-        $source_tournament = $this->get('entity')->getTournamentById($tid);
-        if ($source_tournament->getPid() != $tournament->getPid()) {
-            throw new ValidationException("NOTTHESAMETOURNAMENT",
-                    "Not allowed to import from different host, source=".$source_tournament->getPid().", target=".$tournament->getPid());
-        }
-
-//        if ($import == "sites") {
+    private function importTournament(Tournament $source_tournament, Tournament $tournament) {
+        $em = $this->getDoctrine()->getEntityManager();
+        $em->beginTransaction();
+        try {
+            $tournament->setKey(uniqid());
+            $tournament->setEdition($source_tournament->getEdition());
+            $tournament->setName($source_tournament->getName().' '.$this->get('translator')->trans('FORM.TOURNAMENTIMPORT.COPY', array(), 'admin'));
+            $tournament->setDescription($source_tournament->getDescription());
+            $tournament->getOption()->setDrr($source_tournament->getOption()->isDrr());
+            $tournament->getOption()->setStrategy($source_tournament->getOption()->getStrategy());
+            $tournament->getOption()->setWpoints($source_tournament->getOption()->getWpoints());
+            $tournament->getOption()->setTpoints($source_tournament->getOption()->getTpoints());
+            $tournament->getOption()->setLpoints($source_tournament->getOption()->getLpoints());
+            $tournament->getOption()->setDscore($source_tournament->getOption()->getDscore());
+            $em->persist($tournament);
+            $em->flush();
             $this->importSites($source_tournament, $tournament);
-/*        }
-        else {
-            $this->importCategories($source_tournament, $tournament);
+            $em->commit();
         }
-*/    }
-    
+        catch (Exception $e) {
+            $em->rollBack();
+            throw $e;
+        }
+    }
+
     private function importSites(Tournament $source_tournament, Tournament $tournament) {
         $em = $this->getDoctrine()->getManager();
         $tsconversion = $this->importTimeslots($source_tournament, $tournament);
@@ -109,6 +125,7 @@ class TournamentImportController extends Controller
                 $new_playground->setPid($new_site->getId());
                 $new_playground->setName($playground->getName());
                 $new_playground->setNo($playground->getNo());
+                $new_playground->setLocation($playground->getLocation());
                 $em->persist($new_playground);
                 $em->flush();
                 $this->importPAttrs($playground, $new_playground, $tsconversion, $cconversion);

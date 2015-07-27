@@ -7,6 +7,7 @@ use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use ICup\Bundle\PublicSiteBundle\Services\Util;
+use Symfony\Component\Form\FormError;
 use Symfony\Component\HttpFoundation\Request;
 
 /**
@@ -113,16 +114,16 @@ class TournamentController extends Controller
             if ($this->get('logic')->listSites($tournament->getId()) != null) {
                 $form->addError(new FormError($this->get('translator')->trans('FORM.TOURNAMENT.SITESEXIST', array(), 'admin')));
             }
-            elseif ($this->get('logic')->listCategories($tournament->getId()) != null) {
+            if ($this->get('logic')->listCategories($tournament->getId()) != null) {
                 $form->addError(new FormError($this->get('translator')->trans('FORM.TOURNAMENT.CATEGORIESEXIST', array(), 'admin')));
             }
-            elseif ($this->get('logic')->listTimeslots($tournament->getId()) != null) {
+            if ($this->get('logic')->listTimeslots($tournament->getId()) != null) {
                 $form->addError(new FormError($this->get('translator')->trans('FORM.TOURNAMENT.TIMESLOTSEXIST', array(), 'admin')));
             }
-            elseif (count($this->get('tmnt')->listEventsByTournament($tournament->getId())) > 0) {
+            if (count($this->get('tmnt')->listEventsByTournament($tournament->getId())) > 0) {
                 $form->addError(new FormError($this->get('translator')->trans('FORM.TOURNAMENT.EVENTSEXIST', array(), 'admin')));
             }
-            else {
+            if ($form->isValid()) {
                 $em = $this->getDoctrine()->getManager();
                 $em->remove($tournament);
                 $em->flush();

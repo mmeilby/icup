@@ -78,15 +78,22 @@
                             </td>
                             <td class="narrow-col">
         {% if is_granted('ROLE_EDITOR_ADMIN') %}
-                                <a href="{{ path('_edit_tournamentboard', { 'tournamentid': tournament.id }) }}">
-                                    <span class="fa fa-cog" title="{% trans %}FORM.DASHBOARD.TOURNAMENTBOARD.CAPTION{% endtrans %}"></span>
+                                <a href="{{ path('_edit_tournament_del', { 'tournamentid': tournament.id }) }}">
+                                    <span class="fa fa-times text-danger" title="{% trans %}FORM.TOURNAMENT.CAPTION.DEL{% endtrans %}"></span>
                                 </a>
+        {% endif %}
+                            </td>
+                            <td class="narrow-col">
+        {% if is_granted('ROLE_EDITOR_ADMIN') %}
+                                    <a href="{{ path('_edit_tournamentboard', { 'tournamentid': tournament.id }) }}">
+                                        <span class="fa fa-cog" title="{% trans %}FORM.DASHBOARD.TOURNAMENTBOARD.CAPTION{% endtrans %}"></span>
+                                    </a>
         {% endif %}
                             </td>
                         </tr>
     {% else %}
                         <tr>
-                            <td colspan="5">
+                            <td colspan="6">
         {% if is_granted('ROLE_EDITOR_ADMIN') %}
                                 <a href="{{ path('_edit_tournament_add', { 'hostid': host.id }) }}">
                                     {{'FORM.DASHBOARD.TOURNAMENTS.NOTOURNAMENT'|trans|upper}}
@@ -101,6 +108,10 @@
     {% if tournaments|length > 0 and is_granted('ROLE_EDITOR_ADMIN') %}
             <a class="btn btn-primary btn-lg" href="{{ path('_edit_tournament_add', { 'hostid': host.id }) }}">
                 <span class="fa fa-file"></span>&nbsp;{% trans %}FORM.DASHBOARD.TOURNAMENTS.NOTOURNAMENT{% endtrans %}
+            </a>
+            &nbsp;
+            <a class="btn btn-default btn-lg" href="{{ path('_edit_import_tournament', {'hostid': host.id }) }}">
+                <span class="fa fa-files-o"></span>&nbsp;{% trans %}FORM.TOURNAMENTIMPORT.CAPTION{% endtrans %}
             </a>
     {% endif %}
             <p>&nbsp;</p>

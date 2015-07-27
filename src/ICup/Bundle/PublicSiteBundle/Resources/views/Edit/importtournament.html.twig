@@ -9,7 +9,7 @@
         {% trans %}FORM.TOURNAMENTIMPORT.TITLE{% endtrans %}
     </h2>
     <p>{% trans %}FORM.TOURNAMENTIMPORT.CAPTION{% endtrans %}</p>
-    <p>{{ ['FORM.TOURNAMENTIMPORT.PROMPT.',action]|join|upper|trans }}</p>
+    <p>{% trans %}FORM.TOURNAMENTIMPORT.PROMPT{% endtrans %}</p>
 <div class="panel panel-default">
     <div class="panel-body">
     {{ form(form) }}

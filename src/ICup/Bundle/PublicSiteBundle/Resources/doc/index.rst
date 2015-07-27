@@ -1,5 +1,6 @@
 To Do List
 ----------
+Fejlrettelse - nulstil kodeord har forkert besked indhold - og link virker ikke
 Kampdetaljer som popup - se checkbox definition for eksempel
 Grafisk brush-up af finale billedet på kategorisiden
 Genåbn konto som turneringsansvarlig
@@ -11,6 +12,7 @@ Registreringssystem for indrul
 
 IDEER
 -----
+Fix - forside ændres så højrebar forbliver på inaktiv side (men i et andet format)
 Dommerpåsætning - dommernationaltet skal sikre at man ikke dømmer for eget land
 
 Done List
@@ -37,6 +39,9 @@ NY - indstillinger for turnering - tournamentoptions
 Fejlrettelse - ved manglende referer henvises til forside i stedet
 Fix - opret menuadgang fra dashboard til ret kamp via kampnr.
 Fix - kamp redigering - valg af kamp via match dato / bane / gruppe - som ved resultat ændring.
+Fix - kamp redigering er forenklet til valg af hold og valg af forudsætninger for kvalifikationskampe.
+Fix - Fjern kamprelationer er uønsket funktion og fjernes senere.
+Kopier turnering flyttes til turnerings dashboard - som een funktion der kopierer en hel turnering
 
 FORKASTET
 ---------

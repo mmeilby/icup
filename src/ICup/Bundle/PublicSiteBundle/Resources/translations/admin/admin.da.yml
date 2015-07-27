@@ -159,7 +159,7 @@ FORM:
     PROMPT:
       ADD: Indtast oplysninger om turneringen.
       CHG: Ret oplysninger om turneringen.
-      DEL: Følgende turnering vil bliver slettet. Alle kampresultater samt oplysninger knyttet til turneringen vil også blive fjernet. Det er ikke muligt at fortryde når turneringen er fjernet.
+      DEL: Følgende turnering vil bliver slettet.
     NAME: Navn
     KEY: Identifikation
     EDITION: Udgave
@@ -413,14 +413,13 @@ FORM:
         OPTION2: Puljevindere går til semifinale
   TOURNAMENTIMPORT:
     TITLE: Vedligehold turnering
-    CAPTION: Indlæs fra turnering
-    PROMPT:
-      SITES: Indlæs baner, lokaliteter og præferencer
-      CATEGORIES: Indlæs grupper og puljer
+    CAPTION: Kopier fra turnering
+    PROMPT: Indlæs grupper, puljer, baner, lokaliteter og præferencer
     DEFAULT: Vælg en turnering...
     TOURNAMENT:
       PROMPT: Turnering der indlæses fra
       HELP: Vælg den turnering som skal danne grundlag for kopiering
+    COPY: kopi
     SUBMIT: Indlæs oplysninger
     CANCEL: Fortryd
   LISTCATEGORIES:

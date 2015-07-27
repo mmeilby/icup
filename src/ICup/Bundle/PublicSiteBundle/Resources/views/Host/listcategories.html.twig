@@ -23,11 +23,6 @@
             <a href="{{ path('_edit_tournamentboard', { 'tournamentid': tournament.id }) }}">{{ host.name|upper }}</a><br />
             {{ tournament.name }}
             </div>
-            <div class="col-lg-6 text-right">
-                <a href="{{ path('_edit_import_tournament', {'tournamentid': tournament.id, 'import': 'categories' }) }}" class="btn btn-info">
-                    {% trans %}FORM.TOURNAMENTIMPORT.CAPTION{% endtrans %}
-                </a>
-            </div>
         </div>
     </div>
     <div class="panel-group" id="accordion" role="tablist" aria-multiselectable="true">

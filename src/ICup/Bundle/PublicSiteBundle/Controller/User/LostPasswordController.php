@@ -7,6 +7,7 @@ use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\Form\FormError;
+use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
 use Symfony\Component\Security\Core\SecurityContext;
 use Symfony\Component\HttpFoundation\Request;
 use Swift_Message;
@@ -91,7 +92,7 @@ class LostPasswordController extends Controller
         $em->flush();
 
         $from = array($this->container->getParameter('mailer_user') => "icup.dk support");
-        $url = $this->generateUrl('_admin_direct_login', array('username' => $user->getUsername(), 'securekey' => $key));
+        $url = $this->generateUrl('_admin_direct_login', array('username' => $user->getUsername(), 'securekey' => $key), UrlGeneratorInterface::ABSOLUTE_URL);
         $mailbody = $this->renderView('ICupPublicSiteBundle:Email:login_direct.html.twig',
             array(
                 'url' => $url,

@@ -76,17 +76,17 @@
 {% endif %}
                 <td class="narrow-col">
                     <a href="{{ path('_edit_match_add', { 'groupid': group.id }) }}">
-                        <span class="glyphicon glyphicon-file"></span>
+                        <span class="fa fa-file"></span>
                     </a>    
                 </td>
                 <td class="narrow-col">
                     <a href="{{ path('_edit_match_chg', { 'matchid': match.id }) }}">
-                        <span class="glyphicon glyphicon-edit"></span>
+                        <span class="fa fa-pencil"></span>
                     </a>    
                 </td>
                 <td class="narrow-col">
                     <a href="{{ path('_edit_match_del', { 'matchid': match.id }) }}">
-                        <span class="glyphicon glyphicon-remove"></span>
+                        <span class="fa fa-times text-danger"></span>
                     </a>    
                 </td>
         {% endfor %}
@@ -101,7 +101,7 @@
                 </td>
                 <td class="narrow-col">
                     <a href="{{ path('_edit_match_add', { 'groupid': group.id }) }}">
-                        <span class="glyphicon glyphicon-file"></span>
+                        <span class="fa fa-file"></span>
                     </a>    
                 </td>
                 <td colspan="2"></td>

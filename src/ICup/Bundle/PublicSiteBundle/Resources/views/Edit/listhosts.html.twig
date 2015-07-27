@@ -19,12 +19,12 @@
                 </td>
                 <td class="narrow-col">
                     <a href="{{ path('_edit_host_add') }}">
-                        <span class="lead glyphicon glyphicon-file" title="{% trans %}FORM.HOST.TITLE.ADD{% endtrans %}"></span>
+                        <span class="lead fa fa-file" title="{% trans %}FORM.HOST.TITLE.ADD{% endtrans %}"></span>
                     </a>    
                 </td>
                 <td class="narrow-col">
                     <a href="{{ path('_edit_host_chg', { 'hostid': host.id }) }}">
-                        <span class="lead glyphicon glyphicon-edit" title="{% trans %}FORM.HOST.TITLE.CHG{% endtrans %}"></span>
+                        <span class="lead fa fa-pencil" title="{% trans %}FORM.HOST.TITLE.CHG{% endtrans %}"></span>
                     </a>    
                 </td>
                 <td class="narrow-col">
@@ -34,7 +34,7 @@
                 </td>
                 <td class="narrow-col">
                     <a href="{{ path('_edit_editor_list', { 'hostid': host.id }) }}">
-                        <span class="lead glyphicon glyphicon-user" title="{% trans %}FORM.LISTEDITORS.TITLE{% endtrans %}"></span>
+                        <span class="lead fa fa-users" title="{% trans %}FORM.LISTEDITORS.TITLE{% endtrans %}"></span>
                     </a>    
                 </td>
                 <td class="narrow-col"></td>
@@ -51,12 +51,12 @@
                 </td>
                 <td class="narrow-col">
                     <a href="{{ path('_edit_tournament_add', { 'hostid': host.id }) }}">
-                        <span class="glyphicon glyphicon-file" title="{% trans %}FORM.TOURNAMENT.TITLE.ADD{% endtrans %}"></span>
+                        <span class="fa fa-file" title="{% trans %}FORM.TOURNAMENT.TITLE.ADD{% endtrans %}"></span>
                     </a>    
                 </td>
                 <td class="narrow-col">
                     <a href="{{ path('_edit_tournament_chg', { 'tournamentid': tournament.id }) }}">
-                        <span class="glyphicon glyphicon-edit" title="{% trans %}FORM.TOURNAMENT.TITLE.CHG{% endtrans %}"></span>
+                        <span class="fa fa-pencil" title="{% trans %}FORM.TOURNAMENT.TITLE.CHG{% endtrans %}"></span>
                     </a>    
                 </td>
                 <td class="narrow-col">
@@ -66,17 +66,17 @@
                 </td>
                 <td class="narrow-col">
                     <a href="{{ path('_edit_site_list', { 'tournamentid': tournament.id }) }}">
-                        <span class="glyphicon glyphicon-tower" title="{% trans %}FORM.LISTTOURNAMENTS.CAPTION{% endtrans %}"></span>
+                        <span class="fa fa-university" title="{% trans %}FORM.LISTTOURNAMENTS.CAPTION{% endtrans %}"></span>
                     </a>
                 </td>
                 <td class="narrow-col">
                     <a href="{{ path('_edit_category_list', { 'tournamentid': tournament.id }) }}">
-                        <span class="glyphicon glyphicon-tags" title="{% trans %}FORM.LISTCATEGORIES.CAPTION{% endtrans %}"></span>
+                        <span class="fa fa-tags" title="{% trans %}FORM.LISTCATEGORIES.CAPTION{% endtrans %}"></span>
                     </a>
                 </td>
                 <td class="narrow-col">
                     <a href="{{ path('_host_list_clubs', { 'tournamentid': tournament.id }) }}">
-                        <span class="glyphicon glyphicon-flag" title="{% trans %}FORM.LISTCLUBS.TITLE{% endtrans %}"></span>
+                        <span class="fa fa-flag" title="{% trans %}FORM.LISTCLUBS.TITLE{% endtrans %}"></span>
                     </a>    
                 </td>
             </tr>
@@ -87,7 +87,7 @@
                 <td><a href="{{ path('_edit_tournament_add', { 'hostid': host.id }) }}">{{'FORM.LISTHOSTS.NOTOURNAMENT'|trans|upper}}</a></td>
                 <td class="narrow-col">
                     <a href="{{ path('_edit_tournament_add', { 'hostid': host.id }) }}">
-                        <span class="glyphicon glyphicon-file" title="{% trans %}FORM.TOURNAMENT.TITLE.ADD{% endtrans %}"></span>
+                        <span class="fa fa-file" title="{% trans %}FORM.TOURNAMENT.TITLE.ADD{% endtrans %}"></span>
                     </a>    
                 </td>
                 <td></td>

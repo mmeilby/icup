@@ -65,13 +65,13 @@
                     </td>
                     <td class="narrow-col">
                         <a href="{{ path('_edit_user_chg', { 'userid': user.id }) }}">
-                            <span class="glyphicon glyphicon-edit"></span>
+                            <span class="fa fa-pencil"></span>
                         </a>    
                     </td>
                     <td class="narrow-col">
     {% if user.id != currentuser.id %}
                         <a href="{{ path('_edit_user_del', { 'userid': user.id }) }}">
-                            <span class="glyphicon glyphicon-remove"></span>
+                            <span class="fa fa-times text-danger"></span>
                         </a>    
     {% endif %}
                     </td>

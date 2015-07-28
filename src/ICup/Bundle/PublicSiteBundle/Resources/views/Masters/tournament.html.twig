@@ -163,10 +163,15 @@
                     <td class="narrow-col">{{ match.matchno }}</td>
                     <td class="narrow-col">{{ match.schedule|date('FORMAT.TIME'|trans([],'messages')) }}<br />
                         {% if playground_defined %}
-                            <a href="{{ path('_showplayground_full', { 'playgroundid': match.playground.id }) }}" title="{{ match.playground.name }}">{{ match.playground.no }}</a>
+                            <a href="{{ path('_showplayground_full', { 'playgroundid': match.playground.id }) }}"
+                               data-toggle="tooltip" data-placement="top"
+                               title="{{ match.playground.name }}">{{ match.playground.no }}</a>
                         {% endif %}
                     </td>
-                    <td class="narrow-col"><a href="{{ path('_showcategory', { 'categoryid': match.category.id }) }}">{{ match.category.name }}</a><br />
+                    <td class="narrow-col">
+                        <a href="{{ path('_showcategory', { 'categoryid': match.category.id }) }}"
+                           data-toggle="tooltip" data-placement="top"
+                           title="{{ match.category.tip }}">{{ match.category.name }}</a><br />
                         {{ match.group.name }}</td>
                     {{ context.formatter.club(match.home, match.group.id, context) }}
                     {{ context.formatter.club(match.away, match.group.id, context) }}

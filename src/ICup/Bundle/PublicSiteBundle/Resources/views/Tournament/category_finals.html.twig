@@ -47,20 +47,20 @@
             {% if loop.length/2 == loop.index0 %}
                 {{ formatter.td((cols-7)/2) }}
                 <td colspan="2" class="vscore">
-                    <span title="{{ formatter.match(pyramid.FH, _context) }}">{{ pyramid.FH.away.score }}</span>
+                    <span data-toggle="tooltip" data-placement="left" title="{{ formatter.match(pyramid.FH, _context) }}">{{ pyramid.FH.away.score }}</span>
                 </td>
                 {{ formatter.td(2) }}
                 <td colspan="2" class="vscore">
-                    <span title="{{ formatter.match(pyramid.FA, _context) }}">{{ pyramid.FA.away.score }}</span>
+                    <span data-toggle="tooltip" data-placement="right" title="{{ formatter.match(pyramid.FA, _context) }}">{{ pyramid.FA.away.score }}</span>
                 </td>
                 {{ formatter.td((cols-7)/2) }}
             {% elseif pyramid.levels == 3 and loop.index0 > 0 %}
                 {{ formatter.td(2) }}
                 <td colspan="2" class="vscore">
                     {% if loop.index0 == 1 %}
-                        <span title="{{ formatter.match(pyramid.FHH, _context) }}">{{ pyramid.FHH.away.score }}</span>
+                        <span data-toggle="tooltip" data-placement="left" title="{{ formatter.match(pyramid.FHH, _context) }}">{{ pyramid.FHH.away.score }}</span>
                     {% else %}
-                        <span title="{{ formatter.match(pyramid.FHA, _context) }}">{{ pyramid.FHA.away.score }}</span>
+                        <span data-toggle="tooltip" data-placement="left" title="{{ formatter.match(pyramid.FHA, _context) }}">{{ pyramid.FHA.away.score }}</span>
                     {% endif %}
                 </td>
                 {{ formatter.td(1) }}
@@ -70,9 +70,9 @@
                 {{ formatter.td(1) }}
                 <td colspan="2" class="vscore">
                     {% if loop.index0 == 1 %}
-                        <span title="{{ formatter.match(pyramid.FAH, _context) }}">{{ pyramid.FAH.away.score }}</span>
+                        <span data-toggle="tooltip" data-placement="right" title="{{ formatter.match(pyramid.FAH, _context) }}">{{ pyramid.FAH.away.score }}</span>
                     {% else %}
-                        <span title="{{ formatter.match(pyramid.FAA, _context) }}">{{ pyramid.FAA.away.score }}</span>
+                        <span data-toggle="tooltip" data-placement="right" title="{{ formatter.match(pyramid.FAA, _context) }}">{{ pyramid.FAA.away.score }}</span>
                     {% endif %}
                 </td>
                 {{ formatter.td(2) }}
@@ -90,7 +90,7 @@
             <td class="line">&nbsp;</td>
         {% if pyramid.levels == 1 %}
             <td rowspan="2" class="hscore">
-                <span title="{{ formatter.match(pyramid.F, _context) }}">{{ pyramid.F.home.score }}-{{ pyramid.F.away.score }}</span>
+                <span data-toggle="tooltip" data-placement="top" title="{{ formatter.match(pyramid.F, _context) }}">{{ pyramid.F.home.score }}-{{ pyramid.F.away.score }}</span>
             </td>
         {% else %}
             <td class="line{{ loop.index0%2 == 1 ? ' vlinel' : '' }}"></td>
@@ -138,24 +138,24 @@
             {% if loop.length/2 == loop.index %}
                 {{ formatter.td((cols-7)/2) }}
                 <td colspan="2" class="vscore">
-                    <span title="{{ formatter.match(pyramid.FH, _context) }}">{{ pyramid.FH.home.score }}</span>
+                    <span data-toggle="tooltip" data-placement="left" title="{{ formatter.match(pyramid.FH, _context) }}">{{ pyramid.FH.home.score }}</span>
                 </td>
                 <td class="line"></td>
                 <td rowspan="2" class="hscore">
-                    <span title="{{ formatter.match(pyramid.F, _context) }}">{{ pyramid.F.home.score }}-{{ pyramid.F.away.score }}</span>
+                    <span data-toggle="tooltip" data-placement="top" title="{{ formatter.match(pyramid.F, _context) }}">{{ pyramid.F.home.score }}-{{ pyramid.F.away.score }}</span>
                 </td>
                 <td class="line"></td>
                 <td colspan="2" class="vscore">
-                    <span title="{{ formatter.match(pyramid.FA, _context) }}">{{ pyramid.FA.home.score }}</span>
+                    <span data-toggle="tooltip" data-placement="right" title="{{ formatter.match(pyramid.FA, _context) }}">{{ pyramid.FA.home.score }}</span>
                 </td>
                 {{ formatter.td((cols-7)/2) }}
              {% elseif pyramid.levels == 3 and loop.index < loop.length %}
                 {{ formatter.td(2) }}
                 <td colspan="2" class="vscore">
                     {% if loop.index0 == 0 %}
-                        <span title="{{ formatter.match(pyramid.FHH, _context) }}">{{ pyramid.FHH.home.score }}</span>
+                        <span data-toggle="tooltip" data-placement="left" title="{{ formatter.match(pyramid.FHH, _context) }}">{{ pyramid.FHH.home.score }}</span>
                     {% else %}
-                        <span title="{{ formatter.match(pyramid.FHA, _context) }}">{{ pyramid.FHA.home.score }}</span>
+                        <span data-toggle="tooltip" data-placement="left" title="{{ formatter.match(pyramid.FHA, _context) }}">{{ pyramid.FHA.home.score }}</span>
                     {% endif %}
                 </td>
                 <td class="line"></td>
@@ -165,9 +165,9 @@
                 <td class="line"></td>
                 <td colspan="2" class="vscore">
                     {% if loop.index0 == 0 %}
-                        <span title="{{ formatter.match(pyramid.FAH, _context) }}">{{ pyramid.FAH.home.score }}</span>
+                        <span data-toggle="tooltip" data-placement="right" title="{{ formatter.match(pyramid.FAH, _context) }}">{{ pyramid.FAH.home.score }}</span>
                     {% else %}
-                        <span title="{{ formatter.match(pyramid.FAA, _context) }}">{{ pyramid.FAA.home.score }}</span>
+                        <span data-toggle="tooltip" data-placement="right" title="{{ formatter.match(pyramid.FAA, _context) }}">{{ pyramid.FAA.home.score }}</span>
                     {% endif %}
                 </td>
                 {{ formatter.td(2) }}
@@ -237,4 +237,10 @@
     </div>
 </div>
 {% endif %}
+{% endblock %}
+
+{% block javascripts %}
+    <script type="text/javascript">
+        $("[data-toggle='tooltip']").tooltip();
+    </script>
 {% endblock %}

@@ -1,6 +1,5 @@
 To Do List
 ----------
-Kampdetaljer som popup - se checkbox definition for eksempel
 Grafisk brush-up af finale billedet på kategorisiden
 Genåbn konto som turneringsansvarlig
 Overfør hold til en anden klub (indsæt nyt hold på samme plads i pulje)
@@ -13,6 +12,7 @@ IDEER
 -----
 Fix - forside ændres så højrebar forbliver på inaktiv side (men i et andet format)
 Dommerpåsætning - dommernationaltet skal sikre at man ikke dømmer for eget land
+Cookie consent page
 
 Done List
 ---------
@@ -44,6 +44,7 @@ Kopier turnering flyttes til turnerings dashboard - som een funktion der kopiere
 Fejlrettelse - nulstil kodeord har forkert besked indhold - og link virker ikke
 Glyphicon erstattet med Font Awesome
 Cookie consent javascript implementeret
+Kampdetaljer som popup - se checkbox definition for eksempel
 
 FORKASTET
 ---------

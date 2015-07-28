@@ -97,19 +97,130 @@ class MatchSupport
         $homeMatch = $this->flattenList($matchRelList['H']);
         $awayMatch = $this->flattenList($matchRelList['A']);
         return array(
-            'id' => $this->getValue($homeMatch, 'mid'),
+            'id' => $homeMatch['mid'],
             'matchno' => $homeMatch['matchno'],
             'schedule' => Date::getDateTime($homeMatch['date'], $homeMatch['time']),
-            'playground' => array('no' => $this->getValue($homeMatch, 'no'),
-                                  'name' => $this->getValue($homeMatch, 'playground'),
-                                  'id' => $this->getValue($homeMatch, 'pid')),
-            'category' => array('name' => $this->getValue($homeMatch, 'category'),
-                                'id' => $this->getValue($homeMatch, 'cid')),
-            'group' => array('name' => $this->getValue($homeMatch, 'grp'),
-                             'id' => $this->getValue($homeMatch, 'gid')),
+            'playground' => array('no' => $homeMatch['no'],
+                                  'name' => $homeMatch['playground'],
+                                  'id' => $homeMatch['pid']),
+            'category' => array('name' => $homeMatch['category'],
+                                'tip' =>  $this->container->get('translator')->trans('CATEGORY', array(), 'tournament')." ".
+                                          $homeMatch['category']." - ".
+                                          $this->container->get('translator')->transChoice(
+                                                        'GENDER.'.$homeMatch['gender'].$homeMatch['cls'],
+                                                        $homeMatch['age'],
+                                                        array('%age%' => $homeMatch['age']), 'tournament'),
+                                'id' => $homeMatch['cid']),
+            'group' => array('name' => $homeMatch['grp'],
+                             'id' => $homeMatch['gid']),
             'home' => $this->samplePart($homeMatch),
             'away' => $this->samplePart($awayMatch)
         );
+    }
+
+    private function getFieldList() {
+        return
+        // Match fields
+            "m.id as mid,".
+            "m.matchno,".
+            "m.date,".
+            "m.time,".
+        // Playground fields
+            "p.id as pid,".
+            "p.no,".
+            "p.name as playground,".
+        // Group fields
+            "g.id as gid,".
+            "g.name as grp,".
+        // Category fields
+            "cat.id as cid,".
+            "cat.name as category,".
+            "cat.gender,".
+            "cat.classification as cls,".
+            "cat.age,".
+        // MatchRelation fields
+            "r.id as rid,".
+            "r.awayteam,".
+            "r.scorevalid,".
+            "r.score,".
+            "r.points,".
+        // Team fields
+            "t.id,".
+            "t.name as team,".
+            "t.division,".
+        // Club fields
+            "c.country,".
+            "c.id as clubid ";
+    }
+
+    private function getQFieldList() {
+        return
+            // Match fields
+            "m.id as mid,".
+            "m.matchno,".
+            "m.date,".
+            "m.time,".
+            // Playground fields
+            "p.id as pid,".
+            "p.no,".
+            "p.name as playground,".
+            // Group fields
+            "g.id as gid,".
+            "g.name as grp,".
+            // Category fields
+            "cat.id as cid,".
+            "cat.name as category,".
+            "cat.gender,".
+            "cat.classification as cls,".
+            "cat.age,".
+            // QMatchRelation fields
+            "q.id as qrid,".
+            "q.awayteam,".
+            "q.rank,".
+            // Group (related) fields
+            "gq.id as rgrp,".
+            "gq.name as gname,".
+            "gq.classification ";
+    }
+
+    private function getTableList() {
+        return
+            $this->entity->getRepositoryPath('MatchRelation')." r, ".
+            $this->entity->getRepositoryPath('Match')." m, ".
+            $this->entity->getRepositoryPath('Playground')." p, ".
+            $this->entity->getRepositoryPath('Group')." g, ".
+            $this->entity->getRepositoryPath('Category')." cat, ".
+            $this->entity->getRepositoryPath('Team')." t, ".
+            $this->entity->getRepositoryPath('Club')." c ";
+    }
+
+    private function getQTableList() {
+        return
+            $this->entity->getRepositoryPath('QMatchRelation')." q, ".
+            $this->entity->getRepositoryPath('Match')." m, ".
+            $this->entity->getRepositoryPath('Playground')." p, ".
+            $this->entity->getRepositoryPath('Group')." g, ".
+            $this->entity->getRepositoryPath('Category')." cat, ".
+            $this->entity->getRepositoryPath('Group')." gq ";
+    }
+
+    private function getTableRelations() {
+        return
+            "g.pid=cat.id and ".
+            "m.pid=g.id and ".
+            "m.playground=p.id and ".
+            "m.id=r.pid and ".
+            "t.id=r.cid and ".
+            "c.id=t.pid ";
+    }
+
+    private function getQTableRelations() {
+        return
+            "g.pid=cat.id and ".
+            "m.pid=g.id and ".
+            "m.playground=p.id and ".
+            "m.id=q.pid and ".
+            "gq.id=q.cid ";
     }
 
     private function flattenList($matchList) {
@@ -330,27 +441,10 @@ class MatchSupport
 
     private function queryMatchListWithMatchNo($tournamentid, $matchno) {
         $qb = $this->em->createQuery(
-            "select m.id as mid,m.matchno,m.date,m.time,".
-                    "p.id as pid,p.no,p.name as playground,".
-                    "g.id as gid,g.name as grp,".
-                    "cat.id as cid,cat.name as category,".
-                    "r.id as rid,r.awayteam,r.scorevalid,r.score,r.points,".
-                    "t.id,t.name as team,t.division,c.country ".
-            "from ".$this->entity->getRepositoryPath('MatchRelation')." r, ".
-                    $this->entity->getRepositoryPath('Match')." m, ".
-                    $this->entity->getRepositoryPath('Playground')." p, ".
-                    $this->entity->getRepositoryPath('Group')." g, ".
-                    $this->entity->getRepositoryPath('Category')." cat, ".
-                    $this->entity->getRepositoryPath('Team')." t, ".
-                    $this->entity->getRepositoryPath('Club')." c ".
-            "where m.matchno=:matchno and ".
-                    "p.id=m.playground and ".
-                    "r.pid=m.id and ".
-                    "t.id=r.cid and ".
-                    "c.id=t.pid and ".
-                    "g.id=m.pid and ".
-                    "cat.id=g.pid and ".
-                    "cat.pid=:tournament ".
+            "select ".$this->getFieldList().
+            "from ".$this->getTableList().
+            "where ".$this->getTableRelations().
+                   " and m.matchno=:matchno and cat.pid=:tournament ".
             "order by m.id");
         $qb->setParameter('matchno', $matchno);
         $qb->setParameter('tournament', $tournamentid);
@@ -359,24 +453,10 @@ class MatchSupport
 
     private function queryQMatchListWithMatchNo($tournamentid, $matchno) {
         $qb = $this->em->createQuery(
-            "select m.id as mid,m.matchno,m.date,m.time,".
-                    "p.id as pid,p.no,p.name as playground,".
-                    "g.id as gid,g.name as grp,".
-                    "cat.id as cid,cat.name as category,".
-                    "q.awayteam,q.rank,gq.id as rgrp,gq.name as gname,gq.classification ".
-            "from ".$this->entity->getRepositoryPath('QMatchRelation')." q, ".
-                    $this->entity->getRepositoryPath('Match')." m, ".
-                    $this->entity->getRepositoryPath('Playground')." p, ".
-                    $this->entity->getRepositoryPath('Group')." g, ".
-                    $this->entity->getRepositoryPath('Category')." cat, ".
-                    $this->entity->getRepositoryPath('Group')." gq ".
-            "where m.matchno=:matchno and ".
-                    "p.id=m.playground and ".
-                    "q.pid=m.id and ".
-                    "q.cid=gq.id and ".
-                    "g.id=m.pid and ".
-                    "cat.id=g.pid and ".
-                    "cat.pid=:tournament ".
+            "select ".$this->getQFieldList().
+            "from ".$this->getQTableList().
+            "where ".$this->getQTableRelations().
+                    " and m.matchno=:matchno and cat.pid=:tournament ".
             "order by m.id");
         $qb->setParameter('matchno', $matchno);
         $qb->setParameter('tournament', $tournamentid);
@@ -391,27 +471,10 @@ class MatchSupport
 
     private function queryMatchListWithGroupPlayground($groupid, $playgroundid, $date) {
         $qb = $this->em->createQuery(
-                "select m.id as mid,m.matchno,m.date,m.time,".
-                       "p.id as pid,p.no,p.name as playground,".
-                       "g.id as gid,g.name as grp,".
-                       "cat.id as cid,cat.name as category,".
-                       "r.id as rid,r.awayteam,r.scorevalid,r.score,r.points,".
-                       "t.id,t.name as team,t.division,c.country ".
-                "from ".$this->entity->getRepositoryPath('MatchRelation')." r, ".
-                        $this->entity->getRepositoryPath('Match')." m, ".
-                        $this->entity->getRepositoryPath('Playground')." p, ".
-                        $this->entity->getRepositoryPath('Group')." g, ".
-                        $this->entity->getRepositoryPath('Category')." cat, ".
-                        $this->entity->getRepositoryPath('Team')." t, ".
-                        $this->entity->getRepositoryPath('Club')." c ".
-                "where m.pid=:group and ".
-                      "m.playground=:playground and ".
-                      "p.id=m.playground and ".
-                      "g.id=m.pid and ".
-                      "cat.id=g.pid and ".
-                      "r.pid=m.id and ".
-                      "t.id=r.cid and ".
-                      "c.id=t.pid ".
+                "select ".$this->getFieldList().
+                "from ".$this->getTableList().
+                "where ".$this->getTableRelations().
+                        " and m.pid=:group and m.playground=:playground ".
                       ($date ? "and m.date='".$date."' " : "").
                 "order by m.id");
         $qb->setParameter('group', $groupid);
@@ -421,24 +484,10 @@ class MatchSupport
     
     private function queryQMatchListWithGroupPlayground($groupid, $playgroundid, $date) {
         $qb = $this->em->createQuery(
-                "select m.id as mid,m.matchno,m.date,m.time,".
-                       "p.id as pid,p.no,p.name as playground,".
-                       "g.id as gid,g.name as grp,".
-                       "cat.id as cid,cat.name as category,".
-                       "q.id as rid,q.awayteam,q.rank,gq.id as rgrp,gq.name as gname,gq.classification ".
-                "from ".$this->entity->getRepositoryPath('QMatchRelation')." q, ".
-                        $this->entity->getRepositoryPath('Match')." m, ".
-                        $this->entity->getRepositoryPath('Playground')." p, ".
-                        $this->entity->getRepositoryPath('Group')." g, ".
-                        $this->entity->getRepositoryPath('Category')." cat, ".
-                        $this->entity->getRepositoryPath('Group')." gq ".
-                "where m.pid=:group and ".
-                      "m.playground=:playground and ".
-                      "p.id=m.playground and ".
-                      "g.id=m.pid and ".
-                      "cat.id=g.pid and ".
-                      "q.pid=m.id and ".
-                      "q.cid=gq.id ".
+                "select ".$this->getQFieldList().
+                "from ".$this->getQTableList().
+                "where ".$this->getQTableRelations().
+                        " and m.pid=:group and m.playground=:playground ".
                       ($date ? "and m.date='".$date."' " : "").
                 "order by m.id");
         $qb->setParameter('group', $groupid);
@@ -454,26 +503,10 @@ class MatchSupport
 
     private function queryMatchList($groupid, $date) {
         $qb = $this->em->createQuery(
-                "select m.id as mid,m.matchno,m.date,m.time,".
-                       "p.id as pid,p.no,p.name as playground,".
-                       "g.id as gid,g.name as grp,".
-                       "cat.id as cid,cat.name as category,".
-                       "r.id as rid,r.awayteam,r.scorevalid,r.score,r.points,".
-                       "t.id,t.name as team,t.division,c.country ".
-                "from ".$this->entity->getRepositoryPath('MatchRelation')." r, ".
-                        $this->entity->getRepositoryPath('Match')." m, ".
-                        $this->entity->getRepositoryPath('Playground')." p, ".
-                        $this->entity->getRepositoryPath('Group')." g, ".
-                        $this->entity->getRepositoryPath('Category')." cat, ".
-                        $this->entity->getRepositoryPath('Team')." t, ".
-                        $this->entity->getRepositoryPath('Club')." c ".
-                "where m.pid=:group and ".
-                      "p.id=m.playground and ".
-                      "g.id=m.pid and ".
-                      "cat.id=g.pid and ".
-                      "r.pid=m.id and ".
-                      "t.id=r.cid and ".
-                      "c.id=t.pid ".
+                "select ".$this->getFieldList().
+                "from ".$this->getTableList().
+                "where ".$this->getTableRelations().
+                        " and m.pid=:group ".
                       ($date ? "and m.date='".$date."' " : "").
                 "order by m.id");
         $qb->setParameter('group', $groupid);
@@ -482,23 +515,10 @@ class MatchSupport
     
     private function queryQMatchList($groupid, $date) {
         $qb = $this->em->createQuery(
-                "select m.id as mid,m.matchno,m.date,m.time,".
-                       "p.id as pid,p.no,p.name as playground,".
-                       "g.id as gid,g.name as grp,".
-                       "cat.id as cid,cat.name as category,".
-                       "q.id as rid,q.awayteam,q.rank,gq.id as rgrp,gq.name as gname,gq.classification ".
-                "from ".$this->entity->getRepositoryPath('QMatchRelation')." q, ".
-                        $this->entity->getRepositoryPath('Match')." m, ".
-                        $this->entity->getRepositoryPath('Playground')." p, ".
-                        $this->entity->getRepositoryPath('Group')." g, ".
-                        $this->entity->getRepositoryPath('Category')." cat, ".
-                        $this->entity->getRepositoryPath('Group')." gq ".
-                "where m.pid=:group and ".
-                      "p.id=m.playground and ".
-                      "g.id=m.pid and ".
-                      "cat.id=g.pid and ".
-                      "q.pid=m.id and ".
-                      "q.cid=gq.id ".
+                "select ".$this->getQFieldList().
+                "from ".$this->getQTableList().
+                "where ".$this->getQTableRelations().
+                        " and m.pid=:group ".
                       ($date ? "and m.date='".$date."' " : "").
                 "order by m.id");
         $qb->setParameter('group', $groupid);
@@ -513,27 +533,10 @@ class MatchSupport
     
     private function queryMatchListWithCategory($playgroundid, $matchdate) {
         $qb = $this->em->createQuery(
-                "select m.id as mid,m.matchno,m.date,m.time,".
-                       "p.id as pid,p.no,p.name as playground,".
-                       "g.id as gid,g.name as grp,".
-                       "cat.id as cid,cat.name as category,".
-                       "r.id as rid,r.awayteam,r.scorevalid,r.score,r.points,".
-                       "t.id,t.name as team,t.division,c.country ".
-                "from ".$this->entity->getRepositoryPath('MatchRelation')." r, ".
-                        $this->entity->getRepositoryPath('Match')." m, ".
-                        $this->entity->getRepositoryPath('Playground')." p, ".
-                        $this->entity->getRepositoryPath('Group')." g, ".
-                        $this->entity->getRepositoryPath('Category')." cat, ".
-                        $this->entity->getRepositoryPath('Team')." t, ".
-                        $this->entity->getRepositoryPath('Club')." c ".
-                "where m.playground=:playground and ".
-                      "p.id=m.playground and ".
-                      "m.pid=g.id and ".
-                      "m.date=:date and ".
-                      "g.pid=cat.id and ".
-                      "r.pid=m.id and ".
-                      "t.id=r.cid and ".
-                      "c.id=t.pid ".
+                "select ".$this->getFieldList().
+                "from ".$this->getTableList().
+                "where ".$this->getTableRelations().
+                        " and m.playground=:playground and m.date=:date ".
                 "order by m.id");
         $qb->setParameter('playground', $playgroundid);
         $qb->setParameter('date', $matchdate);
@@ -542,24 +545,10 @@ class MatchSupport
     
     private function queryQMatchListWithCategory($playgroundid, $matchdate) {
         $qb = $this->em->createQuery(
-                "select m.id as mid,m.matchno,m.date,m.time,".
-                       "p.id as pid,p.no,p.name as playground,".
-                       "g.id as gid,g.name as grp,".
-                       "cat.id as cid,cat.name as category,".
-                       "q.id as rid,q.awayteam,q.rank,gq.id as rgrp,gq.name as gname,gq.classification ".
-                "from ".$this->entity->getRepositoryPath('QMatchRelation')." q, ".
-                        $this->entity->getRepositoryPath('Match')." m, ".
-                        $this->entity->getRepositoryPath('Playground')." p, ".
-                        $this->entity->getRepositoryPath('Group')." g, ".
-                        $this->entity->getRepositoryPath('Category')." cat, ".
-                        $this->entity->getRepositoryPath('Group')." gq ".
-                "where m.playground=:playground and ".
-                      "p.id=m.playground and ".
-                      "m.pid=g.id and ".
-                      "m.date=:date and ".
-                      "g.pid=cat.id and ".
-                      "q.pid=m.id and ".
-                      "q.cid=gq.id ".
+                "select ".$this->getQFieldList().
+                "from ".$this->getQTableList().
+                "where ".$this->getQTableRelations().
+                        " and m.playground=:playground and m.date=:date ".
                 "order by m.id");
         $qb->setParameter('playground', $playgroundid);
         $qb->setParameter('date', $matchdate);
@@ -576,30 +565,14 @@ class MatchSupport
     
     private function queryMatchListWithGroupTeam($groupid, $teamid) {
         $qb = $this->em->createQuery(
-                "select m.id as mid,m.matchno,m.date,m.time,".
-                       "p.id as pid,p.no,p.name as playground,".
-                       "g.id as gid,g.name as grp,".
-                       "cat.id as cid,cat.name as category,".
-                       "r.id as rid,r.awayteam,r.scorevalid,r.score,r.points,".
-                       "t.id,t.name as team,t.division,c.country ".
-                "from ".$this->entity->getRepositoryPath('MatchRelation')." r, ".
-                        $this->entity->getRepositoryPath('Match')." m, ".
-                        $this->entity->getRepositoryPath('Playground')." p, ".
-                        $this->entity->getRepositoryPath('Group')." g, ".
-                        $this->entity->getRepositoryPath('Category')." cat, ".
-                        $this->entity->getRepositoryPath('Team')." t, ".
-                        $this->entity->getRepositoryPath('Club')." c ".
-                "where m.pid=:group and ".
-                      "m.id in (".
-                            "select rx.pid ".
-                            "from ".$this->entity->getRepositoryPath('MatchRelation')." rx ".
-                            "where rx.cid=:team) and ".
-                      "p.id=m.playground and ".
-                      "g.id=m.pid and ".
-                      "cat.id=g.pid and ".
-                      "r.pid=m.id and ".
-                      "t.id=r.cid and ".
-                      "c.id=t.pid ".
+                "select ".$this->getFieldList().
+                "from ".$this->getTableList().
+                "where ".$this->getTableRelations().
+                        " and m.pid=:group and ".
+                          "m.id in (".
+                                "select rx.pid ".
+                                "from ".$this->entity->getRepositoryPath('MatchRelation')." rx ".
+                                "where rx.cid=:team) ".
                 "order by m.id");
         $qb->setParameter('group', $groupid);
         $qb->setParameter('team', $teamid);
@@ -608,27 +581,14 @@ class MatchSupport
     
     private function queryQMatchListWithGroupTeam($groupid, $teamid) {
         $qb = $this->em->createQuery(
-                "select m.id as mid,m.matchno,m.date,m.time,".
-                       "p.id as pid,p.no,p.name as playground,".
-                       "g.id as gid,g.name as grp,".
-                       "cat.id as cid,cat.name as category,".
-                       "q.awayteam,q.rank,gq.id as rgrp,gq.name as gname,gq.classification ".
-                "from ".$this->entity->getRepositoryPath('QMatchRelation')." q, ".
-                        $this->entity->getRepositoryPath('Match')." m, ".
-                        $this->entity->getRepositoryPath('Playground')." p, ".
-                        $this->entity->getRepositoryPath('Group')." g, ".
-                        $this->entity->getRepositoryPath('Category')." cat, ".
-                        $this->entity->getRepositoryPath('Group')." gq ".
-                "where m.pid=:group and ".
-                      "m.id in (".
-                            "select rx.pid ".
-                            "from ".$this->entity->getRepositoryPath('MatchRelation')." rx ".
-                            "where rx.cid=:team) and ".
-                      "p.id=m.playground and ".
-                      "g.id=m.pid and ".
-                      "cat.id=g.pid and ".
-                      "q.pid=m.id and ".
-                      "q.cid=gq.id ".
+                "select ".$this->getQFieldList().
+                "from ".$this->getQTableList().
+                "where ".$this->getQTableRelations().
+                        " and m.pid=:group and ".
+                          "m.id in (".
+                                "select rx.pid ".
+                                "from ".$this->entity->getRepositoryPath('MatchRelation')." rx ".
+                                "where rx.cid=:team) ".
                 "order by m.id");
         $qb->setParameter('group', $groupid);
         $qb->setParameter('team', $teamid);
@@ -645,29 +605,13 @@ class MatchSupport
     
     private function queryMatchListWithTeam($teamid) {
         $qb = $this->em->createQuery(
-                "select m.id as mid,m.matchno,m.date,m.time,".
-                       "p.id as pid,p.no,p.name as playground,".
-                       "g.id as gid,g.name as grp,".
-                       "cat.id as cid,cat.name as category,".
-                       "r.id as rid,r.awayteam,r.scorevalid,r.score,r.points,".
-                       "t.id,t.name as team,t.division,c.country ".
-                "from ".$this->entity->getRepositoryPath('MatchRelation')." r, ".
-                        $this->entity->getRepositoryPath('Match')." m, ".
-                        $this->entity->getRepositoryPath('Playground')." p, ".
-                        $this->entity->getRepositoryPath('Group')." g, ".
-                        $this->entity->getRepositoryPath('Category')." cat, ".
-                        $this->entity->getRepositoryPath('Team')." t, ".
-                        $this->entity->getRepositoryPath('Club')." c ".
-                "where m.id in (".
-                            "select rx.pid ".
-                            "from ".$this->entity->getRepositoryPath('MatchRelation')." rx ".
-                            "where rx.cid=:team) and ".
-                      "p.id=m.playground and ".
-                      "r.pid=m.id and ".
-                      "t.id=r.cid and ".
-                      "c.id=t.pid and ".
-                      "g.id=m.pid and ".
-                      "cat.id=g.pid ".
+                "select ".$this->getFieldList().
+                "from ".$this->getTableList().
+                "where ".$this->getTableRelations().
+                        " and m.id in (".
+                                "select rx.pid ".
+                                "from ".$this->entity->getRepositoryPath('MatchRelation')." rx ".
+                                "where rx.cid=:team) ".
                 "order by m.id");
         $qb->setParameter('team', $teamid);
         return $qb->getResult();
@@ -675,26 +619,13 @@ class MatchSupport
     
     private function queryQMatchListWithTeam($teamid) {
         $qb = $this->em->createQuery(
-                "select m.id as mid,m.matchno,m.date,m.time,".
-                       "p.id as pid,p.no,p.name as playground,".
-                       "g.id as gid,g.name as grp,".
-                       "cat.id as cid,cat.name as category,".
-                       "q.awayteam,q.rank,gq.id as rgrp,gq.name as gname,gq.classification ".
-                "from ".$this->entity->getRepositoryPath('QMatchRelation')." q, ".
-                        $this->entity->getRepositoryPath('Match')." m, ".
-                        $this->entity->getRepositoryPath('Playground')." p, ".
-                        $this->entity->getRepositoryPath('Group')." g, ".
-                        $this->entity->getRepositoryPath('Category')." cat, ".
-                        $this->entity->getRepositoryPath('Group')." gq ".
-                "where m.id in (".
-                            "select rx.pid ".
-                            "from ".$this->entity->getRepositoryPath('MatchRelation')." rx ".
-                            "where rx.cid=:team) and ".
-                      "p.id=m.playground and ".
-                      "q.pid=m.id and ".
-                      "q.cid=gq.id and ".
-                      "g.id=m.pid and ".
-                      "cat.id=g.pid ".
+                "select ".$this->getQFieldList().
+                "from ".$this->getQTableList().
+                "where ".$this->getQTableRelations().
+                        " and m.id in (".
+                                "select rx.pid ".
+                                "from ".$this->entity->getRepositoryPath('MatchRelation')." rx ".
+                                "where rx.cid=:team) ".
                 "order by m.id");
         $qb->setParameter('team', $teamid);
         return $qb->getResult();
@@ -708,26 +639,10 @@ class MatchSupport
 
     private function queryMatchListWithPlayground($playgroundid) {
         $qb = $this->em->createQuery(
-                "select m.id as mid,m.matchno,m.date,m.time,".
-                       "p.id as pid,p.no,p.name as playground,".
-                       "g.id as gid,g.name as grp,".
-                       "cat.id as cid,cat.name as category,".
-                       "r.id as rid,r.awayteam,r.scorevalid,r.score,r.points,".
-                       "t.id,t.name as team,t.division,c.country ".
-                "from ".$this->entity->getRepositoryPath('MatchRelation')." r, ".
-                        $this->entity->getRepositoryPath('Match')." m, ".
-                        $this->entity->getRepositoryPath('Playground')." p, ".
-                        $this->entity->getRepositoryPath('Group')." g, ".
-                        $this->entity->getRepositoryPath('Category')." cat, ".
-                        $this->entity->getRepositoryPath('Team')." t, ".
-                        $this->entity->getRepositoryPath('Club')." c ".
-                "where m.playground=:playground and ".
-                      "p.id=m.playground and ".
-                      "m.pid=g.id and ".
-                      "g.pid=cat.id and ".
-                      "r.pid=m.id and ".
-                      "t.id=r.cid and ".
-                      "c.id=t.pid ".
+                "select ".$this->getFieldList().
+                "from ".$this->getTableList().
+                "where ".$this->getTableRelations().
+                        " and m.playground=:playground ".
                 "order by m.id");
         $qb->setParameter('playground', $playgroundid);
         return $qb->getResult();
@@ -735,28 +650,15 @@ class MatchSupport
     
     private function queryQMatchListWithPlayground($playgroundid) {
         $qb = $this->em->createQuery(
-                "select m.id as mid,m.matchno,m.date,m.time,".
-                       "p.id as pid,p.no,p.name as playground,".
-                       "g.id as gid,g.name as grp,".
-                       "cat.id as cid,cat.name as category,".
-                       "q.id as rid,q.awayteam,q.rank,gq.id as rgrp,gq.name as gname,gq.classification ".
-                "from ".$this->entity->getRepositoryPath('QMatchRelation')." q, ".
-                        $this->entity->getRepositoryPath('Match')." m, ".
-                        $this->entity->getRepositoryPath('Playground')." p, ".
-                        $this->entity->getRepositoryPath('Group')." g, ".
-                        $this->entity->getRepositoryPath('Category')." cat, ".
-                        $this->entity->getRepositoryPath('Group')." gq ".
-                "where m.playground=:playground and ".
-                      "p.id=m.playground and ".
-                      "m.pid=g.id and ".
-                      "g.pid=cat.id and ".
-                      "q.pid=m.id and ".
-                      "q.cid=gq.id ".
+                "select ".$this->getQFieldList().
+                "from ".$this->getQTableList().
+                "where ".$this->getQTableRelations().
+                        " and m.playground=:playground ".
                 "order by m.id");
         $qb->setParameter('playground', $playgroundid);
         return $qb->getResult();
     }
-    
+
     public function listMatchesByTournament($tournamentid, $club_list = array()) {
         $matchList = $this->queryMatchListWithTournament($tournamentid);
         $qmatchList = $this->queryQMatchListWithTournament($tournamentid);
@@ -771,26 +673,10 @@ class MatchSupport
 
     private function queryMatchListWithTournament($tournamentid, $date = null) {
         $qb = $this->em->createQuery(
-                "select m.id as mid,m.matchno,m.date,m.time,".
-                       "p.id as pid,p.no,p.name as playground,".
-                       "g.id as gid,g.name as grp,".
-                       "cat.id as cid,cat.name as category,".
-                       "r.id as rid,r.awayteam,r.scorevalid,r.score,r.points,".
-                       "t.id,t.name as team,t.division,c.country,c.id as clubid ".
-                "from ".$this->entity->getRepositoryPath('MatchRelation')." r, ".
-                        $this->entity->getRepositoryPath('Match')." m, ".
-                        $this->entity->getRepositoryPath('Playground')." p, ".
-                        $this->entity->getRepositoryPath('Group')." g, ".
-                        $this->entity->getRepositoryPath('Category')." cat, ".
-                        $this->entity->getRepositoryPath('Team')." t, ".
-                        $this->entity->getRepositoryPath('Club')." c ".
-                "where cat.pid=:tournament and ".
-                      "g.pid=cat.id and ".
-                      "m.pid=g.id and ".
-                      "p.id=m.playground and ".
-                      "r.pid=m.id and ".
-                      "t.id=r.cid and ".
-                      "c.id=t.pid ".
+                "select ".$this->getFieldList().
+                "from ".$this->getTableList().
+                "where ".$this->getTableRelations().
+                        " and cat.pid=:tournament ".
                       ($date ? "and m.date='".$date."' " : "").
                 "order by m.id");
         $qb->setParameter('tournament', $tournamentid);
@@ -799,23 +685,10 @@ class MatchSupport
     
     private function queryQMatchListWithTournament($tournamentid, $date = null) {
         $qb = $this->em->createQuery(
-                "select m.id as mid,m.matchno,m.date,m.time,".
-                       "p.id as pid,p.no,p.name as playground,".
-                       "g.id as gid,g.name as grp,".
-                       "cat.id as cid,cat.name as category,".
-                       "q.id as rid,q.awayteam,q.rank,gq.id as rgrp,gq.name as gname,gq.classification ".
-                "from ".$this->entity->getRepositoryPath('QMatchRelation')." q, ".
-                        $this->entity->getRepositoryPath('Match')." m, ".
-                        $this->entity->getRepositoryPath('Playground')." p, ".
-                        $this->entity->getRepositoryPath('Group')." g, ".
-                        $this->entity->getRepositoryPath('Category')." cat, ".
-                        $this->entity->getRepositoryPath('Group')." gq ".
-                "where cat.pid=:tournament and ".
-                      "g.pid=cat.id and ".
-                      "m.pid=g.id and ".
-                      "p.id=m.playground and ".
-                      "q.pid=m.id and ".
-                      "q.cid=gq.id ".
+                "select ".$this->getQFieldList().
+                "from ".$this->getQTableList().
+                "where ".$this->getQTableRelations().
+                        " and cat.pid=:tournament ".
                       ($date ? "and m.date='".$date."' " : "").
                 "order by m.id");
         $qb->setParameter('tournament', $tournamentid);
@@ -893,6 +766,7 @@ class MatchSupport
                                   'name' => $this->getValue($match, 'playground'),
                                   'id' => $this->getValue($match, 'pid')),
             'category' => array('name' => $this->getValue($match, 'category'),
+                                'tip' => '',
                                 'id' => $this->getValue($match, 'cid')),
             'group' => array('name' => $this->getValue($match, 'grp'),
                              'id' => $this->getValue($match, 'gid')),

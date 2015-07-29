@@ -186,3 +186,32 @@ FORM:
             AWAY: Antal mål scoret af udeholdet
         SUBMIT: Indberet resultat
         CANCEL: Retur
+
+    COOKIES:
+        CONSENT: >
+                <h2>Cookies</h2>
+                For at få vores website til at fungere bedst muligt lægger vi sommetider små datafiler, såkaldte cookies,
+                på din computer. Det gør de fleste store websites.
+                <h3>Hvad er cookies?</h3>
+                En cookie er en lille tekstfil, som et website gemmer på din computer eller dit mobiludstyr, når du besøger
+                sitet. På den måde kan websitet huske dine handlinger og indstillinger (såsom login, sprog, skriftstørrelse
+                og andre indstillinger for visning) i en vis periode, så du ikke behøver at foretage indstillingerne,
+                hver gang du går ind på sitet eller bevæger dig fra én side til en anden.
+                <h3>Hvordan bruger vi cookies?</h3>
+                En række af vores sider bruger cookies til at huske:
+                <ul>
+                <li>dine indstillinger for visning såsom valg af favorit hold du ønsker at følge</li>
+                <li>din aktuelle session mens du benytter icup.dk (denne session cookie slettes når du lukker browseren)</li>
+                </ul>
+                <p>Visse annoncer på vores sider anvender også en cookie for anonymt at indhente statistik om, hvordan du kom
+                frem til siden, og hvilke sider du har besøgt.</p>
+                <p>Det er ikke strengt nødvendigt at acceptere cookies, for at websitet kan fungere, men det vil give dig en
+                bedre oplevelse, når du bruger sitet. Du kan slette eller blokere cookies, men visse funktioner på sitet vil i
+                så fald muligvis ikke fungere korrekt.</p>
+                <p>De oplysninger, der indhentes med cookies, bruges ikke til at identificere dig personligt, og vi har fuld
+                kontrol over datamønstrene. Vores cookies anvendes ikke til andre formål end de, der er beskrevet her.</p>
+                <h3>Hvordan kontrollerer du cookies?</h3>
+                Du kan kontrollere og/eller slette cookies, som du vil – læs mere på aboutcookies.org.
+                Du kan slette alle de cookies, der allerede er på din computer, og indstille de fleste browsere til at
+                forhindre dem i at blive lagt på computeren. Hvis du gør dette, skal du dog muligvis selv tilpasse dine
+                indstillinger manuelt, hver gang du besøger et site, og visse tjenester og funktioner vil muligvis ikke fungere.

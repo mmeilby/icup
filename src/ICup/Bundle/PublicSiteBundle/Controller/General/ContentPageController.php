@@ -34,5 +34,13 @@ class ContentPageController extends Controller
             return array('files' => array());
         }
     }
-    
+
+    /**
+     * @Route("/cookies", name="_cookies")
+     * @Template("ICupPublicSiteBundle:General:cookieinfo.html.twig")
+     */
+    public function showCookieInformation()
+    {
+        return array();
+    }
 }

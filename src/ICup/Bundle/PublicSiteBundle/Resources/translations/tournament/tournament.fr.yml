@@ -186,3 +186,34 @@ FORM:
             AWAY: Number of goals scored by the away team.
         SUBMIT: Report result
         CANCEL: Cancel
+
+    COOKIES:
+        CONSENT: >
+                <h2>Cookies</h2>
+                Pour assurer le bon fonctionnement de ce site, nous devons parfois enregistrer de petits fichiers de données
+                sur l'équipement de nos utilisateurs.  La plupart des grands sites web font de même.
+                <h3>Qu'est-ce qu'un cookie?</h3>
+                Un cookie est un petit fichier texte que les sites web sauvegardent sur votre ordinateur ou appareil mobile
+                lorsque vous les consultez. Il permet à ces sites de mémoriser vos actions et préférences (nom d'utilisateur,
+                langue, taille des caractères et autres paramètres d'affichage) pendant un temps donné, pour que vous n'ayez
+                pas à réindiquer ces informations à chaque fois vous consultez ces sites ou naviguez d'une page à une autre.
+                <h3>Comment utilisons-nous les cookies?</h3>
+                Certaines de nos pages utilisent des cookies afin de mémoriser:
+                <ul>
+                <li>your display preferences, such as specific teams you like to follow</li>
+                <li>your current session while you are using icup.dk (closing the browser will delete the session cookie)</li>
+                </ul>
+                <p>En outre, certaines annonces présentées sur nos pages utilisent des cookies pour recueillir des statistiques
+                anonymes indiquant comment vous êtes arrivé sur la page et quelles vidéos vous avez vues.</p>
+                <p>Ces cookies ne sont pas indispensables au fonctionnement du site, mais ils facilitent votre navigation.
+                Vous pouvez les bloquer ou les supprimer, mais vous risquez alors d'empêcher le bon fonctionnement de certains
+                éléments du site.</p>
+                <p>Les informations contenues dans les cookies ne visent pas à vous identifier personnellement et nous en
+                contrôlons pleinement les données. Ces cookies ne sont jamais utilisés à d'autres fins que celles
+                indiquées ici.</p>
+                <h3>Comment contrôler les cookies</h3>
+                Vous pouvez contrôler et/ou supprimer des cookies comme vous le souhaitez. Pour en savoir plus, consultez
+                aboutcookies.org.  Vous avez la possibilité de supprimer tous les cookies déjà stockés sur votre ordinateur
+                et de configurer la plupart des navigateurs pour qu'ils les bloquent. Toutefois, dans ce cas, vous devrez
+                peut-être indiquer vous-mêmes certaines préférences chaque fois que vous vous rendrez sur un site, et certains
+                services et fonctionnalités risquent de ne pas être accessibles.

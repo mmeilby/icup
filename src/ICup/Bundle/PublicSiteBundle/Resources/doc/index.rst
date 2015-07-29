@@ -12,7 +12,6 @@ IDEER
 -----
 Fix - forside ændres så højrebar forbliver på inaktiv side (men i et andet format)
 Dommerpåsætning - dommernationaltet skal sikre at man ikke dømmer for eget land
-Cookie consent page
 
 Done List
 ---------
@@ -45,6 +44,7 @@ Fejlrettelse - nulstil kodeord har forkert besked indhold - og link virker ikke
 Glyphicon erstattet med Font Awesome
 Cookie consent javascript implementeret
 Kampdetaljer som popup - se checkbox definition for eksempel
+Cookie consent page
 
 FORKASTET
 ---------

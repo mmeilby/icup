@@ -186,3 +186,34 @@ FORM:
             AWAY: Number of goals scored by the away team.
         SUBMIT: Report result
         CANCEL: Cancel
+
+    COOKIES:
+        CONSENT: >
+                <h2>Cookies</h2>
+                Para que este sitio funcione adecuadamente, a veces instalamos en los dispositivos de los usuarios pequeños
+                ficheros de datos, conocidos como cookies. La mayoría de los grandes sitios web también lo hacen.
+                <h3>¿Qué son las cookies?</h3>
+                Una cookie es un pequeño fichero de texto que los sitios web instalan en el ordenador o el dispositivo móvil
+                de los usuarios que los visitan. Las cookies hacen posible que el sitio web recuerde las acciones y preferencias
+                del usuario (identificador de inicio de sesión, idioma, tamaño de letra y otras preferencias de visualización),
+                para que este no tenga que volver a configurarlos cuando regrese al sitio o navegue por sus páginas.
+                <h3>¿Cómo utilizamos las cookies?</h3>
+                En algunas páginas utilizamos cookies para recordar:
+                <ul>
+                <li>your display preferences, such as specific teams you like to follow</li>
+                <li>your current session while you are using icup.dk (closing the browser will delete the session cookie)</li>
+                </ul>
+                <p>Además, algunos de los anuncios incrustados en nuestras páginas utilizan cookies para elaborar estadísticas
+                anónimas sobre cómo ha llegado hasta ellos y qué vídeos ha visualizado.</p>
+                <p>Aunque las cookies no son imprescindibles para que el sitio web funcione, si las habilita disfrutará de una
+                mejor experiencia de navegación. Puede borrar o bloquear las cookies, pero si lo hace es posible que algunas
+                de las características de esta web no funcionen adecuadamente.</p>
+                <p>La información asociada a las cookies no se utiliza para identificar personalmente al usuario. Además,
+                mantenemos plenamente bajo nuestro control los datos sobre sus patrones de navegación. Estas cookies se
+                utilizan exclusivamente para los fines aquí indicados.</p>
+                <h3>Cómo controlar las cookies</h3>
+                Usted puede controlar o borrar las cookies siempre que lo desee: para más información, consulte aboutcookies.org.
+                Además de poder eliminar todas las cookies que ya se encuentran en su ordenador, también puede configurar la
+                mayoría de los navegadores para que dejen de aceptarlas. Pero tenga presente que, si rechaza las cookies, es
+                posible que tenga que volver a configurar manualmente sus preferencias cada vez que visite un sitio y que dejen
+                de funcionar determinados servicios y funcionalidades.

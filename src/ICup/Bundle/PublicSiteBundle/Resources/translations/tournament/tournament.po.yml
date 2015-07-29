@@ -187,6 +187,38 @@ FORM:
         SUBMIT: Report result
         CANCEL: Cancel
 
+    COOKIES:
+        CONSENT: >
+                <h2>Pliki cookie</h2>
+                Aby zapewnić sprawne funkcjonowanie tego portalu, czasami umieszczamy na komputerze użytkownika (bądź innym
+                urządzeniu) małe pliki – tzw. cookies („ciasteczka”). Podobnie postępuje większość dużych witryn internetowych.
+                <h3>Czym są pliki cookie?</h3>
+                „Cookie” to mały plik tekstowy, który strona internetowa zapisuje na komputerze lub urządzeniu przenośnym
+                internauty w chwili, gdy ten ją przegląda. Strona ta może w ten sposób zapamiętać na dłużej czynności i
+                preferencje internauty (takie jak nazwa użytkownika, język, rozmiar czcionki i inne opcje).
+                Dzięki temu użytkownik nie musi wpisywać tych samych informacji za każdym razem, gdy powróci na tę stronę
+                lub przejdzie z jednej strony na inną.
+                <h3>Jak używamy plików cookie?</h3>
+                Część naszych stron używa plików cookie, żeby zapamiętać:
+                <ul>
+                <li>your display preferences, such as specific teams you like to follow</li>
+                <li>your current session while you are using icup.dk (closing the browser will delete the session cookie)</li>
+                </ul>
+                <p>Niektóre pliki ogłoszeń zamieszczone na naszych stronach używają również cookies do gromadzenia anonimowych
+                statystyk dotyczących tego, jak internauta dostał się na stronę oraz które nagrania wideo odtwarzał.</p>
+                <p>Aktywowanie plików cookie nie jest konieczne do funkcjonowania strony, a jedynie ułatwia użytkownikom
+                przeglądanie jej zawartości. Cookies można usunąć albo zablokować, ale w takim wypadku niektóre elementy
+                tej strony mogą nie działać prawidłowo.</p>
+                <p>Informacje związane z plikami cookie nie są wykorzystywane do zidentyfikowania użytkownika, a dane
+                dotyczące preferencji są pod ścisłą kontrolą. Nie używamy plików cookie do żadnych innych celów niż te
+                opisane na tej stronie.</p>
+                <h3>Jak kontrolować pliki cookie</h3>
+                Pliki cookie można samodzielnie kontrolować i usuwać – szczegóły są dostępne na stronie aboutcookies.org.
+                Można usunąć wszystkie pliki cookie zamieszczone na swoim komputerze, a w większości przeglądarek wybrać
+                ustawienie, które uniemożliwia instalowanie tych plików. W takim przypadku może się okazać konieczne
+                dostosowanie niektórych preferencji przy każdej wizycie na danej stronie, a część opcji i usług może być
+                niedostępna.
+
 # Old translations
 LOGIN: Zaloguj się 
 USERNAME: Nazwa użytkownika 

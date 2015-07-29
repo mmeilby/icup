@@ -100,11 +100,15 @@
     {% for match in matchset %}
         <tr>
             <td class="narrow-col">
-                <a href="{{ path('_showcategory', { 'categoryid': match.category.id }) }}">{{ match.category.name }}</a> - {{ match.group.name }}
+                <a href="{{ path('_showcategory', { 'categoryid': match.category.id }) }}"
+                   data-toggle="tooltip" data-placement="top"
+                   title="{{ match.category.tip }}">{{ match.category.name }}</a> - {{ match.group.name }}
                 <br />
                 {{ match.schedule|date('FORMAT.TIME'|trans([],'messages')) }}
             {% if playground_defined %}
-                <br /><a href="{{ path('_showplayground_full', { 'playgroundid': match.playground.id }) }}" title="{{ match.playground.name }}">{{ match.playground.no }}</a>
+                <br /><a href="{{ path('_showplayground_full', { 'playgroundid': match.playground.id }) }}"
+                         data-toggle="tooltip" data-placement="top"
+                         title="{{ match.playground.name }}">{{ match.playground.no }}</a>
             {% endif %}    
             </td>
             <td style="vertical-align: middle">
@@ -213,7 +217,7 @@
         </tbody>
     </table>
             {% endif %}
-    <a href="{{ path('_showplayground_full', { 'playgroundid': match.playground.id }) }}" title="{{ match.playground.name }}">
+    <a href="{{ path('_showplayground_full', { 'playgroundid': match.playground.id }) }}">
         <h4>{{ match.playground.name }}</h4>
     </a>
     <table class="table table-striped">
@@ -237,7 +241,9 @@
         <tr>
             <td class="narrow-col" style="vertical-align: middle">
                 {{ match.schedule|date('FORMAT.TIME'|trans([],'messages')) }}<br />
-                <a href="{{ path('_showcategory', { 'categoryid': match.category.id }) }}">{{ match.category.name }}</a><br />
+                <a href="{{ path('_showcategory', { 'categoryid': match.category.id }) }}"
+                   data-toggle="tooltip" data-placement="top"
+                   title="{{ match.category.tip }}">{{ match.category.name }}</a><br />
                 {{ match.group.name }}
             </td>
             <td style="vertical-align: middle">
@@ -286,7 +292,7 @@
         </tbody>
     </table>
             {% endif %}
-    <a href="{{ path('_showplayground_full', { 'playgroundid': match.playground.id }) }}" title="{{ match.playground.name }}">
+    <a href="{{ path('_showplayground_full', { 'playgroundid': match.playground.id }) }}">
         <h4>{{ match.playground.name }}</h4>
     </a>
     <table class="table table-striped">
@@ -318,7 +324,9 @@
             <td class="narrow-col">{{ match.matchno }}</td>
             <td class="narrow-col">{{ match.schedule|date('FORMAT.TIME'|trans([],'messages')) }}</td>
             <td class="narrow-col">
-                <a href="{{ path('_showcategory', { 'categoryid': match.category.id }) }}">{{ match.category.name }}</a><br />
+                <a href="{{ path('_showcategory', { 'categoryid': match.category.id }) }}"
+                   data-toggle="tooltip" data-placement="top"
+                   title="{{ match.category.tip }}">{{ match.category.name }}</a><br />
                 {{ match.group.name }}
             </td>
             <td>

@@ -28,85 +28,10 @@
 </div>
 {% if matchlist|length > 0 %}
 <div class="hidden-xs">
-    <table class="table table-striped">
-        <thead>
-            <tr>
-                <td class="narrow-col"></td>
-                <td class="narrow-col">{% trans %}LEGEND.NO{% endtrans %}</td>
-                <td class="narrow-col">{% trans %}LEGEND.TIME{% endtrans %}</td>
-                <td class="narrow-col">{% trans %}LEGEND.GROUP{% endtrans %}</td>
-                <td class="narrow-col">{% trans %}LEGEND.PLAYGROUND{% endtrans %}</td>
-                <td class="flag"></td>
-                <td>{% trans %}LEGEND.HOMETEAM{% endtrans %}</td>
-                <td class="flag"></td>
-                <td>{% trans %}LEGEND.AWAYTEAM{% endtrans %}</td>
-                <td class="narrow-col">{% trans %}LEGEND.RESULT{% endtrans %}</td>
-            </tr>
-        </thead>
-        <tbody>
-    {% for matchset in matchlist %}
-            <tr>
-                <td class="lead" colspan="10">
-                    {{ 'FORMAT.LONGDATE'|transchoice(matchset[0].schedule|date('j'), {
-                            '%week%': ['WEEK.',matchset[0].schedule|date('D')|upper]|join|trans([],'messages')|capitalize,
-                            '%day%': matchset[0].schedule|date('j'),
-                            '%month%': ['MONTH.',matchset[0].schedule|date('M')|upper]|join|trans([],'messages'),
-                            '%year%': matchset[0].schedule|date('Y')}, 'messages') }}
-                </td>
-            </tr>
-        {% for match in matchset %}
-            <tr>
-                <td class="narrow-col"></td>
-                <td class="narrow-col">{{ match.matchno }}</td>
-                <td class="narrow-col">{{ match.schedule|date('FORMAT.TIME'|trans([],'messages')) }}</td>
-                <td class="narrow-col"><a href="{{ path('_showcategory', { 'categoryid': match.category.id }) }}">{{ match.group.name }}</a></td>
-                <td class="narrow-col"><a href="{{ path('_showplayground', { 'playgroundid': match.playground.id, 'groupid': match.group.id }) }}" title="{{ match.playground.name }}">{{ match.playground.no }}</a></td>
-                {{ formatter.club(match.home, match.group, _context) }}
-                {{ formatter.club(match.away, match.group, _context) }}
-                <td class="narrow-col text-nowrap">{{ match.home.score }}-{{ match.away.score }}</td>
-            </tr>
-        {% endfor %}
-    {% endfor %}
-        </tbody>
-    </table>
+    {{ tformatter.listmatches(matchlist, _context) }}
 </div>
 <div class="visible-xs-block">
-    <table class="table table-striped">
-        <thead>
-            <tr>
-                <td class="narrow-col">{% trans %}LEGEND.NO{% endtrans %}</td>
-                <td class="narrow-col">{% trans %}LEGEND.TIME{% endtrans %}<br />
-                                       {% trans %}LEGEND.PLAYGROUND{% endtrans %}</td>
-                <td>{% trans %}LEGEND.HOMETEAM{% endtrans %}<br />
-                    {% trans %}LEGEND.AWAYTEAM{% endtrans %}</td>
-                <td class="narrow-col">{% trans %}LEGEND.RESULT{% endtrans %}</td>
-            </tr>
-        </thead>
-        <tbody>
-    {% for matchset in matchlist %}
-            <tr>
-                <td class="lead" colspan="4">
-                    {{ 'FORMAT.LONGDATE'|transchoice(matchset[0].schedule|date('j'), {
-                            '%week%': ['WEEK.',matchset[0].schedule|date('D')|upper]|join|trans([],'messages')|capitalize,
-                            '%day%': matchset[0].schedule|date('j'),
-                            '%month%': ['MONTH.',matchset[0].schedule|date('M')|upper]|join|trans([],'messages'),
-                            '%year%': matchset[0].schedule|date('Y')}, 'messages') }}
-                </td>
-            </tr>
-        {% for match in matchset %}
-            <tr>
-                <td class="narrow-col">{{ match.matchno }}</td>
-                <td class="narrow-col">{{ match.schedule|date('FORMAT.TIME'|trans([],'messages')) }}<br />
-                                 <a href="{{ path('_showplayground', { 'playgroundid': match.playground.id, 'groupid': match.group.id }) }}" title="{{ match.playground.name }}">{{ match.playground.no }}</a></td>
-                <td>
-                {{ formatter.clubxs(match.home, match.away, match.group, _context) }}
-                </td>
-                <td class="narrow-col text-nowrap">{{ match.home.score }}-{{ match.away.score }}</td>
-            </tr>
-        {% endfor %}
-    {% endfor %}
-        </tbody>
-    </table>
+    {{ tformatter.listmatchesxs(matchlist, _context) }}
 </div>
 {% else %}
 <div class="panel panel-warning">
@@ -117,4 +42,10 @@
     </div>
 </div>
 {% endif %}
+{% endblock %}
+
+{% block javascripts %}
+    <script type="text/javascript">
+        $("[data-toggle='tooltip']").tooltip();
+    </script>
 {% endblock %}

@@ -46,17 +46,17 @@
         {% else %}
             {% if loop.length/2 == loop.index0 %}
                 {{ formatter.td((cols-7)/2) }}
-                <td colspan="2" class="vscore">
+                <td colspan="2" class="vscoreb">
                     <span data-toggle="tooltip" data-placement="left" title="{{ formatter.match(pyramid.FH, _context) }}">{{ pyramid.FH.away.score }}</span>
                 </td>
                 {{ formatter.td(2) }}
-                <td colspan="2" class="vscore">
+                <td colspan="2" class="vscoreb">
                     <span data-toggle="tooltip" data-placement="right" title="{{ formatter.match(pyramid.FA, _context) }}">{{ pyramid.FA.away.score }}</span>
                 </td>
                 {{ formatter.td((cols-7)/2) }}
             {% elseif pyramid.levels == 3 and loop.index0 > 0 %}
                 {{ formatter.td(2) }}
-                <td colspan="2" class="vscore">
+                <td colspan="2" class="vscoreb">
                     {% if loop.index0 == 1 %}
                         <span data-toggle="tooltip" data-placement="left" title="{{ formatter.match(pyramid.FHH, _context) }}">{{ pyramid.FHH.away.score }}</span>
                     {% else %}
@@ -68,7 +68,7 @@
                 {{ formatter.td(cols-12) }}
                 <td class="{{ loop.length/2 >= loop.index ? ' vliner' : '' }}"></td>
                 {{ formatter.td(1) }}
-                <td colspan="2" class="vscore">
+                <td colspan="2" class="vscoreb">
                     {% if loop.index0 == 1 %}
                         <span data-toggle="tooltip" data-placement="right" title="{{ formatter.match(pyramid.FAH, _context) }}">{{ pyramid.FAH.away.score }}</span>
                     {% else %}
@@ -137,7 +137,7 @@
         {% else %}
             {% if loop.length/2 == loop.index %}
                 {{ formatter.td((cols-7)/2) }}
-                <td colspan="2" class="vscore">
+                <td colspan="2" class="vscoret">
                     <span data-toggle="tooltip" data-placement="left" title="{{ formatter.match(pyramid.FH, _context) }}">{{ pyramid.FH.home.score }}</span>
                 </td>
                 <td class="line"></td>
@@ -145,13 +145,13 @@
                     <span data-toggle="tooltip" data-placement="top" title="{{ formatter.match(pyramid.F, _context) }}">{{ pyramid.F.home.score }}-{{ pyramid.F.away.score }}</span>
                 </td>
                 <td class="line"></td>
-                <td colspan="2" class="vscore">
+                <td colspan="2" class="vscoret">
                     <span data-toggle="tooltip" data-placement="right" title="{{ formatter.match(pyramid.FA, _context) }}">{{ pyramid.FA.home.score }}</span>
                 </td>
                 {{ formatter.td((cols-7)/2) }}
              {% elseif pyramid.levels == 3 and loop.index < loop.length %}
                 {{ formatter.td(2) }}
-                <td colspan="2" class="vscore">
+                <td colspan="2" class="vscoret">
                     {% if loop.index0 == 0 %}
                         <span data-toggle="tooltip" data-placement="left" title="{{ formatter.match(pyramid.FHH, _context) }}">{{ pyramid.FHH.home.score }}</span>
                     {% else %}
@@ -163,7 +163,7 @@
                 {{ formatter.td(cols-12) }}
                 <td class="line{{ loop.length/2 < loop.index ? ' vliner' : '' }}"></td>
                 <td class="line"></td>
-                <td colspan="2" class="vscore">
+                <td colspan="2" class="vscoret">
                     {% if loop.index0 == 0 %}
                         <span data-toggle="tooltip" data-placement="right" title="{{ formatter.match(pyramid.FAH, _context) }}">{{ pyramid.FAH.home.score }}</span>
                     {% else %}

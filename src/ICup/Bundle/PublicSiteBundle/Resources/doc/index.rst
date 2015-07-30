@@ -1,7 +1,5 @@
 To Do List
 ----------
-Grafisk brush-up af finale billedet på kategorisiden
-Genåbn konto som turneringsansvarlig
 Overfør hold til en anden klub (indsæt nyt hold på samme plads i pulje)
 Planlæg slutrunde kampe og puljer
 Færdiggørelse af planlæg indledende kampe
@@ -12,6 +10,7 @@ IDEER
 -----
 Fix - forside ændres så højrebar forbliver på inaktiv side (men i et andet format)
 Dommerpåsætning - dommernationaltet skal sikre at man ikke dømmer for eget land
+Genåbn konto som turneringsansvarlig
 
 Done List
 ---------
@@ -45,6 +44,7 @@ Glyphicon erstattet med Font Awesome
 Cookie consent javascript implementeret
 Kampdetaljer som popup - se checkbox definition for eksempel
 Cookie consent page
+Grafisk brush-up af finale billedet på kategorisiden
 
 FORKASTET
 ---------

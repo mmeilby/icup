@@ -25,10 +25,19 @@ TD.rightteam {
     border-left: 2px solid black;
     padding-left: 5px;
 }
-TD.vscore {
+TD.vscoret {
     text-align: center;
+    background-color: #CADFE3;
+    border-radius: 10px 10px 0 0;
+}
+TD.vscoreb {
+    text-align: center;
+    background-color: #CADFE3;
+    border-radius: 0 0 10px 10px;
 }
 TD.hscore {
     padding-left: 5px;
     padding-right: 5px;
+    background-color: #CADFE3;
+    border-radius: 10px;
 }

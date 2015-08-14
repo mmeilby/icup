@@ -68,18 +68,21 @@
 
 {% block form_rows %}
 {% spaceless %}
+    {% set buttons = [] %}
     {% for child in form %}
         {% if child.vars.block_prefixes[0] == 'form' %}
-        {{ form_row(child) }}
+            {{ form_row(child) }}
+        {% elseif child.vars.block_prefixes[0] == 'button' %}
+            {% set buttons = buttons|merge([child]) %}
         {% endif %}
     {% endfor %}
+    {% if buttons|length > 0 %}
     <div class="btn-group form-btn-row">
-    {% for child in form %}
-        {% if child.vars.block_prefixes[0] == 'button' %}
-        {{ form_row(child) }}
-        {% endif %}
-    {% endfor %}
+        {% for child in buttons %}
+            {{ form_row(child) }}
+        {% endfor %}
     </div>
+    {% endif %}
 {% endspaceless %}
 {% endblock form_rows %}
 

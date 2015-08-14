@@ -1,4 +1,6 @@
 {% extends "ICupPublicSiteBundle:Masters:edit.html.twig" %}
+
+{% form_theme upload_form 'ICupPublicSiteBundle:Default:layout.script.html.twig' %}
 {% trans_default_domain "admin" %}
 
 {% import 'ICupPublicSiteBundle:Masters:club.html.twig' as formatter %}
@@ -20,7 +22,7 @@
     </p>
     <ul class="nav nav-tabs" role="tablist">
         <li>
-            <a href="{{ path('_edit_match_planning', { 'tournamentid': tournament.id }) }}">
+            <a href="{{ path('_edit_match_planning_options', { 'tournamentid': tournament.id }) }}">
                 <span class="fa fa-toggle-on"></span>&nbsp;{% trans %}FORM.MATCHPLANNING.OPTIONS{% endtrans %}
             </a>
         </li>
@@ -31,12 +33,12 @@
         </li>
         <li class="active">
             <a href="{{ path('_edit_match_planning_result', { 'tournamentid': tournament.id }) }}">
-                <span class="fa fa-bullseye"></span>&nbsp;{% trans %}FORM.MATCHPLANNING.RESULT{% endtrans %}
+                <span class="fa fa-puzzle-piece"></span>&nbsp;{% trans %}FORM.MATCHPLANNING.RESULT{% endtrans %}
             </a>
         </li>
         <li>
             <a href="{{ path('_edit_match_planning_view', { 'tournamentid': tournament.id }) }}">
-                <span class="fa fa-calendar"></span>&nbsp;{% trans %}FORM.MATCHPLANNING.VIEW{% endtrans %}
+                <span class="fa fa-calendar-check-o"></span>&nbsp;{% trans %}FORM.MATCHPLANNING.VIEW{% endtrans %}
             </a>
         </li>
         <li>
@@ -50,82 +52,139 @@
             </a>
         </li>
     </ul>
-    <p>&nbsp;</p>
-    {% for flashMessage in app.session.flashbag.get('data_saved') %}
-        <div class="alert alert-success alert-dismissible" role="alert">
-            <button type="button" class="close" data-dismiss="alert">
-                <span aria-hidden="true">&times;</span><span class="sr-only">Close</span>
-            </button>
-            {{ flashMessage|trans }}
-        </div>
-        <p>&nbsp;</p>
-    {% endfor %}
-
-    {% if unassigned|length > 0 %}
-    <div class="panel panel-danger">
-        <div class="panel-heading">
-            <h4><span class="fa fa-exclamation-triangle"></span>&nbsp;{% trans %}FORM.MATCHPLANNING.PLANNINGINCOMPLETE{% endtrans %}</h4>
-        {% for categoryinfo in unassigned %}
-            <div class="row">
-                <div class="col-xs-4">
-                    {% trans from "tournament" %}CATEGORY{% endtrans %} {{ categoryinfo.category.name|upper }} -
-                    {{ ['GENDER.',
-                        categoryinfo.category.gender,
-                        categoryinfo.category.classification]|join|transchoice(categoryinfo.category.age, { '%age%': categoryinfo.category.age },'tournament') }}
+    <div class="row" style="margin-top: 10px; margin-bottom: 10px;">
+        <div class="col-sm-6">
+            <div class="list-group">
+                <a class="list-group-item" href="{{ path('_edit_match_planning_plan', { 'tournamentid': tournament.id }) }}">
+                    <div class="row">
+                        <div class="col-sm-3 text-center">
+                            <span class="fa fa-magic fa-5x text-info"></span>
+                        </div>
+                        <div class="col-sm-9">
+                            <h4 class="list-group-item-heading">{% trans %}FORM.MATCHPLANNING.PLAN.TITLE{% endtrans %}</h4>
+                            <p class="list-group-item-text">{% trans %}FORM.MATCHPLANNING.PLAN.DESCRIPTION{% endtrans %}</p>
+                        </div>
+                    </div>
+                </a>
+                <div class="list-group-item">
+                    <div class="row">
+                        <div class="col-sm-3 text-center">
+                            <span class="fa fa-upload fa-5x"></span>
+                        </div>
+                        <div class="col-sm-9">
+                            <h4 class="list-group-item-heading">{% trans %}FORM.MATCHPLANNING.MATCHIMPORT.TITLE{% endtrans %}</h4>
+                            <p class="list-group-item-text">
+                                {% trans %}FORM.MATCHPLANNING.MATCHIMPORT.DESCRIPTION{% endtrans %}
+                            </p>
+                        </div>
+                    </div>
+                    <form class="standard" action="{{ path('_edit_match_planning_result', { 'tournamentid': tournament.id }) }}" method="post" {{ form_enctype(upload_form) }}>
+                        {{ form_widget(upload_form) }}
+                    </form>
                 </div>
-                <div class="col-xs-1 text-right">
-                    {{ categoryinfo.matchcount }}
+                <a class="list-group-item" href="{{ path('_edit_match_planning_save', { 'tournamentid': tournament.id }) }}">
+                    <div class="row">
+                        <div class="col-sm-3 text-center">
+                            <span class="fa fa-map-o fa-5x text-success"></span>
+                        </div>
+                        <div class="col-sm-9">
+                            <h4 class="list-group-item-heading">{% trans %}FORM.MATCHPLANNING.SAVE.TITLE{% endtrans %}</h4>
+                            <p class="list-group-item-text">{% trans %}FORM.MATCHPLANNING.SAVE.DESCRIPTION{% endtrans %}</p>
+                        {% for flashMessage in app.session.flashbag.get('data_saved') %}
+                            <div class="alert alert-success alert-dismissible" role="alert">
+                                <button type="button" class="close" data-dismiss="alert">
+                                    <span aria-hidden="true">&times;</span><span class="sr-only">Close</span>
+                                </button>
+                                {{ flashMessage|trans }}
+                            </div>
+                        {% endfor %}
+                        </div>
+                    </div>
+                </a>
+            </div>
+        </div>
+        <div class="col-sm-6">
+        {% if planned %}
+            {% if unassigned|length > 0 %}
+            <div class="panel panel-danger">
+                <div class="panel-heading">
+                    <h4><span class="fa fa-exclamation-triangle"></span>&nbsp;{% trans %}FORM.MATCHPLANNING.PLANNINGINCOMPLETE{% endtrans %}</h4>
+                {% for categoryinfo in unassigned %}
+                    <div class="row">
+                        <div class="col-xs-4">
+                            {% trans from "tournament" %}CATEGORY{% endtrans %} {{ categoryinfo.category.name|upper }} -
+                            {{ ['GENDER.',
+                                categoryinfo.category.gender,
+                                categoryinfo.category.classification]|join|transchoice(categoryinfo.category.age, { '%age%': categoryinfo.category.age },'tournament') }}
+                        </div>
+                        <div class="col-xs-1 text-right">
+                            {{ categoryinfo.matchcount }}
+                        </div>
+                    </div>
+                {% endfor %}
                 </div>
             </div>
-        {% endfor %}
-        <p></p>
+            {% else %}
+            <div class="panel panel-success">
+                <div class="panel-heading">
+                    <div class="row">
+                        <div class="col-sm-9">
+                            <h4>{% trans %}FORM.MATCHPLANNING.PLANNINGCOMPLETE.TITLE{% endtrans %}</h4>
+                            <p>{% trans %}FORM.MATCHPLANNING.PLANNINGCOMPLETE.DESCRIPTION{% endtrans %}</p>
+                        </div>
+                        <div class="col-sm-3 text-center">
+                            <span class="fa fa-check fa-5x"></span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            {% endif %}
+            <div class="list-group">
+            {% if planned %}
+                <a class="list-group-item" href="{{ path('_edit_match_planning_reset', { 'tournamentid': tournament.id }) }}">
+                    <div class="row">
+                        <div class="col-sm-3 text-center">
+                            <span class="fa fa-trash fa-5x text-danger"></span>
+                        </div>
+                        <div class="col-sm-9">
+                            <h4 class="list-group-item-heading">{% trans %}FORM.MATCHPLANNING.RESET.TITLE{% endtrans %}</h4>
+                            <p class="list-group-item-text">{% trans %}FORM.MATCHPLANNING.RESET.DESCRIPTION{% endtrans %}</p>
+                        </div>
+                    </div>
+                </a>
+            {% endif %}
+                <a class="list-group-item" href="{{ path('_edit_match_planning_download', { 'tournamentid': tournament.id }) }}">
+                    <div class="row">
+                        <div class="col-sm-3 text-center">
+                            <span class="fa fa-download fa-5x"></span>
+                        </div>
+                        <div class="col-sm-9">
+                            <h4 class="list-group-item-heading">{% trans %}FORM.MATCHPLANNING.DOWNLOAD.TITLE{% endtrans %}</h4>
+                            <p class="list-group-item-text">{% trans %}FORM.MATCHPLANNING.DOWNLOAD.DESCRIPTION{% endtrans %}</p>
+                        </div>
+                    </div>
+                </a>
+            </div>
+        {% else %}
+            <div class="panel panel-info">
+                <div class="panel-heading">
+                    <div class="row">
+                        <div class="col-sm-9">
+                            <h4>{% trans %}FORM.MATCHPLANNING.NEEDTOPLAN.TITLE{% endtrans %}</h4>
+                            <p>{% trans %}FORM.MATCHPLANNING.NEEDTOPLAN.DESCRIPTION{% endtrans %}</p>
+                        </div>
+                        <div class="col-sm-3 text-center">
+                            <span class="fa fa-info fa-5x"></span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        {% endif %}
         </div>
     </div>
-    <p>&nbsp;</p>
-    {% endif %}
-    <p class="text-right">
-        <a class="btn btn-primary btn-lg" href="{{ path('_edit_match_planning_save', { 'tournamentid': tournament.id }) }}">
-            <span class="fa fa-archive"></span>&nbsp;{% trans %}FORM.MATCHPLANNING.SAVE{% endtrans %}
-        </a>
-        <a class="btn btn-default btn-lg" href="{{ path('_edit_match_planning_download', { 'tournamentid': tournament.id }) }}">
-            <span class="fa fa-download"></span>&nbsp;{% trans %}FORM.MATCHPLANNING.DOWNLOAD{% endtrans %}
-        </a>
-    </p>
-    <table class="table table-striped">
-        <thead>
-            <tr>
-                <td>{% trans %}FORM.MATCHPLANNING.PLAYGROUND{% endtrans %}</td>
-                <td>{% trans %}FORM.MATCHPLANNING.TIMESLOT{% endtrans %}</td>
-                <td class="text-left">{% trans %}FORM.MATCHPLANNING.PATTRS{% endtrans %}</td>
-                <td class="text-right">{% trans %}FORM.MATCHPLANNING.TIMELEFT{% endtrans %}</td>
-            </tr>
-        </thead>
-        <tbody>
-    {% for tsset in available_timeslots %}
-            <tr><td class="bg-warning" colspan="4">
-                    {{ 'FORMAT.LONGDATE'|transchoice(tsset[0].schedule|date('j'), {
-                            '%week%': ['WEEK.',tsset[0].schedule|date('D')|upper]|join|trans([],'messages')|capitalize,
-                            '%day%': tsset[0].schedule|date('j'),
-                            '%month%': ['MONTH.',tsset[0].schedule|date('M')|upper]|join|trans([],'messages'),
-                            '%year%': tsset[0].schedule|date('Y')}, 'messages') }}
-            </td></tr>
-        {% for timeslot in tsset %}
-            <tr>
-                <td>{{ timeslot.playground.name }}</td>
-                <td>{{ timeslot.timeslot.name }}</td>
-                <td>
-                    <a href="{{ path('_edit_list_parel', { 'playgroundattributeid': timeslot.id }) }}">
-                    {% if timeslot.categories|length > 0 %}
-                        {{ timeslot.categories|join(',') }}
-                    {% else %}
-                        <span class="fa fa-cogs"></span>
-                    {% endif %}
-                    </a>
-                </td>
-                <td class="text-right">{{ timeslot.timeleft }}</td>
-            </tr>
-        {% endfor %}
-    {% endfor %}
-        </tbody>
-    </table>
+{% endblock %}
+{% block javascripts %}
+    <script>
+        $("#form_file").fileinput({'showUpload':true, 'showPreview':false, 'showRemove':false, 'browseLabel':'{% trans %}FORM.MATCHPLANNING.MATCHIMPORT.BROWSE{% endtrans %}', 'uploadLabel':'{% trans %}FORM.MATCHPLANNING.MATCHIMPORT.UPLOAD{% endtrans %}'});
+    </script>
 {% endblock %}

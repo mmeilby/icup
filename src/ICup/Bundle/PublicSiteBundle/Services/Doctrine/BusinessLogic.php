@@ -9,6 +9,7 @@ use ICup\Bundle\PublicSiteBundle\Entity\Doctrine\Club;
 use ICup\Bundle\PublicSiteBundle\Entity\Doctrine\Date;
 use ICup\Bundle\PublicSiteBundle\Entity\Doctrine\Enrollment;
 use ICup\Bundle\PublicSiteBundle\Entity\Doctrine\GroupOrder;
+use ICup\Bundle\PublicSiteBundle\Entity\Doctrine\MatchSchedule;
 use ICup\Bundle\PublicSiteBundle\Entity\Doctrine\PARelation;
 use ICup\Bundle\PublicSiteBundle\Entity\Doctrine\Team;
 use ICup\Bundle\PublicSiteBundle\Entity\Doctrine\User;
@@ -311,10 +312,10 @@ class BusinessLogic
     public function moveMatches($groupid, $teamid, $target_teamid) {
         $qb = $this->em->createQuery(
             "update ".$this->entity->getRepositoryPath('MatchRelation')." r set r.cid=:target ".
-            "where r.cid=:team and r.pid in (".
+            "where r.cid=:team and r.match in (".
             "select m.id ".
                 "from ".$this->entity->getRepositoryPath('Match')." m ".
-                "where m.pid=:group)");
+                "where m.group=:group)");
         $qb->setParameter('group', $groupid);
         $qb->setParameter('team', $teamid);
         $qb->setParameter('target', $target_teamid);
@@ -326,8 +327,8 @@ class BusinessLogic
                 "select count(r) as results ".
                 "from ".$this->entity->getRepositoryPath('MatchRelation')." r, ".
                         $this->entity->getRepositoryPath('Match')." m ".
-                "where r.pid=m.id and m.pid=:group and r.cid=:team ".
-                "order by r.pid");
+                "where r.match=m.id and m.group=:group and r.cid=:team ".
+                "order by r.match");
         $qb->setParameter('group', $groupid);
         $qb->setParameter('team', $teamid);
         $results = $qb->getOneOrNullResult();
@@ -339,8 +340,8 @@ class BusinessLogic
             "select count(r) as results ".
             "from ".$this->entity->getRepositoryPath('MatchRelation')." r, ".
                     $this->entity->getRepositoryPath('Match')." m ".
-            "where r.pid=m.id and m.pid=:group and r.cid=:team and r.scorevalid='Y'".
-            "order by r.pid");
+            "where r.match=m.id and m.group=:group and r.cid=:team and r.scorevalid='Y'".
+            "order by r.match");
         $qb->setParameter('group', $groupid);
         $qb->setParameter('team', $teamid);
         $results = $qb->getOneOrNullResult();
@@ -529,7 +530,7 @@ class BusinessLogic
     }
 
     public function listMatchSchedules($tournamentid) {
-        return $this->entity->getMatchScheduleRepo()->findBy(array('pid' => $tournamentid), array('paid' => 'desc'));
+        return $this->entity->getMatchScheduleRepo()->findBy(array('tournament' => $tournamentid));
     }
 
     public function listMatchAlternatives($matchscheduleid) {
@@ -542,15 +543,14 @@ class BusinessLogic
             "delete from ".$this->entity->getRepositoryPath('MatchAlternative')." m ".
             "where m.pid in (select ms.id ".
                             "from ".$this->entity->getRepositoryPath('MatchSchedule')." ms ".
-                            "where ms.pid=:tournament)");
+                            "where ms.tournament=:tournament)");
         $qba->setParameter('tournament', $tournamentid);
         $qba->getResult();
         // wipe matchschedules
-        $qbr = $this->em->createQuery(
-            "delete from ".$this->entity->getRepositoryPath('MatchSchedule')." m ".
-            "where m.pid=:tournament");
-        $qbr->setParameter('tournament', $tournamentid);
-        $qbr->getResult();
+        foreach ($this->listMatchSchedules($tournamentid) as $ms) {
+            $this->em->remove($ms);
+        }
+        $this->em->flush();
     }
 
     public function listHosts() {
@@ -615,6 +615,16 @@ class BusinessLogic
                       "g.name=:group");
         $qb->setParameter('tournament', $tournamentid);
         $qb->setParameter('category', $category);
+        $qb->setParameter('group', $group);
+        return $qb->getOneOrNullResult();
+    }
+
+    public function getGroup($groupfamily, $group) {
+        $qb = $this->em->createQuery(
+            "select g ".
+            "from ".$this->entity->getRepositoryPath('Group')." g ".
+            "where g.pid in (select gx.pid from ".$this->entity->getRepositoryPath('Group')." gx where gx.id=".$groupfamily.") and ".
+                  "g.name=:group");
         $qb->setParameter('group', $group);
         return $qb->getOneOrNullResult();
     }
@@ -737,8 +747,8 @@ class BusinessLogic
                     $this->entity->getRepositoryPath('Match')." m, ".
                     $this->entity->getRepositoryPath('Team')." t, ".
                     $this->entity->getRepositoryPath('Club')." c ".
-            "where m.pid=:group and ".
-            "r.pid=m.id and ".
+            "where m.group=:group and ".
+            "r.match=m.id and ".
             "r.cid=t.id and ".
             "t.pid=c.id ".
             "order by t.id");
@@ -758,8 +768,8 @@ class BusinessLogic
             "from ".$this->entity->getRepositoryPath('QMatchRelation')." q, ".
             $this->entity->getRepositoryPath('Match')." m, ".
             $this->entity->getRepositoryPath('Group')." g ".
-            "where m.pid=:group and ".
-            "q.pid=m.id and ".
+            "where m.group=:group and ".
+            "q.match=m.id and ".
             "q.cid=g.id ".
             "order by m.id, q.awayteam");
         $qb->setParameter('group', $groupid);
@@ -773,7 +783,7 @@ class BusinessLogic
             $rankTxt = $this->container->get('translator')->
             transChoice('RANK', $qmatch['rank'],
                 array('%rank%' => $qmatch['rank'],
-                    '%group%' => strtolower($groupname).' '.$qmatch['gname']), 'tournament');
+                      '%group%' => strtolower($groupname).' '.$qmatch['gname']), 'tournament');
 
             $teamInfo = new TeamInfo();
             $teamInfo->id = $qmatch['rgrp'].'-'.$qmatch['rank'];
@@ -829,8 +839,8 @@ class BusinessLogic
                 "select r ".
                 "from ".$this->entity->getRepositoryPath('MatchRelation')." r, ".
                         $this->entity->getRepositoryPath('Match')." m ".
-                "where r.pid=m.id and m.pid=:group ".
-                "order by r.pid");
+                "where r.match=m.id and m.group=:group ".
+                "order by r.match");
         $qb->setParameter('group', $groupid);
         return $qb->getResult();
     }

@@ -87,6 +87,25 @@
     {% endif %}
 {% endmacro %}
 
+{% macro displaymatchrelation(team, context) %}
+    {% if team.id > 0 %}
+        {% if team.rank is defined and team.rank != '' %}
+            <small>{{ team.rank }}</small><br />
+        {% endif %}
+        <span class="text-nowrap">
+        {% if team.country in context.countries|keys %}
+            <img src="{{ asset(['bundles/icuppublicsite/images/flags/',context.countries[team.country].flag]|join) }}"
+                 alt="{{ team.country|trans({},'lang') }}"
+                 title="{{ team.country|trans({},'lang') }}"
+                 class="flag">&nbsp;
+        {% endif %}
+            {{ team.name }}
+        </span>
+    {% else %}
+        {{ team.rank }}
+    {% endif %}
+{% endmacro %}
+
 {% macro displayteam(team, context) %}
     <span class="text-nowrap">
     {% if team.country in context.countries|keys %}

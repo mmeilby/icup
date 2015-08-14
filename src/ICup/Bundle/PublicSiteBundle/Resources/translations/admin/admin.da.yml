@@ -342,6 +342,23 @@ FORM:
     TITLE: Vedligehold turnering
     CAPTION: Planlæg kampe
     PLANNINGINCOMPLETE: Det er ikke muligt at planlægge alle kampe
+    PLANNINGCOMPLETE:
+      TITLE: Kampplanen er lagt
+      DESCRIPTION: >
+                  Alle hold har fået tildelt kampe inden for planen. Du kan justere kampplanen efter behov i kampoplægget.
+                  Du kan også hente kampplanen som en tekstfil og ændre oplægget på din pc.
+                  Hvis du er tilfreds med kampoplægget kan du godkende det og få gemt kampplanen som turneringens officielle
+                  kampprogram.
+    PLANNOTREADY:
+      TITLE: Kampoplæg er ikke klar endnu
+      DESCRIPTION: Indlæs kampplan eller lad systemet planlægge et kampprogram. Du kan starte med at planlægge puljerne. Når det er på plads er du klar til at planlægge kampe.
+    NEEDTOPLAN:
+      TITLE: Planlæg kampprogram
+      DESCRIPTION: >
+                  Planlægning af et kampprogram kan ske ved at indlæse en færdig kampplan eller lade systemet planlægge
+                  kampprogrammet. Men først skal du have styr på puljerne. Hvilke hold skal spille mod hinanden og hvor mange
+                  hold skal der være i hver pulje. Du skal også tage stilling til på hvilke tidspunkter der kan spilles
+                  på turneringens baner. Når det er på plads er du klar til at planlægge kampe.
     DOUBLEMATCH:
       PROMPT: Planlæg med returkampe
       HELP: Hvis der spilles med returkampe kommer hvert hold til at spille to gange mod samme modstander
@@ -357,8 +374,24 @@ FORM:
     TEAMS: Hold
     MATCHES: Kampe
     NOTEAMS: Ingen hold
-    DOWNLOAD: Hent kampplan som tekstfil
-    SAVE: Godkend og gem kampplan
+    DOWNLOAD:
+      TITLE: Hent kampplan
+      DESCRIPTION: Hent planen til din pc og gem den som en tekstfil. Hvis du foretager ændringer i tekstfilen kan du indlæse den som en ny plan.
+    PLAN:
+      TITLE: Planlæg kampplan
+      DESCRIPTION: Gennemfør automatisk planlægning med udgangspunkt i de grupper du har valgt. Baner og perioder skal være veldefinerede.
+    RESET:
+      TITLE: Kasser kampplan
+      DESCRIPTION: Kasser det aktuelle kampoplæg og gør plads til et nyt.
+    SAVE:
+      TITLE: Godkend kampplan
+      DESCRIPTION: Accepter det aktuelle kampoplæg og gem kampplanen som turneringens officielle kampprogam.
+    MATCHIMPORT:
+      TITLE: Indlæs kampplan
+      DESCRIPTION: Indlæs kampoplæg fra fil. Kampoplægget kan efterfølgende accepteres som turneringens officielle kampprogam.
+      FILE: Angiv navn på tekstfil der ønskes indlæst:
+      UPLOAD: Indlæs
+      BROWSE: Find fil
     OPTIONS: Indstillinger
     GROUPS: Planlæg puljer
     VIEW: Kampoplæg
@@ -380,6 +413,7 @@ FORM:
         MATCHNO: Et officielt kampnr. som det fremgår af programmet
         DATE: En dato hvor der er planlagt kampe for denne turnering
     DEFAULT: Vælg...
+    TIMEUSED: Oversigt af ledig tid
     SEARCH: Søg kamp
     ADD: Ny kamp
     CHG: Tilpas kamp
@@ -389,7 +423,7 @@ FORM:
     MATCHFOUND: Følgende kamp passer til det søgte.
     MATCHESFOUND: Følgende kampe passer til det søgte.
     INFO: <h4>Søg kamp</h4><p>Søg en kamp på kampnr. eller søg blandt alle kampe der spilles på en given dag, pulje og/eller bane. Du kan angive de oplysninger du har og vælge en kamp fra listen af kampe der passer til din søgning. For at angive en pulje skal du have valgt en gruppe først. Det er ikke muligt at søge på gruppe alene. Klik på en kamp når du har fundet den du søger.</p>
-    SUBMIT: Planlæg kampe
+    SUBMIT: Gem indstillinger
     CANCEL: Fortryd
   QMATCHPLANNING:
     TITLE: Vedligehold turnering

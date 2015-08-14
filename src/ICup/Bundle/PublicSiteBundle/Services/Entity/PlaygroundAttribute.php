@@ -15,6 +15,12 @@ class PlaygroundAttribute
     private $id;
 
     /**
+     * @var integer $pa
+     * Master for this attribute
+     */
+    private $pa;
+
+    /**
      * @var integer $pid
      * Relation to Playground - pid=playground.id
      */
@@ -67,6 +73,29 @@ class PlaygroundAttribute
     public function getId()
     {
         return $this->id;
+    }
+
+    /**
+     * Set id
+     *
+     * @param integer $id
+     * @return PlaygroundAttribute
+     */
+    public function setPA($pa)
+    {
+        $this->pa = $pa;
+
+        return $this;
+    }
+
+    /**
+     * Get id
+     *
+     * @return integer
+     */
+    public function getPA()
+    {
+        return $this->pa;
     }
 
     /**

@@ -3,6 +3,7 @@
 namespace ICup\Bundle\PublicSiteBundle\Entity\Doctrine;
 
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Intl\Exception\MethodNotImplementedException;
 
 /**
  * ICup\Bundle\PublicSiteBundle\Entity\Doctrine\QMatchRelation
@@ -22,11 +23,12 @@ class QMatchRelation
     private $id;
 
     /**
-     * @var integer $pid
-     * Relation to Match - pid=match.id 
-     * @ORM\Column(name="pid", type="integer", nullable=false)
+     * @var Match $match
+     * Relation to Match
+     * @ORM\ManyToOne(targetEntity="Match", inversedBy="id", cascade={"persist", "remove"})
+     * @ORM\JoinColumn(name="pid", referencedColumnName="id", onDelete="CASCADE")
      */
-    private $pid;
+    private $match;
 
     /**
      * @var integer $cid
@@ -60,33 +62,49 @@ class QMatchRelation
     }
 
     /**
-     * Set parent id - related match
+     * Set parent id
      *
      * @param integer $pid
-     * @return MatchRelation
+     * @return QMatchRelation
+     * @deprecated
      */
     public function setPid($pid)
     {
-        $this->pid = $pid;
-    
+        throw new MethodNotImplementedException();
+    }
+
+    /**
+     * Get parent id
+     *
+     * @return integer
+     * @deprecated
+     */
+    public function getPid()
+    {
+        return $this->match->getId();
+    }
+
+    /**
+     * @param Match $match
+     * @return QMatchRelation
+     */
+    public function setMatch(Match $match) {
+        $this->match = $match;
         return $this;
     }
 
     /**
-     * Get parent id - related match
-     *
-     * @return integer 
+     * @return Match
      */
-    public function getPid()
-    {
-        return $this->pid;
+    public function getMatch() {
+        return $this->match;
     }
 
     /**
      * Set child id - related team
      *
      * @param integer $cid
-     * @return MatchRelation
+     * @return QMatchRelation
      */
     public function setCid($cid)
     {
@@ -109,7 +127,7 @@ class QMatchRelation
      * Set rank
      *
      * @param integer $rank
-     * @return MatchRelation
+     * @return QMatchRelation
      */
     public function setRank($rank)
     {
@@ -132,7 +150,7 @@ class QMatchRelation
      * Set awayteam
      *
      * @param boolean $away
-     * @return MatchRelation
+     * @return QMatchRelation
      */
     public function setAwayteam($away)
     {

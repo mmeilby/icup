@@ -1,6 +1,5 @@
 To Do List
 ----------
-Overfør hold til en anden klub (indsæt nyt hold på samme plads i pulje)
 Planlæg slutrunde kampe og puljer
 Færdiggørelse af planlæg indledende kampe
 Administrer kobling mellem nyheder og hold/kampe
@@ -11,6 +10,7 @@ IDEER
 Fix - forside ændres så højrebar forbliver på inaktiv side (men i et andet format)
 Dommerpåsætning - dommernationaltet skal sikre at man ikke dømmer for eget land
 Genåbn konto som turneringsansvarlig
+Overfør hold til en anden klub (indsæt nyt hold på samme plads i pulje)
 
 Done List
 ---------

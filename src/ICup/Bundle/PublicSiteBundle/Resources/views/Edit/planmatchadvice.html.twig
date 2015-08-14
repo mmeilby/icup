@@ -20,7 +20,7 @@
     </p>
     <ul class="nav nav-tabs" role="tablist">
         <li>
-            <a href="{{ path('_edit_match_planning', { 'tournamentid': tournament.id }) }}">
+            <a href="{{ path('_edit_match_planning_options', { 'tournamentid': tournament.id }) }}">
                 <span class="fa fa-toggle-on"></span>&nbsp;{% trans %}FORM.MATCHPLANNING.OPTIONS{% endtrans %}
             </a>
         </li>
@@ -31,12 +31,12 @@
         </li>
         <li>
             <a href="{{ path('_edit_match_planning_result', { 'tournamentid': tournament.id }) }}">
-                <span class="fa fa-bullseye"></span>&nbsp;{% trans %}FORM.MATCHPLANNING.RESULT{% endtrans %}
+                <span class="fa fa-puzzle-piece"></span>&nbsp;{% trans %}FORM.MATCHPLANNING.RESULT{% endtrans %}
             </a>
         </li>
         <li>
             <a href="{{ path('_edit_match_planning_view', { 'tournamentid': tournament.id }) }}">
-                <span class="fa fa-calendar"></span>&nbsp;{% trans %}FORM.MATCHPLANNING.VIEW{% endtrans %}
+                <span class="fa fa-calendar-check-o"></span>&nbsp;{% trans %}FORM.MATCHPLANNING.VIEW{% endtrans %}
             </a>
         </li>
         <li class="active">
@@ -50,6 +50,44 @@
             </a>
         </li>
     </ul>
+    <h3>{% trans %}FORM.MATCHPLANNING.TIMEUSED{% endtrans %}</h3>
+    <table class="table table-striped">
+        <thead>
+        <tr>
+            <td>{% trans %}FORM.MATCHPLANNING.PLAYGROUND{% endtrans %}</td>
+            <td>{% trans %}FORM.MATCHPLANNING.TIMESLOT{% endtrans %}</td>
+            <td class="text-left">{% trans %}FORM.MATCHPLANNING.PATTRS{% endtrans %}</td>
+            <td class="text-right">{% trans %}FORM.MATCHPLANNING.TIMELEFT{% endtrans %}</td>
+        </tr>
+        </thead>
+        <tbody>
+        {% for tsset in available_timeslots %}
+            <tr><td class="bg-warning" colspan="4">
+                    {{ 'FORMAT.LONGDATE'|transchoice(tsset[0].schedule|date('j'), {
+                        '%week%': ['WEEK.',tsset[0].schedule|date('D')|upper]|join|trans([],'messages')|capitalize,
+                        '%day%': tsset[0].schedule|date('j'),
+                        '%month%': ['MONTH.',tsset[0].schedule|date('M')|upper]|join|trans([],'messages'),
+                        '%year%': tsset[0].schedule|date('Y')}, 'messages') }}
+                </td></tr>
+            {% for timeslot in tsset %}
+                <tr>
+                    <td>{{ timeslot.playground.name }}</td>
+                    <td>{{ timeslot.timeslot.name }}</td>
+                    <td>
+                        <a href="{{ path('_edit_list_parel', { 'playgroundattributeid': timeslot.id }) }}">
+                            {% if timeslot.categories|length > 0 %}
+                                {{ timeslot.categories|join(',') }}
+                            {% else %}
+                                <span class="fa fa-cogs"></span>
+                            {% endif %}
+                        </a>
+                    </td>
+                    <td class="text-right">{{ timeslot.timeleft }}</td>
+                </tr>
+            {% endfor %}
+        {% endfor %}
+        </tbody>
+    </table>
     <p>&nbsp;</p>
     <div class="list-group">
 {% for matchset in advices %}

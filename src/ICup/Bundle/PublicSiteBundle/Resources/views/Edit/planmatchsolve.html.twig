@@ -20,7 +20,7 @@
     </p>
     <ul class="nav nav-tabs" role="tablist">
         <li>
-            <a href="{{ path('_edit_match_planning', { 'tournamentid': tournament.id }) }}">
+            <a href="{{ path('_edit_match_planning_options', { 'tournamentid': tournament.id }) }}">
                 <span class="fa fa-toggle-on"></span>&nbsp;{% trans %}FORM.MATCHPLANNING.OPTIONS{% endtrans %}
             </a>
         </li>
@@ -31,12 +31,12 @@
         </li>
         <li>
             <a href="{{ path('_edit_match_planning_result', { 'tournamentid': tournament.id }) }}">
-                <span class="fa fa-bullseye"></span>&nbsp;{% trans %}FORM.MATCHPLANNING.RESULT{% endtrans %}
+                <span class="fa fa-puzzle-piece"></span>&nbsp;{% trans %}FORM.MATCHPLANNING.RESULT{% endtrans %}
             </a>
         </li>
         <li>
             <a href="{{ path('_edit_match_planning_view', { 'tournamentid': tournament.id }) }}">
-                <span class="fa fa-calendar"></span>&nbsp;{% trans %}FORM.MATCHPLANNING.VIEW{% endtrans %}
+                <span class="fa fa-calendar-check-o"></span>&nbsp;{% trans %}FORM.MATCHPLANNING.VIEW{% endtrans %}
             </a>
         </li>
         <li class="active">

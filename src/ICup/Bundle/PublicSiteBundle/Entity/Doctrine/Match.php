@@ -2,8 +2,9 @@
 
 namespace ICup\Bundle\PublicSiteBundle\Entity\Doctrine;
 
+use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\ORM\Mapping as ORM;
-use DateTime;
+use Symfony\Component\Intl\Exception\MethodNotImplementedException;
 
 /**
  * ICup\Bundle\PublicSiteBundle\Entity\Doctrine\Match
@@ -23,11 +24,12 @@ class Match
     private $id;
 
     /**
-     * @var integer $pid
-     * Relation to group - pid=group.id
-     * @ORM\Column(name="pid", type="integer", nullable=false)
+     * @var Group $group
+     * Relation to Group
+     * @ORM\ManyToOne(targetEntity="Group", inversedBy="id")
+     * @ORM\JoinColumn(name="pid", referencedColumnName="id")
      */
-    private $pid;
+    private $group;
 
     /**
      * @var integer $playground
@@ -35,7 +37,21 @@ class Match
      * @ORM\Column(name="playground", type="integer", nullable=false)
      */
     private $playground;
-    
+
+    /**
+     * @var ArrayCollection $matchRelation
+     * Collection of match relations to teams
+     * @ORM\OneToMany(targetEntity="MatchRelation", mappedBy="match", cascade={"persist", "remove"})
+     */
+    private $matchRelation;
+
+    /**
+     * @var ArrayCollection $qmatchRelation
+     * Collection of match relations to qualifying prerequisites
+     * @ORM\OneToMany(targetEntity="QMatchRelation", mappedBy="match", cascade={"persist", "remove"})
+     */
+    private $qmatchRelation;
+
     /**
      * @var string $time
      * Match start time - Hi
@@ -57,7 +73,13 @@ class Match
      */
     private $matchno;
 
-
+    /**
+     * Match constructor.
+     */
+    public function __construct() {
+        $this->matchRelation = new ArrayCollection();
+        $this->qmatchRelation = new ArrayCollection();
+    }
 
     /**
      * Get id
@@ -74,22 +96,36 @@ class Match
      *
      * @param integer $pid
      * @return Match
+     * @deprecated
      */
     public function setPid($pid)
     {
-        $this->pid = $pid;
-    
-        return $this;
+        throw new MethodNotImplementedException();
     }
 
     /**
      * Get parent id - related group
      *
-     * @return integer 
+     * @return integer
+     * @deprecated
      */
     public function getPid()
     {
-        return $this->pid;
+        return $this->group->getId();
+    }
+
+    /**
+     * @param Group $group
+     */
+    public function setGroup(Group $group) {
+        $this->group = $group;
+    }
+
+    /**
+     * @return Group
+     */
+    public function getGroup() {
+        return $this->group;
     }
 
     /**
@@ -113,6 +149,35 @@ class Match
     public function getPlayground()
     {
         return $this->playground;
+    }
+
+    /**
+     * @return ArrayCollection
+     */
+    public function getMatchRelations() {
+        return $this->matchRelation;
+    }
+
+    /**
+     * @return ArrayCollection
+     */
+    public function getQMatchRelations() {
+        return $this->qmatchRelation;
+    }
+
+    /**
+     * @param MatchRelation|QMatchRelation $matchRelation
+     * @return Match
+     */
+    public function addMatchRelation($matchRelation) {
+        if ($matchRelation instanceof MatchRelation) {
+            $this->matchRelation->add($matchRelation);
+        }
+        else {
+            $this->qmatchRelation->add($matchRelation);
+        }
+        $matchRelation->setMatch($this);
+        return $this;
     }
 
     /**
@@ -182,5 +247,9 @@ class Match
     public function getMatchno()
     {
         return $this->matchno;
+    }
+
+    public function getSchedule() {
+        return Date::getDateTime($this->date, $this->time);
     }
 }

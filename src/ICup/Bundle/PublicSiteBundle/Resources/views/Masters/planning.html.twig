@@ -18,7 +18,7 @@
     </thead>
     <tbody>
 {% for matchset in matchlist %}
-        <tr><td class="bg-warning" colspan="3">
+        <tr><td class="bg-warning" colspan="2">
             {{ 'FORMAT.LONGDATE'|transchoice(matchset[0].schedule|date('j'), {
                     '%week%': ['WEEK.',matchset[0].schedule|date('D')|upper]|join|trans([],'messages')|capitalize,
                     '%day%': matchset[0].schedule|date('j'),
@@ -31,7 +31,10 @@
                 {{ match.schedule|date('FORMAT.TIME'|trans([],'messages')) }}<br />
                 <a href="{{ path('_showplayground_full', { 'playgroundid': match.playground.id }) }}" title="{{ match.playground.name }}">{{ match.playground.no }}</a>
             </td>
-            <td>{{ context.formatter.clubxs(match.teamA, match.teamB, match.group.id, context) }}</td>
+            <td>
+                {{ context.formatter.displaymatchrelation(match.teamA, context) }}<br />
+                {{ context.formatter.displaymatchrelation(match.teamB, context) }}
+            </td>
         </tr>
     {% endfor %}
 {% endfor %}
@@ -52,9 +55,7 @@
             </td>
             <td class="narrow-col">{% trans from "tournament" %}LEGEND.CATEGORY{% endtrans %}<br />
                                    {% trans from "tournament" %}LEGEND.GROUP{% endtrans %}</td>
-            <td class="flag"></td>
             <td>{% trans from "tournament" %}LEGEND.HOMETEAM{% endtrans %}</td>
-            <td class="flag"></td>
             <td>{% trans from "tournament" %}LEGEND.AWAYTEAM{% endtrans %}</td>
         </tr>
     </thead>
@@ -83,8 +84,8 @@
                                 match.category.classification]|join|transchoice(match.category.age, { '%age%': match.category.age },'tournament') }}">
                                 {{ match.category.name }}</a><br />
                 {{ match.group.name }}</td>
-            {{ context.formatter.club(match.teamA, match.group.id, context) }}
-            {{ context.formatter.club(match.teamB, match.group.id, context) }}
+            <td>{{ context.formatter.displaymatchrelation(match.teamA, context) }}</td>
+            <td>{{ context.formatter.displaymatchrelation(match.teamB, context) }}</td>
         </tr>
         {% endfor %}
     {% endfor %}

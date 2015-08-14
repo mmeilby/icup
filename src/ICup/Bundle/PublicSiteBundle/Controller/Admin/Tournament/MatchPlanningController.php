@@ -1,14 +1,20 @@
 <?php
 namespace ICup\Bundle\PublicSiteBundle\Controller\Admin\Tournament;
 
+use Doctrine\Common\Collections\ArrayCollection;
 use ICup\Bundle\PublicSiteBundle\Entity\Doctrine\Category;
 use ICup\Bundle\PublicSiteBundle\Entity\Doctrine\Date;
 use ICup\Bundle\PublicSiteBundle\Entity\Doctrine\Group;
 use ICup\Bundle\PublicSiteBundle\Entity\Doctrine\Match;
 use ICup\Bundle\PublicSiteBundle\Entity\Doctrine\MatchRelation;
 use ICup\Bundle\PublicSiteBundle\Entity\Doctrine\MatchSchedule;
+use ICup\Bundle\PublicSiteBundle\Entity\Doctrine\MatchScheduleRelation;
 use ICup\Bundle\PublicSiteBundle\Entity\Doctrine\PlaygroundAttribute;
+use ICup\Bundle\PublicSiteBundle\Entity\Doctrine\QMatchScheduleRelation;
 use ICup\Bundle\PublicSiteBundle\Entity\Doctrine\Tournament;
+use ICup\Bundle\PublicSiteBundle\Entity\TeamInfo;
+use ICup\Bundle\PublicSiteBundle\Services\Doctrine\MatchSupport;
+use ICup\Bundle\PublicSiteBundle\Services\Doctrine\TournamentSupport;
 use ICup\Bundle\PublicSiteBundle\Entity\MatchSearchForm;
 use ICup\Bundle\PublicSiteBundle\Entity\ResultForm;
 use ICup\Bundle\PublicSiteBundle\Exceptions\ValidationException;
@@ -19,37 +25,44 @@ use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
+use Symfony\Component\Form\FormError;
 use Symfony\Component\HttpFoundation\BinaryFileResponse;
+use Symfony\Component\HttpFoundation\File\UploadedFile;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\ResponseHeaderBag;
+use SplFileObject;
+use DateTime;
 
 class MatchPlanningController extends Controller
 {
     /**
-     * List the latest matches for a tournament
-     * @Route("/edit/m/plan/{tournamentid}", name="_edit_match_planning")
+     * Configure options for match planning
+     * @Route("/edit/m/options/plan/{tournamentid}", name="_edit_match_planning_options")
      * @Template("ICupPublicSiteBundle:Edit:planoptions.html.twig")
      */
-    public function planMatchesAction($tournamentid, Request $request) {
+    public function configureOptionsAction($tournamentid, Request $request) {
         $tournament = $this->checkArgs($tournamentid);
         $returnUrl = $this->get('util')->getReferer();
 
-        $form = $this->makePlanForm();
+        $form = $this->makePlanForm($tournament);
         $form->handleRequest($request);
-        if ($form->get('cancel')->isClicked()) {
-            return $this->redirect($returnUrl);
-        }
         if ($form->isValid()) {
+            /* @var $options PlanningOptions */
             $options = $form->getData();
-            $this->get('planning')->planTournament($tournament->getId(), $options);
+            $tournament->getOption()->setDrr($options->isDoublematch());
+            $em = $this->getDoctrine()->getManager();
+            $em->flush();
+            $request->getSession()->set('planning.options', $options);
             return $this->redirect($this->generateUrl("_edit_match_planning_result", array('tournamentid' => $tournament->getId())));
         }
         $host = $this->get('entity')->getHostById($tournament->getPid());
         return array('form' => $form->createView(), 'host' => $host, 'tournament' => $tournament);
     }
     
-    private function makePlanForm() {
-        $formDef = $this->createFormBuilder(new PlanningOptions());
+    private function makePlanForm(Tournament $tournament) {
+        $options = new PlanningOptions();
+        $options->setDoublematch($tournament->getOption()->isDrr());
+        $formDef = $this->createFormBuilder($options);
         $formDef->add('doublematch',
                       'checkbox', array('label' => 'FORM.MATCHPLANNING.DOUBLEMATCH.PROMPT',
                                         'help' => 'FORM.MATCHPLANNING.DOUBLEMATCH.HELP',
@@ -62,16 +75,6 @@ class MatchPlanningController extends Controller
                                         'required' => false,
                                         'disabled' => false,
                                         'translation_domain' => 'admin'));
-        $formDef->add('finals',
-                      'checkbox', array('label' => 'FORM.MATCHPLANNING.FINALS.PROMPT',
-                                        'help' => 'FORM.MATCHPLANNING.FINALS.HELP',
-                                        'required' => false,
-                                        'disabled' => false,
-                                        'translation_domain' => 'admin'));
-        $formDef->add('cancel', 'submit', array('label' => 'FORM.MATCHPLANNING.CANCEL',
-                                                'translation_domain' => 'admin',
-                                                'buttontype' => 'btn btn-default',
-                                                'icon' => 'fa fa-times'));
         $formDef->add('save', 'submit', array('label' => 'FORM.MATCHPLANNING.SUBMIT',
                                                 'translation_domain' => 'admin',
                                                 'icon' => 'fa fa-check'));
@@ -99,6 +102,9 @@ class MatchPlanningController extends Controller
                 $categoryList[$category->getId()]['group'][] = array('obj' => $group, 'cnt' => $teams);
             }
         }
+        uasort($categoryList, function ($cat1, $cat2) {
+            return count($cat1['group']) < count($cat2['group']) ? 1 : (count($cat1['group']) == count($cat2['group']) ? 0 : -1);
+        });
 
         return array('host' => $host,
                      'tournament' => $tournament,
@@ -106,31 +112,238 @@ class MatchPlanningController extends Controller
     }
 
     /**
-     * List the latest matches for a tournament
+     * Show planning results overview
      * @Route("/edit/m/result/plan/{tournamentid}", name="_edit_match_planning_result")
      * @Template("ICupPublicSiteBundle:Edit:planmatch.html.twig")
      */
-    public function resultMatchesAction($tournamentid) {
+    public function resultMatchesAction($tournamentid, Request $request) {
         $tournament = $this->checkArgs($tournamentid);
+        $form = $this->createFormBuilder(array('file' => null))
+                            ->add('file', 'file', array(
+                                                    'label' => 'FORM.MATCHPLANNING.MATCHIMPORT.FILE',
+                                                    'required' => false,
+                                                    'disabled' => false,
+                                                    'translation_domain' => 'admin'))
+                            ->getForm();
+        $form->handleRequest($request);
+        if ($form->isValid()) {
+            /* @var $uploadedFile UploadedFile */
+            $uploadedFile = $request->files->get('form');
+            try {
+                $matchListRaw = $this->import($uploadedFile['file']);
+                $matchList = $this->validateData($tournament, $matchListRaw);
+                $this->commitImport($tournament, $matchList);
+            } catch (ValidationException $exc) {
+                $form->addError(new FormError($this->get('translator')->trans('FORM.ERROR.'.$exc->getMessage(), array(), 'admin')." [".$exc->getDebugInfo()."]"));
+            }
+        }
         $result = $this->get('planning')->getSchedule($tournamentid);
-
-        $matches = array();
-        /* @var $match MatchPlan */
-        foreach ($result['matches'] as $match) {
-            $matches[$match->getDate()][] = $match;
-        }
-
-        $timeslots = array();
-        foreach ($result['timeslots'] as $ts) {
-            $timeslots[date_format($ts->getSchedule(), "Y/m/d")][] = $ts;
-        }
-
-        $unassigned_by_category = $result['unassigned_by_category'];
         $host = $this->get('entity')->getHostById($tournament->getPid());
         return array('host' => $host,
                      'tournament' => $tournament,
-                     'unassigned' => $unassigned_by_category,
-                     'available_timeslots' => $timeslots);
+                     'unassigned' => $result['unassigned_by_category'],
+                     'planned' => count($result['matches']) > 0,
+                     'upload_form' => $form->createView());
+    }
+
+    /**
+     * Import match plan from text file
+     * @param Tournament $tournament Import related to tournament
+     * @param String $date Date of match
+     * @param String $importStr Match plan - must follow this syntax:
+     *                          - Match no
+     *                          - Match date (local format - j-m-Y)
+     *                          - Match time (local format - G.i)
+     *                          - Category name
+     *                          - Group name
+     *                          - Playground no
+     *                          - Home team
+     *                                  team name 'division' (country)
+     *                                  rank group name
+     *                          - Away team
+     *                                  team name 'division' (country)
+     *                                  rank group name
+     *
+     * Examples:    385;10-7-2015;13.00;C;(A);7;1 A;2 B
+     *              212;5-7-2015;9.15;C;A;7;AETNA MASCALUCIA (ITA);TVIS KFUM 'A' (DNK)
+     *
+     * Country is only used if team name is ambigious - however syntax must be maintained.
+     * Division can be ommitted.
+     */
+    public function import(UploadedFile $uploadedFile) {
+        $keys = array("matchno","date","time","category","group","playground","teamA","teamB");
+        $matches = array();
+        if ($uploadedFile->isValid() && $uploadedFile->isFile()) {
+            /* @var $file SplFileObject */
+            $file = $uploadedFile->openFile();
+            while (!$file->eof()) {
+                $csv = $file->fgetcsv(";");
+                $match = array();
+                foreach ($csv as $idx => $data) {
+                    if ($data) {
+                        if (array_key_exists($idx, $keys)) {
+                            if ($keys[$idx] == 'teamA' || $keys[$idx] == 'teamB') {
+                                $match[$keys[$idx]] = $this->parseImportTeam($data);
+                            }
+                            else {
+                                $match[$keys[$idx]] = $data;
+                            }
+                        }
+                        else {
+                            $match[] = $data;
+                        }
+                    }
+                }
+                if (count($match) > 0) {
+                    $matches[] = $match;
+                }
+            }
+        }
+        return $matches;
+    }
+
+    private function parseImportTeam($token) {
+        if (preg_match('/#(?<rank>\d+) (?<group>\w+)/', $token, $args)) {}
+        elseif (preg_match('/(?<name>[^\'\(]+) \'(?<division>\w+)\' \((?<country>\w+)\)/', $token, $args)) {}
+        elseif (preg_match('/(?<name>[^\'\(]+) \((?<country>\w+)\)/', $token, $args)) {}
+        else {
+            $args = array('name' => $token);
+        }
+        return $args;
+    }
+
+    private function validateData(Tournament $tournament, $matchListRaw) {
+        $matchList = array();
+        foreach ($matchListRaw as $matchRaw) {
+            $playground = $this->get('logic')->getPlaygroundByNo($tournament->getId(), $matchRaw['playground']);
+            if ($playground == null) {
+                throw new ValidationException("BADPLAYGROUND", "tournament=".$tournament->getId()." no=".$matchRaw['playground']);
+            }
+            $group = $this->get('logic')->getGroupByCategory($tournament->getId(), $matchRaw['category'], $matchRaw['group']);
+            if ($group == null) {
+                throw new ValidationException("BADGROUP", "tournament=".$tournament->getId()." category=".$matchRaw['category']." group=".$matchRaw['group']);
+            }
+            $matchdate = date_create_from_format($this->get('translator')->trans('FORMAT.DATE'), $matchRaw['date']);
+            $matchtime = date_create_from_format($this->get('translator')->trans('FORMAT.TIME'), $matchRaw['time']);
+            if ($matchdate === false || $matchtime === false) {
+                throw new ValidationException("BADDATE", "date=".$matchRaw['date']." time=".$matchRaw['time']);
+            }
+            $date = Date::getDate($matchdate);
+            $time = Date::getTime($matchtime);
+            $paList = $this->get('logic')->listPlaygroundAttributes($playground->getId());
+            $pattr = null;
+            foreach ($paList as $pa) {
+                if ($pa->getDate() == $date && $pa->getStart() <= $time && $pa->getEnd() >= $time) {
+                    $pattr = $pa;
+                    break;
+                }
+            }
+            if (!$pattr) {
+                throw new ValidationException("BADDATE", "No playground attribute for date=".$matchRaw['date']);
+            }
+            $teamA = $this->getTeam($group->getId(), $matchRaw['teamA']);
+            $teamB = $this->getTeam($group->getId(), $matchRaw['teamB']);
+            $match = array(
+                'matchno' => $matchRaw['matchno'],
+                'date' => $date,
+                'time' => $time,
+                'pa' => $pattr,
+                'category' => $matchRaw['category'],
+                'group' => $group,
+                'playground' => $playground,
+                'teamA' => $teamA,
+                'teamB' => $teamB
+            );
+            $matchList[] = $match;
+        }
+        return $matchList;
+    }
+
+    private function getTeam($groupid, $teamRaw) {
+        if (isset($teamRaw['rank'])) {
+            $rankingGroup = $this->get('logic')->getGroup($groupid, $teamRaw['group']);
+            if ($rankingGroup == null) {
+                throw new ValidationException("BADGROUP", "group=".$teamRaw['group']);
+            }
+            if (!is_numeric($teamRaw['rank']) || $teamRaw['rank'] < 1) {
+                throw new ValidationException("BADRANK", "rank=".$teamRaw['rank']);
+            }
+            $relation = new QMatchScheduleRelation();
+            $relation->setRank($teamRaw['rank']);
+            $relation->setGroup($rankingGroup);
+        }
+        else {
+            $infoteam = null;
+            $teamList = $this->get('logic')->getTeamByGroup(
+                $groupid,
+                $teamRaw['name'],
+                isset($teamRaw['division']) ? $teamRaw['division'] : '');
+            if (count($teamList) == 1) {
+                $infoteam = $teamList[0];
+            }
+            foreach ($teamList as $team) {
+                if (isset($teamRaw['country']) && $team->country == $teamRaw['country']) {
+                    $infoteam = $team;
+                    break;
+                }
+            }
+            if (!$infoteam) {
+                throw new ValidationException("BADTEAM", "group=".$groupid." team=".$teamRaw['name'].
+                    (isset($teamRaw['division']) ? " '".$teamRaw['division']."'" : "").
+                    (isset($teamRaw['country']) ? " (".$teamRaw['country'].")" : ""));
+            }
+            $relation = new MatchScheduleRelation();
+            $relation->setTeam($this->get('entity')->getTeamById($infoteam->getId()));
+        }
+        return $relation;
+    }
+
+    private function commitImport(Tournament $tournament, $matchList) {
+        $em = $this->getDoctrine()->getManager();
+
+        foreach ($matchList as $match) {
+            $matchrec = new MatchSchedule();
+            $matchrec->setTournament($tournament);
+            $matchrec->setGroup($match['group']);
+            $matchrec->setMatchstart($match['time']);
+            $matchrec->setPlaygroundAttribute($match['pa']);
+            $hr = $match['teamA'];
+            $hr->setAwayteam(MatchSupport::$HOME);
+            $matchrec->addMatchRelation($hr);
+            $ar = $match['teamB'];
+            $ar->setAwayteam(MatchSupport::$AWAY);
+            $matchrec->addMatchRelation($ar);
+            $matchrec->setUnscheduled(false);
+            $matchrec->setFixed(true);
+            $em->persist($matchrec);
+        }
+        $em->flush();
+    }
+
+    /**
+     * Clear match plan and make space for new plans
+     * @Route("/edit/m/reset/plan/{tournamentid}", name="_edit_match_planning_reset")
+     * @Template("ICupPublicSiteBundle:Edit:planmatch.html.twig")
+     */
+    public function resetMatchesAction($tournamentid) {
+        $tournament = $this->checkArgs($tournamentid);
+        $this->get('logic')->removeMatchSchedules($tournamentid);
+        return $this->redirect($this->generateUrl("_edit_match_planning_result", array('tournamentid' => $tournament->getId())));
+    }
+
+    /**
+     * Plan matches according to assigned groups and match configuration
+     * @Route("/edit/m/plan/plan/{tournamentid}", name="_edit_match_planning_plan")
+     * @Template("ICupPublicSiteBundle:Edit:planmatch.html.twig")
+     */
+    public function planMatchesAction($tournamentid) {
+        $tournament = $this->checkArgs($tournamentid);
+        $options = new PlanningOptions();
+        $options->setDoublematch($tournament->getOption()->isDrr());
+        $options->setFinals(false);
+        $options->setPreferpg(false);
+        $this->get('planning')->planTournament($tournament->getId(), $options);
+        return $this->redirect($this->generateUrl("_edit_match_planning_result", array('tournamentid' => $tournament->getId())));
     }
 
     /**
@@ -146,39 +359,42 @@ class MatchPlanningController extends Controller
         if ($this->get('tmnt')->getTournamentStatus($tournamentid, new DateTime()) == TournamentSupport::$TMNT_ENROLL) {
             $this->get('tmnt')->wipeMatches($tournamentid);
 
-            $em = $this->getDoctrine()->getManager();
-            /* @var $match MatchPlan */
-            foreach ($result['matches'] as $match) {
-                $matchrec = new Match();
-                $matchrec->setMatchno($match->getMatchno());
-                $matchrec->setDate($match->getDate());
-                $matchrec->setTime($match->getTime());
-                $matchrec->setPid($match->getGroup()->getId());
-                $matchrec->setPlayground($match->getPlayground()->getId());
+            $em = $this->getDoctrine()->getEntityManager();
+            $em->beginTransaction();
+            try {
+                /* @var $match MatchPlan */
+                foreach ($result['matches'] as $match) {
+                    $matchrec = new Match();
+                    $matchrec->setMatchno($match->getMatchno());
+                    $matchrec->setDate($match->getDate());
+                    $matchrec->setTime($match->getTime());
+                    $matchrec->setGroup($match->getGroup());
+                    $matchrec->setPlayground($match->getPlayground()->getId());
 
-                $em->persist($matchrec);
+                    $resultreqA = new MatchRelation();
+                    $resultreqA->setCid($match->getTeamA()->getId());
+                    $resultreqA->setAwayteam(MatchSupport::$HOME);
+                    $resultreqA->setScorevalid(false);
+                    $resultreqA->setScore(0);
+                    $resultreqA->setPoints(0);
+                    $matchrec->addMatchRelation($resultreqA);
+
+                    $resultreqB = new MatchRelation();
+                    $resultreqB->setCid($match->getTeamB()->getId());
+                    $resultreqB->setAwayteam(MatchSupport::$AWAY);
+                    $resultreqB->setScorevalid(false);
+                    $resultreqB->setScore(0);
+                    $resultreqB->setPoints(0);
+                    $matchrec->addMatchRelation($resultreqB);
+
+                    $em->persist($matchrec);
+                }
                 $em->flush();
-
-                $resultreqA = new MatchRelation();
-                $resultreqA->setPid($matchrec->getId());
-                $resultreqA->setCid($match->getTeamA()->getId());
-                $resultreqA->setAwayteam(false);
-                $resultreqA->setScorevalid(false);
-                $resultreqA->setScore(0);
-                $resultreqA->setPoints(0);
-
-                $resultreqB = new MatchRelation();
-                $resultreqB->setPid($matchrec->getId());
-                $resultreqB->setCid($match->getTeamB()->getId());
-                $resultreqB->setAwayteam(true);
-                $resultreqB->setScorevalid(false);
-                $resultreqB->setScore(0);
-                $resultreqB->setPoints(0);
-
-                $em->persist($resultreqA);
-                $em->persist($resultreqB);
+                $em->commit();
+            } catch (Exception $e) {
+                $em->rollback();
+                throw $e;
             }
-            $em->flush();
 
             $request->getSession()->getFlashBag()->add(
                 'data_saved',
@@ -219,10 +435,16 @@ class MatchPlanningController extends Controller
         $tournament = $this->checkArgs($tournamentid);
         $result = $this->get('planning')->getSchedule($tournamentid);
 
+        $timeslots = array();
+        foreach ($result['timeslots'] as $ts) {
+            $timeslots[date_format($ts->getSchedule(), "Y/m/d")][] = $ts;
+        }
+
         $host = $this->get('entity')->getHostById($tournament->getPid());
         return array(
             'host' => $host,
             'tournament' => $tournament,
+            'available_timeslots' => $timeslots,
             'advices' => $result['advices']);
     }
 
@@ -361,7 +583,7 @@ class MatchPlanningController extends Controller
         $outputar[] = ";;;;;;;";
         $tid = array();
         foreach ($result['matches'] as $match) {
-            if (!array_key_exists($match->getTeamA()->getId(), $tid)) {
+            if (!isset($tid[$match->getTeamA()->getId()])) {
                 $outputstr = '"'.$match->getCategory()->getName().
                         '";"'.$match->getGroup()->getName().
                         '";"'.str_replace('"', "'", $match->getTeamA()->getName())." (".$match->getTeamA()->getCountry().")".'"';
@@ -373,6 +595,11 @@ class MatchPlanningController extends Controller
         return $outputar;
     }
 
+    /**
+     * Check tournament id and validate current user rights to change tournament
+     * @param $tournamentid
+     * @return Tournament
+     */
     private function checkArgs($tournamentid) {
         /* @var $utilService Util */
         $utilService = $this->get('util');

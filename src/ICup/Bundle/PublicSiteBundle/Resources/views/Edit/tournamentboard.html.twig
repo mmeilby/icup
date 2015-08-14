@@ -80,13 +80,9 @@
                             <h3 class="list-group-item-heading">{% trans %}FORM.TOURNAMENTBOARD.STATUS.CAPTION{% endtrans %}</h3>
                             <p class="list-group-item-text">{{ ['FORM.TOURNAMENTBOARD.STATUS.DESCRIPTION.',tstat]|join|trans }}</p>
                         </a>
-                        <a class="list-group-item" href="{{ path('_edit_match_planning', { 'tournamentid': tournament.id }) }}">
+                        <a class="list-group-item" href="{{ path('_edit_match_planning_result', { 'tournamentid': tournament.id }) }}">
                             <h3 class="list-group-item-heading">{% trans %}FORM.TOURNAMENTBOARD.PLANNING.CAPTION{% endtrans %}</h3>
                             <p class="list-group-item-text">{% trans %}FORM.TOURNAMENTBOARD.PLANNING.DESCRIPTION{% endtrans %}</p>
-                        </a>
-                        <a class="list-group-item" href="{{ path('_edit_import_match', { 'tournamentid': tournament.id }) }}">
-                            <h3 class="list-group-item-heading">{% trans %}FORM.TOURNAMENTBOARD.MATCHIMPORT.CAPTION{% endtrans %}</h3>
-                            <p class="list-group-item-text">{% trans %}FORM.TOURNAMENTBOARD.MATCHIMPORT.DESCRIPTION{% endtrans %}</p>
                         </a>
                         <a class="list-group-item" href="{{ path('_edit_import_qmatch', { 'tournamentid': tournament.id }) }}">
                             <h3 class="list-group-item-heading">{% trans %}FORM.TOURNAMENTBOARD.QMATCHIMPORT.CAPTION{% endtrans %}</h3>

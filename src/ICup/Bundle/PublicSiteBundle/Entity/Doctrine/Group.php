@@ -36,6 +36,14 @@ class Group implements JsonSerializable
     private $pid;
 
     /**
+     * @var Category $category
+     * Relation to Category
+     * @ORM\ManyToOne(targetEntity="Category", inversedBy="id")
+     * @ORM\JoinColumn(name="pid", referencedColumnName="id")
+     */
+    private $category;
+
+    /**
      * @var string $name
      *
      * @ORM\Column(name="name", type="string", length=50, nullable=false)
@@ -86,6 +94,20 @@ class Group implements JsonSerializable
     public function getPid()
     {
         return $this->pid;
+    }
+
+    /**
+     * @return Category
+     */
+    public function getCategory() {
+        return $this->category;
+    }
+
+    /**
+     * @param Category $category
+     */
+    public function setCategory($category) {
+        $this->category = $category;
     }
 
     /**

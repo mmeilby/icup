@@ -3,6 +3,7 @@
 namespace ICup\Bundle\PublicSiteBundle\Entity\Doctrine;
 
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Intl\Exception\MethodNotImplementedException;
 
 /**
  * ICup\Bundle\PublicSiteBundle\Entity\Doctrine\MatchRelation
@@ -22,11 +23,12 @@ class MatchRelation
     private $id;
 
     /**
-     * @var integer $pid
-     * Relation to Match - pid=match.id 
-     * @ORM\Column(name="pid", type="integer", nullable=false)
+     * @var Match $match
+     * Relation to Match
+     * @ORM\ManyToOne(targetEntity="Match", inversedBy="id", cascade={"persist", "remove"})
+     * @ORM\JoinColumn(name="pid", referencedColumnName="id", onDelete="CASCADE")
      */
-    private $pid;
+    private $match;
 
     /**
      * @var integer $cid
@@ -75,26 +77,42 @@ class MatchRelation
     }
 
     /**
-     * Set parent id - related match
+     * Set parent id
      *
      * @param integer $pid
      * @return MatchRelation
+     * @deprecated
      */
     public function setPid($pid)
     {
-        $this->pid = $pid;
-    
+        throw new MethodNotImplementedException();
+    }
+
+    /**
+     * Get parent id
+     *
+     * @return integer
+     * @deprecated
+     */
+    public function getPid()
+    {
+        return $this->match->getId();
+    }
+
+    /**
+     * @param Match $match
+     * @return MatchRelation
+     */
+    public function setMatch(Match $match) {
+        $this->match = $match;
         return $this;
     }
 
     /**
-     * Get parent id - related match
-     *
-     * @return integer 
+     * @return Match
      */
-    public function getPid()
-    {
-        return $this->pid;
+    public function getMatch() {
+        return $this->match;
     }
 
     /**

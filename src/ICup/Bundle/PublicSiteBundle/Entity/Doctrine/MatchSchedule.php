@@ -2,12 +2,13 @@
 
 namespace ICup\Bundle\PublicSiteBundle\Entity\Doctrine;
 
+use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\ORM\Mapping as ORM;
 
 /**
  * ICup\Bundle\PublicSiteBundle\Entity\Doctrine\MatchSchedule
  *
- * @ORM\Table(name="matchschedules",uniqueConstraints={@ORM\UniqueConstraint(name="IdxByMatch", columns={"pid", "paid", "matchstart", "id"})})
+ * @ORM\Table(name="matchschedules")
  * @ORM\Entity
  */
 class MatchSchedule
@@ -22,32 +23,42 @@ class MatchSchedule
     private $id;
 
     /**
-     * @var integer $pid
-     * Relation to Tournament - pid=tournament.id
-     * @ORM\Column(name="pid", type="integer", nullable=false)
+     * @var Tournament $tournament
+     * Relation to Tournament
+     * @ORM\ManyToOne(targetEntity="Tournament", inversedBy="id")
+     * @ORM\JoinColumn(name="pid", referencedColumnName="id")
      */
-    private $pid;
+    private $tournament;
 
     /**
-     * @var integer $paid
-     * Relation to PlaygroundAttribute - paid=pattr.id
-     * @ORM\Column(name="paid", type="integer", nullable=false)
+     * @var Group $group
+     * Relation to Group
+     * @ORM\ManyToOne(targetEntity="Group", inversedBy="id")
+     * @ORM\JoinColumn(name="gid", referencedColumnName="id")
      */
-    private $paid;
+    private $group;
 
     /**
-     * @var integer $thid
-     * Relation to home Team - thid=team.id
-     * @ORM\Column(name="thid", type="integer", nullable=false)
+     * @var PlaygroundAttribute $tournament
+     * Relation to PlaygroundAttribute
+     * @ORM\ManyToOne(targetEntity="PlaygroundAttribute", inversedBy="id")
+     * @ORM\JoinColumn(name="paid", referencedColumnName="id")
      */
-    private $thid;
+    private $playgroundAttribute;
 
     /**
-     * @var integer $taid
-     * Relation to away Team - taid=team.id
-     * @ORM\Column(name="taid", type="integer", nullable=false)
+     * @var ArrayCollection $matchRelation
+     * Collection of match relations to teams
+     * @ORM\OneToMany(targetEntity="MatchScheduleRelation", mappedBy="matchSchedule", cascade={"persist", "remove"})
      */
-    private $taid;
+    private $matchRelation;
+
+    /**
+     * @var ArrayCollection $qmatchRelation
+     * Collection of match relations to qualifying prerequisites
+     * @ORM\OneToMany(targetEntity="QMatchScheduleRelation", mappedBy="matchSchedule", cascade={"persist", "remove"})
+     */
+    private $qmatchRelation;
 
     /**
      * @var string $matchstart
@@ -58,17 +69,25 @@ class MatchSchedule
 
     /**
      * @var string $unscheduled
-     * Indicates this record has not yet been scheduled - Y=Yes, N=No
-     * @ORM\Column(name="unscheduled", type="string", length=1, nullable=false)
+     * Indicates this record has not yet been scheduled
+     * @ORM\Column(name="unscheduled", type="boolean", nullable=false)
      */
     private $unscheduled;
 
     /**
      * @var string $fixed
-     * Indicates this record holds a fixed schedule (not allowed to change) - Y=Yes, N=No
-     * @ORM\Column(name="fixed", type="string", length=1, nullable=false)
+     * Indicates this record holds a fixed schedule (not allowed to change)
+     * @ORM\Column(name="fixed", type="boolean", nullable=false)
      */
     private $fixed;
+
+    /**
+     * MatchSchedule constructor.
+     */
+    public function __construct() {
+        $this->matchRelation = new ArrayCollection();
+        $this->qmatchRelation = new ArrayCollection();
+    }
 
     /**
      * Get id
@@ -81,69 +100,73 @@ class MatchSchedule
     }
 
     /**
-     * Set parent id - related tournament
-     *
-     * @param integer $pid
+     * @return Tournament
+     */
+    public function getTournament() {
+        return $this->tournament;
+    }
+
+    /**
+     * @param Tournament $tournament
+     */
+    public function setTournament(Tournament $tournament) {
+        $this->tournament = $tournament;
+    }
+
+    /**
+     * @param Group $group
+     */
+    public function setGroup(Group $group) {
+        $this->group = $group;
+    }
+
+    /**
+     * @return Group
+     */
+    public function getGroup() {
+        return $this->group;
+    }
+
+    /**
+     * @return PlaygroundAttribute
+     */
+    public function getPlaygroundAttribute() {
+        return $this->playgroundAttribute;
+    }
+
+    /**
+     * @param PlaygroundAttribute $playgroundAttribute
+     */
+    public function setPlaygroundAttribute(PlaygroundAttribute $playgroundAttribute) {
+        $this->playgroundAttribute = $playgroundAttribute;
+    }
+
+    /**
+     * @return ArrayCollection
+     */
+    public function getMatchRelations() {
+        return $this->matchRelation;
+    }
+
+    /**
+     * @return ArrayCollection
+     */
+    public function getQMatchRelations() {
+        return $this->qmatchRelation;
+    }
+
+    /**
+     * @param MatchScheduleRelation|QMatchScheduleRelation $matchRelation
      * @return MatchSchedule
      */
-    public function setPid($pid)
-    {
-        $this->pid = $pid;
-
-        return $this;
-    }
-
-    /**
-     * Get parent id - related tournament
-     *
-     * @return integer 
-     */
-    public function getPid()
-    {
-        return $this->pid;
-    }
-
-    /**
-     * Get playground attribute id - related playground attribute
-     *
-     * @return int
-     */
-    public function getPaid()
-    {
-        return $this->paid;
-    }
-
-    /**
-     * Set playground attribute id - related playground attribute
-     *
-     * @param int $paid
-     * @return MatchSchedule
-     */
-    public function setPaid($paid)
-    {
-        $this->paid = $paid;
-        return $this;
-    }
-
-    /**
-     * Check if match schedule is fixed
-     *
-     * @return string
-     */
-    public function isFixed()
-    {
-        return $this->fixed == "Y";
-    }
-
-    /**
-     * Set the match schedule to be fixed
-     *
-     * @param string $fixed
-     * @return MatchSchedule
-     */
-    public function setFixed($fixed)
-    {
-        $this->fixed = $fixed ? "Y" : "N";
+    public function addMatchRelation($matchRelation) {
+        if ($matchRelation instanceof MatchScheduleRelation) {
+            $this->matchRelation->add($matchRelation);
+        }
+        else {
+            $this->qmatchRelation->add($matchRelation);
+        }
+        $matchRelation->setMatchSchedule($this);
         return $this;
     }
 
@@ -170,57 +193,13 @@ class MatchSchedule
     }
 
     /**
-     * Get home team
-     *
-     * @return int
-     */
-    public function getThid()
-    {
-        return $this->thid;
-    }
-
-    /**
-     * Set home team
-     *
-     * @param int $thid
-     * @return MatchSchedule
-     */
-    public function setThid($thid)
-    {
-        $this->thid = $thid;
-        return $this;
-    }
-
-    /**
-     * Get away team
-     *
-     * @return int
-     */
-    public function getTaid()
-    {
-        return $this->taid;
-    }
-
-    /**
-     * Set away team
-     *
-     * @param int $taid
-     * @return MatchSchedule
-     */
-    public function setTaid($taid)
-    {
-        $this->taid = $taid;
-        return $this;
-    }
-
-    /**
      * Get unscheduled state - true if this record is not yet scheduled
      *
      * @return string
      */
     public function isUnscheduled()
     {
-        return $this->unscheduled == 'Y';
+        return $this->unscheduled;
     }
 
     /**
@@ -231,7 +210,29 @@ class MatchSchedule
      */
     public function setUnscheduled($unscheduled)
     {
-        $this->unscheduled = $unscheduled ? "Y" : "N";
+        $this->unscheduled = $unscheduled;
+        return $this;
+    }
+
+    /**
+     * Check if match schedule is fixed
+     *
+     * @return string
+     */
+    public function isFixed()
+    {
+        return $this->fixed;
+    }
+
+    /**
+     * Set the match schedule to be fixed
+     *
+     * @param string $fixed
+     * @return MatchSchedule
+     */
+    public function setFixed($fixed)
+    {
+        $this->fixed = $fixed;
         return $this;
     }
 }

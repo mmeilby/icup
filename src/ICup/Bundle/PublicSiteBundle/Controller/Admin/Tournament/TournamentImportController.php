@@ -161,6 +161,7 @@ class TournamentImportController extends Controller
             $new_pattr->setDate($pattr->getDate());
             $new_pattr->setStart($pattr->getStart());
             $new_pattr->setEnd($pattr->getEnd());
+            $new_pattr->setFinals($pattr->getFinals());
             $em->persist($new_pattr);
             $em->flush();
             $parels = $this->get('logic')->listPARelations($pattr->getId());
@@ -168,8 +169,8 @@ class TournamentImportController extends Controller
                 $new_parel = new PARelation();
                 $new_parel->setPid($new_pattr->getId());
                 $new_parel->setCid($cconversion[$parel->getCid()]);
-                $new_parel->setMatchtime($parel->getMatchtime());
-                $new_parel->setFinals($parel->getFinals());
+//                $new_parel->setMatchtime($parel->getMatchtime());
+//                $new_parel->setFinals($parel->getFinals());
                 $em->persist($new_parel);
             }
             $em->flush();

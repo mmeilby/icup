@@ -12,7 +12,9 @@ use ICup\Bundle\PublicSiteBundle\Entity\Doctrine\Group;
 use ICup\Bundle\PublicSiteBundle\Entity\Doctrine\MatchAlternative;
 use ICup\Bundle\PublicSiteBundle\Entity\Doctrine\MatchRelation;
 use ICup\Bundle\PublicSiteBundle\Entity\Doctrine\MatchSchedule;
+use ICup\Bundle\PublicSiteBundle\Entity\Doctrine\MatchSchedulePlan;
 use ICup\Bundle\PublicSiteBundle\Entity\Doctrine\MatchScheduleRelation;
+use ICup\Bundle\PublicSiteBundle\Entity\Doctrine\MatchUnscheduled;
 use ICup\Bundle\PublicSiteBundle\Entity\Doctrine\QMatchScheduleRelation;
 use ICup\Bundle\PublicSiteBundle\Entity\Match;
 use ICup\Bundle\PublicSiteBundle\Entity\MatchPlan;
@@ -79,7 +81,6 @@ class MatchPlanning
                 $ms = new MatchSchedule();
                 $ms->setTournament($tournament);
                 $ms->setGroup($this->container->get('entity')->getGroupById($match->getTeamA()->getGroup()));
-                $ms->setPlaygroundAttribute($pa->getPA());
                 $hr = new MatchScheduleRelation();
                 $hr->setTeam($this->container->get('entity')->getTeamById($match->getTeamA()->getId()));
                 $hr->setAwayteam(false);
@@ -88,9 +89,11 @@ class MatchPlanning
                 $ar->setTeam($this->container->get('entity')->getTeamById($match->getTeamB()->getId()));
                 $ar->setAwayteam(true);
                 $ms->addMatchRelation($ar);
-                $ms->setMatchstart($match->getTime());
-                $ms->setUnscheduled(false);
-                $ms->setFixed($match->isFixed());
+                $mp = new MatchSchedulePlan();
+                $mp->setPlaygroundAttribute($pa->getPA());
+                $mp->setMatchstart($match->getTime());
+                $mp->setFixed($match->isFixed());
+                $ms->setPlan($mp);
                 $this->em->persist($ms);
             }
         }
@@ -100,7 +103,6 @@ class MatchPlanning
             $ms = new MatchSchedule();
             $ms->setTournament($tournament);
             $ms->setGroup($this->container->get('entity')->getGroupById($match->getTeamA()->getGroup()));
-            $ms->setPlaygroundAttribute(null);
             $hr = new MatchScheduleRelation();
             $hr->setTeam($this->container->get('entity')->getTeamById($match->getTeamA()->getId()));
             $hr->setAwayteam(false);
@@ -109,9 +111,6 @@ class MatchPlanning
             $ar->setTeam($this->container->get('entity')->getTeamById($match->getTeamB()->getId()));
             $ar->setAwayteam(true);
             $ms->addMatchRelation($ar);
-            $ms->setMatchstart('');
-            $ms->setUnscheduled(true);
-            $ms->setFixed($match->isFixed());
             $this->em->persist($ms);
             $this->em->flush();
 
@@ -199,17 +198,17 @@ class MatchPlanning
             $match->setGroup($ms->getGroup());
             $match->setCategory($match->getGroup()->getCategory());
             $match->setMatchno(0);
-            if (!$ms->isUnscheduled()) {
-                $match->setTime($ms->getMatchstart());
-                $match->setFixed($ms->isFixed());
+            if ($ms->getPlan()) {
+                $match->setTime($ms->getPlan()->getMatchstart());
+                $match->setFixed($ms->getPlan()->isFixed());
                 /* @var $pattr PlaygroundAttribute */
-                $pattr = $ms->getPlaygroundAttribute();
+                $pattr = $ms->getPlan()->getPlaygroundAttribute();
                 $match->setPlayground($playgrounds[$pattr->getPid()]);
                 $match->setDate($pattr->getDate());
-                if (!array_key_exists($ms->getPlaygroundAttribute()->getId(), $ts)) {
+                if (!isset($ts[$ms->getPlan()->getPlaygroundAttribute()->getId()])) {
                     $pa = new PA();
-                    $pa->setPA($ms->getPlaygroundAttribute());
-                    $pa->setId($ms->getPlaygroundAttribute()->getId());
+                    $pa->setPA($ms->getPlan()->getPlaygroundAttribute());
+                    $pa->setId($ms->getPlan()->getPlaygroundAttribute()->getId());
                     $pa->setPlayground($match->getPlayground());
                     $pa->setTimeslot($timeslots[$pattr->getTimeslot()]);
 
@@ -232,7 +231,7 @@ class MatchPlanning
                     $ts[$pa->getId()] = $pa;
                 }
                 else {
-                    $pa = $ts[$ms->getPlaygroundAttribute()->getId()];
+                    $pa = $ts[$ms->getPlan()->getPlaygroundAttribute()->getId()];
                     $ml = $pa->getMatchList();
                     $ml[] = $match;
                     $pa->setMatchlist($ml);
@@ -248,7 +247,7 @@ class MatchPlanning
                 $match->setDate('');
                 $match->setFixed(false);
                 $category = $match->getCategory();
-                if (array_key_exists($category->getId(), $catcnt)) {
+                if (isset($catcnt[$category->getId()])) {
                     $catcnt[$category->getId()]['matchcount']++;
                 } else {
                     $catcnt[$category->getId()] = array(
@@ -398,29 +397,29 @@ class MatchPlanning
         $pattrs = $this->logic->listPlaygroundAttributesByTournament($tournamentid);
         /* @var $pattr PlaygroundAttribute */
         foreach ($pattrs as $pattr) {
-            $pa = new PA();
-            $pa->setPA($pattr);
-            $pa->setId($pattr->getId());
-            $pa->setPlayground($playgrounds[$pattr->getPid()]);
-            $pa->setTimeslot($timeslots[$pattr->getTimeslot()]);
+            if ($pattr->getFinals() == $options->isFinals()) {
+                $pa = new PA();
+                $pa->setPA($pattr);
+                $pa->setId($pattr->getId());
+                $pa->setPlayground($playgrounds[$pattr->getPid()]);
+                $pa->setTimeslot($timeslots[$pattr->getTimeslot()]);
 
-            $slotschedule = $pattr->getStartSchedule();
-            $pa->setSchedule($slotschedule);
+                $slotschedule = $pattr->getStartSchedule();
+                $pa->setSchedule($slotschedule);
 
-            $slotend = $pattr->getEndSchedule();
-            $diff = $slotschedule->diff($slotend);
-            $slot_time_left = $diff->h*60 + $diff->i;
-            $pa->setTimeleft($slot_time_left);
-            
-            $parels = array();
-            foreach ($this->logic->listPARelations($pattr->getId()) as $parel) {
-                if ($parel->getFinals() == $options->isFinals()) {
+                $slotend = $pattr->getEndSchedule();
+                $diff = $slotschedule->diff($slotend);
+                $slot_time_left = $diff->h * 60 + $diff->i;
+                $pa->setTimeleft($slot_time_left);
+
+                $parels = array();
+                foreach ($this->logic->listPARelations($pattr->getId()) as $parel) {
                     $parels[$parel->getCid()] = $parel;
                 }
+                $pa->setCategories($parels);
+                $pa->setMatchlist(array());
+                $result->addTimeslot($pa);
             }
-            $pa->setCategories($parels);
-            $pa->setMatchlist(array());
-            $result->addTimeslot($pa);
         }
 
         foreach ($matchList as $match) {
@@ -459,16 +458,10 @@ class MatchPlanning
      */
     private function planMatch(PlanningResults $result, $match, $replan = false) {
         $result->mark();
+        $matchtime = $match->getCategory()->getMatchtime();
         while ($pa = $result->cycleTimeslot()) {
             $parels = $pa->getCategories();
-            if ($replan || array_key_exists($match->getCategory()->getId(), $parels)) {
-                if ($replan) {
-                    $matchtime = $match->getCategory()->getMatchtime();
-                }
-                else {
-                    $parel = $parels[$match->getCategory()->getId()];
-                    $matchtime = $parel->getMatchtime();
-                }
+            if ($replan || isset($parels[$match->getCategory()->getId()])) {
                 $slotschedule = $pa->getSchedule();
                 $date = Date::getDate($slotschedule);
                 $time = Date::getTime($slotschedule);

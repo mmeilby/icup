@@ -1,6 +1,8 @@
 <?php
 namespace ICup\Bundle\PublicSiteBundle\Controller\Admin\Overview;
 
+use ICup\Bundle\PublicSiteBundle\Entity\Doctrine\Date;
+use ICup\Bundle\PublicSiteBundle\Entity\Doctrine\PlaygroundAttribute;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
@@ -31,6 +33,7 @@ class ListPlaygroundAttributesController extends Controller
 
         $attributes = $this->get('logic')->listPlaygroundAttributes($playgroundid);
         $attrList = array();
+        /* @var $attr PlaygroundAttribute */
         foreach ($attributes as $attr) {
             $categories = array();
             $categoryList = $this->get('logic')->listPACategories($attr->getId());
@@ -46,17 +49,10 @@ class ListPlaygroundAttributesController extends Controller
             $attrList[] = array(
                 'id' => $attr->getId(),
                 'timeslot' => $timeslot,
-                'start' => DateTime::createFromFormat(
-                                $this->container->getParameter('db_date_format').
-                                '-'.
-                                $this->container->getParameter('db_time_format'),
-                                $attr->getDate().'-'.$attr->getStart()),
-                'end' => DateTime::createFromFormat(
-                                $this->container->getParameter('db_date_format').
-                                '-'.
-                                $this->container->getParameter('db_time_format'),
-                                $attr->getDate().'-'.$attr->getEnd()),
-                'categories' => $categories
+                'start' => $attr->getStartSchedule(),
+                'end' => $attr->getEndSchedule(),
+                'categories' => $categories,
+                'finals' => $attr->getFinals()
             );
         }
 

@@ -146,6 +146,7 @@ class PlaygroundAttributeController extends Controller
         $pattr->setStart(Date::getTime($starttime));
         $endtime = date_create_from_format($timeformat, $pattrForm->getEnd());
         $pattr->setEnd(Date::getTime($endtime));
+        $pattr->setFinals($pattrForm->isFinals());
     }
     
     private function copyPAttrForm(PlaygroundAttribute $pattr) {
@@ -160,6 +161,7 @@ class PlaygroundAttributeController extends Controller
         $pattrForm->setStart(date_format($matchdate, $timeformat));
         $endtime = $pattr->getEndSchedule();
         $pattrForm->setEnd(date_format($endtime, $timeformat));
+        $pattrForm->setFinals($pattr->getFinals());
         $pattrForm->setCategories($this->get('logic')->listPACategories($pattr->getId()));
         return $pattrForm;
     }
@@ -195,6 +197,12 @@ class PlaygroundAttributeController extends Controller
         $formDef->add('end', 'text',
               array('label' => 'FORM.PLAYGROUNDATTR.END.PROMPT',
                     'help' => 'FORM.PLAYGROUNDATTR.END.HELP',
+                    'required' => false,
+                    'disabled' => $action == 'del',
+                    'translation_domain' => 'admin'));
+        $formDef->add('finals', 'checkbox',
+              array('label' => 'FORM.PLAYGROUNDATTR.FINALS.PROMPT',
+                    'help' => 'FORM.PLAYGROUNDATTR.FINALS.HELP',
                     'required' => false,
                     'disabled' => $action == 'del',
                     'translation_domain' => 'admin'));

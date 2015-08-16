@@ -41,6 +41,12 @@ class PAttrForm
     private $end;
 
     /**
+     * @var boolean $finals
+     * Indicates this timeslot is restricted to finals
+     */
+    private $finals;
+
+    /**
      * @var array $categories
      * List of categories related to playground attribute
      */
@@ -182,6 +188,22 @@ class PAttrForm
     public function getCategories()
     {
         return $this->categories;
+    }
+
+    /**
+     * @return boolean
+     */
+    public function isFinals() {
+        return $this->finals;
+    }
+
+    /**
+     * @param boolean $finals
+     * @return PAttrForm
+     */
+    public function setFinals($finals) {
+        $this->finals = $finals;
+        return $this;
     }
 
     /**

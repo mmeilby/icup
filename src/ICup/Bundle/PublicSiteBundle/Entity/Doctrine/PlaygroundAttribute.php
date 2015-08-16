@@ -58,6 +58,13 @@ class PlaygroundAttribute
     private $end;
 
     /**
+     * @var boolean $finals
+     * Indicates this timeslot is restricted to finals
+     * @ORM\Column(name="finals", type="boolean", nullable=false)
+     */
+    private $finals;
+
+    /**
      * Get id
      *
      * @return integer 
@@ -71,7 +78,7 @@ class PlaygroundAttribute
      * Set parent id - related tournament
      *
      * @param integer $pid
-     * @return PlaygroundAttributes
+     * @return PlaygroundAttribute
      */
     public function setPid($pid)
     {
@@ -94,7 +101,7 @@ class PlaygroundAttribute
      * Set child id - related timeslot
      *
      * @param integer $timeslot
-     * @return PlaygroundAttributes
+     * @return PlaygroundAttribute
      */
     public function setTimeslot($timeslot)
     {
@@ -117,7 +124,7 @@ class PlaygroundAttribute
      * Set date
      *
      * @param string $date
-     * @return PlaygroundAttributes
+     * @return PlaygroundAttribute
      */
     public function setDate($date)
     {
@@ -140,7 +147,7 @@ class PlaygroundAttribute
      * Set start time
      *
      * @param string $start
-     * @return PlaygroundAttributes
+     * @return PlaygroundAttribute
      */
     public function setStart($start)
     {
@@ -163,7 +170,7 @@ class PlaygroundAttribute
      * Set end time
      *
      * @param string $end
-     * @return PlaygroundAttributes
+     * @return PlaygroundAttribute
      */
     public function setEnd($end)
     {
@@ -198,4 +205,28 @@ class PlaygroundAttribute
     public function getEndSchedule() {
         return Date::getDateTime($this->date, $this->end);
     }
+
+    /**
+     * Set match level
+     *
+     * @param boolean $final
+     * @return PlaygroundAttribute
+     */
+    public function setFinals($final)
+    {
+        $this->finals = $final;
+
+        return $this;
+    }
+
+    /**
+     * Get match level
+     *
+     * @return boolean
+     */
+    public function getFinals()
+    {
+        return $this->finals;
+    }
+
 }

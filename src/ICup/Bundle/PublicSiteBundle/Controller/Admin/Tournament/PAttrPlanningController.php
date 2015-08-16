@@ -45,8 +45,8 @@ class PAttrPlanningController extends Controller
                 'gender' => $category->getGender(),
                 'age' => $category->getAge(),
                 'classification' => $category->getClassification(),
-                'matchtime' => $paRelation->getMatchtime(),
-                'finals' => $paRelation->getFinals()
+                'matchtime' => $category->getMatchtime(),
+                'finals' => $pattr->getFinals()
             );
         }
 
@@ -82,7 +82,7 @@ class PAttrPlanningController extends Controller
         $tournament = $this->get('entity')->getTournamentById($category->getPid());
         $utilService->validateEditorAdminUser($user, $tournament->getPid());
 
-        $this->get('logic')->assignCategory($categoryid, $playgroundattributeid, $category->getMatchtime(), false);
+        $this->get('logic')->assignCategory($categoryid, $playgroundattributeid);
         return $this->redirect($returnUrl);
     }
     

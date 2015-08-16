@@ -287,6 +287,9 @@ FORM:
     END:
       PROMPT: Ophørstidspunkt
       HELP: Seneste ophørstidspunkt af den sidste kamp for denne præference
+    FINALS:
+      PROMPT: Reserveret til slutrunder
+      HELP: Ved at vælge denne indstilling kan banepræferencen kun benyttes til slutrunder
     SUBMIT:
       ADD: Tilføj ny banepræference
       CHG: Gem banepræference
@@ -341,7 +344,15 @@ FORM:
   MATCHPLANNING:
     TITLE: Vedligehold turnering
     CAPTION: Planlæg kampe
-    PLANNINGINCOMPLETE: Det er ikke muligt at planlægge alle kampe
+    PLANNINGINCOMPLETE:
+      TITLE: Kampplanen indeholder ikke alle kampe
+      DESCRIPTION: >
+                  Det var ikke muligt at planlægge alle kampe. Du kan se de kampe der blev planlagt i kampoplægget.
+                  Kampe der ikke blev planlagt er vist under løsninger. Der kan du også se årsagen til de faldt ud.
+                  Herunder ser du resume af de grupper, hvor der mangler kampe at blive planlagt.<br />
+                  Du kan også hente kampplanen som en tekstfil og ændre oplægget på din pc.
+                  Hvis du er tilfreds med kampoplægget kan du godkende det og få gemt kampplanen som turneringens officielle
+                  kampprogram.<br />
     PLANNINGCOMPLETE:
       TITLE: Kampplanen er lagt
       DESCRIPTION: >

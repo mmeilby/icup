@@ -191,15 +191,13 @@ class BusinessLogic
         $this->em->flush();
     }
 
-    public function assignCategory($categoryid, $playgroundattributeid, $matchtime, $finals) {
+    public function assignCategory($categoryid, $playgroundattributeid) {
         // Verify that the category and playground share the same tournament
         $this->verifyRelation($categoryid, $playgroundattributeid);
         
         $parel = new PARelation();
         $parel->setPid($playgroundattributeid);
         $parel->setCid($categoryid);
-        $parel->setFinals($finals);
-        $parel->setMatchtime($matchtime);
         $this->em->persist($parel);
         $this->em->flush();
         return $parel;
@@ -515,7 +513,7 @@ class BusinessLogic
 
     public function listPACategories($playgroundattributeid) {
         $qb = $this->em->createQuery(
-                "select c ".
+                "select distinct c ".
                 "from ".$this->entity->getRepositoryPath('Category')." c, ".
                         $this->entity->getRepositoryPath('PARelation')." p ".
                 "where p.cid=c.id and ".

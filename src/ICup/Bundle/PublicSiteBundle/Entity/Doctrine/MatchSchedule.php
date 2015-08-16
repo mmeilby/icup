@@ -39,12 +39,11 @@ class MatchSchedule
     private $group;
 
     /**
-     * @var PlaygroundAttribute $tournament
-     * Relation to PlaygroundAttribute
-     * @ORM\ManyToOne(targetEntity="PlaygroundAttribute", inversedBy="id")
-     * @ORM\JoinColumn(name="paid", referencedColumnName="id")
+     * @var MatchSchedulePlan $plan
+     * Relation to MatchSchedulePlan
+     * @ORM\OneToOne(targetEntity="MatchSchedulePlan", cascade={"persist", "remove"}, orphanRemoval=true)
      */
-    private $playgroundAttribute;
+    private $plan;
 
     /**
      * @var ArrayCollection $matchRelation
@@ -59,27 +58,6 @@ class MatchSchedule
      * @ORM\OneToMany(targetEntity="QMatchScheduleRelation", mappedBy="matchSchedule", cascade={"persist", "remove"})
      */
     private $qmatchRelation;
-
-    /**
-     * @var string $matchstart
-     * Scheduled match start - format Hi
-     * @ORM\Column(name="matchstart", type="string", length=4, nullable=false)
-     */
-    private $matchstart;
-
-    /**
-     * @var string $unscheduled
-     * Indicates this record has not yet been scheduled
-     * @ORM\Column(name="unscheduled", type="boolean", nullable=false)
-     */
-    private $unscheduled;
-
-    /**
-     * @var string $fixed
-     * Indicates this record holds a fixed schedule (not allowed to change)
-     * @ORM\Column(name="fixed", type="boolean", nullable=false)
-     */
-    private $fixed;
 
     /**
      * MatchSchedule constructor.
@@ -128,17 +106,17 @@ class MatchSchedule
     }
 
     /**
-     * @return PlaygroundAttribute
+     * @return MatchSchedulePlan
      */
-    public function getPlaygroundAttribute() {
-        return $this->playgroundAttribute;
+    public function getPlan() {
+        return $this->plan;
     }
 
     /**
-     * @param PlaygroundAttribute $playgroundAttribute
+     * @param MatchSchedulePlan $plan
      */
-    public function setPlaygroundAttribute(PlaygroundAttribute $playgroundAttribute) {
-        $this->playgroundAttribute = $playgroundAttribute;
+    public function setPlan(MatchSchedulePlan $plan) {
+        $this->plan = $plan;
     }
 
     /**
@@ -167,72 +145,6 @@ class MatchSchedule
             $this->qmatchRelation->add($matchRelation);
         }
         $matchRelation->setMatchSchedule($this);
-        return $this;
-    }
-
-    /**
-     * Get match start - scheduled time of start
-     *
-     * @return string
-     */
-    public function getMatchstart()
-    {
-        return $this->matchstart;
-    }
-
-    /**
-     * Set match start - scheduled time of start
-     *
-     * @param string $matchstart
-     * @return MatchSchedule
-     */
-    public function setMatchstart($matchstart)
-    {
-        $this->matchstart = $matchstart;
-        return $this;
-    }
-
-    /**
-     * Get unscheduled state - true if this record is not yet scheduled
-     *
-     * @return string
-     */
-    public function isUnscheduled()
-    {
-        return $this->unscheduled;
-    }
-
-    /**
-     * Set unscheduled state
-     *
-     * @param string $unscheduled
-     * @return MatchSchedule
-     */
-    public function setUnscheduled($unscheduled)
-    {
-        $this->unscheduled = $unscheduled;
-        return $this;
-    }
-
-    /**
-     * Check if match schedule is fixed
-     *
-     * @return string
-     */
-    public function isFixed()
-    {
-        return $this->fixed;
-    }
-
-    /**
-     * Set the match schedule to be fixed
-     *
-     * @param string $fixed
-     * @return MatchSchedule
-     */
-    public function setFixed($fixed)
-    {
-        $this->fixed = $fixed;
         return $this;
     }
 }

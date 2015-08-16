@@ -42,6 +42,13 @@
                     {{ attr.end|date('FORMAT.TIME'|trans([],'messages')) }}
                 </td>
                 <td>
+                    {% if attr.finals %}
+                        <span class="fa fa-trophy text-warning"></span>
+                    {% else %}
+                        <span class="fa fa-gavel text-info"></span>
+                    {% endif %}
+                </td>
+                <td>
                     <a href="{{ path('_edit_list_parel', { 'playgroundattributeid': attr.id }) }}">
             {% if attr.categories|length > 0 %}
                         {{ attr.categories|join(',') }}
@@ -73,6 +80,7 @@
                         {{'FORM.LISTPLAYGROUNDATTRS.NOATTR'|trans|upper}}
                     </a>    
                 </td>
+                <td></td>
                 <td></td>
                 <td></td>
                 <td></td>

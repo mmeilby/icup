@@ -3,9 +3,11 @@ namespace ICup\Bundle\PublicSiteBundle\Controller\Admin\Tournament;
 
 use ICup\Bundle\PublicSiteBundle\Entity\Doctrine\Category;
 use ICup\Bundle\PublicSiteBundle\Entity\Doctrine\User;
+use ICup\Bundle\PublicSiteBundle\Services\Util;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
+use Symfony\Component\Form\FormError;
 use Symfony\Component\HttpFoundation\Request;
 
 /**
@@ -105,7 +107,7 @@ class CategoryController extends Controller
             elseif ($this->get('logic')->listEnrolledByCategory($category->getId()) != null) {
                 $form->addError(new FormError($this->get('translator')->trans('FORM.CATEGORY.ENROLLEDEXIST', array(), 'admin')));
             }
-            elseif ($this->get('logic')->listPARelationsByCategory($category->getId()) != null) {
+            elseif ($this->get('logic')->listPlaygroundAttributesByCategory($category->getId()) != null) {
                 $form->addError(new FormError($this->get('translator')->trans('FORM.CATEGORY.PARELATIONSEXIST', array(), 'admin')));
             }
             else {

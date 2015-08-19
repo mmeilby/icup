@@ -36,12 +36,11 @@ class ListPlaygroundAttributesController extends Controller
         /* @var $attr PlaygroundAttribute */
         foreach ($attributes as $attr) {
             $categories = array();
-            $categoryList = $this->get('logic')->listPACategories($attr->getId());
-            foreach ($categoryList as $category) {
+            foreach ($attr->getCategories() as $category) {
                 $categories[] = $category->getName();
             }
-            if ($attr->getTimeslot() > 0) {
-                $timeslot = $this->get('entity')->getTimeslotById($attr->getTimeslot())->getName();
+            if ($attr->getTimeslot()) {
+                $timeslot = $attr->getTimeslot()->getName();
             }
             else {
                 $timeslot = $this->get('translator')->trans('FORM.PLAYGROUNDATTR.DEFAULT');

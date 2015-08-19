@@ -2,6 +2,8 @@
 
 namespace ICup\Bundle\PublicSiteBundle\Entity;
 
+use ICup\Bundle\PublicSiteBundle\Entity\Doctrine\Group;
+
 class Match
 {
     /**
@@ -11,10 +13,10 @@ class Match
     private $id;
 
     /**
-     * @var integer $pid
+     * @var Group $pid
      * Relation to group - pid=group.id
      */
-    private $pid;
+    private $group;
 
     /**
      * @var integer $playground
@@ -76,26 +78,19 @@ class Match
     }
 
     /**
-     * Set parent id - related group
-     *
-     * @param integer $pid
-     * @return Match
+     * @return Group
      */
-    public function setPid($pid)
-    {
-        $this->pid = $pid;
-    
-        return $this;
+    public function getGroup() {
+        return $this->group;
     }
 
     /**
-     * Get parent id - related group
-     *
-     * @return integer 
+     * @param Group $group
+     * @return Match
      */
-    public function getPid()
-    {
-        return $this->pid;
+    public function setGroup($group) {
+        $this->group = $group;
+        return $this;
     }
 
     /**

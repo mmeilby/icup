@@ -1,6 +1,7 @@
 <?php
 namespace ICup\Bundle\PublicSiteBundle\Controller\Admin\Tournament;
 
+use ICup\Bundle\PublicSiteBundle\Entity\Doctrine\Category;
 use ICup\Bundle\PublicSiteBundle\Entity\Doctrine\Date;
 use ICup\Bundle\PublicSiteBundle\Entity\Doctrine\Match;
 use ICup\Bundle\PublicSiteBundle\Entity\Doctrine\QMatchRelation;
@@ -34,8 +35,10 @@ class QMatchRelationController extends Controller
         $user = $utilService->getCurrentUser();
         /* @var $match Match */
         $match = $this->get('entity')->getMatchById($matchid);
-        $group = $this->get('entity')->getGroupById($match->getPid());
-        $category = $this->get('entity')->getCategoryById($group->getPid());
+        /* @var $group Group */
+        $group = $match->getGroup();
+        /* @var $category Category */
+        $category = $group->getCategory();
         $tournament = $this->get('entity')->getTournamentById($category->getPid());
         $utilService->validateEditorAdminUser($user, $tournament->getPid());
 
@@ -75,9 +78,12 @@ class QMatchRelationController extends Controller
 
         /* @var $user User */
         $user = $utilService->getCurrentUser();
+        /* @var $match Match */
         $match = $this->get('entity')->getMatchById($matchid);
-        $group = $this->get('entity')->getGroupById($match->getPid());
-        $category = $this->get('entity')->getCategoryById($group->getPid());
+        /* @var $group Group */
+        $group = $match->getGroup();
+        /* @var $category Category */
+        $category = $group->getCategory();
         $tournament = $this->get('entity')->getTournamentById($category->getPid());
         $utilService->validateEditorAdminUser($user, $tournament->getPid());
 
@@ -109,8 +115,8 @@ class QMatchRelationController extends Controller
         $homeRel = $this->get('match')->getQMatchRelationByMatch($match->getId(), MatchSupport::$HOME);
         if ($homeRel == null) {
             $homeRel = new QMatchRelation();
-            $homeRel->setPid($matchForm->getId());
             $homeRel->setAwayteam(false);
+            $match->addMatchRelation($homeRel);
             $em->persist($homeRel);
         }
         $homeRel->setCid($matchForm->getGroupA());
@@ -118,10 +124,8 @@ class QMatchRelationController extends Controller
         $awayRel = $this->get('match')->getQMatchRelationByMatch($match->getId(), MatchSupport::$AWAY);
         if ($awayRel == null) {
             $awayRel = new QMatchRelation();
-            $awayRel->setPid($matchForm->getId());
             $awayRel->setAwayteam(true);
-            $awayRel->setCid($matchForm->getGroupB());
-            $awayRel->setRank($matchForm->getRankB());
+            $match->addMatchRelation($awayRel);
             $em->persist($awayRel);
         }
         $awayRel->setCid($matchForm->getGroupB());
@@ -145,7 +149,7 @@ class QMatchRelationController extends Controller
     private function copyMatchForm(Match $match) {
         $matchForm = new MatchForm();
         $matchForm->setId($match->getId());
-        $matchForm->setPid($match->getPId());
+        $matchForm->setPid($match->getGroup()->getId());
         $matchForm->setMatchno($match->getMatchno());
         $matchdate = Date::getDateTime($match->getDate(), $match->getTime());
         $dateformat = $this->get('translator')->trans('FORMAT.DATE');

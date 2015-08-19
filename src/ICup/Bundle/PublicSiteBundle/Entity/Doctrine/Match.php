@@ -92,29 +92,6 @@ class Match
     }
 
     /**
-     * Set parent id - related group
-     *
-     * @param integer $pid
-     * @return Match
-     * @deprecated
-     */
-    public function setPid($pid)
-    {
-        throw new MethodNotImplementedException();
-    }
-
-    /**
-     * Get parent id - related group
-     *
-     * @return integer
-     * @deprecated
-     */
-    public function getPid()
-    {
-        return $this->group->getId();
-    }
-
-    /**
      * @param Group $group
      */
     public function setGroup(Group $group) {

@@ -15,7 +15,6 @@ use ICup\Bundle\PublicSiteBundle\Entity\Doctrine\MatchSchedule;
 use ICup\Bundle\PublicSiteBundle\Entity\Doctrine\News;
 use ICup\Bundle\PublicSiteBundle\Entity\Doctrine\Playground;
 use ICup\Bundle\PublicSiteBundle\Entity\Doctrine\PlaygroundAttribute;
-use ICup\Bundle\PublicSiteBundle\Entity\Doctrine\PARelation;
 use ICup\Bundle\PublicSiteBundle\Entity\Doctrine\Timeslot;
 use ICup\Bundle\PublicSiteBundle\Entity\Doctrine\Site;
 use ICup\Bundle\PublicSiteBundle\Entity\Doctrine\Team;
@@ -137,14 +136,6 @@ class Entity
      */
     public function getPlaygroundAttributeRepo() {
         return $this->getRepository('PlaygroundAttribute');
-    }
-    
-    /**
-     * Get the PARelation entity repository
-     * @return \Doctrine\ORM\EntityRepository
-     */
-    public function getPARelationRepo() {
-        return $this->getRepository('PARelation');
     }
     
     /**
@@ -394,21 +385,6 @@ class Entity
             throw new ValidationException("BADPLAYGROUNDATTRIBUTE", "Unknown playgroundattributeid=".$playgroundattributeid);
         }
         return $playgroundattribute;
-    }
-    
-    /**
-     * Get the playground attribute relation from the parelation id
-     * @param $parelationid
-     * @return PARelation
-     * @throws ValidationException
-     */
-    public function getPARelationById($parelationid) {
-        /* @var $parelation PARelation */
-        $parelation = $this->getPARelationRepo()->find($parelationid);
-        if ($parelation == null) {
-            throw new ValidationException("BADPARELATION", "Unknown parelationid=".$parelationid);
-        }
-        return $parelation;
     }
     
     /**

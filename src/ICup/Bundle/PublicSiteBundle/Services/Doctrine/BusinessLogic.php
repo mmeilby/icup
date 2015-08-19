@@ -10,7 +10,7 @@ use ICup\Bundle\PublicSiteBundle\Entity\Doctrine\Date;
 use ICup\Bundle\PublicSiteBundle\Entity\Doctrine\Enrollment;
 use ICup\Bundle\PublicSiteBundle\Entity\Doctrine\GroupOrder;
 use ICup\Bundle\PublicSiteBundle\Entity\Doctrine\MatchSchedule;
-use ICup\Bundle\PublicSiteBundle\Entity\Doctrine\PARelation;
+use ICup\Bundle\PublicSiteBundle\Entity\Doctrine\PlaygroundAttribute;
 use ICup\Bundle\PublicSiteBundle\Entity\Doctrine\Team;
 use ICup\Bundle\PublicSiteBundle\Entity\Doctrine\User;
 use ICup\Bundle\PublicSiteBundle\Entity\TeamInfo;
@@ -155,7 +155,7 @@ class BusinessLogic
                 "select count(o) as teams ".
                 "from ".$this->entity->getRepositoryPath('Group')." g, ".
                         $this->entity->getRepositoryPath('GroupOrder')." o ".
-                "where g.pid=:category and g.classification=0 and ".
+                "where g.category=:category and g.classification=0 and ".
                       "o.pid=g.id and ".
                       "o.cid=:team");
         $qbt->setParameter('category', $categoryid);
@@ -193,39 +193,35 @@ class BusinessLogic
 
     public function assignCategory($categoryid, $playgroundattributeid) {
         // Verify that the category and playground share the same tournament
-        $this->verifyRelation($categoryid, $playgroundattributeid);
-        
-        $parel = new PARelation();
-        $parel->setPid($playgroundattributeid);
-        $parel->setCid($categoryid);
-        $this->em->persist($parel);
+        $objects = $this->verifyRelation($categoryid, $playgroundattributeid);
+        /* @var $pattr PlaygroundAttribute */
+        $pattr = $objects['pattr'];
+        $pattr->getCategories()->add($objects['category']);
         $this->em->flush();
-        return $parel;
     }
     
     public function removeAssignedCategory($categoryid, $playgroundattributeid) {
         // Verify that the category and playground share the same tournament
-        $this->verifyRelation($categoryid, $playgroundattributeid);
-
-        $parel = $this->entity->getPARelationRepo()->findOneBy(array('pid' => $playgroundattributeid, 'cid' => $categoryid));
-        if ($parel == null) {
+        $objects = $this->verifyRelation($categoryid, $playgroundattributeid);
+        /* @var $pattr PlaygroundAttribute */
+        $pattr = $objects['pattr'];
+        if ($pattr->getCategories()->removeElement($objects['category']) === false) {
             throw new ValidationException("CATEGORYISNOTASSIGNED", "Category is not assigned - pattr=".$playgroundattributeid.", category=".$categoryid);
         }
-        $this->em->remove($parel);
         $this->em->flush();
-        return $parel;
     }
 
     private function verifyRelation($categoryid, $playgroundattributeid) {
         /* @var $category Category */
         $category = $this->entity->getCategoryById($categoryid);
         $pattr = $this->entity->getPlaygroundAttributeById($playgroundattributeid);
-        $playground = $this->entity->getPlaygroundById($pattr->getPid());
+        $playground = $pattr->getPlayground();
         $site = $this->entity->getSiteById($playground->getPid());
         // Verify that the category and playground share the same tournament
         if ($site->getPid() != $category->getPid()) {
             throw new ValidationException("NOTTHESAMETOURNAMENT", "Category and playground does not share the same tournament - pattr=".$playgroundattributeid.", category=".$categoryid);
         }
+        return array('category' => $category, 'pattr' => $pattr);
     }    
     
     public function assignEnrolled($teamid, $groupid) {
@@ -431,7 +427,7 @@ class BusinessLogic
                 "from ".$this->entity->getRepositoryPath('Group')." g, ".
                         $this->entity->getRepositoryPath('GroupOrder')." o, ".
                         $this->entity->getRepositoryPath('Category')." c ".
-                "where o.pid=g.id and o.cid=:team and g.pid=c.id");
+                "where o.pid=g.id and o.cid=:team and g.category=c.id");
         $qb->setParameter('team', $teamid);
         $category = $qb->getOneOrNullResult();
         if ($category == null) {
@@ -479,7 +475,7 @@ class BusinessLogic
     }
 
     public function listPlaygroundAttributes($playgroundid) {
-        return $this->entity->getPlaygroundAttributeRepo()->findBy(array('pid' => $playgroundid), array('date' => 'asc', 'start' => 'asc'));
+        return $this->entity->getPlaygroundAttributeRepo()->findBy(array('playground' => $playgroundid), array('date' => 'asc', 'start' => 'asc'));
     }
 
     public function listPlaygroundAttributesByTournament($tournamentid) {
@@ -488,43 +484,24 @@ class BusinessLogic
                 "from ".$this->entity->getRepositoryPath('PlaygroundAttribute')." a, ".
                         $this->entity->getRepositoryPath('Playground')." p, ".
                         $this->entity->getRepositoryPath('Site')." s ".
-                "where s.pid=:tournament and p.pid=s.id and a.pid=p.id ".
-                "order by a.pid asc, a.date asc, a.start asc");
+                "where s.pid=:tournament and p.pid=s.id and a.playground=p.id ".
+                "order by p.no asc, a.date asc, a.start asc");
         $qb->setParameter('tournament', $tournamentid);
         return $qb->getResult();
     }
 
     public function getPlaygroundAttribute($playgroundid, $date, $start) {
-        return $this->entity->getPlaygroundAttributeRepo()->findOneBy(array('pid' => $playgroundid, 'date' => $date, 'start' => $start));
+        return $this->entity->getPlaygroundAttributeRepo()->findOneBy(array('playground' => $playgroundid, 'date' => $date, 'start' => $start));
     }
 
-    public function listPARelations($playgroundattributeid) {
-        return $this->entity->getPARelationRepo()->findBy(array('pid' => $playgroundattributeid), array('id' => 'asc'));
-    }
-
-    public function removePARelations($playgroundattributeid) {
-        // wipe playground attribute relations
-        $qbr = $this->em->createQuery(
-            "delete from ".$this->entity->getRepositoryPath('PARelation')." p ".
-            "where p.pid=:pattr");
-        $qbr->setParameter('pattr', $playgroundattributeid);
-        $qbr->getResult();
-    }
-
-    public function listPACategories($playgroundattributeid) {
-        $qb = $this->em->createQuery(
-                "select distinct c ".
-                "from ".$this->entity->getRepositoryPath('Category')." c, ".
-                        $this->entity->getRepositoryPath('PARelation')." p ".
-                "where p.cid=c.id and ".
-                      "p.pid=:pattr ".
-                "order by c.classification asc, c.age desc, c.gender asc");
-        $qb->setParameter('pattr', $playgroundattributeid);
-        return $qb->getResult();
-    }
-
-    public function listPARelationsByCategory($categoryid) {
-        return $this->entity->getPARelationRepo()->findBy(array('cid' => $categoryid), array('id' => 'asc'));
+    public function listPlaygroundAttributesByCategory($categoryid) {
+        return $this->em->createQuery(
+                "select pa ".
+                "from ".$this->entity->getRepositoryPath('PlaygroundAttribute')." pa ".
+                "join ".$this->entity->getRepositoryPath('Category')." c ".
+                "where c.id=:category")
+            ->setParameter('category', $categoryid)
+            ->getResult();
     }
 
     public function listMatchSchedules($tournamentid) {
@@ -596,7 +573,7 @@ class BusinessLogic
                 "select g ".
                 "from ".$this->entity->getRepositoryPath('Group')." g, ".
                         $this->entity->getRepositoryPath('Category')." c ".
-                "where c.pid=:tournament and g.pid=c.id ".
+                "where c.pid=:tournament and g.category=c.id ".
                 "order by g.classification asc, g.name asc");
         $qb->setParameter('tournament', $tournamentid);
         return $qb->getResult();
@@ -609,7 +586,7 @@ class BusinessLogic
                         $this->entity->getRepositoryPath('Category')." c ".
                 "where c.pid=:tournament and ".
                       "c.name=:category and ".
-                      "g.pid=c.id and ".
+                      "g.category=c.id and ".
                       "g.name=:group");
         $qb->setParameter('tournament', $tournamentid);
         $qb->setParameter('category', $category);
@@ -621,19 +598,19 @@ class BusinessLogic
         $qb = $this->em->createQuery(
             "select g ".
             "from ".$this->entity->getRepositoryPath('Group')." g ".
-            "where g.pid in (select gx.pid from ".$this->entity->getRepositoryPath('Group')." gx where gx.id=".$groupfamily.") and ".
+            "where g.category in (select gx.category from ".$this->entity->getRepositoryPath('Group')." gx where gx.id=".$groupfamily.") and ".
                   "g.name=:group");
         $qb->setParameter('group', $group);
         return $qb->getOneOrNullResult();
     }
 
     public function listGroupsByCategory($categoryid) {
-        return $this->entity->getGroupRepo()->findBy(array('pid' => $categoryid));
+        return $this->entity->getGroupRepo()->findBy(array('category' => $categoryid));
     }
 
     public function listGroups($categoryid, $classification = 0) {
         return $this->entity->getGroupRepo()
-                    ->findBy(array('pid' => $categoryid, 'classification' => $classification),
+                    ->findBy(array('category' => $categoryid, 'classification' => $classification),
                              array('name' => 'asc'));
     }
     
@@ -641,7 +618,7 @@ class BusinessLogic
         $qb = $this->em->createQuery(
                 "select g ".
                 "from ".$this->entity->getRepositoryPath('Group')." g ".
-                "where g.pid=:category and g.classification > 0 and g.classification < 6 ".
+                "where g.category=:category and g.classification > 0 and g.classification < 6 ".
                 "order by g.classification asc, g.name asc");
         $qb->setParameter('category', $categoryid);
         return $qb->getResult();
@@ -651,7 +628,7 @@ class BusinessLogic
         $qb = $this->em->createQuery(
                 "select g ".
                 "from ".$this->entity->getRepositoryPath('Group')." g ".
-                "where g.pid=:category and g.classification > 5 ".
+                "where g.category=:category and g.classification > 5 ".
                 "order by g.classification desc, g.name asc");
         $qb->setParameter('category', $categoryid);
         return $qb->getResult();
@@ -814,7 +791,7 @@ class BusinessLogic
                             "select o.cid ".
                             "from ".$this->entity->getRepositoryPath('Group')." g, ".
                                     $this->entity->getRepositoryPath('GroupOrder')." o ".
-                            "where g.pid=:category and g.classification=:class and ".
+                            "where g.category=:category and g.classification=:class and ".
                                   "o.pid=g.id".
                             ") ".
                 "order by c.country, c.name, t.division");
@@ -864,7 +841,7 @@ class BusinessLogic
                         $this->entity->getRepositoryPath('Team')." t, ".
                         $this->entity->getRepositoryPath('Club')." c ".
                 "where cat.pid=:tournament and ".
-                        "g.pid=cat.id and ".
+                        "g.category=cat.id and ".
                         "g.classification=0 and ".
                         "o.pid=g.id and ".
                         "o.cid=t.id and ".

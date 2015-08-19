@@ -2,13 +2,14 @@
 
 namespace ICup\Bundle\PublicSiteBundle\Entity\Doctrine;
 
+use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\ORM\Mapping as ORM;
 use DateTime;
 
 /**
  * ICup\Bundle\PublicSiteBundle\Entity\Doctrine\Category
  *
- * @ORM\Table(name="playgroundattributes",uniqueConstraints={@ORM\UniqueConstraint(name="IdxByDate", columns={"pid", "date", "start"})})
+ * @ORM\Table(name="playgroundattributes")
  * @ORM\Entity
  */
 class PlaygroundAttribute
@@ -23,16 +24,28 @@ class PlaygroundAttribute
     private $id;
 
     /**
-     * @var integer $pid
-     * Relation to Playground - pid=playground.id 
-     * @ORM\Column(name="pid", type="integer", nullable=false)
+     * @var Playground $playground
+     * Relation to Playground
+     * @ORM\ManyToOne(targetEntity="Playground", inversedBy="id")
+     * @ORM\JoinColumn(name="pid", referencedColumnName="id")
      */
-    private $pid;
+    private $playground;
 
     /**
-     * @var integer $timeslot
-     * Relation to Timeslot - pid=timeslot.id 
-     * @ORM\Column(name="timeslot", type="integer", nullable=false)
+     * @var ArrayCollection $categories
+     * @ORM\ManyToMany(targetEntity="Category")
+     * @ORM\JoinTable(name="parelations",
+     *      joinColumns={@ORM\JoinColumn(name="pid", referencedColumnName="id")},
+     *      inverseJoinColumns={@ORM\JoinColumn(name="cid", referencedColumnName="id")}
+     *      )
+     **/
+    private $categories;
+
+    /**
+     * @var Timeslot $timeslot
+     * Relation to Timeslot
+     * @ORM\ManyToOne(targetEntity="Timeslot", inversedBy="id")
+     * @ORM\JoinColumn(name="timeslot", referencedColumnName="id")
      */
     private $timeslot;
 
@@ -65,6 +78,13 @@ class PlaygroundAttribute
     private $finals;
 
     /**
+     * PlaygroundAttribute constructor.
+     */
+    public function __construct() {
+        $this->categories = new ArrayCollection();
+    }
+
+    /**
      * Get id
      *
      * @return integer 
@@ -75,45 +95,44 @@ class PlaygroundAttribute
     }
 
     /**
-     * Set parent id - related tournament
-     *
-     * @param integer $pid
+     * @return Playground
+     */
+    public function getPlayground() {
+        return $this->playground;
+    }
+
+    /**
+     * @param Playground $playground
      * @return PlaygroundAttribute
      */
-    public function setPid($pid)
-    {
-        $this->pid = $pid;
-    
+    public function setPlayground($playground) {
+        $this->playground = $playground;
         return $this;
     }
 
     /**
-     * Get parent id - related tournament
-     *
-     * @return integer 
+     * @return ArrayCollection
      */
-    public function getPid()
-    {
-        return $this->pid;
+    public function getCategories() {
+        return $this->categories;
     }
 
     /**
      * Set child id - related timeslot
      *
-     * @param integer $timeslot
+     * @param Timeslot $timeslot
      * @return PlaygroundAttribute
      */
     public function setTimeslot($timeslot)
     {
         $this->timeslot = $timeslot;
-    
         return $this;
     }
 
     /**
      * Get child id - related timeslot
      *
-     * @return integer 
+     * @return Timeslot
      */
     public function getTimeslot()
     {
@@ -129,7 +148,6 @@ class PlaygroundAttribute
     public function setDate($date)
     {
         $this->date = $date;
-    
         return $this;
     }
 
@@ -152,7 +170,6 @@ class PlaygroundAttribute
     public function setStart($start)
     {
         $this->start = $start;
-    
         return $this;
     }
 
@@ -175,7 +192,6 @@ class PlaygroundAttribute
     public function setEnd($end)
     {
         $this->end = $end;
-    
         return $this;
     }
 
@@ -215,7 +231,6 @@ class PlaygroundAttribute
     public function setFinals($final)
     {
         $this->finals = $final;
-
         return $this;
     }
 

@@ -1,6 +1,7 @@
 <?php
 namespace ICup\Bundle\PublicSiteBundle\Controller\Tournament;
 
+use ICup\Bundle\PublicSiteBundle\Entity\Doctrine\Category;
 use ICup\Bundle\PublicSiteBundle\Entity\Doctrine\Group;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
@@ -17,7 +18,8 @@ class TeamController extends Controller
         $team = $this->get('entity')->getTeamById($teamid);
         $name = $this->get('logic')->getTeamName($team->getName(), $team->getDivision());
         $group = $this->get('entity')->getGroupById($groupid);
-        $category = $this->get('entity')->getCategoryById($group->getPid());
+        /* @var $category Category */
+        $category = $group->getCategory();
         $tournament = $this->get('entity')->getTournamentById($category->getPid());
         $matchList = $this->get('match')->listMatchesByGroupTeam($groupid, $teamid);
 

@@ -1,7 +1,9 @@
 <?php
 namespace ICup\Bundle\PublicSiteBundle\Controller\Admin\Tournament;
 
+use ICup\Bundle\PublicSiteBundle\Entity\Doctrine\Category;
 use ICup\Bundle\PublicSiteBundle\Entity\Doctrine\Date;
+use ICup\Bundle\PublicSiteBundle\Entity\Doctrine\Group;
 use ICup\Bundle\PublicSiteBundle\Entity\Doctrine\Match;
 use ICup\Bundle\PublicSiteBundle\Entity\Doctrine\QMatchRelation;
 use ICup\Bundle\PublicSiteBundle\Entity\Doctrine\User;
@@ -79,9 +81,12 @@ class QMatchPlanningController extends Controller
 
         /* @var $user User */
         $user = $utilService->getCurrentUser();
+        /* @var $match Match */
         $match = $this->get('entity')->getMatchById($matchid);
-        $group = $this->get('entity')->getGroupById($match->getPid());
-        $category = $this->get('entity')->getCategoryById($group->getPid());
+        /* @var $group Group */
+        $group = $match->getGroup();
+        /* @var $category Category */
+        $category = $group->getCategory();
         $tournament = $this->get('entity')->getTournamentById($category->getPid());
         $utilService->validateEditorAdminUser($user, $tournament->getPid());
 

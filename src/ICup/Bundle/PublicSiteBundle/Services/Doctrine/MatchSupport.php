@@ -206,7 +206,7 @@ class MatchSupport
 
     private function getTableRelations() {
         return
-            "g.pid=cat.id and ".
+            "g.category=cat.id and ".
             "m.group=g.id and ".
             "m.playground=p.id and ".
             "m.id=r.match and ".
@@ -216,7 +216,7 @@ class MatchSupport
 
     private function getQTableRelations() {
         return
-            "g.pid=cat.id and ".
+            "g.category=cat.id and ".
             "m.group=g.id and ".
             "m.playground=p.id and ".
             "m.id=q.match and ".
@@ -288,7 +288,7 @@ class MatchSupport
                         $this->entity->getRepositoryPath('Category')." c ".
                 "where m.group=g.id and ".
                       "m.matchno=:matchno and ".
-                      "g.pid=c.id and ".
+                      "g.category=c.id and ".
                       "c.pid=:tournament");
         $qb->setParameter('tournament', $tournamentid);
         $qb->setParameter('matchno', $matchno);
@@ -381,7 +381,7 @@ class MatchSupport
             "from ".$this->entity->getRepositoryPath('Match')." m, ".
                     $this->entity->getRepositoryPath('Group')." g, ".
                     $this->entity->getRepositoryPath('Category')." c ".
-            "where c.pid=:tournament and g.pid=c.id and m.group=g.id and m.date>=:date");
+            "where c.pid=:tournament and g.category=c.id and m.group=g.id and m.date>=:date");
         $qb->setParameter('tournament', $tournamentid);
         $qb->setParameter('date', Date::getDate($date));
         $mdate = $qb->getOneOrNullResult();
@@ -391,7 +391,7 @@ class MatchSupport
                 "from ".$this->entity->getRepositoryPath('Match')." m, ".
                         $this->entity->getRepositoryPath('Group')." g, ".
                         $this->entity->getRepositoryPath('Category')." c ".
-                "where c.pid=:tournament and g.pid=c.id and m.group=g.id");
+                "where c.pid=:tournament and g.category=c.id and m.group=g.id");
             $qb->setParameter('tournament', $tournamentid);
             $mdate = $qb->getOneOrNullResult();
         }
@@ -421,7 +421,7 @@ class MatchSupport
                         $this->entity->getRepositoryPath('Group')." g, ".
                         $this->entity->getRepositoryPath('Match')." m ".
                 "where c.pid=:tournament and ".
-                      "g.pid=c.id and ".
+                      "g.category=c.id and ".
                       "m.group=g.id and ".
                       "m.id not in (select r.match ".
                                    "from ".$this->entity->getRepositoryPath('MatchRelation')." r)");
@@ -803,7 +803,7 @@ class MatchSupport
                     $this->entity->getRepositoryPath('Playground')." p, ".
                     $this->entity->getRepositoryPath('Group')." gq ".
             "where cat.pid=:tournament and ".
-            "g.pid=cat.id and ".
+            "g.category=cat.id and ".
             "m.group=g.id and ".
             "p.id=m.playground and ".
             "q.match=m.id and ".

@@ -1,6 +1,7 @@
 <?php
 namespace ICup\Bundle\PublicSiteBundle\Controller\Tournament;
 
+use ICup\Bundle\PublicSiteBundle\Entity\Doctrine\Category;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
@@ -15,7 +16,8 @@ class PlaygroundController extends Controller
     {
         $playground = $this->get('entity')->getPlaygroundById($playgroundid);
         $group = $this->get('entity')->getGroupById($groupid);
-        $category = $this->get('entity')->getCategoryById($group->getPid());
+        /* @var $category Category */
+        $category = $group->getCategory();
         $tournament = $this->get('entity')->getTournamentById($category->getPid());
         $matchList = $this->get('match')->listMatchesByGroupPlayground($groupid, $playgroundid);
 

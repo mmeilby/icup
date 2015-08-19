@@ -80,7 +80,7 @@ class GroupPlanningController extends Controller
         /* @var $group Group */
         $group = $this->get('entity')->getGroupById($groupid);
         /* @var $category Category */
-        $category = $this->get('entity')->getCategoryById($group->getPid());
+        $category = $group->getCategory();
         $tournament = $this->get('entity')->getTournamentById($category->getPid());
         $utilService->validateEditorAdminUser($user, $tournament->getPid());
 
@@ -103,7 +103,7 @@ class GroupPlanningController extends Controller
         /* @var $group Group */
         $group = $this->get('entity')->getGroupById($groupid);
         /* @var $category Category */
-        $category = $this->get('entity')->getCategoryById($group->getPid());
+        $category = $group->getCategory();
         $tournament = $this->get('entity')->getTournamentById($category->getPid());
         $utilService->validateEditorAdminUser($user, $tournament->getPid());
 
@@ -126,7 +126,7 @@ class GroupPlanningController extends Controller
         /* @var $group Group */
         $group = $this->get('entity')->getGroupById($groupid);
         /* @var $category Category */
-        $category = $this->get('entity')->getCategoryById($group->getPid());
+        $category = $group->getCategory();
         $tournament = $this->get('entity')->getTournamentById($category->getPid());
         $utilService->validateEditorAdminUser($user, $tournament->getPid());
 
@@ -156,7 +156,7 @@ class GroupPlanningController extends Controller
         /* @var $group Group */
         $group = $this->get('entity')->getGroupById($groupid);
         /* @var $category Category */
-        $category = $this->get('entity')->getCategoryById($group->getPid());
+        $category = $group->getCategory();
         $tournament = $this->get('entity')->getTournamentById($category->getPid());
         $utilService->validateEditorAdminUser($user, $tournament->getPid());
 

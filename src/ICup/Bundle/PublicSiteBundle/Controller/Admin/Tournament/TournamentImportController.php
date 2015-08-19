@@ -6,7 +6,6 @@ use ICup\Bundle\PublicSiteBundle\Entity\Doctrine\Timeslot;
 use ICup\Bundle\PublicSiteBundle\Entity\Doctrine\Site;
 use ICup\Bundle\PublicSiteBundle\Entity\Doctrine\Playground;
 use ICup\Bundle\PublicSiteBundle\Entity\Doctrine\PlaygroundAttribute;
-use ICup\Bundle\PublicSiteBundle\Entity\Doctrine\PARelation;
 use ICup\Bundle\PublicSiteBundle\Entity\Doctrine\Category;
 use ICup\Bundle\PublicSiteBundle\Entity\Doctrine\Group;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
@@ -145,9 +144,9 @@ class TournamentImportController extends Controller
             $new_timeslot->setPenalty($timeslot->getPenalty());
             $new_timeslot->setRestperiod($timeslot->getRestperiod());
             $em->persist($new_timeslot);
-            $em->flush();
-            $tsconversion[$timeslot->getId()] = $new_timeslot->getId();
+            $tsconversion[$timeslot->getId()] = $new_timeslot;
         }
+        $em->flush();
         return $tsconversion;
     }
     
@@ -156,25 +155,18 @@ class TournamentImportController extends Controller
         $pattrs = $this->get('logic')->listPlaygroundAttributes($playground->getId());
         foreach ($pattrs as $pattr) {
             $new_pattr = new PlaygroundAttribute();
-            $new_pattr->setPid($new_playground->getId());
-            $new_pattr->setTimeslot($tsconversion[$pattr->getTimeslot()]);
+            $new_pattr->setPlayground($new_playground);
+            $new_pattr->setTimeslot($tsconversion[$pattr->getTimeslot()->getId()]);
             $new_pattr->setDate($pattr->getDate());
             $new_pattr->setStart($pattr->getStart());
             $new_pattr->setEnd($pattr->getEnd());
             $new_pattr->setFinals($pattr->getFinals());
-            $em->persist($new_pattr);
-            $em->flush();
-            $parels = $this->get('logic')->listPARelations($pattr->getId());
-            foreach ($parels as $parel) {
-                $new_parel = new PARelation();
-                $new_parel->setPid($new_pattr->getId());
-                $new_parel->setCid($cconversion[$parel->getCid()]);
-//                $new_parel->setMatchtime($parel->getMatchtime());
-//                $new_parel->setFinals($parel->getFinals());
-                $em->persist($new_parel);
+            foreach ($pattr->getCategories() as $category) {
+                $new_pattr->getCategories()->add($cconversion[$category->getId()]);
             }
-            $em->flush();
+            $em->persist($new_pattr);
         }
+        $em->flush();
     }
     
     private function importCategories(Tournament $source_tournament, Tournament $tournament) {
@@ -190,18 +182,17 @@ class TournamentImportController extends Controller
             $new_category->setAge($category->getAge());
             $new_category->setMatchtime($category->getMatchtime());
             $em->persist($new_category);
-            $em->flush();
-            $cconversion[$category->getId()] = $new_category->getId();
+            $cconversion[$category->getId()] = $new_category;
             $groups = $this->get('logic')->listGroupsByCategory($category->getId());
             foreach ($groups as $group) {
                 $new_group = new Group();
-                $new_group->setPid($new_category->getId());
+                $new_group->setCategory($new_category);
                 $new_group->setName($group->getName());
                 $new_group->setClassification($group->getClassification());
                 $em->persist($new_group);
-                $em->flush();
             }
         }
+        $em->flush();
         return $cconversion;
     }
 }

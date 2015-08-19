@@ -28,7 +28,7 @@ class ListMatchController extends Controller
         /* @var $user User */
         $user = $utilService->getCurrentUser();
         $group = $this->get('entity')->getGroupById($groupid);
-        $category = $this->get('entity')->getCategoryById($group->getPid());
+        $category = $group->getCategory();
         $tournament = $this->get('entity')->getTournamentById($category->getPid());
         $utilService->validateEditorAdminUser($user, $tournament->getPid());
 

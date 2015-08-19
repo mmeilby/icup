@@ -1,6 +1,7 @@
 <?php
 namespace ICup\Bundle\PublicSiteBundle\Controller\Admin\Overview;
 
+use ICup\Bundle\PublicSiteBundle\Entity\Doctrine\Group;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
@@ -32,8 +33,9 @@ class ListCategoryController extends Controller
         $categories = $this->get('logic')->listCategories($tournamentid);
         $groups = $this->get('logic')->listGroupsByTournament($tournamentid);
         $groupList = array();
+        /* @var $group Group */
         foreach ($groups as $group) {
-            $groupList[$group->getPid()][] = $group;
+            $groupList[$group->getCategory()->getId()][] = $group;
         }
         return array('host' => $host, 'tournament' => $tournament, 'groups' => $groupList, 'categories' => $categories);
     }

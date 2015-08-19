@@ -203,14 +203,14 @@ class MatchPlanning
                 $match->setFixed($ms->getPlan()->isFixed());
                 /* @var $pattr PlaygroundAttribute */
                 $pattr = $ms->getPlan()->getPlaygroundAttribute();
-                $match->setPlayground($playgrounds[$pattr->getPid()]);
+                $match->setPlayground($pattr->getPlayground());
                 $match->setDate($pattr->getDate());
-                if (!isset($ts[$ms->getPlan()->getPlaygroundAttribute()->getId()])) {
+                if (!isset($ts[$pattr->getId()])) {
                     $pa = new PA();
-                    $pa->setPA($ms->getPlan()->getPlaygroundAttribute());
-                    $pa->setId($ms->getPlan()->getPlaygroundAttribute()->getId());
+                    $pa->setPA($pattr);
+                    $pa->setId($pattr->getId());
                     $pa->setPlayground($match->getPlayground());
-                    $pa->setTimeslot($timeslots[$pattr->getTimeslot()]);
+                    $pa->setTimeslot($pattr->getTimeslot());
 
                     $slotschedule = $pattr->getStartSchedule();
                     $pa->setSchedule($slotschedule);
@@ -221,8 +221,7 @@ class MatchPlanning
                     $pa->setTimeleft($slot_time_left);
 
                     $pa_categories = array();
-                    $categoryList = $this->logic->listPACategories($pa->getId());
-                    foreach ($categoryList as $category) {
+                    foreach ($pattr->getCategories() as $category) {
                         $pa_categories[] = $category->getName();
                     }
                     $pa->setCategories($pa_categories);
@@ -231,7 +230,7 @@ class MatchPlanning
                     $ts[$pa->getId()] = $pa;
                 }
                 else {
-                    $pa = $ts[$ms->getPlan()->getPlaygroundAttribute()->getId()];
+                    $pa = $ts[$pattr->getId()];
                     $ml = $pa->getMatchList();
                     $ml[] = $match;
                     $pa->setMatchlist($ml);
@@ -412,11 +411,11 @@ class MatchPlanning
                 $slot_time_left = $diff->h * 60 + $diff->i;
                 $pa->setTimeleft($slot_time_left);
 
-                $parels = array();
-                foreach ($this->logic->listPARelations($pattr->getId()) as $parel) {
-                    $parels[$parel->getCid()] = $parel;
+                $categories = array();
+                foreach ($pattr->getCategories() as $category) {
+                    $categories[$category->getId()] = $category;
                 }
-                $pa->setCategories($parels);
+                $pa->setCategories($categories);
                 $pa->setMatchlist(array());
                 $result->addTimeslot($pa);
             }
@@ -460,8 +459,8 @@ class MatchPlanning
         $result->mark();
         $matchtime = $match->getCategory()->getMatchtime();
         while ($pa = $result->cycleTimeslot()) {
-            $parels = $pa->getCategories();
-            if ($replan || isset($parels[$match->getCategory()->getId()])) {
+            $categories = $pa->getCategories();
+            if ($replan || isset($categories[$match->getCategory()->getId()])) {
                 $slotschedule = $pa->getSchedule();
                 $date = Date::getDate($slotschedule);
                 $time = Date::getTime($slotschedule);

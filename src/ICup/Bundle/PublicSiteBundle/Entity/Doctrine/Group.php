@@ -29,13 +29,6 @@ class Group implements JsonSerializable
     private $id;
 
     /**
-     * @var integer $pid
-     *
-     * @ORM\Column(name="pid", type="integer", nullable=false)
-     */
-    private $pid;
-
-    /**
      * @var Category $category
      * Relation to Category
      * @ORM\ManyToOne(targetEntity="Category", inversedBy="id")
@@ -71,29 +64,6 @@ class Group implements JsonSerializable
     public function getId()
     {
         return $this->id;
-    }
-
-    /**
-     * Set parent id - related category
-     *
-     * @param integer $pid
-     * @return Group
-     */
-    public function setPid($pid)
-    {
-        $this->pid = $pid;
-    
-        return $this;
-    }
-
-    /**
-     * Get parent id - related category
-     *
-     * @return integer 
-     */
-    public function getPid()
-    {
-        return $this->pid;
     }
 
     /**

@@ -65,6 +65,13 @@ class Category
     private $matchtime;
 
     /**
+     * @var ArrayCollection $groups
+     * Collection of category relations to groups
+     * @ORM\OneToMany(targetEntity="Group", mappedBy="pid", cascade={"persist", "remove"})
+     */
+    private $groups;
+
+    /**
      * Get id
      *
      * @return integer 
@@ -210,5 +217,12 @@ class Category
     public function getMatchtime()
     {
         return $this->matchtime;
+    }
+
+    /**
+     * @return ArrayCollection
+     */
+    public function getGroups() {
+        return $this->groups;
     }
 }

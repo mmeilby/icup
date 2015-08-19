@@ -4,6 +4,7 @@ Planlæg slutrunde kampe og puljer
 Færdiggørelse af planlæg indledende kampe
 Administrer kobling mellem nyheder og hold/kampe
 Registreringssystem for indrul
+Implementering af DQL på alle data klasser
 
 IDEER
 -----
@@ -45,6 +46,9 @@ Cookie consent javascript implementeret
 Kampdetaljer som popup - se checkbox definition for eksempel
 Cookie consent page
 Grafisk brush-up af finale billedet på kategorisiden
+Kampplan data klasser tilrettet DQL
+Valg af slutrunde krav flyttet fra PARelations til PlaygroundAttributes
+Matchtime fjernet fra PARelations - forberedt til ManyToMany relation mellem PlaygroundAttribute og Category
 
 FORKASTET
 ---------

@@ -32,7 +32,7 @@ class GroupController extends Controller
         $utilService->validateEditorAdminUser($user, $tournament->getPid());
 
         $group = new Group();
-        $group->setPid($category->getId());
+        $group->setCategory($category);
         $form = $this->makeGroupForm($group, 'add');
         $form->handleRequest($request);
         if ($form->get('cancel')->isClicked()) {
@@ -61,7 +61,7 @@ class GroupController extends Controller
         /* @var $user User */
         $user = $utilService->getCurrentUser();
         $group = $this->get('entity')->getGroupById($groupid);
-        $category = $this->get('entity')->getCategoryById($group->getPid());
+        $category = $group->getCategory();
         $tournament = $this->get('entity')->getTournamentById($category->getPid());
         $utilService->validateEditorAdminUser($user, $tournament->getPid());
 
@@ -93,7 +93,7 @@ class GroupController extends Controller
         /* @var $user User */
         $user = $utilService->getCurrentUser();
         $group = $this->get('entity')->getGroupById($groupid);
-        $category = $this->get('entity')->getCategoryById($group->getPid());
+        $category = $group->getCategory();
         $tournament = $this->get('entity')->getTournamentById($category->getPid());
         $utilService->validateEditorAdminUser($user, $tournament->getPid());
 

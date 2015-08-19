@@ -3,6 +3,7 @@ namespace ICup\Bundle\PublicSiteBundle\Controller\Tournament;
 
 use ICup\Bundle\PublicSiteBundle\Entity\Doctrine\Date;
 use ICup\Bundle\PublicSiteBundle\Entity\Doctrine\News;
+use ICup\Bundle\PublicSiteBundle\Entity\Doctrine\PlaygroundAttribute;
 use ICup\Bundle\PublicSiteBundle\Exceptions\ValidationException;
 use ICup\Bundle\PublicSiteBundle\Services\Util;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
@@ -52,7 +53,7 @@ class OverviewController extends Controller
         $pattrList = array();
         /* @var $pattr PlaygroundAttribute */
         foreach ($pattrs as $pattr) {
-            $pattrList[$pattr->getPid()][] = $pattr;
+            $pattrList[$pattr->getPlayground()->getId()][] = $pattr;
         }
 
         $newsStream = $this->get('tmnt')->listNewsByTournament($tournament->getId());
@@ -96,8 +97,7 @@ class OverviewController extends Controller
                 $diffstart = $pattr->getStartSchedule()->getTimestamp() - $match['schedule']->getTimestamp();
                 $diffend = $pattr->getEndSchedule()->getTimestamp() - $match['schedule']->getTimestamp();
                 if ($diffend >= 0 && $diffstart <= 0) {
-                    $slotid = $pattr->getTimeslot();
-                    $match['timeslot'] = $timeslots[$slotid];
+                    $match['timeslot'] = $pattr->getTimeslot();
                     $matchList[] = $match;
                     break;
                 }

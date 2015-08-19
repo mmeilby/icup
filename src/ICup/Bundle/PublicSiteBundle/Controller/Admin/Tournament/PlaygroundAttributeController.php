@@ -130,7 +130,6 @@ class PlaygroundAttributeController extends Controller
 
     private function delPAttr(PlaygroundAttribute $pattr) {
         $em = $this->getDoctrine()->getManager();
-        $this->get('logic')->removePARelations($pattr->getId());
         $em->remove($pattr);
         $em->flush();
     }
@@ -162,7 +161,7 @@ class PlaygroundAttributeController extends Controller
         $endtime = $pattr->getEndSchedule();
         $pattrForm->setEnd(date_format($endtime, $timeformat));
         $pattrForm->setFinals($pattr->getFinals());
-        $pattrForm->setCategories($this->get('logic')->listPACategories($pattr->getId()));
+        $pattrForm->setCategories($pattr->getCategories());
         return $pattrForm;
     }
 

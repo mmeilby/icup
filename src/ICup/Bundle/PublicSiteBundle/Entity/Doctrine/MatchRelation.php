@@ -77,29 +77,6 @@ class MatchRelation
     }
 
     /**
-     * Set parent id
-     *
-     * @param integer $pid
-     * @return MatchRelation
-     * @deprecated
-     */
-    public function setPid($pid)
-    {
-        throw new MethodNotImplementedException();
-    }
-
-    /**
-     * Get parent id
-     *
-     * @return integer
-     * @deprecated
-     */
-    public function getPid()
-    {
-        return $this->match->getId();
-    }
-
-    /**
      * @param Match $match
      * @return MatchRelation
      */

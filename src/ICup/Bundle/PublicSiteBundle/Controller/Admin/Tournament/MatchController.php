@@ -1,6 +1,7 @@
 <?php
 namespace ICup\Bundle\PublicSiteBundle\Controller\Admin\Tournament;
 
+use ICup\Bundle\PublicSiteBundle\Entity\Doctrine\Category;
 use ICup\Bundle\PublicSiteBundle\Entity\Doctrine\Date;
 use ICup\Bundle\PublicSiteBundle\Entity\Doctrine\Group;
 use ICup\Bundle\PublicSiteBundle\Entity\Doctrine\Match;
@@ -33,12 +34,13 @@ class MatchController extends Controller
         /* @var $user User */
         $user = $utilService->getCurrentUser();
         $group = $this->get('entity')->getGroupById($groupid);
-        $category = $this->get('entity')->getCategoryById($group->getPid());
+        /* @var $category Category */
+        $category = $group->getCategory();
         $tournament = $this->get('entity')->getTournamentById($category->getPid());
         $utilService->validateEditorAdminUser($user, $tournament->getPid());
 
         $matchForm = new MatchForm();
-        $matchForm->setPid($group->getId());
+        $matchForm->setGroup($group);
         $form = $this->makeMatchForm($matchForm, $tournament->getId(), 'add');
         $form->handleRequest($request);
         if ($form->get('cancel')->isClicked()) {
@@ -76,8 +78,10 @@ class MatchController extends Controller
         $user = $utilService->getCurrentUser();
         /* @var $match Match */
         $match = $this->get('entity')->getMatchById($matchid);
-        $group = $this->get('entity')->getGroupById($match->getPid());
-        $category = $this->get('entity')->getCategoryById($group->getPid());
+        /* @var $group Group */
+        $group = $match->getGroup();
+        /* @var $category Category */
+        $category = $group->getCategory();
         $tournament = $this->get('entity')->getTournamentById($category->getPid());
         $utilService->validateEditorAdminUser($user, $tournament->getPid());
 
@@ -120,9 +124,12 @@ class MatchController extends Controller
 
         /* @var $user User */
         $user = $utilService->getCurrentUser();
+        /* @var $match Match */
         $match = $this->get('entity')->getMatchById($matchid);
-        $group = $this->get('entity')->getGroupById($match->getPid());
-        $category = $this->get('entity')->getCategoryById($group->getPid());
+        /* @var $group Group */
+        $group = $match->getGroup();
+        /* @var $category Category */
+        $category = $group->getCategory();
         $tournament = $this->get('entity')->getTournamentById($category->getPid());
         $utilService->validateEditorAdminUser($user, $tournament->getPid());
 
@@ -149,7 +156,7 @@ class MatchController extends Controller
 
     private function addMatch(MatchForm $matchForm) {
         $match = new Match();
-        $match->setPid($matchForm->getPid());
+        $match->setGroup($matchForm->getGroup());
         $this->updateMatch($matchForm, $match);
         $em = $this->getDoctrine()->getManager();
         $em->persist($match);
@@ -164,22 +171,6 @@ class MatchController extends Controller
 
     private function delMatch(Match $match) {
         $em = $this->getDoctrine()->getManager();
-        $homeRel = $this->get('match')->getMatchRelationByMatch($match->getId(), MatchSupport::$HOME);
-        if ($homeRel != null) {
-            $em->remove($homeRel);
-        }
-        $awayRel = $this->get('match')->getMatchRelationByMatch($match->getId(), MatchSupport::$AWAY);
-        if ($awayRel != null) {
-            $em->remove($awayRel);
-        }
-        $qhomeRel = $this->get('match')->getQMatchRelationByMatch($match->getId(), MatchSupport::$HOME);
-        if ($homeRel != null) {
-            $em->remove($qhomeRel);
-        }
-        $qawayRel = $this->get('match')->getQMatchRelationByMatch($match->getId(), MatchSupport::$AWAY);
-        if ($awayRel != null) {
-            $em->remove($qawayRel);
-        }
         $em->remove($match);
         $em->flush();
     }
@@ -198,7 +189,7 @@ class MatchController extends Controller
     private function copyMatchForm(Match $match) {
         $matchForm = new MatchForm();
         $matchForm->setId($match->getId());
-        $matchForm->setPid($match->getPId());
+        $matchForm->setGroup($match->getGroup());
         $matchForm->setMatchno($match->getMatchno());
         $matchdate = Date::getDateTime($match->getDate(), $match->getTime());
         $dateformat = $this->get('translator')->trans('FORMAT.DATE');

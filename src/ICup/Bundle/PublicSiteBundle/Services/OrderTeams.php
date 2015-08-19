@@ -134,9 +134,10 @@ class OrderTeams
     private function traverseMatches($teamMap, $teamResults) {
         $groupCompleted = true;
         $relationMap = array();
+        /* @var $matchRelation MatchRelation */
         foreach ($teamResults as $matchRelation) {
             if (array_key_exists($matchRelation->getCid(), $teamMap)) {
-                $relationMap[$matchRelation->getPid()][$matchRelation->getAwayteam()?'A':'H'] = $matchRelation;
+                $relationMap[$matchRelation->getMatch()->getId()][$matchRelation->getAwayteam()?'A':'H'] = $matchRelation;
             }
         }
         foreach ($relationMap as $matchResults) {

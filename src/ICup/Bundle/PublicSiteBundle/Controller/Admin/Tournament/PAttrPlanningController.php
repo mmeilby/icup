@@ -1,6 +1,7 @@
 <?php
 namespace ICup\Bundle\PublicSiteBundle\Controller\Admin\Tournament;
 
+use ICup\Bundle\PublicSiteBundle\Entity\Doctrine\PlaygroundAttribute;
 use ICup\Bundle\PublicSiteBundle\Entity\Doctrine\User;
 use ICup\Bundle\PublicSiteBundle\Entity\Doctrine\Category;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
@@ -22,8 +23,9 @@ class PAttrPlanningController extends Controller
         $utilService = $this->get('util');
         /* @var $user User */
         $user = $utilService->getCurrentUser();
+        /* @var $pattr PlaygroundAttribute */
         $pattr = $this->get('entity')->getPlaygroundAttributeById($playgroundattributeid);
-        $playground = $this->get('entity')->getPlaygroundById($pattr->getPid());
+        $playground = $pattr->getPlayground();
         $site = $this->get('entity')->getSiteById($playground->getPid());
         $tournament = $this->get('entity')->getTournamentById($site->getPid());
         $host = $this->get('entity')->getHostById($tournament->getPid());
@@ -36,10 +38,8 @@ class PAttrPlanningController extends Controller
         }
 
         $assignedCategoryList = array();
-        $paRelations = $this->get('logic')->listPARelations($pattr->getId());
-        foreach ($paRelations as $paRelation) {
-            $category = $categoryList[$paRelation->getCid()];
-            $assignedCategoryList[$paRelation->getCid()] = array(
+        foreach ($pattr->getCategories() as $category) {
+            $assignedCategoryList[$category->getId()] = array(
                 'id' => $category->getId(),
                 'name' => $category->getName(),
                 'gender' => $category->getGender(),
@@ -56,11 +56,7 @@ class PAttrPlanningController extends Controller
                      'tournament' => $tournament,
                      'playground' => $playground,
                      'attribute' => $pattr,
-                     'attr_schedule' => DateTime::createFromFormat(
-                                $this->container->getParameter('db_date_format').
-                                '-'.
-                                $this->container->getParameter('db_time_format'),
-                                $pattr->getDate().'-'.$pattr->getStart()),
+                     'attr_schedule' => $pattr->getStartSchedule(),
                      'unassignedlist' => $unassignedCategoryList,
                      'assignedlist' => $assignedCategoryList);
     }

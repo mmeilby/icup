@@ -22,11 +22,12 @@ class Category
     private $id;
 
     /**
-     * @var integer $pid
-     *
-     * @ORM\Column(name="pid", type="integer", nullable=false)
+     * @var Tournament $tournament
+     * Relation to Tournament
+     * @ORM\ManyToOne(targetEntity="Tournament", inversedBy="id")
+     * @ORM\JoinColumn(name="pid", referencedColumnName="id")
      */
-    private $pid;
+    private $tournament;
 
     /**
      * @var string $name
@@ -67,7 +68,7 @@ class Category
     /**
      * @var ArrayCollection $groups
      * Collection of category relations to groups
-     * @ORM\OneToMany(targetEntity="Group", mappedBy="pid", cascade={"persist", "remove"})
+     * @ORM\OneToMany(targetEntity="Group", mappedBy="category", cascade={"persist", "remove"})
      */
     private $groups;
 
@@ -82,26 +83,19 @@ class Category
     }
 
     /**
-     * Set parent id - related tournament
-     *
-     * @param integer $pid
-     * @return Category
+     * @return Tournament
      */
-    public function setPid($pid)
-    {
-        $this->pid = $pid;
-    
-        return $this;
+    public function getTournament() {
+        return $this->tournament;
     }
 
     /**
-     * Get parent id - related tournament
-     *
-     * @return integer 
+     * @param Tournament $tournament
+     * @return Category
      */
-    public function getPid()
-    {
-        return $this->pid;
+    public function setTournament($tournament) {
+        $this->tournament = $tournament;
+        return $this;
     }
 
     /**

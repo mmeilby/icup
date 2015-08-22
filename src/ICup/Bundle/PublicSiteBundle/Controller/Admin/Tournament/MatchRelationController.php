@@ -6,7 +6,9 @@ use ICup\Bundle\PublicSiteBundle\Entity\Doctrine\Date;
 use ICup\Bundle\PublicSiteBundle\Entity\Doctrine\Group;
 use ICup\Bundle\PublicSiteBundle\Entity\Doctrine\Match;
 use ICup\Bundle\PublicSiteBundle\Entity\Doctrine\MatchRelation;
+use ICup\Bundle\PublicSiteBundle\Entity\Doctrine\Tournament;
 use ICup\Bundle\PublicSiteBundle\Entity\Doctrine\User;
+use ICup\Bundle\PublicSiteBundle\Services\Util;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
@@ -38,8 +40,10 @@ class MatchRelationController extends Controller
         $group = $match->getGroup();
         /* @var $category Category */
         $category = $group->getCategory();
-        $tournament = $this->get('entity')->getTournamentById($category->getPid());
-        $utilService->validateEditorAdminUser($user, $tournament->getPid());
+        /* @var $tournament Tournament */
+        $tournament = $category->getTournament();
+        $host = $tournament->getHost();
+        $utilService->validateEditorAdminUser($user, $host->getId());
 
         $matchForm = $this->copyMatchForm($match);
         $form = $this->makeMatchForm($matchForm, 'chg');
@@ -79,8 +83,10 @@ class MatchRelationController extends Controller
         $group = $match->getGroup();
         /* @var $category Category */
         $category = $group->getCategory();
-        $tournament = $this->get('entity')->getTournamentById($category->getPid());
-        $utilService->validateEditorAdminUser($user, $tournament->getPid());
+        /* @var $tournament Tournament */
+        $tournament = $category->getTournament();
+        $host = $tournament->getHost();
+        $utilService->validateEditorAdminUser($user, $host->getId());
 
         $matchForm = $this->copyMatchForm($match);
         $form = $this->makeMatchForm($matchForm, 'del');
@@ -119,8 +125,10 @@ class MatchRelationController extends Controller
         $group = $match->getGroup();
         /* @var $category Category */
         $category = $group->getCategory();
-        $tournament = $this->get('entity')->getTournamentById($category->getPid());
-        $utilService->validateEditorAdminUser($user, $tournament->getPid());
+        /* @var $tournament Tournament */
+        $tournament = $category->getTournament();
+        $host = $tournament->getHost();
+        $utilService->validateEditorAdminUser($user, $host->getId());
         
         $matchForm = $this->copyMatchForm($match);
         $form = $this->makeUpdMatchForm($matchForm, $match);

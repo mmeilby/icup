@@ -6,6 +6,7 @@ use ICup\Bundle\PublicSiteBundle\Entity\Doctrine\MatchRelation;
 use ICup\Bundle\PublicSiteBundle\Entity\Doctrine\GroupOrder;
 use ICup\Bundle\PublicSiteBundle\Entity\MatchImport;
 use ICup\Bundle\PublicSiteBundle\Entity\Doctrine\Tournament;
+use ICup\Bundle\PublicSiteBundle\Services\Util;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
 use Symfony\Component\Form\FormError;
@@ -27,8 +28,10 @@ class MatchUnresImportController extends Controller
 
         /* @var $user User */
         $user = $utilService->getCurrentUser();
+        /* @var $tournament Tournament */
         $tournament = $this->get('entity')->getTournamentById($tournamentid);
-        $utilService->validateEditorAdminUser($user, $tournament->getPid());
+        $host = $tournament->getHost();
+        $utilService->validateEditorAdminUser($user, $host->getId());
 
         $matchImport = new MatchImport();
         $form = $this->makeImportForm($matchImport);
@@ -166,31 +169,32 @@ class MatchUnresImportController extends Controller
     }
     
     private function commitImport($parseObj) {
+        /* @var $match Match */
         $match = $parseObj['match'];
 
         $goA = new GroupOrder();
         $goA->setCid($parseObj['teamAid']);
-        $goA->setPid($match->getPid());
+        $goA->setPid($match->getGroup()->getId());
         
         $resultreqA = new MatchRelation();
-        $resultreqA->setPid($match->getId());
         $resultreqA->setCid($parseObj['teamAid']);
         $resultreqA->setAwayteam(false);
         $resultreqA->setScorevalid(false);
         $resultreqA->setScore(0);
         $resultreqA->setPoints(0);
+        $match->addMatchRelation($resultreqA);
 
         $goB = new GroupOrder();
         $goB->setCid($parseObj['teamBid']);
-        $goB->setPid($match->getPid());
+        $goB->setPid($match->getGroup()->getId());
 
         $resultreqB = new MatchRelation();
-        $resultreqB->setPid($match->getId());
         $resultreqB->setCid($parseObj['teamBid']);
         $resultreqB->setAwayteam(true);
         $resultreqB->setScorevalid(false);
         $resultreqB->setScore(0);
         $resultreqB->setPoints(0);
+        $match->addMatchRelation($resultreqB);
 
         $em = $this->getDoctrine()->getManager();
         $em->persist($goA);

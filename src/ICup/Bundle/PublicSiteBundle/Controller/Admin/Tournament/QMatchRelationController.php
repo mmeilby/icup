@@ -39,8 +39,10 @@ class QMatchRelationController extends Controller
         $group = $match->getGroup();
         /* @var $category Category */
         $category = $group->getCategory();
-        $tournament = $this->get('entity')->getTournamentById($category->getPid());
-        $utilService->validateEditorAdminUser($user, $tournament->getPid());
+        /* @var $tournament Tournament */
+        $tournament = $category->getTournament();
+        $host = $tournament->getHost();
+        $utilService->validateEditorAdminUser($user, $host->getId());
 
         $matchForm = $this->copyMatchForm($match);
         $form = $this->makeMatchForm($matchForm, $category->getId(), $group->getClassification(), 'chg');
@@ -84,8 +86,10 @@ class QMatchRelationController extends Controller
         $group = $match->getGroup();
         /* @var $category Category */
         $category = $group->getCategory();
-        $tournament = $this->get('entity')->getTournamentById($category->getPid());
-        $utilService->validateEditorAdminUser($user, $tournament->getPid());
+        /* @var $tournament Tournament */
+        $tournament = $category->getTournament();
+        $host = $tournament->getHost();
+        $utilService->validateEditorAdminUser($user, $host->getId());
 
         $matchForm = $this->copyMatchForm($match);
         $form = $this->makeMatchForm($matchForm, $category->getId(), $group->getClassification(), 'del');

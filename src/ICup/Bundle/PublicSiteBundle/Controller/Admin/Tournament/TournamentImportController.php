@@ -30,7 +30,7 @@ class TournamentImportController extends Controller
         $utilService->validateEditorAdminUser($user, $hostid);
 
         $tournament = new Tournament();
-        $tournament->setPid($hostid);
+        $tournament->setHost($this->get('entity')->getHostById($hostid));
         $form = $this->makeImportForm($tournament);
         $form->handleRequest($request);
         if ($form->get('cancel')->isClicked()) {
@@ -41,9 +41,9 @@ class TournamentImportController extends Controller
             $tid = $formData['tournament'];
             if ($tid > 0) {
                 $source_tournament = $this->get('entity')->getTournamentById($tid);
-                if ($source_tournament->getPid() != $tournament->getPid()) {
+                if ($source_tournament->getHost()->getId() != $tournament->getHost()->getId()) {
                     throw new ValidationException("NOTTHESAMETOURNAMENT",
-                        "Not allowed to import from different host, source=" . $source_tournament->getPid() . ", target=" . $tournament->getPid());
+                        "Not allowed to import from different host, source=" . $source_tournament->getHost()->getId() . ", target=" . $tournament->getHost()->getId());
                 }
                 $this->importTournament($source_tournament, $tournament);
                 return $this->redirect($returnUrl);
@@ -56,7 +56,7 @@ class TournamentImportController extends Controller
     }
     
     private function makeImportForm(Tournament $tournament) {
-        $tournaments = $this->get('logic')->listTournaments($tournament->getPid());
+        $tournaments = $this->get('logic')->listTournaments($tournament->getHost()->getId());
         $tournamentList = array();
         foreach ($tournaments as $tmnt) {
             if ($tmnt->getId() != $tournament->getId()) {
@@ -114,7 +114,7 @@ class TournamentImportController extends Controller
         $sites = $this->get('logic')->listSites($source_tournament->getId());
         foreach ($sites as $site) {
             $new_site = new Site();
-            $new_site->setPid($tournament->getId());
+            $new_site->setTournament($tournament);
             $new_site->setName($site->getName());
             $em->persist($new_site);
             $em->flush();
@@ -138,7 +138,7 @@ class TournamentImportController extends Controller
         $timeslots = $this->get('logic')->listTimeslots($source_tournament->getId());
         foreach ($timeslots as $timeslot) {
             $new_timeslot = new Timeslot();
-            $new_timeslot->setPid($tournament->getId());
+            $new_timeslot->setTournament($tournament);
             $new_timeslot->setName($timeslot->getName());
             $new_timeslot->setCapacity($timeslot->getCapacity());
             $new_timeslot->setPenalty($timeslot->getPenalty());
@@ -175,7 +175,7 @@ class TournamentImportController extends Controller
         $categories = $this->get('logic')->listCategories($source_tournament->getId());
         foreach ($categories as $category) {
             $new_category = new Category();
-            $new_category->setPid($tournament->getId());
+            $new_category->setTournament($tournament);
             $new_category->setName($category->getName());
             $new_category->setGender($category->getGender());
             $new_category->setClassification($category->getClassification());

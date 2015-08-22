@@ -1,6 +1,7 @@
 <?php
 namespace ICup\Bundle\PublicSiteBundle\Controller\Admin\Overview;
 
+use ICup\Bundle\PublicSiteBundle\Entity\Doctrine\Tournament;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
@@ -22,14 +23,13 @@ class ListEventController extends Controller
     public function listAction($tournamentid) {
         /* @var $utilService Util */
         $utilService = $this->get('util');
-        
         /* @var $user User */
         $user = $utilService->getCurrentUser();
+        /* @var $tournament Tournament */
         $tournament = $this->get('entity')->getTournamentById($tournamentid);
-        $utilService->validateEditorAdminUser($user, $tournament->getPid());
-
-        $host = $this->get('entity')->getHostById($tournament->getPid());
-        $events = $this->get('tmnt')->listEventsByTournament($tournamentid);
+        $host = $tournament->getHost();
+        $utilService->validateEditorAdminUser($user, $host->getId());
+        $events = $tournament->getEvents();
         usort($events,
             function ($event1, $event2) {
                 if ($event1['schedule'] == $event2['schedule']) {

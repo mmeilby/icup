@@ -4,8 +4,10 @@ namespace ICup\Bundle\PublicSiteBundle\Controller\Admin\Tournament;
 use ICup\Bundle\PublicSiteBundle\Entity\Doctrine\Date;
 use ICup\Bundle\PublicSiteBundle\Entity\Doctrine\Match;
 use ICup\Bundle\PublicSiteBundle\Entity\Doctrine\QMatchRelation;
+use ICup\Bundle\PublicSiteBundle\Entity\Doctrine\User;
 use ICup\Bundle\PublicSiteBundle\Entity\MatchImport;
 use ICup\Bundle\PublicSiteBundle\Entity\Doctrine\Tournament;
+use ICup\Bundle\PublicSiteBundle\Services\Util;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
 use Symfony\Component\Form\FormError;
@@ -27,8 +29,10 @@ class QMatchImportController extends Controller
 
         /* @var $user User */
         $user = $utilService->getCurrentUser();
+        /* @var $tournament Tournament */
         $tournament = $this->get('entity')->getTournamentById($tournamentid);
-        $utilService->validateEditorAdminUser($user, $tournament->getPid());
+        $host = $tournament->getHost();
+        $utilService->validateEditorAdminUser($user, $host->getId());
 
         $matchImport = new MatchImport();
         $form = $this->makeImportForm($matchImport);
@@ -171,7 +175,7 @@ class QMatchImportController extends Controller
         }
         
         $parseObj['playgroundid'] = $playground->getId();
-        $parseObj['groupid'] = $group->getId();
+        $parseObj['group'] = $group;
         $parseObj['teamAgroupid'] = $groupRA->getId();
         $parseObj['teamBgroupid'] = $groupRB->getId();
     }
@@ -187,26 +191,23 @@ class QMatchImportController extends Controller
         $matchrec->setMatchno($parseObj['id']);
         $matchrec->setDate(Date::getDate($matchdate));
         $matchrec->setTime(Date::getTime($matchtime));
-        $matchrec->setPid($parseObj['groupid']);
+        $matchrec->setGroup($parseObj['group']);
         $matchrec->setPlayground($parseObj['playgroundid']);
+
+        $resultreqA = new QMatchRelation();
+        $resultreqA->setCid($parseObj['teamAgroupid']);
+        $resultreqA->setRank($parseObj['teamA']['rank']);
+        $resultreqA->setAwayteam(false);
+        $matchrec->addMatchRelation($resultreqA);
+
+        $resultreqB = new QMatchRelation();
+        $resultreqB->setCid($parseObj['teamBgroupid']);
+        $resultreqB->setRank($parseObj['teamB']['rank']);
+        $resultreqB->setAwayteam(true);
+        $matchrec->addMatchRelation($resultreqB);
 
         $em = $this->getDoctrine()->getManager();
         $em->persist($matchrec);
         $em->flush();
-
-        $resultreqA = new QMatchRelation();
-        $resultreqA->setPid($matchrec->getId());
-        $resultreqA->setCid($parseObj['teamAgroupid']);
-        $resultreqA->setRank($parseObj['teamA']['rank']);
-        $resultreqA->setAwayteam(false);
-
-        $resultreqB = new QMatchRelation();
-        $resultreqB->setPid($matchrec->getId());
-        $resultreqB->setCid($parseObj['teamBgroupid']);
-        $resultreqB->setRank($parseObj['teamB']['rank']);
-        $resultreqB->setAwayteam(true);
-
-        $em->persist($resultreqA);
-        $em->persist($resultreqB);
     }
 }

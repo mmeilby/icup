@@ -33,11 +33,12 @@ class Event
     private $id;
 
     /**
-     * @var integer $pid
-     * Relation to Tournament - pid=tournament.id 
-     * @ORM\Column(name="pid", type="integer", nullable=false)
+     * @var Tournament $tournament
+     * Relation to Tournament
+     * @ORM\ManyToOne(targetEntity="Tournament", inversedBy="id")
+     * @ORM\JoinColumn(name="pid", referencedColumnName="id")
      */
-    private $pid;
+    private $tournament;
 
     /**
      * @var string $date
@@ -89,6 +90,22 @@ class Event
     public function getPid()
     {
         return $this->pid;
+    }
+
+    /**
+     * @return Tournament
+     */
+    public function getTournament() {
+        return $this->tournament;
+    }
+
+    /**
+     * @param Tournament $tournament
+     * @return Event
+     */
+    public function setTournament($tournament) {
+        $this->tournament = $tournament;
+        return $this;
     }
 
     /**

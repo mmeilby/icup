@@ -53,8 +53,10 @@ class EnrollmentController extends Controller
         /* @var $category Category */
         $category = $this->get('entity')->getCategoryById($categoryid);
         // Check that user is editor
-        $tournament = $this->get('entity')->getTournamentById($category->getPid());
-        $utilService->validateEditorAdminUser($user, $tournament->getPid());
+        /* @var $tournament Tournament */
+        $tournament = $category->getTournament();
+        $host = $tournament->getHost();
+        $utilService->validateEditorAdminUser($user, $host->getId());
         
         $this->get('logic')->addEnrolled($category->getId(), $club->getId(), $user->getId());
         return $this->redirect($returnUrl);
@@ -99,8 +101,10 @@ class EnrollmentController extends Controller
         /* @var $category Category */
         $category = $this->get('entity')->getCategoryById($categoryid);
         // Check that user is editor
-        $tournament = $this->get('entity')->getTournamentById($category->getPid());
-        $utilService->validateEditorAdminUser($user, $tournament->getPid());
+        /* @var $tournament Tournament */
+        $tournament = $category->getTournament();
+        $host = $tournament->getHost();
+        $utilService->validateEditorAdminUser($user, $host->getId());
 
         $this->get('logic')->deleteEnrolled($category->getId(), $club->getId());
         return $this->redirect($returnUrl);

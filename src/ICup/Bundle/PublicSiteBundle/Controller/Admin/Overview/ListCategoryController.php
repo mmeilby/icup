@@ -2,6 +2,7 @@
 namespace ICup\Bundle\PublicSiteBundle\Controller\Admin\Overview;
 
 use ICup\Bundle\PublicSiteBundle\Entity\Doctrine\Group;
+use ICup\Bundle\PublicSiteBundle\Entity\Doctrine\Tournament;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
@@ -22,15 +23,13 @@ class ListCategoryController extends Controller
     public function listAction($tournamentid) {
         /* @var $utilService Util */
         $utilService = $this->get('util');
-        
-
         /* @var $user User */
         $user = $utilService->getCurrentUser();
+        /* @var $tournament Tournament */
         $tournament = $this->get('entity')->getTournamentById($tournamentid);
-        $utilService->validateEditorAdminUser($user, $tournament->getPid());
-
-        $host = $this->get('entity')->getHostById($tournament->getPid());
-        $categories = $this->get('logic')->listCategories($tournamentid);
+        $host = $tournament->getHost();
+        $utilService->validateEditorAdminUser($user, $host->getId());
+        $categories = $tournament->getCategories();
         $groups = $this->get('logic')->listGroupsByTournament($tournamentid);
         $groupList = array();
         /* @var $group Group */

@@ -2,6 +2,7 @@
 namespace ICup\Bundle\PublicSiteBundle\Controller\Admin\Dashboard;
 
 use ICup\Bundle\PublicSiteBundle\Entity\Doctrine\Host;
+use ICup\Bundle\PublicSiteBundle\Entity\Doctrine\Tournament;
 use ICup\Bundle\PublicSiteBundle\Entity\Doctrine\User;
 use ICup\Bundle\PublicSiteBundle\Exceptions\RedirectException;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
@@ -30,8 +31,9 @@ class TournamentboardController extends Controller
         $utilService = $this->get('util');
         /* @var $user User */
         $user = $utilService->getCurrentUser();
+        /* @var $tournament Tournament */
         $tournament = $this->get('entity')->getTournamentById($tournamentid);
-        $host = $this->get('entity')->getHostById($tournament->getPid());
+        $host = $tournament->getHost();
         $utilService->validateEditorAdminUser($user, $host->getId());
         $today = new DateTime();
         $tstat = $this->get('tmnt')->getTournamentStatus($tournament->getId(), $today);

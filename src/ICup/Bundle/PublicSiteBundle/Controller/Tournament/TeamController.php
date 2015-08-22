@@ -20,7 +20,7 @@ class TeamController extends Controller
         $group = $this->get('entity')->getGroupById($groupid);
         /* @var $category Category */
         $category = $group->getCategory();
-        $tournament = $this->get('entity')->getTournamentById($category->getPid());
+        $tournament = $category->getTournament();
         $matchList = $this->get('match')->listMatchesByGroupTeam($groupid, $teamid);
 
         $matches = array();
@@ -45,8 +45,7 @@ class TeamController extends Controller
         $team = $this->get('entity')->getTeamById($teamid);
         $name = $this->get('logic')->getTeamName($team->getName(), $team->getDivision());
         $category = $this->get('logic')->getEnrolledCategory($teamid);
-        $tournament = $this->get('entity')->getTournamentById($category->getPid());
-
+        $tournament = $category->getTournament();
         $matchList = $this->get('match')->listMatchesByTeam($teamid);
         $matches = array();
         foreach ($matchList as $match) {

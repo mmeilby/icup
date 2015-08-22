@@ -1,6 +1,7 @@
 <?php
 namespace ICup\Bundle\PublicSiteBundle\Controller\Admin\Tournament;
 
+use ICup\Bundle\PublicSiteBundle\Entity\Doctrine\Tournament;
 use ICup\Bundle\PublicSiteBundle\Entity\Doctrine\User;
 use ICup\Bundle\PublicSiteBundle\Entity\Doctrine\Timeslot;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
@@ -28,11 +29,13 @@ class TimeslotController extends Controller
 
         /* @var $user User */
         $user = $utilService->getCurrentUser();
+        /* @var $tournament Tournament */
         $tournament = $this->get('entity')->getTournamentById($tournamentid);
-        $utilService->validateEditorAdminUser($user, $tournament->getPid());
+        $host = $tournament->getHost();
+        $utilService->validateEditorAdminUser($user, $host->getId());
 
         $timeslot = new Timeslot();
-        $timeslot->setPid($tournament->getId());
+        $timeslot->setTournament($tournament);
         $form = $this->makeTimeslotForm($timeslot, 'add');
         $form->handleRequest($request);
         if ($form->get('cancel')->isClicked()) {
@@ -61,8 +64,10 @@ class TimeslotController extends Controller
         /* @var $user User */
         $user = $utilService->getCurrentUser();
         $timeslot = $this->get('entity')->getTimeslotById($timeslotid);
+        /* @var $tournament Tournament */
         $tournament = $this->get('entity')->getTournamentById($timeslot->getPid());
-        $utilService->validateEditorAdminUser($user, $tournament->getPid());
+        $host = $tournament->getHost();
+        $utilService->validateEditorAdminUser($user, $host->getId());
 
         $form = $this->makeTimeslotForm($timeslot, 'chg');
         $form->handleRequest($request);
@@ -92,8 +97,10 @@ class TimeslotController extends Controller
         /* @var $user User */
         $user = $utilService->getCurrentUser();
         $timeslot = $this->get('entity')->getTimeslotById($timeslotid);
+        /* @var $tournament Tournament */
         $tournament = $this->get('entity')->getTournamentById($timeslot->getPid());
-        $utilService->validateEditorAdminUser($user, $tournament->getPid());
+        $host = $tournament->getHost();
+        $utilService->validateEditorAdminUser($user, $host->getId());
 
         $form = $this->makeTimeslotForm($timeslot, 'del');
         $form->handleRequest($request);

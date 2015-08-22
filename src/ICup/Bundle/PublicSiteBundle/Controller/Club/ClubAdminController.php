@@ -90,8 +90,8 @@ class ClubAdminController extends Controller
         $user = $utilService->getCurrentUser();
         /* @var $tournament Tournament */
         $tournament = $this->get('entity')->getTournamentById($tournamentid);
-        // Check that user is editor
-        $utilService->validateEditorAdminUser($user, $tournament->getPid());
+        $host = $tournament->getHost();
+        $utilService->validateEditorAdminUser($user, $host->getId());
 
         // Prepare default data for form
         $clubFormData = $this->getClubDefaults($request);

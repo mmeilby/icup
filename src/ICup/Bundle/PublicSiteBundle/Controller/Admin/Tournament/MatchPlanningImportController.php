@@ -114,7 +114,7 @@ class MatchPlanningImportController extends Controller
         $teamBid = $this->getTeam($group->getId(), $parseObj, 'teamB');
         
         $parseObj['playgroundid'] = $playground->getId();
-        $parseObj['groupid'] = $group->getId();
+        $parseObj['group'] = $group;
         $parseObj['teamAid'] = $teamAid;
         $parseObj['teamBid'] = $teamBid;
     }
@@ -143,30 +143,27 @@ class MatchPlanningImportController extends Controller
         $matchrec->setMatchno($parseObj['id']);
         $matchrec->setDate(Date::getDate($matchdate));
         $matchrec->setTime(Date::getTime($matchtime));
-        $matchrec->setPid($parseObj['groupid']);
+        $matchrec->setGroup($parseObj['group']);
         $matchrec->setPlayground($parseObj['playgroundid']);
 
-        $em = $this->getDoctrine()->getManager();
-        $em->persist($matchrec);
-        $em->flush();
-
         $resultreqA = new MatchRelation();
-        $resultreqA->setPid($matchrec->getId());
         $resultreqA->setCid($parseObj['teamAid']);
         $resultreqA->setAwayteam(false);
         $resultreqA->setScorevalid(false);
         $resultreqA->setScore(0);
         $resultreqA->setPoints(0);
+        $matchrec->addMatchRelation($resultreqA);
 
         $resultreqB = new MatchRelation();
-        $resultreqB->setPid($matchrec->getId());
         $resultreqB->setCid($parseObj['teamBid']);
         $resultreqB->setAwayteam(true);
         $resultreqB->setScorevalid(false);
         $resultreqB->setScore(0);
         $resultreqB->setPoints(0);
+        $matchrec->addMatchRelation($resultreqB);
 
-        $em->persist($resultreqA);
-        $em->persist($resultreqB);
+        $em = $this->getDoctrine()->getManager();
+        $em->persist($matchrec);
+        $em->flush();
     }
 }

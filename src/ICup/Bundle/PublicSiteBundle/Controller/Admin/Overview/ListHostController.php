@@ -22,7 +22,6 @@ class ListHostController extends Controller
     public function listAction() {
         /* @var $utilService Util */
         $utilService = $this->get('util');
-        
 
         // If user is not admin redirect to editor view
         if (!$this->get('security.context')->isGranted('ROLE_ADMIN')) {
@@ -33,7 +32,7 @@ class ListHostController extends Controller
         $tournaments = $this->get('entity')->getTournamentRepo()->findAll();
         $hostList = array();
         foreach ($tournaments as $tournament) {
-            $hostList[$tournament->getPid()][] = $tournament;
+            $hostList[$tournament->getHost()->getId()][] = $tournament;
         }
         return array('tournaments' => $hostList, 'hosts' => $hosts);
     }

@@ -29,10 +29,10 @@ class ListMatchController extends Controller
         $user = $utilService->getCurrentUser();
         $group = $this->get('entity')->getGroupById($groupid);
         $category = $group->getCategory();
-        $tournament = $this->get('entity')->getTournamentById($category->getPid());
-        $utilService->validateEditorAdminUser($user, $tournament->getPid());
-
-        $host = $this->get('entity')->getHostById($tournament->getPid());
+        /* @var $tournament Tournament */
+        $tournament = $category->getTournament();
+        $host = $tournament->getHost();
+        $utilService->validateEditorAdminUser($user, $host->getId());
         $mmatches = $this->get('match')->listMatchesByGroup($groupid);
         $umatches = $this->get('match')->listMatchesUnfinished($groupid);
         $sortedMatches = array_merge($umatches, $mmatches);
@@ -60,8 +60,10 @@ class ListMatchController extends Controller
         
         /* @var $user User */
         $user = $utilService->getCurrentUser();
+        /* @var $tournament Tournament */
         $tournament = $this->get('entity')->getTournamentById($tournamentid);
-        $utilService->validateEditorAdminUser($user, $tournament->getPid());
+        $host = $tournament->getHost();
+        $utilService->validateEditorAdminUser($user, $host->getId());
 
         $date = $this->getSelectedDate($tournament->getId(), $request);
         $playgroundid = $this->getSelectedPlayground($tournament->getId(), $request);

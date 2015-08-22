@@ -3,6 +3,8 @@ namespace ICup\Bundle\PublicSiteBundle\Controller\Admin\Tournament;
 
 use ICup\Bundle\PublicSiteBundle\Entity\Doctrine\Date;
 use ICup\Bundle\PublicSiteBundle\Entity\Doctrine\PlaygroundAttribute;
+use ICup\Bundle\PublicSiteBundle\Entity\Doctrine\Site;
+use ICup\Bundle\PublicSiteBundle\Entity\Doctrine\Tournament;
 use ICup\Bundle\PublicSiteBundle\Entity\Doctrine\User;
 use ICup\Bundle\PublicSiteBundle\Entity\PAttrForm;
 use ICup\Bundle\PublicSiteBundle\Services\Util;
@@ -32,8 +34,10 @@ class PlaygroundAttributeController extends Controller
         $user = $utilService->getCurrentUser();
         $playground = $this->get('entity')->getPlaygroundById($playgroundid);
         $site = $this->get('entity')->getSiteById($playground->getPid());
+        /* @var $tournament Tournament */
         $tournament = $this->get('entity')->getTournamentById($site->getPid());
-        $utilService->validateEditorAdminUser($user, $tournament->getPid());
+        $host = $tournament->getHost();
+        $utilService->validateEditorAdminUser($user, $host->getId());
 
         $pattrForm = new PAttrForm();
         $pattrForm->setPid($playground->getId());
@@ -57,16 +61,19 @@ class PlaygroundAttributeController extends Controller
     public function chgAction($playgroundattributeid, Request $request) {
         /* @var $utilService Util */
         $utilService = $this->get('util');
-        
         $returnUrl = $utilService->getReferer();
 
         /* @var $user User */
         $user = $utilService->getCurrentUser();
+        /* @var $pattr PlaygroundAttribute */
         $pattr = $this->get('entity')->getPlaygroundAttributeById($playgroundattributeid);
-        $playground = $this->get('entity')->getPlaygroundById($pattr->getPid());
+        $playground = $pattr->getPlayground();
+        /* @var $site Site */
         $site = $this->get('entity')->getSiteById($playground->getPid());
-        $tournament = $this->get('entity')->getTournamentById($site->getPid());
-        $utilService->validateEditorAdminUser($user, $tournament->getPid());
+        /* @var $tournament Tournament */
+        $tournament = $site->getTournament();
+        $host = $tournament->getHost();
+        $utilService->validateEditorAdminUser($user, $host->getId());
 
         $pattrForm = $this->copyPAttrForm($pattr);
         $form = $this->makePAttrForm($pattrForm, $tournament, 'chg');
@@ -94,11 +101,14 @@ class PlaygroundAttributeController extends Controller
 
         /* @var $user User */
         $user = $utilService->getCurrentUser();
+        /* @var $pattr PlaygroundAttribute */
         $pattr = $this->get('entity')->getPlaygroundAttributeById($playgroundattributeid);
-        $playground = $this->get('entity')->getPlaygroundById($pattr->getPid());
+        $playground = $pattr->getPlayground();
         $site = $this->get('entity')->getSiteById($playground->getPid());
+        /* @var $tournament Tournament */
         $tournament = $this->get('entity')->getTournamentById($site->getPid());
-        $utilService->validateEditorAdminUser($user, $tournament->getPid());
+        $host = $tournament->getHost();
+        $utilService->validateEditorAdminUser($user, $host->getId());
 
         $pattrForm = $this->copyPAttrForm($pattr);
         $form = $this->makePAttrForm($pattrForm, $tournament, 'del');
@@ -115,7 +125,7 @@ class PlaygroundAttributeController extends Controller
     
     private function addPAttr(PAttrForm $pattrForm) {
         $pattr = new PlaygroundAttribute();
-        $pattr->setPid($pattrForm->getPId());
+        $pattr->setPlayground($this->get('entity')->getPlaygroundById($pattrForm->getPid()));
         $this->updatePAttr($pattrForm, $pattr);
         $em = $this->getDoctrine()->getManager();
         $em->persist($pattr);
@@ -136,7 +146,7 @@ class PlaygroundAttributeController extends Controller
     
     private function updatePAttr(PAttrForm $pattrForm, PlaygroundAttribute &$pattr) {
         $timeslotid = $pattrForm->getTimeslot();
-        $pattr->setTimeslot($timeslotid != null ? $timeslotid : 0);
+        $pattr->setTimeslot($this->get('entity')->getTimeslotById($timeslotid));
         $dateformat = $this->get('translator')->trans('FORMAT.DATE');
         $matchdate = date_create_from_format($dateformat, $pattrForm->getDate());
         $pattr->setDate(Date::getDate($matchdate));
@@ -151,8 +161,8 @@ class PlaygroundAttributeController extends Controller
     private function copyPAttrForm(PlaygroundAttribute $pattr) {
         $pattrForm = new PAttrForm();
         $pattrForm->setId($pattr->getId());
-        $pattrForm->setPid($pattr->getPId());
-        $pattrForm->setTimeslot($pattr->getTimeslot());
+        $pattrForm->setPid($pattr->getPlayground()->getId());
+        $pattrForm->setTimeslot($pattr->getTimeslot()->getId());
         $matchdate = $pattr->getStartSchedule();
         $dateformat = $this->get('translator')->trans('FORMAT.DATE');
         $pattrForm->setDate(date_format($matchdate, $dateformat));
@@ -165,18 +175,17 @@ class PlaygroundAttributeController extends Controller
         return $pattrForm;
     }
 
-    private function makePAttrForm(PAttrForm $pattrForm, $tournament, $action) {
-        $timeslots = $this->get('logic')->listTimeslots($tournament->getId());
-        $timeslotList = array();
-        foreach ($timeslots as $timeslot) {
-            $timeslotList[$timeslot->getId()] = $timeslot->getName();
+    private function makePAttrForm(PAttrForm $pattrForm, Tournament $tournament, $action) {
+        $timeslots = array();
+        foreach ($tournament->getTimeslots() as $timeslot) {
+            $timeslots[$timeslot->getId()] = $timeslot->getName();
         }
         
         $formDef = $this->createFormBuilder($pattrForm);
         $formDef->add('timeslot', 'choice',
               array('label' => 'FORM.PLAYGROUNDATTR.TIMESLOT.PROMPT',
                     'help' => 'FORM.PLAYGROUNDATTR.TIMESLOT.HELP',
-                    'choices' => $timeslotList,
+                    'choices' => $timeslots,
                     'empty_value' => 'FORM.PLAYGROUNDATTR.DEFAULT',
                     'required' => false,
                     'disabled' => $action == 'del',

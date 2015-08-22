@@ -48,6 +48,10 @@ class OverviewController extends Controller
 
         /* @var $matchDate DateTime */
         $matchDate = $this->get('match')->getMatchDate($tournament->getId(), $date);
+        if (!$matchDate) {
+            // No match dates have been defined - use currect date to avoid exception
+            $matchDate = new DateTime();
+        }
         $timeslots = $this->map($this->get('logic')->listTimeslots($tournament->getId()));
         $pattrs = $this->get('logic')->listPlaygroundAttributesByTournament($tournament->getId());
         $pattrList = array();
@@ -151,18 +155,20 @@ class OverviewController extends Controller
         $thisDate = DateTime::createFromFormat(DateTime::ATOM, $matchDate->format(DateTime::ATOM));
         $nextDate = $thisDate->add(new DateInterval("P1D"));
         $nextMatchDate = $this->get('match')->getMatchDate($tournament->getId(), $nextDate);
-        /* @var $diff DateInterval */
-        $diff = $nextMatchDate->diff($matchDate);
-        if ($diff->days > 0) {
-            array_unshift($teaserList,
-                array(
-                    'titletext' => 'FORM.TEASER.TOURNAMENT.MOREMATCHES.TITLE',
-                    'text' => 'FORM.TEASER.TOURNAMENT.MOREMATCHES.DESC',
-                    'path' => $this->generateUrl('_tournament_overview_date', array('tournament' => $tournament->getKey(), 'date' => date_format($nextMatchDate, "d-m-Y")))
-                )
-            );
+        if ($nextMatchDate) {
+            /* @var $diff DateInterval */
+            $diff = $nextMatchDate->diff($matchDate);
+            if ($diff->days > 0) {
+                array_unshift($teaserList,
+                    array(
+                        'titletext' => 'FORM.TEASER.TOURNAMENT.MOREMATCHES.TITLE',
+                        'text' => 'FORM.TEASER.TOURNAMENT.MOREMATCHES.DESC',
+                        'path' => $this->generateUrl('_tournament_overview_date', array('tournament' => $tournament->getKey(), 'date' => date_format($nextMatchDate, "d-m-Y")))
+                    )
+                );
+            }
         }
-        $host = $this->get('entity')->getHostById($tournament->getPid());
+        $host = $tournament->getHost();
         return array(
             'host' => $host,
             'tournament' => $tournament,

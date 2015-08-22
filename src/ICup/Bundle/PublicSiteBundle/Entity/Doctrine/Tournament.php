@@ -2,6 +2,7 @@
 
 namespace ICup\Bundle\PublicSiteBundle\Entity\Doctrine;
 
+use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\ORM\Mapping as ORM;
 
 /**
@@ -22,11 +23,12 @@ class Tournament
     private $id;
 
     /**
-     * @var integer $pid
-     * Relation to Host - pid=host.id 
-     * @ORM\Column(name="pid", type="integer", nullable=false)
+     * @var Host $host
+     * Relation to Host
+     * @ORM\ManyToOne(targetEntity="Host", inversedBy="id")
+     * @ORM\JoinColumn(name="pid", referencedColumnName="id")
      */
-    private $pid;
+    private $host;
 
     /**
      * @var string $key
@@ -61,14 +63,52 @@ class Tournament
      * Relation to TournamentOption - option_id=tournamentoption.id
      * @ORM\OneToOne(targetEntity="TournamentOption", cascade={"persist", "remove"}, orphanRemoval=true)
      */
-
     private $option;
+
+    /**
+     * @var ArrayCollection $categories
+     * Collection of tournament relations to categories
+     * @ORM\OneToMany(targetEntity="Category", mappedBy="tournament", cascade={"persist", "remove"})
+     */
+    private $categories;
+
+    /**
+     * @var ArrayCollection $sites
+     * Collection of tournament relations to sites
+     * @ORM\OneToMany(targetEntity="Site", mappedBy="tournament", cascade={"persist", "remove"})
+     */
+    private $sites;
+
+    /**
+     * @var ArrayCollection $timeslots
+     * Collection of tournament relations to timeslots
+     * @ORM\OneToMany(targetEntity="Timeslot", mappedBy="tournament", cascade={"persist", "remove"})
+     */
+    private $timeslots;
+
+    /**
+     * @var ArrayCollection $events
+     * Collection of tournament relations to events
+     * @ORM\OneToMany(targetEntity="Event", mappedBy="tournament", cascade={"persist", "remove"})
+     */
+    private $events;
+
+    /**
+     * @var ArrayCollection $news
+     * Collection of tournament relations to news
+     * @ORM\OneToMany(targetEntity="News", mappedBy="tournament", cascade={"persist", "remove"})
+     */
+    private $news;
 
     /**
      * Tournament constructor.
      */
     public function __construct() {
         $this->option = new TournamentOption();
+        $this->categories = new ArrayCollection();
+        $this->sites = new ArrayCollection();
+        $this->timeslots = new ArrayCollection();
+        $this->events = new ArrayCollection();
     }
 
     /**
@@ -82,26 +122,19 @@ class Tournament
     }
 
     /**
-     * Set parent id
-     *
-     * @param integer $pid
-     * @return Tournament
+     * @return Host
      */
-    public function setPid($pid)
-    {
-        $this->pid = $pid;
-    
-        return $this;
+    public function getHost() {
+        return $this->host;
     }
 
     /**
-     * Get parent id - related host
-     *
-     * @return integer 
+     * @param Host $host
+     * @return Tournament
      */
-    public function getPid()
-    {
-        return $this->pid;
+    public function setHost($host) {
+        $this->host = $host;
+        return $this;
     }
 
     /**
@@ -210,5 +243,33 @@ class Tournament
     public function setOption($option) {
         $this->option = $option;
         return $this;
+    }
+
+    /**
+     * @return ArrayCollection
+     */
+    public function getCategories() {
+        return $this->categories;
+    }
+
+    /**
+     * @return ArrayCollection
+     */
+    public function getSites() {
+        return $this->sites;
+    }
+
+    /**
+     * @return ArrayCollection
+     */
+    public function getTimeslots() {
+        return $this->timeslots;
+    }
+
+    /**
+     * @return ArrayCollection
+     */
+    public function getEvents() {
+        return $this->events;
     }
 }

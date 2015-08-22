@@ -25,10 +25,10 @@ class ListNewsController extends Controller
         
         /* @var $user User */
         $user = $utilService->getCurrentUser();
+        /* @var $tournament Tournament */
         $tournament = $this->get('entity')->getTournamentById($tournamentid);
-        $utilService->validateEditorAdminUser($user, $tournament->getPid());
-
-        $host = $this->get('entity')->getHostById($tournament->getPid());
+        $host = $tournament->getHost();
+        $utilService->validateEditorAdminUser($user, $host->getId());
         $news = $this->get('tmnt')->listNewsByTournament($tournamentid);
         usort($news,
             function ($news1, $news2) {

@@ -28,8 +28,10 @@ class GroupController extends Controller
         /* @var $user User */
         $user = $utilService->getCurrentUser();
         $category = $this->get('entity')->getCategoryById($categoryid);
-        $tournament = $this->get('entity')->getTournamentById($category->getPid());
-        $utilService->validateEditorAdminUser($user, $tournament->getPid());
+        /* @var $tournament Tournament */
+        $tournament = $category->getTournament();
+        $host = $tournament->getHost();
+        $utilService->validateEditorAdminUser($user, $host->getId());
 
         $group = new Group();
         $group->setCategory($category);
@@ -62,8 +64,10 @@ class GroupController extends Controller
         $user = $utilService->getCurrentUser();
         $group = $this->get('entity')->getGroupById($groupid);
         $category = $group->getCategory();
-        $tournament = $this->get('entity')->getTournamentById($category->getPid());
-        $utilService->validateEditorAdminUser($user, $tournament->getPid());
+        /* @var $tournament Tournament */
+        $tournament = $category->getTournament();
+        $host = $tournament->getHost();
+        $utilService->validateEditorAdminUser($user, $host->getId());
 
         $form = $this->makeGroupForm($group, 'chg');
         $form->handleRequest($request);
@@ -94,8 +98,10 @@ class GroupController extends Controller
         $user = $utilService->getCurrentUser();
         $group = $this->get('entity')->getGroupById($groupid);
         $category = $group->getCategory();
-        $tournament = $this->get('entity')->getTournamentById($category->getPid());
-        $utilService->validateEditorAdminUser($user, $tournament->getPid());
+        /* @var $tournament Tournament */
+        $tournament = $category->getTournament();
+        $host = $tournament->getHost();
+        $utilService->validateEditorAdminUser($user, $host->getId());
 
         $form = $this->makeGroupForm($group, 'del');
         $form->handleRequest($request);

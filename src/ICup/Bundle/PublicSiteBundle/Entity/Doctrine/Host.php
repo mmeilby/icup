@@ -28,7 +28,19 @@ class Host
      */
     private $name;
 
+    /**
+     * @var ArrayCollection $tournaments
+     * Collection of host relations to tournaments
+     * @ORM\OneToMany(targetEntity="Tournament", mappedBy="host", cascade={"persist", "remove"})
+     */
+    private $tournaments;
 
+    /**
+     * Host constructor.
+     */
+    public function __construct() {
+        $this->tournaments = new ArrayCollection();
+    }
 
     /**
      * Get id
@@ -61,5 +73,12 @@ class Host
     public function getName()
     {
         return $this->name;
+    }
+
+    /**
+     * @return ArrayCollection
+     */
+    public function getTournaments() {
+        return $this->tournaments;
     }
 }

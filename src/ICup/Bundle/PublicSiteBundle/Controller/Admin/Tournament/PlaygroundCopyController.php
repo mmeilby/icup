@@ -2,6 +2,8 @@
 namespace ICup\Bundle\PublicSiteBundle\Controller\Admin\Tournament;
 
 use ICup\Bundle\PublicSiteBundle\Entity\Doctrine\PlaygroundAttribute;
+use ICup\Bundle\PublicSiteBundle\Entity\Doctrine\User;
+use ICup\Bundle\PublicSiteBundle\Services\Util;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
@@ -29,8 +31,10 @@ class PlaygroundCopyController extends Controller
         if ($source_site->getPid() != $target_site->getPid()) {
             
         }
+        /* @var $tournament Tournament */
         $tournament = $this->get('entity')->getTournamentById($source_site->getPid());
-        $utilService->validateEditorAdminUser($user, $tournament->getPid());
+        $host = $tournament->getHost();
+        $utilService->validateEditorAdminUser($user, $host->getId());
         
         $form = $this->makeCopyForm();
         $form->handleRequest($request);
@@ -62,7 +66,7 @@ class PlaygroundCopyController extends Controller
         foreach ($attributes as $attr) {
             if ($this->get('logic')->getPlaygroundAttribute($target_playground->getId(), $attr->getDate(), $attr->getStart()) == null) {
                 $target_attr = new PlaygroundAttribute();
-                $target_attr->setPid($target_playground->getId());
+                $target_attr->setPlayground($target_playground);
                 $target_attr->setTimeslot($attr->getTimeslot());
                 $target_attr->setDate($attr->getDate());
                 $target_attr->setStart($attr->getStart());

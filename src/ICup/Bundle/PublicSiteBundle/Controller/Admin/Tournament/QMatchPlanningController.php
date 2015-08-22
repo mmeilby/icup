@@ -6,6 +6,7 @@ use ICup\Bundle\PublicSiteBundle\Entity\Doctrine\Date;
 use ICup\Bundle\PublicSiteBundle\Entity\Doctrine\Group;
 use ICup\Bundle\PublicSiteBundle\Entity\Doctrine\Match;
 use ICup\Bundle\PublicSiteBundle\Entity\Doctrine\QMatchRelation;
+use ICup\Bundle\PublicSiteBundle\Entity\Doctrine\Tournament;
 use ICup\Bundle\PublicSiteBundle\Entity\Doctrine\User;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
@@ -32,10 +33,12 @@ class QMatchPlanningController extends Controller
 
         /* @var $user User */
         $user = $utilService->getCurrentUser();
-        /* @var $match Match */
+        /* @var $category Category */
         $category = $this->get('entity')->getCategoryById($categoryid);
-        $tournament = $this->get('entity')->getTournamentById($category->getPid());
-        $utilService->validateEditorAdminUser($user, $tournament->getPid());
+        /* @var $tournament Tournament */
+        $tournament = $category->getTournament();
+        $host = $tournament->getHost();
+        $utilService->validateEditorAdminUser($user, $host->getId());
 
         $groupList = array();
         $groups = $this->get('logic')->listGroups($category->getId());
@@ -46,7 +49,6 @@ class QMatchPlanningController extends Controller
                 $groupList[] = array('group' => $group, 'count' => $teams);
             }
         }
-        $host = $this->get('entity')->getHostById($tournament->getPid());
         $matchForm = array('strategy' => 'option1');
 //        $matchForm = $this->copyMatchForm($match);
         $formDef = $this->createFormBuilder();
@@ -87,8 +89,10 @@ class QMatchPlanningController extends Controller
         $group = $match->getGroup();
         /* @var $category Category */
         $category = $group->getCategory();
-        $tournament = $this->get('entity')->getTournamentById($category->getPid());
-        $utilService->validateEditorAdminUser($user, $tournament->getPid());
+        /* @var $tournament Tournament */
+        $tournament = $category->getTournament();
+        $host = $tournament->getHost();
+        $utilService->validateEditorAdminUser($user, $host->getId());
 
         $matchForm = $this->copyMatchForm($match);
         $form = $this->makeMatchForm($matchForm, $category->getId(), 'del');
@@ -106,11 +110,8 @@ class QMatchPlanningController extends Controller
                      'match' => $match,
                      'playground' => $playground,
                      'action' => 'del',
-                     'schedule' => DateTime::createFromFormat(
-                                        $this->container->getParameter('db_date_format').
-                                        '-'.
-                                        $this->container->getParameter('db_time_format'),
-                                        $match->getDate().'-'.$match->getTime()));
+                     'schedule' => $match->getSchedule()
+        );
     }
 
     private function chgMatch(MatchForm $matchForm, Match $match) {
@@ -118,8 +119,8 @@ class QMatchPlanningController extends Controller
         $homeRel = $this->get('match')->getQMatchRelationByMatch($match->getId(), false);
         if ($homeRel == null) {
             $homeRel = new QMatchRelation();
-            $homeRel->setPid($matchForm->getId());
             $homeRel->setAwayteam(false);
+            $match->addMatchRelation($homeRel);
             $em->persist($homeRel);
         }
         $homeRel->setCid($matchForm->getGroupA());
@@ -127,10 +128,8 @@ class QMatchPlanningController extends Controller
         $awayRel = $this->get('match')->getQMatchRelationByMatch($match->getId(), true);
         if ($awayRel == null) {
             $awayRel = new QMatchRelation();
-            $awayRel->setPid($matchForm->getId());
             $awayRel->setAwayteam(true);
-            $awayRel->setCid($matchForm->getGroupB());
-            $awayRel->setRank($matchForm->getRankB());
+            $match->addMatchRelation($awayRel);
             $em->persist($awayRel);
         }
         $awayRel->setCid($matchForm->getGroupB());
@@ -154,7 +153,7 @@ class QMatchPlanningController extends Controller
     private function copyMatchForm(Match $match) {
         $matchForm = new MatchForm();
         $matchForm->setId($match->getId());
-        $matchForm->setPid($match->getPId());
+        $matchForm->setPid($match->getGroup()->getId());
         $matchForm->setMatchno($match->getMatchno());
         $matchdate = Date::getDateTime($match->getDate(), $match->getTime());
         $dateformat = $this->get('translator')->trans('FORMAT.DATE');

@@ -2,6 +2,7 @@
 namespace ICup\Bundle\PublicSiteBundle\Controller\Admin\Tournament;
 
 use ICup\Bundle\PublicSiteBundle\Entity\Doctrine\Category;
+use ICup\Bundle\PublicSiteBundle\Entity\Doctrine\Tournament;
 use ICup\Bundle\PublicSiteBundle\Entity\Doctrine\User;
 use ICup\Bundle\PublicSiteBundle\Services\Util;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
@@ -28,11 +29,13 @@ class CategoryController extends Controller
 
         /* @var $user User */
         $user = $utilService->getCurrentUser();
+        /* @var $tournament Tournament */
         $tournament = $this->get('entity')->getTournamentById($tournamentid);
-        $utilService->validateEditorAdminUser($user, $tournament->getPid());
+        $host = $tournament->getHost();
+        $utilService->validateEditorAdminUser($user, $host->getId());
 
         $category = new Category();
-        $category->setPid($tournament->getId());
+        $category->setTournament($tournament);
         $form = $this->makeCategoryForm($category, 'add');
         $form->handleRequest($request);
         if ($form->get('cancel')->isClicked()) {
@@ -61,8 +64,10 @@ class CategoryController extends Controller
         /* @var $user User */
         $user = $utilService->getCurrentUser();
         $category = $this->get('entity')->getCategoryById($categoryid);
-        $tournament = $this->get('entity')->getTournamentById($category->getPid());
-        $utilService->validateEditorAdminUser($user, $tournament->getPid());
+        /* @var $tournament Tournament */
+        $tournament = $category->getTournament();
+        $host = $tournament->getHost();
+        $utilService->validateEditorAdminUser($user, $host->getId());
 
         $form = $this->makeCategoryForm($category, 'chg');
         $form->handleRequest($request);
@@ -92,8 +97,10 @@ class CategoryController extends Controller
         /* @var $user User */
         $user = $utilService->getCurrentUser();
         $category = $this->get('entity')->getCategoryById($categoryid);
-        $tournament = $this->get('entity')->getTournamentById($category->getPid());
-        $utilService->validateEditorAdminUser($user, $tournament->getPid());
+        /* @var $tournament Tournament */
+        $tournament = $category->getTournament();
+        $host = $tournament->getHost();
+        $utilService->validateEditorAdminUser($user, $host->getId());
 
         $form = $this->makeCategoryForm($category, 'del');
         $form->handleRequest($request);

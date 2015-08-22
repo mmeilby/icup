@@ -2,8 +2,11 @@
 namespace ICup\Bundle\PublicSiteBundle\Controller\Admin\Tournament;
 
 use ICup\Bundle\PublicSiteBundle\Entity\Doctrine\PlaygroundAttribute;
+use ICup\Bundle\PublicSiteBundle\Entity\Doctrine\Site;
+use ICup\Bundle\PublicSiteBundle\Entity\Doctrine\Tournament;
 use ICup\Bundle\PublicSiteBundle\Entity\Doctrine\User;
 use ICup\Bundle\PublicSiteBundle\Entity\Doctrine\Category;
+use ICup\Bundle\PublicSiteBundle\Services\Util;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
@@ -26,10 +29,12 @@ class PAttrPlanningController extends Controller
         /* @var $pattr PlaygroundAttribute */
         $pattr = $this->get('entity')->getPlaygroundAttributeById($playgroundattributeid);
         $playground = $pattr->getPlayground();
+        /* @var $site Site */
         $site = $this->get('entity')->getSiteById($playground->getPid());
-        $tournament = $this->get('entity')->getTournamentById($site->getPid());
-        $host = $this->get('entity')->getHostById($tournament->getPid());
-        $utilService->validateEditorAdminUser($user, $tournament->getPid());
+        /* @var $tournament Tournament */
+        $tournament = $site->getTournament();
+        $host = $tournament->getHost();
+        $utilService->validateEditorAdminUser($user, $host->getId());
 
         $categories = $this->get('logic')->listCategories($tournament->getId());
         $categoryList = array();
@@ -75,8 +80,10 @@ class PAttrPlanningController extends Controller
         $user = $utilService->getCurrentUser();
         /* @var $category Category */
         $category = $this->get('entity')->getCategoryById($categoryid);
-        $tournament = $this->get('entity')->getTournamentById($category->getPid());
-        $utilService->validateEditorAdminUser($user, $tournament->getPid());
+        /* @var $tournament Tournament */
+        $tournament = $category->getTournament();
+        $host = $tournament->getHost();
+        $utilService->validateEditorAdminUser($user, $host->getId());
 
         $this->get('logic')->assignCategory($categoryid, $playgroundattributeid);
         return $this->redirect($returnUrl);
@@ -96,8 +103,10 @@ class PAttrPlanningController extends Controller
         $user = $utilService->getCurrentUser();
         /* @var $category Category */
         $category = $this->get('entity')->getCategoryById($categoryid);
-        $tournament = $this->get('entity')->getTournamentById($category->getPid());
-        $utilService->validateEditorAdminUser($user, $tournament->getPid());
+        /* @var $tournament Tournament */
+        $tournament = $category->getTournament();
+        $host = $tournament->getHost();
+        $utilService->validateEditorAdminUser($user, $host->getId());
 
         $this->get('logic')->removeAssignedCategory($categoryid, $playgroundattributeid);
         return $this->redirect($returnUrl);

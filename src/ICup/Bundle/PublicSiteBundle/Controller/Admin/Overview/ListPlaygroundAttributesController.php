@@ -3,6 +3,9 @@ namespace ICup\Bundle\PublicSiteBundle\Controller\Admin\Overview;
 
 use ICup\Bundle\PublicSiteBundle\Entity\Doctrine\Date;
 use ICup\Bundle\PublicSiteBundle\Entity\Doctrine\PlaygroundAttribute;
+use ICup\Bundle\PublicSiteBundle\Entity\Doctrine\Site;
+use ICup\Bundle\PublicSiteBundle\Entity\Doctrine\Tournament;
+use ICup\Bundle\PublicSiteBundle\Entity\Doctrine\User;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
@@ -27,9 +30,12 @@ class ListPlaygroundAttributesController extends Controller
         /* @var $user User */
         $user = $utilService->getCurrentUser();
         $playground = $this->get('entity')->getPlaygroundById($playgroundid);
+        /* @var $site Site */
         $site = $this->get('entity')->getSiteById($playground->getPid());
-        $tournament = $this->get('entity')->getTournamentById($site->getPid());
-        $utilService->validateEditorAdminUser($user, $tournament->getPid());
+        /* @var $tournament Tournament */
+        $tournament = $site->getTournament();
+        $host = $tournament->getHost();
+        $utilService->validateEditorAdminUser($user, $host->getId());
 
         $attributes = $this->get('logic')->listPlaygroundAttributes($playgroundid);
         $attrList = array();
@@ -55,7 +61,6 @@ class ListPlaygroundAttributesController extends Controller
             );
         }
 
-        $host = $this->get('entity')->getHostById($tournament->getPid());
         return array('host' => $host, 'tournament' => $tournament, 'playground' => $playground, 'attributes' => $attrList);
     }
 }

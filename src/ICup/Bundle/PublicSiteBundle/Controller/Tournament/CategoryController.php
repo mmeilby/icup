@@ -14,7 +14,7 @@ class CategoryController extends Controller
     public function listAction($categoryid)
     {
         $category = $this->get('entity')->getCategoryById($categoryid);
-        $tournament = $this->get('entity')->getTournamentById($category->getPid());
+        $tournament = $category->getTournament();
         $groups = $this->get('logic')->listGroups($categoryid);
         $groupList = array();
         foreach ($groups as $group) {
@@ -38,7 +38,7 @@ class CategoryController extends Controller
     public function listClassAction($categoryid)
     {
         $category = $this->get('entity')->getCategoryById($categoryid);
-        $tournament = $this->get('entity')->getTournamentById($category->getPid());
+        $tournament = $category->getTournament();
         $groups = $this->get('logic')->listGroupsClassification($categoryid);
         $groupList = array();
         foreach ($groups as $group) {
@@ -60,7 +60,7 @@ class CategoryController extends Controller
     public function listFinalsAction($categoryid)
     {
         $category = $this->get('entity')->getCategoryById($categoryid);
-        $tournament = $this->get('entity')->getTournamentById($category->getPid());
+        $tournament = $category->getTournament();
         $groups = $this->get('logic')->listGroupsFinals($categoryid);
         $groupList = array();
         $pyramid = array();

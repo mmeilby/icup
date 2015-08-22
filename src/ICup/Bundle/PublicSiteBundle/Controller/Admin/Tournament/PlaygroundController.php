@@ -29,8 +29,10 @@ class PlaygroundController extends Controller
         /* @var $user User */
         $user = $utilService->getCurrentUser();
         $site = $this->get('entity')->getSiteById($siteid);
+        /* @var $tournament Tournament */
         $tournament = $this->get('entity')->getTournamentById($site->getPid());
-        $utilService->validateEditorAdminUser($user, $tournament->getPid());
+        $host = $tournament->getHost();
+        $utilService->validateEditorAdminUser($user, $host->getId());
 
         $playground = new Playground();
         $playground->setPid($site->getId());
@@ -63,8 +65,10 @@ class PlaygroundController extends Controller
         $user = $utilService->getCurrentUser();
         $playground = $this->get('entity')->getPlaygroundById($playgroundid);
         $site = $this->get('entity')->getSiteById($playground->getPid());
+        /* @var $tournament Tournament */
         $tournament = $this->get('entity')->getTournamentById($site->getPid());
-        $utilService->validateEditorAdminUser($user, $tournament->getPid());
+        $host = $tournament->getHost();
+        $utilService->validateEditorAdminUser($user, $host->getId());
 
         $form = $this->makePlaygroundForm($playground, 'chg');
         $form->handleRequest($request);
@@ -95,8 +99,10 @@ class PlaygroundController extends Controller
         $user = $utilService->getCurrentUser();
         $playground = $this->get('entity')->getPlaygroundById($playgroundid);
         $site = $this->get('entity')->getSiteById($playground->getPid());
+        /* @var $tournament Tournament */
         $tournament = $this->get('entity')->getTournamentById($site->getPid());
-        $utilService->validateEditorAdminUser($user, $tournament->getPid());
+        $host = $tournament->getHost();
+        $utilService->validateEditorAdminUser($user, $host->getId());
 
         $form = $this->makePlaygroundForm($playground, 'del');
         $form->handleRequest($request);

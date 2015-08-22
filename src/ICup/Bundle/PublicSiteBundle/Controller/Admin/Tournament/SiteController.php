@@ -2,11 +2,13 @@
 namespace ICup\Bundle\PublicSiteBundle\Controller\Admin\Tournament;
 
 use ICup\Bundle\PublicSiteBundle\Entity\Doctrine\Site;
+use ICup\Bundle\PublicSiteBundle\Entity\Doctrine\Tournament;
 use ICup\Bundle\PublicSiteBundle\Entity\Doctrine\User;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use ICup\Bundle\PublicSiteBundle\Services\Util;
+use Symfony\Component\Form\FormError;
 use Symfony\Component\HttpFoundation\Request;
 
 /**
@@ -27,11 +29,13 @@ class SiteController extends Controller
 
         /* @var $user User */
         $user = $utilService->getCurrentUser();
+        /* @var $tournament Tournament */
         $tournament = $this->get('entity')->getTournamentById($tournamentid);
-        $utilService->validateEditorAdminUser($user, $tournament->getPid());
+        $host = $tournament->getHost();
+        $utilService->validateEditorAdminUser($user, $host->getId());
 
         $site = new Site();
-        $site->setPid($tournament->getId());
+        $site->setTournament($tournament);
         $form = $this->makeSiteForm($site, 'add');
         $form->handleRequest($request);
         if ($form->get('cancel')->isClicked()) {
@@ -60,8 +64,10 @@ class SiteController extends Controller
         /* @var $user User */
         $user = $utilService->getCurrentUser();
         $site = $this->get('entity')->getSiteById($siteid);
+        /* @var $tournament Tournament */
         $tournament = $this->get('entity')->getTournamentById($site->getPid());
-        $utilService->validateEditorAdminUser($user, $tournament->getPid());
+        $host = $tournament->getHost();
+        $utilService->validateEditorAdminUser($user, $host->getId());
 
         $form = $this->makeSiteForm($site, 'chg');
         $form->handleRequest($request);
@@ -91,8 +97,10 @@ class SiteController extends Controller
         /* @var $user User */
         $user = $utilService->getCurrentUser();
         $site = $this->get('entity')->getSiteById($siteid);
+        /* @var $tournament Tournament */
         $tournament = $this->get('entity')->getTournamentById($site->getPid());
-        $utilService->validateEditorAdminUser($user, $tournament->getPid());
+        $host = $tournament->getHost();
+        $utilService->validateEditorAdminUser($user, $host->getId());
 
         $form = $this->makeSiteForm($site, 'del');
         $form->handleRequest($request);

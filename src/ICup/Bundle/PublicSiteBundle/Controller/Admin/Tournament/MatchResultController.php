@@ -2,6 +2,7 @@
 namespace ICup\Bundle\PublicSiteBundle\Controller\Admin\Tournament;
 
 use DateTime;
+use ICup\Bundle\PublicSiteBundle\Entity\Doctrine\MatchRelation;
 use ICup\Bundle\PublicSiteBundle\Entity\Doctrine\Tournament;
 use ICup\Bundle\PublicSiteBundle\Exceptions\ValidationException;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
@@ -25,10 +26,12 @@ class MatchResultController extends Controller
 
         $playground = $this->get('entity')->getPlaygroundById($playgroundid);
         $site = $this->get('entity')->getSiteById($playground->getPid());
-        $tournament = $this->get('entity')->getTournamentById($site->getPid());
         /* @var $user User */
         $user = $utilService->getCurrentUser();
-        $utilService->validateEditorAdminUser($user, $tournament->getPid());
+        /* @var $tournament Tournament */
+        $tournament = $this->get('entity')->getTournamentById($site->getPid());
+        $host = $tournament->getHost();
+        $utilService->validateEditorAdminUser($user, $host->getId());
 
         $matchDate = DateTime::createFromFormat('d-m-Y', $date);
         if ($matchDate == null) {
@@ -38,7 +41,6 @@ class MatchResultController extends Controller
         $session->set('icup.matchedit.date', $matchDate);
         $session->set('icup.matchedit.playground', $playgroundid);
             
-        $host = $this->get('entity')->getHostById($tournament->getPid());
         $matchList = $this->get('match')->listMatchesByPlaygroundDate($playgroundid, $matchDate);
 
         $playgrounds = $this->get('logic')->listPlaygroundsByTournament($tournament->getId());
@@ -73,10 +75,12 @@ class MatchResultController extends Controller
 
         $playground = $this->get('entity')->getPlaygroundById($playgroundid);
         $site = $this->get('entity')->getSiteById($playground->getPid());
-        $tournament = $this->get('entity')->getTournamentById($site->getPid());
         /* @var $user User */
         $user = $utilService->getCurrentUser();
-        $utilService->validateEditorAdminUser($user, $tournament->getPid());
+        /* @var $tournament Tournament */
+        $tournament = $this->get('entity')->getTournamentById($site->getPid());
+        $host = $tournament->getHost();
+        $utilService->validateEditorAdminUser($user, $host->getId());
 
         $form = $this->makeResultForm();
         $form->handleRequest($request);
@@ -90,6 +94,7 @@ class MatchResultController extends Controller
             if ($keyar[0] !== "score") {
                 continue;
             }
+            /* @var $mr MatchRelation */
             $mr = $this->get('entity')->getMatchRelationById($keyar[1]);
             if ($value != "") {
                 $mr->setScorevalid(true);
@@ -98,7 +103,7 @@ class MatchResultController extends Controller
             else {
                 $mr->setScorevalid(false);
             }
-            $updatedRelations[$mr->getPid()][$mr->getAwayteam() ? 'A' : 'H'] = $mr;
+            $updatedRelations[$mr->getMatch()->getId()][$mr->getAwayteam() ? 'A' : 'H'] = $mr;
         }
         $this->commitMatchChanges($tournament, $updatedRelations);
         

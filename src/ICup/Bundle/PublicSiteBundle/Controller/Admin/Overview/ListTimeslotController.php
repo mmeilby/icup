@@ -1,6 +1,7 @@
 <?php
 namespace ICup\Bundle\PublicSiteBundle\Controller\Admin\Overview;
 
+use ICup\Bundle\PublicSiteBundle\Entity\Doctrine\Tournament;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
@@ -23,11 +24,11 @@ class ListTimeslotController extends Controller
         $utilService = $this->get('util');
         /* @var $user User */
         $user = $utilService->getCurrentUser();
+        /* @var $tournament Tournament */
         $tournament = $this->get('entity')->getTournamentById($tournamentid);
-        $utilService->validateEditorAdminUser($user, $tournament->getPid());
-
-        $host = $this->get('entity')->getHostById($tournament->getPid());
-        $timeslots = $this->get('logic')->listTimeslots($tournamentid);
+        $host = $tournament->getHost();
+        $utilService->validateEditorAdminUser($user, $host->getId());
+        $timeslots = $tournament->getTimeslots();
 
         return array('host' => $host, 'tournament' => $tournament, 'timeslots' => $timeslots);
     }

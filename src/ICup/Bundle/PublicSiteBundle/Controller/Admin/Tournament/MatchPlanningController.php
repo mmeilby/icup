@@ -56,7 +56,7 @@ class MatchPlanningController extends Controller
             $request->getSession()->set('planning.options', $options);
             return $this->redirect($this->generateUrl("_edit_match_planning_result", array('tournamentid' => $tournament->getId())));
         }
-        $host = $this->get('entity')->getHostById($tournament->getPid());
+        $host = $tournament->getHost();
         return array('form' => $form->createView(), 'host' => $host, 'tournament' => $tournament);
     }
     
@@ -90,13 +90,13 @@ class MatchPlanningController extends Controller
     public function planGroupsAction($tournamentid, Request $request) {
         /* @var $tournament Tournament */
         $tournament = $this->checkArgs($tournamentid);
-        $host = $this->get('entity')->getHostById($tournament->getPid());
+        $host = $tournament->getHost();
         $categoryList = array();
-        $categories = $this->get('logic')->listCategories($tournamentid);
+        $categories = $tournament->getCategories();
         /* @var $category Category */
         foreach ($categories as $category) {
             $categoryList[$category->getId()] = array('category' => $category, 'group' => array());
-            $groups = $this->get('logic')->listGroups($category->getId());
+            $groups = $category->getGroups();
             /* @var $group Group */
             foreach ($groups as $group) {
                 $teams = count($this->get('logic')->listTeamsByGroup($group->getId()));
@@ -139,7 +139,7 @@ class MatchPlanningController extends Controller
             }
         }
         $result = $this->get('planning')->getSchedule($tournamentid);
-        $host = $this->get('entity')->getHostById($tournament->getPid());
+        $host = $tournament->getHost();
         return array('host' => $host,
                      'tournament' => $tournament,
                      'unassigned' => $result['unassigned_by_category'],
@@ -421,7 +421,7 @@ class MatchPlanningController extends Controller
             $matches[$match->getDate()][] = $match;
         }
 
-        $host = $this->get('entity')->getHostById($tournament->getPid());
+        $host = $tournament->getHost();
         return array('host' => $host,
                      'tournament' => $tournament,
                      'matchlist' => $matches,
@@ -442,7 +442,7 @@ class MatchPlanningController extends Controller
             $timeslots[date_format($ts->getSchedule(), "Y/m/d")][] = $ts;
         }
 
-        $host = $this->get('entity')->getHostById($tournament->getPid());
+        $host = $tournament->getHost();
         return array(
             'host' => $host,
             'tournament' => $tournament,
@@ -471,7 +471,7 @@ class MatchPlanningController extends Controller
         $tournament = $this->checkArgs($tournamentid);
         // Prepare form fields for javascript form
         $form = $this->makeResultForm($tournament->getId());
-        $host = $this->get('entity')->getHostById($tournament->getPid());
+        $host = $tournament->getHost();
         return array('form' => $form->createView(), 'host' => $host, 'tournament' => $tournament);
     }
 
@@ -607,8 +607,10 @@ class MatchPlanningController extends Controller
         $utilService = $this->get('util');
         /* @var $user User */
         $user = $utilService->getCurrentUser();
+        /* @var $tournament Tournament */
         $tournament = $this->get('entity')->getTournamentById($tournamentid);
-        $utilService->validateEditorAdminUser($user, $tournament->getPid());
+        $host = $tournament->getHost();
+        $utilService->validateEditorAdminUser($user, $host->getId());
         return $tournament;
     }
 }

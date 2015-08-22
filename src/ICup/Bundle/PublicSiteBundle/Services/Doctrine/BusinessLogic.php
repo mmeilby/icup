@@ -8,10 +8,12 @@ use ICup\Bundle\PublicSiteBundle\Entity\Doctrine\Category;
 use ICup\Bundle\PublicSiteBundle\Entity\Doctrine\Club;
 use ICup\Bundle\PublicSiteBundle\Entity\Doctrine\Date;
 use ICup\Bundle\PublicSiteBundle\Entity\Doctrine\Enrollment;
+use ICup\Bundle\PublicSiteBundle\Entity\Doctrine\Group;
 use ICup\Bundle\PublicSiteBundle\Entity\Doctrine\GroupOrder;
 use ICup\Bundle\PublicSiteBundle\Entity\Doctrine\MatchSchedule;
 use ICup\Bundle\PublicSiteBundle\Entity\Doctrine\PlaygroundAttribute;
 use ICup\Bundle\PublicSiteBundle\Entity\Doctrine\Team;
+use ICup\Bundle\PublicSiteBundle\Entity\Doctrine\Tournament;
 use ICup\Bundle\PublicSiteBundle\Entity\Doctrine\User;
 use ICup\Bundle\PublicSiteBundle\Entity\TeamInfo;
 use ICup\Bundle\PublicSiteBundle\Exceptions\ValidationException;
@@ -218,17 +220,18 @@ class BusinessLogic
         $playground = $pattr->getPlayground();
         $site = $this->entity->getSiteById($playground->getPid());
         // Verify that the category and playground share the same tournament
-        if ($site->getPid() != $category->getPid()) {
+        if ($site->getTournament()->getId() != $category->getTournament()->getId()) {
             throw new ValidationException("NOTTHESAMETOURNAMENT", "Category and playground does not share the same tournament - pattr=".$playgroundattributeid.", category=".$categoryid);
         }
         return array('category' => $category, 'pattr' => $pattr);
     }    
     
     public function assignEnrolled($teamid, $groupid) {
+        /* @var $group Group */
         $group = $this->entity->getGroupById($groupid);
         // Verify that the team is not assigned to any group
-        if ($this->isTeamAssigned($group->getPid(), $teamid)) {
-            throw new ValidationException("TEAMASSIGNED", "Team was assigned previously - team=".$teamid.", category=".$group->getPid());
+        if ($this->isTeamAssigned($group->getCategory()->getId(), $teamid)) {
+            throw new ValidationException("TEAMASSIGNED", "Team was assigned previously - team=".$teamid.", category=".$group->getCategory()->getId());
         }
         $groupOrder = $this->getFirstVacantAssigned($groupid);
         if (!$groupOrder) {
@@ -251,6 +254,7 @@ class BusinessLogic
     private static $VACANT_CLUB_COUNTRYCODE = "[V]";
 
     public function assignVacant($groupid, $userid) {
+        /* @var $group Group */
         $group = $this->entity->getGroupById($groupid);
         $club = $this->getClubByName(BusinessLogic::$VACANT_CLUB_NAME, BusinessLogic::$VACANT_CLUB_COUNTRYCODE);
         if ($club == null) {
@@ -260,7 +264,7 @@ class BusinessLogic
             $this->em->persist($club);
             $this->em->flush();
         }
-        $enrolled = $this->addEnrolled($group->getPid(), $club->getId(), $userid, true);
+        $enrolled = $this->addEnrolled($group->getCategory()->getId(), $club->getId(), $userid, true);
         $groupOrder = new GroupOrder();
         $groupOrder->setCid($enrolled->getCid());
         $groupOrder->setPid($groupid);
@@ -344,13 +348,13 @@ class BusinessLogic
 
     public function listAnyEnrolledByClub($clubid) {
         $qb = $this->em->createQuery(
-                "select c.pid as tid,count(e) as enrolled ".
+                "select c.tournament as tid,count(e) as enrolled ".
                 "from ".$this->entity->getRepositoryPath('Enrollment')." e, ".
                         $this->entity->getRepositoryPath('Category')." c, ".
                         $this->entity->getRepositoryPath('Team')." t ".
                 "where e.pid=c.id and e.cid=t.id and t.pid=:club ".
-                "group by c.pid ".
-                "order by c.pid asc");
+                "group by c.tournament ".
+                "order by c.tournament asc");
         $qb->setParameter('club', $clubid);
         return $qb->getResult();
     }
@@ -362,7 +366,7 @@ class BusinessLogic
                         $this->entity->getRepositoryPath('Category')." c, ".
                         $this->entity->getRepositoryPath('Team')." t, ".
                         $this->entity->getRepositoryPath('Club')." clb ".
-                "where c.pid=:tournament and e.pid=c.id and e.cid=t.id and t.pid=clb.id ".
+                "where c.tournament=:tournament and e.pid=c.id and e.cid=t.id and t.pid=clb.id ".
                 "group by clb.id ".
                 "order by clb.country, clb.name");
         $qb->setParameter('tournament', $tournamentid);
@@ -388,7 +392,7 @@ class BusinessLogic
                 "from ".$this->entity->getRepositoryPath('Enrollment')." e, ".
                         $this->entity->getRepositoryPath('Category')." c, ".
                         $this->entity->getRepositoryPath('Team')." t ".
-                "where c.pid=:tournament and e.pid=c.id and e.cid=t.id and t.pid=:club ".
+                "where c.tournament=:tournament and e.pid=c.id and e.cid=t.id and t.pid=:club ".
                 "order by e.pid");
         $qb->setParameter('tournament', $tournamentid);
         $qb->setParameter('club', $clubid);
@@ -437,7 +441,7 @@ class BusinessLogic
     }
 
     public function listSites($tournamentid) {
-        return $this->entity->getSiteRepo()->findBy(array('pid' => $tournamentid));
+        return $this->entity->getSiteRepo()->findBy(array('tournament' => $tournamentid));
     }
 
     public function getPlaygroundByNo($tournamentid, $no) {
@@ -445,7 +449,7 @@ class BusinessLogic
                 "select p ".
                 "from ".$this->entity->getRepositoryPath('Playground')." p, ".
                         $this->entity->getRepositoryPath('Site')." s ".
-                "where s.pid=:tournament and p.pid=s.id and p.no=:no");
+                "where s.tournament=:tournament and p.pid=s.id and p.no=:no");
         $qb->setParameter('tournament', $tournamentid);
         $qb->setParameter('no', $no);
         return $qb->getOneOrNullResult();
@@ -460,7 +464,7 @@ class BusinessLogic
                 "select p ".
                 "from ".$this->entity->getRepositoryPath('Playground')." p, ".
                         $this->entity->getRepositoryPath('Site')." s ".
-                "where s.pid=:tournament and p.pid=s.id ".
+                "where s.tournament=:tournament and p.pid=s.id ".
                 "order by p.no asc");
         $qb->setParameter('tournament', $tournamentid);
         return $qb->getResult();
@@ -471,7 +475,7 @@ class BusinessLogic
     }
 
     public function listTimeslots($tournamentid) {
-        return $this->entity->getTimeslotRepo()->findBy(array('pid' => $tournamentid), array('name' => 'asc'));
+        return $this->entity->getTimeslotRepo()->findBy(array('tournament' => $tournamentid), array('name' => 'asc'));
     }
 
     public function listPlaygroundAttributes($playgroundid) {
@@ -484,7 +488,7 @@ class BusinessLogic
                 "from ".$this->entity->getRepositoryPath('PlaygroundAttribute')." a, ".
                         $this->entity->getRepositoryPath('Playground')." p, ".
                         $this->entity->getRepositoryPath('Site')." s ".
-                "where s.pid=:tournament and p.pid=s.id and a.playground=p.id ".
+                "where s.tournament=:tournament and p.pid=s.id and a.playground=p.id ".
                 "order by p.no asc, a.date asc, a.start asc");
         $qb->setParameter('tournament', $tournamentid);
         return $qb->getResult();
@@ -539,21 +543,26 @@ class BusinessLogic
             return $this->listTournaments($hostid);
         }
         else {
-            return $this->entity->getTournamentRepo()
-                ->findAll(array(),
-                    array('name' => 'asc'));
+            $tournaments = array();
+            foreach ($this->entity->getTournamentRepo()->findAll(array(), array('host' => 'asc', 'name' => 'asc')) as $tournament) {
+                $status = $this->container->get('tmnt')->getTournamentStatus($tournament->getId(), new DateTime());
+                if ($status === TournamentSupport::$TMNT_ENROLL || $status === TournamentSupport::$TMNT_GOING || $status === TournamentSupport::$TMNT_DONE) {
+                    $tournaments[] = $tournament;
+                }
+            }
+            return $tournaments;
         }
     }
     
     public function listTournaments($hostid) {
         return $this->entity->getTournamentRepo()
-                    ->findBy(array('pid' => $hostid),
+                    ->findBy(array('host' => $hostid),
                              array('name' => 'asc'));
     }
 
     public function listCategories($tournamentid) {
         return $this->entity->getCategoryRepo()
-                ->findBy(array('pid' => $tournamentid),
+                ->findBy(array('tournament' => $tournamentid),
                          array('classification' => 'desc', 'age' => 'desc', 'gender' => 'asc'));
     }
 
@@ -561,7 +570,7 @@ class BusinessLogic
         $qb = $this->em->createQuery(
                 "select c ".
                 "from ".$this->entity->getRepositoryPath('Category')." c ".
-                "where c.pid=:tournament and ".
+                "where c.tournament=:tournament and ".
                       "c.name=:category");
         $qb->setParameter('tournament', $tournamentid);
         $qb->setParameter('category', $category);
@@ -573,7 +582,7 @@ class BusinessLogic
                 "select g ".
                 "from ".$this->entity->getRepositoryPath('Group')." g, ".
                         $this->entity->getRepositoryPath('Category')." c ".
-                "where c.pid=:tournament and g.category=c.id ".
+                "where c.tournament=:tournament and g.category=c.id ".
                 "order by g.classification asc, g.name asc");
         $qb->setParameter('tournament', $tournamentid);
         return $qb->getResult();
@@ -584,7 +593,7 @@ class BusinessLogic
                 "select g ".
                 "from ".$this->entity->getRepositoryPath('Group')." g, ".
                         $this->entity->getRepositoryPath('Category')." c ".
-                "where c.pid=:tournament and ".
+                "where c.tournament=:tournament and ".
                       "c.name=:category and ".
                       "g.category=c.id and ".
                       "g.name=:group");
@@ -840,7 +849,7 @@ class BusinessLogic
                         $this->entity->getRepositoryPath('GroupOrder')." o, ".
                         $this->entity->getRepositoryPath('Team')." t, ".
                         $this->entity->getRepositoryPath('Club')." c ".
-                "where cat.pid=:tournament and ".
+                "where cat.tournament=:tournament and ".
                         "g.category=cat.id and ".
                         "g.classification=0 and ".
                         "o.pid=g.id and ".

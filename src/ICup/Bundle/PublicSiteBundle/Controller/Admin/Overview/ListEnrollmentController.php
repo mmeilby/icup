@@ -59,13 +59,12 @@ class ListEnrollmentController extends Controller
     public function listActionHost($tournament, $club) {
         /* @var $utilService Util */
         $utilService = $this->get('util');
-        
-
         /* @var $user User */
         $user = $utilService->getCurrentUser();
+        /* @var $tmnt Tournament */
         $tmnt = $this->get('entity')->getTournamentById($tournament);
-        $utilService->validateEditorAdminUser($user, $tmnt->getPid());
-
+        $host = $tmnt->getHost();
+        $utilService->validateEditorAdminUser($user, $host->getId());
         $clb = $this->get('entity')->getClubById($club);
         return $this->listEnrolled($tmnt, $clb);
     }
@@ -85,8 +84,8 @@ class ListEnrollmentController extends Controller
     }
 
     private function listEnrolled(Tournament $tmnt, Club $club) {
-        $host = $this->get('entity')->getHostById($tmnt->getPid());
-        $categories = $this->get('logic')->listCategories($tmnt->getId());
+        $host = $tmnt->getHost();
+        $categories = $tmnt->getCategories();
         $enrolled = $this->get('logic')->listEnrolledByClub($tmnt->getId(), $club->getId());
 
         $enrolledList = array();

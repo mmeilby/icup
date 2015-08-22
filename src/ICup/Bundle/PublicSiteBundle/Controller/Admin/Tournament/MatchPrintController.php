@@ -3,6 +3,7 @@ namespace ICup\Bundle\PublicSiteBundle\Controller\Admin\Tournament;
 
 use DateTime;
 use ICup\Bundle\PublicSiteBundle\Entity\Doctrine\PlaygroundAttribute;
+use ICup\Bundle\PublicSiteBundle\Entity\Doctrine\Tournament;
 use ICup\Bundle\PublicSiteBundle\Entity\Doctrine\User;
 use ICup\Bundle\PublicSiteBundle\Exceptions\ValidationException;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
@@ -23,11 +24,12 @@ class MatchPrintController extends Controller
     {
         /* @var $utilService Util */
         $utilService = $this->get('util');
-
-        $tournament = $this->get('entity')->getTournamentById($tournamentid);
         /* @var $user User */
         $user = $utilService->getCurrentUser();
-        $utilService->validateEditorAdminUser($user, $tournament->getPid());
+        /* @var $tournament Tournament */
+        $tournament = $this->get('entity')->getTournamentById($tournamentid);
+        $host = $tournament->getHost();
+        $utilService->validateEditorAdminUser($user, $host->getId());
 
         $matchDate = DateTime::createFromFormat('d-m-Y', $date);
         if ($matchDate == null) {
@@ -35,15 +37,14 @@ class MatchPrintController extends Controller
         }
         $matchDate = $this->get('match')->getMatchDate($tournament->getId(), $matchDate);
         $eventdates = $this->get('match')->listMatchCalendar($tournament->getId());
-        $timeslots = $this->map($this->get('logic')->listTimeslots($tournament->getId()));
+        $timeslots = $tournament->getTimeslots();
         $pattrs = $this->get('logic')->listPlaygroundAttributesByTournament($tournament->getId());
         $pattrList = array();
         /* @var $pattr PlaygroundAttribute */
         foreach ($pattrs as $pattr) {
-            $pattrList[$pattr->getPid()][] = $pattr;
+            $pattrList[$pattr->getPlayground()->getId()][] = $pattr;
         }
 
-        $host = $this->get('entity')->getHostById($tournament->getPid());
         $matches = $this->get('match')->listMatchesByDate($tournament->getId(), $matchDate);
         $matchList = array();
         foreach ($matches as $match) {

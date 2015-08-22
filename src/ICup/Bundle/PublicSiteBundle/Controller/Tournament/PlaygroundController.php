@@ -2,6 +2,8 @@
 namespace ICup\Bundle\PublicSiteBundle\Controller\Tournament;
 
 use ICup\Bundle\PublicSiteBundle\Entity\Doctrine\Category;
+use ICup\Bundle\PublicSiteBundle\Entity\Doctrine\Site;
+use ICup\Bundle\PublicSiteBundle\Entity\Doctrine\Tournament;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
@@ -18,7 +20,7 @@ class PlaygroundController extends Controller
         $group = $this->get('entity')->getGroupById($groupid);
         /* @var $category Category */
         $category = $group->getCategory();
-        $tournament = $this->get('entity')->getTournamentById($category->getPid());
+        $tournament = $category->getTournament();
         $matchList = $this->get('match')->listMatchesByGroupPlayground($groupid, $playgroundid);
 
         $matches = array();
@@ -40,8 +42,10 @@ class PlaygroundController extends Controller
     public function listAllAction($playgroundid)
     {
         $playground = $this->get('entity')->getPlaygroundById($playgroundid);
+        /* @var $site Site */
         $site = $this->get('entity')->getSiteById($playground->getPid());
-        $tournament = $this->get('entity')->getTournamentById($site->getPid());
+        /* @var $tournament Tournament */
+        $tournament = $site->getTournament();
         $matchList = $this->get('match')->listMatchesByPlayground($playgroundid);
 
         $matches = array();

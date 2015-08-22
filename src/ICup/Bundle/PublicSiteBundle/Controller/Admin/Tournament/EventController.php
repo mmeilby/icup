@@ -28,8 +28,10 @@ class EventController extends Controller
 
         /* @var $user User */
         $user = $utilService->getCurrentUser();
+        /* @var $tournament Tournament */
         $tournament = $this->get('entity')->getTournamentById($tournamentid);
-        $utilService->validateEditorAdminUser($user, $tournament->getPid());
+        $host = $tournament->getHost();
+        $utilService->validateEditorAdminUser($user, $host->getId());
 
         $eventForm = new EventForm();
         $eventForm->setPid($tournament->getId());
@@ -45,7 +47,7 @@ class EventController extends Controller
             }
             else {
                 $event = new Event();
-                $event->setPid($tournamentid);
+                $event->setTournament($tournament);
                 $this->updateEvent($eventForm, $event);
                 $em = $this->getDoctrine()->getManager();
                 $em->persist($event);
@@ -70,8 +72,10 @@ class EventController extends Controller
         $user = $utilService->getCurrentUser();
         /* @var $event Event */
         $event = $this->get('entity')->getEventById($eventid);
+        /* @var $tournament Tournament */
         $tournament = $this->get('entity')->getTournamentById($event->getPid());
-        $utilService->validateEditorAdminUser($user, $tournament->getPid());
+        $host = $tournament->getHost();
+        $utilService->validateEditorAdminUser($user, $host->getId());
 
         $eventForm = $this->copyEventForm($event);
         $form = $this->makeEventForm($eventForm, 'chg');
@@ -107,8 +111,10 @@ class EventController extends Controller
         /* @var $user User */
         $user = $utilService->getCurrentUser();
         $event = $this->get('entity')->getEventById($eventid);
+        /* @var $tournament Tournament */
         $tournament = $this->get('entity')->getTournamentById($event->getPid());
-        $utilService->validateEditorAdminUser($user, $tournament->getPid());
+        $host = $tournament->getHost();
+        $utilService->validateEditorAdminUser($user, $host->getId());
 
         $eventForm = $this->copyEventForm($event);
         $form = $this->makeEventForm($eventForm, 'del');

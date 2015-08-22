@@ -3,8 +3,10 @@ namespace ICup\Bundle\PublicSiteBundle\Controller\Admin\Tournament;
 
 use ICup\Bundle\PublicSiteBundle\Entity\Doctrine\Date;
 use ICup\Bundle\PublicSiteBundle\Entity\Doctrine\News;
+use ICup\Bundle\PublicSiteBundle\Entity\Doctrine\Tournament;
 use ICup\Bundle\PublicSiteBundle\Entity\NewsForm;
 use ICup\Bundle\PublicSiteBundle\Entity\Doctrine\User;
+use ICup\Bundle\PublicSiteBundle\Services\Util;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
@@ -29,8 +31,10 @@ class NewsController extends Controller
 
         /* @var $user User */
         $user = $utilService->getCurrentUser();
+        /* @var $tournament Tournament */
         $tournament = $this->get('entity')->getTournamentById($tournamentid);
-        $utilService->validateEditorAdminUser($user, $tournament->getPid());
+        $host = $tournament->getHost();
+        $utilService->validateEditorAdminUser($user, $host->getId());
 
         $newsForm = new NewsForm();
         $newsForm->setPid($tournament->getId());
@@ -54,7 +58,7 @@ class NewsController extends Controller
             }
             if ($form->isValid()) {
                 $news = new News();
-                $news->setPid($tournamentid);
+                $news->setTournament($tournament);
                 $news->setCid(0);
                 $news->setMid(0);
                 $this->updateNews($newsForm, $news);
@@ -81,8 +85,10 @@ class NewsController extends Controller
         $user = $utilService->getCurrentUser();
         /* @var $news News */
         $news = $this->get('entity')->getNewsById($newsid);
+        /* @var $tournament Tournament */
         $tournament = $this->get('entity')->getTournamentById($news->getPid());
-        $utilService->validateEditorAdminUser($user, $tournament->getPid());
+        $host = $tournament->getHost();
+        $utilService->validateEditorAdminUser($user, $host->getId());
 
         $newsForm = $this->copyNewsForm($news);
         $form = $this->makeNewsForm($newsForm, 'chg');
@@ -121,8 +127,10 @@ class NewsController extends Controller
         /* @var $user User */
         $user = $utilService->getCurrentUser();
         $news = $this->get('entity')->getNewsById($newsid);
+        /* @var $tournament Tournament */
         $tournament = $this->get('entity')->getTournamentById($news->getPid());
-        $utilService->validateEditorAdminUser($user, $tournament->getPid());
+        $host = $tournament->getHost();
+        $utilService->validateEditorAdminUser($user, $host->getId());
 
         $newsForm = $this->copyNewsForm($news);
         $form = $this->makeNewsForm($newsForm, 'del');

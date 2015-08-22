@@ -30,7 +30,7 @@ class TournamentOptionController extends Controller
         $user = $utilService->getCurrentUser();
         /* @var $tournament Tournament */
         $tournament = $this->get('entity')->getTournamentById($tournamentid);
-        $host = $this->get('entity')->getHostById($tournament->getPid());
+        $host = $tournament->getHost();
         $utilService->validateEditorAdminUser($user, $host->getId());
 
         $options = $tournament->getOption();

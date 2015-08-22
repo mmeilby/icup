@@ -22,11 +22,12 @@ class Site
     private $id;
 
     /**
-     * @var integer $pid
-     * Relation to Tournament - pid=tournament.id 
-     * @ORM\Column(name="pid", type="integer", nullable=false)
+     * @var Tournament $tournament
+     * Relation to Tournament
+     * @ORM\ManyToOne(targetEntity="Tournament", inversedBy="id")
+     * @ORM\JoinColumn(name="pid", referencedColumnName="id")
      */
-    private $pid;
+    private $tournament;
 
     /**
      * @var string $name
@@ -34,8 +35,6 @@ class Site
      * @ORM\Column(name="name", type="string", length=50, nullable=false)
      */
     private $name;
-
-
 
     /**
      * Get id
@@ -68,6 +67,20 @@ class Site
     public function getPid()
     {
         return $this->pid;
+    }
+
+    /**
+     * @return Tournament
+     */
+    public function getTournament() {
+        return $this->tournament;
+    }
+
+    /**
+     * @param Tournament $tournament
+     */
+    public function setTournament($tournament) {
+        $this->tournament = $tournament;
     }
 
     /**

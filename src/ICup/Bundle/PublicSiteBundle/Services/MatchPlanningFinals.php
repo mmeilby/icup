@@ -55,7 +55,6 @@ class MatchPlanningFinals
      * @return array
      */
     public function updateTournamentSchedule($tournamentid) {
-        $categories = $this->map($this->logic->listCategories($tournamentid));
         $groups = $this->map($this->logic->listGroupsByTournament($tournamentid));
         $playgrounds = $this->map($this->logic->listPlaygroundsByTournament($tournamentid));
         $settledGroups = array();
@@ -75,7 +74,7 @@ class MatchPlanningFinals
                 $match->setDate($qmatch->getDate());
                 $match->setTime($qmatch->getTime());
                 $match->setGroup($groups[$qmatch->getPid()]);
-                $match->setCategory($categories[$match->getGroup()->getPid()]);
+                $match->setCategory($match->getGroup()->getCategory());
                 $match->setPlayground($playgrounds[$qmatch->getPlayground()]);
                 $match->setTeamA($this->getTeam($sortedGrpA[$qmatch->getRankA()]));
                 $match->setTeamB($this->getTeam($sortedGrpB[$qmatch->getRankB()]));

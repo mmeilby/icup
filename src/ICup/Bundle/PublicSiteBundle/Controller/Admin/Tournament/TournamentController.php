@@ -32,7 +32,7 @@ class TournamentController extends Controller
         $utilService->validateEditorAdminUser($user, $hostid);
 
         $tournament = new Tournament();
-        $tournament->setPid($host->getId());
+        $tournament->setHost($host);
         $form = $this->makeTournamentForm($tournament, 'add');
         $form->handleRequest($request);
         if ($form->get('cancel')->isClicked()) {
@@ -65,8 +65,9 @@ class TournamentController extends Controller
 
         /* @var $user User */
         $user = $utilService->getCurrentUser();
+        /* @var $tournament Tournament */
         $tournament = $this->get('entity')->getTournamentById($tournamentid);
-        $host = $this->get('entity')->getHostById($tournament->getPid());
+        $host = $tournament->getHost();
         $utilService->validateEditorAdminUser($user, $host->getId());
 
         $form = $this->makeTournamentForm($tournament, 'chg');
@@ -101,8 +102,9 @@ class TournamentController extends Controller
 
         /* @var $user User */
         $user = $utilService->getCurrentUser();
+        /* @var $tournament Tournament */
         $tournament = $this->get('entity')->getTournamentById($tournamentid);
-        $host = $this->get('entity')->getHostById($tournament->getPid());
+        $host = $tournament->getHost();
         $utilService->validateEditorAdminUser($user, $host->getId());
 
         $form = $this->makeTournamentForm($tournament, 'del');

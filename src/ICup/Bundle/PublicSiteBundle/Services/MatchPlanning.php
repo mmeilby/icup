@@ -340,12 +340,12 @@ class MatchPlanning
      */
     private function populateTournament($tournamentid, PlanningOptions $options) {
         $matchPlanList = array();
-        $categories = $this->map($this->logic->listCategories($tournamentid));
         $groups = $this->listGroups($tournamentid);
+        /* @var $group Group */
         foreach ($groups as $group) {
             $matches = $this->populateGroup($group->getId(), $options);
             foreach ($matches as $match) {
-                $match->setCategory($categories[$group->getPid()]);
+                $match->setCategory($group->getCategory());
                 $match->setGroup($group);
                 $matchPlanList[] = $match;
             }
@@ -391,8 +391,6 @@ class MatchPlanning
      */
     private function setupCriteria($tournamentid, $matchList, PlanningOptions $options) {
         $result = new PlanningResults();
-        $playgrounds = $this->map($this->logic->listPlaygroundsByTournament($tournamentid));
-        $timeslots = $this->map($this->logic->listTimeslots($tournamentid));
         $pattrs = $this->logic->listPlaygroundAttributesByTournament($tournamentid);
         /* @var $pattr PlaygroundAttribute */
         foreach ($pattrs as $pattr) {
@@ -400,8 +398,8 @@ class MatchPlanning
                 $pa = new PA();
                 $pa->setPA($pattr);
                 $pa->setId($pattr->getId());
-                $pa->setPlayground($playgrounds[$pattr->getPid()]);
-                $pa->setTimeslot($timeslots[$pattr->getTimeslot()]);
+                $pa->setPlayground($pattr->getPlayground());
+                $pa->setTimeslot($pattr->getTimeslot());
 
                 $slotschedule = $pattr->getStartSchedule();
                 $pa->setSchedule($slotschedule);

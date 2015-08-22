@@ -1,14 +1,16 @@
 To Do List
 ----------
+Implementering af DQL på alle data klasser
 Planlæg slutrunde kampe og puljer
 Færdiggørelse af planlæg indledende kampe
 Administrer kobling mellem nyheder og hold/kampe
 Registreringssystem for indrul
-Implementering af DQL på alle data klasser
+Popup med info om klub/hold og gruppe for hver pokal under "Vindende lande" og "Vindende klubber"
 
 IDEER
 -----
 Fix - forside ændres så højrebar forbliver på inaktiv side (men i et andet format)
+Søgning efter turnering skal tage udgangspunkt i valg af turneringsvært
 Dommerpåsætning - dommernationaltet skal sikre at man ikke dømmer for eget land
 Genåbn konto som turneringsansvarlig
 Overfør hold til en anden klub (indsæt nyt hold på samme plads i pulje)
@@ -49,6 +51,7 @@ Grafisk brush-up af finale billedet på kategorisiden
 Kampplan data klasser tilrettet DQL
 Valg af slutrunde krav flyttet fra PARelations til PlaygroundAttributes
 Matchtime fjernet fra PARelations - forberedt til ManyToMany relation mellem PlaygroundAttribute og Category
+Fix - dato defaultes til dags dato når der ikke er defineret match datoer (vis kampliste for dato)
 
 FORKASTET
 ---------

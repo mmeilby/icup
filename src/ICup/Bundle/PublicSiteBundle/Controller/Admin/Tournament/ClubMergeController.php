@@ -73,14 +73,14 @@ class ClubMergeController extends Controller
             else {
                 $division = chr($noTeams + 65);
             }
-            $team->setPid($target_club->getId());
+            $team->setClub($target_club);
             $team->setName($target_club->getName());
             $team->setDivision($division);
             $em->flush();
         }
         $users = $this->get('logic')->listUsersByClub($source_club->getId());
         foreach ($users as $user) {
-            $user->setCid($target_club->getId());
+            $user->setClub($target_club);
         }
         $em->remove($source_club);
         $em->flush();

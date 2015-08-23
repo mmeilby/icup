@@ -3,7 +3,9 @@ namespace ICup\Bundle\PublicSiteBundle\Controller\Admin\Tournament;
 
 use DateTime;
 use ICup\Bundle\PublicSiteBundle\Entity\Doctrine\MatchRelation;
+use ICup\Bundle\PublicSiteBundle\Entity\Doctrine\Playground;
 use ICup\Bundle\PublicSiteBundle\Entity\Doctrine\Tournament;
+use ICup\Bundle\PublicSiteBundle\Entity\Doctrine\User;
 use ICup\Bundle\PublicSiteBundle\Exceptions\ValidationException;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
@@ -23,15 +25,15 @@ class MatchResultController extends Controller
     {
         /* @var $utilService Util */
         $utilService = $this->get('util');
-
+        /* @var $playground Playground */
         $playground = $this->get('entity')->getPlaygroundById($playgroundid);
-        $site = $this->get('entity')->getSiteById($playground->getPid());
+        $site = $playground->getSite();
         /* @var $user User */
         $user = $utilService->getCurrentUser();
         /* @var $tournament Tournament */
-        $tournament = $this->get('entity')->getTournamentById($site->getPid());
+        $tournament = $site->getTournament();
         $host = $tournament->getHost();
-        $utilService->validateEditorAdminUser($user, $host->getId());
+        $utilService->validateEditorAdminUser($user, $host);
 
         $matchDate = DateTime::createFromFormat('d-m-Y', $date);
         if ($matchDate == null) {
@@ -73,14 +75,15 @@ class MatchResultController extends Controller
         $date = $session->get('icup.matchedit.date');
         $playgroundid = $session->get('icup.matchedit.playground');
 
+        /* @var $playground Playground */
         $playground = $this->get('entity')->getPlaygroundById($playgroundid);
-        $site = $this->get('entity')->getSiteById($playground->getPid());
+        $site = $playground->getSite();
         /* @var $user User */
         $user = $utilService->getCurrentUser();
         /* @var $tournament Tournament */
-        $tournament = $this->get('entity')->getTournamentById($site->getPid());
+        $tournament = $site->getTournament();
         $host = $tournament->getHost();
-        $utilService->validateEditorAdminUser($user, $host->getId());
+        $utilService->validateEditorAdminUser($user, $host);
 
         $form = $this->makeResultForm();
         $form->handleRequest($request);

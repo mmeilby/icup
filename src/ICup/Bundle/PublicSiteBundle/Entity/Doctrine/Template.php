@@ -21,11 +21,12 @@ class Template
     private $id;
 
     /**
-     * @var integer $pid
-     * Relation to Tournament - pid=tournament.id 
-     * @ORM\Column(name="pid", type="integer", nullable=false)
+     * @var Tournament $tournament
+     * Relation to Tournament
+     * @ORM\ManyToOne(targetEntity="Tournament", inversedBy="id")
+     * @ORM\JoinColumn(name="pid", referencedColumnName="id")
      */
-    private $pid;
+    private $tournament;
 
     /**
      * @var string $name
@@ -59,26 +60,19 @@ class Template
     }
 
     /**
-     * Set parent id
-     *
-     * @param integer $pid
-     * @return Site
+     * @return Tournament
      */
-    public function setPid($pid)
-    {
-        $this->pid = $pid;
-    
-        return $this;
+    public function getTournament() {
+        return $this->tournament;
     }
 
     /**
-     * Get parent id - related tournament
-     *
-     * @return integer 
+     * @param Tournament $tournament
+     * @return Template
      */
-    public function getPid()
-    {
-        return $this->pid;
+    public function setTournament($tournament) {
+        $this->tournament = $tournament;
+        return $this;
     }
 
     /**

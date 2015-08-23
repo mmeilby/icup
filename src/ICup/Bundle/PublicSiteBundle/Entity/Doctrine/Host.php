@@ -2,12 +2,13 @@
 
 namespace ICup\Bundle\PublicSiteBundle\Entity\Doctrine;
 
+use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\ORM\Mapping as ORM;
 
 /**
  * ICup\Bundle\PublicSiteBundle\Entity\Doctrine\Host
  *
- * @ORM\Table(name="hosts")
+ * @ORM\Table(name="hosts", uniqueConstraints={@ORM\UniqueConstraint(name="IdxByName", columns={"name"})})
  * @ORM\Entity
  */
 class Host
@@ -36,10 +37,18 @@ class Host
     private $tournaments;
 
     /**
+     * @var ArrayCollection $users
+     * Collection of host relations to users
+     * @ORM\OneToMany(targetEntity="User", mappedBy="host", cascade={"persist"})
+     */
+    private $users;
+
+    /**
      * Host constructor.
      */
     public function __construct() {
         $this->tournaments = new ArrayCollection();
+        $this->users = new ArrayCollection();
     }
 
     /**
@@ -80,5 +89,12 @@ class Host
      */
     public function getTournaments() {
         return $this->tournaments;
+    }
+
+    /**
+     * @return ArrayCollection
+     */
+    public function getUsers() {
+        return $this->users;
     }
 }

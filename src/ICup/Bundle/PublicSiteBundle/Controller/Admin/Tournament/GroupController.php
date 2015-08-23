@@ -1,8 +1,11 @@
 <?php
 namespace ICup\Bundle\PublicSiteBundle\Controller\Admin\Tournament;
 
+use ICup\Bundle\PublicSiteBundle\Entity\Doctrine\Category;
 use ICup\Bundle\PublicSiteBundle\Entity\Doctrine\Group;
+use ICup\Bundle\PublicSiteBundle\Entity\Doctrine\Tournament;
 use ICup\Bundle\PublicSiteBundle\Entity\Doctrine\User;
+use ICup\Bundle\PublicSiteBundle\Services\Util;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
@@ -27,11 +30,12 @@ class GroupController extends Controller
 
         /* @var $user User */
         $user = $utilService->getCurrentUser();
+        /* @var $category Category */
         $category = $this->get('entity')->getCategoryById($categoryid);
         /* @var $tournament Tournament */
         $tournament = $category->getTournament();
         $host = $tournament->getHost();
-        $utilService->validateEditorAdminUser($user, $host->getId());
+        $utilService->validateEditorAdminUser($user, $host);
 
         $group = new Group();
         $group->setCategory($category);
@@ -62,12 +66,13 @@ class GroupController extends Controller
 
         /* @var $user User */
         $user = $utilService->getCurrentUser();
+        /* @var $group Group */
         $group = $this->get('entity')->getGroupById($groupid);
         $category = $group->getCategory();
         /* @var $tournament Tournament */
         $tournament = $category->getTournament();
         $host = $tournament->getHost();
-        $utilService->validateEditorAdminUser($user, $host->getId());
+        $utilService->validateEditorAdminUser($user, $host);
 
         $form = $this->makeGroupForm($group, 'chg');
         $form->handleRequest($request);
@@ -96,12 +101,13 @@ class GroupController extends Controller
 
         /* @var $user User */
         $user = $utilService->getCurrentUser();
+        /* @var $group Group */
         $group = $this->get('entity')->getGroupById($groupid);
         $category = $group->getCategory();
         /* @var $tournament Tournament */
         $tournament = $category->getTournament();
         $host = $tournament->getHost();
-        $utilService->validateEditorAdminUser($user, $host->getId());
+        $utilService->validateEditorAdminUser($user, $host);
 
         $form = $this->makeGroupForm($group, 'del');
         $form->handleRequest($request);

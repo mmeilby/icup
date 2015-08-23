@@ -70,29 +70,6 @@ class Event
     }
 
     /**
-     * Set parent id - related tournament
-     *
-     * @param integer $pid
-     * @return Category
-     */
-    public function setPid($pid)
-    {
-        $this->pid = $pid;
-    
-        return $this;
-    }
-
-    /**
-     * Get parent id - related tournament
-     *
-     * @return integer 
-     */
-    public function getPid()
-    {
-        return $this->pid;
-    }
-
-    /**
      * @return Tournament
      */
     public function getTournament() {

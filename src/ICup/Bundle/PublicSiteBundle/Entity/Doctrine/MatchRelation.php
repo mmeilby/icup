@@ -31,11 +31,12 @@ class MatchRelation
     private $match;
 
     /**
-     * @var integer $cid
-     * Relation to Team - cid=team.id
-     * @ORM\Column(name="cid", type="integer", nullable=false)
+     * @var Team $team
+     * Relation to Team
+     * @ORM\ManyToOne(targetEntity="Team", inversedBy="id")
+     * @ORM\JoinColumn(name="cid", referencedColumnName="id")
      */
-    private $cid;
+    private $team;
     
     /**
      * @var string $awayteam
@@ -93,26 +94,19 @@ class MatchRelation
     }
 
     /**
-     * Set child id - related team
-     *
-     * @param integer $cid
-     * @return MatchRelation
+     * @return Team
      */
-    public function setCid($cid)
-    {
-        $this->cid = $cid;
-    
-        return $this;
+    public function getTeam() {
+        return $this->team;
     }
 
     /**
-     * Get child id - related team
-     *
-     * @return integer 
+     * @param Team $team
+     * @return MatchRelation
      */
-    public function getCid()
-    {
-        return $this->cid;
+    public function setTeam($team) {
+        $this->team = $team;
+        return $this;
     }
 
     /**

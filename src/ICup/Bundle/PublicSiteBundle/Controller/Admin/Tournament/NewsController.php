@@ -34,7 +34,7 @@ class NewsController extends Controller
         /* @var $tournament Tournament */
         $tournament = $this->get('entity')->getTournamentById($tournamentid);
         $host = $tournament->getHost();
-        $utilService->validateEditorAdminUser($user, $host->getId());
+        $utilService->validateEditorAdminUser($user, $host);
 
         $newsForm = new NewsForm();
         $newsForm->setPid($tournament->getId());
@@ -59,8 +59,6 @@ class NewsController extends Controller
             if ($form->isValid()) {
                 $news = new News();
                 $news->setTournament($tournament);
-                $news->setCid(0);
-                $news->setMid(0);
                 $this->updateNews($newsForm, $news);
                 $em = $this->getDoctrine()->getManager();
                 $em->persist($news);
@@ -86,9 +84,9 @@ class NewsController extends Controller
         /* @var $news News */
         $news = $this->get('entity')->getNewsById($newsid);
         /* @var $tournament Tournament */
-        $tournament = $this->get('entity')->getTournamentById($news->getPid());
+        $tournament = $news->getTournament();
         $host = $tournament->getHost();
-        $utilService->validateEditorAdminUser($user, $host->getId());
+        $utilService->validateEditorAdminUser($user, $host);
 
         $newsForm = $this->copyNewsForm($news);
         $form = $this->makeNewsForm($newsForm, 'chg');
@@ -126,11 +124,12 @@ class NewsController extends Controller
 
         /* @var $user User */
         $user = $utilService->getCurrentUser();
+        /* @var $news News */
         $news = $this->get('entity')->getNewsById($newsid);
         /* @var $tournament Tournament */
-        $tournament = $this->get('entity')->getTournamentById($news->getPid());
+        $tournament = $news->getTournament();
         $host = $tournament->getHost();
-        $utilService->validateEditorAdminUser($user, $host->getId());
+        $utilService->validateEditorAdminUser($user, $host);
 
         $newsForm = $this->copyNewsForm($news);
         $form = $this->makeNewsForm($newsForm, 'del');
@@ -161,7 +160,7 @@ class NewsController extends Controller
     private function copyNewsForm(News $news) {
         $newsForm = new NewsForm();
         $newsForm->setId($news->getId());
-        $newsForm->setPid($news->getPId());
+        $newsForm->setPid($news->getTournament()->getId());
         $newsForm->setNewsno($news->getNewsno());
         $newsForm->setNewstype($news->getNewstype());
         $newsForm->setLanguage($news->getLanguage());
@@ -170,8 +169,8 @@ class NewsController extends Controller
         $dateformat = $this->get('translator')->trans('FORMAT.DATE');
         $eventdate = Date::getDateTime($news->getDate());
         $newsForm->setDate(date_format($eventdate, $dateformat));
-        $newsForm->setCid($news->getCid());
-        $newsForm->setMid($news->getMid());
+        $newsForm->setCid($news->getTeam()->getId());
+        $newsForm->setMid($news->getMatch()->getId());
         return $newsForm;
     }
 

@@ -28,20 +28,26 @@ class DashboardController extends Controller
         $user = $this->get('util')->getCurrentUser();
         if ($user->isAdmin()) {
             // Get the host accessed lately by this user
-            $hostid = $user->getPid();
-            $form = $this->getSearchForm($hostid);
+            $host = $user->getHost();
+            $form = $this->getSearchForm($host ? $host->getId() : 0);
             $form->handleRequest($request);
             if ($form->isValid()) {
                 $formData = $form->getData();
                 $hostid = $formData['host'];
                 // Update accessed host
-                $user->setPid($hostid);
+                if ($hostid) {
+                    $host = $this->get('entity')->getHostById($hostid);
+                    $user->setHost($host);
+                }
+                else {
+                    $user->setHost(null);
+                }
                 $em = $this->getDoctrine()->getManager();
                 $em->flush();
             }
         }
         else {
-            $hostid = $user->getPid();
+            $hostid = $user->getHost()->getId();
             $form = $this->getSearchForm($hostid);
         }
         

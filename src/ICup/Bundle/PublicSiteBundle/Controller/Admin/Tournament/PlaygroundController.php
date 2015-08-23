@@ -2,6 +2,8 @@
 namespace ICup\Bundle\PublicSiteBundle\Controller\Admin\Tournament;
 
 use ICup\Bundle\PublicSiteBundle\Entity\Doctrine\Playground;
+use ICup\Bundle\PublicSiteBundle\Entity\Doctrine\Site;
+use ICup\Bundle\PublicSiteBundle\Entity\Doctrine\Tournament;
 use ICup\Bundle\PublicSiteBundle\Entity\Doctrine\User;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
@@ -28,14 +30,15 @@ class PlaygroundController extends Controller
 
         /* @var $user User */
         $user = $utilService->getCurrentUser();
+        /* @var $site Site */
         $site = $this->get('entity')->getSiteById($siteid);
         /* @var $tournament Tournament */
-        $tournament = $this->get('entity')->getTournamentById($site->getPid());
+        $tournament = $site->getTournament();
         $host = $tournament->getHost();
-        $utilService->validateEditorAdminUser($user, $host->getId());
+        $utilService->validateEditorAdminUser($user, $host);
 
         $playground = new Playground();
-        $playground->setPid($site->getId());
+        $playground->setSite($site);
         $form = $this->makePlaygroundForm($playground, 'add');
         $form->handleRequest($request);
         if ($form->get('cancel')->isClicked()) {
@@ -63,12 +66,13 @@ class PlaygroundController extends Controller
 
         /* @var $user User */
         $user = $utilService->getCurrentUser();
+        /* @var $playground Playground */
         $playground = $this->get('entity')->getPlaygroundById($playgroundid);
-        $site = $this->get('entity')->getSiteById($playground->getPid());
+        $site = $playground->getSite();
         /* @var $tournament Tournament */
-        $tournament = $this->get('entity')->getTournamentById($site->getPid());
+        $tournament = $site->getTournament();
         $host = $tournament->getHost();
-        $utilService->validateEditorAdminUser($user, $host->getId());
+        $utilService->validateEditorAdminUser($user, $host);
 
         $form = $this->makePlaygroundForm($playground, 'chg');
         $form->handleRequest($request);
@@ -97,12 +101,13 @@ class PlaygroundController extends Controller
 
         /* @var $user User */
         $user = $utilService->getCurrentUser();
+        /* @var $playground Playground */
         $playground = $this->get('entity')->getPlaygroundById($playgroundid);
-        $site = $this->get('entity')->getSiteById($playground->getPid());
+        $site = $playground->getSite();
         /* @var $tournament Tournament */
-        $tournament = $this->get('entity')->getTournamentById($site->getPid());
+        $tournament = $site->getTournament();
         $host = $tournament->getHost();
-        $utilService->validateEditorAdminUser($user, $host->getId());
+        $utilService->validateEditorAdminUser($user, $host);
 
         $form = $this->makePlaygroundForm($playground, 'del');
         $form->handleRequest($request);

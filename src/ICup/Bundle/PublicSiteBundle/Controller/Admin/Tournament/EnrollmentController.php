@@ -3,6 +3,7 @@ namespace ICup\Bundle\PublicSiteBundle\Controller\Admin\Tournament;
 
 use ICup\Bundle\PublicSiteBundle\Entity\Doctrine\Category;
 use ICup\Bundle\PublicSiteBundle\Entity\Doctrine\Club;
+use ICup\Bundle\PublicSiteBundle\Entity\Doctrine\Tournament;
 use ICup\Bundle\PublicSiteBundle\Entity\Doctrine\User;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
@@ -30,8 +31,8 @@ class EnrollmentController extends Controller
         $utilService->validateClubUser($user);
         /* @var $category Category */
         $category = $this->get('entity')->getCategoryById($categoryid);
-        $club = $this->get('entity')->getClubById($user->getCid());
-        $this->get('logic')->addEnrolled($category->getId(), $club->getId(), $user->getId());
+        $club = $user->getClub();
+        $this->get('logic')->addEnrolled($category, $club, $user);
         return $this->redirect($returnUrl);
     }
     
@@ -56,9 +57,9 @@ class EnrollmentController extends Controller
         /* @var $tournament Tournament */
         $tournament = $category->getTournament();
         $host = $tournament->getHost();
-        $utilService->validateEditorAdminUser($user, $host->getId());
+        $utilService->validateEditorAdminUser($user, $host);
         
-        $this->get('logic')->addEnrolled($category->getId(), $club->getId(), $user->getId());
+        $this->get('logic')->addEnrolled($category, $club, $user);
         return $this->redirect($returnUrl);
     }
     
@@ -78,7 +79,7 @@ class EnrollmentController extends Controller
         $utilService->validateClubUser($user);
         /* @var $category Category */
         $category = $this->get('entity')->getCategoryById($categoryid);
-        $club = $this->get('entity')->getClubById($user->getCid());
+        $club = $user->getClub();
         $this->get('logic')->deleteEnrolled($category->getId(), $club->getId());
         return $this->redirect($returnUrl);
     }
@@ -104,7 +105,7 @@ class EnrollmentController extends Controller
         /* @var $tournament Tournament */
         $tournament = $category->getTournament();
         $host = $tournament->getHost();
-        $utilService->validateEditorAdminUser($user, $host->getId());
+        $utilService->validateEditorAdminUser($user, $host);
 
         $this->get('logic')->deleteEnrolled($category->getId(), $club->getId());
         return $this->redirect($returnUrl);

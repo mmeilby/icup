@@ -34,7 +34,7 @@ class TournamentboardController extends Controller
         /* @var $tournament Tournament */
         $tournament = $this->get('entity')->getTournamentById($tournamentid);
         $host = $tournament->getHost();
-        $utilService->validateEditorAdminUser($user, $host->getId());
+        $utilService->validateEditorAdminUser($user, $host);
         $today = new DateTime();
         $tstat = $this->get('tmnt')->getTournamentStatus($tournament->getId(), $today);
         return array('host' => $host,

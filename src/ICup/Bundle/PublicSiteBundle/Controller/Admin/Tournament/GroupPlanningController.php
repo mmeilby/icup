@@ -1,6 +1,7 @@
 <?php
 namespace ICup\Bundle\PublicSiteBundle\Controller\Admin\Tournament;
 
+use ICup\Bundle\PublicSiteBundle\Entity\Doctrine\GroupOrder;
 use ICup\Bundle\PublicSiteBundle\Entity\Doctrine\Tournament;
 use ICup\Bundle\PublicSiteBundle\Entity\Doctrine\User;
 use ICup\Bundle\PublicSiteBundle\Entity\Doctrine\Group;
@@ -32,7 +33,7 @@ class GroupPlanningController extends Controller
         /* @var $tournament Tournament */
         $tournament = $category->getTournament();
         $host = $tournament->getHost();
-        $utilService->validateEditorAdminUser($user, $host->getId());
+        $utilService->validateEditorAdminUser($user, $host);
 
         $groups = $this->get('logic')->listGroups($categoryid);
         $teamsUnassigned = $this->get('logic')->listTeamsEnrolledUnassigned($categoryid);
@@ -88,7 +89,7 @@ class GroupPlanningController extends Controller
         /* @var $tournament Tournament */
         $tournament = $category->getTournament();
         $host = $tournament->getHost();
-        $utilService->validateEditorAdminUser($user, $host->getId());
+        $utilService->validateEditorAdminUser($user, $host);
 
         $this->setSelectedGroup($groupid, $request);
         return $this->redirect($returnUrl);
@@ -113,7 +114,7 @@ class GroupPlanningController extends Controller
         /* @var $tournament Tournament */
         $tournament = $category->getTournament();
         $host = $tournament->getHost();
-        $utilService->validateEditorAdminUser($user, $host->getId());
+        $utilService->validateEditorAdminUser($user, $host);
 
         $this->get('logic')->assignEnrolled($teamid, $groupid);
         return $this->redirect($returnUrl);
@@ -138,14 +139,15 @@ class GroupPlanningController extends Controller
         /* @var $tournament Tournament */
         $tournament = $category->getTournament();
         $host = $tournament->getHost();
-        $utilService->validateEditorAdminUser($user, $host->getId());
+        $utilService->validateEditorAdminUser($user, $host);
 
         if ($this->get('logic')->isTeamInGame($groupid, $teamid)) {
             throw new ValidationException("TEAMISACTIVE", "Team has matchresults - team=".$teamid.", group=".$groupid);
         }
         elseif ($this->get('logic')->isTeamActive($groupid, $teamid)) {
-            $groupOrder = $this->get('logic')->assignVacant($groupid, $user->getId());
-            $this->get('logic')->moveMatches($groupid, $teamid, $groupOrder->getCid());
+            /* @var $groupOrder GroupOrder */
+            $groupOrder = $this->get('logic')->assignVacant($groupid, $user);
+            $this->get('logic')->moveMatches($groupid, $teamid, $groupOrder->getTeam()->getId());
         }
         $this->get('logic')->removeAssignment($teamid, $groupid);
         return $this->redirect($returnUrl);
@@ -170,9 +172,9 @@ class GroupPlanningController extends Controller
         /* @var $tournament Tournament */
         $tournament = $category->getTournament();
         $host = $tournament->getHost();
-        $utilService->validateEditorAdminUser($user, $host->getId());
+        $utilService->validateEditorAdminUser($user, $host);
 
-        $this->get('logic')->assignVacant($groupid, $user->getId());
+        $this->get('logic')->assignVacant($groupid, $user);
         return $this->redirect($returnUrl);
     }
 
@@ -194,7 +196,7 @@ class GroupPlanningController extends Controller
         /* @var $tournament Tournament */
         $tournament = $category->getTournament();
         $host = $tournament->getHost();
-        $utilService->validateEditorAdminUser($user, $host->getId());
+        $utilService->validateEditorAdminUser($user, $host);
 
         $this->get('logic')->removeEnrolled($teamid, $category->getId());
         return $this->redirect($returnUrl);

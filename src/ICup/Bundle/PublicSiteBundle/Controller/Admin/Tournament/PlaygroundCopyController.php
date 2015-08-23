@@ -1,7 +1,9 @@
 <?php
 namespace ICup\Bundle\PublicSiteBundle\Controller\Admin\Tournament;
 
+use ICup\Bundle\PublicSiteBundle\Entity\Doctrine\Playground;
 use ICup\Bundle\PublicSiteBundle\Entity\Doctrine\PlaygroundAttribute;
+use ICup\Bundle\PublicSiteBundle\Entity\Doctrine\Tournament;
 use ICup\Bundle\PublicSiteBundle\Entity\Doctrine\User;
 use ICup\Bundle\PublicSiteBundle\Services\Util;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
@@ -20,21 +22,23 @@ class PlaygroundCopyController extends Controller
         /* @var $utilService Util */
         $utilService = $this->get('util');
         $returnUrl = $utilService->getReferer();
-        
+
+        /* @var $target_playground Playground */
         $target_playground = $this->get('entity')->getPlaygroundById($playgroundid);
+        /* @var $source_playground Playground */
         $source_playground = $this->get('entity')->getPlaygroundById($sourceplaygroundid);
 
         /* @var $user User */
         $user = $utilService->getCurrentUser();
-        $source_site = $this->get('entity')->getSiteById($source_playground->getPid());
-        $target_site = $this->get('entity')->getSiteById($target_playground->getPid());
-        if ($source_site->getPid() != $target_site->getPid()) {
+        $source_site = $source_playground->getSite();
+        $target_site = $target_playground->getSite();
+        if ($source_site->getTournament()->getId() != $target_site->getTournament()->getId()) {
             
         }
         /* @var $tournament Tournament */
-        $tournament = $this->get('entity')->getTournamentById($source_site->getPid());
+        $tournament = $source_site->getTournament();
         $host = $tournament->getHost();
-        $utilService->validateEditorAdminUser($user, $host->getId());
+        $utilService->validateEditorAdminUser($user, $host);
         
         $form = $this->makeCopyForm();
         $form->handleRequest($request);
@@ -60,7 +64,7 @@ class PlaygroundCopyController extends Controller
         return $formDef->getForm();
     }
     
-    private function copyPlayground($source_playground, $target_playground) {
+    private function copyPlayground(Playground $source_playground, Playground $target_playground) {
         $em = $this->getDoctrine()->getManager();
         $attributes = $this->get('logic')->listPlaygroundAttributes($source_playground->getId());
         foreach ($attributes as $attr) {

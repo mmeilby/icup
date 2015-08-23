@@ -2,12 +2,14 @@
 
 namespace ICup\Bundle\PublicSiteBundle\Services;
 
+use ICup\Bundle\PublicSiteBundle\Entity\Doctrine\Club;
+use ICup\Bundle\PublicSiteBundle\Entity\Doctrine\Host;
 use ICup\Bundle\PublicSiteBundle\Entity\Doctrine\Tournament;
 use ICup\Bundle\PublicSiteBundle\Entity\Doctrine\User;
 use ICup\Bundle\PublicSiteBundle\Services\Doctrine\Entity;
 use ICup\Bundle\PublicSiteBundle\Services\Doctrine\BusinessLogic;
 use Symfony\Component\HttpFoundation\Request;
-use Symfony\Component\HttpFoundation\Session;
+use Symfony\Component\HttpFoundation\Session\Session;
 use ICup\Bundle\PublicSiteBundle\Exceptions\ValidationException;
 use ICup\Bundle\PublicSiteBundle\Exceptions\RedirectException;
 use Symfony\Component\DependencyInjection\ContainerInterface;
@@ -192,10 +194,10 @@ class Util
      * Verify that user is admin or an editor allowed to access the host specified by hostid.
      * This function does not ensure that user->pid is referring to a valid host - if user is an admin.
      * @param User $user
-     * @param Mixed $hostid
+     * @param Host $host
      * @throws ValidationException
      */
-    public function validateEditorAdminUser(User $user, $hostid) {
+    public function validateEditorAdminUser(User $user, Host $host) {
         // If user is admin anything is allowed...
         if (!$this->isAdminUser($user)) {
             // Since this is not the admin - validate for editor
@@ -203,9 +205,9 @@ class Util
                 // Controller is called by club user user
                 throw new ValidationException("NOTEDITORADMIN", "userid=".$user->getId().", role=".$user->getRole());
             }
-            if (!$user->isEditorFor($hostid)) {
+            if (!$user->isEditorFor($host->getId())) {
                 // Controller is called by editor - however editor is not allowed to access this host
-                throw new ValidationException("NOTEDITORADMIN", "userid=".$user->getId().", hostid=".$hostid);
+                throw new ValidationException("NOTEDITORADMIN", "userid=".$user->getId().", hostid=".$host->getId());
             }
         }
     }
@@ -214,10 +216,10 @@ class Util
      * Verify that user is admin or a club user allowed to administer the club specified by clubid
      * This function does not ensure that user->cid is referring to a valid club - if user is an admin.
      * @param User $user
-     * @param Mixed $clubid
+     * @param Club $club
      * @throws ValidationException
      */
-    public function validateClubAdminUser(User $user, $clubid) {
+    public function validateClubAdminUser(User $user, Club $club) {
         // If user is admin anything is allowed...
         if (!$this->isAdminUser($user)) {
             // Since this is not the admin - validate for club admin
@@ -225,9 +227,9 @@ class Util
                 // Controller is called by club user user
                 throw new ValidationException("NOTCLUBADMIN", "userid=".$user->getId().", role=".$user->getRole());
             }
-            if (!$user->isRelatedTo($clubid)) {
+            if (!$user->isRelatedTo($club->getId())) {
                 // Even though this is a club admin - the admin does not administer this club
-                throw new ValidationException("NOTCLUBADMIN", "userid=".$user->getId().", clubid=".$clubid);
+                throw new ValidationException("NOTCLUBADMIN", "userid=".$user->getId().", clubid=".$club->getId());
             }
         }
     }

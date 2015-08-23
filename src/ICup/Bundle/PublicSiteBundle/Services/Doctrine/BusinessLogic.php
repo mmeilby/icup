@@ -39,22 +39,21 @@ class BusinessLogic
         $this->logger = $logger;
     }
     
-    public function addEnrolled($categoryid, $clubid, $userid, $vacant = false) {
-        $club = $this->entity->getClubById($clubid);
+    public function addEnrolled(Category $category, Club $club, User $user, $vacant = false) {
         $qb = $this->em->createQuery(
                 "select e ".
                 "from ".$this->entity->getRepositoryPath('Enrollment')." e, ".
                         $this->entity->getRepositoryPath('Team')." t ".
-                "where e.pid=:category and e.cid=t.id and t.pid=:club ".
-                "order by e.pid");
-        $qb->setParameter('category', $categoryid);
-        $qb->setParameter('club', $clubid);
+                "where e.category=:category and e.team=t.id and t.club=:club ".
+                "order by e.category");
+        $qb->setParameter('category', $category->getId());
+        $qb->setParameter('club', $club->getId());
         $enrolled = $qb->getResult();
  
         $noTeams = count($enrolled);
         if ($noTeams >= 26) {
             // Can not add more than 26 teams to same category - Team A -> Team Z
-            throw new ValidationException("NOMORETEAMS", "More than 26 enrolled - club=".$clubid.", category=".$categoryid);
+            throw new ValidationException("NOMORETEAMS", "More than 26 enrolled - club=".$club->getId().", category=".$category->getId());
         }
         else if ($noTeams == 0) {
             $division = '';
@@ -67,8 +66,8 @@ class BusinessLogic
             $division = chr($noTeams + 65);
         }
 
-        return $this->enrollTeam($categoryid, $userid,
-                                 $clubid, $club->getName(), $division, $vacant);
+        return $this->enrollTeam($category, $user,
+                                 $club, $club->getName(), $division, $vacant);
     }
     
     public function deleteEnrolled($categoryid, $clubid) {
@@ -76,22 +75,23 @@ class BusinessLogic
                 "select e ".
                 "from ".$this->entity->getRepositoryPath('Enrollment')." e, ".
                         $this->entity->getRepositoryPath('Team')." t ".
-                "where e.pid=:category and e.cid=t.id and t.pid=:club ".
+                "where e.category=:category and e.team=t.id and t.club=:club ".
                 "order by t.division");
         $qb->setParameter('category', $categoryid);
         $qb->setParameter('club', $clubid);
         $enrolled = $qb->getResult();
- 
+
+        /* @var $enroll Enrollment */
         $enroll = array_pop($enrolled);
         if ($enroll == null) {
             throw new ValidationException("NOTEAMS", "No teams enrolled - club=".$clubid.", category=".$categoryid);
         }
+        $team = $enroll->getTeam();
         // Verify that the team is not assigned to a group
-        if ($this->isTeamAssigned($categoryid, $enroll->getCid())) {
-            throw new ValidationException("TEAMASSIGNED", "Team was assigned previously - team=".$enroll->getCid().", category=".$categoryid);
+        if ($this->isTeamAssigned($categoryid, $team->getId())) {
+            throw new ValidationException("TEAMASSIGNED", "Team was assigned previously - team=".$team->getId().", category=".$categoryid);
         }
         // Remove the team entity enrolled in this category
-        $team = $this->entity->getTeamById($enroll->getCid());
         $this->em->remove($team);
         // When clubs have more than one team enrolled in a category
         // the division must be defined for each team - A, B, C, ...
@@ -118,19 +118,19 @@ class BusinessLogic
         $qb = $this->em->createQuery(
             "select e ".
             "from ".$this->entity->getRepositoryPath('Enrollment')." e ".
-            "where e.pid=:category and e.cid=:team");
+            "where e.category=:category and e.team=:team");
         $qb->setParameter('category', $categoryid);
         $qb->setParameter('team', $teamid);
         $enroll = $qb->getOneOrNullResult();
         // Remove the team entity enrolled in this category
         $team = $this->entity->getTeamById($teamid);
-        $clubid = $team->getPid();
+        $club = $team->getClub();
         $this->em->remove($team);
         // Finally remove the enroll entity
         $this->em->remove($enroll);
         $this->em->flush();
 
-        $enrolled = $this->listEnrolledTeamsByCategory($categoryid, $clubid);
+        $enrolled = $this->listEnrolledTeamsByCategory($categoryid, $club->getId());
         // When clubs have more than one team enrolled in a category
         // the division must be defined for each team - A, B, C, ...
         // However for single teams the division must be blank.
@@ -158,17 +158,17 @@ class BusinessLogic
                 "from ".$this->entity->getRepositoryPath('Group')." g, ".
                         $this->entity->getRepositoryPath('GroupOrder')." o ".
                 "where g.category=:category and g.classification=0 and ".
-                      "o.pid=g.id and ".
-                      "o.cid=:team");
+                      "o.group=g.id and ".
+                      "o.team=:team");
         $qbt->setParameter('category', $categoryid);
         $qbt->setParameter('team', $teamid);
         $teamsAssigned = $qbt->getOneOrNullResult();
         return $teamsAssigned != null ? $teamsAssigned['teams'] > 0 : false;
     }
     
-    public function enrollTeam($categoryid, $userid, $clubid, $name, $division, $vacant = false) {
+    public function enrollTeam(Category $category, User $user, Club $club, $name, $division, $vacant = false) {
         $team = new Team();
-        $team->setPid($clubid);
+        $team->setClub($club);
         $team->setName($name);
         $team->setColor('');
         $team->setDivision($division);
@@ -178,9 +178,9 @@ class BusinessLogic
 
         $today = new DateTime();
         $enroll = new Enrollment();
-        $enroll->setCid($team->getId());
-        $enroll->setPid($categoryid);
-        $enroll->setUid($userid);
+        $enroll->setTeam($team);
+        $enroll->setCategory($category);
+        $enroll->setUser($user);
         $enroll->setDate(Date::getDate($today));
         $this->em->persist($enroll);
         $this->em->flush();
@@ -188,7 +188,7 @@ class BusinessLogic
     }
     
     private function updateDivision(Enrollment $enroll, $division) {
-        $firstTeam = $this->entity->getTeamById($enroll->getCid());
+        $firstTeam = $enroll->getTeam();
         $firstTeam->setDivision($division);
         $this->em->flush();
     }
@@ -216,9 +216,10 @@ class BusinessLogic
     private function verifyRelation($categoryid, $playgroundattributeid) {
         /* @var $category Category */
         $category = $this->entity->getCategoryById($categoryid);
+        /* @var $pattr PlaygroundAttribute */
         $pattr = $this->entity->getPlaygroundAttributeById($playgroundattributeid);
         $playground = $pattr->getPlayground();
-        $site = $this->entity->getSiteById($playground->getPid());
+        $site = $playground->getSite();
         // Verify that the category and playground share the same tournament
         if ($site->getTournament()->getId() != $category->getTournament()->getId()) {
             throw new ValidationException("NOTTHESAMETOURNAMENT", "Category and playground does not share the same tournament - pattr=".$playgroundattributeid.", category=".$categoryid);
@@ -229,6 +230,7 @@ class BusinessLogic
     public function assignEnrolled($teamid, $groupid) {
         /* @var $group Group */
         $group = $this->entity->getGroupById($groupid);
+        $team = $this->entity->getTeamById($teamid);
         // Verify that the team is not assigned to any group
         if ($this->isTeamAssigned($group->getCategory()->getId(), $teamid)) {
             throw new ValidationException("TEAMASSIGNED", "Team was assigned previously - team=".$teamid.", category=".$group->getCategory()->getId());
@@ -236,15 +238,14 @@ class BusinessLogic
         $groupOrder = $this->getFirstVacantAssigned($groupid);
         if (!$groupOrder) {
             $groupOrder = new GroupOrder();
-            $groupOrder->setPid($groupid);
-            $groupOrder->setCid($teamid);
+            $groupOrder->setGroup($group);
+            $groupOrder->setTeam($team);
             $this->em->persist($groupOrder);
         }
         else {
-            $vacantTeamid = $groupOrder->getCid();
-            $this->moveMatches($groupid, $vacantTeamid, $teamid);
-
-            $groupOrder->setCid($teamid);
+            $vacantTeam = $groupOrder->getTeam();
+            $this->moveMatches($groupid, $vacantTeam->getId(), $teamid);
+            $groupOrder->setTeam($team);
         }
         $this->em->flush();
         return $groupOrder;
@@ -253,7 +254,7 @@ class BusinessLogic
     private static $VACANT_CLUB_NAME = "VACANT";
     private static $VACANT_CLUB_COUNTRYCODE = "[V]";
 
-    public function assignVacant($groupid, $userid) {
+    public function assignVacant($groupid, User $user) {
         /* @var $group Group */
         $group = $this->entity->getGroupById($groupid);
         $club = $this->getClubByName(BusinessLogic::$VACANT_CLUB_NAME, BusinessLogic::$VACANT_CLUB_COUNTRYCODE);
@@ -264,10 +265,10 @@ class BusinessLogic
             $this->em->persist($club);
             $this->em->flush();
         }
-        $enrolled = $this->addEnrolled($group->getCategory()->getId(), $club->getId(), $userid, true);
+        $enrolled = $this->addEnrolled($group->getCategory(), $club, $user, true);
         $groupOrder = new GroupOrder();
-        $groupOrder->setCid($enrolled->getCid());
-        $groupOrder->setPid($groupid);
+        $groupOrder->setTeam($enrolled->getTeam());
+        $groupOrder->setGroup($group);
         $this->em->persist($groupOrder);
         $this->em->flush();
         return $groupOrder;
@@ -278,8 +279,8 @@ class BusinessLogic
             "select o ".
             "from ".$this->entity->getRepositoryPath('GroupOrder')." o, ".
                     $this->entity->getRepositoryPath('Team')." t ".
-            "where o.pid=:group and ".
-            "o.cid=t.id and t.vacant='Y'");
+            "where o.group=:group and ".
+            "o.team=t.id and t.vacant='Y'");
         $qbt->setParameter('group', $groupid);
         $vacantTeams = $qbt->getResult();
         return array_shift($vacantTeams);
@@ -291,8 +292,8 @@ class BusinessLogic
                 "select o ".
                 "from ".$this->entity->getRepositoryPath('Group')." g, ".
                         $this->entity->getRepositoryPath('GroupOrder')." o ".
-                "where o.pid=:group and ".
-                      "o.cid=:team");
+                "where o.group=:group and ".
+                      "o.team=:team");
         $qb->setParameter('group', $groupid);
         $qb->setParameter('team', $teamid);
         $groupOrder = $qb->getOneOrNullResult();
@@ -309,8 +310,8 @@ class BusinessLogic
 
     public function moveMatches($groupid, $teamid, $target_teamid) {
         $qb = $this->em->createQuery(
-            "update ".$this->entity->getRepositoryPath('MatchRelation')." r set r.cid=:target ".
-            "where r.cid=:team and r.match in (".
+            "update ".$this->entity->getRepositoryPath('MatchRelation')." r set r.team=:target ".
+            "where r.team=:team and r.match in (".
             "select m.id ".
                 "from ".$this->entity->getRepositoryPath('Match')." m ".
                 "where m.group=:group)");
@@ -325,7 +326,7 @@ class BusinessLogic
                 "select count(r) as results ".
                 "from ".$this->entity->getRepositoryPath('MatchRelation')." r, ".
                         $this->entity->getRepositoryPath('Match')." m ".
-                "where r.match=m.id and m.group=:group and r.cid=:team ".
+                "where r.match=m.id and m.group=:group and r.team=:team ".
                 "order by r.match");
         $qb->setParameter('group', $groupid);
         $qb->setParameter('team', $teamid);
@@ -338,7 +339,7 @@ class BusinessLogic
             "select count(r) as results ".
             "from ".$this->entity->getRepositoryPath('MatchRelation')." r, ".
                     $this->entity->getRepositoryPath('Match')." m ".
-            "where r.match=m.id and m.group=:group and r.cid=:team and r.scorevalid='Y'".
+            "where r.match=m.id and m.group=:group and r.team=:team and r.scorevalid='Y'".
             "order by r.match");
         $qb->setParameter('group', $groupid);
         $qb->setParameter('team', $teamid);
@@ -352,7 +353,7 @@ class BusinessLogic
                 "from ".$this->entity->getRepositoryPath('Enrollment')." e, ".
                         $this->entity->getRepositoryPath('Category')." c, ".
                         $this->entity->getRepositoryPath('Team')." t ".
-                "where e.pid=c.id and e.cid=t.id and t.pid=:club ".
+                "where e.category=c.id and e.team=t.id and t.club=:club ".
                 "group by c.tournament ".
                 "order by c.tournament asc");
         $qb->setParameter('club', $clubid);
@@ -366,7 +367,7 @@ class BusinessLogic
                         $this->entity->getRepositoryPath('Category')." c, ".
                         $this->entity->getRepositoryPath('Team')." t, ".
                         $this->entity->getRepositoryPath('Club')." clb ".
-                "where c.tournament=:tournament and e.pid=c.id and e.cid=t.id and t.pid=clb.id ".
+                "where c.tournament=:tournament and e.category=c.id and e.team=t.id and t.club=clb.id ".
                 "group by clb.id ".
                 "order by clb.country, clb.name");
         $qb->setParameter('tournament', $tournamentid);
@@ -377,7 +378,7 @@ class BusinessLogic
         $qb = $this->em->createQuery(
                 "select e ".
                 "from ".$this->entity->getRepositoryPath('Enrollment')." e ".
-                "where e.uid=:user");
+                "where e.user=:user");
         $qb->setParameter('user', $userid);
         return $qb->getResult();
     }
@@ -392,8 +393,8 @@ class BusinessLogic
                 "from ".$this->entity->getRepositoryPath('Enrollment')." e, ".
                         $this->entity->getRepositoryPath('Category')." c, ".
                         $this->entity->getRepositoryPath('Team')." t ".
-                "where c.tournament=:tournament and e.pid=c.id and e.cid=t.id and t.pid=:club ".
-                "order by e.pid");
+                "where c.tournament=:tournament and e.category=c.id and e.team=t.id and t.club=:club ".
+                "order by e.category");
         $qb->setParameter('tournament', $tournamentid);
         $qb->setParameter('club', $clubid);
         return $qb->getResult();
@@ -404,7 +405,7 @@ class BusinessLogic
                 "select t ".
                 "from ".$this->entity->getRepositoryPath('Enrollment')." e, ".
                         $this->entity->getRepositoryPath('Team')." t ".
-                "where e.pid=:category and e.cid=t.id and t.pid=:club ".
+                "where e.category=:category and e.team=t.id and t.club=:club ".
                 "order by t.division");
         $qb->setParameter('category', $categoryid);
         $qb->setParameter('club', $clubid);
@@ -416,7 +417,7 @@ class BusinessLogic
                 "select c ".
                 "from ".$this->entity->getRepositoryPath('Enrollment')." e, ".
                         $this->entity->getRepositoryPath('Category')." c ".
-                "where e.pid=c.id and e.cid=:team");
+                "where e.category=c.id and e.team=:team");
         $qb->setParameter('team', $teamid);
         $category = $qb->getOneOrNullResult();
         if ($category == null) {
@@ -431,7 +432,7 @@ class BusinessLogic
                 "from ".$this->entity->getRepositoryPath('Group')." g, ".
                         $this->entity->getRepositoryPath('GroupOrder')." o, ".
                         $this->entity->getRepositoryPath('Category')." c ".
-                "where o.pid=g.id and o.cid=:team and g.category=c.id");
+                "where o.group=g.id and o.team=:team and g.category=c.id");
         $qb->setParameter('team', $teamid);
         $category = $qb->getOneOrNullResult();
         if ($category == null) {
@@ -449,7 +450,7 @@ class BusinessLogic
                 "select p ".
                 "from ".$this->entity->getRepositoryPath('Playground')." p, ".
                         $this->entity->getRepositoryPath('Site')." s ".
-                "where s.tournament=:tournament and p.pid=s.id and p.no=:no");
+                "where s.tournament=:tournament and p.site=s.id and p.no=:no");
         $qb->setParameter('tournament', $tournamentid);
         $qb->setParameter('no', $no);
         return $qb->getOneOrNullResult();
@@ -464,7 +465,7 @@ class BusinessLogic
                 "select p ".
                 "from ".$this->entity->getRepositoryPath('Playground')." p, ".
                         $this->entity->getRepositoryPath('Site')." s ".
-                "where s.tournament=:tournament and p.pid=s.id ".
+                "where s.tournament=:tournament and p.site=s.id ".
                 "order by p.no asc");
         $qb->setParameter('tournament', $tournamentid);
         return $qb->getResult();
@@ -488,7 +489,7 @@ class BusinessLogic
                 "from ".$this->entity->getRepositoryPath('PlaygroundAttribute')." a, ".
                         $this->entity->getRepositoryPath('Playground')." p, ".
                         $this->entity->getRepositoryPath('Site')." s ".
-                "where s.tournament=:tournament and p.pid=s.id and a.playground=p.id ".
+                "where s.tournament=:tournament and p.site=s.id and a.playground=p.id ".
                 "order by p.no asc, a.date asc, a.start asc");
         $qb->setParameter('tournament', $tournamentid);
         return $qb->getResult();
@@ -520,7 +521,7 @@ class BusinessLogic
         // wipe matchalternatives
         $qba = $this->em->createQuery(
             "delete from ".$this->entity->getRepositoryPath('MatchAlternative')." m ".
-            "where m.pid in (select ms.id ".
+            "where m.matchschedule in (select ms.id ".
                             "from ".$this->entity->getRepositoryPath('MatchSchedule')." ms ".
                             "where ms.tournament=:tournament)");
         $qba->setParameter('tournament', $tournamentid);
@@ -653,9 +654,9 @@ class BusinessLogic
                 "from ".$this->entity->getRepositoryPath('Enrollment')." e, ".
                         $this->entity->getRepositoryPath('Team')." t, ".
                         $this->entity->getRepositoryPath('Club')." c ".
-                "where e.pid=:category and ".
-                      "e.cid=t.id and ".
-                      "t.pid=c.id and ".
+                "where e.category=:category and ".
+                      "e.team=t.id and ".
+                      "t.club=c.id and ".
                       "t.name=:name and ".
                       "t.division=:division");
         $qb->setParameter('category', $categoryid);
@@ -672,16 +673,33 @@ class BusinessLogic
         }
         return $teamsList;
     }
-    
+
+    public function findTeamByCategory(Category $category, $name, $division) {
+        $qb = $this->em->createQuery(
+            "select t ".
+            "from ".$this->entity->getRepositoryPath('Enrollment')." e, ".
+                    $this->entity->getRepositoryPath('Team')." t, ".
+                    $this->entity->getRepositoryPath('Club')." c ".
+            "where e.category=:category and ".
+                  "e.team=t.id and ".
+                  "t.club=c.id and ".
+                  "t.name=:name and ".
+                  "t.division=:division");
+        $qb->setParameter('category', $category->getId());
+        $qb->setParameter('name', $name);
+        $qb->setParameter('division', $division);
+        return $qb->getResult();
+    }
+
     public function getTeamByGroup($groupid, $name, $division) {
         $qb = $this->em->createQuery(
                 "select t.id,t.name,t.division,c.name as club,c.country ".
                 "from ".$this->entity->getRepositoryPath('GroupOrder')." o, ".
                         $this->entity->getRepositoryPath('Team')." t, ".
                         $this->entity->getRepositoryPath('Club')." c ".
-                "where o.pid=:group and ".
-                      "o.cid=t.id and ".
-                      "t.pid=c.id and ".
+                "where o.group=:group and ".
+                      "o.team=t.id and ".
+                      "t.club=c.id and ".
                       "t.name=:name and ".
                       "t.division=:division");
         $qb->setParameter('group', $groupid);
@@ -699,16 +717,35 @@ class BusinessLogic
         }
         return $teamsList;
     }
-    
+
+    public function findTeamByGroup(Group $group, $name, $division, $country) {
+        $qb = $this->em->createQuery(
+            "select t ".
+            "from ".$this->entity->getRepositoryPath('GroupOrder')." o, ".
+                    $this->entity->getRepositoryPath('Team')." t, ".
+                    $this->entity->getRepositoryPath('Club')." c ".
+            "where o.group=:group and ".
+                  "o.team=t.id and ".
+                  "c.country=:country and ".
+                  "t.club=c.id and ".
+                  "t.name=:name and ".
+                  "t.division=:division");
+        $qb->setParameter('group', $group->getId());
+        $qb->setParameter('name', $name);
+        $qb->setParameter('division', $division);
+        $qb->setParameter('country', $country);
+        return $qb->getOneOrNullResult();
+    }
+
     public function listTeamsByGroup($groupid) {
         $qb = $this->em->createQuery(
                 "select t.id,t.name,t.division,c.name as club,c.country ".
                 "from ".$this->entity->getRepositoryPath('GroupOrder')." o, ".
                         $this->entity->getRepositoryPath('Team')." t, ".
                         $this->entity->getRepositoryPath('Club')." c ".
-                "where o.pid=:group and ".
-                      "o.cid=t.id and ".
-                      "t.pid=c.id ".
+                "where o.group=:group and ".
+                      "o.team=t.id and ".
+                      "t.club=c.id ".
                 "order by o.id");
         $qb->setParameter('group', $groupid);
         $teamsList = array();
@@ -733,8 +770,8 @@ class BusinessLogic
                     $this->entity->getRepositoryPath('Club')." c ".
             "where m.group=:group and ".
             "r.match=m.id and ".
-            "r.cid=t.id and ".
-            "t.pid=c.id ".
+            "r.team=t.id and ".
+            "t.club=c.id ".
             "order by t.id");
         $qb->setParameter('group', $groupid);
         $teamsList = array();
@@ -750,11 +787,11 @@ class BusinessLogic
         $qb = $this->em->createQuery(
             "select q.id as rid,q.awayteam,q.rank,g.id as rgrp,g.name as gname,g.classification ".
             "from ".$this->entity->getRepositoryPath('QMatchRelation')." q, ".
-            $this->entity->getRepositoryPath('Match')." m, ".
-            $this->entity->getRepositoryPath('Group')." g ".
+                    $this->entity->getRepositoryPath('Match')." m, ".
+                    $this->entity->getRepositoryPath('Group')." g ".
             "where m.group=:group and ".
-            "q.match=m.id and ".
-            "q.cid=g.id ".
+                  "q.match=m.id and ".
+                  "q.group=g.id ".
             "order by m.id, q.awayteam");
         $qb->setParameter('group', $groupid);
         foreach ($qb->getResult() as $qmatch) {
@@ -784,7 +821,7 @@ class BusinessLogic
         $qb = $this->em->createQuery(
                 "select t ".
                 "from ".$this->entity->getRepositoryPath('Team')." t ".
-                "where t.pid=:club");
+                "where t.club=:club");
         $qb->setParameter('club', $clubid);
         return $qb->getResult();
     }
@@ -795,13 +832,13 @@ class BusinessLogic
                 "from ".$this->entity->getRepositoryPath('Enrollment')." e, ".
                         $this->entity->getRepositoryPath('Team')." t, ".
                         $this->entity->getRepositoryPath('Club')." c ".
-                "where e.pid=:category and e.cid=t.id and t.pid=c.id and ".
+                "where e.category=:category and e.team=t.id and t.club=c.id and ".
                       "t.id not in (".
-                            "select o.cid ".
+                            "select o.team ".
                             "from ".$this->entity->getRepositoryPath('Group')." g, ".
                                     $this->entity->getRepositoryPath('GroupOrder')." o ".
                             "where g.category=:category and g.classification=:class and ".
-                                  "o.pid=g.id".
+                                  "o.group=g.id".
                             ") ".
                 "order by c.country, c.name, t.division");
         $qb->setParameter('category', $categoryid);
@@ -852,9 +889,9 @@ class BusinessLogic
                 "where cat.tournament=:tournament and ".
                         "g.category=cat.id and ".
                         "g.classification=0 and ".
-                        "o.pid=g.id and ".
-                        "o.cid=t.id and ".
-                        "t.pid=c.id ".
+                        "o.group=g.id and ".
+                        "o.team=t.id and ".
+                        "t.club=c.id ".
                 "order by c.country asc, c.name asc");
         $qb->setParameter('tournament', $tournamentid);
         return $qb->getResult();
@@ -879,7 +916,7 @@ class BusinessLogic
         $qb = $this->em->createQuery(
                 "select u ".
                 "from ".$this->entity->getRepositoryPath('User')." u ".
-                "where u.cid=:club and ".
+                "where u.club=:club and ".
                       "u.role in (".User::$CLUB.",".User::$CLUB_ADMIN.") and ".
                       "u.status in (".User::$PRO.",".User::$ATT.",".User::$INF.") ".
                 "order by u.status, u.role desc, u.name");
@@ -891,7 +928,7 @@ class BusinessLogic
         $qb = $this->em->createQuery(
                 "select u ".
                 "from ".$this->entity->getRepositoryPath('User')." u ".
-                "where u.pid=:host and ".
+                "where u.host=:host and ".
                       "u.role in (".User::$EDITOR.",".User::$EDITOR_ADMIN.") ".
                 "order by u.role desc, u.name");
         $qb->setParameter('host', $hostid);

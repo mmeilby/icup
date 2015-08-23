@@ -2,6 +2,7 @@
 
 namespace ICup\Bundle\PublicSiteBundle\Entity\Doctrine;
 
+use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\ORM\Mapping as ORM;
 
 /**
@@ -22,11 +23,12 @@ class Playground
     private $id;
 
     /**
-     * @var integer $pid
-     * Relation to Site - pid=site.id 
-     * @ORM\Column(name="pid", type="integer", nullable=false)
+     * @var Site $site
+     * Relation to Site
+     * @ORM\ManyToOne(targetEntity="Site", inversedBy="id")
+     * @ORM\JoinColumn(name="pid", referencedColumnName="id")
      */
-    private $pid;
+    private $site;
 
     /**
      * @var integer $no
@@ -49,6 +51,27 @@ class Playground
      */
     private $location;
 
+    /**
+     * @var ArrayCollection $matches
+     * Collection of playground relations to matches
+     * @ORM\OneToMany(targetEntity="Match", mappedBy="playground", cascade={"persist", "remove"})
+     */
+    private $matches;
+
+    /**
+     * @var ArrayCollection $playgroundattributes
+     * Collection of playground relations to playground attributes
+     * @ORM\OneToMany(targetEntity="PlaygroundAttribute", mappedBy="playground", cascade={"persist", "remove"})
+     */
+    private $playgroundattributes;
+
+    /**
+     * Playground constructor.
+     */
+    public function __construct() {
+        $this->matches = new ArrayCollection();
+        $this->playgroundattributes = new ArrayCollection();
+    }
 
     /**
      * Get id
@@ -61,26 +84,19 @@ class Playground
     }
 
     /**
-     * Set parent id - related site
-     *
-     * @param integer $pid
-     * @return Playground
+     * @return Site
      */
-    public function setPid($pid)
-    {
-        $this->pid = $pid;
-    
-        return $this;
+    public function getSite() {
+        return $this->site;
     }
 
     /**
-     * Get parent id - related site
-     *
-     * @return integer 
+     * @param Site $site
+     * @return Playground
      */
-    public function getPid()
-    {
-        return $this->pid;
+    public function setSite($site) {
+        $this->site = $site;
+        return $this;
     }
 
     /**
@@ -150,5 +166,31 @@ class Playground
     public function getLocation()
     {
         return $this->location;
+    }
+
+    /**
+     * @return ArrayCollection
+     */
+    public function getMatches() {
+        return $this->matches;
+    }
+
+    /**
+     * @return ArrayCollection
+     */
+    public function getPlaygroundAttributes() {
+        return $this->playgroundattributes;
+    }
+
+    /**
+     * @return ArrayCollection
+     */
+    public function getTimeslots() {
+        $timeslots = array();
+        /* @var PlaygroundAttribute $playgroundattribute */
+        foreach ($this->playgroundattributes as $playgroundattribute) {
+            $timeslots[$playgroundattribute->getTimeslot()->getId()] = $playgroundattribute->getTimeslot();
+        }
+        return $timeslots;
     }
 }

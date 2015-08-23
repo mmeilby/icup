@@ -1,6 +1,7 @@
 <?php
 namespace ICup\Bundle\PublicSiteBundle\Controller\Admin\Tournament;
 
+use ICup\Bundle\PublicSiteBundle\Entity\Doctrine\Category;
 use ICup\Bundle\PublicSiteBundle\Entity\Doctrine\User;
 use ICup\Bundle\PublicSiteBundle\Entity\MatchImport;
 use ICup\Bundle\PublicSiteBundle\Entity\Doctrine\Tournament;
@@ -30,7 +31,7 @@ class TeamImportController extends Controller
         /* @var $tournament Tournament */
         $tournament = $this->get('entity')->getTournamentById($tournamentid);
         $host = $tournament->getHost();
-        $utilService->validateEditorAdminUser($user, $host->getId());
+        $utilService->validateEditorAdminUser($user, $host);
 
         $matchImport = new MatchImport();
         $form = $this->makeImportForm($matchImport);
@@ -40,7 +41,7 @@ class TeamImportController extends Controller
         }
         if ($form->isValid()) {
             try {
-                $this->import($tournament, $matchImport, $user->getId());
+                $this->import($tournament, $matchImport, $user);
                 return $this->redirect($returnUrl);
             } catch (ValidationException $exc) {
                 $form->addError(new FormError($this->get('translator')->trans('FORM.ERROR.'.$exc->getMessage(), array(), 'admin')." [".$exc->getDebugInfo()."]"));
@@ -80,7 +81,7 @@ class TeamImportController extends Controller
      * 
      * Division can be ommitted.
      */
-    private function import(Tournament $tournament, MatchImport $matchImport, $userid) {
+    private function import(Tournament $tournament, MatchImport $matchImport, User $user) {
         $parsedTokens = array();
         $parseObj = array();
         $keywords = preg_split("/[\s]+/", $matchImport->getImport());
@@ -95,7 +96,7 @@ class TeamImportController extends Controller
             }
         }
         foreach ($parsedTokens as $parseObj) {
-            $this->commitImport($parseObj, $userid);
+            $this->commitImport($parseObj, $user);
         }
         $em = $this->getDoctrine()->getManager();
         $em->flush();
@@ -141,24 +142,24 @@ class TeamImportController extends Controller
         if ($group == null) {
             throw new ValidationException("BADGROUP", $parseObj['category'].":".$parseObj['group']);
         }
-        $teamid = $this->getTeam($category->getId(),
-                                 $parseObj['team']['name'],
-                                 $parseObj['team']['division'],
-                                 $parseObj['team']['country']);
-        $parseObj['categoryid'] = $category->getId();
-        $parseObj['groupid'] = $group->getId();
-        $parseObj['teamid'] = $teamid;
+        $team = $this->getTeam($category,
+                               $parseObj['team']['name'],
+                               $parseObj['team']['division'],
+                               $parseObj['team']['country']);
+        $parseObj['category'] = $category;
+        $parseObj['group'] = $group;
+        $parseObj['teamA'] = $team;
     }
 
-    private function getTeam($categoryid, $name, $division, $country) {
-        $teamList = $this->get('logic')->getTeamByCategory($categoryid, $name, $division);
+    private function getTeam(Category $category, $name, $division, $country) {
+        $teamList = $this->get('logic')->findTeamByCategory($category, $name, $division);
         if (count($teamList) == 1) {
-            return $teamList[0]->id;
+            return $teamList[0];
         }
         else if (count($teamList) > 0) {
             foreach ($teamList as $team) {
-                if ($team->country == $country) {
-                    return $team->id;
+                if ($team->getClub()->getCountry() == $country) {
+                    return $team;
                 }
             }
         }
@@ -166,17 +167,17 @@ class TeamImportController extends Controller
         if (!array_search($country, $countries)) {
             throw new ValidationException("BADTEAM", $name." '".$division."' (".$country.")");
         }
-        return 0;
+        return null;
     }
 
-    private function commitImport($parseObj, $userid) {
+    private function commitImport($parseObj, User $user) {
         $em = $this->getDoctrine()->getManager();
-        $categoryid = $parseObj['categoryid'];
-        $teamid = $parseObj['teamid'];
+        $category = $parseObj['category'];
+        $team = $parseObj['teamA'];
         $name = $parseObj['team']['name'];
         $division = $parseObj['team']['division'];
         $country = $parseObj['team']['country'];
-        if ($teamid == 0) {
+        if (!$team) {
             $club = $this->get('logic')->getClubByName($name, $country);
             if ($club == null) {
                 $club = new Club();
@@ -185,15 +186,14 @@ class TeamImportController extends Controller
                 $em->persist($club);
                 $em->flush();
             }
-            $clubid = $club->getId();
-            $enroll = $this->get('logic')->enrollTeam($categoryid, $userid,
-                                                      $clubid, $name, $division);
-            $teamid = $enroll->getCid();
+            $enroll = $this->get('logic')->enrollTeam($category, $user,
+                                                      $club, $name, $division);
+            $team = $enroll->getTeam();
         }
 
-        if (!$this->get('logic')->isTeamAssigned($categoryid, $teamid)) {
-            $groupid = $parseObj['groupid'];
-            $this->get('logic')->assignEnrolled($teamid, $groupid);
+        if (!$this->get('logic')->isTeamAssigned($category->getId(), $team->getId())) {
+            $group = $parseObj['group'];
+            $this->get('logic')->assignEnrolled($team->getId(), $group->getId());
         }
     }
 }

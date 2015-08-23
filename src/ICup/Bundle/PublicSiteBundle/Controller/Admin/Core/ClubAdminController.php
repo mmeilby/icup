@@ -29,7 +29,7 @@ class ClubAdminController extends Controller
         $this->validateClubUser($user);
         // Validate current user - is it a club administrator?
         $thisuser = $utilService->getCurrentUser();
-        $utilService->validateClubAdminUser($thisuser, $user->getCid());
+        $utilService->validateClubAdminUser($thisuser, $user->getClub());
         // Disconnect user from club - make user a verified user with no relation
         // However cid should not be cleared in order to restore the connection if in error
         $user->setRole(User::$CLUB);
@@ -63,7 +63,7 @@ class ClubAdminController extends Controller
         }
         // Validate current user - is it a club administrator?
         $thisuser = $utilService->getCurrentUser();
-        $utilService->validateClubAdminUser($thisuser, $clubid);
+        $utilService->validateClubAdminUser($thisuser, $user->getClub());
         // Connect user to the club - make user an attached user
         $user->setStatus(User::$ATT);
         $em = $this->getDoctrine()->getManager();
@@ -89,7 +89,7 @@ class ClubAdminController extends Controller
         $this->validateClubUser($user);
         // Validate current user - is it a club administrator?
         $thisuser = $utilService->getCurrentUser();
-        $utilService->validateClubAdminUser($thisuser, $user->getCid());
+        $utilService->validateClubAdminUser($thisuser, $user->getClub());
         // Switch user role
         $user->setRole($user->getRole() === User::$CLUB ? User::$CLUB_ADMIN : User::$CLUB);
         $em = $this->getDoctrine()->getManager();
@@ -124,7 +124,7 @@ class ClubAdminController extends Controller
         $club = $this->get('entity')->getClubById($clubid);
         // Connect user to the club - make user a prospected user
         $user->setStatus(User::$PRO);
-        $user->setCid($club->getId());
+        $user->setClub($club);
         $em = $this->getDoctrine()->getManager();
         $em->flush();
         // Redirect to my page
@@ -194,7 +194,7 @@ class ClubAdminController extends Controller
         $this->validateClubUser($user);
         // Validate current user - is it a club administrator?
         $thisuser = $utilService->getCurrentUser();
-        $utilService->validateClubAdminUser($thisuser, $user->getCid());
+        $utilService->validateClubAdminUser($thisuser, $user->getClub());
         // Ignore user - make user an attached user with no rights other than following the club
         $user->setRole(User::$CLUB);
         $user->setStatus(User::$INF);

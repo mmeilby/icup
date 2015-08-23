@@ -104,7 +104,7 @@ class ClubController extends Controller
                     $usr->setRole(User::$CLUB);
                     $usr->setStatus(User::$VER);
                 }
-                $usr->setCid(0);
+                $usr->setClub(null);
             }
             $em = $this->getDoctrine()->getManager();
             $em->remove($club);

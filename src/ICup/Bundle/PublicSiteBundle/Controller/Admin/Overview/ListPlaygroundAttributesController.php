@@ -2,6 +2,7 @@
 namespace ICup\Bundle\PublicSiteBundle\Controller\Admin\Overview;
 
 use ICup\Bundle\PublicSiteBundle\Entity\Doctrine\Date;
+use ICup\Bundle\PublicSiteBundle\Entity\Doctrine\Playground;
 use ICup\Bundle\PublicSiteBundle\Entity\Doctrine\PlaygroundAttribute;
 use ICup\Bundle\PublicSiteBundle\Entity\Doctrine\Site;
 use ICup\Bundle\PublicSiteBundle\Entity\Doctrine\Tournament;
@@ -29,13 +30,14 @@ class ListPlaygroundAttributesController extends Controller
         $utilService = $this->get('util');
         /* @var $user User */
         $user = $utilService->getCurrentUser();
+        /* @var $playground Playground */
         $playground = $this->get('entity')->getPlaygroundById($playgroundid);
         /* @var $site Site */
-        $site = $this->get('entity')->getSiteById($playground->getPid());
+        $site = $playground->getSite();
         /* @var $tournament Tournament */
         $tournament = $site->getTournament();
         $host = $tournament->getHost();
-        $utilService->validateEditorAdminUser($user, $host->getId());
+        $utilService->validateEditorAdminUser($user, $host);
 
         $attributes = $this->get('logic')->listPlaygroundAttributes($playgroundid);
         $attrList = array();

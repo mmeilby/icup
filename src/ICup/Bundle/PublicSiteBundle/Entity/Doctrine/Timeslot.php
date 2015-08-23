@@ -2,6 +2,7 @@
 
 namespace ICup\Bundle\PublicSiteBundle\Entity\Doctrine;
 
+use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\ORM\Mapping as ORM;
 
 /**
@@ -62,6 +63,20 @@ class Timeslot
     private $penalty;
 
     /**
+     * @var ArrayCollection $playgroundattributes
+     * Collection of playground relations to playground attributes
+     * @ORM\OneToMany(targetEntity="PlaygroundAttribute", mappedBy="timeslot", cascade={"persist", "remove"})
+     */
+    private $playgroundattributes;
+
+    /**
+     * Playground constructor.
+     */
+    public function __construct() {
+        $this->playgroundattributes = new ArrayCollection();
+    }
+
+    /**
      * Get id
      *
      * @return integer 
@@ -69,29 +84,6 @@ class Timeslot
     public function getId()
     {
         return $this->id;
-    }
-
-    /**
-     * Set parent id - related tournament
-     *
-     * @param integer $pid
-     * @return Timeslot
-     */
-    public function setPid($pid)
-    {
-        $this->pid = $pid;
-    
-        return $this;
-    }
-
-    /**
-     * Get parent id - related tournament
-     *
-     * @return integer 
-     */
-    public function getPid()
-    {
-        return $this->pid;
     }
 
     /**

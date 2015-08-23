@@ -2,6 +2,7 @@
 namespace ICup\Bundle\PublicSiteBundle\Controller\Tournament;
 
 use ICup\Bundle\PublicSiteBundle\Entity\Doctrine\Category;
+use ICup\Bundle\PublicSiteBundle\Entity\Doctrine\Playground;
 use ICup\Bundle\PublicSiteBundle\Entity\Doctrine\Site;
 use ICup\Bundle\PublicSiteBundle\Entity\Doctrine\Tournament;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
@@ -41,9 +42,10 @@ class PlaygroundController extends Controller
      */
     public function listAllAction($playgroundid)
     {
+        /* @var $playground Playground */
         $playground = $this->get('entity')->getPlaygroundById($playgroundid);
         /* @var $site Site */
-        $site = $this->get('entity')->getSiteById($playground->getPid());
+        $site = $playground->getSite();
         /* @var $tournament Tournament */
         $tournament = $site->getTournament();
         $matchList = $this->get('match')->listMatchesByPlayground($playgroundid);

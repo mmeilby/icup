@@ -2,6 +2,7 @@
 namespace ICup\Bundle\PublicSiteBundle\Controller\Admin\Overview;
 
 use ICup\Bundle\PublicSiteBundle\Entity\Doctrine\User;
+use ICup\Bundle\PublicSiteBundle\Services\Util;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
@@ -25,9 +26,8 @@ class ListEditorController extends Controller
         // Validate current user - is it an editor?
         $utilService->validateEditorUser($user);
         // Get the host from current user
-        $hostid = $user->getPid();
-        $host = $this->get('entity')->getHostById($hostid);
-        $users = $this->get('entity')->getUserRepo()->findBy(array('pid' => $hostid));
+        $host = $user->getHost();
+        $users = $host->getUsers();
 
         return array('host' => $host, 'users' => $users, 'currentuser' => $user);
     }

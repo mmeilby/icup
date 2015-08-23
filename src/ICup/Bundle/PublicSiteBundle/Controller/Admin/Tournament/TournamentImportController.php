@@ -8,6 +8,8 @@ use ICup\Bundle\PublicSiteBundle\Entity\Doctrine\Playground;
 use ICup\Bundle\PublicSiteBundle\Entity\Doctrine\PlaygroundAttribute;
 use ICup\Bundle\PublicSiteBundle\Entity\Doctrine\Category;
 use ICup\Bundle\PublicSiteBundle\Entity\Doctrine\Group;
+use ICup\Bundle\PublicSiteBundle\Entity\Doctrine\User;
+use ICup\Bundle\PublicSiteBundle\Services\Util;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
@@ -27,10 +29,11 @@ class TournamentImportController extends Controller
         
         /* @var $user User */
         $user = $utilService->getCurrentUser();
-        $utilService->validateEditorAdminUser($user, $hostid);
+        $host = $this->get('entity')->getHostById($hostid);
+        $utilService->validateEditorAdminUser($user, $host);
 
         $tournament = new Tournament();
-        $tournament->setHost($this->get('entity')->getHostById($hostid));
+        $tournament->setHost($host);
         $form = $this->makeImportForm($tournament);
         $form->handleRequest($request);
         if ($form->get('cancel')->isClicked()) {
@@ -121,7 +124,7 @@ class TournamentImportController extends Controller
             $playgrounds = $this->get('logic')->listPlaygrounds($site->getId());
             foreach ($playgrounds as $playground) {
                 $new_playground = new Playground();
-                $new_playground->setPid($new_site->getId());
+                $new_playground->setSite($new_site);
                 $new_playground->setName($playground->getName());
                 $new_playground->setNo($playground->getNo());
                 $new_playground->setLocation($playground->getLocation());

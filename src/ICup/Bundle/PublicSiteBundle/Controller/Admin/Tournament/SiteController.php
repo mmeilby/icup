@@ -32,7 +32,7 @@ class SiteController extends Controller
         /* @var $tournament Tournament */
         $tournament = $this->get('entity')->getTournamentById($tournamentid);
         $host = $tournament->getHost();
-        $utilService->validateEditorAdminUser($user, $host->getId());
+        $utilService->validateEditorAdminUser($user, $host);
 
         $site = new Site();
         $site->setTournament($tournament);
@@ -63,11 +63,12 @@ class SiteController extends Controller
 
         /* @var $user User */
         $user = $utilService->getCurrentUser();
+        /* @var $site Site */
         $site = $this->get('entity')->getSiteById($siteid);
         /* @var $tournament Tournament */
-        $tournament = $this->get('entity')->getTournamentById($site->getPid());
+        $tournament = $site->getTournament();
         $host = $tournament->getHost();
-        $utilService->validateEditorAdminUser($user, $host->getId());
+        $utilService->validateEditorAdminUser($user, $host);
 
         $form = $this->makeSiteForm($site, 'chg');
         $form->handleRequest($request);
@@ -96,11 +97,12 @@ class SiteController extends Controller
 
         /* @var $user User */
         $user = $utilService->getCurrentUser();
+        /* @var $site Site */
         $site = $this->get('entity')->getSiteById($siteid);
         /* @var $tournament Tournament */
-        $tournament = $this->get('entity')->getTournamentById($site->getPid());
+        $tournament = $site->getTournament();
         $host = $tournament->getHost();
-        $utilService->validateEditorAdminUser($user, $host->getId());
+        $utilService->validateEditorAdminUser($user, $host);
 
         $form = $this->makeSiteForm($site, 'del');
         $form->handleRequest($request);

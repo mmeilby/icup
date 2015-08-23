@@ -61,7 +61,8 @@ class ClubAdminController extends Controller
                 $user->setStatus(User::$ATT);
                 $user->setRole(User::$CLUB_ADMIN);
             }
-            $user->setCid($club->getId());
+            $user->setClub($club);
+            $em = $this->getDoctrine()->getManager();
             $em->flush();
             return $this->redirect($this->generateUrl('_user_my_page'));
         }
@@ -91,7 +92,7 @@ class ClubAdminController extends Controller
         /* @var $tournament Tournament */
         $tournament = $this->get('entity')->getTournamentById($tournamentid);
         $host = $tournament->getHost();
-        $utilService->validateEditorAdminUser($user, $host->getId());
+        $utilService->validateEditorAdminUser($user, $host);
 
         // Prepare default data for form
         $clubFormData = $this->getClubDefaults($request);

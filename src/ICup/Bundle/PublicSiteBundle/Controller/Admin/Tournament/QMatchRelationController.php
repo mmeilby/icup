@@ -5,9 +5,11 @@ use ICup\Bundle\PublicSiteBundle\Entity\Doctrine\Category;
 use ICup\Bundle\PublicSiteBundle\Entity\Doctrine\Date;
 use ICup\Bundle\PublicSiteBundle\Entity\Doctrine\Match;
 use ICup\Bundle\PublicSiteBundle\Entity\Doctrine\QMatchRelation;
+use ICup\Bundle\PublicSiteBundle\Entity\Doctrine\Tournament;
 use ICup\Bundle\PublicSiteBundle\Entity\Doctrine\User;
 use ICup\Bundle\PublicSiteBundle\Entity\Doctrine\Group;
 use ICup\Bundle\PublicSiteBundle\Services\Doctrine\MatchSupport;
+use ICup\Bundle\PublicSiteBundle\Services\Util;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
@@ -42,7 +44,7 @@ class QMatchRelationController extends Controller
         /* @var $tournament Tournament */
         $tournament = $category->getTournament();
         $host = $tournament->getHost();
-        $utilService->validateEditorAdminUser($user, $host->getId());
+        $utilService->validateEditorAdminUser($user, $host);
 
         $matchForm = $this->copyMatchForm($match);
         $form = $this->makeMatchForm($matchForm, $category->getId(), $group->getClassification(), 'chg');
@@ -89,7 +91,7 @@ class QMatchRelationController extends Controller
         /* @var $tournament Tournament */
         $tournament = $category->getTournament();
         $host = $tournament->getHost();
-        $utilService->validateEditorAdminUser($user, $host->getId());
+        $utilService->validateEditorAdminUser($user, $host);
 
         $matchForm = $this->copyMatchForm($match);
         $form = $this->makeMatchForm($matchForm, $category->getId(), $group->getClassification(), 'del');
@@ -123,7 +125,7 @@ class QMatchRelationController extends Controller
             $match->addMatchRelation($homeRel);
             $em->persist($homeRel);
         }
-        $homeRel->setCid($matchForm->getGroupA());
+        $homeRel->setGroup($this->get('entity')->getGroupById($matchForm->getGroupA()));
         $homeRel->setRank($matchForm->getRankA());
         $awayRel = $this->get('match')->getQMatchRelationByMatch($match->getId(), MatchSupport::$AWAY);
         if ($awayRel == null) {
@@ -132,7 +134,7 @@ class QMatchRelationController extends Controller
             $match->addMatchRelation($awayRel);
             $em->persist($awayRel);
         }
-        $awayRel->setCid($matchForm->getGroupB());
+        $awayRel->setGroup($this->get('entity')->getGroupById($matchForm->getGroupB()));
         $awayRel->setRank($matchForm->getRankB());
         $em->flush();
     }
@@ -161,14 +163,16 @@ class QMatchRelationController extends Controller
         $timeformat = $this->get('translator')->trans('FORMAT.TIME');
         $matchForm->setTime(date_format($matchdate, $timeformat));
         $matchForm->setPlayground($match->getPlayground());
+        /* @var $homeRel QMatchRelation */
         $homeRel = $this->get('match')->getQMatchRelationByMatch($match->getId(), false);
         if ($homeRel != null) {
-            $matchForm->setGroupA($homeRel->getCid());
+            $matchForm->setGroupA($homeRel->getGroup()->getId());
             $matchForm->setRankA($homeRel->getRank());
         }
+        /* @var $awayRel QMatchRelation */
         $awayRel = $this->get('match')->getQMatchRelationByMatch($match->getId(), true);
         if ($awayRel != null) {
-            $matchForm->setGroupB($awayRel->getCid());
+            $matchForm->setGroupB($awayRel->getGroup()->getId());
             $matchForm->setRankB($awayRel->getRank());
         }
         return $matchForm;

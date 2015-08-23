@@ -119,8 +119,8 @@ class MatchPlanning
                 /* Both teams must be allowed to play now */
                 if ($result->getTeamCheck()->isCapacity($match, Date::getDate($pa->getSchedule()), $pa->getTimeslot())) {
                     $matchAlternative = new MatchAlternative();
-                    $matchAlternative->setPid($ms->getId());
-                    $matchAlternative->setPaid($pa->getId());
+                    $matchAlternative->setMatchSchedule($ms);
+                    $matchAlternative->setPlaygroundAttribute($pa->getPA());
                     $this->em->persist($matchAlternative);
                 }
             }
@@ -258,7 +258,7 @@ class MatchPlanning
                 $malts = array();
                 /* @var $ma MatchAlternative */
                 foreach ($this->logic->listMatchAlternatives($ms->getId()) as $ma) {
-                    $malts[] = $ts[$ma->getPaid()];
+                    $malts[] = $ts[$ma->getPlaygroundAttribute()->getId()];
                 }
                 usort($malts, function (PA $ats1, PA $ats2) {
                     $p1 = $ats1->getTimeleft() - $ats2->getTimeleft();

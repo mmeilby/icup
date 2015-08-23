@@ -1,6 +1,8 @@
 <?php
 namespace ICup\Bundle\PublicSiteBundle\Controller\Admin\Overview;
 
+use ICup\Bundle\PublicSiteBundle\Entity\Doctrine\Group;
+use ICup\Bundle\PublicSiteBundle\Entity\Doctrine\Tournament;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
@@ -27,12 +29,12 @@ class ListMatchController extends Controller
         
         /* @var $user User */
         $user = $utilService->getCurrentUser();
+        /* @var $group Group */
         $group = $this->get('entity')->getGroupById($groupid);
         $category = $group->getCategory();
-        /* @var $tournament Tournament */
         $tournament = $category->getTournament();
         $host = $tournament->getHost();
-        $utilService->validateEditorAdminUser($user, $host->getId());
+        $utilService->validateEditorAdminUser($user, $host);
         $mmatches = $this->get('match')->listMatchesByGroup($groupid);
         $umatches = $this->get('match')->listMatchesUnfinished($groupid);
         $sortedMatches = array_merge($umatches, $mmatches);
@@ -63,7 +65,7 @@ class ListMatchController extends Controller
         /* @var $tournament Tournament */
         $tournament = $this->get('entity')->getTournamentById($tournamentid);
         $host = $tournament->getHost();
-        $utilService->validateEditorAdminUser($user, $host->getId());
+        $utilService->validateEditorAdminUser($user, $host);
 
         $date = $this->getSelectedDate($tournament->getId(), $request);
         $playgroundid = $this->getSelectedPlayground($tournament->getId(), $request);

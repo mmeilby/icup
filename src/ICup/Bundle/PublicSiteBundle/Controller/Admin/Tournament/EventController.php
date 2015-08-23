@@ -3,7 +3,9 @@ namespace ICup\Bundle\PublicSiteBundle\Controller\Admin\Tournament;
 
 use ICup\Bundle\PublicSiteBundle\Entity\Doctrine\Date;
 use ICup\Bundle\PublicSiteBundle\Entity\Doctrine\Event;
+use ICup\Bundle\PublicSiteBundle\Entity\Doctrine\Tournament;
 use ICup\Bundle\PublicSiteBundle\Entity\Doctrine\User;
+use ICup\Bundle\PublicSiteBundle\Services\Util;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
@@ -31,7 +33,7 @@ class EventController extends Controller
         /* @var $tournament Tournament */
         $tournament = $this->get('entity')->getTournamentById($tournamentid);
         $host = $tournament->getHost();
-        $utilService->validateEditorAdminUser($user, $host->getId());
+        $utilService->validateEditorAdminUser($user, $host);
 
         $eventForm = new EventForm();
         $eventForm->setPid($tournament->getId());
@@ -73,9 +75,9 @@ class EventController extends Controller
         /* @var $event Event */
         $event = $this->get('entity')->getEventById($eventid);
         /* @var $tournament Tournament */
-        $tournament = $this->get('entity')->getTournamentById($event->getPid());
+        $tournament = $event->getTournament();
         $host = $tournament->getHost();
-        $utilService->validateEditorAdminUser($user, $host->getId());
+        $utilService->validateEditorAdminUser($user, $host);
 
         $eventForm = $this->copyEventForm($event);
         $form = $this->makeEventForm($eventForm, 'chg');
@@ -112,9 +114,9 @@ class EventController extends Controller
         $user = $utilService->getCurrentUser();
         $event = $this->get('entity')->getEventById($eventid);
         /* @var $tournament Tournament */
-        $tournament = $this->get('entity')->getTournamentById($event->getPid());
+        $tournament = $event->getTournament();
         $host = $tournament->getHost();
-        $utilService->validateEditorAdminUser($user, $host->getId());
+        $utilService->validateEditorAdminUser($user, $host);
 
         $eventForm = $this->copyEventForm($event);
         $form = $this->makeEventForm($eventForm, 'del');
@@ -141,7 +143,7 @@ class EventController extends Controller
     private function copyEventForm(Event $event) {
         $eventForm = new EventForm();
         $eventForm->setId($event->getId());
-        $eventForm->setPid($event->getPId());
+        $eventForm->setPid($event->getTournament()->getId());
         $eventForm->setEvent($event->getEvent());
         $dateformat = $this->get('translator')->trans('FORMAT.DATE');
         $eventdate = Date::getDateTime($event->getDate());

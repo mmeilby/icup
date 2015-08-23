@@ -3,8 +3,10 @@ namespace ICup\Bundle\PublicSiteBundle\Controller\Admin\Overview;
 
 use ICup\Bundle\PublicSiteBundle\Entity\Doctrine\Category;
 use ICup\Bundle\PublicSiteBundle\Entity\Doctrine\Club;
+use ICup\Bundle\PublicSiteBundle\Entity\Doctrine\Enrollment;
 use ICup\Bundle\PublicSiteBundle\Entity\Doctrine\Tournament;
 use ICup\Bundle\PublicSiteBundle\Entity\Doctrine\User;
+use ICup\Bundle\PublicSiteBundle\Services\Util;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
@@ -32,7 +34,7 @@ class ListEnrollmentController extends Controller
         $utilService->validateClubUser($user);
 
         $tmnt = $this->get('entity')->getTournamentById($tournament);
-        $club = $this->get('entity')->getClubById($user->getCid());
+        $club = $user->getClub();
         return $this->listEnrolled($tmnt, $club);
     }
 
@@ -64,7 +66,7 @@ class ListEnrollmentController extends Controller
         /* @var $tmnt Tournament */
         $tmnt = $this->get('entity')->getTournamentById($tournament);
         $host = $tmnt->getHost();
-        $utilService->validateEditorAdminUser($user, $host->getId());
+        $utilService->validateEditorAdminUser($user, $host);
         $clb = $this->get('entity')->getClubById($club);
         return $this->listEnrolled($tmnt, $clb);
     }
@@ -85,18 +87,18 @@ class ListEnrollmentController extends Controller
 
     private function listEnrolled(Tournament $tmnt, Club $club) {
         $host = $tmnt->getHost();
-        $categories = $tmnt->getCategories();
         $enrolled = $this->get('logic')->listEnrolledByClub($tmnt->getId(), $club->getId());
 
         $enrolledList = array();
+        /* @var $enroll Enrollment */
         foreach ($enrolled as $enroll) {
-            $enrolledList[$enroll->getPid()][] = $enroll;
+            $enrolledList[$enroll->getCategory()->getId()][] = $enroll;
         }
 
         $classMap = array();
         $categoryMap = array();
         /* @var $category Category */
-        foreach ($categories as $category) {
+        foreach ($tmnt->getCategories() as $category) {
             $classification = $category->getClassification() . $category->getAge();
             $classMap[$classification] = $classification;
             $cls = $category->getGender() . $classification;

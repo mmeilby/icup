@@ -1,6 +1,7 @@
 <?php
 namespace ICup\Bundle\PublicSiteBundle\Controller\Admin\Core;
 
+use ICup\Bundle\PublicSiteBundle\Entity\Doctrine\Host;
 use ICup\Bundle\PublicSiteBundle\Entity\Doctrine\User;
 use ICup\Bundle\PublicSiteBundle\Entity\Password;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
@@ -39,8 +40,7 @@ class UserController extends Controller
             else {
                 $user->setAttempts(0);
                 $user->setEnabled(true);
-                $user->setCid($clubid);
-                $user->setPid(0);
+                $user->setClub($club);
                 $this->get('util')->generatePassword($user);
                 $em = $this->getDoctrine()->getManager();
                 $em->persist($user);
@@ -63,7 +63,7 @@ class UserController extends Controller
         /* @var $thisuser User */
         $thisuser = $this->get('util')->getCurrentUser();
         $host = $this->get('entity')->getHostById($hostid);
-        $this->get('util')->validateEditorAdminUser($thisuser, $hostid);
+        $this->get('util')->validateEditorAdminUser($thisuser, $host);
 
         $user = new User();
         $user->setStatus(User::$SYSTEM);
@@ -80,8 +80,7 @@ class UserController extends Controller
             else {
                 $user->setAttempts(0);
                 $user->setEnabled(true);
-                $user->setCid(0);
-                $user->setPid($hostid);
+                $user->setHost($host);
                 $this->get('util')->generatePassword($user);
                 $em = $this->getDoctrine()->getManager();
                 $em->persist($user);
@@ -116,8 +115,6 @@ class UserController extends Controller
             else {
                 $user->setAttempts(0);
                 $user->setEnabled(true);
-                $user->setCid(0);
-                $user->setPid(0);
                 $this->get('util')->generatePassword($user);
                 $em = $this->getDoctrine()->getManager();
                 $em->persist($user);
@@ -144,13 +141,13 @@ class UserController extends Controller
         /* @var $thisuser User */
         $thisuser = $this->get('util')->getCurrentUser();
         if ($user->isEditor()) {
-            $hostid = $user->getPid();
+            $host = $user->getHost();
         }
         else {
             // If the user to be changed is not an editor - then make it impossible for editor admin to change it
-            $hostid = -1;
+            $host = new Host();
         }
-        $this->get('util')->validateEditorAdminUser($thisuser, $hostid);
+        $this->get('util')->validateEditorAdminUser($thisuser, $host);
 
         $form = $this->makeUserForm($user, 'chg');
         $form->handleRequest($request);
@@ -170,12 +167,12 @@ class UserController extends Controller
             }
         }
         if ($user->isClub() && $user->isRelated()) {
-            $club = $this->get('entity')->getClubById($user->getCid());
+            $club = $user->getClub();
         }
         else {
             $club = null;
         }
-        return array('form' => $form->createView(), 'action' => 'chg', 'host' => $user->getPid(), 'club' => $club, 'user' => $user, 'error' => null);
+        return array('form' => $form->createView(), 'action' => 'chg', 'host' => $user->getHost(), 'club' => $club, 'user' => $user);
     }
     
    /**
@@ -193,13 +190,13 @@ class UserController extends Controller
         /* @var $thisuser User */
         $thisuser = $this->get('util')->getCurrentUser();
         if ($user->isEditor()) {
-            $hostid = $user->getPid();
+            $host = $user->getHost();
         }
         else {
             // If the user to be removed is not an editor - then make it impossible for editor admin to change it
-            $hostid = -1;
+            $host = new Host();
         }
-        $this->get('util')->validateEditorAdminUser($thisuser, $hostid);
+        $this->get('util')->validateEditorAdminUser($thisuser, $host);
         // Check for "self destruction" - current user is not allowed to remove own profile 
         if ($thisuser->getId() == $user->getId()) {
             throw new ValidationException("CANNOTDELETESELF", "Attempt to remove current user: user=".$thisuser->getId());
@@ -212,7 +209,7 @@ class UserController extends Controller
         if ($form->isValid()) {
             $enrolls = $this->get('logic')->listEnrolledByUser($user->getId());
             foreach ($enrolls as $enroll) {
-                $enroll->setUid(0);
+                $enroll->setUser(null);
             }
             $em = $this->getDoctrine()->getManager();
             $em->remove($user);
@@ -220,12 +217,12 @@ class UserController extends Controller
             return $this->redirect($returnUrl);
         }
         if ($user->isClub() && $user->isRelated()) {
-            $club = $this->get('entity')->getClubById($user->getCid());
+            $club = $user->getClub();
         }
         else {
             $club = null;
         }
-        return array('form' => $form->createView(), 'action' => 'del', 'host' => $user->getPid(), 'club' => $club, 'user' => $user, 'error' => null);
+        return array('form' => $form->createView(), 'action' => 'del', 'host' => $user->getHost(), 'club' => $club, 'user' => $user);
     }
     
     private function makeUserForm(User $user, $action) {
@@ -327,13 +324,13 @@ class UserController extends Controller
         /* @var $thisuser User */
         $thisuser = $this->get('util')->getCurrentUser();
         if ($user->isEditor()) {
-            $hostid = $user->getPid();
+            $host = $user->getHost();
         }
         else {
             // If the user to change is not an editor - then make it impossible for editor admin to change it
-            $hostid = -1;
+            $host = new Host();
         }
-        $this->get('util')->validateEditorAdminUser($thisuser, $hostid);
+        $this->get('util')->validateEditorAdminUser($thisuser, $host);
         
         $pwd = new Password();
         $formDef = $this->createFormBuilder($pwd);
@@ -367,11 +364,11 @@ class UserController extends Controller
             return $this->redirect($returnUrl);
         }
         if ($user->isClub() && $user->isRelated()) {
-            $club = $this->get('entity')->getClubById($user->getCid());
+            $club = $user->getClub();
         }
         else {
             $club = null;
         }
-        return array('form' => $form->createView(), 'host' => $user->getPid(), 'club' => $club, 'user' => $user);
+        return array('form' => $form->createView(), 'host' => $user->getHost(), 'club' => $club, 'user' => $user);
     }
 }

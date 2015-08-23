@@ -8,7 +8,7 @@ use Doctrine\ORM\Mapping as ORM;
 /**
  * ICup\Bundle\PublicSiteBundle\Entity\Doctrine\Tournament
  *
- * @ORM\Table(name="tournaments")
+ * @ORM\Table(name="tournaments", uniqueConstraints={@ORM\UniqueConstraint(name="KeyConstraint", columns={"keyname"})})
  * @ORM\Entity
  */
 class Tournament
@@ -109,6 +109,7 @@ class Tournament
         $this->sites = new ArrayCollection();
         $this->timeslots = new ArrayCollection();
         $this->events = new ArrayCollection();
+        $this->news = new ArrayCollection();
     }
 
     /**
@@ -271,5 +272,12 @@ class Tournament
      */
     public function getEvents() {
         return $this->events;
+    }
+
+    /**
+     * @return ArrayCollection
+     */
+    public function getNews() {
+        return $this->news;
     }
 }

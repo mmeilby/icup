@@ -7,7 +7,7 @@ use Doctrine\ORM\Mapping as ORM;
 /**
  * ICup\Bundle\PublicSiteBundle\Entity\Doctrine\Enrollment
  *
- * @ORM\Table(name="enrollments",uniqueConstraints={@ORM\UniqueConstraint(name="IdxByCat", columns={"pid", "id"})})
+ * @ORM\Table(name="enrollments",uniqueConstraints={@ORM\UniqueConstraint(name="TeamConstraint", columns={"cid"})})
  * @ORM\Entity
  */
 class Enrollment
@@ -22,25 +22,28 @@ class Enrollment
     private $id;
 
     /**
-     * @var integer $pid
-     * Relation to Category - pid=category.id 
-     * @ORM\Column(name="pid", type="integer", nullable=false)
+     * @var Category $category
+     * Relation to Category
+     * @ORM\ManyToOne(targetEntity="Category", inversedBy="id")
+     * @ORM\JoinColumn(name="pid", referencedColumnName="id")
      */
-    private $pid;
+    private $category;
 
     /**
-     * @var integer $cid
-     * Relation to Team - cid=team.id 
-     * @ORM\Column(name="cid", type="integer", nullable=false)
+     * @var Team $team
+     * Relation to Team
+     * @ORM\ManyToOne(targetEntity="Team", inversedBy="id")
+     * @ORM\JoinColumn(name="cid", referencedColumnName="id")
      */
-    private $cid;
+    private $team;
 
     /**
-     * @var integer $uid
-     * Relation to User - uid=user.id 
-     * @ORM\Column(name="uid", type="integer", nullable=false)
+     * @var User $user
+     * Relation to User
+     * @ORM\ManyToOne(targetEntity="User", inversedBy="id")
+     * @ORM\JoinColumn(name="uid", referencedColumnName="id")
      */
-    private $uid;
+    private $user;
 
     /**
      * @var string $date
@@ -60,72 +63,51 @@ class Enrollment
     }
 
     /**
-     * Set parent id - related category
-     *
-     * @param integer $pid
+     * @return Category
+     */
+    public function getCategory() {
+        return $this->category;
+    }
+
+    /**
+     * @param Category $category
      * @return Enrollment
      */
-    public function setPid($pid)
-    {
-        $this->pid = $pid;
-    
+    public function setCategory($category) {
+        $this->category = $category;
         return $this;
     }
 
     /**
-     * Get parent id - related category
-     *
-     * @return integer 
+     * @return Team
      */
-    public function getPid()
-    {
-        return $this->pid;
+    public function getTeam() {
+        return $this->team;
     }
 
     /**
-     * Set child id - related team
-     *
-     * @param integer $cid
+     * @param Team $team
      * @return Enrollment
      */
-    public function setCid($cid)
-    {
-        $this->cid = $cid;
-    
+    public function setTeam($team) {
+        $this->team = $team;
         return $this;
     }
 
     /**
-     * Get child id - related team
-     *
-     * @return integer 
+     * @return User
      */
-    public function getCid()
-    {
-        return $this->cid;
-    }
-    
-    /**
-     * Set user id - related user
-     *
-     * @param integer $uid
-     * @return Enrollment
-     */
-    public function setUid($uid)
-    {
-        $this->uid = $uid;
-    
-        return $this;
+    public function getUser() {
+        return $this->user;
     }
 
     /**
-     * Get user id - related user
-     *
-     * @return integer 
+     * @param User $user
+     * @return Enrollment
      */
-    public function getUid()
-    {
-        return $this->uid;
+    public function setUser($user) {
+        $this->user = $user;
+        return $this;
     }
 
     /**

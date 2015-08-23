@@ -3,6 +3,7 @@
 namespace ICup\Bundle\PublicSiteBundle\Services\Doctrine;
 
 use ICup\Bundle\PublicSiteBundle\Entity\Doctrine\Date;
+use ICup\Bundle\PublicSiteBundle\Entity\Doctrine\MatchRelation;
 use ICup\Bundle\PublicSiteBundle\Entity\Doctrine\QMatchRelation;
 use ICup\Bundle\PublicSiteBundle\Entity\Doctrine\Tournament;
 use ICup\Bundle\PublicSiteBundle\Entity\MatchPlan;
@@ -210,8 +211,8 @@ class MatchSupport
             "m.group=g.id and ".
             "m.playground=p.id and ".
             "m.id=r.match and ".
-            "t.id=r.cid and ".
-            "c.id=t.pid ";
+            "t.id=r.team and ".
+            "c.id=t.club ";
     }
 
     private function getQTableRelations() {
@@ -220,7 +221,7 @@ class MatchSupport
             "m.group=g.id and ".
             "m.playground=p.id and ".
             "m.id=q.match and ".
-            "gq.id=q.cid ";
+            "gq.id=q.group ";
     }
 
     private function flattenList($matchList) {
@@ -337,8 +338,8 @@ class MatchSupport
                     $this->entity->getRepositoryPath('Team')." t, ".
                     $this->entity->getRepositoryPath('Club')." c ".
             "where r.match=:match and r.awayteam=:away and ".
-            "t.id=r.cid and ".
-            "c.id=t.pid ".
+            "t.id=r.team and ".
+            "c.id=t.club ".
             "order by r.awayteam");
         $qb->setParameter('match', $matchid);
         $qb->setParameter('away', $away ? 'Y' : 'N');
@@ -366,13 +367,15 @@ class MatchSupport
     }
 
     public function getMatchHomeTeam($matchid) {
+        /* @var $matchRel MatchRelation */
         $matchRel = $this->getMatchRelationByMatch($matchid, false);
-        return $matchRel != null ? $matchRel->getCid() : 0;
+        return $matchRel != null ? $matchRel->getTeam() : 0;
     }
     
     public function getMatchAwayTeam($matchid) {
+        /* @var $matchRel MatchRelation */
         $matchRel = $this->getMatchRelationByMatch($matchid, true);
-        return $matchRel != null ? $matchRel->getCid() : 0;
+        return $matchRel != null ? $matchRel->getTeam() : 0;
     }
 
     public function getMatchDate($tournamentid, DateTime $date) {
@@ -404,7 +407,7 @@ class MatchSupport
                 "from ".$this->entity->getRepositoryPath('PlaygroundAttribute')." a, ".
                         $this->entity->getRepositoryPath('Playground')." p, ".
                         $this->entity->getRepositoryPath('Site')." s ".
-                "where s.tournament=:tournament and p.pid=s.id and a.playground=p.id");
+                "where s.tournament=:tournament and p.site=s.id and a.playground=p.id");
         $qb->setParameter('tournament', $tournamentid);
         $matchList = array();
         foreach ($qb->getResult() as $date) {
@@ -572,7 +575,7 @@ class MatchSupport
                           "m.id in (".
                                 "select identity(rx.match) ".
                                 "from ".$this->entity->getRepositoryPath('MatchRelation')." rx ".
-                                "where rx.cid=:team) ".
+                                "where rx.team=:team) ".
                 "order by m.id");
         $qb->setParameter('group', $groupid);
         $qb->setParameter('team', $teamid);
@@ -588,7 +591,7 @@ class MatchSupport
                           "m.id in (".
                                 "select identity(rx.match) ".
                                 "from ".$this->entity->getRepositoryPath('MatchRelation')." rx ".
-                                "where rx.cid=:team) ".
+                                "where rx.team=:team) ".
                 "order by m.id");
         $qb->setParameter('group', $groupid);
         $qb->setParameter('team', $teamid);
@@ -611,7 +614,7 @@ class MatchSupport
                         " and m.id in (".
                                 "select identity(rx.match) ".
                                 "from ".$this->entity->getRepositoryPath('MatchRelation')." rx ".
-                                "where rx.cid=:team) ".
+                                "where rx.team=:team) ".
                 "order by m.id");
         $qb->setParameter('team', $teamid);
         return $qb->getResult();
@@ -625,7 +628,7 @@ class MatchSupport
                         " and m.id in (".
                                 "select identity(rx.match) ".
                                 "from ".$this->entity->getRepositoryPath('MatchRelation')." rx ".
-                                "where rx.cid=:team) ".
+                                "where rx.team=:team) ".
                 "order by m.id");
         $qb->setParameter('team', $teamid);
         return $qb->getResult();
@@ -807,7 +810,7 @@ class MatchSupport
             "m.group=g.id and ".
             "p.id=m.playground and ".
             "q.match=m.id and ".
-            "q.cid=gq.id and ".
+            "q.group=gq.id and ".
             "(select count(r.match) from matchrelations r where r.match=m.id) = 0 ".
             "order by m.id");
         $qb->setParameter('tournament', $tournamentid);

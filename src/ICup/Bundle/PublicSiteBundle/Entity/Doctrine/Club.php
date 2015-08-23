@@ -2,12 +2,13 @@
 
 namespace ICup\Bundle\PublicSiteBundle\Entity\Doctrine;
 
+use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\ORM\Mapping as ORM;
 
 /**
  * ICup\Bundle\PublicSiteBundle\Entity\Doctrine\Club
  *
- * @ORM\Table(name="clubs",uniqueConstraints={@ORM\UniqueConstraint(name="IdxByName", columns={"name", "id"})})
+ * @ORM\Table(name="clubs", uniqueConstraints={@ORM\UniqueConstraint(name="IdxByName", columns={"name", "country"})})
  * @ORM\Entity
  */
 class Club
@@ -34,6 +35,28 @@ class Club
      * @ORM\Column(name="country", type="string", length=3, nullable=false)
      */
     private $country;
+
+    /**
+     * @var ArrayCollection $teams
+     * Collection of club relations to teams
+     * @ORM\OneToMany(targetEntity="Team", mappedBy="club", cascade={"persist", "remove"})
+     */
+    private $teams;
+
+    /**
+     * @var ArrayCollection $users
+     * Collection of club relations to users
+     * @ORM\OneToMany(targetEntity="User", mappedBy="club", cascade={"persist"})
+     */
+    private $users;
+
+    /**
+     * Club constructor.
+     */
+    public function __construct() {
+        $this->teams = new ArrayCollection();
+        $this->users = new ArrayCollection();
+    }
 
     /**
      * Get id
@@ -89,5 +112,19 @@ class Club
     public function getCountry()
     {
         return $this->country;
+    }
+
+    /**
+     * @return ArrayCollection
+     */
+    public function getTeams() {
+        return $this->teams;
+    }
+
+    /**
+     * @return ArrayCollection
+     */
+    public function getUsers() {
+        return $this->users;
     }
 }

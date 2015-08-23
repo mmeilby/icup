@@ -3,6 +3,7 @@ namespace ICup\Bundle\PublicSiteBundle\Controller\Admin\Overview;
 
 use ICup\Bundle\PublicSiteBundle\Entity\Doctrine\Playground;
 use ICup\Bundle\PublicSiteBundle\Entity\Doctrine\Tournament;
+use ICup\Bundle\PublicSiteBundle\Entity\Doctrine\User;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
@@ -28,14 +29,14 @@ class ListSiteController extends Controller
         /* @var $tournament Tournament */
         $tournament = $this->get('entity')->getTournamentById($tournamentid);
         $host = $tournament->getHost();
-        $utilService->validateEditorAdminUser($user, $host->getId());
+        $utilService->validateEditorAdminUser($user, $host);
         $sites = $tournament->getSites();
         $playgrounds = $this->get('logic')->listPlaygroundsByTournament($tournamentid);
 
         $siteList = array();
         /* @var $playground Playground */
         foreach ($playgrounds as $playground) {
-            $siteList[$playground->getPid()][] = $playground;
+            $siteList[$playground->getSite()->getId()][] = $playground;
         }
 
         return array('host' => $host, 'tournament' => $tournament, 'playgrounds' => $siteList, 'sites' => $sites);

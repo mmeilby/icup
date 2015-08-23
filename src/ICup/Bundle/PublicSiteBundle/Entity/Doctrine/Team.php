@@ -2,7 +2,9 @@
 
 namespace ICup\Bundle\PublicSiteBundle\Entity\Doctrine;
 
+use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\ORM\Mapping as ORM;
+use ICup\Bundle\PublicSiteBundle\Exceptions\ValidationException;
 
 /**
  * ICup\Bundle\PublicSiteBundle\Entity\Doctrine\Team
@@ -22,11 +24,12 @@ class Team
     private $id;
 
     /**
-     * @var integer $pid
-     * Relation to Club - pid=club.id 
-     * @ORM\Column(name="pid", type="integer", nullable=false)
+     * @var Club $club
+     * Relation to Club
+     * @ORM\ManyToOne(targetEntity="Club", inversedBy="id")
+     * @ORM\JoinColumn(name="pid", referencedColumnName="id")
      */
-    private $pid;
+    private $club;
 
     /**
      * @var string $name
@@ -57,6 +60,36 @@ class Team
     private $vacant;
 
     /**
+     * @var ArrayCollection $matchrelations
+     * Collection of team relations to matchrelations
+     * @ORM\OneToMany(targetEntity="MatchRelation", mappedBy="team", cascade={"persist", "remove"})
+     */
+    private $matchrelations;
+
+    /**
+     * @var ArrayCollection $grouporder
+     * Collection of team relation to grouporder
+     * @ORM\OneToMany(targetEntity="GroupOrder", mappedBy="team", cascade={"persist", "remove"})
+     */
+    private $grouporder;
+
+    /**
+     * @var ArrayCollection $enrollments
+     * Collection of team relations to enrollments
+     * @ORM\OneToMany(targetEntity="Enrollment", mappedBy="team", cascade={"persist", "remove"})
+     */
+    private $enrollments;
+
+    /**
+     * Group constructor.
+     */
+    public function __construct() {
+        $this->matchrelations = new ArrayCollection();
+        $this->grouporder = new ArrayCollection();
+        $this->enrollments = new ArrayCollection();
+    }
+
+    /**
      * Get id
      *
      * @return integer 
@@ -67,26 +100,17 @@ class Team
     }
 
     /**
-     * Set parent id - related club
-     *
-     * @param integer $pid
-     * @return Team
+     * @return Club
      */
-    public function setPid($pid)
-    {
-        $this->pid = $pid;
-    
-        return $this;
+    public function getClub() {
+        return $this->club;
     }
 
     /**
-     * Get parent id - related club
-     *
-     * @return integer 
+     * @param Club $club
      */
-    public function getPid()
-    {
-        return $this->pid;
+    public function setClub($club) {
+        $this->club = $club;
     }
 
     /**
@@ -170,5 +194,63 @@ class Team
      */
     public function setVacant($vacant) {
         $this->vacant = $vacant ? 'Y' : 'N';
+    }
+
+    /**
+     * @return ArrayCollection
+     */
+    public function getMatchRelations() {
+        return $this->matchrelations;
+    }
+
+    /**
+     * @return ArrayCollection
+     */
+    public function getMatches() {
+        $matches = array();
+        /* @var MatchRelation $matchrelation */
+        foreach ($this->matchrelations as $matchrelation) {
+            $matches[] = $matchrelation->getMatch();
+        }
+        return $matches;
+    }
+
+    /**
+     * @return ArrayCollection
+     */
+    public function getGroupOrder() {
+        return $this->grouporder;
+    }
+
+    /**
+     * @return ArrayCollection
+     */
+    public function getGroups() {
+        $groups = array();
+        /* @var GroupOrder $grouporder */
+        foreach ($this->grouporder as $grouporder) {
+            $groups[] = $grouporder->getGroup();
+        }
+        return $groups;
+    }
+
+    /**
+     * @return ArrayCollection
+     */
+    public function getEnrollments() {
+        return $this->enrollments;
+    }
+
+    /**
+     * @return Category
+     */
+    public function getCategory() {
+        if ($this->enrollments->count() > 1) {
+            throw new ValidationException("INVALIDENROLLMENT", "A team can not be enrolled for more than one category - team id=".$this->id);
+        }
+        if ($this->enrollments->count() == 1) {
+            return $this->enrollments->first()->getCategory();
+        }
+        return null;
     }
 }

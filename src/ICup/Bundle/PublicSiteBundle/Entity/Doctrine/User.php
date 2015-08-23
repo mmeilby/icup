@@ -2,10 +2,12 @@
 
 namespace ICup\Bundle\PublicSiteBundle\Entity\Doctrine;
 
+use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Security\Core\Role\Role;
 use Symfony\Component\Security\Core\User\AdvancedUserInterface;
-use Symfony\Component\Security\Core\User\UserInterface;
 use DateTime;
+use JsonSerializable;
 
 /**
  * ICup\Bundle\PublicSiteBundle\Entity\Doctrine\User
@@ -13,7 +15,7 @@ use DateTime;
  * @ORM\Table(name="users",uniqueConstraints={@ORM\UniqueConstraint(name="IdxByUser", columns={"username"})})
  * @ORM\Entity
  */
-class User implements AdvancedUserInterface
+class User implements AdvancedUserInterface, JsonSerializable
 {
     public static $CLUB = 1;
     public static $CLUB_ADMIN = 2;
@@ -44,18 +46,20 @@ class User implements AdvancedUserInterface
     private $id;
 
     /**
-     * @var integer $pid
-     * Relation to Host - pid=host.id
-     * @ORM\Column(name="pid", type="integer", nullable=false)
+     * @var Host $host
+     * Relation to Host
+     * @ORM\ManyToOne(targetEntity="Host", inversedBy="id")
+     * @ORM\JoinColumn(name="pid", referencedColumnName="id")
      */
-    private $pid;
+    private $host;
 
     /**
-     * @var integer $cid
-     * Relation to Club - pid=club.id
-     * @ORM\Column(name="cid", type="integer", nullable=false)
+     * @var Club $club
+     * Relation to Club
+     * @ORM\ManyToOne(targetEntity="Club", inversedBy="id")
+     * @ORM\JoinColumn(name="cid", referencedColumnName="id")
      */
-    private $cid;
+    private $club;
 
     /**
      * @var string $name
@@ -128,6 +132,20 @@ class User implements AdvancedUserInterface
     private $lastLogin;
 
     /**
+     * @var ArrayCollection $enrollments
+     * Collection of category relations to enrollments
+     * @ORM\OneToMany(targetEntity="Enrollment", mappedBy="user", cascade={"persist"})
+     */
+    private $enrollments;
+
+    /**
+     * User constructor.
+     */
+    public function __construct() {
+        $this->enrollments = new ArrayCollection();
+    }
+
+    /**
      * Get id
      *
      * @return integer 
@@ -138,49 +156,35 @@ class User implements AdvancedUserInterface
     }
 
     /**
-     * Set parent id - related host
-     *
-     * @param integer $pid
+     * @return Host
+     */
+    public function getHost() {
+        return $this->host;
+    }
+
+    /**
+     * @param Host $host
      * @return User
      */
-    public function setPid($pid)
-    {
-        $this->pid = $pid;
-    
+    public function setHost($host) {
+        $this->host = $host;
         return $this;
     }
 
     /**
-     * Get parent id - related host
-     *
-     * @return integer 
+     * @return Club
      */
-    public function getPid()
-    {
-        return $this->pid;
+    public function getClub() {
+        return $this->club;
     }
 
     /**
-     * Set child id - related club
-     *
-     * @param integer $cid
+     * @param Club $club
      * @return User
      */
-    public function setCid($cid)
-    {
-        $this->cid = $cid;
-    
+    public function setClub($club) {
+        $this->club = $club;
         return $this;
-    }
-
-    /**
-     * Get child id - related club
-     *
-     * @return integer 
-     */
-    public function getCid()
-    {
-        return $this->cid;
     }
 
     /**
@@ -294,7 +298,7 @@ class User implements AdvancedUserInterface
      */
     public function isRelatedTo($clubid)
     {
-        return $this->isRelated() && $this->getCid() == $clubid;
+        return $this->isRelated() && $this->getClub() && $this->getClub()->getId() == $clubid;
     }
     
     /**
@@ -303,7 +307,7 @@ class User implements AdvancedUserInterface
      */
     public function isEditorFor($hostid)
     {
-        return $this->isEditor() && $this->getPid() == $hostid;
+        return $this->isEditor() && $this->getHost() && $this->getHost()->getId() == $hostid;
     }
     
     /**
@@ -569,16 +573,32 @@ class User implements AdvancedUserInterface
         $this->lastLogin = new DateTime();
     }
 
-    public function dump() {
-        return "User: id=".$this->getId().
-                ", usr=".$this->getUsername().
-                ", name=".$this->getName().
-                ", email=".$this->getEmail().
-                ", cid=".$this->getCid().
-                ", pid=".$this->getPid().
-                ", role=".$this->getRole().
-                ", status=".$this->getStatus().
-                ", locked=".($this->isAccountNonLocked() ? 'N' : 'Y').
-                ". enabled=".($this->isEnabled() ? 'Y' : 'N');
+    /**
+     * @return ArrayCollection
+     */
+    public function getEnrollments() {
+        return $this->enrollments;
+    }
+
+    /**
+     * (PHP 5 &gt;= 5.4.0)<br/>
+     * Specify data which should be serialized to JSON
+     * @link http://php.net/manual/en/jsonserializable.jsonserialize.php
+     * @return mixed data which can be serialized by <b>json_encode</b>,
+     * which is a value of any type other than a resource.
+     */
+    function jsonSerialize() {
+        return array(
+            "id" => $this->getId(),
+            "username" => $this->getUsername(),
+            "name" => $this->getName(),
+            "email" => $this->getEmail(),
+            "club" => $this->getClub() ? $this->getClub()->getName() : "",
+            "host" => $this->getHost() ? $this->getHost()->getName() : "",
+            "role" => $this->getRole(),
+            "status" => $this->getStatus(),
+            "locked" => $this->isAccountNonLocked() ? 'N' : 'Y',
+            "enabled" => $this->isEnabled() ? 'Y' : 'N'
+        );
     }
 }

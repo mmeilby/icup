@@ -30,11 +30,11 @@ class PAttrPlanningController extends Controller
         $pattr = $this->get('entity')->getPlaygroundAttributeById($playgroundattributeid);
         $playground = $pattr->getPlayground();
         /* @var $site Site */
-        $site = $this->get('entity')->getSiteById($playground->getPid());
+        $site = $playground->getSite();
         /* @var $tournament Tournament */
         $tournament = $site->getTournament();
         $host = $tournament->getHost();
-        $utilService->validateEditorAdminUser($user, $host->getId());
+        $utilService->validateEditorAdminUser($user, $host);
 
         $categories = $this->get('logic')->listCategories($tournament->getId());
         $categoryList = array();
@@ -83,7 +83,7 @@ class PAttrPlanningController extends Controller
         /* @var $tournament Tournament */
         $tournament = $category->getTournament();
         $host = $tournament->getHost();
-        $utilService->validateEditorAdminUser($user, $host->getId());
+        $utilService->validateEditorAdminUser($user, $host);
 
         $this->get('logic')->assignCategory($categoryid, $playgroundattributeid);
         return $this->redirect($returnUrl);
@@ -106,7 +106,7 @@ class PAttrPlanningController extends Controller
         /* @var $tournament Tournament */
         $tournament = $category->getTournament();
         $host = $tournament->getHost();
-        $utilService->validateEditorAdminUser($user, $host->getId());
+        $utilService->validateEditorAdminUser($user, $host);
 
         $this->get('logic')->removeAssignedCategory($categoryid, $playgroundattributeid);
         return $this->redirect($returnUrl);

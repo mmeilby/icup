@@ -28,7 +28,7 @@ class ListEventController extends Controller
         /* @var $tournament Tournament */
         $tournament = $this->get('entity')->getTournamentById($tournamentid);
         $host = $tournament->getHost();
-        $utilService->validateEditorAdminUser($user, $host->getId());
+        $utilService->validateEditorAdminUser($user, $host);
         $events = $tournament->getEvents();
         usort($events,
             function ($event1, $event2) {

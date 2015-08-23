@@ -1,6 +1,7 @@
 <?php
 namespace ICup\Bundle\PublicSiteBundle\Controller\Admin\Overview;
 
+use ICup\Bundle\PublicSiteBundle\Entity\Doctrine\User;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
@@ -53,10 +54,9 @@ class ListHostController extends Controller
         // Validate current user - is it an editor?
         $utilService->validateEditorUser($user);
         // Get the host from current user
-        $hostid = $user->getPid();
-        $host = $this->get('entity')->getHostById($hostid);
+        $host = $user->getHost();
         // Find list of tournaments for this host
-        $tournaments = $this->get('logic')->listTournaments($hostid);
+        $tournaments = $host->getTournaments();
         return array('tournaments' => $tournaments, 'host' => $host);
     }
 }

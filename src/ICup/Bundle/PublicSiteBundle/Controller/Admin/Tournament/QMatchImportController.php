@@ -32,7 +32,7 @@ class QMatchImportController extends Controller
         /* @var $tournament Tournament */
         $tournament = $this->get('entity')->getTournamentById($tournamentid);
         $host = $tournament->getHost();
-        $utilService->validateEditorAdminUser($user, $host->getId());
+        $utilService->validateEditorAdminUser($user, $host);
 
         $matchImport = new MatchImport();
         $form = $this->makeImportForm($matchImport);
@@ -156,7 +156,7 @@ class QMatchImportController extends Controller
         return count($parseObj) > 8;
     }
 
-    private function validateData($tournament, &$parseObj) {
+    private function validateData(Tournament $tournament, &$parseObj) {
         $playground = $this->get('logic')->getPlaygroundByNo($tournament->getId(), $parseObj['playground']);
         if ($playground == null) {
             throw new ValidationException("BADPLAYGROUND", "tournament=".$tournament->getId()." no=".$parseObj['playground']);
@@ -174,10 +174,10 @@ class QMatchImportController extends Controller
             throw new ValidationException("BADGROUP", "tournament=".$tournament->getId()." category=".$parseObj['category']." group=".$parseObj['teamB']['group']);
         }
         
-        $parseObj['playgroundid'] = $playground->getId();
+        $parseObj['playground'] = $playground;
         $parseObj['group'] = $group;
-        $parseObj['teamAgroupid'] = $groupRA->getId();
-        $parseObj['teamBgroupid'] = $groupRB->getId();
+        $parseObj['teamAgroup'] = $groupRA;
+        $parseObj['teamBgroup'] = $groupRB;
     }
 
     private function commitImport($parseObj, $date) {
@@ -192,16 +192,16 @@ class QMatchImportController extends Controller
         $matchrec->setDate(Date::getDate($matchdate));
         $matchrec->setTime(Date::getTime($matchtime));
         $matchrec->setGroup($parseObj['group']);
-        $matchrec->setPlayground($parseObj['playgroundid']);
+        $matchrec->setPlayground($parseObj['playground']);
 
         $resultreqA = new QMatchRelation();
-        $resultreqA->setCid($parseObj['teamAgroupid']);
+        $resultreqA->setGroup($parseObj['teamAgroup']);
         $resultreqA->setRank($parseObj['teamA']['rank']);
         $resultreqA->setAwayteam(false);
         $matchrec->addMatchRelation($resultreqA);
 
         $resultreqB = new QMatchRelation();
-        $resultreqB->setCid($parseObj['teamBgroupid']);
+        $resultreqB->setGroup($parseObj['teamBgroup']);
         $resultreqB->setRank($parseObj['teamB']['rank']);
         $resultreqB->setAwayteam(true);
         $matchrec->addMatchRelation($resultreqB);

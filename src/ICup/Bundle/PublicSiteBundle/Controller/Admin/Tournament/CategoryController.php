@@ -32,7 +32,7 @@ class CategoryController extends Controller
         /* @var $tournament Tournament */
         $tournament = $this->get('entity')->getTournamentById($tournamentid);
         $host = $tournament->getHost();
-        $utilService->validateEditorAdminUser($user, $host->getId());
+        $utilService->validateEditorAdminUser($user, $host);
 
         $category = new Category();
         $category->setTournament($tournament);
@@ -63,11 +63,12 @@ class CategoryController extends Controller
 
         /* @var $user User */
         $user = $utilService->getCurrentUser();
+        /* @var $category Category */
         $category = $this->get('entity')->getCategoryById($categoryid);
         /* @var $tournament Tournament */
         $tournament = $category->getTournament();
         $host = $tournament->getHost();
-        $utilService->validateEditorAdminUser($user, $host->getId());
+        $utilService->validateEditorAdminUser($user, $host);
 
         $form = $this->makeCategoryForm($category, 'chg');
         $form->handleRequest($request);
@@ -96,11 +97,12 @@ class CategoryController extends Controller
 
         /* @var $user User */
         $user = $utilService->getCurrentUser();
+        /* @var $category Category */
         $category = $this->get('entity')->getCategoryById($categoryid);
         /* @var $tournament Tournament */
         $tournament = $category->getTournament();
         $host = $tournament->getHost();
-        $utilService->validateEditorAdminUser($user, $host->getId());
+        $utilService->validateEditorAdminUser($user, $host);
 
         $form = $this->makeCategoryForm($category, 'del');
         $form->handleRequest($request);

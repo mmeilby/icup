@@ -1,9 +1,11 @@
 <?php
 namespace ICup\Bundle\PublicSiteBundle\Controller\Admin\Tournament;
 
+use ICup\Bundle\PublicSiteBundle\Entity\Doctrine\Group;
 use ICup\Bundle\PublicSiteBundle\Entity\Doctrine\Match;
 use ICup\Bundle\PublicSiteBundle\Entity\Doctrine\MatchRelation;
 use ICup\Bundle\PublicSiteBundle\Entity\Doctrine\GroupOrder;
+use ICup\Bundle\PublicSiteBundle\Entity\Doctrine\User;
 use ICup\Bundle\PublicSiteBundle\Entity\MatchImport;
 use ICup\Bundle\PublicSiteBundle\Entity\Doctrine\Tournament;
 use ICup\Bundle\PublicSiteBundle\Services\Util;
@@ -31,7 +33,7 @@ class MatchUnresImportController extends Controller
         /* @var $tournament Tournament */
         $tournament = $this->get('entity')->getTournamentById($tournamentid);
         $host = $tournament->getHost();
-        $utilService->validateEditorAdminUser($user, $host->getId());
+        $utilService->validateEditorAdminUser($user, $host);
 
         $matchImport = new MatchImport();
         $form = $this->makeImportForm($matchImport);
@@ -140,32 +142,27 @@ class MatchUnresImportController extends Controller
         }
     }
 
-    private function validateData($tournament, &$parseObj) {
+    private function validateData(Tournament $tournament, &$parseObj) {
         $match = $this->get('match')->getMatchByNo($tournament->getId(), $parseObj['id']);
         if ($match == null) {
             throw new ValidationException("BADMATCH", "tournament=".$tournament->getId()." match=".$parseObj['id']);
         }
         $qmh = $this->get('match')->getQMatchRelationByMatch($match->getId(), false);
-        $teamAid = $this->getTeam($qmh->getCid(), $parseObj, 'teamA');
+        $teamA = $this->getTeam($qmh->getGroup(), $parseObj, 'teamA');
         $qma = $this->get('match')->getQMatchRelationByMatch($match->getId(), true);
-        $teamBid = $this->getTeam($qma->getCid(), $parseObj, 'teamB');
+        $teamB = $this->getTeam($qma->getGroup(), $parseObj, 'teamB');
         
         $parseObj['match'] = $match;
-        $parseObj['teamAid'] = $teamAid;
-        $parseObj['teamBid'] = $teamBid;
+        $parseObj['teamA'] = $teamA;
+        $parseObj['teamB'] = $teamB;
     }
 
-    private function getTeam($groupid, $parseObj, $tkey) {
-        $teamList = $this->get('logic')->getTeamByGroup($groupid, $parseObj[$tkey]['name'], $parseObj[$tkey]['division']);
-        if (count($teamList) == 1) {
-            return $teamList[0]->id;
+    private function getTeam(Group $group, $parseObj, $tkey) {
+        $team = $this->get('logic')->findTeamByGroup($group, $parseObj[$tkey]['name'], $parseObj[$tkey]['division'], $parseObj[$tkey.'Country']);
+        if (!$team) {
+            throw new ValidationException("BADTEAM", "group=".$group->getId()." team=".$parseObj[$tkey]['name']." '".$parseObj[$tkey]['division']."' (".$parseObj[$tkey.'Country'].")");
         }
-        foreach ($teamList as $team) {
-            if ($team->country == $parseObj[$tkey.'Country']) {
-                return $team->id;
-            }
-        }
-        throw new ValidationException("BADTEAM", "group=".$groupid." team=".$parseObj[$tkey]['name']." '".$parseObj[$tkey]['division']."' (".$parseObj[$tkey.'Country'].")");
+        return $team;
     }
     
     private function commitImport($parseObj) {
@@ -173,11 +170,11 @@ class MatchUnresImportController extends Controller
         $match = $parseObj['match'];
 
         $goA = new GroupOrder();
-        $goA->setCid($parseObj['teamAid']);
-        $goA->setPid($match->getGroup()->getId());
+        $goA->setTeam($parseObj['teamA']);
+        $goA->setGroup($match->getGroup());
         
         $resultreqA = new MatchRelation();
-        $resultreqA->setCid($parseObj['teamAid']);
+        $resultreqA->setTeam($parseObj['teamA']);
         $resultreqA->setAwayteam(false);
         $resultreqA->setScorevalid(false);
         $resultreqA->setScore(0);
@@ -185,11 +182,11 @@ class MatchUnresImportController extends Controller
         $match->addMatchRelation($resultreqA);
 
         $goB = new GroupOrder();
-        $goB->setCid($parseObj['teamBid']);
-        $goB->setPid($match->getGroup()->getId());
+        $goB->setTeam($parseObj['teamB']);
+        $goB->setGroup($match->getGroup());
 
         $resultreqB = new MatchRelation();
-        $resultreqB->setCid($parseObj['teamBid']);
+        $resultreqB->setTeam($parseObj['teamB']);
         $resultreqB->setAwayteam(true);
         $resultreqB->setScorevalid(false);
         $resultreqB->setScore(0);

@@ -7,7 +7,7 @@ use Doctrine\ORM\Mapping as ORM;
 /**
  * ICup\Bundle\PublicSiteBundle\Entity\Doctrine\GroupOrder
  *
- * @ORM\Table(name="grouporders",uniqueConstraints={@ORM\UniqueConstraint(name="IdxByGroup", columns={"pid", "id"})})
+ * @ORM\Table(name="grouporders")
  * @ORM\Entity
  */
 class GroupOrder
@@ -22,18 +22,20 @@ class GroupOrder
     private $id;
 
     /**
-     * @var integer $pid
-     * Relation to Group - pid=group.id 
-     * @ORM\Column(name="pid", type="integer", nullable=false)
+     * @var Group $group
+     * Relation to Group
+     * @ORM\ManyToOne(targetEntity="Group", inversedBy="id")
+     * @ORM\JoinColumn(name="pid", referencedColumnName="id")
      */
-    private $pid;
+    private $group;
 
     /**
-     * @var integer $cid
-     * Relation to Team - cid=team.id 
-     * @ORM\Column(name="cid", type="integer", nullable=false)
+     * @var Team $team
+     * Relation to Team
+     * @ORM\ManyToOne(targetEntity="Team", inversedBy="id")
+     * @ORM\JoinColumn(name="cid", referencedColumnName="id")
      */
-    private $cid;
+    private $team;
 
     /**
      * Get id
@@ -46,48 +48,34 @@ class GroupOrder
     }
 
     /**
-     * Set parent id - related group
-     *
-     * @param integer $pid
+     * @return Group
+     */
+    public function getGroup() {
+        return $this->group;
+    }
+
+    /**
+     * @param Group $group
      * @return GroupOrder
      */
-    public function setPid($pid)
-    {
-        $this->pid = $pid;
-    
+    public function setGroup($group) {
+        $this->group = $group;
         return $this;
     }
 
     /**
-     * Get parent id - related group
-     *
-     * @return integer 
+     * @return Team
      */
-    public function getPid()
-    {
-        return $this->pid;
+    public function getTeam() {
+        return $this->team;
     }
 
     /**
-     * Set child id - related team
-     *
-     * @param integer $cid
+     * @param Team $team
      * @return GroupOrder
      */
-    public function setCid($cid)
-    {
-        $this->cid = $cid;
-    
+    public function setTeam($team) {
+        $this->team = $team;
         return $this;
-    }
-
-    /**
-     * Get child id - related team
-     *
-     * @return integer 
-     */
-    public function getCid()
-    {
-        return $this->cid;
     }
 }

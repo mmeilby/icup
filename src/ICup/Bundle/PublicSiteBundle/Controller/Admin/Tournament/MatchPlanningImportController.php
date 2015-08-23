@@ -2,6 +2,7 @@
 namespace ICup\Bundle\PublicSiteBundle\Controller\Admin\Tournament;
 
 use ICup\Bundle\PublicSiteBundle\Entity\Doctrine\Date;
+use ICup\Bundle\PublicSiteBundle\Entity\Doctrine\Group;
 use ICup\Bundle\PublicSiteBundle\Entity\Doctrine\Match;
 use ICup\Bundle\PublicSiteBundle\Entity\Doctrine\MatchRelation;
 use ICup\Bundle\PublicSiteBundle\Entity\FileForm;
@@ -101,7 +102,7 @@ class MatchPlanningImportController extends Controller
         }
     }
 
-    private function validateData($tournament, &$parseObj) {
+    private function validateData(Tournament $tournament, &$parseObj) {
         $playground = $this->get('logic')->getPlaygroundByNo($tournament->getId(), $parseObj['playground']);
         if ($playground == null) {
             throw new ValidationException("BADPLAYGROUND", "tournament=".$tournament->getId()." no=".$parseObj['playground']);
@@ -110,26 +111,21 @@ class MatchPlanningImportController extends Controller
         if ($group == null) {
             throw new ValidationException("BADGROUP", "tournament=".$tournament->getId()." category=".$parseObj['category']." group=".$parseObj['group']);
         }
-        $teamAid = $this->getTeam($group->getId(), $parseObj, 'teamA');
-        $teamBid = $this->getTeam($group->getId(), $parseObj, 'teamB');
+        $teamA = $this->getTeam($group, $parseObj, 'teamA');
+        $teamB = $this->getTeam($group, $parseObj, 'teamB');
         
-        $parseObj['playgroundid'] = $playground->getId();
+        $parseObj['playground'] = $playground;
         $parseObj['group'] = $group;
-        $parseObj['teamAid'] = $teamAid;
-        $parseObj['teamBid'] = $teamBid;
+        $parseObj['teamA'] = $teamA;
+        $parseObj['teamB'] = $teamB;
     }
 
-    private function getTeam($groupid, $parseObj, $tkey) {
-        $teamList = $this->get('logic')->getTeamByGroup($groupid, $parseObj[$tkey]['name'], $parseObj[$tkey]['division']);
-        if (count($teamList) == 1) {
-            return $teamList[0]->id;
+    private function getTeam(Group $group, $parseObj, $tkey) {
+        $team = $this->get('logic')->findTeamByGroup($group, $parseObj[$tkey]['name'], $parseObj[$tkey]['division'], $parseObj[$tkey.'Country']);
+        if (!$team) {
+            throw new ValidationException("BADTEAM", "group=".$group->getId()." team=".$parseObj[$tkey]['name']." '".$parseObj[$tkey]['division']."' (".$parseObj[$tkey.'Country'].")");
         }
-        foreach ($teamList as $team) {
-            if ($team->country == $parseObj[$tkey.'Country']) {
-                return $team->id;
-            }
-        }
-        throw new ValidationException("BADTEAM", "group=".$groupid." team=".$parseObj[$tkey]['name']." '".$parseObj[$tkey]['division']."' (".$parseObj[$tkey.'Country'].")");
+        return $team;
     }
     
     private function commitImport($parseObj, $date) {
@@ -144,10 +140,10 @@ class MatchPlanningImportController extends Controller
         $matchrec->setDate(Date::getDate($matchdate));
         $matchrec->setTime(Date::getTime($matchtime));
         $matchrec->setGroup($parseObj['group']);
-        $matchrec->setPlayground($parseObj['playgroundid']);
+        $matchrec->setPlayground($parseObj['playground']);
 
         $resultreqA = new MatchRelation();
-        $resultreqA->setCid($parseObj['teamAid']);
+        $resultreqA->setTeam($parseObj['teamA']);
         $resultreqA->setAwayteam(false);
         $resultreqA->setScorevalid(false);
         $resultreqA->setScore(0);
@@ -155,7 +151,7 @@ class MatchPlanningImportController extends Controller
         $matchrec->addMatchRelation($resultreqA);
 
         $resultreqB = new MatchRelation();
-        $resultreqB->setCid($parseObj['teamBid']);
+        $resultreqB->setTeam($parseObj['teamB']);
         $resultreqB->setAwayteam(true);
         $resultreqB->setScorevalid(false);
         $resultreqB->setScore(0);

@@ -1,6 +1,7 @@
 <?php
 namespace ICup\Bundle\PublicSiteBundle\Controller\User;
 
+use ICup\Bundle\PublicSiteBundle\Entity\Doctrine\Club;
 use ICup\Bundle\PublicSiteBundle\Entity\Doctrine\Host;
 use ICup\Bundle\PublicSiteBundle\Entity\Doctrine\User;
 use ICup\Bundle\PublicSiteBundle\Exceptions\RedirectException;
@@ -35,10 +36,14 @@ class MyPageController extends Controller
     public function myPageUsersAction()
     {
         $user = $this->get('util')->getCurrentUser();
-        $clubid = $user->getCid();
-        $this->get('util')->validateClubAdminUser($user, $clubid);
-        $club = $this->get('entity')->getClubById($clubid);
-        $users = $this->get('logic')->listUsersByClub($clubid);
+        /* @var $club Club */
+        $club = $user->getClub();
+        $this->get('util')->validateClubAdminUser($user, $club);
+        $users = $club->getUsers();
+        usort($users, function (User $user1, User $user2) {
+            // sort users
+            return 1;
+        });
         // Redirect to my page users list
         return $this->render('ICupPublicSiteBundle:User:mypage_users.html.twig',
                 array('club' => $club,
@@ -62,7 +67,7 @@ class MyPageController extends Controller
             throw $rexp;
             /* @var $host Host */
 /*            
-            $host = $this->get('entity')->getHostById($user->getPid());
+            $host = $user->getHost();
             $users = $this->get('logic')->listUsersByHost($host->getId());
             $tournaments = $this->get('logic')->listTournaments($host->getId());
             $tstat = array();
@@ -96,12 +101,11 @@ class MyPageController extends Controller
     private function getMyPageParameters(User $user) {
         $parms = array();
         if ($user->isClub() && $user->isRelated()) {
-            $clubid = $user->getCid();
-            $club = $this->get('entity')->getClubById($clubid);
-            $users = $this->get('logic')->listUsersByClub($clubid);
+            $club = $user->getClub();
+            $users = $club->getUsers();
             $prospectors = array();
             foreach ($users as $usr) {
-                if ($usr->getStatus() === User::$PRO) {
+                if (($usr->getRole() === User::$CLUB || $usr->getRole() === User::$CLUB_ADMIN) && $usr->getStatus() === User::$PRO) {
                     $prospectors[] = $usr;
                 }
             }
@@ -115,7 +119,7 @@ class MyPageController extends Controller
                      );
         }
         elseif ($user->isEditor()) {
-            $host = $this->get('entity')->getHostById($user->getPid());
+            $host = $user->getHost();
             $users = $this->get('logic')->listUsersByHost($host->getId());
             $parms = array(
                         'host' => $host,
@@ -160,7 +164,7 @@ class MyPageController extends Controller
 
     private function getEnrollments(User $user) {
         $today = new DateTime();
-        $enrolled = $this->get('logic')->listAnyEnrolledByClub($user->getCid());
+        $enrolled = $this->get('logic')->listAnyEnrolledByClub($user->getClub()->getId());
         $tournaments = $this->get('logic')->listAvailableTournaments();
         $tournamentList = array();
         foreach ($tournaments as $tournament) {

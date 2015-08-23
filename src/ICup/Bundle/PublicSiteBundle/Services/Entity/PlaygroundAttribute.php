@@ -5,6 +5,7 @@ namespace ICup\Bundle\PublicSiteBundle\Services\Entity;
 use DateTime;
 use ICup\Bundle\PublicSiteBundle\Entity\Doctrine\Timeslot;
 use ICup\Bundle\PublicSiteBundle\Entity\Doctrine\Playground;
+use ICup\Bundle\PublicSiteBundle\Entity\Doctrine\PlaygroundAttribute as PA;
 
 class PlaygroundAttribute
 {
@@ -78,7 +79,7 @@ class PlaygroundAttribute
     /**
      * Set id
      *
-     * @param integer $id
+     * @param PA $id
      * @return PlaygroundAttribute
      */
     public function setPA($pa)
@@ -91,7 +92,7 @@ class PlaygroundAttribute
     /**
      * Get id
      *
-     * @return integer
+     * @return PA
      */
     public function getPA()
     {

@@ -2,6 +2,7 @@
 namespace ICup\Bundle\PublicSiteBundle\Controller\Admin\Tournament;
 
 use ICup\Bundle\PublicSiteBundle\Entity\Doctrine\Date;
+use ICup\Bundle\PublicSiteBundle\Entity\Doctrine\Playground;
 use ICup\Bundle\PublicSiteBundle\Entity\Doctrine\PlaygroundAttribute;
 use ICup\Bundle\PublicSiteBundle\Entity\Doctrine\Site;
 use ICup\Bundle\PublicSiteBundle\Entity\Doctrine\Tournament;
@@ -32,12 +33,13 @@ class PlaygroundAttributeController extends Controller
 
         /* @var $user User */
         $user = $utilService->getCurrentUser();
+        /* @var $playground Playground */
         $playground = $this->get('entity')->getPlaygroundById($playgroundid);
-        $site = $this->get('entity')->getSiteById($playground->getPid());
+        $site = $playground->getSite();
         /* @var $tournament Tournament */
-        $tournament = $this->get('entity')->getTournamentById($site->getPid());
+        $tournament = $site->getTournament();
         $host = $tournament->getHost();
-        $utilService->validateEditorAdminUser($user, $host->getId());
+        $utilService->validateEditorAdminUser($user, $host);
 
         $pattrForm = new PAttrForm();
         $pattrForm->setPid($playground->getId());
@@ -69,11 +71,11 @@ class PlaygroundAttributeController extends Controller
         $pattr = $this->get('entity')->getPlaygroundAttributeById($playgroundattributeid);
         $playground = $pattr->getPlayground();
         /* @var $site Site */
-        $site = $this->get('entity')->getSiteById($playground->getPid());
+        $site = $playground->getSite();
         /* @var $tournament Tournament */
         $tournament = $site->getTournament();
         $host = $tournament->getHost();
-        $utilService->validateEditorAdminUser($user, $host->getId());
+        $utilService->validateEditorAdminUser($user, $host);
 
         $pattrForm = $this->copyPAttrForm($pattr);
         $form = $this->makePAttrForm($pattrForm, $tournament, 'chg');
@@ -104,11 +106,11 @@ class PlaygroundAttributeController extends Controller
         /* @var $pattr PlaygroundAttribute */
         $pattr = $this->get('entity')->getPlaygroundAttributeById($playgroundattributeid);
         $playground = $pattr->getPlayground();
-        $site = $this->get('entity')->getSiteById($playground->getPid());
+        $site = $playground->getSite();
         /* @var $tournament Tournament */
-        $tournament = $this->get('entity')->getTournamentById($site->getPid());
+        $tournament = $site->getTournament();
         $host = $tournament->getHost();
-        $utilService->validateEditorAdminUser($user, $host->getId());
+        $utilService->validateEditorAdminUser($user, $host);
 
         $pattrForm = $this->copyPAttrForm($pattr);
         $form = $this->makePAttrForm($pattrForm, $tournament, 'del');

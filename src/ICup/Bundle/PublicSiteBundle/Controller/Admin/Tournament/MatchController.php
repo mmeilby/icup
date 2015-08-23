@@ -7,8 +7,10 @@ use ICup\Bundle\PublicSiteBundle\Entity\Doctrine\Group;
 use ICup\Bundle\PublicSiteBundle\Entity\Doctrine\Match;
 use ICup\Bundle\PublicSiteBundle\Entity\Doctrine\MatchRelation;
 use ICup\Bundle\PublicSiteBundle\Entity\Doctrine\QMatchRelation;
+use ICup\Bundle\PublicSiteBundle\Entity\Doctrine\Tournament;
 use ICup\Bundle\PublicSiteBundle\Entity\Doctrine\User;
 use ICup\Bundle\PublicSiteBundle\Services\Doctrine\MatchSupport;
+use ICup\Bundle\PublicSiteBundle\Services\Util;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
@@ -33,13 +35,14 @@ class MatchController extends Controller
 
         /* @var $user User */
         $user = $utilService->getCurrentUser();
+        /* @var $group Group */
         $group = $this->get('entity')->getGroupById($groupid);
         /* @var $category Category */
         $category = $group->getCategory();
         /* @var $tournament Tournament */
         $tournament = $category->getTournament();
         $host = $tournament->getHost();
-        $utilService->validateEditorAdminUser($user, $host->getId());
+        $utilService->validateEditorAdminUser($user, $host);
 
         $matchForm = new MatchForm();
         $matchForm->setGroup($group);
@@ -87,7 +90,7 @@ class MatchController extends Controller
         /* @var $tournament Tournament */
         $tournament = $category->getTournament();
         $host = $tournament->getHost();
-        $utilService->validateEditorAdminUser($user, $host->getId());
+        $utilService->validateEditorAdminUser($user, $host);
 
         $matchForm = $this->copyMatchForm($match);
         $form = $this->makeMatchForm($matchForm, $tournament->getId(), 'chg');
@@ -137,7 +140,7 @@ class MatchController extends Controller
         /* @var $tournament Tournament */
         $tournament = $category->getTournament();
         $host = $tournament->getHost();
-        $utilService->validateEditorAdminUser($user, $host->getId());
+        $utilService->validateEditorAdminUser($user, $host);
 
         $matchForm = $this->copyMatchForm($match);
         $form = $this->makeMatchForm($matchForm, $tournament->getId(), 'del');
@@ -277,7 +280,7 @@ class MatchController extends Controller
         /* @var $qrel QMatchRelation */
         $qrel = $this->get('match')->getQMatchRelationByMatch($match->getId(), $away);
         if ($qrel) {
-            $group = $this->get('entity')->getGroupById($qrel->getCid());
+            $group = $qrel->getGroup();
             if ($group->getClassification() > 0) {
                 $groupname = $this->get('translator')->trans('GROUPCLASS.'.$group->getClassification(), array(), 'tournament');
             }
@@ -291,7 +294,7 @@ class MatchController extends Controller
                 $detail['id'] = -1;
             }
             $detail['rank'] = $rankTxt;
-            $detail['rgrp'] = $qrel->getCid();
+            $detail['rgrp'] = $group->getId();
         }
         return count($detail) > 0 ? $detail : null;
     }

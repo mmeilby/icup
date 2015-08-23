@@ -32,7 +32,7 @@ class TimeslotController extends Controller
         /* @var $tournament Tournament */
         $tournament = $this->get('entity')->getTournamentById($tournamentid);
         $host = $tournament->getHost();
-        $utilService->validateEditorAdminUser($user, $host->getId());
+        $utilService->validateEditorAdminUser($user, $host);
 
         $timeslot = new Timeslot();
         $timeslot->setTournament($tournament);
@@ -63,11 +63,12 @@ class TimeslotController extends Controller
 
         /* @var $user User */
         $user = $utilService->getCurrentUser();
+        /* @var $timeslot Timeslot */
         $timeslot = $this->get('entity')->getTimeslotById($timeslotid);
         /* @var $tournament Tournament */
-        $tournament = $this->get('entity')->getTournamentById($timeslot->getPid());
+        $tournament = $timeslot->getTournament();
         $host = $tournament->getHost();
-        $utilService->validateEditorAdminUser($user, $host->getId());
+        $utilService->validateEditorAdminUser($user, $host);
 
         $form = $this->makeTimeslotForm($timeslot, 'chg');
         $form->handleRequest($request);
@@ -96,11 +97,12 @@ class TimeslotController extends Controller
 
         /* @var $user User */
         $user = $utilService->getCurrentUser();
+        /* @var $timeslot Timeslot */
         $timeslot = $this->get('entity')->getTimeslotById($timeslotid);
         /* @var $tournament Tournament */
-        $tournament = $this->get('entity')->getTournamentById($timeslot->getPid());
+        $tournament = $timeslot->getTournament();
         $host = $tournament->getHost();
-        $utilService->validateEditorAdminUser($user, $host->getId());
+        $utilService->validateEditorAdminUser($user, $host);
 
         $form = $this->makeTimeslotForm($timeslot, 'del');
         $form->handleRequest($request);

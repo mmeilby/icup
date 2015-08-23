@@ -6,6 +6,7 @@ use ICup\Bundle\PublicSiteBundle\Entity\Doctrine\Date;
 use ICup\Bundle\PublicSiteBundle\Entity\Doctrine\Group;
 use ICup\Bundle\PublicSiteBundle\Entity\Doctrine\Match;
 use ICup\Bundle\PublicSiteBundle\Entity\Doctrine\MatchRelation;
+use ICup\Bundle\PublicSiteBundle\Entity\Doctrine\QMatchRelation;
 use ICup\Bundle\PublicSiteBundle\Entity\Doctrine\Tournament;
 use ICup\Bundle\PublicSiteBundle\Entity\Doctrine\User;
 use ICup\Bundle\PublicSiteBundle\Services\Util;
@@ -43,7 +44,7 @@ class MatchRelationController extends Controller
         /* @var $tournament Tournament */
         $tournament = $category->getTournament();
         $host = $tournament->getHost();
-        $utilService->validateEditorAdminUser($user, $host->getId());
+        $utilService->validateEditorAdminUser($user, $host);
 
         $matchForm = $this->copyMatchForm($match);
         $form = $this->makeMatchForm($matchForm, 'chg');
@@ -86,7 +87,7 @@ class MatchRelationController extends Controller
         /* @var $tournament Tournament */
         $tournament = $category->getTournament();
         $host = $tournament->getHost();
-        $utilService->validateEditorAdminUser($user, $host->getId());
+        $utilService->validateEditorAdminUser($user, $host);
 
         $matchForm = $this->copyMatchForm($match);
         $form = $this->makeMatchForm($matchForm, 'del');
@@ -128,7 +129,7 @@ class MatchRelationController extends Controller
         /* @var $tournament Tournament */
         $tournament = $category->getTournament();
         $host = $tournament->getHost();
-        $utilService->validateEditorAdminUser($user, $host->getId());
+        $utilService->validateEditorAdminUser($user, $host);
         
         $matchForm = $this->copyMatchForm($match);
         $form = $this->makeUpdMatchForm($matchForm, $match);
@@ -161,7 +162,7 @@ class MatchRelationController extends Controller
             $match->addMatchRelation($homeRel);
             $em->persist($homeRel);
         }
-        $homeRel->setCid($matchForm->getTeamA());
+        $homeRel->setTeam($this->get('entity')->getTeamById($matchForm->getTeamA()));
         $awayRel = $this->get('match')->getMatchRelationByMatch($match->getId(), true);
         if ($awayRel == null) {
             $awayRel = new MatchRelation();
@@ -172,7 +173,7 @@ class MatchRelationController extends Controller
             $match->addMatchRelation($awayRel);
             $em->persist($awayRel);
         }
-        $awayRel->setCid($matchForm->getTeamB());
+        $awayRel->setTeam($this->get('entity')->getTeamById($matchForm->getTeamB()));
         $em->flush();
     }
 
@@ -192,7 +193,7 @@ class MatchRelationController extends Controller
     private function copyMatchForm(Match $match) {
         $matchForm = new MatchForm();
         $matchForm->setId($match->getId());
-        $matchForm->setPid($match->getGroup()->getId());
+        $matchForm->setGroup($match->getGroup());
         $matchForm->setMatchno($match->getMatchno());
         $matchdate = Date::getDateTime($match->getDate(), $match->getTime());
         $dateformat = $this->get('translator')->trans('FORMAT.DATE');
@@ -206,7 +207,7 @@ class MatchRelationController extends Controller
     }
 
     private function makeMatchForm(MatchForm $matchForm, $action) {
-        $teams = $this->get('logic')->listTeamsByGroup($matchForm->getPid());
+        $teams = $this->get('logic')->listTeamsByGroup($matchForm->getGroup()->getId());
         $teamnames = array();
         foreach ($teams as $team) {
             $teamnames[$team->id] = $team->name;
@@ -249,8 +250,9 @@ class MatchRelationController extends Controller
     }
     
     private function makeUpdMatchForm(MatchForm $matchForm, Match $match) {
+        /* @var $qmh QMatchRelation */
         $qmh = $this->get('match')->getQMatchRelationByMatch($match->getId(), false);
-        $teamListA = $this->get('orderTeams')->sortGroup($qmh->getCid());
+        $teamListA = $this->get('orderTeams')->sortGroup($qmh->getGroup()->getId());
         $teamnamesA = array();
         foreach ($teamListA as $team) {
             $teamnamesA[$team->id] = $team->name;
@@ -258,8 +260,9 @@ class MatchRelationController extends Controller
         $teamA = $teamListA[$qmh->getRank()-1];
         $matchForm->setTeamA($teamA->id);
 
+        /* @var $qma QMatchRelation */
         $qma = $this->get('match')->getQMatchRelationByMatch($match->getId(), true);
-        $teamListB = $this->get('orderTeams')->sortGroup($qma->getCid());
+        $teamListB = $this->get('orderTeams')->sortGroup($qma->getGroup()->getId());
         $teamnamesB = array();
         foreach ($teamListB as $team) {
             $teamnamesB[$team->id] = $team->name;

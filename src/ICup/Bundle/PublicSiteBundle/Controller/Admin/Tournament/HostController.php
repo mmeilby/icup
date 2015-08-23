@@ -56,7 +56,7 @@ class HostController extends Controller
         /* @var $user User */
         $user = $utilService->getCurrentUser();
         $host = $this->get('entity')->getHostById($hostid);
-        $utilService->validateEditorAdminUser($user, $hostid);
+        $utilService->validateEditorAdminUser($user, $host);
 
         $form = $this->makeHostForm($host, 'chg');
         $form->handleRequest($request);

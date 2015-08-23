@@ -164,7 +164,7 @@ class TournamentSupport
                 "from ".$this->entity->getRepositoryPath('Playground')." p, ".
                         $this->entity->getRepositoryPath('Site')." s ".
                 "where s.tournament=:tournament and ".
-                        "p.pid=s.id ".
+                        "p.site=s.id ".
                 "order by p.no asc");
         $qb->setParameter('tournament', $tournamentid);
         return $qb->getResult();
@@ -177,11 +177,11 @@ class TournamentSupport
                    "m.id as mid,m.matchno,m.date as matchdate,m.time as matchtime ".
             "from ".$this->entity->getRepositoryPath('News')." n ".
             "left outer join ".$this->entity->getRepositoryPath('Match')." m ".
-            "with n.mid=m.id ".
+            "with n.match=m.id ".
             "left outer join ".$this->entity->getRepositoryPath('Team')." t ".
-            "with n.cid=t.id ".
+            "with n.team=t.id ".
             "left outer join ".$this->entity->getRepositoryPath('Club')." c ".
-            "with t.pid=c.id ".
+            "with t.club=c.id ".
             "where n.tournament=:tournament ".
             "order by n.newsno asc");
         $qb->setParameter('tournament', $tournamentid);
@@ -212,9 +212,9 @@ class TournamentSupport
                         $this->entity->getRepositoryPath('GroupOrder')." o, ".
                         $this->entity->getRepositoryPath('Group')." g, ".
                         $this->entity->getRepositoryPath('Category')." c ".
-                "where t.pid=:club and ".
-                        "o.cid=t.id and ".
-                        "o.pid=g.id and ".
+                "where t.club=:club and ".
+                        "o.team=t.id and ".
+                        "o.group=g.id and ".
                         "g.classification=0 and ".
                         "g.category=c.id and ".
                         "c.tournament=:tournament ".
@@ -252,9 +252,9 @@ class TournamentSupport
                 "where cat.tournament=:tournament and ".
                         "g.category=cat.id and ".
                         "g.classification=0 and ".
-                        "o.pid=g.id and ".
-                        "o.cid=t.id and ".
-                        "t.pid=c.id");
+                        "o.group=g.id and ".
+                        "o.team=t.id and ".
+                        "t.club=c.id");
         $qb->setParameter('tournament', $tournamentid);
         return $qb->getResult();
     }
@@ -266,7 +266,7 @@ class TournamentSupport
                 "from ".$this->entity->getRepositoryPath('Site')." s, ".
                         $this->entity->getRepositoryPath('Playground')." p ".
                 "where s.tournament=:tournament and ".
-                        "p.pid=s.id");
+                        "p.site=s.id");
         $qb->setParameter('tournament', $tournamentid);
         return $qb->getResult();
     }
@@ -281,8 +281,8 @@ class TournamentSupport
                 "where cat.tournament=:tournament and ".
                         "cat.gender='F' and ".
                         "g.category=cat.id and ".
-                        "o.pid=g.id and ".
-                        "o.cid=t.id");
+                        "o.group=g.id and ".
+                        "o.team=t.id");
         $qb->setParameter('tournament', $tournamentid);
         return $qb->getResult();
     }
@@ -298,8 +298,8 @@ class TournamentSupport
                       "cat.classification='U' and ".
                       "cat.age<=18 and ".
                       "g.category=cat.id and ".
-                      "o.pid=g.id and ".
-                      "o.cid=t.id");
+                      "o.group=g.id and ".
+                      "o.team=t.id");
         $qb->setParameter('tournament', $tournamentid);
         return $qb->getResult();
     }
@@ -328,19 +328,19 @@ class TournamentSupport
                         $this->entity->getRepositoryPath('Group')." g, ".
                         $this->entity->getRepositoryPath('GroupOrder')." o, ".
                         $this->entity->getRepositoryPath('Team')." t, ".
-                        $this->entity->getRepositoryPath('Club')." c ".
+                        $this->entity->getRepositoryPath('Club')." c, ".
+                        $this->entity->getRepositoryPath('MatchRelation')." r, ".
+                        $this->entity->getRepositoryPath('Match')." m ".
                 "where cat.tournament=:tournament and ".
                         "g.category=cat.id and ".
                         "g.classification>=9 and ".
-                        "o.pid=g.id and ".
-                        "o.cid=t.id and ".
-                        "t.pid=c.id and ".
-                        "t.id in (select r.cid ".
-                                 "from ".$this->entity->getRepositoryPath('MatchRelation')." r, ".
-                                         $this->entity->getRepositoryPath('Match')." m ".
-                                 "where r.match=m.id and ".
-                                       "m.group=g.id and ".
-                                       "r.scorevalid='Y') ".
+                        "o.group=g.id and ".
+                        "o.team=t.id and ".
+                        "t.club=c.id and ".
+                        "t.id=r.team and ".
+                        "r.match=m.id and ".
+                        "m.group=g.id and ".
+                        "r.scorevalid='Y' ".
                 "order by o.id");
         $qb->setParameter('tournament', $tournamentid);
         $teamsList = array();
@@ -358,52 +358,52 @@ class TournamentSupport
         
     public function getTrophysByCountry($tournamentid) {
         $qb = $this->em->createQuery(
-                "select c.country, count(t.id) as trophys ".
+                "select c.country, count(m.id) as trophys ".
                 "from ".$this->entity->getRepositoryPath('Category')." cat, ".
                         $this->entity->getRepositoryPath('Group')." g, ".
                         $this->entity->getRepositoryPath('GroupOrder')." o, ".
                         $this->entity->getRepositoryPath('Team')." t, ".
-                        $this->entity->getRepositoryPath('Club')." c ".
+                        $this->entity->getRepositoryPath('Club')." c, ".
+                        $this->entity->getRepositoryPath('MatchRelation')." r, ".
+                        $this->entity->getRepositoryPath('Match')." m ".
                 "where cat.tournament=:tournament and ".
                         "g.category=cat.id and ".
                         "g.classification>=9 and ".
-                        "o.pid=g.id and ".
-                        "o.cid=t.id and ".
-                        "t.pid=c.id and ".
-                        "t.id in (select r.cid ".
-                                 "from ".$this->entity->getRepositoryPath('MatchRelation')." r, ".
-                                         $this->entity->getRepositoryPath('Match')." m ".
-                                 "where r.match=m.id and ".
-                                       "m.group=g.id and ".
-                                       "r.scorevalid='Y') ".
+                        "o.group=g.id and ".
+                        "o.team=t.id and ".
+                        "t.club=c.id and ".
+                        "t.id=r.team and ".
+                        "r.match=m.id and ".
+                        "m.group=g.id and ".
+                        "r.scorevalid='Y' ".
                 "group by c.country ".
-                "order by trophys desc");
+                "order by trophys desc, g.classification desc");
         $qb->setParameter('tournament', $tournamentid);
         return $qb->getResult();
     }
         
     public function getTrophysByClub($tournamentid) {
         $qb = $this->em->createQuery(
-                "select c.name as club, c.country, count(t.id) as trophys ".
+                "select c.name as club, c.country, count(m.id) as trophys ".
                 "from ".$this->entity->getRepositoryPath('Category')." cat, ".
                         $this->entity->getRepositoryPath('Group')." g, ".
                         $this->entity->getRepositoryPath('GroupOrder')." o, ".
                         $this->entity->getRepositoryPath('Team')." t, ".
-                        $this->entity->getRepositoryPath('Club')." c ".
+                        $this->entity->getRepositoryPath('Club')." c, ".
+                        $this->entity->getRepositoryPath('MatchRelation')." r, ".
+                        $this->entity->getRepositoryPath('Match')." m ".
                 "where cat.tournament=:tournament and ".
                         "g.category=cat.id and ".
                         "g.classification>=9 and ".
-                        "o.pid=g.id and ".
-                        "o.cid=t.id and ".
-                        "t.pid=c.id and ".
-                        "t.id in (select r.cid ".
-                                 "from ".$this->entity->getRepositoryPath('MatchRelation')." r, ".
-                                         $this->entity->getRepositoryPath('Match')." m ".
-                                 "where r.match=m.id and ".
-                                       "m.group=g.id and ".
-                                       "r.scorevalid='Y') ".
-                "group by c.name ".
-                "order by trophys desc");
+                        "o.group=g.id and ".
+                        "o.team=t.id and ".
+                        "t.club=c.id and ".
+                        "t.id=r.team and ".
+                        "r.match=m.id and ".
+                        "m.group=g.id and ".
+                        "r.scorevalid='Y' ".
+                "group by c.country,c.name ".
+                "order by trophys desc, g.classification desc");
         $qb->setParameter('tournament', $tournamentid);
         return $qb->getResult();
     }
@@ -421,8 +421,8 @@ class TournamentSupport
                         "g.category=cat.id and ".
                         "m.group=g.id and ".
                         "r.match=m.id and ".
-                        "t.id=r.cid and ".
-                        "t.pid=c.id and ".
+                        "t.id=r.team and ".
+                        "t.club=c.id and ".
                         "r.scorevalid='Y' ".
                 "group by t.id ".
                 "order by mostgoals desc");
@@ -443,8 +443,8 @@ class TournamentSupport
                         "g.category=cat.id and ".
                         "m.group=g.id and ".
                         "r.match=m.id and ".
-                        "t.id=r.cid and ".
-                        "t.pid=c.id and ".
+                        "t.id=r.team and ".
+                        "t.club=c.id and ".
                         "r.scorevalid='Y' ".
                 "group by t.id ".
                 "order by mostgoals desc");
@@ -456,34 +456,34 @@ class TournamentSupport
         // wipe clubs
         $qbc = $this->em->createQuery(
                 "delete from ".$this->entity->getRepositoryPath('Club')." clb ".
-                "where clb.id in (select t.pid ".
+                "where clb.id in (select t.club ".
                                 "from ".$this->entity->getRepositoryPath('Category')." c, ".
                                         $this->entity->getRepositoryPath('Group')." g, ".
                                         $this->entity->getRepositoryPath('GroupOrder')." o, ".
                                         $this->entity->getRepositoryPath('Team')." t ".
-                                "where c.tournament=:tournament and g.category=c.id and o.pid=g.id and o.cid=t.id) ".
-                  "and clb.id not in (select tt.pid ".
+                                "where c.tournament=:tournament and g.category=c.id and o.group=g.id and o.team=t.id) ".
+                  "and clb.id not in (select tt.club ".
                                 "from ".$this->entity->getRepositoryPath('Category')." cc, ".
                                         $this->entity->getRepositoryPath('Group')." gg, ".
                                         $this->entity->getRepositoryPath('GroupOrder')." oo, ".
                                         $this->entity->getRepositoryPath('Team')." tt ".
-                                "where cc.tournament<>:tournament and gg.category=cc.id and oo.pid=gg.id and oo.cid=tt.id)");
+                                "where cc.tournament<>:tournament and gg.category=cc.id and oo.group=gg.id and oo.team=tt.id)");
         $qbc->setParameter('tournament', $tournamentid);
         $qbc->getResult();
         // wipe teams
         $qbt = $this->em->createQuery(
                 "delete from ".$this->entity->getRepositoryPath('Team')." t ".
-                "where t.id in (select o.cid ".
+                "where t.id in (select o.team ".
                                 "from ".$this->entity->getRepositoryPath('Category')." c, ".
                                         $this->entity->getRepositoryPath('Group')." g, ".
                                         $this->entity->getRepositoryPath('GroupOrder')." o ".
-                                "where c.tournament=:tournament and g.category=c.id and o.pid=g.id)");
+                                "where c.tournament=:tournament and g.category=c.id and o.group=g.id)");
         $qbt->setParameter('tournament', $tournamentid);
         $qbt->getResult();
         // wipe group orders
         $qbo = $this->em->createQuery(
                 "delete from ".$this->entity->getRepositoryPath('GroupOrder')." o ".
-                "where o.pid in (select g.id ".
+                "where o.group in (select g.id ".
                                 "from ".$this->entity->getRepositoryPath('Category')." c, ".
                                         $this->entity->getRepositoryPath('Group')." g ".
                                 "where c.tournament=:tournament and g.category=c.id)");
@@ -492,7 +492,7 @@ class TournamentSupport
         // wipe enrollments
         $qbe = $this->em->createQuery(
                 "delete from ".$this->entity->getRepositoryPath('Enrollment')." e ".
-                "where e.pid in (select c.id ".
+                "where e.category in (select c.id ".
                                 "from ".$this->entity->getRepositoryPath('Category')." c ".
                                 "where c.tournament=:tournament)");
         $qbe->setParameter('tournament', $tournamentid);
@@ -557,7 +557,7 @@ class TournamentSupport
         // wipe playground attribute relations
         $qbp = $this->em->createQuery(
                 "delete from ".$this->entity->getRepositoryPath('PARelation')." p ".
-                "where p.cid in (select c.id ".
+                "where p.category in (select c.id ".
                                 "from ".$this->entity->getRepositoryPath('Category')." c ".
                                 "where c.tournament=:tournament)");
         $qbp->setParameter('tournament', $tournamentid);
@@ -574,11 +574,11 @@ class TournamentSupport
         // wipe playground attribute relations
         $qbr = $this->em->createQuery(
                 "delete from ".$this->entity->getRepositoryPath('PARelation')." r ".
-                "where r.pid in (select a.id ".
+                "where r.playgroundattribute in (select a.id ".
                                 "from ".$this->entity->getRepositoryPath('Site')." s, ".
                                         $this->entity->getRepositoryPath('Playground')." p, ".
                                         $this->entity->getRepositoryPath('PlaygroundAttribute')." a ".
-                                "where s.tournament=:tournament and p.pid=s.id and a.playground=p.id)");
+                                "where s.tournament=:tournament and p.site=s.id and a.playground=p.id)");
         $qbr->setParameter('tournament', $tournamentid);
         $qbr->getResult();
         // wipe playground attributes
@@ -587,13 +587,13 @@ class TournamentSupport
                 "where a.playground in (select p.id ".
                                 "from ".$this->entity->getRepositoryPath('Site')." s, ".
                                         $this->entity->getRepositoryPath('Playground')." p ".
-                                "where s.tournament=:tournament and p.pid=s.id)");
+                                "where s.tournament=:tournament and p.site=s.id)");
         $qbm->setParameter('tournament', $tournamentid);
         $qbm->getResult();
         // wipe playgrounds
         $qbg = $this->em->createQuery(
                 "delete from ".$this->entity->getRepositoryPath('Playground')." p ".
-                "where p.pid in (select s.id ".
+                "where p.site in (select s.id ".
                                 "from ".$this->entity->getRepositoryPath('Site')." s ".
                                 "where s.tournament=:tournament)");
         $qbg->setParameter('tournament', $tournamentid);

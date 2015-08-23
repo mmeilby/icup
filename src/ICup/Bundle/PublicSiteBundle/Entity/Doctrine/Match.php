@@ -32,9 +32,10 @@ class Match
     private $group;
 
     /**
-     * @var integer $playground
-     * Relation to playground - playground=playground.id
-     * @ORM\Column(name="playground", type="integer", nullable=false)
+     * @var Playground $playground
+     * Relation to Playground
+     * @ORM\ManyToOne(targetEntity="Playground", inversedBy="id")
+     * @ORM\JoinColumn(name="playground", referencedColumnName="id")
      */
     private $playground;
 

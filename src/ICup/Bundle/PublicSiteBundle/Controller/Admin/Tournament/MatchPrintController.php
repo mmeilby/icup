@@ -29,7 +29,7 @@ class MatchPrintController extends Controller
         /* @var $tournament Tournament */
         $tournament = $this->get('entity')->getTournamentById($tournamentid);
         $host = $tournament->getHost();
-        $utilService->validateEditorAdminUser($user, $host->getId());
+        $utilService->validateEditorAdminUser($user, $host);
 
         $matchDate = DateTime::createFromFormat('d-m-Y', $date);
         if ($matchDate == null) {

@@ -22,18 +22,20 @@ class MatchAlternative
     private $id;
 
     /**
-     * @var integer $pid
-     * Relation to MatchSchedule - pid=matchschedule.id
-     * @ORM\Column(name="pid", type="integer", nullable=false)
+     * @var MatchSchedule $matchSchedule
+     * Relation to MatchSchedule
+     * @ORM\ManyToOne(targetEntity="MatchSchedule", inversedBy="id", cascade={"persist", "remove"})
+     * @ORM\JoinColumn(name="pid", referencedColumnName="id", onDelete="CASCADE")
      */
-    private $pid;
+    private $matchSchedule;
 
     /**
-     * @var integer $paid
-     * Relation to PlaygroundAttribute - pid=playgroundattribute.id
-     * @ORM\Column(name="paid", type="integer", nullable=false)
+     * @var PlaygroundAttribute $tournament
+     * Relation to PlaygroundAttribute
+     * @ORM\ManyToOne(targetEntity="PlaygroundAttribute", inversedBy="id")
+     * @ORM\JoinColumn(name="paid", referencedColumnName="id")
      */
-    private $paid;
+    private $playgroundAttribute;
 
     /**
      * Get id
@@ -46,48 +48,34 @@ class MatchAlternative
     }
 
     /**
-     * Set parent id - related matchschedule
-     *
-     * @param integer $pid
+     * @return MatchSchedule
+     */
+    public function getMatchSchedule() {
+        return $this->matchSchedule;
+    }
+
+    /**
+     * @param MatchSchedule $matchSchedule
      * @return MatchAlternative
      */
-    public function setPid($pid)
-    {
-        $this->pid = $pid;
-    
+    public function setMatchSchedule($matchSchedule) {
+        $this->matchSchedule = $matchSchedule;
         return $this;
     }
 
     /**
-     * Get parent id - related matchschedule
-     *
-     * @return integer 
+     * @return PlaygroundAttribute
      */
-    public function getPid()
-    {
-        return $this->pid;
+    public function getPlaygroundAttribute() {
+        return $this->playgroundAttribute;
     }
 
     /**
-     * Set child id - related playground attributes
-     *
-     * @param integer $paid
+     * @param PlaygroundAttribute $playgroundAttribute
      * @return MatchAlternative
      */
-    public function setPaid($paid)
-    {
-        $this->paid = $paid;
-    
+    public function setPlaygroundAttribute($playgroundAttribute) {
+        $this->playgroundAttribute = $playgroundAttribute;
         return $this;
-    }
-
-    /**
-     * Get child id - related playground attributes
-     *
-     * @return integer 
-     */
-    public function getPaid()
-    {
-        return $this->paid;
     }
 }

@@ -43,8 +43,6 @@ class AnnonymousController extends Controller
             $user->setUsername($user->getEmail());
             $user->setStatus(User::$AUTH);
             $user->setRole(User::$CLUB);
-            $user->setCid(0);
-            $user->setPid(0);
             $em = $this->getDoctrine()->getManager();
             $em->persist($user);
             $em->flush();

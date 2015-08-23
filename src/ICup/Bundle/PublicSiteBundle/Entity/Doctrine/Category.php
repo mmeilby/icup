@@ -2,6 +2,7 @@
 
 namespace ICup\Bundle\PublicSiteBundle\Entity\Doctrine;
 
+use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\ORM\Mapping as ORM;
 
 /**
@@ -71,6 +72,21 @@ class Category
      * @ORM\OneToMany(targetEntity="Group", mappedBy="category", cascade={"persist", "remove"})
      */
     private $groups;
+
+    /**
+     * @var ArrayCollection $enrollments
+     * Collection of category relations to enrollments
+     * @ORM\OneToMany(targetEntity="Enrollment", mappedBy="category", cascade={"persist", "remove"})
+     */
+    private $enrollments;
+
+    /**
+     * Category constructor.
+     */
+    public function __construct() {
+        $this->groups = new ArrayCollection();
+        $this->enrollments = new ArrayCollection();
+    }
 
     /**
      * Get id
@@ -218,5 +234,12 @@ class Category
      */
     public function getGroups() {
         return $this->groups;
+    }
+
+    /**
+     * @return ArrayCollection
+     */
+    public function getEnrollments() {
+        return $this->enrollments;
     }
 }

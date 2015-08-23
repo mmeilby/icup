@@ -1,6 +1,5 @@
 To Do List
 ----------
-Implementering af DQL på alle data klasser
 Planlæg slutrunde kampe og puljer
 Færdiggørelse af planlæg indledende kampe
 Administrer kobling mellem nyheder og hold/kampe
@@ -52,6 +51,7 @@ Kampplan data klasser tilrettet DQL
 Valg af slutrunde krav flyttet fra PARelations til PlaygroundAttributes
 Matchtime fjernet fra PARelations - forberedt til ManyToMany relation mellem PlaygroundAttribute og Category
 Fix - dato defaultes til dags dato når der ikke er defineret match datoer (vis kampliste for dato)
+Implementering af DQL på alle data klasser
 
 FORKASTET
 ---------

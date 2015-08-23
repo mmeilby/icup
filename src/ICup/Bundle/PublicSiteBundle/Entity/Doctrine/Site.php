@@ -2,6 +2,7 @@
 
 namespace ICup\Bundle\PublicSiteBundle\Entity\Doctrine;
 
+use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\ORM\Mapping as ORM;
 
 /**
@@ -37,6 +38,20 @@ class Site
     private $name;
 
     /**
+     * @var ArrayCollection $playgrounds
+     * Collection of group relations to playgrounds
+     * @ORM\OneToMany(targetEntity="Playground", mappedBy="site", cascade={"persist", "remove"})
+     */
+    private $playgrounds;
+
+    /**
+     * Site constructor.
+     */
+    public function __construct() {
+        $this->playgrounds = new ArrayCollection();
+    }
+
+    /**
      * Get id
      *
      * @return integer 
@@ -44,29 +59,6 @@ class Site
     public function getId()
     {
         return $this->id;
-    }
-
-    /**
-     * Set parent id
-     *
-     * @param integer $pid
-     * @return Site
-     */
-    public function setPid($pid)
-    {
-        $this->pid = $pid;
-    
-        return $this;
-    }
-
-    /**
-     * Get parent id - related tournament
-     *
-     * @return integer 
-     */
-    public function getPid()
-    {
-        return $this->pid;
     }
 
     /**
@@ -104,5 +96,12 @@ class Site
     public function getName()
     {
         return $this->name;
+    }
+
+    /**
+     * @return ArrayCollection
+     */
+    public function getPlaygrounds() {
+        return $this->playgrounds;
     }
 }

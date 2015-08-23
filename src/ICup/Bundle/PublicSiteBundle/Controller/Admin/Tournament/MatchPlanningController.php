@@ -13,6 +13,7 @@ use ICup\Bundle\PublicSiteBundle\Entity\Doctrine\MatchScheduleRelation;
 use ICup\Bundle\PublicSiteBundle\Entity\Doctrine\PlaygroundAttribute;
 use ICup\Bundle\PublicSiteBundle\Entity\Doctrine\QMatchScheduleRelation;
 use ICup\Bundle\PublicSiteBundle\Entity\Doctrine\Tournament;
+use ICup\Bundle\PublicSiteBundle\Entity\Doctrine\User;
 use ICup\Bundle\PublicSiteBundle\Entity\TeamInfo;
 use ICup\Bundle\PublicSiteBundle\Services\Doctrine\MatchSupport;
 use ICup\Bundle\PublicSiteBundle\Services\Doctrine\TournamentSupport;
@@ -22,6 +23,7 @@ use ICup\Bundle\PublicSiteBundle\Exceptions\ValidationException;
 use ICup\Bundle\PublicSiteBundle\Services\Entity\PlaygroundAttribute as PA;
 use ICup\Bundle\PublicSiteBundle\Entity\MatchPlan;
 use ICup\Bundle\PublicSiteBundle\Services\Entity\PlanningOptions;
+use ICup\Bundle\PublicSiteBundle\Services\Util;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
@@ -33,6 +35,7 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\ResponseHeaderBag;
 use SplFileObject;
 use DateTime;
+use Exception;
 
 class MatchPlanningController extends Controller
 {
@@ -371,10 +374,10 @@ class MatchPlanningController extends Controller
                     $matchrec->setDate($match->getDate());
                     $matchrec->setTime($match->getTime());
                     $matchrec->setGroup($match->getGroup());
-                    $matchrec->setPlayground($match->getPlayground()->getId());
+                    $matchrec->setPlayground($match->getPlayground());
 
                     $resultreqA = new MatchRelation();
-                    $resultreqA->setCid($match->getTeamA()->getId());
+                    $resultreqA->setTeam($match->getTeamA());
                     $resultreqA->setAwayteam(MatchSupport::$HOME);
                     $resultreqA->setScorevalid(false);
                     $resultreqA->setScore(0);
@@ -382,7 +385,7 @@ class MatchPlanningController extends Controller
                     $matchrec->addMatchRelation($resultreqA);
 
                     $resultreqB = new MatchRelation();
-                    $resultreqB->setCid($match->getTeamB()->getId());
+                    $resultreqB->setTeam($match->getTeamB());
                     $resultreqB->setAwayteam(MatchSupport::$AWAY);
                     $resultreqB->setScorevalid(false);
                     $resultreqB->setScore(0);
@@ -610,7 +613,7 @@ class MatchPlanningController extends Controller
         /* @var $tournament Tournament */
         $tournament = $this->get('entity')->getTournamentById($tournamentid);
         $host = $tournament->getHost();
-        $utilService->validateEditorAdminUser($user, $host->getId());
+        $utilService->validateEditorAdminUser($user, $host);
         return $tournament;
     }
 }

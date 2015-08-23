@@ -136,7 +136,7 @@ class OrderTeams
         $relationMap = array();
         /* @var $matchRelation MatchRelation */
         foreach ($teamResults as $matchRelation) {
-            if (array_key_exists($matchRelation->getCid(), $teamMap)) {
+            if (isset($teamMap[$matchRelation->getTeam()->getId()])) {
                 $relationMap[$matchRelation->getMatch()->getId()][$matchRelation->getAwayteam()?'A':'H'] = $matchRelation;
             }
         }
@@ -161,7 +161,7 @@ class OrderTeams
 
     private function updateTeamStat($teamMap, MatchRelation $relA, MatchRelation $relB) {
         /* @var $stat TeamStat */
-        $stat = $teamMap[$relA->getCid()];
+        $stat = $teamMap[$relA->getTeam()->getId()];
         $stat->setMatches($stat->getMatches()+1);
         $stat->setPoints($stat->getPoints()+$relA->getPoints());
         $stat->setScore($stat->getScore()+$relA->getScore());

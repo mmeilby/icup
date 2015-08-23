@@ -2,6 +2,7 @@
 
 namespace ICup\Bundle\PublicSiteBundle\Entity\Doctrine;
 
+use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\ORM\Mapping as ORM;
 use JsonSerializable;
 
@@ -55,6 +56,28 @@ class Group implements JsonSerializable
      * @ORM\Column(name="classification", type="integer", nullable=false)
      */
     private $classification;
+
+    /**
+     * @var ArrayCollection $matches
+     * Collection of group relations to matches
+     * @ORM\OneToMany(targetEntity="Match", mappedBy="group", cascade={"persist", "remove"})
+     */
+    private $matches;
+
+    /**
+     * @var ArrayCollection $grouporder
+     * Collection of group relations to grouporder
+     * @ORM\OneToMany(targetEntity="GroupOrder", mappedBy="group", cascade={"persist", "remove"})
+     */
+    private $grouporder;
+
+    /**
+     * Group constructor.
+     */
+    public function __construct() {
+        $this->matches = new ArrayCollection();
+        $this->grouporder = new ArrayCollection();
+    }
 
     /**
      * Get id
@@ -124,6 +147,32 @@ class Group implements JsonSerializable
     public function getClassification()
     {
         return $this->classification;
+    }
+
+    /**
+     * @return ArrayCollection
+     */
+    public function getMatches() {
+        return $this->matches;
+    }
+
+    /**
+     * @return ArrayCollection
+     */
+    public function getGroupOrder() {
+        return $this->grouporder;
+    }
+
+    /**
+     * @return ArrayCollection
+     */
+    public function getTeams() {
+        $teams = array();
+        /* @var GroupOrder $grouporder */
+        foreach ($this->grouporder as $grouporder) {
+            $teams[] = $grouporder->getTeam();
+        }
+        return $teams;
     }
 
     /**

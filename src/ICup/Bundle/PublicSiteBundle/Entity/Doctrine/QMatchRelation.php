@@ -31,11 +31,12 @@ class QMatchRelation
     private $match;
 
     /**
-     * @var integer $cid
-     * Relation to qualifying Group - cid=group.id
-     * @ORM\Column(name="cid", type="integer", nullable=false)
+     * @var Group $group
+     * Relation to Group
+     * @ORM\ManyToOne(targetEntity="Group", inversedBy="id")
+     * @ORM\JoinColumn(name="cid", referencedColumnName="id")
      */
-    private $cid;
+    private $group;
     
     /**
      * @var integer $rank
@@ -78,26 +79,17 @@ class QMatchRelation
     }
 
     /**
-     * Set child id - related team
-     *
-     * @param integer $cid
-     * @return QMatchRelation
+     * @return Group
      */
-    public function setCid($cid)
-    {
-        $this->cid = $cid;
-    
-        return $this;
+    public function getGroup() {
+        return $this->group;
     }
 
     /**
-     * Get child id - related team
-     *
-     * @return integer 
+     * @param Group $group
      */
-    public function getCid()
-    {
-        return $this->cid;
+    public function setGroup($group) {
+        $this->group = $group;
     }
 
     /**
@@ -109,7 +101,7 @@ class QMatchRelation
     public function setRank($rank)
     {
         $this->rank = $rank;
-    
+
         return $this;
     }
 

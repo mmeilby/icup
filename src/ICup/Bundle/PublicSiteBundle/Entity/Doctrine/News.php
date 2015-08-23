@@ -42,18 +42,20 @@ class News
     private $date;
 
     /**
-     * @var integer $mid
-     * Relation to Match - mid=match.id
-     * @ORM\Column(name="mid", type="integer", nullable=false)
+     * @var Match $match
+     * Relation to Match
+     * @ORM\ManyToOne(targetEntity="Match", inversedBy="id")
+     * @ORM\JoinColumn(name="mid", referencedColumnName="id")
      */
-    private $mid;
+    private $match;
 
     /**
-     * @var integer $cid
-     * Relation to Team - cid=team.id
-     * @ORM\Column(name="cid", type="integer", nullable=false)
+     * @var Team $team
+     * Relation to Team
+     * @ORM\ManyToOne(targetEntity="Team", inversedBy="id")
+     * @ORM\JoinColumn(name="cid", referencedColumnName="id")
      */
-    private $cid;
+    private $team;
 
     /**
      * @var integer $newstype
@@ -99,29 +101,6 @@ class News
     }
 
     /**
-     * Set parent id - related tournament
-     *
-     * @param integer $pid
-     * @return Category
-     */
-    public function setPid($pid)
-    {
-        $this->pid = $pid;
-    
-        return $this;
-    }
-
-    /**
-     * Get parent id - related tournament
-     *
-     * @return integer 
-     */
-    public function getPid()
-    {
-        return $this->pid;
-    }
-
-    /**
      * @return Tournament
      */
     public function getTournament() {
@@ -151,31 +130,35 @@ class News
     }
 
     /**
-     * @return int
+     * @return Match
      */
-    public function getMid() {
-        return $this->mid;
+    public function getMatch() {
+        return $this->match;
     }
 
     /**
-     * @param int $mid
+     * @param Match $match
+     * @return News
      */
-    public function setMid($mid) {
-        $this->mid = $mid;
+    public function setMatch($match) {
+        $this->match = $match;
+        return $this;
     }
 
     /**
-     * @return int
+     * @return Team
      */
-    public function getCid() {
-        return $this->cid;
+    public function getTeam() {
+        return $this->team;
     }
 
     /**
-     * @param int $cid
+     * @param Team $team
+     * @return News
      */
-    public function setCid($cid) {
-        $this->cid = $cid;
+    public function setTeam($team) {
+        $this->team = $team;
+        return $this;
     }
 
     /**

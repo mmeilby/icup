@@ -243,5 +243,4 @@ class PlaygroundAttribute
     {
         return $this->finals;
     }
-
 }

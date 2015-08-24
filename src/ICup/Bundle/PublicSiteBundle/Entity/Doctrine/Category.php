@@ -70,6 +70,7 @@ class Category
      * @var ArrayCollection $groups
      * Collection of category relations to groups
      * @ORM\OneToMany(targetEntity="Group", mappedBy="category", cascade={"persist", "remove"})
+     * @ORM\OrderBy({"name" = "ASC"})
      */
     private $groups;
 
@@ -234,6 +235,16 @@ class Category
      */
     public function getGroups() {
         return $this->groups;
+    }
+
+    /**
+     * @return array
+     */
+    public function getGroupsClassified($classification) {
+        $groups = $this->groups->filter(function (Group $group) use ($classification) {
+            return $group->getClassification() == $classification;
+        });
+        return $groups;
     }
 
     /**

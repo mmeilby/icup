@@ -3,6 +3,7 @@ namespace ICup\Bundle\PublicSiteBundle\Controller\Admin\Tournament;
 
 use DateTime;
 use ICup\Bundle\PublicSiteBundle\Entity\Doctrine\PlaygroundAttribute;
+use ICup\Bundle\PublicSiteBundle\Entity\Doctrine\Timeslot;
 use ICup\Bundle\PublicSiteBundle\Entity\Doctrine\Tournament;
 use ICup\Bundle\PublicSiteBundle\Entity\Doctrine\User;
 use ICup\Bundle\PublicSiteBundle\Exceptions\ValidationException;
@@ -55,14 +56,14 @@ class MatchPrintController extends Controller
                 /* @var $diffend \DateInterval */
                 $diffend = $pattr->getEndSchedule()->getTimestamp() - $match['schedule']->getTimestamp();
                 if ($diffend >= 0 && $diffstart <= 0) {
-                    $slotid = $pattr->getTimeslot();
-                    $match['timeslot'] = $timeslots[$slotid];
+                    $slotid = $pattr->getTimeslot()->getId();
+                    $match['timeslot'] = $pattr->getTimeslot();
                     $matchList[] = $match;
                     break;
                 }
             }
             if (!$slotid) {
-                $match['timeslot'] = $timeslots[array_rand($timeslots)];
+                $match['timeslot'] = new Timeslot();
                 $matchList[] = $match;
             }
         }

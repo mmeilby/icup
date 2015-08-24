@@ -3,6 +3,9 @@
 namespace ICup\Bundle\PublicSiteBundle\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
+use ICup\Bundle\PublicSiteBundle\Entity\Doctrine\Match;
+use ICup\Bundle\PublicSiteBundle\Entity\Doctrine\Team;
+use ICup\Bundle\PublicSiteBundle\Entity\Doctrine\Tournament;
 
 /**
  * ICup\Bundle\PublicSiteBundle\Entity\NewsForm
@@ -15,10 +18,10 @@ class NewsForm
     private $id;
 
     /**
-     * @var integer $pid
+     * @var Tournament $tournament
      * Relation to Tournament - pid=tournament.id 
      */
-    private $pid;
+    private $tournament;
 
     /**
      * @var string $date
@@ -27,16 +30,16 @@ class NewsForm
     private $date;
 
     /**
-     * @var integer $mid
+     * @var Match $match
      * Relation to Match - mid=match.id
      */
-    private $mid;
+    private $match;
 
     /**
-     * @var integer $cid
+     * @var Team $team
      * Relation to Team - cid=team.id
      */
-    private $cid;
+    private $team;
 
     /**
      * @var integer $newstype
@@ -81,67 +84,74 @@ class NewsForm
     }
 
     /**
-     * Set parent id - related tournament
-     *
-     * @param integer $pid
-     * @return Category
+     * @return Tournament
      */
-    public function setPid($pid)
-    {
-        $this->pid = $pid;
-    
+    public function getTournament() {
+        return $this->tournament;
+    }
+
+    /**
+     * @param Tournament $tournament
+     * @return NewsForm
+     */
+    public function setTournament($tournament) {
+        $this->tournament = $tournament;
         return $this;
     }
 
     /**
-     * Get parent id - related tournament
-     *
-     * @return integer 
+     * @return Match
      */
-    public function getPid()
+    public function getMatch() {
+        return $this->match;
+    }
+
+    /**
+     * @param Match $match
+     * @return NewsForm
+     */
+    public function setMatch($match) {
+        $this->match = $match;
+        return $this;
+    }
+
+    /**
+     * @return Team
+     */
+    public function getTeam() {
+        return $this->team;
+    }
+
+    /**
+     * @param Team $team
+     * @return NewsForm
+     */
+    public function setTeam($team) {
+        $this->team = $team;
+        return $this;
+    }
+
+    /**
+     * Get date
+     *
+     * @return string
+     */
+    public function getDate()
     {
-        return $this->pid;
+        return $this->date;
     }
 
     /**
      * Set date
      *
      * @param string $date
-     * @return Match
+     * @return NewsForm
      */
     public function setDate($date)
     {
         $this->date = $date;
     
         return $this;
-    }
-
-    /**
-     * @return int
-     */
-    public function getMid() {
-        return $this->mid;
-    }
-
-    /**
-     * @param int $mid
-     */
-    public function setMid($mid) {
-        $this->mid = $mid;
-    }
-
-    /**
-     * @return int
-     */
-    public function getCid() {
-        return $this->cid;
-    }
-
-    /**
-     * @param int $cid
-     */
-    public function setCid($cid) {
-        $this->cid = $cid;
     }
 
     /**
@@ -214,13 +224,4 @@ class NewsForm
         $this->context = $context;
     }
 
-    /**
-     * Get date
-     *
-     * @return string 
-     */
-    public function getDate()
-    {
-        return $this->date;
-    }
 }

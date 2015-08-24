@@ -10,9 +10,17 @@ use DateTime;
 use JsonSerializable;
 
 /**
- * ICup\Bundle\PublicSiteBundle\Entity\Doctrine\User
+ * User entity
+ * This is one of the three basic entities: Hosts, Users and Clubs
+ * A user is a top level entity. Only one user can use a specific username in the system.
  *
- * @ORM\Table(name="users",uniqueConstraints={@ORM\UniqueConstraint(name="IdxByUser", columns={"username"})})
+ * The user entity is a special object used for login of users to the system.
+ * Data in this object are used for authentication and administration of access rights
+ *
+ * However the user entity also relates to enrollments and hosts/clubs as a part of the data model
+ * to bind the user to actions and relationships.
+ *
+ * @ORM\Table(name="users",uniqueConstraints={@ORM\UniqueConstraint(name="UserConstraint", columns={"username"})})
  * @ORM\Entity
  */
 class User implements AdvancedUserInterface, JsonSerializable
@@ -47,7 +55,7 @@ class User implements AdvancedUserInterface, JsonSerializable
 
     /**
      * @var Host $host
-     * Relation to Host
+     * Editor relation to a specific host (for system admins this is the host used recently)
      * @ORM\ManyToOne(targetEntity="Host", inversedBy="id")
      * @ORM\JoinColumn(name="pid", referencedColumnName="id")
      */
@@ -55,7 +63,7 @@ class User implements AdvancedUserInterface, JsonSerializable
 
     /**
      * @var Club $club
-     * Relation to Club
+     * Club user relation a specific club
      * @ORM\ManyToOne(targetEntity="Club", inversedBy="id")
      * @ORM\JoinColumn(name="cid", referencedColumnName="id")
      */
@@ -63,14 +71,14 @@ class User implements AdvancedUserInterface, JsonSerializable
 
     /**
      * @var string $name
-     *
+     * Formal name used by the system
      * @ORM\Column(name="name", type="string", length=50, nullable=false)
      */
     private $name;
 
     /**
      * @var string $email
-     *
+     * E-mail address used for system messages like reset password
      * @ORM\Column(name="email", type="string", length=100, nullable=false)
      */
     private $email;
@@ -91,21 +99,21 @@ class User implements AdvancedUserInterface, JsonSerializable
 
     /**
      * @var string $username
-     *
+     * Username used for login (could be the e-mail address)
      * @ORM\Column(name="username", type="string", length=50, nullable=false)
      */
     private $username;
 
     /**
      * @var string $password
-     *
+     * Password used for login (crypted)
      * @ORM\Column(name="password", type="string", length=128, nullable=false)
      */
     private $password;
 
     /**
      * @var string $secret
-     *
+     * Secret used for system routines like reset password
      * @ORM\Column(name="secret", type="string", length=50, nullable=false)
      */
     private $secret;
@@ -126,14 +134,14 @@ class User implements AdvancedUserInterface, JsonSerializable
 
     /**
      * @var DateTime $lastLogin
-     *
+     * Timestamp of last successfull login
      * @ORM\Column(name="lastlogin", type="datetime", nullable=true)
      */
     private $lastLogin;
 
     /**
      * @var ArrayCollection $enrollments
-     * Collection of category relations to enrollments
+     * Collection of team enrollments authorized by this user
      * @ORM\OneToMany(targetEntity="Enrollment", mappedBy="user", cascade={"persist"})
      */
     private $enrollments;

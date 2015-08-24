@@ -6,9 +6,11 @@ use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\ORM\Mapping as ORM;
 
 /**
- * ICup\Bundle\PublicSiteBundle\Entity\Doctrine\Club
+ * Club entity
+ * This is one of the three basic entities: Hosts, Users and Clubs
+ * A club is a top level entity that can exist with several Hosts. Only one club can use a specific name in each country.
  *
- * @ORM\Table(name="clubs", uniqueConstraints={@ORM\UniqueConstraint(name="IdxByName", columns={"name", "country"})})
+ * @ORM\Table(name="clubs", uniqueConstraints={@ORM\UniqueConstraint(name="NameConstraint", columns={"name", "country"})})
  * @ORM\Entity
  */
 class Club
@@ -20,35 +22,35 @@ class Club
      * @ORM\Id
      * @ORM\GeneratedValue(strategy="IDENTITY")
      */
-    private $id;
+    protected $id;
 
     /**
      * @var string $name
-     *
+     * Club name used in lists (and as template for team names)
      * @ORM\Column(name="name", type="string", length=50, nullable=false)
      */
-    private $name;
+    protected $name;
 
     /**
      * @var string $country
-     *
+     * Country code for club residence - DNK for Denmark, DEU for Germany, FRA for France and so on...
      * @ORM\Column(name="country", type="string", length=3, nullable=false)
      */
-    private $country;
+    protected $country;
 
     /**
      * @var ArrayCollection $teams
-     * Collection of club relations to teams
+     * Collection of teams associated with this club
      * @ORM\OneToMany(targetEntity="Team", mappedBy="club", cascade={"persist", "remove"})
      */
-    private $teams;
+    protected $teams;
 
     /**
      * @var ArrayCollection $users
-     * Collection of club relations to users
+     * Collection of users connected with this club
      * @ORM\OneToMany(targetEntity="User", mappedBy="club", cascade={"persist"})
      */
-    private $users;
+    protected $users;
 
     /**
      * Club constructor.

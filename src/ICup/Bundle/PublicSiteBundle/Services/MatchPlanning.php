@@ -16,7 +16,6 @@ use ICup\Bundle\PublicSiteBundle\Entity\Doctrine\MatchSchedulePlan;
 use ICup\Bundle\PublicSiteBundle\Entity\Doctrine\MatchScheduleRelation;
 use ICup\Bundle\PublicSiteBundle\Entity\Doctrine\MatchUnscheduled;
 use ICup\Bundle\PublicSiteBundle\Entity\Doctrine\QMatchScheduleRelation;
-use ICup\Bundle\PublicSiteBundle\Entity\Match;
 use ICup\Bundle\PublicSiteBundle\Entity\MatchPlan;
 use ICup\Bundle\PublicSiteBundle\Entity\TeamInfo;
 use ICup\Bundle\PublicSiteBundle\Services\Doctrine\BusinessLogic;

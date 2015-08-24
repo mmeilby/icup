@@ -6,9 +6,11 @@ use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\ORM\Mapping as ORM;
 
 /**
- * ICup\Bundle\PublicSiteBundle\Entity\Doctrine\Host
+ * Host entity
+ * This is one of the three basic entities: Hosts, Users and Clubs
+ * A host is a top level entity. Only one host can use a specific name in the system.
  *
- * @ORM\Table(name="hosts", uniqueConstraints={@ORM\UniqueConstraint(name="IdxByName", columns={"name"})})
+ * @ORM\Table(name="hosts", uniqueConstraints={@ORM\UniqueConstraint(name="NameConstraint", columns={"name"})})
  * @ORM\Entity
  */
 class Host
@@ -20,28 +22,28 @@ class Host
      * @ORM\Id
      * @ORM\GeneratedValue(strategy="IDENTITY")
      */
-    private $id;
+    protected $id;
 
     /**
      * @var string $name
      * Host name used in lists
      * @ORM\Column(name="name", type="string", length=50, nullable=false)
      */
-    private $name;
+    protected $name;
 
     /**
      * @var ArrayCollection $tournaments
-     * Collection of host relations to tournaments
+     * Collection of tournaments created by this host
      * @ORM\OneToMany(targetEntity="Tournament", mappedBy="host", cascade={"persist", "remove"})
      */
-    private $tournaments;
+    protected $tournaments;
 
     /**
      * @var ArrayCollection $users
-     * Collection of host relations to users
+     * Collection of users with access to this host
      * @ORM\OneToMany(targetEntity="User", mappedBy="host", cascade={"persist"})
      */
-    private $users;
+    protected $users;
 
     /**
      * Host constructor.

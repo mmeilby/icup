@@ -14,7 +14,7 @@ use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\Form\FormError;
-use ICup\Bundle\PublicSiteBundle\Entity\Match as MatchForm;
+use ICup\Bundle\PublicSiteBundle\Entity\MatchForm;
 use Symfony\Component\HttpFoundation\Request;
 use DateTime;
 

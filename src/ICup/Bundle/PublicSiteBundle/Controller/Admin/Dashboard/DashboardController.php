@@ -47,8 +47,8 @@ class DashboardController extends Controller
             }
         }
         else {
-            $hostid = $user->getHost()->getId();
-            $form = $this->getSearchForm($hostid);
+            $host = $user->getHost();
+            $form = $this->getSearchForm($host ? $host->getId() : 0);
         }
         
         $parameters = array(
@@ -56,9 +56,7 @@ class DashboardController extends Controller
             'search_form' => $form->createView(),
         );
         
-        if ($hostid) {
-            /* @var $host Host */
-            $host = $this->get('entity')->getHostById($hostid);
+        if ($host) {
             $parameters['host'] = $host;
             $parameters['users'] = $this->get('logic')->listUsersByHost($host->getId());
             $tournaments = $this->get('logic')->listTournaments($host->getId());

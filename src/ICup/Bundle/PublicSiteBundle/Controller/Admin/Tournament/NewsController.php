@@ -37,7 +37,7 @@ class NewsController extends Controller
         $utilService->validateEditorAdminUser($user, $host);
 
         $newsForm = new NewsForm();
-        $newsForm->setPid($tournament->getId());
+        $newsForm->setTournament($tournament);
         $newsForm->setNewstype(News::$TYPE_TIMELIMITED);
         $dateformat = $this->get('translator')->trans('FORMAT.DATE');
         $newsForm->setDate(date_format(new DateTime(), $dateformat));
@@ -160,7 +160,7 @@ class NewsController extends Controller
     private function copyNewsForm(News $news) {
         $newsForm = new NewsForm();
         $newsForm->setId($news->getId());
-        $newsForm->setPid($news->getTournament()->getId());
+        $newsForm->setTournament($news->getTournament());
         $newsForm->setNewsno($news->getNewsno());
         $newsForm->setNewstype($news->getNewstype());
         $newsForm->setLanguage($news->getLanguage());
@@ -169,8 +169,8 @@ class NewsController extends Controller
         $dateformat = $this->get('translator')->trans('FORMAT.DATE');
         $eventdate = Date::getDateTime($news->getDate());
         $newsForm->setDate(date_format($eventdate, $dateformat));
-        $newsForm->setCid($news->getTeam()->getId());
-        $newsForm->setMid($news->getMatch()->getId());
+        $newsForm->setTeam($news->getTeam());
+        $newsForm->setMatch($news->getMatch());
         return $newsForm;
     }
 

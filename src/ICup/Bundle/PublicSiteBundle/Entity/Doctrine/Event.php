@@ -130,4 +130,8 @@ class Event
     {
         return $this->event;
     }
+
+    public function getSchedule() {
+        return Date::getDateTime($this->date);
+    }
 }

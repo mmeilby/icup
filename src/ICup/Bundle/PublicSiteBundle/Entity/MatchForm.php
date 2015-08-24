@@ -4,7 +4,7 @@ namespace ICup\Bundle\PublicSiteBundle\Entity;
 
 use ICup\Bundle\PublicSiteBundle\Entity\Doctrine\Group;
 
-class Match
+class MatchForm
 {
     /**
      * @var integer $id

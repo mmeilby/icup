@@ -22,15 +22,15 @@ class MatchAlternative
     private $id;
 
     /**
-     * @var MatchSchedule $matchSchedule
+     * @var MatchSchedule $matchschedule
      * Relation to MatchSchedule
      * @ORM\ManyToOne(targetEntity="MatchSchedule", inversedBy="id", cascade={"persist", "remove"})
      * @ORM\JoinColumn(name="pid", referencedColumnName="id", onDelete="CASCADE")
      */
-    private $matchSchedule;
+    private $matchschedule;
 
     /**
-     * @var PlaygroundAttribute $tournament
+     * @var PlaygroundAttribute $playgroundAttribute
      * Relation to PlaygroundAttribute
      * @ORM\ManyToOne(targetEntity="PlaygroundAttribute", inversedBy="id")
      * @ORM\JoinColumn(name="paid", referencedColumnName="id")
@@ -51,15 +51,15 @@ class MatchAlternative
      * @return MatchSchedule
      */
     public function getMatchSchedule() {
-        return $this->matchSchedule;
+        return $this->matchschedule;
     }
 
     /**
-     * @param MatchSchedule $matchSchedule
+     * @param MatchSchedule $matchschedule
      * @return MatchAlternative
      */
-    public function setMatchSchedule($matchSchedule) {
-        $this->matchSchedule = $matchSchedule;
+    public function setMatchSchedule($matchschedule) {
+        $this->matchschedule = $matchschedule;
         return $this;
     }
 

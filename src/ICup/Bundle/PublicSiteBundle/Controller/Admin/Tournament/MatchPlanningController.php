@@ -99,7 +99,7 @@ class MatchPlanningController extends Controller
         /* @var $category Category */
         foreach ($categories as $category) {
             $categoryList[$category->getId()] = array('category' => $category, 'group' => array());
-            $groups = $category->getGroups();
+            $groups = $category->getGroupsClassified(Group::$PRE);
             /* @var $group Group */
             foreach ($groups as $group) {
                 $teams = count($this->get('logic')->listTeamsByGroup($group->getId()));

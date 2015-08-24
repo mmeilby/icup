@@ -514,7 +514,7 @@ class BusinessLogic
     }
 
     public function listMatchAlternatives($matchscheduleid) {
-        return $this->entity->getMatchAlternativeRepo()->findBy(array('pid' => $matchscheduleid), array('paid' => 'asc'));
+        return $this->entity->getMatchAlternativeRepo()->findBy(array('matchschedule' => $matchscheduleid));
     }
 
     public function removeMatchSchedules($tournamentid) {

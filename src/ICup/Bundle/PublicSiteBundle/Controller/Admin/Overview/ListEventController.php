@@ -1,6 +1,7 @@
 <?php
 namespace ICup\Bundle\PublicSiteBundle\Controller\Admin\Overview;
 
+use ICup\Bundle\PublicSiteBundle\Entity\Doctrine\Event;
 use ICup\Bundle\PublicSiteBundle\Entity\Doctrine\Tournament;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
@@ -29,13 +30,13 @@ class ListEventController extends Controller
         $tournament = $this->get('entity')->getTournamentById($tournamentid);
         $host = $tournament->getHost();
         $utilService->validateEditorAdminUser($user, $host);
-        $events = $tournament->getEvents();
+        $events = $tournament->getEvents()->toArray();
         usort($events,
-            function ($event1, $event2) {
-                if ($event1['schedule'] == $event2['schedule']) {
+            function (Event $event1, Event $event2) {
+                if ($event1->getDate() == $event2->getDate()) {
                     return 0;
                 }
-                elseif ($event1['schedule'] > $event2['schedule']) {
+                elseif ($event1->getDate() > $event2->getDate()) {
                     return 1;
                 }
                 else {

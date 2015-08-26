@@ -1,13 +1,14 @@
 To Do List
 ----------
 Fix - Vedligehold perioder - undgå rejsetid skal vises som switch (JA/NEJ) med info popup
-Kig på Indlæs kampplan til slutrunde/Påsæt hold til slutrunde
+Kig på Indlæs kampplan til slutrunde/Påsæt hold til slutrunde - lav generel import funktion under planlæg turnering
 Planlæg slutrunde kampe og puljer
 Færdiggørelse af planlæg indledende kampe
 Administrer kobling mellem nyheder og hold/kampe
 Registreringssystem for indrul
 Popup med info om klub/hold og gruppe for hver pokal under "Vindende lande" og "Vindende klubber"
 Kig på Vedligehold klubber
+Brush up - tilføj klub fra vedligehold klubber
 
 IDEER
 -----

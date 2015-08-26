@@ -4,6 +4,7 @@ namespace ICup\Bundle\PublicSiteBundle\Controller\Tournament;
 use ICup\Bundle\PublicSiteBundle\Entity\Doctrine\Date;
 use ICup\Bundle\PublicSiteBundle\Entity\Doctrine\News;
 use ICup\Bundle\PublicSiteBundle\Entity\Doctrine\PlaygroundAttribute;
+use ICup\Bundle\PublicSiteBundle\Entity\Doctrine\Timeslot;
 use ICup\Bundle\PublicSiteBundle\Exceptions\ValidationException;
 use ICup\Bundle\PublicSiteBundle\Services\Util;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
@@ -103,11 +104,12 @@ class OverviewController extends Controller
                 if ($diffend >= 0 && $diffstart <= 0) {
                     $match['timeslot'] = $pattr->getTimeslot();
                     $matchList[] = $match;
+                    $slotid = $pattr->getTimeslot()->getId();
                     break;
                 }
             }
             if (!$slotid) {
-                $match['timeslot'] = $timeslots[array_rand($timeslots)];
+                $match['timeslot'] = new Timeslot();
                 $matchList[] = $match;
             }
         }

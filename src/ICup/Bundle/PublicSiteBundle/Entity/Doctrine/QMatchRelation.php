@@ -25,7 +25,7 @@ class QMatchRelation
     /**
      * @var Match $match
      * Relation to Match
-     * @ORM\ManyToOne(targetEntity="Match", inversedBy="id", cascade={"persist", "remove"})
+     * @ORM\ManyToOne(targetEntity="Match", inversedBy="qmatchrelation", cascade={"persist", "remove"})
      * @ORM\JoinColumn(name="pid", referencedColumnName="id", onDelete="CASCADE")
      */
     private $match;
@@ -33,7 +33,7 @@ class QMatchRelation
     /**
      * @var Group $group
      * Relation to Group
-     * @ORM\ManyToOne(targetEntity="Group", inversedBy="id")
+     * @ORM\ManyToOne(targetEntity="Group")
      * @ORM\JoinColumn(name="cid", referencedColumnName="id")
      */
     private $group;

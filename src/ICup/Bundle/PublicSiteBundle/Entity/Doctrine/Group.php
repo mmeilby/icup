@@ -32,7 +32,7 @@ class Group implements JsonSerializable
     /**
      * @var Category $category
      * Relation to Category
-     * @ORM\ManyToOne(targetEntity="Category", inversedBy="id")
+     * @ORM\ManyToOne(targetEntity="Category", inversedBy="groups")
      * @ORM\JoinColumn(name="pid", referencedColumnName="id")
      */
     private $category;

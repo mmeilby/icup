@@ -24,7 +24,7 @@ class GroupOrder
     /**
      * @var Group $group
      * Relation to Group
-     * @ORM\ManyToOne(targetEntity="Group", inversedBy="id")
+     * @ORM\ManyToOne(targetEntity="Group", inversedBy="grouporder")
      * @ORM\JoinColumn(name="pid", referencedColumnName="id")
      */
     private $group;
@@ -32,7 +32,7 @@ class GroupOrder
     /**
      * @var Team $team
      * Relation to Team
-     * @ORM\ManyToOne(targetEntity="Team", inversedBy="id")
+     * @ORM\ManyToOne(targetEntity="Team", inversedBy="grouporder")
      * @ORM\JoinColumn(name="cid", referencedColumnName="id")
      */
     private $team;

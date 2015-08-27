@@ -25,7 +25,7 @@ class MatchSchedulePlan
     /**
      * @var PlaygroundAttribute $tournament
      * Relation to PlaygroundAttribute
-     * @ORM\ManyToOne(targetEntity="PlaygroundAttribute", inversedBy="id")
+     * @ORM\ManyToOne(targetEntity="PlaygroundAttribute")
      * @ORM\JoinColumn(name="paid", referencedColumnName="id")
      */
     private $playgroundAttribute;

@@ -25,7 +25,7 @@ class Site
     /**
      * @var Tournament $tournament
      * Relation to Tournament
-     * @ORM\ManyToOne(targetEntity="Tournament", inversedBy="id")
+     * @ORM\ManyToOne(targetEntity="Tournament", inversedBy="sites")
      * @ORM\JoinColumn(name="pid", referencedColumnName="id")
      */
     private $tournament;

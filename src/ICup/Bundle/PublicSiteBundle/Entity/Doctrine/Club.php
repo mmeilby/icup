@@ -48,7 +48,7 @@ class Club
     /**
      * @var ArrayCollection $users
      * Collection of users connected with this club
-     * @ORM\OneToMany(targetEntity="User", mappedBy="club", cascade={"persist"})
+     * @ORM\OneToMany(targetEntity="User", mappedBy="club_membership", cascade={"persist"})
      */
     protected $users;
 

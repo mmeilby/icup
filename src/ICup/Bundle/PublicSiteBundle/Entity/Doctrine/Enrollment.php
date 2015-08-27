@@ -24,7 +24,7 @@ class Enrollment
     /**
      * @var Category $category
      * Relation to Category
-     * @ORM\ManyToOne(targetEntity="Category", inversedBy="id")
+     * @ORM\ManyToOne(targetEntity="Category", inversedBy="enrollments")
      * @ORM\JoinColumn(name="pid", referencedColumnName="id")
      */
     private $category;
@@ -32,7 +32,7 @@ class Enrollment
     /**
      * @var Team $team
      * Relation to Team
-     * @ORM\ManyToOne(targetEntity="Team", inversedBy="id")
+     * @ORM\ManyToOne(targetEntity="Team", inversedBy="enrollments")
      * @ORM\JoinColumn(name="cid", referencedColumnName="id")
      */
     private $team;
@@ -40,7 +40,7 @@ class Enrollment
     /**
      * @var User $user
      * Relation to User
-     * @ORM\ManyToOne(targetEntity="User", inversedBy="id")
+     * @ORM\ManyToOne(targetEntity="User", inversedBy="enrollments")
      * @ORM\JoinColumn(name="uid", referencedColumnName="id")
      */
     private $user;

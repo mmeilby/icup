@@ -25,7 +25,7 @@ class Playground
     /**
      * @var Site $site
      * Relation to Site
-     * @ORM\ManyToOne(targetEntity="Site", inversedBy="id")
+     * @ORM\ManyToOne(targetEntity="Site", inversedBy="playgrounds")
      * @ORM\JoinColumn(name="pid", referencedColumnName="id")
      */
     private $site;

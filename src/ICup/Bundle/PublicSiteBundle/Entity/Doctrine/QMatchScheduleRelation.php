@@ -24,7 +24,7 @@ class QMatchScheduleRelation
     /**
      * @var MatchSchedule $matchSchedule
      * Relation to MatchSchedule
-     * @ORM\ManyToOne(targetEntity="MatchSchedule", inversedBy="id", cascade={"persist", "remove"})
+     * @ORM\ManyToOne(targetEntity="MatchSchedule", inversedBy="qmatchrelation", cascade={"persist", "remove"})
      * @ORM\JoinColumn(name="pid", referencedColumnName="id", onDelete="CASCADE")
      */
     private $matchSchedule;
@@ -32,7 +32,7 @@ class QMatchScheduleRelation
     /**
      * @var Group $group
      * Relation to Group
-     * @ORM\ManyToOne(targetEntity="Group", inversedBy="id")
+     * @ORM\ManyToOne(targetEntity="Group")
      * @ORM\JoinColumn(name="gid", referencedColumnName="id")
      */
     private $group;

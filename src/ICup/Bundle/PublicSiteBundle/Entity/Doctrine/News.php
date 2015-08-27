@@ -29,7 +29,7 @@ class News
     /**
      * @var Tournament $tournament
      * Relation to Tournament
-     * @ORM\ManyToOne(targetEntity="Tournament", inversedBy="id")
+     * @ORM\ManyToOne(targetEntity="Tournament", inversedBy="news")
      * @ORM\JoinColumn(name="pid", referencedColumnName="id")
      */
     private $tournament;
@@ -44,7 +44,7 @@ class News
     /**
      * @var Match $match
      * Relation to Match
-     * @ORM\ManyToOne(targetEntity="Match", inversedBy="id")
+     * @ORM\ManyToOne(targetEntity="Match")
      * @ORM\JoinColumn(name="mid", referencedColumnName="id")
      */
     private $match;
@@ -52,7 +52,7 @@ class News
     /**
      * @var Team $team
      * Relation to Team
-     * @ORM\ManyToOne(targetEntity="Team", inversedBy="id")
+     * @ORM\ManyToOne(targetEntity="Team")
      * @ORM\JoinColumn(name="cid", referencedColumnName="id")
      */
     private $team;

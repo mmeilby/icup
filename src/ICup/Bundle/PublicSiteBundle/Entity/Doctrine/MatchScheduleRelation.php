@@ -24,7 +24,7 @@ class MatchScheduleRelation
     /**
      * @var MatchSchedule $matchSchedule
      * Relation to MatchSchedule
-     * @ORM\ManyToOne(targetEntity="MatchSchedule", inversedBy="id", cascade={"persist", "remove"})
+     * @ORM\ManyToOne(targetEntity="MatchSchedule", inversedBy="matchrelation", cascade={"persist", "remove"})
      * @ORM\JoinColumn(name="pid", referencedColumnName="id", onDelete="CASCADE")
      */
     private $matchSchedule;
@@ -32,7 +32,7 @@ class MatchScheduleRelation
     /**
      * @var Team $team
      * Relation to Team
-     * @ORM\ManyToOne(targetEntity="Team", inversedBy="id")
+     * @ORM\ManyToOne(targetEntity="Team")
      * @ORM\JoinColumn(name="cid", referencedColumnName="id")
      */
     private $team;

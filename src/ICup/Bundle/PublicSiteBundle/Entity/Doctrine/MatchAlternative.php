@@ -24,7 +24,7 @@ class MatchAlternative
     /**
      * @var MatchSchedule $matchschedule
      * Relation to MatchSchedule
-     * @ORM\ManyToOne(targetEntity="MatchSchedule", inversedBy="id", cascade={"persist", "remove"})
+     * @ORM\ManyToOne(targetEntity="MatchSchedule", cascade={"persist", "remove"})
      * @ORM\JoinColumn(name="pid", referencedColumnName="id", onDelete="CASCADE")
      */
     private $matchschedule;
@@ -32,7 +32,7 @@ class MatchAlternative
     /**
      * @var PlaygroundAttribute $playgroundAttribute
      * Relation to PlaygroundAttribute
-     * @ORM\ManyToOne(targetEntity="PlaygroundAttribute", inversedBy="id")
+     * @ORM\ManyToOne(targetEntity="PlaygroundAttribute")
      * @ORM\JoinColumn(name="paid", referencedColumnName="id")
      */
     private $playgroundAttribute;

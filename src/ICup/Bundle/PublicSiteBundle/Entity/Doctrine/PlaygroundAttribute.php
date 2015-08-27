@@ -26,7 +26,7 @@ class PlaygroundAttribute
     /**
      * @var Playground $playground
      * Relation to Playground
-     * @ORM\ManyToOne(targetEntity="Playground", inversedBy="id")
+     * @ORM\ManyToOne(targetEntity="Playground", inversedBy="playgroundattributes")
      * @ORM\JoinColumn(name="pid", referencedColumnName="id")
      */
     private $playground;
@@ -44,7 +44,7 @@ class PlaygroundAttribute
     /**
      * @var Timeslot $timeslot
      * Relation to Timeslot
-     * @ORM\ManyToOne(targetEntity="Timeslot", inversedBy="id")
+     * @ORM\ManyToOne(targetEntity="Timeslot", inversedBy="playgroundattributes")
      * @ORM\JoinColumn(name="timeslot", referencedColumnName="id")
      */
     private $timeslot;

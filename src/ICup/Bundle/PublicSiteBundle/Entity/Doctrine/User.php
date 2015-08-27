@@ -56,7 +56,7 @@ class User implements AdvancedUserInterface, JsonSerializable
     /**
      * @var Host $host
      * Editor relation to a specific host (for system admins this is the host used recently)
-     * @ORM\ManyToOne(targetEntity="Host", inversedBy="id")
+     * @ORM\ManyToOne(targetEntity="Host", inversedBy="users")
      * @ORM\JoinColumn(name="pid", referencedColumnName="id")
      */
     private $host;
@@ -64,10 +64,10 @@ class User implements AdvancedUserInterface, JsonSerializable
     /**
      * @var Club $club
      * Club user relation a specific club
-     * @ORM\ManyToOne(targetEntity="Club", inversedBy="id")
+     * @ORM\ManyToOne(targetEntity="Club", inversedBy="users")
      * @ORM\JoinColumn(name="cid", referencedColumnName="id")
      */
-    private $club;
+    private $club_membership;
 
     /**
      * @var string $name
@@ -183,7 +183,7 @@ class User implements AdvancedUserInterface, JsonSerializable
      * @return Club
      */
     public function getClub() {
-        return $this->club;
+        return $this->club_membership;
     }
 
     /**
@@ -191,7 +191,7 @@ class User implements AdvancedUserInterface, JsonSerializable
      * @return User
      */
     public function setClub($club) {
-        $this->club = $club;
+        $this->club_membership = $club;
         return $this;
     }
 

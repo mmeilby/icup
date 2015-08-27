@@ -25,7 +25,7 @@ class MatchRelation
     /**
      * @var Match $match
      * Relation to Match
-     * @ORM\ManyToOne(targetEntity="Match", inversedBy="id", cascade={"persist", "remove"})
+     * @ORM\ManyToOne(targetEntity="Match", inversedBy="matchrelation", cascade={"persist", "remove"})
      * @ORM\JoinColumn(name="pid", referencedColumnName="id", onDelete="CASCADE")
      */
     private $match;
@@ -33,7 +33,7 @@ class MatchRelation
     /**
      * @var Team $team
      * Relation to Team
-     * @ORM\ManyToOne(targetEntity="Team", inversedBy="id")
+     * @ORM\ManyToOne(targetEntity="Team", inversedBy="matchrelations")
      * @ORM\JoinColumn(name="cid", referencedColumnName="id")
      */
     private $team;

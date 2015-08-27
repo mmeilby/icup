@@ -23,7 +23,7 @@ class Template
     /**
      * @var Tournament $tournament
      * Relation to Tournament
-     * @ORM\ManyToOne(targetEntity="Tournament", inversedBy="id")
+     * @ORM\ManyToOne(targetEntity="Tournament")
      * @ORM\JoinColumn(name="pid", referencedColumnName="id")
      */
     private $tournament;

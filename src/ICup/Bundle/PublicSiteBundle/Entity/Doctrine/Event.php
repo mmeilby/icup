@@ -35,7 +35,7 @@ class Event
     /**
      * @var Tournament $tournament
      * Relation to Tournament
-     * @ORM\ManyToOne(targetEntity="Tournament", inversedBy="id")
+     * @ORM\ManyToOne(targetEntity="Tournament", inversedBy="events")
      * @ORM\JoinColumn(name="pid", referencedColumnName="id")
      */
     private $tournament;

@@ -26,7 +26,7 @@ class Team
     /**
      * @var Club $club
      * Relation to Club
-     * @ORM\ManyToOne(targetEntity="Club", inversedBy="id")
+     * @ORM\ManyToOne(targetEntity="Club", inversedBy="teams")
      * @ORM\JoinColumn(name="pid", referencedColumnName="id")
      */
     private $club;

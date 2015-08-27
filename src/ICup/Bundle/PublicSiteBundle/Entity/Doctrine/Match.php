@@ -26,7 +26,7 @@ class Match
     /**
      * @var Group $group
      * Relation to Group
-     * @ORM\ManyToOne(targetEntity="Group", inversedBy="id")
+     * @ORM\ManyToOne(targetEntity="Group", inversedBy="matches")
      * @ORM\JoinColumn(name="pid", referencedColumnName="id")
      */
     private $group;
@@ -34,24 +34,24 @@ class Match
     /**
      * @var Playground $playground
      * Relation to Playground
-     * @ORM\ManyToOne(targetEntity="Playground", inversedBy="id")
+     * @ORM\ManyToOne(targetEntity="Playground", inversedBy="matches")
      * @ORM\JoinColumn(name="playground", referencedColumnName="id")
      */
     private $playground;
 
     /**
-     * @var ArrayCollection $matchRelation
+     * @var ArrayCollection $matchrelation
      * Collection of match relations to teams
      * @ORM\OneToMany(targetEntity="MatchRelation", mappedBy="match", cascade={"persist", "remove"})
      */
-    private $matchRelation;
+    private $matchrelation;
 
     /**
-     * @var ArrayCollection $qmatchRelation
+     * @var ArrayCollection $qmatchrelation
      * Collection of match relations to qualifying prerequisites
      * @ORM\OneToMany(targetEntity="QMatchRelation", mappedBy="match", cascade={"persist", "remove"})
      */
-    private $qmatchRelation;
+    private $qmatchrelation;
 
     /**
      * @var string $time
@@ -78,8 +78,8 @@ class Match
      * Match constructor.
      */
     public function __construct() {
-        $this->matchRelation = new ArrayCollection();
-        $this->qmatchRelation = new ArrayCollection();
+        $this->matchrelation = new ArrayCollection();
+        $this->qmatchrelation = new ArrayCollection();
     }
 
     /**
@@ -133,14 +133,14 @@ class Match
      * @return ArrayCollection
      */
     public function getMatchRelations() {
-        return $this->matchRelation;
+        return $this->matchrelation;
     }
 
     /**
      * @return ArrayCollection
      */
     public function getQMatchRelations() {
-        return $this->qmatchRelation;
+        return $this->qmatchrelation;
     }
 
     /**
@@ -149,10 +149,10 @@ class Match
      */
     public function addMatchRelation($matchRelation) {
         if ($matchRelation instanceof MatchRelation) {
-            $this->matchRelation->add($matchRelation);
+            $this->matchrelation->add($matchRelation);
         }
         else {
-            $this->qmatchRelation->add($matchRelation);
+            $this->qmatchrelation->add($matchRelation);
         }
         $matchRelation->setMatch($this);
         return $this;

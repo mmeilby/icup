@@ -15,3 +15,10 @@
     </div>
 </div>
 {% endblock %}
+{% block javascripts %}
+    <script type="text/javascript">
+        $("[type='checkbox']").bootstrapSwitch('onText', '{% trans %}FORM.MATCHPLANNING.SWITCH.ON{% endtrans %}');
+        $("[type='checkbox']").bootstrapSwitch('offText', '{% trans %}FORM.MATCHPLANNING.SWITCH.OFF{% endtrans %}');
+        $("[data-toggle='tooltip']").tooltip();
+    </script>
+{% endblock %}

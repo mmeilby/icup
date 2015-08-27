@@ -140,7 +140,7 @@ class TimeslotController extends Controller
                                                 'required' => false,
                                                 'disabled' => $action == 'del',
                                                 'translation_domain' => 'admin'));
-        $formDef->add('penalty', 'text', array('label' => 'FORM.TIMESLOT.PENALTY.PROMPT',
+        $formDef->add('penalty', 'checkbox', array('label' => 'FORM.TIMESLOT.PENALTY.PROMPT',
                                                 'help' => 'FORM.TIMESLOT.PENALTY.HELP',
                                                 'required' => false,
                                                 'disabled' => $action == 'del',

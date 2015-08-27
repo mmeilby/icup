@@ -1,6 +1,5 @@
 To Do List
 ----------
-Fix - Vedligehold perioder - undgå rejsetid skal vises som switch (JA/NEJ) med info popup
 Kig på Indlæs kampplan til slutrunde/Påsæt hold til slutrunde - lav generel import funktion under planlæg turnering
 Planlæg slutrunde kampe og puljer
 Færdiggørelse af planlæg indledende kampe
@@ -57,6 +56,7 @@ Valg af slutrunde krav flyttet fra PARelations til PlaygroundAttributes
 Matchtime fjernet fra PARelations - forberedt til ManyToMany relation mellem PlaygroundAttribute og Category
 Fix - dato defaultes til dags dato når der ikke er defineret match datoer (vis kampliste for dato)
 Implementering af DQL på alle data klasser
+Fix - Vedligehold perioder - undgå rejsetid skal vises som switch (JA/NEJ) med info popup
 
 FORKASTET
 ---------

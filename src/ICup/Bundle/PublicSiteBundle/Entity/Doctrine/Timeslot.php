@@ -174,12 +174,12 @@ class Timeslot
     /**
      * Set timeslot penalty
      *
-     * @param integer $penalty
+     * @param boolean $penalty
      * @return Timeslot
      */
     public function setPenalty($penalty)
     {
-        $this->penalty = $penalty;
+        $this->penalty = $penalty ? "Y" : "N";
     
         return $this;
     }
@@ -187,10 +187,10 @@ class Timeslot
     /**
      * Get timeslot penalty
      *
-     * @return integer 
+     * @return boolean
      */
     public function getPenalty()
     {
-        return $this->penalty;
+        return $this->penalty == "Y";
     }
 }

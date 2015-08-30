@@ -19,7 +19,7 @@ class QMatchScheduleRelation
      * @ORM\Id
      * @ORM\GeneratedValue(strategy="IDENTITY")
      */
-    private $id;
+    protected $id;
 
     /**
      * @var MatchSchedule $matchSchedule
@@ -27,7 +27,7 @@ class QMatchScheduleRelation
      * @ORM\ManyToOne(targetEntity="MatchSchedule", inversedBy="qmatchrelation", cascade={"persist", "remove"})
      * @ORM\JoinColumn(name="pid", referencedColumnName="id", onDelete="CASCADE")
      */
-    private $matchSchedule;
+    protected $matchSchedule;
 
     /**
      * @var Group $group
@@ -35,21 +35,21 @@ class QMatchScheduleRelation
      * @ORM\ManyToOne(targetEntity="Group")
      * @ORM\JoinColumn(name="gid", referencedColumnName="id")
      */
-    private $group;
+    protected $group;
 
     /**
      * @var integer $rank
      * The rank required by the team in qualifying group - 1=first place, 2=second place, ...
      * @ORM\Column(name="rank", type="integer", nullable=false)
      */
-    private $rank;
+    protected $rank;
 
     /**
      * @var string $awayteam
      * Indicates this record is related to the away team
      * @ORM\Column(name="awayteam", type="boolean", nullable=false)
      */
-    private $awayteam;
+    protected $awayteam;
 
     /**
      * Get id

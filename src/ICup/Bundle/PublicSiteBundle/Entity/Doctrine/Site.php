@@ -20,7 +20,7 @@ class Site
      * @ORM\Id
      * @ORM\GeneratedValue(strategy="IDENTITY")
      */
-    private $id;
+    protected $id;
 
     /**
      * @var Tournament $tournament
@@ -28,21 +28,21 @@ class Site
      * @ORM\ManyToOne(targetEntity="Tournament", inversedBy="sites")
      * @ORM\JoinColumn(name="pid", referencedColumnName="id")
      */
-    private $tournament;
+    protected $tournament;
 
     /**
      * @var string $name
      * Site name used in lists
      * @ORM\Column(name="name", type="string", length=50, nullable=false)
      */
-    private $name;
+    protected $name;
 
     /**
      * @var ArrayCollection $playgrounds
      * Collection of group relations to playgrounds
      * @ORM\OneToMany(targetEntity="Playground", mappedBy="site", cascade={"persist", "remove"})
      */
-    private $playgrounds;
+    protected $playgrounds;
 
     /**
      * Site constructor.

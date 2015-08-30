@@ -207,7 +207,7 @@ class UserController extends Controller
             return $this->redirect($returnUrl);
         }
         if ($form->isValid()) {
-            $enrolls = $this->get('logic')->listEnrolledByUser($user->getId());
+            $enrolls = $user->getEnrollments();
             foreach ($enrolls as $enroll) {
                 $enroll->setUser(null);
             }

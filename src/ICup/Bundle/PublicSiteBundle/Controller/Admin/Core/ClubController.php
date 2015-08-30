@@ -89,8 +89,8 @@ class ClubController extends Controller
         $club = $this->get('entity')->getClubById($clubid);
 
         $form = $this->makeClubForm($club, 'del');
-        $teams = $this->get('logic')->listTeamsByClub($clubid);
-        if ($teams != null) {
+        $teams = $club->getTeams();
+        if ($teams->count() > 0) {
             $form->addError(new FormError($this->get('translator')->trans('FORM.CLUB.TEAMSEXIST', array(), 'admin')));
         }
         $form->handleRequest($request);
@@ -98,12 +98,10 @@ class ClubController extends Controller
             return $this->redirect($returnUrl);
         }
         if ($form->isValid() && $teams == null) {
-            $users = $this->get('logic')->listUsersByClub($clubid);
+            $users = $club->getClubMembers();
             foreach ($users as $usr) {
-                if ($usr->isClub() && $usr->isRelated()) {
-                    $usr->setRole(User::$CLUB);
-                    $usr->setStatus(User::$VER);
-                }
+                $usr->setRole(User::$CLUB);
+                $usr->setStatus(User::$VER);
                 $usr->setClub(null);
             }
             $em = $this->getDoctrine()->getManager();

@@ -59,7 +59,7 @@ class TournamentImportController extends Controller
     }
     
     private function makeImportForm(Tournament $tournament) {
-        $tournaments = $this->get('logic')->listTournaments($tournament->getHost()->getId());
+        $tournaments = $tournament->getHost()->getTournaments();
         $tournamentList = array();
         foreach ($tournaments as $tmnt) {
             if ($tmnt->getId() != $tournament->getId()) {
@@ -114,15 +114,14 @@ class TournamentImportController extends Controller
         $em = $this->getDoctrine()->getManager();
         $tsconversion = $this->importTimeslots($source_tournament, $tournament);
         $cconversion = $this->importCategories($source_tournament, $tournament);
-        $sites = $this->get('logic')->listSites($source_tournament->getId());
-        foreach ($sites as $site) {
+        /* @var $site Site */
+        foreach ($source_tournament->getSites() as $site) {
             $new_site = new Site();
             $new_site->setTournament($tournament);
             $new_site->setName($site->getName());
             $em->persist($new_site);
             $em->flush();
-            $playgrounds = $this->get('logic')->listPlaygrounds($site->getId());
-            foreach ($playgrounds as $playground) {
+            foreach ($site->getPlaygrounds() as $playground) {
                 $new_playground = new Playground();
                 $new_playground->setSite($new_site);
                 $new_playground->setName($playground->getName());
@@ -138,8 +137,7 @@ class TournamentImportController extends Controller
     private function importTimeslots(Tournament $source_tournament, Tournament $tournament) {
         $em = $this->getDoctrine()->getManager();
         $tsconversion = array();
-        $timeslots = $this->get('logic')->listTimeslots($source_tournament->getId());
-        foreach ($timeslots as $timeslot) {
+        foreach ($source_tournament->getTimeslots() as $timeslot) {
             $new_timeslot = new Timeslot();
             $new_timeslot->setTournament($tournament);
             $new_timeslot->setName($timeslot->getName());
@@ -155,8 +153,7 @@ class TournamentImportController extends Controller
     
     private function importPAttrs(Playground $playground, Playground $new_playground, array $tsconversion, array $cconversion) {
         $em = $this->getDoctrine()->getManager();
-        $pattrs = $this->get('logic')->listPlaygroundAttributes($playground->getId());
-        foreach ($pattrs as $pattr) {
+        foreach ($playground->getPlaygroundAttributes() as $pattr) {
             $new_pattr = new PlaygroundAttribute();
             $new_pattr->setPlayground($new_playground);
             $new_pattr->setTimeslot($tsconversion[$pattr->getTimeslot()->getId()]);
@@ -175,8 +172,8 @@ class TournamentImportController extends Controller
     private function importCategories(Tournament $source_tournament, Tournament $tournament) {
         $em = $this->getDoctrine()->getManager();
         $cconversion = array();
-        $categories = $this->get('logic')->listCategories($source_tournament->getId());
-        foreach ($categories as $category) {
+        /* @var $category Category */
+        foreach ($source_tournament->getCategories() as $category) {
             $new_category = new Category();
             $new_category->setTournament($tournament);
             $new_category->setName($category->getName());
@@ -186,8 +183,7 @@ class TournamentImportController extends Controller
             $new_category->setMatchtime($category->getMatchtime());
             $em->persist($new_category);
             $cconversion[$category->getId()] = $new_category;
-            $groups = $this->get('logic')->listGroupsByCategory($category->getId());
-            foreach ($groups as $group) {
+            foreach ($category->getGroups() as $group) {
                 $new_group = new Group();
                 $new_group->setCategory($new_category);
                 $new_group->setName($group->getName());

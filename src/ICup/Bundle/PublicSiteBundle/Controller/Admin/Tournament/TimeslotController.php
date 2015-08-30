@@ -110,7 +110,7 @@ class TimeslotController extends Controller
             return $this->redirect($returnUrl);
         }
         if ($form->isValid()) {
-            if ($this->get('logic')->listPlaygrounds($timeslot->getId()) != null) {
+            if ($timeslot->getPlaygroundattributes()->count() > 0) {
                 $form->addError(new FormError($this->get('translator')->trans('FORM.TIMESLOT.PLAYGROUNDSEXIST', array(), 'admin')));
             }
             else {

@@ -47,7 +47,7 @@ class QMatchRelationController extends Controller
         $utilService->validateEditorAdminUser($user, $host);
 
         $matchForm = $this->copyMatchForm($match);
-        $form = $this->makeMatchForm($matchForm, $category->getId(), $group->getClassification(), 'chg');
+        $form = $this->makeMatchForm($matchForm, $category, $group->getClassification(), 'chg');
         $form->handleRequest($request);
         if ($form->get('cancel')->isClicked()) {
             return $this->redirect($returnUrl);
@@ -94,7 +94,7 @@ class QMatchRelationController extends Controller
         $utilService->validateEditorAdminUser($user, $host);
 
         $matchForm = $this->copyMatchForm($match);
-        $form = $this->makeMatchForm($matchForm, $category->getId(), $group->getClassification(), 'del');
+        $form = $this->makeMatchForm($matchForm, $category, $group->getClassification(), 'del');
         $form->handleRequest($request);
         if ($form->get('cancel')->isClicked()) {
             return $this->redirect($returnUrl);
@@ -178,10 +178,9 @@ class QMatchRelationController extends Controller
         return $matchForm;
     }
 
-    private function makeMatchForm(MatchForm $matchForm, $categoryid, $classification, $action) {
-        $groups = $this->get('logic')->listGroupsByCategory($categoryid);
+    private function makeMatchForm(MatchForm $matchForm, Category $category, $classification, $action) {
         $groupnames = array();
-        foreach ($groups as $group) {
+        foreach ($category->getGroups() as $group) {
             if ($group->getClassification() < $classification && $group->getClassification() < Group::$BRONZE) {
                 $groupnames[$group->getId()] =
                     $this->get('translator')->trans('GROUP', array(), 'tournament')." ".

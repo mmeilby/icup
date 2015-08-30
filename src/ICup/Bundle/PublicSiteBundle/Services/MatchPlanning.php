@@ -16,6 +16,7 @@ use ICup\Bundle\PublicSiteBundle\Entity\Doctrine\MatchSchedulePlan;
 use ICup\Bundle\PublicSiteBundle\Entity\Doctrine\MatchScheduleRelation;
 use ICup\Bundle\PublicSiteBundle\Entity\Doctrine\MatchUnscheduled;
 use ICup\Bundle\PublicSiteBundle\Entity\Doctrine\QMatchScheduleRelation;
+use ICup\Bundle\PublicSiteBundle\Entity\Doctrine\Tournament;
 use ICup\Bundle\PublicSiteBundle\Entity\MatchPlan;
 use ICup\Bundle\PublicSiteBundle\Entity\TeamInfo;
 use ICup\Bundle\PublicSiteBundle\Services\Doctrine\BusinessLogic;
@@ -136,7 +137,6 @@ class MatchPlanning
      */
     public function getSchedule($tournamentid){
         $matchschedules = $this->logic->listMatchSchedules($tournamentid);
-        $categories = $this->map($this->logic->listCategories($tournamentid));
         $groups = $this->map($this->logic->listGroupsByTournament($tournamentid));
         $teams = array();
         foreach ($groups as $group) {
@@ -144,9 +144,6 @@ class MatchPlanning
                 $teams[$t->getId()] = $t;
             }
         }
-        $playgrounds = $this->map($this->logic->listPlaygroundsByTournament($tournamentid));
-        $timeslots = $this->map($this->logic->listTimeslots($tournamentid));
-        $pattrs = $this->map($this->logic->listPlaygroundAttributesByTournament($tournamentid));
 
         $matches = array();
         $unassigned = array();
@@ -195,7 +192,7 @@ class MatchPlanning
                 }
             }
             $match->setGroup($ms->getGroup());
-            $match->setCategory($match->getGroup()->getCategory());
+            $match->setCategory($ms->getGroup()->getCategory());
             $match->setMatchno(0);
             if ($ms->getPlan()) {
                 $match->setTime($ms->getPlan()->getMatchstart());

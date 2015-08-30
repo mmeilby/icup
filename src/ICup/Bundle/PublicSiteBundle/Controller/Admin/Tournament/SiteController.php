@@ -110,7 +110,7 @@ class SiteController extends Controller
             return $this->redirect($returnUrl);
         }
         if ($form->isValid()) {
-            if ($this->get('logic')->listPlaygrounds($site->getId()) != null) {
+            if ($site->getPlaygrounds()->count() > 0) {
                 $form->addError(new FormError($this->get('translator')->trans('FORM.SITE.PLAYGROUNDSEXIST', array(), 'admin')));
             }
             else {

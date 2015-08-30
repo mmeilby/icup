@@ -30,7 +30,7 @@ class Event
      * @ORM\Id
      * @ORM\GeneratedValue(strategy="IDENTITY")
      */
-    private $id;
+    protected $id;
 
     /**
      * @var Tournament $tournament
@@ -38,14 +38,14 @@ class Event
      * @ORM\ManyToOne(targetEntity="Tournament", inversedBy="events")
      * @ORM\JoinColumn(name="pid", referencedColumnName="id")
      */
-    private $tournament;
+    protected $tournament;
 
     /**
      * @var string $date
      * Date for this event to happen - DD/MM/YYYY
      * @ORM\Column(name="date", type="string", length=10, nullable=false)
      */
-    private $date;
+    protected $date;
 
     /**
      * @var integer $event
@@ -57,7 +57,7 @@ class Event
      *    9: Tournament archived - only visual for editor administrators
      * @ORM\Column(name="event", type="integer", nullable=false)
      */
-    private $event;
+    protected $event;
 
     /**
      * Get id

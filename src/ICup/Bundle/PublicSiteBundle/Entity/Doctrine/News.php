@@ -24,7 +24,7 @@ class News
      * @ORM\Id
      * @ORM\GeneratedValue(strategy="IDENTITY")
      */
-    private $id;
+    protected $id;
 
     /**
      * @var Tournament $tournament
@@ -32,14 +32,14 @@ class News
      * @ORM\ManyToOne(targetEntity="Tournament", inversedBy="news")
      * @ORM\JoinColumn(name="pid", referencedColumnName="id")
      */
-    private $tournament;
+    protected $tournament;
 
     /**
      * @var string $date
      * Date for this event to happen - YYYYMMDD
      * @ORM\Column(name="date", type="string", length=8, nullable=false)
      */
-    private $date;
+    protected $date;
 
     /**
      * @var Match $match
@@ -47,7 +47,7 @@ class News
      * @ORM\ManyToOne(targetEntity="Match")
      * @ORM\JoinColumn(name="mid", referencedColumnName="id")
      */
-    private $match;
+    protected $match;
 
     /**
      * @var Team $team
@@ -55,40 +55,40 @@ class News
      * @ORM\ManyToOne(targetEntity="Team")
      * @ORM\JoinColumn(name="cid", referencedColumnName="id")
      */
-    private $team;
+    protected $team;
 
     /**
      * @var integer $newstype
      * @ORM\Column(name="newstype", type="integer", nullable=false)
      */
-    private $newstype;
+    protected $newstype;
 
     /**
      * @var integer $newsno
      * @ORM\Column(name="newsno", type="integer", nullable=false)
      */
-    private $newsno;
+    protected $newsno;
 
     /**
      * @var string $language
      *
      * @ORM\Column(name="language", type="string", length=2, nullable=false)
      */
-    private $language;
+    protected $language;
 
     /**
      * @var string $title
      *
      * @ORM\Column(name="title", type="string", length=50, nullable=false)
      */
-    private $title;
+    protected $title;
 
     /**
      * @var string $context
      *
      * @ORM\Column(name="context", type="text", nullable=false)
      */
-    private $context;
+    protected $context;
 
     /**
      * Get id

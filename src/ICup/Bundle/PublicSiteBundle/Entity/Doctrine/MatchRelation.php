@@ -20,7 +20,7 @@ class MatchRelation
      * @ORM\Id
      * @ORM\GeneratedValue(strategy="IDENTITY")
      */
-    private $id;
+    protected $id;
 
     /**
      * @var Match $match
@@ -28,7 +28,7 @@ class MatchRelation
      * @ORM\ManyToOne(targetEntity="Match", inversedBy="matchrelation", cascade={"persist", "remove"})
      * @ORM\JoinColumn(name="pid", referencedColumnName="id", onDelete="CASCADE")
      */
-    private $match;
+    protected $match;
 
     /**
      * @var Team $team
@@ -36,35 +36,35 @@ class MatchRelation
      * @ORM\ManyToOne(targetEntity="Team", inversedBy="matchrelations")
      * @ORM\JoinColumn(name="cid", referencedColumnName="id")
      */
-    private $team;
+    protected $team;
     
     /**
      * @var string $awayteam
      * Indicates this record is related to the away team - Y=Yes, N=No
      * @ORM\Column(name="awayteam", type="string", length=1, nullable=false)
      */
-    private $awayteam;
+    protected $awayteam;
 
     /**
      * @var string $scorevalid
      * Indicates this record holds a valid score - Y=Yes, N=No
      * @ORM\Column(name="scorevalid", type="string", length=1, nullable=false)
      */
-    private $scorevalid;
+    protected $scorevalid;
 
     /**
      * @var integer $score
      * The score achieved by the team in this match
      * @ORM\Column(name="score", type="integer", nullable=false)
      */
-    private $score;
+    protected $score;
 
     /**
      * @var integer $points
      * The match points achieved by the team in this match
      * @ORM\Column(name="points", type="integer", nullable=false)
      */
-    private $points;
+    protected $points;
 
 
     /**

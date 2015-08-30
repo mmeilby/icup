@@ -42,7 +42,7 @@ class QMatchPlanningController extends Controller
         $utilService->validateEditorAdminUser($user, $host);
 
         $groupList = array();
-        $groups = $this->get('logic')->listGroups($category->getId());
+        $groups = $category->getGroupsClassified(Group::$PRE);
         /* @var $group Group */
         foreach ($groups as $group) {
             $teams = count($this->get('logic')->listTeamsByGroup($group->getId()));

@@ -19,7 +19,7 @@ class MatchAlternative
      * @ORM\Id
      * @ORM\GeneratedValue(strategy="IDENTITY")
      */
-    private $id;
+    protected $id;
 
     /**
      * @var MatchSchedule $matchschedule
@@ -27,7 +27,7 @@ class MatchAlternative
      * @ORM\ManyToOne(targetEntity="MatchSchedule", cascade={"persist", "remove"})
      * @ORM\JoinColumn(name="pid", referencedColumnName="id", onDelete="CASCADE")
      */
-    private $matchschedule;
+    protected $matchschedule;
 
     /**
      * @var PlaygroundAttribute $playgroundAttribute
@@ -35,7 +35,7 @@ class MatchAlternative
      * @ORM\ManyToOne(targetEntity="PlaygroundAttribute")
      * @ORM\JoinColumn(name="paid", referencedColumnName="id")
      */
-    private $playgroundAttribute;
+    protected $playgroundAttribute;
 
     /**
      * Get id

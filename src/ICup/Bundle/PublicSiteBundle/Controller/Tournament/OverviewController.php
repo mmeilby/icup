@@ -53,7 +53,6 @@ class OverviewController extends Controller
             // No match dates have been defined - use currect date to avoid exception
             $matchDate = new DateTime();
         }
-        $timeslots = $this->map($this->get('logic')->listTimeslots($tournament->getId()));
         $pattrs = $this->get('logic')->listPlaygroundAttributesByTournament($tournament->getId());
         $pattrList = array();
         /* @var $pattr PlaygroundAttribute */

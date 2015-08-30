@@ -39,7 +39,7 @@ class ListPlaygroundAttributesController extends Controller
         $host = $tournament->getHost();
         $utilService->validateEditorAdminUser($user, $host);
 
-        $attributes = $this->get('logic')->listPlaygroundAttributes($playgroundid);
+        $attributes = $playground->getPlaygroundAttributes();
         $attrList = array();
         /* @var $attr PlaygroundAttribute */
         foreach ($attributes as $attr) {

@@ -58,8 +58,8 @@ class DashboardController extends Controller
         
         if ($host) {
             $parameters['host'] = $host;
-            $parameters['users'] = $this->get('logic')->listUsersByHost($host->getId());
-            $tournaments = $this->get('logic')->listTournaments($host->getId());
+            $parameters['users'] = $host->getEditors();
+            $tournaments = $host->getTournaments();
             $tstat = array();
             $today = new DateTime();
             foreach ($tournaments as $tournament) {

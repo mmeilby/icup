@@ -10,6 +10,7 @@ use ICup\Bundle\PublicSiteBundle\Entity\Doctrine\MatchRelation;
 use ICup\Bundle\PublicSiteBundle\Entity\Doctrine\MatchSchedule;
 use ICup\Bundle\PublicSiteBundle\Entity\Doctrine\MatchSchedulePlan;
 use ICup\Bundle\PublicSiteBundle\Entity\Doctrine\MatchScheduleRelation;
+use ICup\Bundle\PublicSiteBundle\Entity\Doctrine\Playground;
 use ICup\Bundle\PublicSiteBundle\Entity\Doctrine\PlaygroundAttribute;
 use ICup\Bundle\PublicSiteBundle\Entity\Doctrine\QMatchScheduleRelation;
 use ICup\Bundle\PublicSiteBundle\Entity\Doctrine\Tournament;
@@ -219,6 +220,7 @@ class MatchPlanningController extends Controller
     private function validateData(Tournament $tournament, $matchListRaw) {
         $matchList = array();
         foreach ($matchListRaw as $matchRaw) {
+            /* @var $playground Playground */
             $playground = $this->get('logic')->getPlaygroundByNo($tournament->getId(), $matchRaw['playground']);
             if ($playground == null) {
                 throw new ValidationException("BADPLAYGROUND", "tournament=".$tournament->getId()." no=".$matchRaw['playground']);
@@ -234,7 +236,7 @@ class MatchPlanningController extends Controller
             }
             $date = Date::getDate($matchdate);
             $time = Date::getTime($matchtime);
-            $paList = $this->get('logic')->listPlaygroundAttributes($playground->getId());
+            $paList = $playground->getPlaygroundAttributes();
             $pattr = null;
             foreach ($paList as $pa) {
                 if ($pa->getDate() == $date && $pa->getStart() <= $time && $pa->getEnd() >= $time) {
@@ -473,15 +475,14 @@ class MatchPlanningController extends Controller
     public function matchMaintAction($tournamentid) {
         $tournament = $this->checkArgs($tournamentid);
         // Prepare form fields for javascript form
-        $form = $this->makeResultForm($tournament->getId());
+        $form = $this->makeResultForm($tournament);
         $host = $tournament->getHost();
         return array('form' => $form->createView(), 'host' => $host, 'tournament' => $tournament);
     }
 
-    private function makeResultForm($tournamentid) {
-        $categoryList = $this->get('logic')->listCategories($tournamentid);
+    private function makeResultForm(Tournament $tournament) {
         $categories = array();
-        foreach ($categoryList as $category) {
+        foreach ($tournament->getCategories() as $category) {
             $categories[$category->getId()] =
                 $this->get('translator')->trans('CATEGORY', array(), 'tournament')." ".
                 $category->getName()." - ".
@@ -491,7 +492,7 @@ class MatchPlanningController extends Controller
                     array('%age%' => $category->getAge()),
                     'tournament');
         }
-        $playgroundList = $this->get('logic')->listPlaygroundsByTournament($tournamentid);
+        $playgroundList = $this->get('logic')->listPlaygroundsByTournament($tournament->getId());
         $playgrounds = array();
         foreach ($playgroundList as $playground) {
             $playgrounds[$playground->getId()] = $playground->getName();

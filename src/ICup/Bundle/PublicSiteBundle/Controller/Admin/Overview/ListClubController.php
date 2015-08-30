@@ -1,6 +1,7 @@
 <?php
 namespace ICup\Bundle\PublicSiteBundle\Controller\Admin\Overview;
 
+use ICup\Bundle\PublicSiteBundle\Entity\Doctrine\Club;
 use ICup\Bundle\PublicSiteBundle\Entity\Doctrine\Tournament;
 use ICup\Bundle\PublicSiteBundle\Entity\Doctrine\User;
 use ICup\Bundle\PublicSiteBundle\Services\Util;
@@ -22,10 +23,11 @@ class ListClubController extends Controller
         $clubs = $this->get('logic')->listClubs();
         $teamList = array();
         $countries = $this->get('util')->getCountries();
+        /* @var $club Club */
         foreach ($clubs as $club) {
             $country = $club->getCountry();
             if (array_search($country, $countries)) {
-                $teams = $this->get('logic')->listTeamsByClub($club->getId());
+                $teams = $club->getTeams();
                 $teamList[$country][$club->getId()] = array('club' => $club, 'teams' => $teams);
             }
         }

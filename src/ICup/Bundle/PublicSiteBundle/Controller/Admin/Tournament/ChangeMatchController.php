@@ -60,7 +60,12 @@ class ChangeMatchController extends Controller
             }
         }
 
-        $tournaments = $this->get('logic')->listAvailableTournaments($user->isEditor() ? $user->getHost()->getId() : 0);
+        if ($user->isEditor()) {
+            $tournaments = $user->getHost()->getTournaments();
+        }
+        else {
+            $tournaments = $this->get('logic')->listAvailableTournaments();
+        }
         $tournamentList = array();
         foreach ($tournaments as $tmnt) {
             $tournamentList[$tmnt->getId()] = $tmnt->getName();

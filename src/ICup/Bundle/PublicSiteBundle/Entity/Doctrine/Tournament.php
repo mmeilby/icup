@@ -20,7 +20,7 @@ class Tournament
      * @ORM\Id
      * @ORM\GeneratedValue(strategy="IDENTITY")
      */
-    private $id;
+    protected $id;
 
     /**
      * @var Host $host
@@ -28,77 +28,82 @@ class Tournament
      * @ORM\ManyToOne(targetEntity="Host", inversedBy="tournaments")
      * @ORM\JoinColumn(name="pid", referencedColumnName="id")
      */
-    private $host;
+    protected $host;
 
     /**
      * @var string $key
      * Tournament key used in references
      * @ORM\Column(name="keyname", type="string", length=50, nullable=false, unique=true)
      */
-    private $key;
+    protected $key;
 
     /**
      * @var string $name
      * Tournament name for identifitcation in lists
      * @ORM\Column(name="name", type="string", length=50, nullable=false)
      */
-    private $name;
+    protected $name;
 
     /**
      * @var string $edition
      * Tournament edition like '2013' or '41th aniversary'
      * @ORM\Column(name="edition", type="string", length=50, nullable=false)
      */
-    private $edition;
+    protected $edition;
 
     /**
      * @var string $description
      * Tournament description in short format
      * @ORM\Column(name="description", type="string", length=250, nullable=false)
      */
-    private $description;
+    protected $description;
 
     /**
      * @var TournamentOption $option
      * Relation to TournamentOption - option_id=tournamentoption.id
      * @ORM\OneToOne(targetEntity="TournamentOption", cascade={"persist", "remove"}, orphanRemoval=true)
      */
-    private $option;
+    protected $option;
 
     /**
      * @var ArrayCollection $categories
      * Collection of tournament relations to categories
      * @ORM\OneToMany(targetEntity="Category", mappedBy="tournament", cascade={"persist", "remove"})
+     * @ORM\OrderBy({"classification" = "desc", "age" = "desc", "gender" = "asc"})
      */
-    private $categories;
+    protected $categories;
 
     /**
      * @var ArrayCollection $sites
      * Collection of tournament relations to sites
      * @ORM\OneToMany(targetEntity="Site", mappedBy="tournament", cascade={"persist", "remove"})
+     * @ORM\OrderBy({"name" = "asc"})
      */
-    private $sites;
+    protected $sites;
 
     /**
      * @var ArrayCollection $timeslots
      * Collection of tournament relations to timeslots
      * @ORM\OneToMany(targetEntity="Timeslot", mappedBy="tournament", cascade={"persist", "remove"})
+     * @ORM\OrderBy({"name" = "asc"})
      */
-    private $timeslots;
+    protected $timeslots;
 
     /**
      * @var ArrayCollection $events
      * Collection of tournament relations to events
      * @ORM\OneToMany(targetEntity="Event", mappedBy="tournament", cascade={"persist", "remove"})
+     * @ORM\OrderBy({"date" = "asc"})
      */
-    private $events;
+    protected $events;
 
     /**
      * @var ArrayCollection $news
      * Collection of tournament relations to news
      * @ORM\OneToMany(targetEntity="News", mappedBy="tournament", cascade={"persist", "remove"})
+     * @ORM\OrderBy({"date" = "asc"})
      */
-    private $news;
+    protected $news;
 
     /**
      * Tournament constructor.

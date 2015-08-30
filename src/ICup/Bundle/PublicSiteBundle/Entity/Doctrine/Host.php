@@ -32,6 +32,14 @@ class Host
     protected $name;
 
     /**
+     * @var HostPlan $hostplan
+     * Relation to HostPlan - the level of service this host has signed up for
+     * @ORM\ManyToOne(targetEntity="HostPlan", inversedBy="hosts")
+     * @ORM\JoinColumn(name="hostplan", referencedColumnName="id")
+     */
+    protected $hostplan;
+
+    /**
      * @var ArrayCollection $tournaments
      * Collection of tournaments created by this host
      * @ORM\OneToMany(targetEntity="Tournament", mappedBy="host", cascade={"persist", "remove"})
@@ -42,6 +50,7 @@ class Host
      * @var ArrayCollection $users
      * Collection of users with access to this host
      * @ORM\OneToMany(targetEntity="User", mappedBy="host", cascade={"persist"})
+     * @ORM\OrderBy({"role" = "desc", "name" = "asc"})
      */
     protected $users;
 
@@ -87,6 +96,22 @@ class Host
     }
 
     /**
+     * @return HostPlan
+     */
+    public function getHostplan() {
+        return $this->hostplan;
+    }
+
+    /**
+     * @param HostPlan $hostplan
+     * @return Host
+     */
+    public function setHostplan($hostplan) {
+        $this->hostplan = $hostplan;
+        return $this;
+    }
+
+    /**
      * @return ArrayCollection
      */
     public function getTournaments() {
@@ -98,5 +123,15 @@ class Host
      */
     public function getUsers() {
         return $this->users;
+    }
+
+    /**
+     * @return ArrayCollection
+     */
+    public function getEditors() {
+        $editors = $this->users->filter(function (User $user) {
+            return $user->isEditor();
+        });
+        return $editors;
     }
 }

@@ -20,7 +20,7 @@ class Playground
      * @ORM\Id
      * @ORM\GeneratedValue(strategy="IDENTITY")
      */
-    private $id;
+    protected $id;
 
     /**
      * @var Site $site
@@ -28,42 +28,43 @@ class Playground
      * @ORM\ManyToOne(targetEntity="Site", inversedBy="playgrounds")
      * @ORM\JoinColumn(name="pid", referencedColumnName="id")
      */
-    private $site;
+    protected $site;
 
     /**
      * @var integer $no
      * Playground number for ordering in lists
      * @ORM\Column(name="no", type="integer", nullable=false)
      */
-    private $no;
+    protected $no;
 
     /**
      * @var string $name
      * Playground name used in lists
      * @ORM\Column(name="name", type="string", length=50, nullable=false)
      */
-    private $name;
+    protected $name;
 
     /**
      * @var string $location
      * Playground location for map support
      * @ORM\Column(name="location", type="string", length=50, nullable=false)
      */
-    private $location;
+    protected $location;
 
     /**
      * @var ArrayCollection $matches
      * Collection of playground relations to matches
      * @ORM\OneToMany(targetEntity="Match", mappedBy="playground", cascade={"persist", "remove"})
      */
-    private $matches;
+    protected $matches;
 
     /**
      * @var ArrayCollection $playgroundattributes
      * Collection of playground relations to playground attributes
      * @ORM\OneToMany(targetEntity="PlaygroundAttribute", mappedBy="playground", cascade={"persist", "remove"})
+     * @ORM\OrderBy({"date" = "asc", "start" = "asc"})
      */
-    private $playgroundattributes;
+    protected $playgroundattributes;
 
     /**
      * Playground constructor.

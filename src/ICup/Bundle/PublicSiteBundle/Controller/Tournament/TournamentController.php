@@ -18,7 +18,7 @@ class TournamentController extends Controller
         if ($tournament == null) {
             return $this->redirect($this->generateUrl('_tournament_select'));
         }
-        $categories = $this->get('logic')->listCategories($tournament->getId());
+        $categories = $tournament->getCategories();
         $classMap = array();
         $categoryMap = array();
         foreach ($categories as $category) {
@@ -95,7 +95,7 @@ class TournamentController extends Controller
         if ($tournament == null) {
             return $this->redirect($this->generateUrl('_tournament_select'));
         }
-        $categories = $this->get('logic')->listCategories($tournament->getId());
+        $categories = $tournament->getCategories();
         $categoryList = array();
         foreach ($categories as $category) {
             $categoryList[$category->getId()] = $category;

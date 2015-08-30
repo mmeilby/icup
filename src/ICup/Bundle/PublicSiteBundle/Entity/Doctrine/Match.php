@@ -21,7 +21,7 @@ class Match
      * @ORM\Id
      * @ORM\GeneratedValue(strategy="IDENTITY")
      */
-    private $id;
+    protected $id;
 
     /**
      * @var Group $group
@@ -29,7 +29,7 @@ class Match
      * @ORM\ManyToOne(targetEntity="Group", inversedBy="matches")
      * @ORM\JoinColumn(name="pid", referencedColumnName="id")
      */
-    private $group;
+    protected $group;
 
     /**
      * @var Playground $playground
@@ -37,42 +37,42 @@ class Match
      * @ORM\ManyToOne(targetEntity="Playground", inversedBy="matches")
      * @ORM\JoinColumn(name="playground", referencedColumnName="id")
      */
-    private $playground;
+    protected $playground;
 
     /**
      * @var ArrayCollection $matchrelation
      * Collection of match relations to teams
      * @ORM\OneToMany(targetEntity="MatchRelation", mappedBy="match", cascade={"persist", "remove"})
      */
-    private $matchrelation;
+    protected $matchrelation;
 
     /**
      * @var ArrayCollection $qmatchrelation
      * Collection of match relations to qualifying prerequisites
      * @ORM\OneToMany(targetEntity="QMatchRelation", mappedBy="match", cascade={"persist", "remove"})
      */
-    private $qmatchrelation;
+    protected $qmatchrelation;
 
     /**
      * @var string $time
      * Match start time - Hi
      * @ORM\Column(name="time", type="string", length=5, nullable=false)
      */
-    private $time;
+    protected $time;
 
     /**
      * @var string $date
      * Match start date - Ymd
      * @ORM\Column(name="date", type="string", length=10, nullable=false)
      */
-    private $date;
+    protected $date;
 
     /**
      * @var integer $matchno
      * Official match no
      * @ORM\Column(name="matchno", type="integer", nullable=false)
      */
-    private $matchno;
+    protected $matchno;
 
     /**
      * Match constructor.

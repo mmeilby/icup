@@ -113,16 +113,16 @@ class TournamentController extends Controller
             return $this->redirect($returnUrl);
         }
         if ($form->isValid()) {
-            if ($this->get('logic')->listSites($tournament->getId()) != null) {
+            if ($tournament->getSites()->count() > 0) {
                 $form->addError(new FormError($this->get('translator')->trans('FORM.TOURNAMENT.SITESEXIST', array(), 'admin')));
             }
-            if ($this->get('logic')->listCategories($tournament->getId()) != null) {
+            if ($tournament->getCategories()->count() > 0) {
                 $form->addError(new FormError($this->get('translator')->trans('FORM.TOURNAMENT.CATEGORIESEXIST', array(), 'admin')));
             }
-            if ($this->get('logic')->listTimeslots($tournament->getId()) != null) {
+            if ($tournament->getTimeslots()->count() > 0) {
                 $form->addError(new FormError($this->get('translator')->trans('FORM.TOURNAMENT.TIMESLOTSEXIST', array(), 'admin')));
             }
-            if (count($this->get('tmnt')->listEventsByTournament($tournament->getId())) > 0) {
+            if ($tournament->getEvents()->count() > 0) {
                 $form->addError(new FormError($this->get('translator')->trans('FORM.TOURNAMENT.EVENTSEXIST', array(), 'admin')));
             }
             if ($form->isValid()) {

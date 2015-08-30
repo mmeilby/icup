@@ -374,19 +374,6 @@ class BusinessLogic
         return $qb->getResult();
     }
 
-    public function listEnrolledByUser($userid) {
-        $qb = $this->em->createQuery(
-                "select e ".
-                "from ".$this->entity->getRepositoryPath('Enrollment')." e ".
-                "where e.user=:user");
-        $qb->setParameter('user', $userid);
-        return $qb->getResult();
-    }
-    
-    public function listEnrolledByCategory($categoryid) {
-        return $this->entity->getEnrollmentRepo()->findBy(array('pid' => $categoryid));
-    }
-    
     public function listEnrolledByClub($tournamentid, $clubid) {
         $qb = $this->em->createQuery(
                 "select e ".
@@ -441,10 +428,6 @@ class BusinessLogic
         return $category;
     }
 
-    public function listSites($tournamentid) {
-        return $this->entity->getSiteRepo()->findBy(array('tournament' => $tournamentid));
-    }
-
     public function getPlaygroundByNo($tournamentid, $no) {
         $qb = $this->em->createQuery(
                 "select p ".
@@ -454,10 +437,6 @@ class BusinessLogic
         $qb->setParameter('tournament', $tournamentid);
         $qb->setParameter('no', $no);
         return $qb->getOneOrNullResult();
-    }
-
-    public function listPlaygrounds($siteid) {
-        return $this->entity->getPlaygroundRepo()->findBy(array('pid' => $siteid));
     }
 
     public function listPlaygroundsByTournament($tournamentid) {
@@ -475,14 +454,6 @@ class BusinessLogic
         return $this->entity->getTournamentRepo()->findOneBy(array('key' => $key));
     }
 
-    public function listTimeslots($tournamentid) {
-        return $this->entity->getTimeslotRepo()->findBy(array('tournament' => $tournamentid), array('name' => 'asc'));
-    }
-
-    public function listPlaygroundAttributes($playgroundid) {
-        return $this->entity->getPlaygroundAttributeRepo()->findBy(array('playground' => $playgroundid), array('date' => 'asc', 'start' => 'asc'));
-    }
-
     public function listPlaygroundAttributesByTournament($tournamentid) {
         $qb = $this->em->createQuery(
                 "select a ".
@@ -497,16 +468,6 @@ class BusinessLogic
 
     public function getPlaygroundAttribute($playgroundid, $date, $start) {
         return $this->entity->getPlaygroundAttributeRepo()->findOneBy(array('playground' => $playgroundid, 'date' => $date, 'start' => $start));
-    }
-
-    public function listPlaygroundAttributesByCategory($categoryid) {
-        return $this->em->createQuery(
-                "select pa ".
-                "from ".$this->entity->getRepositoryPath('PlaygroundAttribute')." pa ".
-                "join ".$this->entity->getRepositoryPath('Category')." c ".
-                "where c.id=:category")
-            ->setParameter('category', $categoryid)
-            ->getResult();
     }
 
     public function listMatchSchedules($tournamentid) {
@@ -539,34 +500,17 @@ class BusinessLogic
                               array('name' => 'asc'));
     }
     
-    public function listAvailableTournaments($hostid = 0) {
-        if ($hostid > 0) {
-            return $this->listTournaments($hostid);
-        }
-        else {
-            $tournaments = array();
-            foreach ($this->entity->getTournamentRepo()->findAll(array(), array('host' => 'asc', 'name' => 'asc')) as $tournament) {
-                $status = $this->container->get('tmnt')->getTournamentStatus($tournament->getId(), new DateTime());
-                if ($status === TournamentSupport::$TMNT_ENROLL || $status === TournamentSupport::$TMNT_GOING || $status === TournamentSupport::$TMNT_DONE) {
-                    $tournaments[] = $tournament;
-                }
+    public function listAvailableTournaments() {
+        $tournaments = array();
+        foreach ($this->entity->getTournamentRepo()->findAll(array(), array('host' => 'asc', 'name' => 'asc')) as $tournament) {
+            $status = $this->container->get('tmnt')->getTournamentStatus($tournament->getId(), new DateTime());
+            if ($status === TournamentSupport::$TMNT_ENROLL || $status === TournamentSupport::$TMNT_GOING || $status === TournamentSupport::$TMNT_DONE) {
+                $tournaments[] = $tournament;
             }
-            return $tournaments;
         }
+        return $tournaments;
     }
     
-    public function listTournaments($hostid) {
-        return $this->entity->getTournamentRepo()
-                    ->findBy(array('host' => $hostid),
-                             array('name' => 'asc'));
-    }
-
-    public function listCategories($tournamentid) {
-        return $this->entity->getCategoryRepo()
-                ->findBy(array('tournament' => $tournamentid),
-                         array('classification' => 'desc', 'age' => 'desc', 'gender' => 'asc'));
-    }
-
     public function getCategoryByName($tournamentid, $category) {
         $qb = $this->em->createQuery(
                 "select c ".
@@ -614,61 +558,26 @@ class BusinessLogic
         return $qb->getOneOrNullResult();
     }
 
-    public function listGroupsByCategory($categoryid) {
-        return $this->entity->getGroupRepo()->findBy(array('category' => $categoryid));
-    }
-
-    public function listGroups($categoryid, $classification = 0) {
-        return $this->entity->getGroupRepo()
-                    ->findBy(array('category' => $categoryid, 'classification' => $classification),
-                             array('name' => 'asc'));
-    }
-    
-    public function listGroupsClassification($categoryid) {
-        $qb = $this->em->createQuery(
-                "select g ".
-                "from ".$this->entity->getRepositoryPath('Group')." g ".
-                "where g.category=:category and g.classification > 0 and g.classification < 6 ".
-                "order by g.classification asc, g.name asc");
-        $qb->setParameter('category', $categoryid);
-        return $qb->getResult();
-    }
-    
-    public function listGroupsFinals($categoryid) {
-        $qb = $this->em->createQuery(
-                "select g ".
-                "from ".$this->entity->getRepositoryPath('Group')." g ".
-                "where g.category=:category and g.classification > 5 ".
-                "order by g.classification desc, g.name asc");
-        $qb->setParameter('category', $categoryid);
-        return $qb->getResult();
-    }
-    
-    public function listGroupOrders($groupid) {
-        return $this->entity->getGroupOrderRepo()->findBy(array('pid' => $groupid));
-    }
-    
     public function getTeamByCategory($categoryid, $name, $division) {
         $qb = $this->em->createQuery(
-                "select t.id,t.name,t.division,c.name as club,c.country ".
+                "select t ".
                 "from ".$this->entity->getRepositoryPath('Enrollment')." e, ".
-                        $this->entity->getRepositoryPath('Team')." t, ".
-                        $this->entity->getRepositoryPath('Club')." c ".
+                        $this->entity->getRepositoryPath('Team')." t ".
                 "where e.category=:category and ".
                       "e.team=t.id and ".
-                      "t.club=c.id and ".
                       "t.name=:name and ".
                       "t.division=:division");
         $qb->setParameter('category', $categoryid);
         $qb->setParameter('name', $name);
         $qb->setParameter('division', $division);
         $teamsList = array();
+        /* @var $team Team */
         foreach ($qb->getResult() as $team) {
             $teamInfo = new TeamInfo();
-            $teamInfo->id = $team['id'];
-            $teamInfo->name = $this->getTeamName($team['name'], $team['division']);
-            $teamInfo->club = $team['club'];
-            $teamInfo->country = $team['country'];
+            $teamInfo->id = $team->getId();
+            $teamInfo->name = $team->getTeamName();
+            $teamInfo->club = $team->getClub()->getName();
+            $teamInfo->country = $team->getClub()->getCountry();
             $teamsList[] = $teamInfo;
         }
         return $teamsList;
@@ -678,11 +587,9 @@ class BusinessLogic
         $qb = $this->em->createQuery(
             "select t ".
             "from ".$this->entity->getRepositoryPath('Enrollment')." e, ".
-                    $this->entity->getRepositoryPath('Team')." t, ".
-                    $this->entity->getRepositoryPath('Club')." c ".
+                    $this->entity->getRepositoryPath('Team')." t ".
             "where e.category=:category and ".
                   "e.team=t.id and ".
-                  "t.club=c.id and ".
                   "t.name=:name and ".
                   "t.division=:division");
         $qb->setParameter('category', $category->getId());
@@ -693,25 +600,24 @@ class BusinessLogic
 
     public function getTeamByGroup($groupid, $name, $division) {
         $qb = $this->em->createQuery(
-                "select t.id,t.name,t.division,c.name as club,c.country ".
+                "select t ".
                 "from ".$this->entity->getRepositoryPath('GroupOrder')." o, ".
-                        $this->entity->getRepositoryPath('Team')." t, ".
-                        $this->entity->getRepositoryPath('Club')." c ".
+                        $this->entity->getRepositoryPath('Team')." t ".
                 "where o.group=:group and ".
                       "o.team=t.id and ".
-                      "t.club=c.id and ".
                       "t.name=:name and ".
                       "t.division=:division");
         $qb->setParameter('group', $groupid);
         $qb->setParameter('name', $name);
         $qb->setParameter('division', $division);
         $teamsList = array();
+        /* @var $team Team */
         foreach ($qb->getResult() as $team) {
             $teamInfo = new TeamInfo();
-            $teamInfo->id = $team['id'];
-            $teamInfo->name = $this->getTeamName($team['name'], $team['division']);
-            $teamInfo->club = $team['club'];
-            $teamInfo->country = $team['country'];
+            $teamInfo->id = $team->getId();
+            $teamInfo->name = $team->getTeamName();
+            $teamInfo->club = $team->getClub()->getName();
+            $teamInfo->country = $team->getClub()->getCountry();
             $teamInfo->group = $groupid;
             $teamsList[] = $teamInfo;
         }
@@ -763,24 +669,23 @@ class BusinessLogic
 
     public function listTeamsByGroupFinals($groupid) {
         $qb = $this->em->createQuery(
-            "select distinct t.id,t.name,t.division,c.name as club,c.country ".
+            "select distinct t ".
             "from ".$this->entity->getRepositoryPath('MatchRelation')." r, ".
                     $this->entity->getRepositoryPath('Match')." m, ".
-                    $this->entity->getRepositoryPath('Team')." t, ".
-                    $this->entity->getRepositoryPath('Club')." c ".
+                    $this->entity->getRepositoryPath('Team')." t ".
             "where m.group=:group and ".
             "r.match=m.id and ".
             "r.team=t.id and ".
-            "t.club=c.id ".
             "order by t.id");
         $qb->setParameter('group', $groupid);
         $teamsList = array();
+        /* @var $team Team */
         foreach ($qb->getResult() as $team) {
             $teamInfo = new TeamInfo();
-            $teamInfo->id = $team['id'];
-            $teamInfo->name = $this->getTeamName($team['name'], $team['division']);
-            $teamInfo->club = $team['club'];
-            $teamInfo->country = $team['country'];
+            $teamInfo->id = $team->getId();
+            $teamInfo->name = $team->getTeamName();
+            $teamInfo->club = $team->getClub()->getName();
+            $teamInfo->country = $team->getClub()->getCountry();
             $teamInfo->group = $groupid;
             $teamsList[] = $teamInfo;
         }
@@ -817,15 +722,6 @@ class BusinessLogic
         return $teamsList;
     }
 
-    public function listTeamsByClub($clubid) {
-        $qb = $this->em->createQuery(
-                "select t ".
-                "from ".$this->entity->getRepositoryPath('Team')." t ".
-                "where t.club=:club");
-        $qb->setParameter('club', $clubid);
-        return $qb->getResult();
-    }
-    
     public function listTeamsEnrolledUnassigned($categoryid, $classification = 0) {
         $qb = $this->em->createQuery(
                 "select t.id,t.name,t.division,c.name as club,c.country ".
@@ -912,29 +808,6 @@ class BusinessLogic
         return $this->entity->getClubRepo()->findOneBy(array('name' => $name, 'country' => $countryCode));
     }
 
-    public function listUsersByClub($clubid) {
-        $qb = $this->em->createQuery(
-                "select u ".
-                "from ".$this->entity->getRepositoryPath('User')." u ".
-                "where u.club=:club and ".
-                      "u.role in (".User::$CLUB.",".User::$CLUB_ADMIN.") and ".
-                      "u.status in (".User::$PRO.",".User::$ATT.",".User::$INF.") ".
-                "order by u.status, u.role desc, u.name");
-        $qb->setParameter('club', $clubid);
-        return $qb->getResult();
-    }
-
-    public function listUsersByHost($hostid) {
-        $qb = $this->em->createQuery(
-                "select u ".
-                "from ".$this->entity->getRepositoryPath('User')." u ".
-                "where u.host=:host and ".
-                      "u.role in (".User::$EDITOR.",".User::$EDITOR_ADMIN.") ".
-                "order by u.role desc, u.name");
-        $qb->setParameter('host', $hostid);
-        return $qb->getResult();
-    }
-    
     public function getUserByName($username) {
         return $this->entity->getUserRepo()->findOneBy(array('username' => $username));
     }

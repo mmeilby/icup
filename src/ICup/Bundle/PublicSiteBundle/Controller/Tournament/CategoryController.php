@@ -1,6 +1,8 @@
 <?php
 namespace ICup\Bundle\PublicSiteBundle\Controller\Tournament;
 
+use ICup\Bundle\PublicSiteBundle\Entity\Doctrine\Category;
+use ICup\Bundle\PublicSiteBundle\Entity\Doctrine\Group;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
@@ -13,16 +15,17 @@ class CategoryController extends Controller
      */
     public function listAction($categoryid)
     {
+        /* @var $category Category */
         $category = $this->get('entity')->getCategoryById($categoryid);
         $tournament = $category->getTournament();
-        $groups = $this->get('logic')->listGroups($categoryid);
+        $groups = $category->getGroupsClassified(Group::$PRE);
         $groupList = array();
         foreach ($groups as $group) {
             $teamsList = $this->get('orderTeams')->sortGroup($group->getId());
             $groupList[$group->getName()] = array('group' => $group, 'teams' => $teamsList);
         }
-        $grpc = $this->get('logic')->listGroupsClassification($categoryid);
-        $grpf = $this->get('logic')->listGroupsFinals($categoryid);
+        $grpc = $category->getGroupsPlayoff();
+        $grpf = $category->getGroupsFinals();
         return array(
             'tournament' => $tournament,
             'category' => $category,
@@ -37,15 +40,16 @@ class CategoryController extends Controller
      */
     public function listClassAction($categoryid)
     {
+        /* @var $category Category */
         $category = $this->get('entity')->getCategoryById($categoryid);
         $tournament = $category->getTournament();
-        $groups = $this->get('logic')->listGroupsClassification($categoryid);
+        $groups = $category->getGroupsPlayoff();
         $groupList = array();
         foreach ($groups as $group) {
             $teamsList = $this->get('orderTeams')->sortGroupFinals($group->getId());
             $groupList[$group->getId()] = array('group' => $group, 'teams' => $teamsList);
         }
-        $grpf = $this->get('logic')->listGroupsFinals($categoryid);
+        $grpf = $category->getGroupsFinals();
         return array(
             'tournament' => $tournament,
             'category' => $category,
@@ -59,9 +63,10 @@ class CategoryController extends Controller
      */
     public function listFinalsAction($categoryid)
     {
+        /* @var $category Category */
         $category = $this->get('entity')->getCategoryById($categoryid);
         $tournament = $category->getTournament();
-        $groups = $this->get('logic')->listGroupsFinals($categoryid);
+        $groups = $category->getGroupsFinals();
         $groupList = array();
         $pyramid = array();
         foreach ($groups as $group) {
@@ -73,7 +78,7 @@ class CategoryController extends Controller
             $this->buildPyramid($pyramid, $group, $matchList);
         }
         // count number of playoff matches - if any - required to show the playoff tab
-        $grpc = $this->get('logic')->listGroupsClassification($categoryid);
+        $grpc = $category->getGroupsPlayoff();
         return array(
             'tournament' => $tournament,
             'category' => $category,
@@ -90,18 +95,18 @@ class CategoryController extends Controller
      * @param $group The new group to attach to the pyramid
      * @param $matchList Matches for the new group to attach
      */
-    private function buildPyramid(&$pyramid, $group, $matchList) {
+    private function buildPyramid(&$pyramid, Group $group, $matchList) {
         foreach ($matchList as &$match) {
             $match['group'] = $group;
             switch ($group->getClassification()) {
-                case 10:
+                case Group::$FINAL:
                     $pyramid['F'] = $match;
                     break;
-                case 9:
+                case Group::$BRONZE:
                     $pyramid['B'] = $match;
                     break;
                 default:
-                    $this->crawl($pyramid['F'], 8 - $group->getClassification(), $match);
+                    $this->crawl($pyramid['F'], Group::$SEMIFINAL - $group->getClassification(), $match);
                     break;
             }
         }

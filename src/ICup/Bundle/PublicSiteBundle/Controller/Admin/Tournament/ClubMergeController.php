@@ -46,9 +46,9 @@ class ClubMergeController extends Controller
         return $formDef->getForm();
     }
     
-    private function mergeClubs($source_club, $target_club) {
+    private function mergeClubs(Club $source_club, Club $target_club) {
         $em = $this->getDoctrine()->getManager();
-        $teams = $this->get('logic')->listTeamsByClub($source_club->getId());
+        $teams = $source_club->getTeams();
         foreach ($teams as $team) {
             try {
                 $category = $this->get('logic')->getEnrolledCategory($team->getId());
@@ -78,7 +78,7 @@ class ClubMergeController extends Controller
             $team->setDivision($division);
             $em->flush();
         }
-        $users = $this->get('logic')->listUsersByClub($source_club->getId());
+        $users = $source_club->getClubMembers();
         foreach ($users as $user) {
             $user->setClub($target_club);
         }

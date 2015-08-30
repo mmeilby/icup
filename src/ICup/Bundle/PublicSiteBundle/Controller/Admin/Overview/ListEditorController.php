@@ -1,6 +1,7 @@
 <?php
 namespace ICup\Bundle\PublicSiteBundle\Controller\Admin\Overview;
 
+use ICup\Bundle\PublicSiteBundle\Entity\Doctrine\Host;
 use ICup\Bundle\PublicSiteBundle\Entity\Doctrine\User;
 use ICup\Bundle\PublicSiteBundle\Services\Util;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
@@ -27,7 +28,7 @@ class ListEditorController extends Controller
         $utilService->validateEditorUser($user);
         // Get the host from current user
         $host = $user->getHost();
-        $users = $host->getUsers();
+        $users = $host->getEditors();
 
         return array('host' => $host, 'users' => $users, 'currentuser' => $user);
     }
@@ -42,8 +43,9 @@ class ListEditorController extends Controller
     {
         /* @var $user User */
         $user = $this->get('util')->getCurrentUser();
+        /* @var $host Host */
         $host = $this->get('entity')->getHostById($hostid);
-        $users = $this->get('entity')->getUserRepo()->findBy(array('pid' => $hostid));
+        $users = $host->getEditors();
 
         return array('host' => $host, 'users' => $users, 'currentuser' => $user);
     }

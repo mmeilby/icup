@@ -19,14 +19,14 @@ class TournamentOption
      * @ORM\Id
      * @ORM\GeneratedValue(strategy="IDENTITY")
      */
-    private $id;
+    protected $id;
 
     /**
      * @var boolean $drr
      * Double Round Robin tournament desired?
      * @ORM\Column(name="drr", type="boolean", nullable=false, options={"default":false})
      */
-    private $drr = false;
+    protected $drr = false;
 
     /**
      * @var integer $strategy
@@ -35,28 +35,28 @@ class TournamentOption
      *   1: plan matches - gather matches on same playground
      * @ORM\Column(name="strategy", type="integer", nullable=false, options={"default":0})
      */
-    private $strategy = 0;
+    protected $strategy = 0;
 
     /**
      * @var integer $wpoints
      * Number of points assigned to the winning team
      * @ORM\Column(name="wpoints", type="integer", nullable=false, options={"unsigned":true, "default":2})
      */
-    private $wpoints = 3;
+    protected $wpoints = 3;
 
     /**
      * @var integer $tpoints
      * Number of points assigned to tie teams
      * @ORM\Column(name="tpoints", type="integer", nullable=false, options={"unsigned":true, "default":1})
      */
-    private $tpoints = 1;
+    protected $tpoints = 1;
 
     /**
      * @var integer $lpoints
      * Number of points assigned to the loosing team
      * @ORM\Column(name="lpoints", type="integer", nullable=false, options={"unsigned":true, "default":0})
      */
-    private $lpoints = 0;
+    protected $lpoints = 0;
 
     /**
      * @var integer $dscore
@@ -64,7 +64,7 @@ class TournamentOption
      * @ORM\Column(name="dscore", type="integer", nullable=false, options={"unsigned":true, "default":6})
      */
 
-    private $dscore = 6;
+    protected $dscore = 6;
 
     /**
      * @return int

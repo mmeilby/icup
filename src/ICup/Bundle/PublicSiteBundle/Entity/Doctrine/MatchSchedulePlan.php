@@ -20,7 +20,7 @@ class MatchSchedulePlan
      * @ORM\Id
      * @ORM\GeneratedValue(strategy="IDENTITY")
      */
-    private $id;
+    protected $id;
 
     /**
      * @var PlaygroundAttribute $tournament
@@ -28,21 +28,21 @@ class MatchSchedulePlan
      * @ORM\ManyToOne(targetEntity="PlaygroundAttribute")
      * @ORM\JoinColumn(name="paid", referencedColumnName="id")
      */
-    private $playgroundAttribute;
+    protected $playgroundAttribute;
 
     /**
      * @var string $matchstart
      * Scheduled match start - format Hi
      * @ORM\Column(name="matchstart", type="string", length=4, nullable=false)
      */
-    private $matchstart;
+    protected $matchstart;
 
     /**
      * @var string $fixed
      * Indicates this record holds a fixed schedule (not allowed to change)
      * @ORM\Column(name="fixed", type="boolean", nullable=false)
      */
-    private $fixed;
+    protected $fixed;
 
     /**
      * Get id

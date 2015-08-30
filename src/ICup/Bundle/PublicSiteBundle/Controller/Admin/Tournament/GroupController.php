@@ -115,10 +115,10 @@ class GroupController extends Controller
             return $this->redirect($returnUrl);
         }
         if ($form->isValid()) {
-            if ($this->get('logic')->listGroupOrders($group->getId()) != null) {
+            if ($group->getGroupOrder()->count() > 0) {
                 $form->addError(new FormError($this->get('translator')->trans('FORM.GROUP.ORDEREXIST', array(), 'admin')));
             }
-            elseif (count($this->get('match')->listMatchesByGroup($group->getId())) > 0) {
+            elseif ($group->getMatches()->count() > 0) {
                 $form->addError(new FormError($this->get('translator')->trans('FORM.GROUP.MATCHESEXIST', array(), 'admin')));
             }
             else {
@@ -133,7 +133,7 @@ class GroupController extends Controller
     
     private function makeGroupForm($group, $action) {
         $classifications = array();
-        foreach (array(0,1,6,7,8,9,10) as $id) {
+        foreach (array(Group::$PRE,Group::$PLAYOFF,6,7,Group::$SEMIFINAL,Group::$BRONZE,Group::$FINAL) as $id) {
             $classifications[$id] = 'FORM.GROUP.CLASS.'.$id;
         }
         $formDef = $this->createFormBuilder($group);

@@ -18,7 +18,7 @@ class Template
      * @ORM\Id
      * @ORM\GeneratedValue(strategy="IDENTITY")
      */
-    private $id;
+    protected $id;
 
     /**
      * @var Tournament $tournament
@@ -26,28 +26,28 @@ class Template
      * @ORM\ManyToOne(targetEntity="Tournament")
      * @ORM\JoinColumn(name="pid", referencedColumnName="id")
      */
-    private $tournament;
+    protected $tournament;
 
     /**
      * @var string $name
      *
      * @ORM\Column(name="name", type="string", length=50, nullable=false)
      */
-    private $name;
+    protected $name;
 
     /**
      * @var string $country
      *
      * @ORM\Column(name="source", type="string", length=1024, nullable=false)
      */
-    private $source;
+    protected $source;
 
     /**
      * @var string $username
      *
      * @ORM\Column(name="last_modified", type="string", length=10, nullable=false)
      */
-    private $last_modified;
+    protected $last_modified;
 
     /**
      * Get id

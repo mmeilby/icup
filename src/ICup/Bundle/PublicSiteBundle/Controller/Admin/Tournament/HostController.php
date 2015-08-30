@@ -84,6 +84,7 @@ class HostController extends Controller
         
         $returnUrl = $utilService->getReferer();
 
+        /* @var $host Host */
         $host = $this->get('entity')->getHostById($hostid);
         $form = $this->makeHostForm($host, 'del');
         $form->handleRequest($request);
@@ -91,10 +92,10 @@ class HostController extends Controller
             return $this->redirect($returnUrl);
         }
         if ($form->isValid()) {
-            if ($this->get('logic')->listTournaments($host->getId()) != null) {
+            if ($host->getTournaments()->count() > 0) {
                 $form->addError(new FormError($this->get('translator')->trans('FORM.HOST.TOURNAMENTSEXIST', array(), 'admin')));
             }
-            elseif ($this->get('logic')->listUsersByHost($host->getId()) != null) {
+            elseif ($host->getUsers()->count() > 0) {
                 $form->addError(new FormError($this->get('translator')->trans('FORM.HOST.EDITORSEXIST', array(), 'admin')));
             }
             else {

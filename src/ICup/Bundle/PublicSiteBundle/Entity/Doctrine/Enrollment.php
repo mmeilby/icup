@@ -19,7 +19,7 @@ class Enrollment
      * @ORM\Id
      * @ORM\GeneratedValue(strategy="IDENTITY")
      */
-    private $id;
+    protected $id;
 
     /**
      * @var Category $category
@@ -27,7 +27,7 @@ class Enrollment
      * @ORM\ManyToOne(targetEntity="Category", inversedBy="enrollments")
      * @ORM\JoinColumn(name="pid", referencedColumnName="id")
      */
-    private $category;
+    protected $category;
 
     /**
      * @var Team $team
@@ -35,7 +35,7 @@ class Enrollment
      * @ORM\ManyToOne(targetEntity="Team", inversedBy="enrollments")
      * @ORM\JoinColumn(name="cid", referencedColumnName="id")
      */
-    private $team;
+    protected $team;
 
     /**
      * @var User $user
@@ -43,14 +43,14 @@ class Enrollment
      * @ORM\ManyToOne(targetEntity="User", inversedBy="enrollments")
      * @ORM\JoinColumn(name="uid", referencedColumnName="id")
      */
-    private $user;
+    protected $user;
 
     /**
      * @var string $date
      * Enrollment date - DD/MM/YYYY
      * @ORM\Column(name="date", type="string", length=10, nullable=false)
      */
-    private $date;
+    protected $date;
 
     /**
      * Get id

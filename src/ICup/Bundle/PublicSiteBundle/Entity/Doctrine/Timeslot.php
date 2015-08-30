@@ -20,7 +20,7 @@ class Timeslot
      * @ORM\Id
      * @ORM\GeneratedValue(strategy="IDENTITY")
      */
-    private $id;
+    protected $id;
 
     /**
      * @var Tournament $tournament
@@ -28,21 +28,21 @@ class Timeslot
      * @ORM\ManyToOne(targetEntity="Tournament", inversedBy="timeslots")
      * @ORM\JoinColumn(name="pid", referencedColumnName="id")
      */
-    private $tournament;
+    protected $tournament;
 
     /**
      * @var string $name
      * Timeslot name used in lists
      * @ORM\Column(name="name", type="string", length=50, nullable=false)
      */
-    private $name;
+    protected $name;
 
     /**
      * @var integer $capacity
      * No of matches a team can participate per day for this timeslot
      * @ORM\Column(name="capacity", type="integer", nullable=false)
      */
-    private $capacity;
+    protected $capacity;
 
     /**
      * @var integer $restperiod
@@ -51,7 +51,7 @@ class Timeslot
      *       this amount of time should be aligned with the match time used
      * @ORM\Column(name="restperiod", type="integer", nullable=false)
      */
-    private $restperiod;
+    protected $restperiod;
 
     /**
      * @var string $penalty
@@ -60,14 +60,14 @@ class Timeslot
      *       however penalty in general means that teams assigned to more sites are discouraged
      * @ORM\Column(name="penalty", type="string", length=1, nullable=false)
      */
-    private $penalty;
+    protected $penalty;
 
     /**
      * @var ArrayCollection $playgroundattributes
      * Collection of playground relations to playground attributes
      * @ORM\OneToMany(targetEntity="PlaygroundAttribute", mappedBy="timeslot", cascade={"persist", "remove"})
      */
-    private $playgroundattributes;
+    protected $playgroundattributes;
 
     /**
      * Playground constructor.
@@ -192,5 +192,12 @@ class Timeslot
     public function getPenalty()
     {
         return $this->penalty == "Y";
+    }
+
+    /**
+     * @return ArrayCollection
+     */
+    public function getPlaygroundattributes() {
+        return $this->playgroundattributes;
     }
 }

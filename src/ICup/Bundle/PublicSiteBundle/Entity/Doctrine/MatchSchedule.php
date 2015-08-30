@@ -20,7 +20,7 @@ class MatchSchedule
      * @ORM\Id
      * @ORM\GeneratedValue(strategy="IDENTITY")
      */
-    private $id;
+    protected $id;
 
     /**
      * @var Tournament $tournament
@@ -28,7 +28,7 @@ class MatchSchedule
      * @ORM\ManyToOne(targetEntity="Tournament")
      * @ORM\JoinColumn(name="pid", referencedColumnName="id")
      */
-    private $tournament;
+    protected $tournament;
 
     /**
      * @var Group $group
@@ -36,28 +36,28 @@ class MatchSchedule
      * @ORM\ManyToOne(targetEntity="Group")
      * @ORM\JoinColumn(name="gid", referencedColumnName="id")
      */
-    private $group;
+    protected $group;
 
     /**
      * @var MatchSchedulePlan $plan
      * Relation to MatchSchedulePlan
      * @ORM\OneToOne(targetEntity="MatchSchedulePlan", cascade={"persist", "remove"}, orphanRemoval=true)
      */
-    private $plan;
+    protected $plan;
 
     /**
      * @var ArrayCollection $matchrelation
      * Collection of match relations to teams
      * @ORM\OneToMany(targetEntity="MatchScheduleRelation", mappedBy="matchSchedule", cascade={"persist", "remove"})
      */
-    private $matchrelation;
+    protected $matchrelation;
 
     /**
      * @var ArrayCollection $qmatchrelation
      * Collection of match relations to qualifying prerequisites
      * @ORM\OneToMany(targetEntity="QMatchScheduleRelation", mappedBy="matchSchedule", cascade={"persist", "remove"})
      */
-    private $qmatchrelation;
+    protected $qmatchrelation;
 
     /**
      * MatchSchedule constructor.

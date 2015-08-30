@@ -49,8 +49,17 @@ class Club
      * @var ArrayCollection $users
      * Collection of users connected with this club
      * @ORM\OneToMany(targetEntity="User", mappedBy="club_membership", cascade={"persist"})
+     * @ORM\OrderBy({"status" = "asc", "role" = "desc", "name" = "asc"})
      */
     protected $users;
+
+    /**
+     * @var ArrayCollection $users
+     * Collection of social groups connected with this club
+     * @ORM\OneToMany(targetEntity="SocialGroup", mappedBy="club", cascade={"persist"})
+     * @ORM\OrderBy({"name" = "asc"})
+     */
+    protected $social_groups;
 
     /**
      * Club constructor.
@@ -58,6 +67,7 @@ class Club
     public function __construct() {
         $this->teams = new ArrayCollection();
         $this->users = new ArrayCollection();
+        $this->social_groups = new ArrayCollection();
     }
 
     /**
@@ -128,5 +138,21 @@ class Club
      */
     public function getUsers() {
         return $this->users;
+    }
+
+    /**
+     * @return ArrayCollection
+     */
+    public function getClubMembers() {
+        return $this->users->filter(function (User $user) {
+            return $user->isClub() && $user->isRelated();
+        });
+    }
+
+    /**
+     * @return ArrayCollection
+     */
+    public function getSocialGroups() {
+        return $this->social_groups;
     }
 }

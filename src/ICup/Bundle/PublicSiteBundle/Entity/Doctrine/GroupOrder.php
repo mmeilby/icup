@@ -19,7 +19,7 @@ class GroupOrder
      * @ORM\Id
      * @ORM\GeneratedValue(strategy="IDENTITY")
      */
-    private $id;
+    protected $id;
 
     /**
      * @var Group $group
@@ -27,7 +27,7 @@ class GroupOrder
      * @ORM\ManyToOne(targetEntity="Group", inversedBy="grouporder")
      * @ORM\JoinColumn(name="pid", referencedColumnName="id")
      */
-    private $group;
+    protected $group;
 
     /**
      * @var Team $team
@@ -35,7 +35,7 @@ class GroupOrder
      * @ORM\ManyToOne(targetEntity="Team", inversedBy="grouporder")
      * @ORM\JoinColumn(name="cid", referencedColumnName="id")
      */
-    private $team;
+    protected $team;
 
     /**
      * Get id

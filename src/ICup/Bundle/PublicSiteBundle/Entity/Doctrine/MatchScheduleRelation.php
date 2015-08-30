@@ -19,7 +19,7 @@ class MatchScheduleRelation
      * @ORM\Id
      * @ORM\GeneratedValue(strategy="IDENTITY")
      */
-    private $id;
+    protected $id;
 
     /**
      * @var MatchSchedule $matchSchedule
@@ -27,7 +27,7 @@ class MatchScheduleRelation
      * @ORM\ManyToOne(targetEntity="MatchSchedule", inversedBy="matchrelation", cascade={"persist", "remove"})
      * @ORM\JoinColumn(name="pid", referencedColumnName="id", onDelete="CASCADE")
      */
-    private $matchSchedule;
+    protected $matchSchedule;
 
     /**
      * @var Team $team
@@ -35,14 +35,14 @@ class MatchScheduleRelation
      * @ORM\ManyToOne(targetEntity="Team")
      * @ORM\JoinColumn(name="cid", referencedColumnName="id")
      */
-    private $team;
+    protected $team;
 
     /**
      * @var boolean $awayteam
      * Indicates this record is related to the away team
      * @ORM\Column(name="awayteam", type="boolean", nullable=false)
      */
-    private $awayteam;
+    protected $awayteam;
 
     /**
      * Get id

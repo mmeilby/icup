@@ -21,7 +21,7 @@ class Team
      * @ORM\Id
      * @ORM\GeneratedValue(strategy="IDENTITY")
      */
-    private $id;
+    protected $id;
 
     /**
      * @var Club $club
@@ -29,56 +29,56 @@ class Team
      * @ORM\ManyToOne(targetEntity="Club", inversedBy="teams")
      * @ORM\JoinColumn(name="pid", referencedColumnName="id")
      */
-    private $club;
+    protected $club;
 
     /**
      * @var string $name
      * Team name used in lists
      * @ORM\Column(name="name", type="string", length=50, nullable=false)
      */
-    private $name;
+    protected $name;
 
     /**
      * @var string $color
      * Color of the jersey of the team
      * @ORM\Column(name="color", type="string", length=10, nullable=false)
      */
-    private $color;
+    protected $color;
 
     /**
      * @var string $division
      * Team division - typically A, B or 1, 2
      * @ORM\Column(name="division", type="string", length=10, nullable=false)
      */
-    private $division;
+    protected $division;
 
     /**
      * @var string $vacant
      * Vacant team placeholder
      * @ORM\Column(name="vacant", type="string", length=1, nullable=false)
      */
-    private $vacant;
+    protected $vacant;
 
     /**
      * @var ArrayCollection $matchrelations
      * Collection of team relations to matchrelations
      * @ORM\OneToMany(targetEntity="MatchRelation", mappedBy="team", cascade={"persist", "remove"})
      */
-    private $matchrelations;
+    protected $matchrelations;
 
     /**
      * @var ArrayCollection $grouporder
      * Collection of team relation to grouporder
      * @ORM\OneToMany(targetEntity="GroupOrder", mappedBy="team", cascade={"persist", "remove"})
      */
-    private $grouporder;
+    protected $grouporder;
 
     /**
      * @var ArrayCollection $enrollments
      * Collection of team relations to enrollments
      * @ORM\OneToMany(targetEntity="Enrollment", mappedBy="team", cascade={"persist", "remove"})
      */
-    private $enrollments;
+    protected $enrollments;
 
     /**
      * Group constructor.
@@ -134,6 +134,20 @@ class Team
     public function getName()
     {
         return $this->name;
+    }
+
+    /**
+     * Get team name
+     *
+     * @return string
+     */
+    public function getTeamName()
+    {
+        $teamname = $this->name;
+        if ($this->division != '') {
+            $teamname.= ' "'.$this->division.'"';
+        }
+        return $teamname;
     }
 
     /**

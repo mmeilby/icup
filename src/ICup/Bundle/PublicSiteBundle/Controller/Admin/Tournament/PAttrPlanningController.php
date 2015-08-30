@@ -36,7 +36,7 @@ class PAttrPlanningController extends Controller
         $host = $tournament->getHost();
         $utilService->validateEditorAdminUser($user, $host);
 
-        $categories = $this->get('logic')->listCategories($tournament->getId());
+        $categories = $tournament->getCategories();
         $categoryList = array();
         foreach ($categories as $category) {
             $categoryList[$category->getId()] = $category;

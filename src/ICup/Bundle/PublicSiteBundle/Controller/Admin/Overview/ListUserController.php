@@ -1,6 +1,7 @@
 <?php
 namespace ICup\Bundle\PublicSiteBundle\Controller\Admin\Overview;
 
+use ICup\Bundle\PublicSiteBundle\Entity\Doctrine\Club;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
@@ -16,8 +17,9 @@ class ListUserController extends Controller
      */
     public function listUsersAction($clubid)
     {
+        /* @var $club Club */
         $club = $this->get('entity')->getClubById($clubid);
-        $users = $this->get('logic')->listUsersByClub($clubid);
+        $users = $club->getClubMembers();
 
         return array('club' => $club, 'users' => $users);
     }

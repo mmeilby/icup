@@ -20,7 +20,7 @@ class Category
      * @ORM\Id
      * @ORM\GeneratedValue(strategy="IDENTITY")
      */
-    private $id;
+    protected $id;
 
     /**
      * @var Tournament $tournament
@@ -28,35 +28,35 @@ class Category
      * @ORM\ManyToOne(targetEntity="Tournament", inversedBy="categories")
      * @ORM\JoinColumn(name="pid", referencedColumnName="id")
      */
-    private $tournament;
+    protected $tournament;
 
     /**
      * @var string $name
      *
      * @ORM\Column(name="name", type="string", length=50, nullable=false)
      */
-    private $name;
+    protected $name;
 
     /**
      * @var string $gender
      *
      * @ORM\Column(name="gender", type="string", length=1, nullable=false)
      */
-    private $gender;
+    protected $gender;
 
     /**
      * @var string $classification
      *
      * @ORM\Column(name="classification", type="string", length=10, nullable=false)
      */
-    private $classification;
+    protected $classification;
 
     /**
      * @var string $age
      *
      * @ORM\Column(name="age", type="string", length=10, nullable=false)
      */
-    private $age;
+    protected $age;
 
     /**
      * @var integer $matchtime
@@ -64,22 +64,28 @@ class Category
      * Note: this amount includes all breaks - before, during, and after the match
      * @ORM\Column(name="matchtime", type="integer", nullable=false)
      */
-    private $matchtime;
+    protected $matchtime;
 
     /**
      * @var ArrayCollection $groups
      * Collection of category relations to groups
      * @ORM\OneToMany(targetEntity="Group", mappedBy="category", cascade={"persist", "remove"})
-     * @ORM\OrderBy({"name" = "ASC"})
+     * @ORM\OrderBy({"classification" = "desc", "name" = "asc"})
      */
-    private $groups;
+    protected $groups;
 
     /**
      * @var ArrayCollection $enrollments
      * Collection of category relations to enrollments
      * @ORM\OneToMany(targetEntity="Enrollment", mappedBy="category", cascade={"persist", "remove"})
      */
-    private $enrollments;
+    protected $enrollments;
+
+    /**
+     * @var ArrayCollection $playgroundattributes
+     * @ORM\ManyToMany(targetEntity="PlaygroundAttribute", mappedBy="categories")
+     **/
+    protected $playgroundattributes;
 
     /**
      * Category constructor.
@@ -87,6 +93,7 @@ class Category
     public function __construct() {
         $this->groups = new ArrayCollection();
         $this->enrollments = new ArrayCollection();
+        $this->playgroundattributes = new ArrayCollection();
     }
 
     /**
@@ -248,9 +255,36 @@ class Category
     }
 
     /**
+     * @return array
+     */
+    public function getGroupsPlayoff() {
+        $groups = $this->groups->filter(function (Group $group) {
+            return $group->getClassification() == Group::$PLAYOFF;
+        });
+        return $groups;
+    }
+
+    /**
+     * @return array
+     */
+    public function getGroupsFinals() {
+        $groups = $this->groups->filter(function (Group $group) {
+            return $group->getClassification() > Group::$PLAYOFF;
+        });
+        return $groups;
+    }
+
+    /**
      * @return ArrayCollection
      */
     public function getEnrollments() {
         return $this->enrollments;
+    }
+
+    /**
+     * @return ArrayCollection
+     */
+    public function getPlaygroundattributes() {
+        return $this->playgroundattributes;
     }
 }

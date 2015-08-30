@@ -110,13 +110,13 @@ class CategoryController extends Controller
             return $this->redirect($returnUrl);
         }
         if ($form->isValid()) {
-            if ($this->get('logic')->listGroupsByCategory($category->getId()) != null) {
+            if ($category->getGroups()->count() > 0) {
                 $form->addError(new FormError($this->get('translator')->trans('FORM.CATEGORY.GROUPSEXIST', array(), 'admin')));
             }
-            elseif ($this->get('logic')->listEnrolledByCategory($category->getId()) != null) {
+            elseif ($category->getEnrollments()->count() > 0) {
                 $form->addError(new FormError($this->get('translator')->trans('FORM.CATEGORY.ENROLLEDEXIST', array(), 'admin')));
             }
-            elseif ($this->get('logic')->listPlaygroundAttributesByCategory($category->getId()) != null) {
+            elseif ($category->getPlaygroundattributes()->count() > 0) {
                 $form->addError(new FormError($this->get('translator')->trans('FORM.CATEGORY.PARELATIONSEXIST', array(), 'admin')));
             }
             else {

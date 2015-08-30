@@ -27,7 +27,7 @@ class Group implements JsonSerializable
      * @ORM\Id
      * @ORM\GeneratedValue(strategy="IDENTITY")
      */
-    private $id;
+    protected $id;
 
     /**
      * @var Category $category
@@ -35,14 +35,14 @@ class Group implements JsonSerializable
      * @ORM\ManyToOne(targetEntity="Category", inversedBy="groups")
      * @ORM\JoinColumn(name="pid", referencedColumnName="id")
      */
-    private $category;
+    protected $category;
 
     /**
      * @var string $name
      *
      * @ORM\Column(name="name", type="string", length=50, nullable=false)
      */
-    private $name;
+    protected $name;
 
     /**
      * @var integer $classification
@@ -55,21 +55,21 @@ class Group implements JsonSerializable
      *  10: Finale
      * @ORM\Column(name="classification", type="integer", nullable=false)
      */
-    private $classification;
+    protected $classification;
 
     /**
      * @var ArrayCollection $matches
      * Collection of group relations to matches
      * @ORM\OneToMany(targetEntity="Match", mappedBy="group", cascade={"persist", "remove"})
      */
-    private $matches;
+    protected $matches;
 
     /**
      * @var ArrayCollection $grouporder
      * Collection of group relations to grouporder
      * @ORM\OneToMany(targetEntity="GroupOrder", mappedBy="group", cascade={"persist", "remove"})
      */
-    private $grouporder;
+    protected $grouporder;
 
     /**
      * Group constructor.

@@ -51,7 +51,7 @@ class User implements AdvancedUserInterface, JsonSerializable
      * @ORM\Id
      * @ORM\GeneratedValue(strategy="IDENTITY")
      */
-    private $id;
+    protected $id;
 
     /**
      * @var Host $host
@@ -59,98 +59,106 @@ class User implements AdvancedUserInterface, JsonSerializable
      * @ORM\ManyToOne(targetEntity="Host", inversedBy="users")
      * @ORM\JoinColumn(name="pid", referencedColumnName="id")
      */
-    private $host;
+    protected $host;
 
     /**
-     * @var Club $club
+     * @var Club $club_membership
      * Club user relation a specific club
      * @ORM\ManyToOne(targetEntity="Club", inversedBy="users")
      * @ORM\JoinColumn(name="cid", referencedColumnName="id")
      */
-    private $club_membership;
+    protected $club_membership;
+
+    /**
+     * @var ArrayCollection $social_relations
+     * User relation to social groups
+     * @ORM\OneToMany(targetEntity="SocialRelation", mappedBy="user", cascade={"persist", "remove"})
+     **/
+    protected $social_relations;
 
     /**
      * @var string $name
      * Formal name used by the system
      * @ORM\Column(name="name", type="string", length=50, nullable=false)
      */
-    private $name;
+    protected $name;
 
     /**
      * @var string $email
      * E-mail address used for system messages like reset password
      * @ORM\Column(name="email", type="string", length=100, nullable=false)
      */
-    private $email;
+    protected $email;
 
     /**
      * @var integer $status
      * User status: 1: authenticating, 2: verified, 3: prospector, 4: attached, 5: inform, 9: system
      * @ORM\Column(name="status", type="integer", nullable=false)
      */
-    private $status;
+    protected $status;
 
     /**
      * @var integer $role
      * User role: 1: user, 2: club_admin, 3: editor, 4: tournament_admin, 9: admin
      * @ORM\Column(name="role", type="integer", nullable=false)
      */
-    private $role;
+    protected $role;
 
     /**
      * @var string $username
      * Username used for login (could be the e-mail address)
      * @ORM\Column(name="username", type="string", length=50, nullable=false)
      */
-    private $username;
+    protected $username;
 
     /**
      * @var string $password
      * Password used for login (crypted)
      * @ORM\Column(name="password", type="string", length=128, nullable=false)
      */
-    private $password;
+    protected $password;
 
     /**
      * @var string $secret
      * Secret used for system routines like reset password
      * @ORM\Column(name="secret", type="string", length=50, nullable=false)
      */
-    private $secret;
+    protected $secret;
 
     /**
      * @var integer $attempts
      * Number of failed login attempts since last successfull login
      * @ORM\Column(name="attempts", type="integer", nullable=false)
      */
-    private $attempts;
+    protected $attempts;
 
     /**
      * @var string $enabled
      * Set to Y if account is enabled
      * @ORM\Column(name="enabled", type="string", length=1, nullable=false)
      */
-    private $enabled;
+    protected $enabled;
 
     /**
      * @var DateTime $lastLogin
      * Timestamp of last successfull login
      * @ORM\Column(name="lastlogin", type="datetime", nullable=true)
      */
-    private $lastLogin;
+    protected $lastLogin;
 
     /**
      * @var ArrayCollection $enrollments
      * Collection of team enrollments authorized by this user
      * @ORM\OneToMany(targetEntity="Enrollment", mappedBy="user", cascade={"persist"})
      */
-    private $enrollments;
+    protected $enrollments;
 
     /**
      * User constructor.
      */
     public function __construct() {
         $this->enrollments = new ArrayCollection();
+        $this->social_relations = new ArrayCollection();
     }
 
     /**
@@ -193,6 +201,13 @@ class User implements AdvancedUserInterface, JsonSerializable
     public function setClub($club) {
         $this->club_membership = $club;
         return $this;
+    }
+
+    /**
+     * @return ArrayCollection
+     */
+    public function getSocialRelations() {
+        return $this->social_relations;
     }
 
     /**

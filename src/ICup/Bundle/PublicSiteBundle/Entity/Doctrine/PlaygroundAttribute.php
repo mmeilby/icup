@@ -21,7 +21,7 @@ class PlaygroundAttribute
      * @ORM\Id
      * @ORM\GeneratedValue(strategy="IDENTITY")
      */
-    private $id;
+    protected $id;
 
     /**
      * @var Playground $playground
@@ -29,17 +29,17 @@ class PlaygroundAttribute
      * @ORM\ManyToOne(targetEntity="Playground", inversedBy="playgroundattributes")
      * @ORM\JoinColumn(name="pid", referencedColumnName="id")
      */
-    private $playground;
+    protected $playground;
 
     /**
      * @var ArrayCollection $categories
-     * @ORM\ManyToMany(targetEntity="Category")
+     * @ORM\ManyToMany(targetEntity="Category", inversedBy="playgroundattributes")
      * @ORM\JoinTable(name="parelations",
      *      joinColumns={@ORM\JoinColumn(name="pid", referencedColumnName="id")},
      *      inverseJoinColumns={@ORM\JoinColumn(name="cid", referencedColumnName="id")}
      *      )
      **/
-    private $categories;
+    protected $categories;
 
     /**
      * @var Timeslot $timeslot
@@ -47,35 +47,35 @@ class PlaygroundAttribute
      * @ORM\ManyToOne(targetEntity="Timeslot", inversedBy="playgroundattributes")
      * @ORM\JoinColumn(name="timeslot", referencedColumnName="id")
      */
-    private $timeslot;
+    protected $timeslot;
 
     /**
      * @var string $date
      * Date for this calendar event - DD/MM/YYYY
      * @ORM\Column(name="date", type="string", length=10, nullable=false)
      */
-    private $date;
+    protected $date;
 
     /**
      * @var string $start
      * Calendar event start time - HH:MM
      * @ORM\Column(name="start", type="string", length=5, nullable=false)
      */
-    private $start;
+    protected $start;
 
     /**
      * @var string $end
      * Calendar event end time - HH:MM
      * @ORM\Column(name="end", type="string", length=5, nullable=false)
      */
-    private $end;
+    protected $end;
 
     /**
      * @var boolean $finals
      * Indicates this timeslot is restricted to finals
      * @ORM\Column(name="finals", type="boolean", nullable=false)
      */
-    private $finals;
+    protected $finals;
 
     /**
      * PlaygroundAttribute constructor.

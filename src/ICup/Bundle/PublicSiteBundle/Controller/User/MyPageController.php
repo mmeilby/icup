@@ -3,6 +3,7 @@ namespace ICup\Bundle\PublicSiteBundle\Controller\User;
 
 use ICup\Bundle\PublicSiteBundle\Entity\Doctrine\Club;
 use ICup\Bundle\PublicSiteBundle\Entity\Doctrine\Host;
+use ICup\Bundle\PublicSiteBundle\Entity\Doctrine\Tournament;
 use ICup\Bundle\PublicSiteBundle\Entity\Doctrine\User;
 use ICup\Bundle\PublicSiteBundle\Exceptions\RedirectException;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
@@ -68,8 +69,8 @@ class MyPageController extends Controller
             /* @var $host Host */
 /*            
             $host = $user->getHost();
-            $users = $this->get('logic')->listUsersByHost($host->getId());
-            $tournaments = $this->get('logic')->listTournaments($host->getId());
+            $users = $host->getUsers();
+            $tournaments = $host->getTournaments();
             $tstat = array();
             $today = new DateTime();
             foreach ($tournaments as $tournament) {
@@ -120,7 +121,7 @@ class MyPageController extends Controller
         }
         elseif ($user->isEditor()) {
             $host = $user->getHost();
-            $users = $this->get('logic')->listUsersByHost($host->getId());
+            $users = $host->getEditors();
             $parms = array(
                         'host' => $host,
                         'users' => $users,
@@ -137,10 +138,11 @@ class MyPageController extends Controller
     {
         $today = new DateTime();
         $tournaments = $this->get('logic')->listAvailableTournaments();
+        /* @var $tournament Tournament */
         foreach ($tournaments as $tournament) {
             $stat = $this->get('tmnt')->getTournamentStatus($tournament->getId(), $today);
             if ($stat == TournamentSupport::$TMNT_GOING || $stat == TournamentSupport::$TMNT_DONE) {
-                $categories = $this->get('logic')->listCategories($tournament->getId());
+                $categories = $tournament->getCategories();
                 $categoryList = array();
                 foreach ($categories as $category) {
                     $categoryList[$category->getId()] = $category;

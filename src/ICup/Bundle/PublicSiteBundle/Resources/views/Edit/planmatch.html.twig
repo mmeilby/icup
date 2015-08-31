@@ -90,14 +90,11 @@
                         <div class="col-sm-9">
                             <h4 class="list-group-item-heading">{% trans %}FORM.MATCHPLANNING.SAVE.TITLE{% endtrans %}</h4>
                             <p class="list-group-item-text">{% trans %}FORM.MATCHPLANNING.SAVE.DESCRIPTION{% endtrans %}</p>
-                        {% for flashMessage in app.session.flashbag.get('data_saved') %}
-                            <div class="alert alert-success alert-dismissible" role="alert">
-                                <button type="button" class="close" data-dismiss="alert">
-                                    <span aria-hidden="true">&times;</span><span class="sr-only">Close</span>
-                                </button>
-                                {{ flashMessage|trans }}
-                            </div>
-                        {% endfor %}
+                            <p class="list-group-item-text">
+                            {% for flashMessage in app.session.flashbag.get('data_saved') %}
+                                <b>{{ flashMessage|trans }}</b>
+                            {% endfor %}
+                            </p>
                         </div>
                     </div>
                 </a>

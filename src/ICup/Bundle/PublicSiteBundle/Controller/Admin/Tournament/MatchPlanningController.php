@@ -134,12 +134,17 @@ class MatchPlanningController extends Controller
         if ($form->isValid()) {
             /* @var $uploadedFile UploadedFile */
             $uploadedFile = $request->files->get('form');
-            try {
-                $matchListRaw = $this->import($uploadedFile['file']);
-                $matchList = $this->validateData($tournament, $matchListRaw);
-                $this->commitImport($tournament, $matchList);
-            } catch (ValidationException $exc) {
-                $form->addError(new FormError($this->get('translator')->trans('FORM.ERROR.'.$exc->getMessage(), array(), 'admin')." [".$exc->getDebugInfo()."]"));
+            if (isset($uploadedFile['file'])) {
+                try {
+                    $matchListRaw = $this->import($uploadedFile['file']);
+                    $matchList = $this->validateData($tournament, $matchListRaw);
+                    $this->commitImport($tournament, $matchList);
+                } catch (ValidationException $exc) {
+                    $form->addError(new FormError($this->get('translator')->trans('FORM.ERROR.'.$exc->getMessage(), array(), 'admin')." [".$exc->getDebugInfo()."]"));
+                }
+            }
+            else {
+                $form->addError(new FormError($this->get('translator')->trans('FORM.MATCHPLANNING.NOFILE', array(), 'admin')));
             }
         }
         $result = $this->get('planning')->getSchedule($tournamentid);
@@ -406,6 +411,12 @@ class MatchPlanningController extends Controller
             $request->getSession()->getFlashBag()->add(
                 'data_saved',
                 'FORM.MATCHPLANNING.PLAN_SAVED'
+            );
+        }
+        else {
+            $request->getSession()->getFlashBag()->add(
+                'data_saved',
+                'FORM.MATCHPLANNING.PLAN_NOT_SAVED'
             );
         }
         return $this->redirect($this->generateUrl("_edit_match_planning_result", array('tournamentid' => $tournament->getId())));

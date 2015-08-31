@@ -6,19 +6,19 @@ use ICup\Bundle\PublicSiteBundle\Entity\Doctrine\Category;
 use ICup\Bundle\PublicSiteBundle\Entity\Doctrine\Date;
 use ICup\Bundle\PublicSiteBundle\Entity\Doctrine\Group;
 use ICup\Bundle\PublicSiteBundle\Entity\Doctrine\Playground;
-use ICup\Bundle\PublicSiteBundle\Entity\TeamInfo;
+use ICup\Bundle\PublicSiteBundle\Entity\Doctrine\Team;
 use DateTime;
 
 class MatchPlan
 {
     /**
-     * @var Category $id
+     * @var Category $category
      * Category object
      */
     private $category;
 
     /**
-     * @var Group $pid
+     * @var Group $group
      * Group object
      */
     private $group;
@@ -48,13 +48,13 @@ class MatchPlan
     private $matchno;
 
     /**
-     * @var TeamInfo $teamA
+     * @var Team $teamA
      * Relation to home team
      */
     private $teamA;
     
     /**
-     * @var TeamInfo $teamB
+     * @var Team $teamB
      * Relation to away team
      */
     private $teamB;
@@ -69,7 +69,7 @@ class MatchPlan
      * Set category
      *
      * @param Category $category
-     * @return MatchPlanning
+     * @return MatchPlan
      */
     public function setCategory($category)
     {
@@ -92,7 +92,7 @@ class MatchPlan
      * Set parent id - related group
      *
      * @param Group $group
-     * @return MatchPlanning
+     * @return MatchPlan
      */
     public function setGroup($group)
     {
@@ -115,7 +115,7 @@ class MatchPlan
      * Set playground relation
      *
      * @param Playground $playground
-     * @return MatchPlanning
+     * @return MatchPlan
      */
     public function setPlayground($playground)
     {
@@ -138,7 +138,7 @@ class MatchPlan
      * Set time
      *
      * @param string $time
-     * @return MatchPlanning
+     * @return MatchPlan
      */
     public function setTime($time)
     {
@@ -161,7 +161,7 @@ class MatchPlan
      * Set date
      *
      * @param string $date
-     * @return MatchPlanning
+     * @return MatchPlan
      */
     public function setDate($date)
     {
@@ -184,7 +184,7 @@ class MatchPlan
      * Set match no
      *
      * @param integer $matchno
-     * @return MatchPlanning
+     * @return MatchPlan
      */
     public function setMatchno($matchno)
     {
@@ -206,8 +206,8 @@ class MatchPlan
     /**
      * Set home team
      *
-     * @param TeamInfo $teamA
-     * @return MatchPlanning
+     * @param Team $teamA
+     * @return MatchPlan
      */
     public function setTeamA($teamA)
     {
@@ -219,7 +219,7 @@ class MatchPlan
     /**
      * Get home team
      *
-     * @return TeamInfo
+     * @return Team
      */
     public function getTeamA()
     {
@@ -229,8 +229,8 @@ class MatchPlan
     /**
      * Set away team
      *
-     * @param TeamInfo $teamB
-     * @return MatchPlanning
+     * @param Team $teamB
+     * @return MatchPlan
      */
     public function setTeamB($teamB)
     {
@@ -242,7 +242,7 @@ class MatchPlan
     /**
      * Get away team
      *
-     * @return TeamInfo
+     * @return Team
      */
     public function getTeamB()
     {

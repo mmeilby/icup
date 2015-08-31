@@ -412,7 +412,9 @@ FORM:
     MAINT: Tilpas kampplan
     SOLVEXCHG: Ingen perioder passer for denne kamp. Forsøg at bytte andre kampe fra puljen med denne kamp.
     SOLVEXPND: Der er ikke ledig plads til denne kamp. Forsøg at udvide en periode så der bliver plads til kampen.
-    PLAN_SAVED: Kampplanen er godkendt og registreret for turneringen.
+    PLAN_SAVED: Kampplanen er godkendt og gemt som turneringens officielle kampprogram.
+    PLAN_NOT_SAVED: Kampplanen kan ikke gemmes mens turneringen er i gang. Ny kampplan kan kun gemmes før turneringen starter.
+    NOFILE: Der mangler valg af fil til indlæsning af kampplan.
     PLAYGROUND: Bane
     TIMESLOT: Periode
     PATTRS: Fordelte kategorier

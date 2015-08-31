@@ -1,9 +1,9 @@
 <?php
 namespace ICup\Bundle\PublicSiteBundle\Services\Entity;
 
+use ICup\Bundle\PublicSiteBundle\Entity\Doctrine\Team;
 use ICup\Bundle\PublicSiteBundle\Entity\Doctrine\Timeslot;
 use ICup\Bundle\PublicSiteBundle\Entity\MatchPlan;
-use ICup\Bundle\PublicSiteBundle\Entity\TeamInfo;
 
 class TeamCheck
 {
@@ -14,9 +14,9 @@ class TeamCheck
         $this->teams = array();
     }
 
-    public function isTeamCapacity(TeamInfo $team, $date, Timeslot $timeslot) {
+    public function isTeamCapacity(Team $team, $date, Timeslot $timeslot) {
         $key = $this->makeKey($team, $date, $timeslot);
-        if (array_key_exists($key, $this->teams)) {
+        if (isset($this->teams[$key])) {
             return $this->teams[$key] < $timeslot->getCapacity();
         }
         $this->teams[$key] = 0;
@@ -30,7 +30,7 @@ class TeamCheck
         return $tac && $tab;
     }
 
-    public function reserveTeamCapacity(TeamInfo $team, $date, Timeslot $timeslot) {
+    public function reserveTeamCapacity(Team $team, $date, Timeslot $timeslot) {
         $key = $this->makeKey($team, $date, $timeslot);
         $this->teams[$key]++;
     }
@@ -40,7 +40,7 @@ class TeamCheck
         $this->reserveTeamCapacity($match->getTeamB(), $date, $timeslot);
     }
 
-    public function freeTeamCapacity(TeamInfo $team, $date, Timeslot $timeslot) {
+    public function freeTeamCapacity(Team $team, $date, Timeslot $timeslot) {
         $key = $this->makeKey($team, $date, $timeslot);
         $this->teams[$key]--;
     }
@@ -50,7 +50,7 @@ class TeamCheck
         $this->freeTeamCapacity($match->getTeamB(), $date, $timeslot);
     }
 
-    private function makeKey(TeamInfo $team, $date, Timeslot $timeslot) {
+    private function makeKey(Team $team, $date, Timeslot $timeslot) {
         return $timeslot->getId()."-".
                $team->getId()."-".
                $date;

@@ -249,6 +249,16 @@ class Team
     }
 
     /**
+     * @return Group
+     */
+    public function getPreliminaryGroup() {
+        $gos = $this->grouporder->filter(function (GroupOrder $grouporder) {
+            return $grouporder->getGroup()->getClassification() == Group::$PRE;
+        });
+        return $gos->count() == 1 ? $gos->first()->getGroup() : null;
+    }
+
+    /**
      * @return ArrayCollection
      */
     public function getEnrollments() {

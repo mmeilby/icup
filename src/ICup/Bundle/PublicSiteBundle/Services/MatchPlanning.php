@@ -16,6 +16,7 @@ use ICup\Bundle\PublicSiteBundle\Entity\Doctrine\MatchSchedulePlan;
 use ICup\Bundle\PublicSiteBundle\Entity\Doctrine\MatchScheduleRelation;
 use ICup\Bundle\PublicSiteBundle\Entity\Doctrine\MatchUnscheduled;
 use ICup\Bundle\PublicSiteBundle\Entity\Doctrine\QMatchScheduleRelation;
+use ICup\Bundle\PublicSiteBundle\Entity\Doctrine\Team;
 use ICup\Bundle\PublicSiteBundle\Entity\Doctrine\Tournament;
 use ICup\Bundle\PublicSiteBundle\Entity\MatchPlan;
 use ICup\Bundle\PublicSiteBundle\Entity\TeamInfo;
@@ -58,8 +59,8 @@ class MatchPlanning
     public function planTournament($tournamentid, PlanningOptions $options) {
         $options->setFinals(false);
         $tournament = $this->container->get('entity')->getTournamentById($tournamentid);
-        $matchList = $this->populateTournament($tournamentid, $options);
-        $result = $this->setupCriteria($tournamentid, $matchList, $options);
+        $matchList = $this->populateTournament($tournament, $options);
+        $result = $this->setupCriteria($tournament, $matchList, $options);
         $this->plan($result);
 
         if ($result->unresolved() > 0) {
@@ -80,13 +81,13 @@ class MatchPlanning
             foreach ($pa->getMatchlist() as $match) {
                 $ms = new MatchSchedule();
                 $ms->setTournament($tournament);
-                $ms->setGroup($this->container->get('entity')->getGroupById($match->getTeamA()->getGroup()));
+                $ms->setGroup($match->getTeamA()->getPreliminaryGroup());
                 $hr = new MatchScheduleRelation();
-                $hr->setTeam($this->container->get('entity')->getTeamById($match->getTeamA()->getId()));
+                $hr->setTeam($match->getTeamA());
                 $hr->setAwayteam(false);
                 $ms->addMatchRelation($hr);
                 $ar = new MatchScheduleRelation();
-                $ar->setTeam($this->container->get('entity')->getTeamById($match->getTeamB()->getId()));
+                $ar->setTeam($match->getTeamB());
                 $ar->setAwayteam(true);
                 $ms->addMatchRelation($ar);
                 $mp = new MatchSchedulePlan();
@@ -102,13 +103,13 @@ class MatchPlanning
         foreach ($result->getUnresolved() as $match) {
             $ms = new MatchSchedule();
             $ms->setTournament($tournament);
-            $ms->setGroup($this->container->get('entity')->getGroupById($match->getTeamA()->getGroup()));
+            $ms->setGroup($match->getTeamA()->getPreliminaryGroup());
             $hr = new MatchScheduleRelation();
-            $hr->setTeam($this->container->get('entity')->getTeamById($match->getTeamA()->getId()));
+            $hr->setTeam($match->getTeamA());
             $hr->setAwayteam(false);
             $ms->addMatchRelation($hr);
             $ar = new MatchScheduleRelation();
-            $ar->setTeam($this->container->get('entity')->getTeamById($match->getTeamB()->getId()));
+            $ar->setTeam($match->getTeamB());
             $ar->setAwayteam(true);
             $ms->addMatchRelation($ar);
             $this->em->persist($ms);
@@ -136,21 +137,13 @@ class MatchPlanning
      * @return array
      */
     public function getSchedule($tournamentid){
-        $matchschedules = $this->logic->listMatchSchedules($tournamentid);
-        $groups = $this->map($this->logic->listGroupsByTournament($tournamentid));
-        $teams = array();
-        foreach ($groups as $group) {
-            foreach ($this->logic->listTeamsByGroup($group->getId()) as $t) {
-                $teams[$t->getId()] = $t;
-            }
-        }
-
         $matches = array();
         $unassigned = array();
         $ts = array();
         $catcnt = array();
         $advice = array();
 
+        $matchschedules = $this->logic->listMatchSchedules($tournamentid);
         /* @var $ms MatchSchedule */
         foreach ($matchschedules as $ms) {
             $match = new MatchPlan();
@@ -159,10 +152,10 @@ class MatchPlanning
             /* @var $rel MatchScheduleRelation */
             foreach ($relations->getValues() as $rel) {
                 if ($rel->getAwayteam()) {
-                    $match->setTeamB($teams[$rel->getTeam()->getId()]);
+                    $match->setTeamB($rel->getTeam());
                 }
                 else {
-                    $match->setTeamA($teams[$rel->getTeam()->getId()]);
+                    $match->setTeamA($rel->getTeam());
                 }
             }
             /* @var $relations ArrayCollection */
@@ -179,11 +172,8 @@ class MatchPlanning
                                     transChoice('RANK', $qrel->getRank(),
                                         array('%rank%' => $qrel->getRank(),
                                               '%group%' => strtolower($groupname).' '.$qrel->getGroup()->getName()), 'tournament');
-                $team = array();
-                $team['rank'] = $rankTxt;
-                $team['name'] = '';
-                $team['id'] = -1;
-                $team['country'] = 'UNK';
+                $team = new Team();
+                $team->setName($rankTxt);
                 if ($qrel->getAwayteam()) {
                     $match->setTeamB($team);
                 }
@@ -226,6 +216,7 @@ class MatchPlanning
                     $ts[$pa->getId()] = $pa;
                 }
                 else {
+                    /* @var $pa PA */
                     $pa = $ts[$pattr->getId()];
                     $ml = $pa->getMatchList();
                     $ml[] = $match;
@@ -270,6 +261,7 @@ class MatchPlanning
                     }
                 });
                 $alternatives = array();
+                /* @var $alt PA */
                 foreach ($malts as $alt) {
                     $alternatives[date_format($alt->getSchedule(), "Y/m/d")][] = $alt;
                 }
@@ -334,12 +326,13 @@ class MatchPlanning
      * @param PlanningOptions $options
      * @return array
      */
-    private function populateTournament($tournamentid, PlanningOptions $options) {
+    private function populateTournament(Tournament $tournament, PlanningOptions $options) {
         $matchPlanList = array();
-        $groups = $this->listGroups($tournamentid);
+        $groups = $this->listGroups($tournament->getId());
         /* @var $group Group */
         foreach ($groups as $group) {
-            $matches = $this->populateGroup($group->getId(), $options);
+            $matches = $this->populateGroup($group, $options);
+            /* @var $match MatchPlan */
             foreach ($matches as $match) {
                 $match->setCategory($group->getCategory());
                 $match->setGroup($group);
@@ -354,16 +347,16 @@ class MatchPlanning
      * @param PlanningOptions $options
      * @return array
      */
-    private function populateGroup($groupid, PlanningOptions $options) {
+    private function populateGroup(Group $group, PlanningOptions $options) {
         $matches = array();
-        $teams = $this->logic->listTeamsByGroup($groupid);
+        $teams = $group->getTeams();
         $check = array();
-        /* @var $teamA TeamInfo */
+        /* @var $teamA Team */
         foreach ($teams as $teamA) {
             $idx = 0;
-            /* @var $teamB TeamInfo */
+            /* @var $teamB Team */
             foreach ($teams as $teamB) {
-                if (($teamA->id != $teamB->id) && !array_key_exists($teamB->id, $check)) {
+                if (($teamA->getId() != $teamB->getId()) && !isset($check[$teamB->getId()])) {
                     $switch = $idx%2 == 0 || $options->isDoublematch();
                     $match = new MatchPlan();
                     $match->setTeamA($switch ? $teamA : $teamB);
@@ -374,7 +367,7 @@ class MatchPlanning
                 }
             }
             if (!$options->isDoublematch()) {
-                $check[$teamA->id] = $teamA;
+                $check[$teamA->getId()] = $teamA;
             }
         }
         return $matches;
@@ -385,9 +378,9 @@ class MatchPlanning
      * @param $finals
      * @return PlanningResults
      */
-    private function setupCriteria($tournamentid, $matchList, PlanningOptions $options) {
+    private function setupCriteria(Tournament $tournament, $matchList, PlanningOptions $options) {
         $result = new PlanningResults();
-        $pattrs = $this->logic->listPlaygroundAttributesByTournament($tournamentid);
+        $pattrs = $this->logic->listPlaygroundAttributesByTournament($tournament->getId());
         /* @var $pattr PlaygroundAttribute */
         foreach ($pattrs as $pattr) {
             if ($pattr->getFinals() == $options->isFinals()) {

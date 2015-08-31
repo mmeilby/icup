@@ -132,6 +132,7 @@ class PlaygroundController extends Controller
         $formDef = $this->createFormBuilder($playground);
         $formDef->add('name', 'text', array('label' => 'FORM.PLAYGROUND.NAME', 'required' => false, 'disabled' => $action == 'del', 'translation_domain' => 'admin'));
         $formDef->add('no', 'text', array('label' => 'FORM.PLAYGROUND.NO', 'required' => false, 'disabled' => $action == 'del', 'translation_domain' => 'admin'));
+        $formDef->add('location', 'text', array('label' => 'FORM.PLAYGROUND.LOCATION', 'required' => false, 'disabled' => $action == 'del', 'translation_domain' => 'admin'));
         $formDef->add('cancel', 'submit', array('label' => 'FORM.PLAYGROUND.CANCEL.'.strtoupper($action),
                                                 'translation_domain' => 'admin',
                                                 'buttontype' => 'btn btn-default',
@@ -146,14 +147,14 @@ class PlaygroundController extends Controller
         if ($form->isValid()) {
             if ($playground->getName() == null || trim($playground->getName()) == '') {
                 $form->addError(new FormError($this->get('translator')->trans('FORM.PLAYGROUND.NONAME', array(), 'admin')));
-                return false;
             }
             if ($playground->getNo() == null || trim($playground->getNo()) == '') {
                 $form->addError(new FormError($this->get('translator')->trans('FORM.PLAYGROUND.NONO', array(), 'admin')));
-                return false;
             }
-            return true;
+            if ($playground->getLocation() == null) {
+                $playground->setLocation('');
+            }
         }
-        return false;
+        return $form->isValid();
     }
 }

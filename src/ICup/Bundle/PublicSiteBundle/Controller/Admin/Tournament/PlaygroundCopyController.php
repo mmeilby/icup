@@ -66,8 +66,8 @@ class PlaygroundCopyController extends Controller
     
     private function copyPlayground(Playground $source_playground, Playground $target_playground) {
         $em = $this->getDoctrine()->getManager();
-        $attributes = $source_playground->getPlaygroundAttributes();
-        foreach ($attributes as $attr) {
+        /* @var $attr PlaygroundAttribute */
+        foreach ($source_playground->getPlaygroundAttributes() as $attr) {
             if ($this->get('logic')->getPlaygroundAttribute($target_playground->getId(), $attr->getDate(), $attr->getStart()) == null) {
                 $target_attr = new PlaygroundAttribute();
                 $target_attr->setPlayground($target_playground);
@@ -75,6 +75,7 @@ class PlaygroundCopyController extends Controller
                 $target_attr->setDate($attr->getDate());
                 $target_attr->setStart($attr->getStart());
                 $target_attr->setEnd($attr->getEnd());
+                $target_attr->setFinals($attr->getFinals());
                 $em->persist($target_attr);
             }
         }

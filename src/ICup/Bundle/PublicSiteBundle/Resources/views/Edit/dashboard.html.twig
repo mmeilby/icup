@@ -105,14 +105,16 @@
                     </tbody>
                 </table>
             </div>
-    {% if tournaments|length > 0 and is_granted('ROLE_EDITOR_ADMIN') %}
+    {% if is_granted('ROLE_EDITOR_ADMIN') %}
             <a class="btn btn-primary btn-lg" href="{{ path('_edit_tournament_add', { 'hostid': host.id }) }}">
                 <span class="fa fa-file"></span>&nbsp;{% trans %}FORM.DASHBOARD.TOURNAMENTS.NOTOURNAMENT{% endtrans %}
             </a>
+        {% if tournaments|length > 0 %}
             &nbsp;
             <a class="btn btn-default btn-lg" href="{{ path('_edit_import_tournament', {'hostid': host.id }) }}">
                 <span class="fa fa-files-o"></span>&nbsp;{% trans %}FORM.TOURNAMENTIMPORT.CAPTION{% endtrans %}
             </a>
+        {% endif %}
     {% endif %}
             <p>&nbsp;</p>
 {% endif %}

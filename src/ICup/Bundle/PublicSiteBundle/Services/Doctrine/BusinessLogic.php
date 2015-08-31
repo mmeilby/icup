@@ -552,7 +552,7 @@ class BusinessLogic
         $qb = $this->em->createQuery(
             "select g ".
             "from ".$this->entity->getRepositoryPath('Group')." g ".
-            "where g.category in (select gx.category from ".$this->entity->getRepositoryPath('Group')." gx where gx.id=".$groupfamily.") and ".
+            "where g.category in (select identity(gx.category) from ".$this->entity->getRepositoryPath('Group')." gx where gx.id=".$groupfamily.") and ".
                   "g.name=:group");
         $qb->setParameter('group', $group);
         return $qb->getOneOrNullResult();
@@ -730,7 +730,7 @@ class BusinessLogic
                         $this->entity->getRepositoryPath('Club')." c ".
                 "where e.category=:category and e.team=t.id and t.club=c.id and ".
                       "t.id not in (".
-                            "select o.team ".
+                            "select identity(o.team) ".
                             "from ".$this->entity->getRepositoryPath('Group')." g, ".
                                     $this->entity->getRepositoryPath('GroupOrder')." o ".
                             "where g.category=:category and g.classification=:class and ".

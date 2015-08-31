@@ -238,6 +238,7 @@ FORM:
       DEL: Følgende bane vil bliver slettet. Alle kampresultater samt oplysninger knyttet til banen vil også blive fjernet. Det er ikke muligt at fortryde når banen er fjernet.
     NAME: Navn
     NO: Banenr.
+    LOCATION: Kort koordinater for banens placering
     SUBMIT:
       ADD: Tilføj ny bane
       CHG: Gem bane

@@ -166,7 +166,6 @@ class MyPageController extends Controller
 
     private function getEnrollments(User $user) {
         $today = new DateTime();
-        $enrolled = $this->get('logic')->listAnyEnrolledByClub($user->getClub()->getId());
         $tournaments = $this->get('logic')->listAvailableTournaments();
         $tournamentList = array();
         foreach ($tournaments as $tournament) {
@@ -175,11 +174,14 @@ class MyPageController extends Controller
                 $tournamentList[$tournament->getId()] = array('tournament' => $tournament, 'enrolled' => 0);
             }
         }
-        
-        foreach ($enrolled as $enroll) {
-            $tid = $enroll['tid'];
-            if (key_exists($tid, $tournamentList)) {
-                $tournamentList[$tid]['enrolled'] = $enroll['enrolled'];
+
+        if ($user->getClub()) {
+            $enrolled =  $this->get('logic')->listAnyEnrolledByClub($user->getClub()->getId());
+            foreach ($enrolled as $enroll) {
+                $tid = $enroll['tid'];
+                if (isset($tournamentList[$tid])) {
+                    $tournamentList[$tid]['enrolled'] = $enroll['enrolled'];
+                }
             }
         }
         return $tournamentList;

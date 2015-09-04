@@ -29,6 +29,13 @@ class TournamentOption
     protected $drr = false;
 
     /**
+     * @var boolean $er
+     * Eliminating rounds used in this tournament?
+     * @ORM\Column(name="er", type="boolean", nullable=false, options={"default":true})
+     */
+    protected $er = true;
+
+    /**
      * @var integer $strategy
      * Chosen strategy for match planning:
      *   0: plan matches - distribute over playgrounds
@@ -42,7 +49,7 @@ class TournamentOption
      * Number of points assigned to the winning team
      * @ORM\Column(name="wpoints", type="integer", nullable=false, options={"unsigned":true, "default":2})
      */
-    protected $wpoints = 3;
+    protected $wpoints = 2;
 
     /**
      * @var integer $tpoints
@@ -61,10 +68,9 @@ class TournamentOption
     /**
      * @var integer $dscore
      * Number of goals assigned to the winning team if opponent is disqualified
-     * @ORM\Column(name="dscore", type="integer", nullable=false, options={"unsigned":true, "default":6})
+     * @ORM\Column(name="dscore", type="integer", nullable=false, options={"unsigned":true, "default":10})
      */
-
-    protected $dscore = 6;
+    protected $dscore = 10;
 
     /**
      * @return int
@@ -86,6 +92,22 @@ class TournamentOption
      */
     public function setDrr($drr) {
         $this->drr = $drr;
+        return $this;
+    }
+
+    /**
+     * @return boolean
+     */
+    public function isEr() {
+        return $this->er;
+    }
+
+    /**
+     * @param boolean $er
+     * @return TournamentOption
+     */
+    public function setEr($er) {
+        $this->er = $er;
         return $this;
     }
 

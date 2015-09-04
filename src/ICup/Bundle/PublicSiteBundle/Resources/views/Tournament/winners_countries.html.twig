@@ -48,22 +48,22 @@
             </div>
             <div class="col-xs-3 col-sm-2 text-center">
                 {% for team in ranks.first %}
-                    <span title="{{ team.club }}"><i class="fa fa-trophy yellow"></i></span>
+                    <span title="{{ team.club.name }}"><i class="fa fa-trophy yellow"></i></span>
                 {% endfor %}
             </div>
             <div class="col-xs-3 col-sm-2 text-center">
                 {% for team in ranks.second %}
-                    <span title="{{ team.club }}"><i class="fa fa-trophy silver"></i></span>
+                    <span title="{{ team.club.name }}"><i class="fa fa-trophy silver"></i></span>
                 {% endfor %}
             </div>
             <div class="col-xs-3 col-sm-2 text-center">
                 {% for team in ranks.third %}
-                    <span title="{{ team.club }}"><i class="fa fa-trophy orange"></i></span>
+                    <span title="{{ team.club.name }}"><i class="fa fa-trophy orange"></i></span>
                 {% endfor %}
             </div>
             <div class="col-xs-3 col-sm-2 text-center">
                 {% for team in ranks.forth %}
-                    <span title="{{ team.club }}"><i class="fa fa-trophy"></i></span>
+                    <span title="{{ team.club.name }}"><i class="fa fa-trophy"></i></span>
                 {% endfor %}
             </div>
         </div>

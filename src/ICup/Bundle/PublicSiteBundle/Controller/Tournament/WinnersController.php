@@ -1,6 +1,9 @@
 <?php
 namespace ICup\Bundle\PublicSiteBundle\Controller\Tournament;
 
+use ICup\Bundle\PublicSiteBundle\Entity\Doctrine\Group;
+use ICup\Bundle\PublicSiteBundle\Entity\Doctrine\Team;
+use ICup\Bundle\PublicSiteBundle\Entity\TeamStat;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
@@ -18,18 +21,13 @@ class WinnersController extends Controller
         if ($tournament == null) {
             return $this->redirect($this->generateUrl('_tournament_select'));
         }
-        $grpclass = array(9 => array('third', 'forth'), 10 => array('first', 'second'));
+        $order = array('first', 'second', 'third', 'forth');
         $championList = array();
-        $groups = $this->get('tmnt')->listChampionsByTournament($tournament->getId());
-        foreach ($groups as $group) {
-            $teamsList = $this->get('orderTeams')->sortCompletedGroup($group['id']);
-            if ($teamsList) {
-                $plcList = $grpclass[$group['classification']];
-                foreach ($teamsList as $i => $team) {
-                    if ($i < 2) {
-                        $this->updateList($championList, $group['catid'], $plcList[$i], $group, $team);
-                    }
-                }
+        $teams = $this->get('tmnt')->listChampionsByTournament($tournament);
+        foreach ($teams as $categoryid => $categoryChamps) {
+            /* @var $team Team */
+            foreach ($categoryChamps as $champion => $team) {
+                $this->updateList($championList, $categoryid, $order[$champion-1], $team->getPreliminaryGroup(), $team);
             }
         }
         return array('tournament' => $tournament, 'championlist' => $championList);
@@ -46,18 +44,13 @@ class WinnersController extends Controller
         if ($tournament == null) {
             return $this->redirect($this->generateUrl('_tournament_select'));
         }
-        $grpclass = array(9 => array('third', 'forth'), 10 => array('first', 'second'));
+        $order = array('first', 'second', 'third', 'forth');
         $championList = array();
-        $groups = $this->get('tmnt')->listChampionsByTournament($tournament->getId());
-        foreach ($groups as $group) {
-            $teamsList = $this->get('orderTeams')->sortCompletedGroup($group['id']);
-            if ($teamsList) {
-                $plcList = $grpclass[$group['classification']];
-                foreach ($teamsList as $i => $team) {
-                    if ($i < 2) {
-                        $this->updateList($championList, $team->country, $plcList[$i], $group, $team);
-                    }
-                }
+        $teams = $this->get('tmnt')->listChampionsByTournament($tournament);
+        foreach ($teams as $categoryid => $categoryChamps) {
+            /* @var $team Team */
+            foreach ($categoryChamps as $champion => $team) {
+                $this->updateList($championList, $team->getClub()->getCountry(), $order[$champion-1], $team->getPreliminaryGroup(), $team);
             }
         }
         usort($championList,
@@ -89,18 +82,13 @@ class WinnersController extends Controller
         if ($tournament == null) {
             return $this->redirect($this->generateUrl('_tournament_select'));
         }
-        $grpclass = array(9 => array('third', 'forth'), 10 => array('first', 'second'));
+        $order = array('first', 'second', 'third', 'forth');
         $championList = array();
-        $groups = $this->get('tmnt')->listChampionsByTournament($tournament->getId());
-        foreach ($groups as $group) {
-            $teamsList = $this->get('orderTeams')->sortCompletedGroup($group['id']);
-            if ($teamsList) {
-                $plcList = $grpclass[$group['classification']];
-                foreach ($teamsList as $i => $team) {
-                    if ($i < 2) {
-                        $this->updateList($championList, $team->club, $plcList[$i], $group, $team);
-                    }
-                }
+        $teams = $this->get('tmnt')->listChampionsByTournament($tournament);
+        foreach ($teams as $categoryid => $categoryChamps) {
+            /* @var $team Team */
+            foreach ($categoryChamps as $champion => $team) {
+                $this->updateList($championList, $team->getClub()->getName(), $order[$champion-1], $team->getPreliminaryGroup(), $team);
             }
         }
         usort($championList,
@@ -121,12 +109,12 @@ class WinnersController extends Controller
         return array('tournament' => $tournament, 'championlist' => $championList);
     }
 
-    private function updateList(&$list, $key, $order, $group, $team) {
+    private function updateList(&$list, $key, $order, Group $group, Team $team) {
         if (!array_key_exists($key, $list)) {
             $list[$key] = array(
-                'country' => $team->country,
+                'country' => $team->getClub()->getCountry(),
                 'group' => $group,
-                'club' => $team->club,
+                'club' => $team->getClub()->getName(),
                 'first' => array(),
                 'second' => array(),
                 'third' => array(),

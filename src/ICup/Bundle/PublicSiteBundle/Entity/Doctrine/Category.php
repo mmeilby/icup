@@ -88,12 +88,21 @@ class Category
     protected $playgroundattributes;
 
     /**
+     * @var ArrayCollection $champions
+     * Collection of category champion requirements
+     * @ORM\OneToMany(targetEntity="Champion", mappedBy="category", cascade={"persist", "remove"})
+     * @ORM\OrderBy({"champion" = "asc"})
+     */
+    protected $champions;
+
+    /**
      * Category constructor.
      */
     public function __construct() {
         $this->groups = new ArrayCollection();
         $this->enrollments = new ArrayCollection();
         $this->playgroundattributes = new ArrayCollection();
+        $this->champions = new ArrayCollection();
     }
 
     /**
@@ -286,5 +295,12 @@ class Category
      */
     public function getPlaygroundattributes() {
         return $this->playgroundattributes;
+    }
+
+    /**
+     * @return ArrayCollection
+     */
+    public function getChampions() {
+        return $this->champions;
     }
 }

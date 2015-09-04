@@ -57,6 +57,7 @@ Matchtime fjernet fra PARelations - forberedt til ManyToMany relation mellem Pla
 Fix - dato defaultes til dags dato når der ikke er defineret match datoer (vis kampliste for dato)
 Implementering af DQL på alle data klasser
 Fix - Vedligehold perioder - undgå rejsetid skal vises som switch (JA/NEJ) med info popup
+Vindere af turneringer uden slutrunder
 
 FORKASTET
 ---------

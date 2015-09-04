@@ -30,14 +30,14 @@ class StatisticsController extends Controller
 
         $famemap = array();
         
-        $mostTrophysClub = $this->getMostTrophysClub($tournament->getId());
+        $mostTrophysClub = $this->getMostTrophysClub($tournament);
         $statmap['mosttrophysbyclub'] = $mostTrophysClub['trophys'];
         if ($mostTrophysClub['country'] != '') {
             $famemap['mosttrophysbyclub']['country'] = $mostTrophysClub['country'];
             $famemap['mosttrophysbyclub']['desc'] = $mostTrophysClub['club'];
             $famemap['mosttrophysbyclub']['id'] = '';
         }
-        $mostTrophys = $this->getMostTrophys($tournament->getId());
+        $mostTrophys = $this->getMostTrophys($tournament);
         $statmap['mosttrophys'] = $mostTrophys['trophys'];
         if ($mostTrophys['country'] != '') {
             $famemap['mosttrophys']['country'] = $mostTrophys['country'];
@@ -82,8 +82,8 @@ class StatisticsController extends Controller
         return $name;
     }
     
-    private function getMostTrophys($tournamentid) {
-        $trophies = $this->get('tmnt')->getTrophysByCountry($tournamentid);
+    private function getMostTrophys($tournament) {
+        $trophies = $this->get('tmnt')->getTrophysByCountry($tournament);
         if (count($trophies) > 0) {
             $trophys = $trophies[0]['trophys'];
             $country = $trophies[0]['country'];
@@ -95,8 +95,8 @@ class StatisticsController extends Controller
         return array('trophys' => $trophys, 'country' => $country);
     }
     
-    private function getMostTrophysClub($tournamentid) {
-        $trophies = $this->get('tmnt')->getTrophysByClub($tournamentid);
+    private function getMostTrophysClub($tournament) {
+        $trophies = $this->get('tmnt')->getTrophysByClub($tournament);
         if (count($trophies) > 0) {
             $trophys = $trophies[0]['trophys'];
             $club = $trophies[0]['club'];

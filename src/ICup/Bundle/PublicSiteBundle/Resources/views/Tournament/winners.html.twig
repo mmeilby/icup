@@ -42,14 +42,14 @@
     {% for category in championlist %}
         {% set group = category.group %}
     <a class="list-group-item bg-table-row"
-       href="{{ path('_showcategory_finals', {'tournament': tournament.key, 'categoryid': group.catid }) }}">
+       href="{{ path('_showcategory_finals', {'tournament': tournament.key, 'categoryid': group.category.id }) }}">
         <h4 class="list-group-item-heading">
-            {% trans %}CATEGORY{% endtrans %} {{ group.category }}
+            {% trans %}CATEGORY{% endtrans %} {{ group.category.name }}
         </h4>
         <p class="list-group-item-text">
             {{ ['GENDER.',
-                group.gender,
-                group.class]|join|transchoice(group.age, { '%age%': group.age },'tournament') }}<br />
+                group.category.gender,
+                group.category.classification]|join|transchoice(group.category.age, { '%age%': group.category.age },'tournament') }}<br />
         </p>
     </a>
     <div class="list-group-item">    

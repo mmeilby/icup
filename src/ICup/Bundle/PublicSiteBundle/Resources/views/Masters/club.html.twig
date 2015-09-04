@@ -121,11 +121,20 @@
 
 {% macro displayteam(team, context) %}
     <span class="text-nowrap">
-    {% if team.country in context.countries|keys %}
+    {% if team.country is defined %}
+        {% if team.country in context.countries|keys %}
         <img src="{{ asset(['bundles/icuppublicsite/images/flags/',context.countries[team.country].flag]|join) }}"
              alt="{{ team.country|trans({},'lang') }}"
              title="{{ team.country|trans({},'lang') }}"
              class="flag">&nbsp;
+        {% endif %}
+    {% else %}
+        {% if team.club.country in context.countries|keys %}
+            <img src="{{ asset(['bundles/icuppublicsite/images/flags/',context.countries[team.club.country].flag]|join) }}"
+                 alt="{{ team.club.country|trans({},'lang') }}"
+                 title="{{ team.club.country|trans({},'lang') }}"
+                 class="flag">&nbsp;
+        {% endif %}
     {% endif %}
         <a href="{{ path('_showteam_all', { 'teamid': team.id }) }}">
             {{ team.name }}

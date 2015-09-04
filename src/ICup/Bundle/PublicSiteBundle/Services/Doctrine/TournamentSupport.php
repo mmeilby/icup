@@ -2,7 +2,11 @@
 
 namespace ICup\Bundle\PublicSiteBundle\Services\Doctrine;
 
+use ICup\Bundle\PublicSiteBundle\Entity\Doctrine\Category;
+use ICup\Bundle\PublicSiteBundle\Entity\Doctrine\Champion;
 use ICup\Bundle\PublicSiteBundle\Entity\Doctrine\Date;
+use ICup\Bundle\PublicSiteBundle\Entity\Doctrine\Team;
+use ICup\Bundle\PublicSiteBundle\Entity\Doctrine\Tournament;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 use Doctrine\ORM\EntityManager;
 use Monolog\Logger;
@@ -224,6 +228,7 @@ class TournamentSupport
         return $qb->getResult();
     }
 
+/*
     public function listChampionsByTournament($tournamentid) {
         $qb = $this->em->createQuery(
                 "select c.id as catid,c.name as category,c.gender,c.classification as class,c.age,g.id,g.classification ".
@@ -236,7 +241,29 @@ class TournamentSupport
         $qb->setParameter('tournament', $tournamentid);
         return $qb->getResult();
     }
-    
+*/
+
+    public function listChampionsByTournament(Tournament $tournament) {
+        $sortedGroups = array();
+        $teams = array();
+        /* @var $category Category */
+        foreach ($tournament->getCategories() as $category) {
+            /* @var $champion Champion */
+            foreach ($category->getChampions() as $champion) {
+                $groupid = $champion->getGroup()->getId();
+                if (!isset($sortedGroups[$groupid])) {
+                    $sortedGroups[$groupid] = $this->container->get('orderTeams')->sortCompletedGroup($groupid);
+                }
+                $rankedTeams = $sortedGroups[$groupid];
+                if ($rankedTeams && isset($rankedTeams[$champion->getRank()-1])) {
+                    $team = $this->entity->getTeamById($rankedTeams[$champion->getRank()-1]->getId());
+                    $teams[$category->getId()][$champion->getChampion()] = $team;
+                }
+            }
+        }
+        return $teams;
+    }
+
     public function getStatTournamentCounts($tournamentid) {
         $qb = $this->em->createQuery(
                 "select count(distinct t.id) as teams, ".
@@ -254,7 +281,8 @@ class TournamentSupport
                         "g.classification=0 and ".
                         "o.group=g.id and ".
                         "o.team=t.id and ".
-                        "t.club=c.id");
+                        "t.club=c.id and ".
+                        "t.vacant='N'");
         $qb->setParameter('tournament', $tournamentid);
         return $qb->getResult();
     }
@@ -282,7 +310,8 @@ class TournamentSupport
                         "cat.gender='F' and ".
                         "g.category=cat.id and ".
                         "o.group=g.id and ".
-                        "o.team=t.id");
+                        "o.team=t.id and ".
+                        "t.vacant='N'");
         $qb->setParameter('tournament', $tournamentid);
         return $qb->getResult();
     }
@@ -299,7 +328,8 @@ class TournamentSupport
                       "cat.age<=18 and ".
                       "g.category=cat.id and ".
                       "o.group=g.id and ".
-                      "o.team=t.id");
+                      "o.team=t.id and ".
+                      "t.vacant='N'");
         $qb->setParameter('tournament', $tournamentid);
         return $qb->getResult();
     }
@@ -320,92 +350,87 @@ class TournamentSupport
         $qb->setParameter('tournament', $tournamentid);
         return $qb->getResult();
     }
-        
-    public function getStatTeams($tournamentid) {
-        $qb = $this->em->createQuery(
-                "select t.id,t.name,t.division,c.name as club,c.country,g.id as grp ".
-                "from ".$this->entity->getRepositoryPath('Category')." cat, ".
-                        $this->entity->getRepositoryPath('Group')." g, ".
-                        $this->entity->getRepositoryPath('GroupOrder')." o, ".
-                        $this->entity->getRepositoryPath('Team')." t, ".
-                        $this->entity->getRepositoryPath('Club')." c, ".
-                        $this->entity->getRepositoryPath('MatchRelation')." r, ".
-                        $this->entity->getRepositoryPath('Match')." m ".
-                "where cat.tournament=:tournament and ".
-                        "g.category=cat.id and ".
-                        "g.classification>=9 and ".
-                        "o.group=g.id and ".
-                        "o.team=t.id and ".
-                        "t.club=c.id and ".
-                        "t.id=r.team and ".
-                        "r.match=m.id and ".
-                        "m.group=g.id and ".
-                        "r.scorevalid='Y' ".
-                "order by o.id");
-        $qb->setParameter('tournament', $tournamentid);
-        $teamsList = array();
-        foreach ($qb->getResult() as $team) {
-            $teamInfo = new TeamInfo();
-            $teamInfo->id = $team['id'];
-            $teamInfo->name = $this->logic->getTeamName($team['name'], $team['division']);
-            $teamInfo->club = $team['club'];
-            $teamInfo->country = $team['country'];
-            $teamInfo->group = $team['grp'];
-            $teamsList[] = $teamInfo;
+
+    public function getTrophysByCountry(Tournament $tournament) {
+        $order = array('first', 'second', 'third', 'forth');
+        $championList = array();
+        $teams = $this->listChampionsByTournament($tournament);
+        foreach ($teams as $categoryid => $categoryChamps) {
+            /* @var $team Team */
+            foreach ($categoryChamps as $champion => $team) {
+                if (!isset($championList[$team->getClub()->getCountry()])) {
+                    $championList[$team->getClub()->getCountry()] =
+                        array('first' => array(), 'second' => array(), 'third' => array(), 'forth' => array());
+                }
+                $championList[$team->getClub()->getCountry()][$order[$champion-1]][] = $team;
+            }
         }
-        return $teamsList;
+        uasort($championList,
+            function (array $country1, array $country2) {
+                $order = array('first', 'second', 'third', 'forth');
+                foreach ($order as $i) {
+                    $o = count($country1[$i]) - count($country2[$i]);
+                    if ($o < 0) {
+                        return 1;
+                    }
+                    else if ($o > 0) {
+                        return -1;
+                    }
+                }
+                return 0;
+            }
+        );
+        foreach ($championList as $country => $trophys) {
+            $totalTrophys = 0;
+            foreach ($trophys as $champions) {
+                $totalTrophys += count($champions);
+            }
+            return array(array('country' => $country, 'trophys' => $totalTrophys));
+        }
+        return array();
     }
         
-    public function getTrophysByCountry($tournamentid) {
-        $qb = $this->em->createQuery(
-                "select c.country, count(m.id) as trophys ".
-                "from ".$this->entity->getRepositoryPath('Category')." cat, ".
-                        $this->entity->getRepositoryPath('Group')." g, ".
-                        $this->entity->getRepositoryPath('GroupOrder')." o, ".
-                        $this->entity->getRepositoryPath('Team')." t, ".
-                        $this->entity->getRepositoryPath('Club')." c, ".
-                        $this->entity->getRepositoryPath('MatchRelation')." r, ".
-                        $this->entity->getRepositoryPath('Match')." m ".
-                "where cat.tournament=:tournament and ".
-                        "g.category=cat.id and ".
-                        "g.classification>=9 and ".
-                        "o.group=g.id and ".
-                        "o.team=t.id and ".
-                        "t.club=c.id and ".
-                        "t.id=r.team and ".
-                        "r.match=m.id and ".
-                        "m.group=g.id and ".
-                        "r.scorevalid='Y' ".
-                "group by c.country ".
-                "order by trophys desc, g.classification desc");
-        $qb->setParameter('tournament', $tournamentid);
-        return $qb->getResult();
-    }
-        
-    public function getTrophysByClub($tournamentid) {
-        $qb = $this->em->createQuery(
-                "select c.name as club, c.country, count(m.id) as trophys ".
-                "from ".$this->entity->getRepositoryPath('Category')." cat, ".
-                        $this->entity->getRepositoryPath('Group')." g, ".
-                        $this->entity->getRepositoryPath('GroupOrder')." o, ".
-                        $this->entity->getRepositoryPath('Team')." t, ".
-                        $this->entity->getRepositoryPath('Club')." c, ".
-                        $this->entity->getRepositoryPath('MatchRelation')." r, ".
-                        $this->entity->getRepositoryPath('Match')." m ".
-                "where cat.tournament=:tournament and ".
-                        "g.category=cat.id and ".
-                        "g.classification>=9 and ".
-                        "o.group=g.id and ".
-                        "o.team=t.id and ".
-                        "t.club=c.id and ".
-                        "t.id=r.team and ".
-                        "r.match=m.id and ".
-                        "m.group=g.id and ".
-                        "r.scorevalid='Y' ".
-                "group by c.country,c.name ".
-                "order by trophys desc, g.classification desc");
-        $qb->setParameter('tournament', $tournamentid);
-        return $qb->getResult();
+    public function getTrophysByClub($tournament) {
+        $order = array('first', 'second', 'third', 'forth');
+        $championList = array();
+        $teams = $this->listChampionsByTournament($tournament);
+        foreach ($teams as $categoryid => $categoryChamps) {
+            /* @var $team Team */
+            foreach ($categoryChamps as $champion => $team) {
+                if (!isset($championList[$team->getClub()->getId()])) {
+                    $championList[$team->getClub()->getId()] =
+                        array('first' => array(), 'second' => array(), 'third' => array(), 'forth' => array());
+                }
+                $championList[$team->getClub()->getId()][$order[$champion-1]][] = $team;
+            }
+        }
+        uasort($championList,
+            function (array $club1, array $club2) {
+                $order = array('first', 'second', 'third', 'forth');
+                foreach ($order as $i) {
+                    $o = count($club1[$i]) - count($club2[$i]);
+                    if ($o < 0) {
+                        return 1;
+                    }
+                    else if ($o > 0) {
+                        return -1;
+                    }
+                }
+                return 0;
+            }
+        );
+        foreach ($championList as $trophys) {
+            $totalTrophys = 0;
+            $club = null;
+            foreach ($trophys as $champions) {
+                if (count($champions) > 0) {
+                    $totalTrophys += count($champions);
+                    $club = $champions[0]->getClub();
+                }
+            }
+            return array(array('club' => $club->getName(), 'country' => $club->getCountry(), 'trophys' => $totalTrophys));
+        }
+        return array();
     }
         
     public function getMostGoals($tournamentid) {
@@ -423,6 +448,7 @@ class TournamentSupport
                         "r.match=m.id and ".
                         "t.id=r.team and ".
                         "t.club=c.id and ".
+                        "t.vacant='N' and ".
                         "r.scorevalid='Y' ".
                 "group by t.id ".
                 "order by mostgoals desc");
@@ -445,6 +471,7 @@ class TournamentSupport
                         "r.match=m.id and ".
                         "t.id=r.team and ".
                         "t.club=c.id and ".
+                        "t.vacant='N' and ".
                         "r.scorevalid='Y' ".
                 "group by t.id ".
                 "order by mostgoals desc");

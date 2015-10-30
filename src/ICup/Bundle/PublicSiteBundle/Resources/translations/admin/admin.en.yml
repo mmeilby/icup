@@ -10,7 +10,7 @@ FORM:
     BADHOST: The host does not exist
     BADTOURNAMENT: The tournament does not exist
     BADSITE: The site does not exist
-    BADPLAYGROUND: Playground does not exist
+    BADPLAYGROUND: Venue does not exist
     BADCATEGORY: The category does not exist
     BADGROUP: The group does not exist
     BADTEAM: The team is not valid
@@ -74,14 +74,14 @@ FORM:
         CAPTION: Tournament options
         DESCRIPTION: Modify rules and game planning for this tournament
     LISTSITES:
-        CAPTION: Sites and playgrounds
-        DESCRIPTION: Maintain information of sites and playgrounds
+        CAPTION: Sites and venues
+        DESCRIPTION: Maintain information of sites and venues
     LISTCATEGORIES:
         CAPTION: Categories and groups
         DESCRIPTION: Plan groups and maintain categories
     LISTTIMESLOTS:
         CAPTION: Timeslots
-        DESCRIPTION: Define logical timeslots for all playgrounds
+        DESCRIPTION: Define logical timeslots for all venues
     LISTCLUBS:
         CAPTION: Enrolled clubs
         DESCRIPTION: Show enrolled clubs and handle new requests
@@ -110,7 +110,7 @@ FORM:
         DESCRIPTION: Specify teams elegible for elimination round
     REPORT:
         CAPTION: Report results
-        DESCRIPTION: Report match results for matches played at a specific playground
+        DESCRIPTION: Report match results for matches played at a specific venue
     MATCHPRINT:
         CAPTION: Print match report
         DESCRIPTION: Show match report for a specific day for output
@@ -201,12 +201,12 @@ FORM:
       CHG: Cancel
   LISTSITES:
     TITLE: Tournament administration
-    CAPTION: Sites and playgrounds
+    CAPTION: Sites and venues
     NOSITE: Add new site
-    NOPLAYGROUND: Add new playground
+    NOPLAYGROUND: Add new venue
   SITE:
     NONAME: The site must be given a name.
-    PLAYGROUNDSEXIST: Playgrounds are defined for this site. The site can not be removed.
+    PLAYGROUNDSEXIST: Venues are defined for this site. The site can not be removed.
     TITLE:
       ADD: Add new site
       CHG: Modify site
@@ -225,37 +225,37 @@ FORM:
       CHG: Cancel changes
       DEL: Cancel
   PLAYGROUND:
-    NONAME: The playground must be given a name.
-    NONO: Playground no. is mandatory.
-    MATCHESEXIST: Matches are defined for this playground. The playground can not be removed.
+    NONAME: The venue must be given a name.
+    NONO: Venue no. is mandatory.
+    MATCHESEXIST: Matches are defined for this venue. The venue can not be removed.
     TITLE:
-      ADD: Add new playground
-      CHG: Modify playground
-      DEL: REMOVE PLAYGROUND
+      ADD: Add new venue
+      CHG: Modify venue
+      DEL: REMOVE VENUE
     PROMPT:
-      ADD: Please enter information about the new playground.
-      CHG: Change information for this playground.
-      DEL: The following playground will be removed. You can not undo this action.
-    NAME: Playground name
+      ADD: Please enter information about the new venue.
+      CHG: Change information for this venue.
+      DEL: The following venue will be removed. You can not undo this action.
+    NAME: Venue name
     NO: Field no.
     SUBMIT:
-      ADD: Add playground
+      ADD: Add venue
       CHG: Save information
-      DEL: REMOVE PLAYGROUND
+      DEL: REMOVE VENUE
     CANCEL:
       ADD: Cancel
       CHG: Cancel changes
       DEL: Cancel
   COPYPLAYGROUND:
-    TITLE: Copy playground preferences
-    PROMPT: Timeslots and preferences will be copied to the selected playground. Existing preferences at same date and time will not be changed.
-    SOURCEPLAYGROUND: Source playground
-    TARGETPLAYGROUND: Target playground
+    TITLE: Copy venue preferences
+    PROMPT: Timeslots and preferences will be copied to the selected venue. Existing preferences at same date and time will not be changed.
+    SOURCEPLAYGROUND: Source venue
+    TARGETPLAYGROUND: Target venue
     SUBMIT: Copy preferences
     CANCEL: Cancel copy
   LISTPLAYGROUNDATTRS:
     TITLE: Tournament administration
-    CAPTION: Playground preferences
+    CAPTION: Venue preferences
     NOATTR: Add new preference
   PLAYGROUNDATTR:
     DEFAULT: No timeslot selected
@@ -301,7 +301,7 @@ FORM:
     NOTIMESLOT: Add new timeslot
   TIMESLOT:
     NONAME: A name of the timeslot is mandatory.
-    PLAYGROUNDSEXIST: Playground preferences are related to this timeslot. The timeslot can not be removed.
+    PLAYGROUNDSEXIST: Venue preferences are related to this timeslot. The timeslot can not be removed.
     TITLE:
       ADD: Add new timeslot
       CHG: Modify timeslot
@@ -332,7 +332,7 @@ FORM:
       DEL: Cancel
   LISTPARELS:
     TITLE: Tournament administration
-    CAPTION: Preferences - categories preferred to play at this playground
+    CAPTION: Preferences - categories preferred to play at this venue
     ASSIGNED: Preferred categories
     UNASSIGNED: Other categories
     FINALS: Final matches?
@@ -346,8 +346,8 @@ FORM:
       PROMPT: Plan for Double Round Robin tournament
       HELP: If you plan for Double Round Robin every team will play twice against same opponent
     PREFERPG:
-      PROMPT: Fill playground first
-      HELP: With this option each team will experience more matches on the same playground
+      PROMPT: Fill venue first
+      HELP: With this option each team will experience more matches on the same venue
     FINALS:
       PROMPT: Schedule finals
       HELP: Choose to schedule preliminary matches or finals
@@ -368,7 +368,7 @@ FORM:
     SOLVEXCHG: No timeslots fit the requirements for this match. Try to exchange timeslot with another match from the group.
     SOLVEXPND: This match requires more time than available. Expand a timeslot to make space for this match.
     PLAN_SAVED: The match schedule has been accepted and registered for the tournament
-    PLAYGROUND: Playground
+    PLAYGROUND: Venue
     TIMESLOT: Timeslot
     PATTRS: Preferred categories
     TIMELEFT: Remaining time
@@ -388,7 +388,7 @@ FORM:
     NOMATCHES: No matches do match your search criteria. Try to open the search by removing some of the criterias.
     MATCHFOUND: The following match was found.
     MATCHESFOUND: The following matches were found.
-    INFO: <h4>Search match</h4><p>Search a match by match no. or use the playground, match date, category and group to find a list of matches from which you can choose a match. To search by group you have to select a category first. It is not possible to search by category only. Click on the match you want to change from the list.</p>
+    INFO: <h4>Search match</h4><p>Search a match by match no. or use the venue, match date, category and group to find a list of matches from which you can choose a match. To search by group you have to select a category first. It is not possible to search by category only. Click on the match you want to change from the list.</p>
     SUBMIT: Schedule matches
     CANCEL: Cancel
   QMATCHPLANNING:
@@ -418,7 +418,7 @@ FORM:
   TOURNAMENTIMPORT:
     TITLE: Tournament administration
     CAPTION: Copy information from another tournament
-    PROMPT: Copy sites, playgrounds, preferences, categories, and groups
+    PROMPT: Copy sites, venues, preferences, categories, and groups
     DEFAULT: Select a tournament...
     TOURNAMENT:
       PROMPT: Source tournament
@@ -442,7 +442,7 @@ FORM:
     NOMATCHTIME: Match time is mandatory (expressed in minutes).
     GROUPSEXIST: Groups are defined for this category. The category can not be removed.
     ENROLLEDEXIST: Teams are enrolled for this category. The category can not be removed.
-    PARELATIONSEXIST: Playground preferences are defined for this category. The category can not be removed.
+    PARELATIONSEXIST: Venue preferences are defined for this category. The category can not be removed.
     TITLE:
       ADD: Add new category
       CHG: Modify category
@@ -662,7 +662,7 @@ FORM:
     BADDATE: The match schedule is not a valid date.
     NOTIME: Time of match is mandatory.
     BADTIME: Time of match is not valid.
-    NOPLAYGROUND: A playground for the match is mandatory.
+    NOPLAYGROUND: A venue for the match is mandatory.
     NOHOMETEAM: Home team is mandatory.
     NOHOMEGROUP: Group of home team is mandatory.
     NOHOMERANK: Group rank for home team is mandatory.
@@ -686,7 +686,7 @@ FORM:
     NO: Match no.
     DATE: Date
     TIME: Time
-    PLAYGROUND: Playground
+    PLAYGROUND: Venue
     HOME: Home team
     QHOME:
       GROUP: Group (home team)

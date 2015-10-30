@@ -25,10 +25,10 @@ Opret bruger
 Opret organisation (navn, kontaktperson, adresse, email, telefon, facebook, twitter, website)
 Opret turnering
 
-Venue = bane?
-
 Done List
 ---------
+Venue = bane !
+Kontrolleret oprettelse af nye PHPCR data tilføjet til translations filerne
 Fejlrettelse - vis playoff og finaler korrekt før hold er fundet
 Forbedring af formular for indberetning af resultater
 Udskriv kampliste per dag som pdf - kampliste gjort printvenlig

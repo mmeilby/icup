@@ -43,14 +43,14 @@ ERROR:
     TITLE: The site is not valid
     SOLUTION: The specified site does not exist.
   INVALIDPLAYGROUND:
-    TITLE: The playground is not valid
-    SOLUTION: The specified playground does not exist.
+    TITLE: The venue is not valid
+    SOLUTION: The specified venue does not exist.
   INVALIDPLAYGROUNDATTRIBUTE:
-    TITLE: There is a technical problem with a playground
-    SOLUTION: A non existing playground attribute was referenced.
+    TITLE: There is a technical problem with a venue
+    SOLUTION: A non existing venue attribute was referenced.
   INVALIDPARELATION:
-    TITLE: There is a technical problem with a playground
-    SOLUTION: A non existing relation between category and playground was referenced.
+    TITLE: There is a technical problem with a venue
+    SOLUTION: A non existing relation between category and venue was referenced.
   INVALIDTIMESLOT:
     TITLE: The timeslot is not valid
     SOLUTION: The specified timeslot does not exist.
@@ -127,9 +127,9 @@ ERROR:
     TITLE: Changing the user profile is not allowed
     SOLUTION: You are about to change the user role, which is not allowed. 
   NOTTHESAMETOURNAMENT:
-    TITLE: Category and playground attribute does not share tournament
-    SOLUTION: Category and playground attribute must refer to the same tournament.
+    TITLE: Category and venue attribute does not share tournament
+    SOLUTION: Category and venue attribute must refer to the same tournament.
   CATEGORYISNOTASSIGNED:
     TITLE: The category can not be unassigned
-    SOLUTION: The category is not assigned to this playground attribute.
+    SOLUTION: The category is not assigned to this venue attribute.
       

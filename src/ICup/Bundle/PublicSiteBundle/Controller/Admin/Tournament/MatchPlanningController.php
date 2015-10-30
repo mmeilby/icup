@@ -47,17 +47,15 @@ class MatchPlanningController extends Controller
      */
     public function configureOptionsAction($tournamentid, Request $request) {
         $tournament = $this->checkArgs($tournamentid);
-        $returnUrl = $this->get('util')->getReferer();
-
         $form = $this->makePlanForm($tournament);
         $form->handleRequest($request);
         if ($form->isValid()) {
             /* @var $options PlanningOptions */
             $options = $form->getData();
             $tournament->getOption()->setDrr($options->isDoublematch());
+            $tournament->getOption()->setSvd($options->isPreferpg());
             $em = $this->getDoctrine()->getManager();
             $em->flush();
-            $request->getSession()->set('planning.options', $options);
             return $this->redirect($this->generateUrl("_edit_match_planning_result", array('tournamentid' => $tournament->getId())));
         }
         $host = $tournament->getHost();
@@ -95,25 +93,162 @@ class MatchPlanningController extends Controller
         /* @var $tournament Tournament */
         $tournament = $this->checkArgs($tournamentid);
         $host = $tournament->getHost();
-        $categoryList = array();
-        $categories = $tournament->getCategories();
+        $session = $request->getSession();
+        $categoryid = $session->get('admin.group.plan.category', 0);
         /* @var $category Category */
-        foreach ($categories as $category) {
-            $categoryList[$category->getId()] = array('category' => $category, 'group' => array());
+        $category = null;
+        $categoryList = array();
+        foreach ($tournament->getCategories() as $cat) {
+            $categoryList[] = array('category' => $cat, 'groups' => $cat->getGroupsClassified(Group::$PRE));
+            if ($cat->getId() == $categoryid) {
+                $category = $cat;
+            }
+        }
+
+        $groupList = array();
+        if ($category) {
+            $mincount = $category->getTopteams();
             $groups = $category->getGroupsClassified(Group::$PRE);
             /* @var $group Group */
             foreach ($groups as $group) {
                 $teams = count($this->get('logic')->listTeamsByGroup($group->getId()));
-                $categoryList[$category->getId()]['group'][] = array('obj' => $group, 'cnt' => $teams);
+                if ($teams > 0) {
+                    $groupList[] = array('group' => $group, 'count' => $teams);
+                    $mincount = min($mincount, $teams);
+                }
+            }
+            $matchForm = array('strategy' => $category->getStrategy(), 'trophys' => $category->getTrophys(), 'topteams' => $mincount);
+        }
+        else {
+            $matchForm = array('strategy' => 0, 'trophys' => 0, 'topteams' => 0);
+        }
+        $form = $this->makeMatchForm($matchForm, count($groupList));
+        $form->handleRequest($request);
+        if ($category && $form->isValid()) {
+            $matchForm = $form->getData();
+            $category->setStrategy($matchForm['strategy']);
+            $category->setTrophys($matchForm['trophys']);
+            $category->setTopteams($matchForm['topteams']);
+            $em = $this->getDoctrine()->getManager();
+            $em->flush();
+        }
+        return array(
+            'form' => $form->createView(),
+            'host' => $host,
+            'tournament' => $tournament,
+            'category' => $category,
+            'categoryList' => $categoryList,
+            'groupList' => $groupList);
+    }
+
+    private function makeMatchForm($matchForm, $noofgroups) {
+        $show = true;
+
+        $formDef = $this->createFormBuilder($matchForm);
+        switch ($noofgroups) {
+            case 0: {
+                $formDef->add('strategy', 'choice', array(
+                    'label' => 'FORM.QMATCHPLANNING.GROUP.ZERO',
+                    'placeholder' => false,
+                    'choices' => array(
+                        '0' => 'FORM.QMATCHPLANNING.RADIO.GROUP0.OPTION0'),
+                    'required' => false,
+                    'disabled' => !$show,
+                    'translation_domain' => 'admin',
+                    'expanded' => true,
+                    'multiple' => false));
+                break;
+            }
+            case 1: {
+                $formDef->add('strategy', 'choice', array(
+                    'label' => 'FORM.QMATCHPLANNING.GROUP.ONE',
+                    'placeholder' => false,
+                    'choices' => array(
+                        '0' => 'FORM.QMATCHPLANNING.RADIO.GROUP1.OPTION0',
+                        '1' => 'FORM.QMATCHPLANNING.RADIO.GROUP1.OPTION1',
+                        '2' => 'FORM.QMATCHPLANNING.RADIO.GROUP1.OPTION2'),
+                    'required' => false,
+                    'disabled' => !$show,
+                    'translation_domain' => 'admin',
+                    'expanded' => true,
+                    'multiple' => false));
+                break;
+            }
+            case 2: {
+                $formDef->add('strategy', 'choice', array(
+                    'label' => 'FORM.QMATCHPLANNING.GROUP.TWO',
+                    'placeholder' => false,
+                    'choices' => array(
+                        '0' => 'FORM.QMATCHPLANNING.RADIO.GROUP2.OPTION0',
+                        '1' => 'FORM.QMATCHPLANNING.RADIO.GROUP2.OPTION1',
+                        '2' => 'FORM.QMATCHPLANNING.RADIO.GROUP2.OPTION2',
+                        '3' => 'FORM.QMATCHPLANNING.RADIO.GROUP2.OPTION3'),
+                    'required' => false,
+                    'disabled' => !$show,
+                    'translation_domain' => 'admin',
+                    'expanded' => true,
+                    'multiple' => false));
+                break;
+            }
+            case 3: {
+                $formDef->add('strategy', 'choice', array(
+                    'label' => 'FORM.QMATCHPLANNING.GROUP.THREE',
+                    'placeholder' => false,
+                    'choices' => array(
+                        '0' => 'FORM.QMATCHPLANNING.RADIO.GROUP3.OPTION0',
+                        '1' => 'FORM.QMATCHPLANNING.RADIO.GROUP3.OPTION1',
+                        '2' => 'FORM.QMATCHPLANNING.RADIO.GROUP3.OPTION2'),
+                    'required' => false,
+                    'disabled' => !$show,
+                    'translation_domain' => 'admin',
+                    'expanded' => true,
+                    'multiple' => false));
+                break;
+            }
+            case 4: {
+                $formDef->add('strategy', 'choice', array(
+                    'label' => 'FORM.QMATCHPLANNING.GROUP.FOUR',
+                    'placeholder' => false,
+                    'choices' => array(
+                        '0' => 'FORM.QMATCHPLANNING.RADIO.GROUP4.OPTION0',
+                        '1' => 'FORM.QMATCHPLANNING.RADIO.GROUP4.OPTION1',
+                        '2' => 'FORM.QMATCHPLANNING.RADIO.GROUP4.OPTION2'),
+                    'required' => false,
+                    'disabled' => !$show,
+                    'translation_domain' => 'admin',
+                    'expanded' => true,
+                    'multiple' => false));
+                break;
             }
         }
-        uasort($categoryList, function ($cat1, $cat2) {
-            return count($cat1['group']) < count($cat2['group']) ? 1 : (count($cat1['group']) == count($cat2['group']) ? 0 : -1);
-        });
 
-        return array('host' => $host,
-                     'tournament' => $tournament,
-                     'catlist' => $categoryList);
+        $formDef->add('trophys', 'text', array('label' => 'FORM.QMATCHPLANNING.PROMPT.TROPHYS',
+            'required' => false,
+            'help' => 'FORM.QMATCHPLANNING.HELP.TROPHYS',
+            'icon' => 'fa fa-lg fa-trophy',
+            'translation_domain' => 'admin'));
+        $formDef->add('topteams', 'text', array('label' => 'FORM.QMATCHPLANNING.PROMPT.TOPTEAMS',
+            'required' => false,
+            'help' => 'FORM.QMATCHPLANNING.HELP.TOPTEAMS',
+            'icon' => 'fa fa-lg fa-random',
+            'translation_domain' => 'admin'));
+        $formDef->add('save', 'submit', array('label' => 'FORM.QMATCHPLANNING.SUBMIT',
+            'translation_domain' => 'admin',
+            'icon' => 'fa fa-check'));
+        return $formDef->getForm();
+    }
+
+    /**
+     * Select category for assignment of teams to groups
+     * @Route("/edit/m/groups/selcat/{tournamentid}/{categoryid}", name="_edit_match_planning_groups_select_category")
+     */
+    public function selectCategoryAction($tournamentid, $categoryid, Request $request) {
+        $tournament = $this->checkArgs($tournamentid);
+        $category = $this->get('entity')->getCategoryById($categoryid);
+        if ($category->getTournament()->getId() == $tournament->getId()) {
+            $request->getSession()->set('admin.group.plan.category', $category->getId());
+        }
+        return $this->redirect($this->generateUrl("_edit_match_planning_groups", array('tournamentid' => $tournament->getId())));
     }
 
     /**
@@ -147,7 +282,7 @@ class MatchPlanningController extends Controller
                 $form->addError(new FormError($this->get('translator')->trans('FORM.MATCHPLANNING.NOFILE', array(), 'admin')));
             }
         }
-        $result = $this->get('planning')->getSchedule($tournamentid);
+        $result = $this->get('planning')->getSchedule($tournament);
         $host = $tournament->getHost();
         return array('host' => $host,
                      'tournament' => $tournament,
@@ -352,9 +487,8 @@ class MatchPlanningController extends Controller
         $tournament = $this->checkArgs($tournamentid);
         $options = new PlanningOptions();
         $options->setDoublematch($tournament->getOption()->isDrr());
-        $options->setFinals(false);
         $options->setPreferpg(false);
-        $this->get('planning')->planTournament($tournament->getId(), $options);
+        $this->get('planning')->planTournament($tournament, $options);
         return $this->redirect($this->generateUrl("_edit_match_planning_result", array('tournamentid' => $tournament->getId())));
     }
 
@@ -365,7 +499,7 @@ class MatchPlanningController extends Controller
      */
     public function saveMatchesAction($tournamentid, Request $request) {
         $tournament = $this->checkArgs($tournamentid);
-        $result = $this->get('planning')->getSchedule($tournamentid);
+        $result = $this->get('planning')->getSchedule($tournament);
 
         // Only if tournament has not been started we are allowed to wipe the teams
         if ($this->get('tmnt')->getTournamentStatus($tournamentid, new DateTime()) == TournamentSupport::$TMNT_ENROLL) {
@@ -429,7 +563,7 @@ class MatchPlanningController extends Controller
      */
     public function viewMatchesAction($tournamentid) {
         $tournament = $this->checkArgs($tournamentid);
-        $result = $this->get('planning')->getSchedule($tournamentid);
+        $result = $this->get('planning')->getSchedule($tournament);
 
         $matches = array();
         /* @var $match MatchPlan */
@@ -451,7 +585,7 @@ class MatchPlanningController extends Controller
      */
     public function listAdvicesAction($tournamentid) {
         $tournament = $this->checkArgs($tournamentid);
-        $result = $this->get('planning')->getSchedule($tournamentid);
+        $result = $this->get('planning')->getSchedule($tournament);
 
         $timeslots = array();
         foreach ($result['timeslots'] as $ts) {
@@ -473,7 +607,7 @@ class MatchPlanningController extends Controller
      */
     public function solveAction($tournamentid, $matchid) {
         $tournament = $this->checkArgs($tournamentid);
-        $result = $this->get('planning')->getSchedule($tournamentid);
+        $result = $this->get('planning')->getSchedule($tournament);
         $this->get('planning')->solveMatch($tournamentid, $matchid, $result);
         return $this->redirect($this->generateUrl("_edit_match_planning_result", array('tournamentid' => $tournament->getId())));
     }
@@ -549,7 +683,7 @@ class MatchPlanningController extends Controller
     public function downloadFileAction($tournamentid)
     {
         $tournament = $this->checkArgs($tournamentid);
-        $result = $this->get('planning')->getSchedule($tournamentid);
+        $result = $this->get('planning')->getSchedule($tournament);
 
         $outputar = $this->getResponses($result);
         $tmpfname = tempnam("/tmp", "icup_match_plan_");

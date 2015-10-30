@@ -12,6 +12,7 @@ use ICup\Bundle\PublicSiteBundle\Entity\Doctrine\Group;
 use ICup\Bundle\PublicSiteBundle\Entity\Doctrine\GroupOrder;
 use ICup\Bundle\PublicSiteBundle\Entity\Doctrine\MatchSchedule;
 use ICup\Bundle\PublicSiteBundle\Entity\Doctrine\PlaygroundAttribute;
+use ICup\Bundle\PublicSiteBundle\Entity\Doctrine\QMatchSchedule;
 use ICup\Bundle\PublicSiteBundle\Entity\Doctrine\Team;
 use ICup\Bundle\PublicSiteBundle\Entity\Doctrine\Tournament;
 use ICup\Bundle\PublicSiteBundle\Entity\Doctrine\User;
@@ -470,25 +471,67 @@ class BusinessLogic
         return $this->entity->getPlaygroundAttributeRepo()->findOneBy(array('playground' => $playgroundid, 'date' => $date, 'start' => $start));
     }
 
-    public function listMatchSchedules($tournamentid) {
-        return $this->entity->getMatchScheduleRepo()->findBy(array('tournament' => $tournamentid));
+    /**
+     * List match schedules ordered by match time ascending
+     * Unassigned match schedules are sorted at the end of the list
+     * @param Tournament $tournament
+     * @return array sorted match schedule list
+     */
+    public function listMatchSchedules(Tournament $tournament) {
+        $matchschedules = $this->entity->getMatchScheduleRepo()->findBy(array('tournament' => $tournament->getId()));
+        usort($matchschedules, function (MatchSchedule $ms1, MatchSchedule $ms2) {
+            if ($ms1->getPlan() && $ms2->getPlan()) {
+                $schedule1 = Date::getDateTime($ms1->getPlan()->getPlaygroundAttribute()->getDate(), $ms1->getPlan()->getMatchstart());
+                $schedule2 = Date::getDateTime($ms2->getPlan()->getPlaygroundAttribute()->getDate(), $ms2->getPlan()->getMatchstart());
+                return min(1, max(-1, $schedule1->getTimestamp() - $schedule2->getTimestamp()));
+            }
+            return (!$ms2->getPlan() ? 0 : 1) - (!$ms1->getPlan() ? 0 : 1);
+        });
+        return $matchschedules;
+    }
+
+    /**
+     * List qualifying match schedules ordered by match time ascending
+     * Unassigned match schedules are sorted at the end of the list
+     * @param Tournament $tournament
+     * @return array sorted match schedule list
+     */
+    public function listQMatchSchedules(Tournament $tournament) {
+        $qmatchschedules = $this->entity->getQMatchScheduleRepo()->findBy(array('tournament' => $tournament->getId()));
+        usort($qmatchschedules, function (QMatchSchedule $ms1, QMatchSchedule $ms2) {
+            if ($ms1->getPlan() && $ms2->getPlan()) {
+                $schedule1 = Date::getDateTime($ms1->getPlan()->getPlaygroundAttribute()->getDate(), $ms1->getPlan()->getMatchstart());
+                $schedule2 = Date::getDateTime($ms2->getPlan()->getPlaygroundAttribute()->getDate(), $ms2->getPlan()->getMatchstart());
+                return min(1, max(-1, $schedule1->getTimestamp() - $schedule2->getTimestamp()));
+            }
+            return (!$ms2->getPlan() ? 0 : 1) - (!$ms1->getPlan() ? 0 : 1);
+        });
+        return $qmatchschedules;
     }
 
     public function listMatchAlternatives($matchscheduleid) {
         return $this->entity->getMatchAlternativeRepo()->findBy(array('matchschedule' => $matchscheduleid));
     }
 
-    public function removeMatchSchedules($tournamentid) {
+    public function removeMatchSchedules(Tournament $tournament) {
         // wipe matchalternatives
         $qba = $this->em->createQuery(
             "delete from ".$this->entity->getRepositoryPath('MatchAlternative')." m ".
             "where m.matchschedule in (select ms.id ".
                             "from ".$this->entity->getRepositoryPath('MatchSchedule')." ms ".
                             "where ms.tournament=:tournament)");
-        $qba->setParameter('tournament', $tournamentid);
+        $qba->setParameter('tournament', $tournament->getId());
         $qba->getResult();
         // wipe matchschedules
-        foreach ($this->listMatchSchedules($tournamentid) as $ms) {
+        foreach ($this->listMatchSchedules($tournament) as $ms) {
+            $this->em->remove($ms);
+        }
+        $this->em->flush();
+    }
+
+    public function removeQMatchSchedules(Tournament $tournament) {
+        // wipe qmatchschedules
+        foreach ($this->listQMatchSchedules($tournament) as $ms) {
             $this->em->remove($ms);
         }
         $this->em->flush();

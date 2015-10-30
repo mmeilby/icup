@@ -26,7 +26,7 @@ class MatchSchedule
      * @var Tournament $tournament
      * Relation to Tournament
      * @ORM\ManyToOne(targetEntity="Tournament")
-     * @ORM\JoinColumn(name="pid", referencedColumnName="id")
+     * @ORM\JoinColumn(name="pid", referencedColumnName="id", nullable=true)
      */
     protected $tournament;
 
@@ -41,7 +41,7 @@ class MatchSchedule
     /**
      * @var MatchSchedulePlan $plan
      * Relation to MatchSchedulePlan
-     * @ORM\OneToOne(targetEntity="MatchSchedulePlan", cascade={"persist", "remove"}, orphanRemoval=true)
+     * @ORM\OneToOne(targetEntity="MatchSchedulePlan", cascade={"persist", "remove"})
      */
     protected $plan;
 
@@ -53,18 +53,10 @@ class MatchSchedule
     protected $matchrelation;
 
     /**
-     * @var ArrayCollection $qmatchrelation
-     * Collection of match relations to qualifying prerequisites
-     * @ORM\OneToMany(targetEntity="QMatchScheduleRelation", mappedBy="matchSchedule", cascade={"persist", "remove"})
-     */
-    protected $qmatchrelation;
-
-    /**
      * MatchSchedule constructor.
      */
     public function __construct() {
         $this->matchrelation = new ArrayCollection();
-        $this->qmatchrelation = new ArrayCollection();
     }
 
     /**
@@ -127,23 +119,11 @@ class MatchSchedule
     }
 
     /**
-     * @return ArrayCollection
-     */
-    public function getQMatchRelations() {
-        return $this->qmatchrelation;
-    }
-
-    /**
-     * @param MatchScheduleRelation|QMatchScheduleRelation $matchRelation
+     * @param MatchScheduleRelation $matchRelation
      * @return MatchSchedule
      */
     public function addMatchRelation($matchRelation) {
-        if ($matchRelation instanceof MatchScheduleRelation) {
-            $this->matchrelation->add($matchRelation);
-        }
-        else {
-            $this->qmatchrelation->add($matchRelation);
-        }
+        $this->matchrelation->add($matchRelation);
         $matchRelation->setMatchSchedule($this);
         return $this;
     }

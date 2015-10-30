@@ -1,8 +1,9 @@
 To Do List
 ----------
-Kig på Indlæs kampplan til slutrunde/Påsæt hold til slutrunde - lav generel import funktion under planlæg turnering
+Definer champions ved gem af kampplan
 Planlæg slutrunde kampe og puljer
 Færdiggørelse af planlæg indledende kampe
+Kig på Indlæs kampplan til slutrunde/Påsæt hold til slutrunde - lav generel import funktion under planlæg turnering
 Administrer kobling mellem nyheder og hold/kampe
 Registreringssystem for indrul
 Popup med info om klub/hold og gruppe for hver pokal under "Vindende lande" og "Vindende klubber"
@@ -17,6 +18,14 @@ Søgning efter turnering skal tage udgangspunkt i valg af turneringsvært
 Dommerpåsætning - dommernationaltet skal sikre at man ikke dømmer for eget land
 Genåbn konto som turneringsansvarlig
 Overfør hold til en anden klub (indsæt nyt hold på samme plads i pulje)
+
+PROCES
+------
+Opret bruger
+Opret organisation (navn, kontaktperson, adresse, email, telefon, facebook, twitter, website)
+Opret turnering
+
+Venue = bane?
 
 Done List
 ---------

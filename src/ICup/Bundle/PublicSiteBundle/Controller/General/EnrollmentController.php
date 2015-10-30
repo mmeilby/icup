@@ -12,7 +12,7 @@ class EnrollmentController extends Controller
 {
     /**
      * @Route("/enrollment/step1", name="_enrollment_step1")
-     * @Template("ICupPublicSiteBundle:General:enrollment_step1.html.twig")
+     * @Template("ICupPublicSiteBundle:General:enrollment/enrollment_step1.html.twig")
      */
     public function showEnrollment(Request $request)
     {
@@ -21,14 +21,14 @@ class EnrollmentController extends Controller
         $form->handleRequest($request);
         if ($form->isValid()) {
             $request->getSession()->set('enrollform', $enrollform);
-            $this->redirectToRoute('_enrollment_step2');
+            return $this->redirectToRoute('_enrollment_step2');
         }
         return array('form' => $form->createView());
     }
     
     /**
      * @Route("/enrollment/step2", name="_enrollment_step2")
-     * @Template("ICupPublicSiteBundle:General:enrollment_step2.html.twig")
+     * @Template("ICupPublicSiteBundle:General:enrollment/enrollment_step2.html.twig")
      */
     public function showEnrollmentStep2(Request $request)
     {
@@ -37,14 +37,14 @@ class EnrollmentController extends Controller
         $form->handleRequest($request);
         if ($form->isValid()) {
             $request->getSession()->set('enrollform', $enrollform);
-            $this->redirectToRoute('_enrollment_step3');
+            return $this->redirectToRoute('_enrollment_step3');
         }
         return array('form' => $form->createView());
     }
     
     /**
      * @Route("/enrollment/step3", name="_enrollment_step3")
-     * @Template("ICupPublicSiteBundle:General:enrollment_step3.html.twig")
+     * @Template("ICupPublicSiteBundle:General:enrollment/enrollment_step3.html.twig")
      */
     public function showEnrollmentStep3(Request $request)
     {
@@ -53,14 +53,14 @@ class EnrollmentController extends Controller
         $form->handleRequest($request);
         if ($form->isValid()) {
             $request->getSession()->set('enrollform', $enrollform);
-            $this->redirectToRoute('_enrollment_step4');
+            return $this->redirectToRoute('_enrollment_step4');
         }
         return array('form' => $form->createView());
     }
     
     /**
      * @Route("/enrollment/step4", name="_enrollment_step4")
-     * @Template("ICupPublicSiteBundle:General:enrollment_step4.html.twig")
+     * @Template("ICupPublicSiteBundle:General:enrollment/enrollment_step4.html.twig")
      */
     public function showEnrollmentStep4(Request $request)
     {
@@ -69,14 +69,14 @@ class EnrollmentController extends Controller
         $form->handleRequest($request);
         if ($form->isValid()) {
             $request->getSession()->set('enrollform', $enrollform);
-            $this->redirectToRoute('_enrollment_step5');
+            return $this->redirectToRoute('_enrollment_step5');
         }
         return array('form' => $form->createView());
     }
     
     /**
      * @Route("/enrollment/step5", name="_enrollment_step5")
-     * @Template("ICupPublicSiteBundle:General:enrollment_step5.html.twig")
+     * @Template("ICupPublicSiteBundle:General:enrollment/enrollment_step5.html.twig")
      */
     public function showEnrollmentStep5(Request $request)
     {
@@ -85,7 +85,7 @@ class EnrollmentController extends Controller
         $form->handleRequest($request);
         if ($form->isValid()) {
             $request->getSession()->set('enrollform', $enrollform);
-            $this->redirectToRoute('_enrollment');
+            return $this->redirectToRoute('_enrollment');
         }
         return array('form' => $form->createView());
     }
@@ -107,7 +107,7 @@ class EnrollmentController extends Controller
         $formDef->add('bestresult', 'text', array('label' => 'FORM.ENROLLMENT.BESTRESULT', 'phonestyle' => true, 'required' => false, 'disabled' => false, 'translation_domain' => 'club'));
         $formDef->add('send', 'submit', array('label' => 'FORM.ENROLLMENT.SUBMIT',
                                                 'translation_domain' => 'club',
-                                                'icon' => 'fa fa-envelope'));
+                                                'icon' => 'fa fa-ticket'));
         return $formDef->getForm();
     }
 
@@ -124,7 +124,7 @@ class EnrollmentController extends Controller
         $formDef->add('m_email', 'text', array('label' => 'FORM.ENROLLMENT.M_EMAIL', 'phonestyle' => true, 'required' => false, 'disabled' => false, 'translation_domain' => 'club'));
         $formDef->add('send', 'submit', array('label' => 'FORM.ENROLLMENT.SUBMIT',
                                                 'translation_domain' => 'club',
-                                                'icon' => 'fa fa-envelope'));
+                                                'icon' => 'fa fa-ticket'));
         return $formDef->getForm();
     }
 
@@ -144,42 +144,42 @@ class EnrollmentController extends Controller
         $formDef->add('t_fu12', 'text', array('label' => 'FORM.ENROLLMENT.FU12', 'phonestyle' => true, 'required' => false, 'disabled' => false, 'translation_domain' => 'club'));
         $formDef->add('send', 'submit', array('label' => 'FORM.ENROLLMENT.SUBMIT',
                                                 'translation_domain' => 'club',
-                                                'icon' => 'fa fa-envelope'));
+                                                'icon' => 'fa fa-ticket'));
         return $formDef->getForm();
     }
         
     private function makeEnrollmentFormStep4(Enrollment $enrollment) {
         $formDef = $this->createFormBuilder($enrollment);
-        $formDef->add('a_teramo_wb', 'text', array('label' => 'FORM.ENROLLMENT.A_TERAMO_WB', 'phonestyle' => true, 'required' => false, 'disabled' => false, 'translation_domain' => 'club'));
         $formDef->add('a_teramo_wob', 'text', array('label' => 'FORM.ENROLLMENT.A_TERAMO_WOB', 'phonestyle' => true, 'required' => false, 'disabled' => false, 'translation_domain' => 'club'));
+        $formDef->add('a_teramo_wb', 'text', array('label' => 'FORM.ENROLLMENT.A_TERAMO_WB', 'phonestyle' => true, 'required' => false, 'disabled' => false, 'translation_domain' => 'club'));
         $formDef->add('a_teramo_tent', 'text', array('label' => 'FORM.ENROLLMENT.A_TERAMO_TENT', 'phonestyle' => true, 'required' => false, 'disabled' => false, 'translation_domain' => 'club'));
-        $formDef->add('a_guilianova_tent', 'text', array('label' => 'FORM.ENROLLMENT.A_GUILIANOVA_TENT', 'phonestyle' => true, 'required' => false, 'disabled' => false, 'translation_domain' => 'club'));
-        $formDef->add('a_restaurant', 'text', array('label' => 'FORM.ENROLLMENT.A_RESTAURANT', 'phonestyle' => true, 'required' => false, 'disabled' => false, 'translation_domain' => 'club'));
         $formDef->add('a_teramo_hotel', 'text', array('label' => 'FORM.ENROLLMENT.A_TERAMO_HOTEL', 'phonestyle' => true, 'required' => false, 'disabled' => false, 'translation_domain' => 'club'));
+        $formDef->add('a_guilianova_tent', 'text', array('label' => 'FORM.ENROLLMENT.A_GUILIANOVA_TENT', 'phonestyle' => true, 'required' => false, 'disabled' => false, 'translation_domain' => 'club'));
         $formDef->add('a_guilianova_hotel', 'text', array('label' => 'FORM.ENROLLMENT.A_GUILIANOVA_HOTEL', 'phonestyle' => true, 'required' => false, 'disabled' => false, 'translation_domain' => 'club'));
+        $formDef->add('a_restaurant', 'text', array('label' => 'FORM.ENROLLMENT.A_RESTAURANT', 'phonestyle' => true, 'required' => false, 'disabled' => false, 'translation_domain' => 'club'));
         $formDef->add('a_other', 'text', array('label' => 'FORM.ENROLLMENT.A_OTHER', 'phonestyle' => true, 'required' => false, 'disabled' => false, 'translation_domain' => 'club'));
         $formDef->add('a_none', 'text', array('label' => 'FORM.ENROLLMENT.A_NONE', 'phonestyle' => true, 'required' => false, 'disabled' => false, 'translation_domain' => 'club'));
         $formDef->add('send', 'submit', array('label' => 'FORM.ENROLLMENT.SUBMIT',
                                                 'translation_domain' => 'club',
-                                                'icon' => 'fa fa-envelope'));
+                                                'icon' => 'fa fa-ticket'));
         return $formDef->getForm();
     }
 
     private function makeEnrollmentFormStep5(Enrollment $enrollment) {
         $formDef = $this->createFormBuilder($enrollment);
-        $formDef->add('arrival_date', 'text', array('label' => 'FORM.ENROLLMENT.CLUB', 'phonestyle' => true, 'required' => false, 'disabled' => false, 'translation_domain' => 'club'));
-        $formDef->add('arrival_time', 'text', array('label' => 'FORM.ENROLLMENT.CLUB', 'phonestyle' => true, 'required' => false, 'disabled' => false, 'translation_domain' => 'club'));
-        $formDef->add('departure_date', 'text', array('label' => 'FORM.ENROLLMENT.CLUB', 'phonestyle' => true, 'required' => false, 'disabled' => false, 'translation_domain' => 'club'));
-        $formDef->add('departure_time', 'text', array('label' => 'FORM.ENROLLMENT.CLUB', 'phonestyle' => true, 'required' => false, 'disabled' => false, 'translation_domain' => 'club'));
+        $formDef->add('arrival_date', 'text', array('label' => 'FORM.ENROLLMENT.ARRIVAL_DATE', 'phonestyle' => true, 'required' => false, 'disabled' => false, 'translation_domain' => 'club'));
+        $formDef->add('arrival_time', 'text', array('label' => 'FORM.ENROLLMENT.ARRIVAL_TIME', 'phonestyle' => true, 'required' => false, 'disabled' => false, 'translation_domain' => 'club'));
+        $formDef->add('departure_date', 'text', array('label' => 'FORM.ENROLLMENT.DEPARTURE_DATE', 'phonestyle' => true, 'required' => false, 'disabled' => false, 'translation_domain' => 'club'));
+        $formDef->add('departure_time', 'text', array('label' => 'FORM.ENROLLMENT.DEPARTURE_TIME', 'phonestyle' => true, 'required' => false, 'disabled' => false, 'translation_domain' => 'club'));
 
-        $formDef->add('b_arrival', 'check', array('label' => 'FORM.ENROLLMENT.MSG', 'phonestyle' => true, 'required' => false, 'disabled' => false, 'translation_domain' => 'club'));
-        $formDef->add('b_arrival_airport', 'text', array('label' => 'FORM.ENROLLMENT.CLUB', 'phonestyle' => true, 'required' => false, 'disabled' => false, 'translation_domain' => 'club'));
-        $formDef->add('b_arrival_date', 'text', array('label' => 'FORM.ENROLLMENT.CLUB', 'phonestyle' => true, 'required' => false, 'disabled' => false, 'translation_domain' => 'club'));
-        $formDef->add('b_arrival_time', 'text', array('label' => 'FORM.ENROLLMENT.CLUB', 'phonestyle' => true, 'required' => false, 'disabled' => false, 'translation_domain' => 'club'));
-        $formDef->add('b_departure', 'check', array('label' => 'FORM.ENROLLMENT.MSG', 'phonestyle' => true, 'required' => false, 'disabled' => false, 'translation_domain' => 'club'));
-        $formDef->add('b_departure_airport', 'text', array('label' => 'FORM.ENROLLMENT.CLUB', 'phonestyle' => true, 'required' => false, 'disabled' => false, 'translation_domain' => 'club'));
-        $formDef->add('b_departure_date', 'text', array('label' => 'FORM.ENROLLMENT.CLUB', 'phonestyle' => true, 'required' => false, 'disabled' => false, 'translation_domain' => 'club'));
-        $formDef->add('b_departure_time', 'text', array('label' => 'FORM.ENROLLMENT.CLUB', 'phonestyle' => true, 'required' => false, 'disabled' => false, 'translation_domain' => 'club'));
+        $formDef->add('b_arrival', 'choice', array('label' => 'FORM.ENROLLMENT.B_ARRIVAL', 'phonestyle' => true, 'required' => false, 'disabled' => false, 'translation_domain' => 'club'));
+        $formDef->add('b_arrival_airport', 'text', array('label' => 'FORM.ENROLLMENT.B_ARRIVAL_AIRPORT', 'phonestyle' => true, 'required' => false, 'disabled' => false, 'translation_domain' => 'club'));
+        $formDef->add('b_arrival_date', 'text', array('label' => 'FORM.ENROLLMENT.B_ARRIVAL_DATE', 'phonestyle' => true, 'required' => false, 'disabled' => false, 'translation_domain' => 'club'));
+        $formDef->add('b_arrival_time', 'text', array('label' => 'FORM.ENROLLMENT.B_ARRIVAL_TIME', 'phonestyle' => true, 'required' => false, 'disabled' => false, 'translation_domain' => 'club'));
+        $formDef->add('b_departure', 'choice', array('label' => 'FORM.ENROLLMENT.B_DEPARTURE', 'phonestyle' => true, 'required' => false, 'disabled' => false, 'translation_domain' => 'club'));
+        $formDef->add('b_departure_airport', 'text', array('label' => 'FORM.ENROLLMENT.B_DEPARTURE_AIRPORT', 'phonestyle' => true, 'required' => false, 'disabled' => false, 'translation_domain' => 'club'));
+        $formDef->add('b_departure_date', 'text', array('label' => 'FORM.ENROLLMENT.B_DEPARTURE_DATE', 'phonestyle' => true, 'required' => false, 'disabled' => false, 'translation_domain' => 'club'));
+        $formDef->add('b_departure_time', 'text', array('label' => 'FORM.ENROLLMENT.B_DEPARTURE_TIME', 'phonestyle' => true, 'required' => false, 'disabled' => false, 'translation_domain' => 'club'));
         $formDef->add('send', 'submit', array('label' => 'FORM.ENROLLMENT.SUBMIT',
                                                 'translation_domain' => 'club',
                                                 'icon' => 'fa fa-envelope'));

@@ -7,7 +7,7 @@ use Doctrine\ORM\Mapping as ORM;
 /**
  * ICup\Bundle\PublicSiteBundle\Entity\Doctrine\News
  *
- * @ORM\Table(name="news",uniqueConstraints={@ORM\UniqueConstraint(name="IdxByNo", columns={"pid", "newsno", "language"})})
+ * @ORM\Table(name="news",uniqueConstraints={@ORM\UniqueConstraint(name="NewsNoConstraint", columns={"pid", "newsno", "language"})})
  * @ORM\Entity
  */
 class News

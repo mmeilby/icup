@@ -3,6 +3,7 @@
 namespace ICup\Bundle\PublicSiteBundle\Services\Entity;
 
 use DateTime;
+use ICup\Bundle\PublicSiteBundle\Entity\Doctrine\Category;
 use ICup\Bundle\PublicSiteBundle\Entity\Doctrine\Timeslot;
 use ICup\Bundle\PublicSiteBundle\Entity\Doctrine\Playground;
 use ICup\Bundle\PublicSiteBundle\Entity\Doctrine\PlaygroundAttribute as PA;
@@ -41,16 +42,14 @@ class PlaygroundAttribute
 
     /**
      * @var string $schedule
-     * Date for this calendar event
+     * Current available time for this timeslot
      */
     private $schedule;
 
     /**
-     * @var string $timeleft
-     * Calendar event start time - HH:MM
+     * @var array $matchlist
+     * List of matches allocated to this timeslot
      */
-    private $timeleft;
-    
     private $matchlist;
 
     /**
@@ -192,35 +191,49 @@ class PlaygroundAttribute
     }
 
     /**
-     * Set start time
-     *
-     * @param integer $start
+     * @param $matchlist
      * @return PlaygroundAttribute
      */
-    public function setTimeleft($timeleft)
-    {
-        $this->timeleft = $timeleft;
-    
+    public function setMatchlist($matchlist) {
+        $this->matchlist = $matchlist;
+
         return $this;
     }
 
     /**
-     * Get start time
+     * @return array
+     */
+    public function getMatchlist() {
+        return $this->matchlist;
+    }
+
+    /**
+     * Get slot time left for this attribute
      *
      * @return integer 
      */
     public function getTimeleft()
     {
-        return $this->timeleft;
+        $diff = $this->getPA()->getEndSchedule()->diff($this->getSchedule());
+        return $diff->d*24*60 + $diff->h*60 + $diff->i;
     }
-    
-    public function setMatchlist($matchlist) {
-        $this->matchlist = $matchlist;
-        
-        return $this;
+
+    /**
+     * Get list of category names
+     *
+     * @return integer
+     */
+    public function getCategoryNames()
+    {
+        $names = array();
+        foreach ($this->getCategories() as $category) {
+            /* @var $category Category */
+            $names[] = $category->getName();
+        }
+        return $names;
     }
-    
-    public function getMatchlist() {
-        return $this->matchlist;
+
+    public function isCategoryAllowed(Category $category) {
+        return count($this->categories) == 0 || isset($this->categories[$category->getId()]);
     }
 }

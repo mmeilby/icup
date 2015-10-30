@@ -8,7 +8,7 @@ use Doctrine\ORM\Mapping as ORM;
 /**
  * ICup\Bundle\PublicSiteBundle\Entity\Doctrine\Category
  *
- * @ORM\Table(name="categories",uniqueConstraints={@ORM\UniqueConstraint(name="IdxByName", columns={"name", "pid"})})
+ * @ORM\Table(name="categories",uniqueConstraints={@ORM\UniqueConstraint(name="CategoryNameConstraint", columns={"name", "pid"})})
  * @ORM\Entity
  */
 class Category
@@ -39,24 +39,65 @@ class Category
 
     /**
      * @var string $gender
-     *
+     * Gender requirements for this category: F-female, M-male, X-mix sex
      * @ORM\Column(name="gender", type="string", length=1, nullable=false)
      */
     protected $gender;
 
     /**
      * @var string $classification
-     *
-     * @ORM\Column(name="classification", type="string", length=10, nullable=false)
+     * Age classification for this category: U-players must be youger, O-players should be older
+     * @ORM\Column(name="classification", type="string", length=1, nullable=false)
      */
     protected $classification;
 
     /**
      * @var string $age
-     *
-     * @ORM\Column(name="age", type="string", length=10, nullable=false)
+     * Age requirement/limit for players enrolled this category
+     * @ORM\Column(name="age", type="string", length=3, nullable=false)
      */
     protected $age;
+
+    /**
+     * @var integer $trophys
+     * Number of trophys available for the best teams in this category
+     * This would normally be 3 for first, second and third place
+     * @ORM\Column(name="trophys", type="integer", nullable=false)
+     */
+    protected $trophys;
+
+    /**
+     * @var integer $topteams
+     * The number of teams ranked for "A" elimination games. The other teams in a group qualify for "B" elimination games.
+     * @ORM\Column(name="topteams", type="integer", nullable=false)
+     */
+    protected $topteams;
+
+    /**
+     * @var integer $strategy
+     * Group planning strategy:
+     *   When no groups:
+     *     0: Gruppens hold spiller slutspil. A-slutspils seedede hold sidder over til senere runder
+     *   For one group:
+     *     0: De bedst placerede hold går til A-slutspil, resten går til B-slutspil
+     *     1: Fire bedst placerede hold går til semifinale
+     *     2: To bedst placerede hold går til finale
+     *   For 2 groups:
+     *     0: De bedst placerede hold går til A-slutspil, resten går til B-slutspil
+     *     1: Fire bedst placerede hold går til kvartfinale
+     *     2: To bedst placerede hold går til semifinale
+     *     3: Puljevindere går til finale
+     *   For 3 groups:
+     *     0: De bedst placerede hold går til A-slutspil, resten går til B-slutspil
+     *     1: Puljevindere går til semifinale, pulje 2-ere mødes i playoff
+     *     2: To bedst placerede hold går til kvartfinale, pulje 3-ere og 4-ere går i playoff
+     *   For 4 and more groups:
+     *     0: De bedst placerede hold går til A-slutspil, resten går til B-slutspil
+     *     1: To bedst placerede hold går til kvartfinale
+     *     2: Puljevindere går til semifinale
+     * @ORM\Column(name="strategy", type="integer", nullable=false)
+     */
+    protected $strategy;
 
     /**
      * @var integer $matchtime
@@ -247,6 +288,54 @@ class Category
     }
 
     /**
+     * @return int
+     */
+    public function getTrophys() {
+        return $this->trophys;
+    }
+
+    /**
+     * @param int $trophys
+     * @return Category
+     */
+    public function setTrophys($trophys) {
+        $this->trophys = $trophys;
+        return $this;
+    }
+
+    /**
+     * @return int
+     */
+    public function getTopteams() {
+        return $this->topteams;
+    }
+
+    /**
+     * @param int $topteams
+     * @return Category
+     */
+    public function setTopteams($topteams) {
+        $this->topteams = $topteams;
+        return $this;
+    }
+
+    /**
+     * @return int
+     */
+    public function getStrategy() {
+        return $this->strategy;
+    }
+
+    /**
+     * @param int $strategy
+     * @return Category
+     */
+    public function setStrategy($strategy) {
+        $this->strategy = $strategy;
+        return $this;
+    }
+
+    /**
      * @return ArrayCollection
      */
     public function getGroups() {
@@ -254,7 +343,7 @@ class Category
     }
 
     /**
-     * @return array
+     * @return ArrayCollection
      */
     public function getGroupsClassified($classification) {
         $groups = $this->groups->filter(function (Group $group) use ($classification) {
@@ -264,7 +353,7 @@ class Category
     }
 
     /**
-     * @return array
+     * @return ArrayCollection
      */
     public function getGroupsPlayoff() {
         $groups = $this->groups->filter(function (Group $group) {
@@ -274,13 +363,21 @@ class Category
     }
 
     /**
-     * @return array
+     * @return ArrayCollection
      */
     public function getGroupsFinals() {
         $groups = $this->groups->filter(function (Group $group) {
             return $group->getClassification() > Group::$PLAYOFF;
         });
         return $groups;
+    }
+
+    /**
+     * @return Group
+     */
+    public function getNthGroup($nth) {
+        $groups = $this->getGroupsClassified(Group::$PRE)->getValues();
+        return isset($groups[$nth-1]) ? $groups[$nth-1] : null;
     }
 
     /**

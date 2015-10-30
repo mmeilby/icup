@@ -277,4 +277,8 @@ class Team
         }
         return null;
     }
+
+    public function __toString() {
+        return $this->isVacant() ? $this->getTeamName() : $this->getTeamName()." (".$this->getClub()->getCountry().")";
+    }
 }

@@ -10,7 +10,7 @@ use Doctrine\ORM\Mapping as ORM;
  * This is one of the three basic entities: Hosts, Users and Clubs
  * A host is a top level entity. Only one host can use a specific name in the system.
  *
- * @ORM\Table(name="hosts", uniqueConstraints={@ORM\UniqueConstraint(name="NameConstraint", columns={"name"})})
+ * @ORM\Table(name="hosts", uniqueConstraints={@ORM\UniqueConstraint(name="HostNameConstraint", columns={"name"})})
  * @ORM\Entity
  */
 class Host

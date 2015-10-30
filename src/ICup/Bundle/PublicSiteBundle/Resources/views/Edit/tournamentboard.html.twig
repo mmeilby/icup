@@ -84,9 +84,9 @@
                             <h3 class="list-group-item-heading">{% trans %}FORM.TOURNAMENTBOARD.PLANNING.CAPTION{% endtrans %}</h3>
                             <p class="list-group-item-text">{% trans %}FORM.TOURNAMENTBOARD.PLANNING.DESCRIPTION{% endtrans %}</p>
                         </a>
-                        <a class="list-group-item" href="{{ path('_edit_import_qmatch', { 'tournamentid': tournament.id }) }}">
-                            <h3 class="list-group-item-heading">{% trans %}FORM.TOURNAMENTBOARD.QMATCHIMPORT.CAPTION{% endtrans %}</h3>
-                            <p class="list-group-item-text">{% trans %}FORM.TOURNAMENTBOARD.QMATCHIMPORT.DESCRIPTION{% endtrans %}</p>
+                        <a class="list-group-item" href="{{ path('_edit_import_match_unres', { 'tournamentid': tournament.id }) }}">
+                            <h3 class="list-group-item-heading">{% trans %}FORM.TOURNAMENTBOARD.MATCHIMPORTUNRES.CAPTION{% endtrans %}</h3>
+                            <p class="list-group-item-text">{% trans %}FORM.TOURNAMENTBOARD.MATCHIMPORTUNRES.DESCRIPTION{% endtrans %}</p>
                         </a>
                     </div>
                 </div>
@@ -103,10 +103,6 @@
                         <a class="list-group-item" href="{{ path('_edit_matchlist_print', { 'tournamentid': tournament.id, 'date': date()|date('d-m-Y') }) }}">
                             <h3 class="list-group-item-heading">{% trans %}FORM.TOURNAMENTBOARD.MATCHPRINT.CAPTION{% endtrans %}</h3>
                             <p class="list-group-item-text">{% trans %}FORM.TOURNAMENTBOARD.MATCHPRINT.DESCRIPTION{% endtrans %}</p>
-                        </a>
-                        <a class="list-group-item" href="{{ path('_edit_import_match_unres', { 'tournamentid': tournament.id }) }}">
-                            <h3 class="list-group-item-heading">{% trans %}FORM.TOURNAMENTBOARD.MATCHIMPORTUNRES.CAPTION{% endtrans %}</h3>
-                            <p class="list-group-item-text">{% trans %}FORM.TOURNAMENTBOARD.MATCHIMPORTUNRES.DESCRIPTION{% endtrans %}</p>
                         </a>
                     </div>
                 </div>

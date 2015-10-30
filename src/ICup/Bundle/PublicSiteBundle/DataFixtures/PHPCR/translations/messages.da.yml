@@ -269,6 +269,45 @@ enrollment:
             <p>Dog vil hold der med en rimelig begrundelse melder afbud skriftligt til stævnets sekretariat inden den 10. juni 2015
             kunne få depositum (gælder ikke depositum for hotelophold) og eventuelle deltagergebyr refunderet.</p>
             <p>Holdgebyr vil i alle tilfælde være tabt for hold der ikke deltager.</p>
+    categories:
+        title: DELTAGERE
+        body: >
+            <p>Deltagelse kan ske med ungdomshold - både drenge og piger - der spiller for en klub som hører under DHF eller DIF.
+            Hold der repræsenterer en by eller egn kan også deltage. Skolehold der er tilknyttet International School Sport
+            Federation er ligeledes berettiget til at deltage.</p>
+
+            <p>
+            <strong>Herre- og drengegrupper</strong><br />
+            A - Universitetshold<br />
+            B - Herrer<br />
+            C - Drenge under 18 (født 1998 og senere)<br />
+            D - Drenge under 16 (født 2000 og senere)<br />
+            E - Drenge under 14 (født 2002 og senere)<br />
+            F - Drenge under 12 (født 2004 og senere)
+            </p>
+
+            <p>
+            <strong>Dame- og pigegrupper</strong><br />
+            G - Universitetshold<br />
+            H - Damer<br />
+            I - Piger under 18 (født 1998 og senere)<br />
+            L - Piger under 16 (født 2000 og senere)<br />
+            M - Piger under 14 (født 2002 og senere)<br />
+            N - Piger under 12 (født 2004 og senere)
+            </p>
+
+            <p>
+            <strong>Gruppe A og G (universitetshold)</strong><br />
+            I forbindelse med samarbejdet mellem University of Teramo, Interamnia World Cup og "Erasmus Interamnia" er der
+            oprettet en særlig gruppe for hold af universitetsstuderende i alle aldre.
+            </p>
+
+            <p>
+            <strong>Gruppe B og H (Herre og Dame hold)</strong><br />
+            Disse grupper har været en fast del af turneringen gennem de sidste fire år, på opfordring fra klubber der er
+            særligt begejstrede for turneringen. Med disse grupper får voksne spillere mulighed for at deltage selvom de
+            er passeret de 18 år som er aldersgrænsen for ungdomsholdene.
+            </p>
 information:
     intro:
         title: Håndboldstævnet Interamnia World Cup afholdes for 43. gang

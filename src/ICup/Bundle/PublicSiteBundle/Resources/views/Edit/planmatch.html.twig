@@ -55,7 +55,7 @@
     <div class="row" style="margin-top: 10px; margin-bottom: 10px;">
         <div class="col-sm-6">
             <div class="list-group">
-                <a class="list-group-item" href="{{ path('_edit_match_planning_plan', { 'tournamentid': tournament.id }) }}">
+                <a id="plan" class="list-group-item">
                     <div class="row">
                         <div class="col-sm-3 text-center">
                             <span class="fa fa-magic fa-5x text-info"></span>
@@ -101,8 +101,28 @@
             </div>
         </div>
         <div class="col-sm-6">
-        {% if planned %}
-            {% if unassigned|length > 0 %}
+
+            <div id="progress_div" class="panel panel-primary" style="display: none">
+                <div class="panel-heading">
+                    <div class="row">
+                        <div class="col-sm-9">
+                            <h4 id="progress_title"></h4>
+                            <p id="progress_text"></p>
+                        </div>
+                        <div class="col-sm-3 text-center">
+                            <h4 class="fa fa-hourglass fa-5x"></h4>
+                        </div>
+                    </div>
+                </div>
+                <div class="panel-body">
+                    <div class="progress">
+                        <div id="progress" class="progress-bar" role="progressbar" aria-valuenow="0" aria-valuemin="0" aria-valuemax="100"></div>
+                    </div>
+                </div>
+            </div>
+
+    {% if planned %}
+        {% if unassigned|length > 0 %}
             <div class="panel panel-warning">
                 <div class="panel-heading">
                     <div class="row">
@@ -129,7 +149,7 @@
                 {% endfor %}
                 </div>
             </div>
-            {% else %}
+        {% else %}
             <div class="panel panel-success">
                 <div class="panel-heading">
                     <div class="row">
@@ -143,9 +163,8 @@
                     </div>
                 </div>
             </div>
-            {% endif %}
+        {% endif %}
             <div class="list-group">
-            {% if planned %}
                 <a class="list-group-item" href="{{ path('_edit_match_planning_reset', { 'tournamentid': tournament.id }) }}">
                     <div class="row">
                         <div class="col-sm-3 text-center">
@@ -157,7 +176,6 @@
                         </div>
                     </div>
                 </a>
-            {% endif %}
                 <a class="list-group-item" href="{{ path('_edit_match_planning_download', { 'tournamentid': tournament.id }) }}">
                     <div class="row">
                         <div class="col-sm-3 text-center">
@@ -170,7 +188,7 @@
                     </div>
                 </a>
             </div>
-        {% else %}
+    {% else %}
             <div class="panel panel-info">
                 <div class="panel-heading">
                     <div class="row">
@@ -184,12 +202,69 @@
                     </div>
                 </div>
             </div>
-        {% endif %}
+    {% endif %}
         </div>
     </div>
 {% endblock %}
 {% block javascripts %}
     <script>
         $("#form_file").fileinput({'showUpload':true, 'showPreview':false, 'showRemove':false, 'browseLabel':'{% trans %}FORM.MATCHPLANNING.MATCHIMPORT.BROWSE{% endtrans %}', 'uploadLabel':'{% trans %}FORM.MATCHPLANNING.MATCHIMPORT.UPLOAD{% endtrans %}'});
+    </script>
+    <script type="text/javascript">
+        $(function onLoad() {
+            // Add key awareness
+            $("#plan").click(function() {
+                $("#progress_div").fadeIn("slow", function() {
+                    success = planTournament();
+                    if (success) {
+                        location.reload(true);
+                    }
+                });
+            });
+        });
+
+        function planTournament() {
+            var level = 0;
+            var done = false;
+            var success = false;
+            $("#progress").attr("aria-valuenow", 0);
+            $("#progress").attr("style", "min-width: 0em; width: 0%;");
+            $("#progress").text("");
+            $("#progress_title").text("{% trans %}FORM.MATCHPLANNING.PLANNING.TITLE{% endtrans %}");
+            $("#progress_text").text("{% trans %}FORM.MATCHPLANNING.PLANNING.DESCRIPTION{% endtrans %}");
+            while (!done) {
+                $.ajax({
+                    dataType: "json",
+                    url: Routing.generate('_rest_match_planning_plan', { 'tournamentid': {{ tournament.id }}, 'level': level }),
+                    async: false
+                })
+                 .done(function( result ) {
+                            done = result.done;
+                            level = result.level;
+                            success = result.success;
+                            if (success) {
+                                $("#progress").attr("aria-valuenow", level);
+                                $("#progress").attr("style", "min-width: 2em; width: "+level+"%;");
+                                $("#progress").text(level+"%");
+                            }
+                            else {
+                                $("#progress_text").text("{% trans %}FORM.MATCHPLANNING.PLANNING.FAILURE{% endtrans %}");
+                            }
+                        }
+                ).fail(function( jqXHR, textStatus, errorThrown) {
+                            $("#progress_text").text("{% trans %}FORM.MATCHPLANNING.PLANNING.ERROR{% endtrans %}" +
+                                                     " " + textStatus + " - " + errorThrown);
+                            success = false;
+                        });
+            };
+            if (success) {
+                $("#progress_text").text("{% trans %}FORM.MATCHPLANNING.PLANNING.DONE{% endtrans %}");
+            }
+            return success;
+        };
+
+        function updateResult() {
+
+        };
     </script>
 {% endblock %}

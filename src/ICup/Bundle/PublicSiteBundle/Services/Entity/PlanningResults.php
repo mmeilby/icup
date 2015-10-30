@@ -2,10 +2,11 @@
 
 namespace ICup\Bundle\PublicSiteBundle\Services\Entity;
 
-use ICup\Bundle\PublicSiteBundle\Entity\Doctrine\Date;
-use ICup\Bundle\PublicSiteBundle\Services\Entity\TeamCheck;
-use ICup\Bundle\PublicSiteBundle\Services\Entity\PlaygroundAttribute;
-use ICup\Bundle\PublicSiteBundle\Entity\MatchPlan;
+use ICup\Bundle\PublicSiteBundle\Entity\Doctrine\Group;
+use ICup\Bundle\PublicSiteBundle\Entity\Doctrine\Timeslot;
+use ICup\Bundle\PublicSiteBundle\Entity\QMatchPlan;
+use DateTime;
+use DateInterval;
 
 /**
  * PlanningResults
@@ -13,12 +14,14 @@ use ICup\Bundle\PublicSiteBundle\Entity\MatchPlan;
 class PlanningResults
 {
     private $team_check;
+    private $dependency_check;
     private $timeslots;
     private $unresolved;
 
     public function __construct()
     {
         $this->team_check = new TeamCheck();
+        $this->dependency_check = array();
         $this->timeslots = array();
         $this->unresolved = array();
     }
@@ -39,21 +42,11 @@ class PlanningResults
         return $this->timeslots;
     }
 
-    public function mark()
+    public function mark($cmp_function = null)
     {
-        usort($this->timeslots, function (PlaygroundAttribute $ats1, PlaygroundAttribute $ats2) {
-            $p1 = $ats1->getTimeleft() - $ats2->getTimeleft();
-            $p2 = $ats2->getPlayground()->getNo() - $ats1->getPlayground()->getNo();
-            $p3 = $ats2->getTimeslot()->getId() - $ats1->getTimeslot()->getId();
-            $p4 = 0;
-            if ($p1 == 0 && $p2 == 0 && $p3 == 0 && $p4 == 0) {
-                return 0;
-            } elseif ($p1 < 0 || ($p1 == 0 && $p2 < 0) || ($p1 == 0 && $p2 == 0 && $p3 < 0) || ($p1 == 0 && $p2 == 0 && $p3 == 0 && $p4 < 0)) {
-                return 1;
-            } else {
-                return -1;
-            }
-        });
+        if ($cmp_function) {
+            usort($this->timeslots, $cmp_function);
+        }
         array_push($this->timeslots, null);
     }
 
@@ -70,7 +63,7 @@ class PlanningResults
     {
         $idx = array_search(null, $this->timeslots);
         if ($idx !== false) {
-            array_splice($this->timeslots, $idx, 1);
+            unset($this->timeslots[$idx]);
         }
     }
 
@@ -82,6 +75,85 @@ class PlanningResults
     public function timeslots()
     {
         return count($this->timeslots);
+    }
+
+    public function getQSchedule(QRelation $rel) {
+        $key = $rel->getClassification().":".$rel->getLitra().$rel->getBranch();
+        return isset($this->dependency_check[$key]) ? $this->dependency_check[$key] : null;
+    }
+
+    public function setQSchedule(QMatchPlan $match, DateTime $schedule) {
+        $key = $match->getClassification().":".$match->getLitra();
+        $this->dependency_check[$key] = $schedule;
+        if ($match->getRelA()->getClassification() == Group::$PRE) {
+            $keyh = $match->getRelA()->getClassification().":".$match->getRelA()->getLitra().$match->getRelA()->getBranch();
+            $this->dependency_check[$keyh] = $schedule;
+        }
+        if ($match->getRelB()->getClassification() == Group::$PRE) {
+            $keya = $match->getRelB()->getClassification().":".$match->getRelB()->getLitra().$match->getRelB()->getBranch();
+            $this->dependency_check[$keya] = $schedule;
+        }
+    }
+
+    public function resetQSchedule(QMatchPlan $match) {
+        $key = $match->getClassification().":".$match->getLitra();
+        unset($this->dependency_check[$key]);
+        if ($match->getRelA()->getClassification() == Group::$PRE) {
+            $keyh = $match->getRelA()->getClassification().":".$match->getRelA()->getLitra().$match->getRelA()->getBranch();
+            unset($this->dependency_check[$keyh]);
+        }
+        if ($match->getRelB()->getClassification() == Group::$PRE) {
+            $keya = $match->getRelB()->getClassification().":".$match->getRelB()->getLitra().$match->getRelB()->getBranch();
+            unset($this->dependency_check[$keya]);
+        }
+    }
+
+    public function isQScheduleAvailable(QMatchPlan $match, DateTime $slotschedule, Timeslot $timeslot) {
+        // Group dependency must be respected when deciding match schedule
+        // No schedule is expected for relations to preliminary groups
+        if ($match->getRelA()->getClassification() > Group::$PRE) {
+            $scheduleA = $this->getQSchedule($match->getRelA());
+            if (!$scheduleA || !$this->testQSchedule($match, $scheduleA, $slotschedule, $timeslot)) {
+                return false;
+            }
+        } else {
+            $scheduleA = $this->getQSchedule($match->getRelA());
+            if ($scheduleA) {
+                /* @var $diff DateInterval */
+                $diff = $slotschedule->diff($scheduleA);
+                if ($diff->d*24*60 + $diff->h*60 + $diff->i < $match->getCategory()->getMatchtime() + $timeslot->getRestperiod()) {
+                    return false;
+                }
+            }
+        }
+        if ($match->getRelB()->getClassification() > Group::$PRE) {
+            $scheduleB = $this->getQSchedule($match->getRelB());
+            if (!$scheduleB || !$this->testQSchedule($match, $scheduleB, $slotschedule, $timeslot)) {
+                return false;
+            }
+        } else {
+            $scheduleB = $this->getQSchedule($match->getRelB());
+            if ($scheduleB) {
+                /* @var $diff DateInterval */
+                $diff = $slotschedule->diff($scheduleB);
+                if ($diff->d*24*60 + $diff->h*60 + $diff->i < $match->getCategory()->getMatchtime() + $timeslot->getRestperiod()) {
+                    return false;
+                }
+            }
+        }
+        return true;
+    }
+
+    private function testQSchedule(QMatchPlan $match, DateTime $schedule, DateTime $slotschedule, Timeslot $timeslot) {
+        if ($slotschedule < $schedule) {
+            return false;
+        }
+        /* @var $diff DateInterval */
+        $diff = $slotschedule->diff($schedule);
+        if ($diff->d*24*60 + $diff->h*60 + $diff->i < $match->getCategory()->getMatchtime() + $timeslot->getRestperiod()) {
+            return false;
+        }
+        return true;
     }
 
     /**

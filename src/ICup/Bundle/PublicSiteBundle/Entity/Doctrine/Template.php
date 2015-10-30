@@ -6,7 +6,7 @@ use Doctrine\ORM\Mapping as ORM;
 /**
  * ICup\Bundle\PublicSiteBundle\Entity\Doctrine\Template
  *
- * @ORM\Table(name="templates",uniqueConstraints={@ORM\UniqueConstraint(name="IdxByName", columns={"name", "id"})})
+ * @ORM\Table(name="templates",uniqueConstraints={@ORM\UniqueConstraint(name="TemplateNameConstraint", columns={"name", "id"})})
  * @ORM\Entity
  */
 class Template

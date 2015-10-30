@@ -29,9 +29,66 @@ class LoadDemoData implements FixtureInterface
     public function load(ObjectManager $manager)
     {
         $this->setupTranslator();
-/*        
-        $parent = $manager->find(null, '/cms/simple');
+        // load the blocks
+        foreach ($this->domains as $domain => $sections) {
+            $parent = $manager->find(null, '/cms/content/blocks/'.$domain);
+            if (null == $parent) {
+                NodeHelper::createPath($manager->getPhpcrSession(), '/cms/content/blocks/' . $domain);
+                $parent = $manager->find(null, '/cms/content/blocks/'.$domain);
+            }
+            foreach ($sections as $section => $messages) {
+                $this->blockCreator($parent, $section, $domain, $manager);
+            }
+        }
+        // save the changes
+        $manager->flush();
+    }
+    
+    private function blockCreator($parent, $name, $parentname, ObjectManager $manager) {
+        $block = $manager->find(null, '/cms/content/blocks/'.$parentname.'/'.$name);
+        if (null == $block) {
+            $block = new SimpleBlock(array('add_locale_pattern' => true));
+            $block->setParentObject($parent);
+            $block->setName($name);
+            $block->setTitle($this->translator->trans($parentname.'.'.$name.'.title', array(), 'messages', 'da'));
+            $block->setBody($this->translator->trans($parentname.'.'.$name.'.body', array(), 'messages', 'da'));
+            $manager->persist($block);
+            $manager->bindTranslation($block, 'da');
+            foreach (array('en', 'de', 'fr', 'es', 'it', 'po') as $locale) {
+                $block->setTitle($this->translator->trans($parentname.'.'.$name.'.title', array(), 'messages', $locale));
+                $block->setBody($this->translator->trans($parentname.'.'.$name.'.body', array(), 'messages', $locale));
+                $manager->bindTranslation($block, $locale);
+            }
+        }
+    }
+    
+    private function setupTranslator() {
+        $transPath = __DIR__.'/translations';
+        $format = 'yaml';
+        $this->translator = new Translator('en');
+        $this->translator->setFallbackLocales(array('en'));
+        $this->translator->addLoader($format, new YamlFileLoader());
+        $this->addTranslatorResource($format, $transPath, 'da');
+        $this->addTranslatorResource($format, $transPath, 'en');
+        $this->addTranslatorResource($format, $transPath, 'de');
+        $this->addTranslatorResource($format, $transPath, 'fr');
+        $this->addTranslatorResource($format, $transPath, 'es');
+        $this->addTranslatorResource($format, $transPath, 'it');
+        $this->addTranslatorResource($format, $transPath, 'po');
         
+        $yaml = new Parser();
+        $this->domains = $yaml->parse(file_get_contents($transPath.'/messages.da.yml'));
+    }
+    
+    private function addTranslatorResource($format, $path, $locale) {
+        $this->translator->addResource($format, $path.'/messages.'.$locale.'.yml', $locale);
+    }
+}
+
+
+/*
+        $parent = $manager->find(null, '/cms/simple');
+
         // pass add_locale_pattern as true to prefix the route pattern with /{_locale}
         $page = new Page(array('add_locale_pattern' => true));
 
@@ -75,54 +132,7 @@ class LoadDemoData implements FixtureInterface
         $loginMenuNode->setRoute('_demo_login');
 
         $manager->persist($loginMenuNode);
+        if (null == $manager->find(null, '/cms/content/blocks')) {
+            NodeHelper::createPath($manager->getPhpcrSession(), '/cms/content/blocks');
+        }
 */
-        NodeHelper::createPath($manager->getPhpcrSession(), '/cms/content/blocks');
-        // load the blocks
-        foreach ($this->domains as $domain => $sections) {
-            NodeHelper::createPath($manager->getPhpcrSession(), '/cms/content/blocks/'.$domain);
-            foreach ($sections as $section => $messages) {
-                $this->blockCreator($section, $domain, $manager);
-            }
-        }
-        // save the changes
-        $manager->flush();
-    }
-    
-    private function blockCreator($name, $parentname, ObjectManager $manager) {
-        $parent = $manager->find(null, '/cms/content/blocks/'.$parentname);
-        $block = new SimpleBlock(array('add_locale_pattern' => true));
-        $block->setParentObject($parent);
-        $block->setName($name);
-        $block->setTitle($this->translator->trans($parentname.'.'.$name.'.title', array(), 'messages', 'da'));
-        $block->setBody($this->translator->trans($parentname.'.'.$name.'.body', array(), 'messages', 'da'));
-        $manager->persist($block);
-        $manager->bindTranslation($block, 'da');
-        foreach (array('en', 'de', 'fr', 'es', 'it', 'po') as $locale) {
-            $block->setTitle($this->translator->trans($parentname.'.'.$name.'.title', array(), 'messages', $locale));
-            $block->setBody($this->translator->trans($parentname.'.'.$name.'.body', array(), 'messages', $locale));
-            $manager->bindTranslation($block, $locale);
-        }
-    }
-    
-    private function setupTranslator() {
-        $transPath = __DIR__.'/translations';
-        $format = 'yaml';
-        $this->translator = new Translator('en');
-        $this->translator->setFallbackLocales(array('en'));
-        $this->translator->addLoader($format, new YamlFileLoader());
-        $this->addTranslatorResource($format, $transPath, 'da');
-        $this->addTranslatorResource($format, $transPath, 'en');
-        $this->addTranslatorResource($format, $transPath, 'de');
-        $this->addTranslatorResource($format, $transPath, 'fr');
-        $this->addTranslatorResource($format, $transPath, 'es');
-        $this->addTranslatorResource($format, $transPath, 'it');
-        $this->addTranslatorResource($format, $transPath, 'po');
-        
-        $yaml = new Parser();
-        $this->domains = $yaml->parse(file_get_contents($transPath.'/messages.da.yml'));
-    }
-    
-    private function addTranslatorResource($format, $path, $locale) {
-        $this->translator->addResource($format, $path.'/messages.'.$locale.'.yml', $locale);
-    }
-}

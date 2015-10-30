@@ -9,7 +9,7 @@ use Doctrine\ORM\Mapping as ORM;
  * SocialGroup entity
  * A social group is a top level entity that can exist with several Hosts. Only one group can use a specific name.
  *
- * @ORM\Table(name="socialgroups", uniqueConstraints={@ORM\UniqueConstraint(name="NameConstraint", columns={"name"})})
+ * @ORM\Table(name="socialgroups", uniqueConstraints={@ORM\UniqueConstraint(name="SocialGroupNameConstraint", columns={"name"})})
  * @ORM\Entity
  */
 class SocialGroup

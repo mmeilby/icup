@@ -1,0 +1,30 @@
+{% extends "ICupPublicSiteBundle:Masters:standard.html.twig" %}
+
+{% form_theme form 'ICupPublicSiteBundle:Default:layout.script.html.twig' %}
+{% trans_default_domain "club" %}
+
+{% block body %}
+<div class="row">
+    <div class="col-md-6">
+        {{ sonata_block_render({'name': '/cms/content/blocks/enrollment/terms'}) }}
+    </div>
+    <div class="col-md-6">
+        <h2><i class="fa fa-ticket"></i> Registrering og tilmelding (del 2)</h2>
+        <h4>Oplys information om den ansvarlige turleder</h4>
+        <p>Følgende oplysninger er obligatoriske</p>
+        {{ form_row(form.manager) }}
+        {{ form_row(form.m_mobile) }}
+        {{ form_row(form.m_email) }}
+        <p>Følgende oplysninger bør gives hvis muligt</p>
+        {{ form_row(form.m_address) }}
+        {{ form_row(form.m_city) }}
+        {{ form_row(form.m_country) }}
+        {{ form_row(form.m_phone) }}
+        {{ form_row(form.m_fax) }}
+        {{ form_row(form.m_skype) }}
+        <p>
+            {{ form(form) }}
+        </p>
+    </div>
+</div>
+{% endblock %}

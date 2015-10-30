@@ -76,7 +76,7 @@
                     <td>
                         <a href="{{ path('_edit_list_parel', { 'playgroundattributeid': timeslot.id }) }}">
                             {% if timeslot.categories|length > 0 %}
-                                {{ timeslot.categories|join(',') }}
+                                {{ timeslot.categoryNames|join(',') }}
                             {% else %}
                                 <span class="fa fa-cogs"></span>
                             {% endif %}
@@ -102,19 +102,25 @@
                         </strong>
                     </div>
                     <div class="col-sm-1">
+    {% if matchset.match.group %}
                         <strong>
                         {{ 'GROUP'|trans([],'tournament') }} {{ matchset.match.group.name }}
                         </strong>
+    {% endif %}
                     </div>
                     <div class="col-sm-4">
+    {% if matchset.match.teamA %}
                         <strong>
-                        {{ formatter.displayclub(matchset.match.teamA, _context) }}
+                        {{ formatter.displayclub(matchset.match.teamA.club, _context) }}
                         </strong>
+    {% endif %}
                     </div>
                     <div class="col-sm-4">
+    {% if matchset.match.teamB %}
                         <strong>
-                        {{ formatter.displayclub(matchset.match.teamB, _context) }}
+                        {{ formatter.displayclub(matchset.match.teamB.club, _context) }}
                         </strong>
+    {% endif %}
                     </div>
                 </div>
             </div>
@@ -154,7 +160,7 @@
                             <td class="col-sm-2">
                                 <a href="{{ path('_edit_list_parel', { 'playgroundattributeid': timeslot.id }) }}">
                 {% if timeslot.categories|length > 0 %}
-                                    {{ timeslot.categories|join(',') }}
+                                    {{ timeslot.categoryNames|join(',') }}
                 {% else %}
                                     <span class="fa fa-cogs"></span>
                 {% endif %}

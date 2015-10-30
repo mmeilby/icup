@@ -46,6 +46,7 @@
         "kartik-v/bootstrap-fileinput": "dev-master"
     },
     "require-dev": {
+        "phpunit/phpunit": "4.8.*",
         "liip/functional-test-bundle": "1.0.*",
         "sensio/generator-bundle": "~2.3"
     },

@@ -119,6 +119,14 @@
     {% endif %}
 {% endmacro %}
 
+{% macro displayqmatchrelation(rel, context) %}
+    {% if rel.classification > 0 %}
+        {{ 'RANK'|transchoice(rel.rank, {'%rank%': rel.rank, '%group%': [['GROUPCLASS',rel.classification]|join('.')|trans([], 'tournament')|lower, ' ', rel.litra, rel.branch]|join()}, 'tournament') }}
+    {% else %}
+        {{ 'RANK'|transchoice(rel.rank, {'%rank%': rel.rank, '%group%': ['GROUP'|trans([], 'tournament')|lower, ' ', (rel.group?rel.group.name:rel.litra), rel.branch]|join()}, 'tournament') }}
+    {% endif %}
+{% endmacro %}
+
 {% macro displayteam(team, context) %}
     <span class="text-nowrap">
     {% if team.country is defined %}

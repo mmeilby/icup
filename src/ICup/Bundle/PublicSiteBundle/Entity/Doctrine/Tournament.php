@@ -285,4 +285,16 @@ class Tournament
     public function getNews() {
         return $this->news;
     }
+
+    /**
+     * @return mixed
+     */
+    public function getPlaygrounds() {
+        $playgrounds = array();
+        $this->sites->forAll(function ($n, Site $site) use (&$playgrounds) {
+            $playgrounds = array_merge($playgrounds, $site->getPlaygrounds()->toArray());
+            return true;
+        });
+        return $playgrounds;
+    }
 }

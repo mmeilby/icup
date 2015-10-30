@@ -62,6 +62,15 @@ class Enrollment
     public $departure_date;
     public $departure_time;
 
+    public $b_arrival;
+    public $b_arrival_airport;
+    public $b_arrival_date;
+    public $b_arrival_time;
+    public $b_departure;
+    public $b_departure_airport;
+    public $b_departure_date;
+    public $b_departure_time;
+/*
     public $bus;
     public $arrival_date_roma_f;
     public $arrival_date_roma_c;
@@ -71,7 +80,7 @@ class Enrollment
     public $departure_date_roma_c;
     public $departure_date_pescara;
     public $departure_date_ancona;
-        
+*/
     public function getArray() {
         return array(
             "name" => $this->name,

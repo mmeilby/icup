@@ -8,7 +8,7 @@ use Doctrine\ORM\Mapping as ORM;
 /**
  * ICup\Bundle\PublicSiteBundle\Entity\Doctrine\Playground
  *
- * @ORM\Table(name="timeslots",uniqueConstraints={@ORM\UniqueConstraint(name="IdxByName", columns={"name", "pid"})})
+ * @ORM\Table(name="timeslots",uniqueConstraints={@ORM\UniqueConstraint(name="TimeslotNameConstraint", columns={"name", "pid"})})
  * @ORM\Entity
  */
 class Timeslot

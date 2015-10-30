@@ -32,8 +32,14 @@
                 <a href="{{ path('_showplayground_full', { 'playgroundid': match.playground.id }) }}" title="{{ match.playground.name }}">{{ match.playground.no }}</a>
             </td>
             <td>
-                {{ context.formatter.displaymatchrelation(match.teamA, context) }}<br />
-                {{ context.formatter.displaymatchrelation(match.teamB, context) }}
+                {% if match.relA is defined and match.relB is defined %}
+                    <strong>{{ ['GROUPCLASS',match.classification]|join('.')|trans([], 'tournament') }} {{ match.litra }}</strong><br />
+                    {{ context.formatter.displayqmatchrelation(match.relA, context) }}<br />
+                    {{ context.formatter.displayqmatchrelation(match.relB, context) }}
+                {% elseif match.teamA and match.teamB %}
+                    {{ context.formatter.displaymatchrelation(match.teamA, context) }}<br />
+                    {{ context.formatter.displaymatchrelation(match.teamB, context) }}
+                {% endif %}
             </td>
         </tr>
     {% endfor %}
@@ -83,9 +89,26 @@
                                 match.category.gender,
                                 match.category.classification]|join|transchoice(match.category.age, { '%age%': match.category.age },'tournament') }}">
                                 {{ match.category.name }}</a><br />
-                {{ match.group.name }}</td>
-            <td>{{ context.formatter.displaymatchrelation(match.teamA, context) }}</td>
-            <td>{{ context.formatter.displaymatchrelation(match.teamB, context) }}</td>
+                {% if match.group %}
+                    {{ match.group.name }}
+                {% endif %}
+            </td>
+            <td>
+                {% if match.relA is defined %}
+                    <strong>{{ ['GROUPCLASS',match.classification]|join('.')|trans([], 'tournament') }} {{ match.litra }}</strong><br />
+                    {{ context.formatter.displayqmatchrelation(match.relA, context) }}
+                {% elseif match.teamA %}
+                    {{ context.formatter.displaymatchrelation(match.teamA, context) }}
+                {% endif %}
+            </td>
+            <td>
+                {% if match.relB is defined %}
+                    <br />
+                    {{ context.formatter.displayqmatchrelation(match.relB, context) }}
+                {% elseif match.teamB %}
+                    {{ context.formatter.displaymatchrelation(match.teamB, context) }}
+                {% endif %}
+            </td>
         </tr>
         {% endfor %}
     {% endfor %}

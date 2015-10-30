@@ -8,7 +8,7 @@ use Symfony\Component\Intl\Exception\MethodNotImplementedException;
 /**
  * ICup\Bundle\PublicSiteBundle\Entity\Doctrine\MatchRelation
  *
- * @ORM\Table(name="matchrelations",uniqueConstraints={@ORM\UniqueConstraint(name="IdxByMatch", columns={"pid", "cid"})})
+ * @ORM\Table(name="matchrelations",uniqueConstraints={@ORM\UniqueConstraint(name="TeamMatchConstraint", columns={"pid", "cid"})})
  * @ORM\Entity
  */
 class MatchRelation

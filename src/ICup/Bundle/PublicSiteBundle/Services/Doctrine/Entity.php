@@ -50,6 +50,15 @@ class Entity
     }
 
     /**
+     * Get the entity class metadata from the key
+     * @param $repository
+     * @return \Doctrine\ORM\Mapping\ClassMetadata
+     */
+    public function getClassMetadata($repository) {
+        return $this->em->getClassMetadata($this->getRepositoryPath($repository));
+    }
+
+    /**
      * Get the entity repository path from the key
      * @param $repository
      * @return String
@@ -152,6 +161,14 @@ class Entity
      */
     public function getMatchScheduleRepo() {
         return $this->getRepository('MatchSchedule');
+    }
+
+    /**
+     * Get the QMatchSchedule entity repository
+     * @return \Doctrine\ORM\EntityRepository
+     */
+    public function getQMatchScheduleRepo() {
+        return $this->getRepository('QMatchSchedule');
     }
 
     /**

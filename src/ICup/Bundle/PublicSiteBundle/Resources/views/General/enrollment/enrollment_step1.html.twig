@@ -3,27 +3,30 @@
 {% form_theme form 'ICupPublicSiteBundle:Default:layout.script.html.twig' %}
 {% trans_default_domain "club" %}
 
-
-{% block widebody %}
-<div class="jumbotron"
-     style="
-    background-image: url('{{ asset('bundles/icuppublicsite/images/IWC/bg.jpg') }}');
-    background-size: cover;
-    background-repeat: no-repeat;">
-    <div class="container">
-        <img src="{{ asset('bundles/icuppublicsite/images/IWC/logo.png') }}" alt="logo" class="img-responsive" />
-    </div>
-</div>
-{% endblock %}
-
 {% block body %}
 <div class="row">
     <div class="col-md-6">
         {{ sonata_block_render({'name': '/cms/content/blocks/enrollment/terms'}) }}
     </div>
     <div class="col-md-6">
-        <i class="fa fa-ticket fa-5x"></i>
-        <h2>Tilmeld dig her - udfyld og send</h2>
+        <h2><i class="fa fa-ticket"></i> Registrering og tilmelding</h2>
+        <h4>Vigtige informationer om klubben</h4>
+        <p>Følgende oplysninger er obligatoriske</p>
+        {{ form_row(form.club) }}
+        {{ form_row(form.address) }}
+        {{ form_row(form.city) }}
+        {{ form_row(form.country) }}
+        {{ form_row(form.email) }}
+        <p>Følgende oplysninger bør gives hvis muligt</p>
+        {{ form_row(form.phone) }}
+        {{ form_row(form.fax) }}
+        {{ form_row(form.skype) }}
+        {{ form_row(form.website) }}
+        <p>Følgende oplysninger anvendes til statistiske formål</p>
+        {{ form_row(form.membership) }}
+        {{ form_row(form.affiliation) }}
+        {{ form_row(form.championship) }}
+        {{ form_row(form.bestresult) }}
         <p>
             {{ form(form) }}
         </p>
@@ -42,8 +45,8 @@
             </a>
 {% endif %}
         </p>
--->
         {{ sonata_block_render({'name': '/cms/content/blocks/contact/address'}) }}
+-->
     </div>
 </div>
 {% endblock %}

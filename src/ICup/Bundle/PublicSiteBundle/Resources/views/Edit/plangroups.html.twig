@@ -1,5 +1,6 @@
 {% extends "ICupPublicSiteBundle:Masters:edit.html.twig" %}
 
+{% form_theme form 'ICupPublicSiteBundle:Default:layout.script.html.twig' %}
 {% trans_default_domain "admin" %}
 
 {% block adminbody %}
@@ -47,38 +48,76 @@
             </a>
         </li>
     </ul>
-    <div class="row">
-{%  for catrec in catlist %}
-        <div class="col-sm-2">
-        <h4 style="margin-bottom: 0px">
-            {% trans from "tournament" %}CATEGORY{% endtrans %} {{ catrec.category.name|upper }}
-        </h4>
-        <p>
-        {{ ['GENDER.',
-        catrec.category.gender,
-        catrec.category.classification]|join|transchoice(catrec.category.age, { '%age%': catrec.category.age },'tournament') }}
-        </p>
-        <p>
-            <a class="btn btn-default" href="{{ path('_host_list_groups', { 'categoryid': catrec.category.id }) }}">
-                {% trans %}FORM.LISTGROUPS.TITLE{% endtrans %}
-            </a>
-        </p>
-    {% for grprec in catrec.group %}
-        <p>
-            <a href="{{ path('_edit_group_list_matches', { 'groupid': grprec.obj.id }) }}" title="{% trans %}FORM.LISTMATCHES.TITLE{% endtrans %}">
-                <span class="label label-primary">{% trans from "tournament" %}GROUP{% endtrans %} {{ grprec.obj.name }}</span>
-            </a><br />
-        {% if grprec.cnt > 0 %}
-            <small>
-                {% trans %}FORM.MATCHPLANNING.TEAMS{% endtrans %}: {{ grprec.cnt }}<br />
-                {% trans %}FORM.MATCHPLANNING.MATCHES{% endtrans %}: {{ grprec.cnt/2 * (grprec.cnt-1) }}
-            </small>
-        {% else %}
-            <small>{% trans %}FORM.MATCHPLANNING.NOTEAMS{% endtrans %}</small>
-        {% endif %}
-        </p>
-    {%  endfor %}
+    <div class="row" style="margin-top: 10px;">
+        <div class="col-sm-4">
+            <ul class="list-group">
+                {% for categoryStat in categoryList %}
+                    <li class="list-group-item">
+                        <span class="badge">{{ categoryStat.groups|length }}</span>
+                        {% if category and categoryStat.category.id == category.id %}
+                        <strong>
+                        {% endif %}
+                            <a href="{{ path('_edit_match_planning_groups_select_category', {
+                                                'categoryid': categoryStat.category.id,
+                                                'tournamentid': tournament.id
+                                            }) }}">
+                                {% trans from 'tournament' %}CATEGORY{% endtrans %} {{ categoryStat.category.name }} -
+                                {{ ['GENDER.',
+                                categoryStat.category.gender,
+                                categoryStat.category.classification]|join|transchoice(categoryStat.category.age, { '%age%': categoryStat.category.age },'tournament') }}
+                            </a>
+                        {% if category and categoryStat.category.id == category.id %}
+                        </strong>
+                        {% endif %}
+                    </li>
+                {% endfor %}
+            </ul>
         </div>
-{%  endfor %}
+        <div class="col-sm-5">
+            {% if category %}
+                <h3>
+                    {% trans from 'tournament' %}CATEGORY{% endtrans %} {{ category.name }} -
+                    {{ ['GENDER.',
+                    category.gender,
+                    category.classification]|join|transchoice(category.age, { '%age%': category.age },'tournament') }}
+                </h3>
+                <p>
+                    {{ form(form) }}
+                </p>
+            {% else %}
+                <h3><span class="fa fa-hand-o-left"></span>&nbsp;{% trans %}FORM.QMATCHPLANNING.SELECTCATEGORY.TITLE{% endtrans %}</h3>
+                <p>{% trans %}FORM.QMATCHPLANNING.SELECTCATEGORY.TEXT{% endtrans %}</p>
+            {% endif %}
+        </div>
+        <div class="col-sm-3">
+            {% if category %}
+                <h3>{% trans %}FORM.QMATCHPLANNING.GROUPS{% endtrans %}</h3>
+                <hr />
+                {% for group in groupList %}
+                    <h4>
+                        <span class="label label-primary">{% trans from "tournament" %}GROUP{% endtrans %} {{ group.group.name }}</span>
+                        {% if group.count > 0 %}
+                            <span class="badge">{{ group.count }} {% trans %}FORM.QMATCHPLANNING.TEAMS{% endtrans %}</span>
+                        {% else %}
+                            <span class="badge">{% trans %}FORM.MATCHPLANNING.NOTEAMS{% endtrans %}</span>
+                        {% endif %}
+                    </h4>
+                {% else %}
+                    <h4>{% trans %}FORM.QMATCHPLANNING.NOGROUPS{% endtrans %}</h4>
+                {% endfor %}
+                <hr />
+                <p>
+                    {% if groupList|length > 0 %}
+                        <a class="btn btn-lg btn-default" href="{{ path('_host_list_groups', { 'categoryid': category.id }) }}">
+                            {% trans %}FORM.LISTGROUPS.TITLE{% endtrans %}
+                        </a>
+                    {% else %}
+                        <a class="btn btn-lg btn-default" href="{{ path('_edit_group_add', { 'categoryid': category.id }) }}">
+                            {% trans %}FORM.QMATCHPLANNING.ADDGROUP{% endtrans %}
+                        </a>
+                    {% endif %}
+                </p>
+            {% endif %}
+        </div>
     </div>
 {% endblock %}

@@ -228,21 +228,6 @@ class TournamentSupport
         return $qb->getResult();
     }
 
-/*
-    public function listChampionsByTournament($tournamentid) {
-        $qb = $this->em->createQuery(
-                "select c.id as catid,c.name as category,c.gender,c.classification as class,c.age,g.id,g.classification ".
-                "from ".$this->entity->getRepositoryPath('Category')." c, ".
-                        $this->entity->getRepositoryPath('Group')." g ".
-                "where c.tournament=:tournament and ".
-                        "g.category=c.id and ".
-                        "g.classification>=9 ".
-                "order by c.gender asc, c.classification desc, c.age desc, g.classification desc");
-        $qb->setParameter('tournament', $tournamentid);
-        return $qb->getResult();
-    }
-*/
-
     public function listChampionsByTournament(Tournament $tournament) {
         $sortedGroups = array();
         $teams = array();
@@ -282,7 +267,7 @@ class TournamentSupport
                         "o.group=g.id and ".
                         "o.team=t.id and ".
                         "t.club=c.id and ".
-                        "t.vacant='N'");
+                        "t.vacant<>'Y'");
         $qb->setParameter('tournament', $tournamentid);
         return $qb->getResult();
     }
@@ -311,7 +296,7 @@ class TournamentSupport
                         "g.category=cat.id and ".
                         "o.group=g.id and ".
                         "o.team=t.id and ".
-                        "t.vacant='N'");
+                        "t.vacant<>'Y'");
         $qb->setParameter('tournament', $tournamentid);
         return $qb->getResult();
     }
@@ -329,7 +314,7 @@ class TournamentSupport
                       "g.category=cat.id and ".
                       "o.group=g.id and ".
                       "o.team=t.id and ".
-                      "t.vacant='N'");
+                      "t.vacant<>'Y'");
         $qb->setParameter('tournament', $tournamentid);
         return $qb->getResult();
     }
@@ -448,7 +433,7 @@ class TournamentSupport
                         "r.match=m.id and ".
                         "t.id=r.team and ".
                         "t.club=c.id and ".
-                        "t.vacant='N' and ".
+                        "t.vacant<>'Y' and ".
                         "r.scorevalid='Y' ".
                 "group by t.id ".
                 "order by mostgoals desc");
@@ -471,7 +456,7 @@ class TournamentSupport
                         "r.match=m.id and ".
                         "t.id=r.team and ".
                         "t.club=c.id and ".
-                        "t.vacant='N' and ".
+                        "t.vacant<>'Y' and ".
                         "r.scorevalid='Y' ".
                 "group by t.id ".
                 "order by mostgoals desc");

@@ -22,20 +22,33 @@ class QMatchScheduleRelation
     protected $id;
 
     /**
-     * @var MatchSchedule $matchSchedule
-     * Relation to MatchSchedule
-     * @ORM\ManyToOne(targetEntity="MatchSchedule", inversedBy="qmatchrelation", cascade={"persist", "remove"})
-     * @ORM\JoinColumn(name="pid", referencedColumnName="id", onDelete="CASCADE")
+     * @var QMatchSchedule $matchSchedule
+     * Relation to QMatchSchedule
+     * @ORM\ManyToOne(targetEntity="QMatchSchedule", inversedBy="qmatchrelation", cascade={"persist", "remove"})
+     * @ORM\JoinColumn(name="matchschedule", referencedColumnName="id", onDelete="CASCADE")
      */
     protected $matchSchedule;
 
     /**
-     * @var Group $group
-     * Relation to Group
-     * @ORM\ManyToOne(targetEntity="Group")
-     * @ORM\JoinColumn(name="gid", referencedColumnName="id")
+     * @var string $branch
+     * The branch for this relation (A or B according to acheived end game)
+     * @ORM\Column(name="branch", type="string", length=1, nullable=false)
      */
-    protected $group;
+    protected $branch;
+
+    /**
+     * @var integer $classification
+     * The classification for the qualifying group referenced by this relation
+     * @ORM\Column(name="classification", type="integer", nullable=false)
+     */
+    protected $classification;
+
+    /**
+     * @var integer $litra
+     * The litra for the qualifying group referenced by this relation
+     * @ORM\Column(name="litra", type="integer", nullable=false)
+     */
+    protected $litra;
 
     /**
      * @var integer $rank
@@ -62,19 +75,51 @@ class QMatchScheduleRelation
     }
 
     /**
-     * @param Group $group
+     * @return string
+     */
+    public function getBranch() {
+        return $this->branch;
+    }
+
+    /**
+     * @param string $branch
      * @return QMatchScheduleRelation
      */
-    public function setGroup(Group $group) {
-        $this->group = $group;
+    public function setBranch($branch) {
+        $this->branch = $branch;
         return $this;
     }
 
     /**
-     * @return Group
+     * @return int
      */
-    public function getGroup() {
-        return $this->group;
+    public function getClassification() {
+        return $this->classification;
+    }
+
+    /**
+     * @param int $classification
+     * @return QMatchScheduleRelation
+     */
+    public function setClassification($classification) {
+        $this->classification = $classification;
+        return $this;
+    }
+
+    /**
+     * @return int
+     */
+    public function getLitra() {
+        return $this->litra;
+    }
+
+    /**
+     * @param int $litra
+     * @return QMatchScheduleRelation
+     */
+    public function setLitra($litra) {
+        $this->litra = $litra;
+        return $this;
     }
 
     /**
@@ -122,18 +167,22 @@ class QMatchScheduleRelation
     }
 
     /**
-     * @param MatchSchedule $matchSchedule
+     * @param QMatchSchedule $matchSchedule
      * @return QMatchScheduleRelation
      */
-    public function setMatchSchedule(MatchSchedule $matchSchedule) {
+    public function setMatchSchedule(QMatchSchedule $matchSchedule) {
         $this->matchSchedule = $matchSchedule;
         return $this;
     }
 
     /**
-     * @return MatchSchedule
+     * @return QMatchSchedule
      */
     public function getMatchSchedule() {
         return $this->matchSchedule;
+    }
+
+    public function __toString() {
+        return $this->getClassification().":".$this->getLitra().$this->getBranch()."#".$this->getRank();
     }
 }

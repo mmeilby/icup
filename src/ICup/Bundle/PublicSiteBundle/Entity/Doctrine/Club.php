@@ -10,7 +10,7 @@ use Doctrine\ORM\Mapping as ORM;
  * This is one of the three basic entities: Hosts, Users and Clubs
  * A club is a top level entity that can exist with several Hosts. Only one club can use a specific name in each country.
  *
- * @ORM\Table(name="clubs", uniqueConstraints={@ORM\UniqueConstraint(name="NameConstraint", columns={"name", "country"})})
+ * @ORM\Table(name="clubs", uniqueConstraints={@ORM\UniqueConstraint(name="ClubNameConstraint", columns={"name", "country"})})
  * @ORM\Entity
  */
 class Club

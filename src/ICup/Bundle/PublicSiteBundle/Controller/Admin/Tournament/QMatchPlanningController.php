@@ -41,6 +41,11 @@ class QMatchPlanningController extends Controller
         $host = $tournament->getHost();
         $utilService->validateEditorAdminUser($user, $host);
 
+        $categoryList = array();
+        foreach ($tournament->getCategories() as $cat) {
+            $categoryList[] = array('category' => $cat, 'groups' => $cat->getGroupsClassified(Group::$PRE));
+        }
+
         $groupList = array();
         $groups = $category->getGroupsClassified(Group::$PRE);
         /* @var $group Group */
@@ -69,6 +74,7 @@ class QMatchPlanningController extends Controller
             'host' => $host,
             'tournament' => $tournament,
             'category' => $category,
+            'categoryList' => $categoryList,
             'groupList' => $groupList);
     }
     

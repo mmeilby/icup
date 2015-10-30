@@ -45,39 +45,39 @@ FORM:
     M_SKYPE: Skype adresse hvis turlederen benytter det
     M_MOBILE: Mobiltelefon til turlederen
     M_EMAIL: E-mail adresse
-    NTMU18: Landshold drenge under 18
-    NTFU18: Landshold piger under 18
+    NTMU18: Drenge
+    NTFU18: Piger
     MO18: Herre senior
     FO18: Dame senior
-    MU18: Drenge under 18
-    FU18: Piger under 18
-    MU16: Drenge under 16
-    FU16: Piger under 16
-    MU14: Drenge under 14
-    FU14: Piger under 14
-    MU12: Drenge under 12
-    FU12: Piger under 12
-    A_TERAMO_WB: Skole i Teramo med senge
-    A_TERAMO_WOB: Skole i Teramo uden senge
-    A_TERAMO_TENT: Telt i Teramo
-    A_GUILIANOVA_TENT: Telt ved havet
+    MU18: Drenge født fra 1998
+    FU18: Piger født fra 1998
+    MU16: Drenge født fra 2000
+    FU16: Piger født fra 2000
+    MU14: Drenge født fra 2002
+    FU14: Piger født fra 2002
+    MU12: Drenge født fra 2004
+    FU12: Piger født fra 2004
+    A_TERAMO_WOB: A - Skole i Teramo uden senge
+    A_TERAMO_WB: B - Skole i Teramo med senge
+    A_TERAMO_TENT: C - Telt i Teramo
+    A_TERAMO_HOTEL: E - Hotel i Teramo eller nærliggende område
+    A_GUILIANOVA_TENT: D - Telt ved havet
+    A_GUILIANOVA_HOTEL: F - Trestjernet hotel ved havet
     A_RESTAURANT: Restaurant i Teramo
-    A_TERAMO_HOTEL: Hotel i Teramo eller nærliggende område
-    A_GUILIANOVA_HOTEL: Trestjernet hotel ved havet
-    A_OTHER: Anden indkvartering (skriv ønske)
-    A_NONE: Hold uden indkvartering
-    arrival_date:
-    arrival_time:
-    departure_date:
-    departure_time:
-    b_arrival:
-    b_arrival_airport:
-    b_arrival_date:
-    b_arrival_time:
-    b_departure:
-    b_departure_airport:
-    b_departure_date:
-    b_departure_time:
+    A_OTHER: Anden indkvartering (der håndteres af stævnet - skriv ønske)
+    A_NONE: Hold uden indkvartering (der sørger for egen logi)
+    ARRIVAL_DATE: Ankomstdato til Teramo
+    ARRIVAL_TIME: Ankomsttidspunkt til Teramo
+    DEPARTURE_DATE: Afrejsedato
+    DEPARTURE_TIME: Afrejsetidspunkt
+    B_ARRIVAL: Ankommer med fly
+    B_ARRIVAL_AIRPORT: Ankomstlufthavn
+    B_ARRIVAL_DATE: Ankomstdato
+    B_ARRIVAL_TIME: Ankomsttidspunkt
+    B_DEPARTURE: Afrejser med fly
+    B_DEPARTURE_AIRPORT: Afrejselufthavn
+    B_DEPARTURE_DATE: Afrejsedato
+    B_DEPARTURE_TIME: Afrejsetidspunkt
   CLUB: 
     WELLCOME: Velkommen til iCup
     TITLE:

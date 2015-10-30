@@ -148,4 +148,11 @@ services:
         arguments:
           - "@service_container"
           - "@logger"
-        
+
+    test:
+        class: "ICup\\Bundle\\PublicSiteBundle\\Tests\\Services\\TestSupport"
+        arguments:
+          - "@doctrine.orm.entity_manager"
+          - "ICup\\Bundle\\PublicSiteBundle\\Entity\\Doctrine\\"
+          - "@logger"
+

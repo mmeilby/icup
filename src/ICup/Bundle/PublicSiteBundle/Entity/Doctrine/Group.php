@@ -175,6 +175,11 @@ class Group implements JsonSerializable
         return $teams;
     }
 
+    public function __toString() {
+        $tags = $this->jsonSerialize();
+        return $this->getCategory()->getName()."/".$this->getName()." ".$tags['classification'];
+    }
+
     /**
      * (PHP 5 &gt;= 5.4.0)<br/>
      * Specify data which should be serialized to JSON

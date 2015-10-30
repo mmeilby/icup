@@ -8,7 +8,7 @@ use Symfony\Component\Intl\Exception\MethodNotImplementedException;
 /**
  * ICup\Bundle\PublicSiteBundle\Entity\Doctrine\QMatchRelation
  *
- * @ORM\Table(name="qmatchrelations",uniqueConstraints={@ORM\UniqueConstraint(name="IdxByMatch", columns={"pid", "cid", "rank"})})
+ * @ORM\Table(name="qmatchrelations",uniqueConstraints={@ORM\UniqueConstraint(name="QTeamMatchConstraint", columns={"pid", "cid", "rank"})})
  * @ORM\Entity
  */
 class QMatchRelation

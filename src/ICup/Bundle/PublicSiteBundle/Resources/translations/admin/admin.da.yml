@@ -371,6 +371,12 @@ FORM:
                   kampprogrammet. Men først skal du have styr på puljerne. Hvilke hold skal spille mod hinanden og hvor mange
                   hold skal der være i hver pulje. Du skal også tage stilling til på hvilke tidspunkter der kan spilles
                   på turneringens baner. Når det er på plads er du klar til at planlægge kampe.
+    PLANNING:
+      TITLE: Kampplanen er ved at blive lagt
+      DESCRIPTION: Turneringens kampplan er ved at blive lagt - hav lidt tålmodighed.
+      FAILURE: Der optod en fejl under planlægningen. Prøv igen.
+      ERROR: Der optod en fejl under planlægningen. Fejlen var:
+      DONE: Voila - så er kampplanen lagt.
     DOUBLEMATCH:
       PROMPT: Planlæg med returkampe
       HELP: Hvis der spilles med returkampe kommer hvert hold til at spille to gange mod samme modstander
@@ -443,26 +449,46 @@ FORM:
     TITLE: Vedligehold turnering
     CAPTION: Planlæg finalekampe
     PLANNINGINCOMPLETE: Det er ikke muligt at planlægge alle kampe
+    SELECTCATEGORY:
+      TITLE: Vælg gruppe fra listen
+      TEXT: Klik på en gruppe fra listen som du vil planlægge puljer for.
+    PROMPT:
+      TROPHYS: Antal medaljemodtagere i hvert slutspil
+      TOPTEAMS: Antal hold der går til A-slutspil
+    HELP:
+      TROPHYS: Normalt angives 3 for første, anden og tredie plads
+      TOPTEAMS: Antal af de bedst seedede/placerede hold der går til A-slutspil
     TEAMS: Hold
+    GROUPS: Grundspilspuljer
+    NOGROUPS: Ingen puljer i grundspillet
+    ADDGROUP: Tilføj pulje
     GROUP:
+      ZERO: Ingen puljer
       ONE: En pulje
       TWO: To puljer
       THREE: Tre puljer
-      FOUR: Fire puljer
+      FOUR: Fire eller flere puljer
     RADIO:
+      GROUP0:
+        OPTION0: Gruppens hold spiller slutspil. A-slutspils seedede hold sidder over til senere runder
       GROUP1:
+        OPTION0: De bedst placerede hold går til A-slutspil, resten går til B-slutspil
         OPTION1: Fire bedst placerede hold går til semifinale
         OPTION2: To bedst placerede hold går til finale
       GROUP2:
+        OPTION0: De bedst placerede hold går til A-slutspil, resten går til B-slutspil
         OPTION1: Fire bedst placerede hold går til kvartfinale
         OPTION2: To bedst placerede hold går til semifinale
         OPTION3: Puljevindere går til finale
       GROUP3:
-        OPTION1: Puljevindere går til semifinale, pulje 2-ere mødes i playoff
-        OPTION2: To bedst placerede hold går til kvartfinale, pulje 3-ere og 4-ere går i playoff
+        OPTION0: De bedst placerede hold går til A-slutspil, resten går til B-slutspil
+        OPTION1: To bedst placerede hold går til kvartfinale, pulje 3-ere og 4-ere går i playoff
+        OPTION2: Puljevindere går til semifinale, pulje 2-ere mødes i playoff
       GROUP4:
+        OPTION0: De bedst placerede hold går til A-slutspil, resten går til B-slutspil
         OPTION1: To bedst placerede hold går til kvartfinale
         OPTION2: Puljevindere går til semifinale
+    SUBMIT: Gem indstillinger
   TOURNAMENTIMPORT:
     TITLE: Vedligehold turnering
     CAPTION: Kopier fra turnering

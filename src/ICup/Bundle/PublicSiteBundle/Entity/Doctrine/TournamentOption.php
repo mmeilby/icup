@@ -29,6 +29,13 @@ class TournamentOption
     protected $drr = false;
 
     /**
+     * @var boolean $svd
+     * Same venue desired?
+     * @ORM\Column(name="svd", type="boolean", nullable=false, options={"default":false})
+     */
+    protected $svd = false;
+
+    /**
      * @var boolean $er
      * Eliminating rounds used in this tournament?
      * @ORM\Column(name="er", type="boolean", nullable=false, options={"default":true})
@@ -92,6 +99,22 @@ class TournamentOption
      */
     public function setDrr($drr) {
         $this->drr = $drr;
+        return $this;
+    }
+
+    /**
+     * @return boolean
+     */
+    public function isSvd() {
+        return $this->svd;
+    }
+
+    /**
+     * @param boolean $svd
+     * @return TournamentOption
+     */
+    public function setSvd($svd) {
+        $this->svd = $svd;
         return $this;
     }
 

@@ -3,47 +3,66 @@
 {% form_theme form 'ICupPublicSiteBundle:Default:layout.script.html.twig' %}
 {% trans_default_domain "club" %}
 
-{% block body %}
-<div class="row">
-    <div class="col-md-6">
-        {{ sonata_block_render({'name': '/cms/content/blocks/enrollment/categories'}) }}
+{% block widebody %}
+    <div class="navy">
+        <div class="container tall">
+            <div class="lead">
+                {{ sonata_block_render({'name': '/cms/content/blocks/enrollment/step3'}) }}
+            </div>
+        </div>
     </div>
-    <div class="col-md-6">
-        <h2><i class="fa fa-ticket"></i> Registrering og tilmelding (del 3)</h2>
-        <h4>Angiv antal hold der tilmeldes i hver kategori</h4>
-        <div class="row">
-            <div class="col-md-4"><h5>Universitetshold</h5></div>
-            <div class="col-md-4">{{ form_row(form.t_ntmu18) }}</div>
-            <div class="col-md-4">{{ form_row(form.t_ntfu18) }}</div>
+    <div class="bg-olive silver">
+        <div class="container tall">
+            <div class="lead">
+                <div class="row">
+                    <div class="col-md-6">
+                        <h2>{% trans %}FORM.ENROLLMENT.STEP3.TITLE{% endtrans %}</h2>
+                        {{ form_start(form) }}
+                        {{ form_errors(form) }}
+                        <h3>{% trans %}FORM.ENROLLMENT.STEP3.HEADER1{% endtrans %}</h3>
+                        <p>{% trans %}FORM.ENROLLMENT.STEP3.HEADER2{% endtrans %}</p>
+                        <div class="row">
+                            <div class="col-md-4"><h5>{% trans %}FORM.ENROLLMENT.STEP3.CLASSUNI{% endtrans %}</h5></div>
+                            <div class="col-md-4">{{ form_row(form.t_ntmu18) }}</div>
+                            <div class="col-md-4">{{ form_row(form.t_ntfu18) }}</div>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-4"><h5>{% trans %}FORM.ENROLLMENT.STEP3.CLASSO18{% endtrans %}</h5></div>
+                            <div class="col-md-4">{{ form_row(form.t_mo18) }}</div>
+                            <div class="col-md-4">{{ form_row(form.t_fo18) }}</div>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-4"><h5>{% trans %}FORM.ENROLLMENT.STEP3.CLASSU18{% endtrans %}</h5></div>
+                            <div class="col-md-4">{{ form_row(form.t_mu18) }}</div>
+                            <div class="col-md-4">{{ form_row(form.t_fu18) }}</div>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-4"><h5>{% trans %}FORM.ENROLLMENT.STEP3.CLASSU16{% endtrans %}</h5></div>
+                            <div class="col-md-4">{{ form_row(form.t_mu16) }}</div>
+                            <div class="col-md-4">{{ form_row(form.t_fu16) }}</div>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-4"><h5>{% trans %}FORM.ENROLLMENT.STEP3.CLASSU14{% endtrans %}</h5></div>
+                            <div class="col-md-4">{{ form_row(form.t_mu14) }}</div>
+                            <div class="col-md-4">{{ form_row(form.t_fu14) }}</div>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-4"><h5>{% trans %}FORM.ENROLLMENT.STEP3.CLASSU12{% endtrans %}</h5></div>
+                            <div class="col-md-4">{{ form_row(form.t_mu12) }}</div>
+                            <div class="col-md-4">{{ form_row(form.t_fu12) }}</div>
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                    </div>
+                </div>
+                <hr class="border--navy" />
+                <div class="row">
+                    <div class="col-md-6 col-md-push-6 text-right">{{ form_row(form.send) }}</div>
+                    <div class="col-md-6 col-md-pull-6">{{ form_row(form.back) }}</div>
+                </div>
+                {{ form_rest(form) }}
+                {{ form_end(form) }}
+            </div>
         </div>
-        <div class="row">
-            <div class="col-md-4"><h5>Seniorer</h5></div>
-            <div class="col-md-4">{{ form_row(form.t_mo18) }}</div>
-            <div class="col-md-4">{{ form_row(form.t_fo18) }}</div>
-        </div>
-        <div class="row">
-            <div class="col-md-4"><h5>Unge under 18</h5></div>
-            <div class="col-md-4">{{ form_row(form.t_mu18) }}</div>
-            <div class="col-md-4">{{ form_row(form.t_fu18) }}</div>
-        </div>
-        <div class="row">
-            <div class="col-md-4"><h5>Unge under 16</h5></div>
-            <div class="col-md-4">{{ form_row(form.t_mu16) }}</div>
-            <div class="col-md-4">{{ form_row(form.t_fu16) }}</div>
-        </div>
-        <div class="row">
-            <div class="col-md-4"><h5>Unge under 14</h5></div>
-            <div class="col-md-4">{{ form_row(form.t_mu14) }}</div>
-            <div class="col-md-4">{{ form_row(form.t_fu14) }}</div>
-        </div>
-        <div class="row">
-            <div class="col-md-4"><h5>Unge under 12</h5></div>
-            <div class="col-md-4">{{ form_row(form.t_mu12) }}</div>
-            <div class="col-md-4">{{ form_row(form.t_fu12) }}</div>
-        </div>
-        <p>
-            {{ form(form) }}
-        </p>
     </div>
-</div>
 {% endblock %}

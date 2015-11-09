@@ -89,8 +89,59 @@ contact:
                 <a href="http://www.facebook.com/InteramniaWorldCup">www.facebook.com/InteramniaWorldCup</a>
             </p>
 enrollment:
+    preface:
+        title: VELKOMMEN TIL HELE VERDEN
+        body: >
+            <h4>INVITATION</h4>
+            <p>
+            Interamnia World Cup nærmer sig den 44. udgave af turneringen - nu stærkere og mere stolt af sit omdømme,
+            takket være den opmærksomhed turneringen har opnået internationalt for sin originalitet og
+            rigdom på sport og kulturelle indhold.
+            </p>
+
+            <p>
+            Vi inviterer dig til at deltage i vores turnering og til at huske på, at i Teramo vil du opleve, hvad der mangler i andre turneringer,
+            selv om de fleste andre turneringer faktisk blev skabt i kølvandet på vores.
+            </p>
+
+            <p>
+            Faktisk vil du ikke finde et stort antal hold fra tilgrænsende lande i vores by, men du vil opleve en mere menneskelig dimension,
+            baseret på hold, der kommer fra forskellige lande i de fem kontinenter.
+            </p>
+
+            <p>
+            Du vil få lejlighed til at slappe af i en venlig og gæstfri by, der gennem turneringen altid har fremmet originale og markante initiativer
+            til fordel for solidaritet og broderskab mellem folkene.
+            </p>
+
+            <p>
+            Vi ønsker at genoplive turneringen med alt dens indhold og give mere opmærksomhed til alle de aspekter, der sidst blev overset - selv i betragtning af det
+            store antal af klubber fra forskellige lande, der ønsker at deltage.
+            Vi vil også drage fordel af den støtte, der tilbydes af vores nye og vigtige partner, University of Teramo, med hvem vi har lavet en samarbejdsaftale.
+            </p>
+
+            <p>
+            Således føler vi os klar til at modtage et større antal entusiastiske deltagere, med forventning om at de kommer til Teramo for at sætte liv i en unik oplevelse.
+            </p>
+
+            <p>
+            Vores invitation til at komme og tilbringe en hel uge med sport, turisme og sjov i Teramo, er rettet til alle, uden hensyn til race,
+            tradition eller politisk overbevisning.
+            </p>
+
+            <h4>PROGRAM</h4>
+            <p>
+            Sports-Cultural Club "Interamnia World Cup" planlægger og organiserer "44. Interamnia World Cup" - Memorial "Giorgio Binchi" - internationale håndboldturnering,
+            i samarbejde med det italienske håndboldforbund og i regi af den nationale olympiske komité,
+            Det Internationale Håndbold Forbund og Det Europæiske Håndbold Forbund.
+            </p>
+
+            <h4>FORLØB</h4>
+            <p>
+            Turneringen vil finde sted fra den 5. til den 11. juli 2016 i Teramo og i nogle nærliggende kommuner.
+            </p>
     terms:
-        title: Tilmelding 2015
+        title: Tilmelding 2016
         body: >
             <p>
                 Tilmelding sker ved indbetaling af holdgebyr samt depositum.
@@ -269,44 +320,212 @@ enrollment:
             <p>Dog vil hold der med en rimelig begrundelse melder afbud skriftligt til stævnets sekretariat inden den 10. juni 2015
             kunne få depositum (gælder ikke depositum for hotelophold) og eventuelle deltagergebyr refunderet.</p>
             <p>Holdgebyr vil i alle tilfælde være tabt for hold der ikke deltager.</p>
-    categories:
-        title: DELTAGERE
+    step1:
+        title: ONLINE TILMELDING
         body: >
-            <p>Deltagelse kan ske med ungdomshold - både drenge og piger - der spiller for en klub som hører under DHF eller DIF.
-            Hold der repræsenterer en by eller egn kan også deltage. Skolehold der er tilknyttet International School Sport
-            Federation er ligeledes berettiget til at deltage.</p>
-
+            <h4>TILMELDING TIL INTERAMNIA WORLD CUP 2016</h4>
             <p>
-            <strong>Herre- og drengegrupper</strong><br />
-            A - Universitetshold<br />
-            B - Herrer<br />
-            C - Drenge under 18 (født 1998 og senere)<br />
-            D - Drenge under 16 (født 2000 og senere)<br />
-            E - Drenge under 14 (født 2002 og senere)<br />
-            F - Drenge under 12 (født 2004 og senere)
+                Online tilmelding er et nyt initiativ som tilbydes de klubber, der foretrækker digitale tjenester.
+                Her kan du tilmelde hold på samme måde som hvis du udfylder den trykte formular. Det er bare lettere og hurtigere.
             </p>
 
             <p>
-            <strong>Dame- og pigegrupper</strong><br />
-            G - Universitetshold<br />
-            H - Damer<br />
-            I - Piger under 18 (født 1998 og senere)<br />
-            L - Piger under 16 (født 2000 og senere)<br />
-            M - Piger under 14 (født 2002 og senere)<br />
-            N - Piger under 12 (født 2004 og senere)
+                Uanset om du benytter online tilmelding eller traditionel tilmelding er betingelserne ens -
+                så husk at tilmelde dig inden de anviste frister.
             </p>
 
             <p>
-            <strong>Gruppe A og G (universitetshold)</strong><br />
-            I forbindelse med samarbejdet mellem University of Teramo, Interamnia World Cup og "Erasmus Interamnia" er der
-            oprettet en særlig gruppe for hold af universitetsstuderende i alle aldre.
+                Det er vigtigt at alle fem trin i tilmeldingsprocessen er gennemført - du starter med det første trin herunder: oplysninger om klubben.
+                Online tilmelding er først gennemført når du ser kvitteringssiden med bekræftelse på at din tilmelding er sendt.
+            </p>
+    step2:
+        title: TURLEDEREN
+        body: >
+            <p>
+                Turlederen er den person, der repræsenterer klubben ved stævnet. Det kan være en person der er med på turen
+                eller klubbens formand.
             </p>
 
             <p>
-            <strong>Gruppe B og H (Herre og Dame hold)</strong><br />
-            Disse grupper har været en fast del af turneringen gennem de sidste fire år, på opfordring fra klubber der er
-            særligt begejstrede for turneringen. Med disse grupper får voksne spillere mulighed for at deltage selvom de
-            er passeret de 18 år som er aldersgrænsen for ungdomsholdene.
+                Turlederen formidler kontakten mellem stævnet og klubben. Som udgangspunkt i forløbet op til turneringsstart men også
+                under turneringen.
+            </p>
+    step3:
+        title: DELTAGERNE
+        body: >
+            <div class="panel panel-default">
+                <div class="panel-heading"><i class="fa fa-cubes fa-2x"></i>&nbsp;ALDERSGRUPPER</div>
+                <div class="panel-body">
+                    Deltagelse kan ske med ungdomshold - både drenge og piger - der spiller for en klub som hører under DHF eller DIF.
+                    Hold der repræsenterer en by eller egn kan også deltage. Skolehold der er tilknyttet International School Sport
+                    Federation er ligeledes berettiget til at deltage.
+                </div>
+                <div class="table-responsive">
+                    <table class="table table-condensed">
+                        <thead>
+                            <td><strong>Herre- og drengegrupper</strong></td><td><strong>Dame- og pigegrupper</strong></td>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td>A - Universitetshold</td><td>G - Universitetshold</td>
+                            </tr>
+                            <tr>
+                                <td>B - Herrer</td><td>H - Damer</td>
+                            </tr>
+                            <tr>
+                                <td>C - Drenge under 18 (født 1998 og senere)</td><td>I - Piger under 18 (født 1998 og senere)</td>
+                            </tr>
+                            <tr>
+                                <td>D - Drenge under 16 (født 2000 og senere)</td><td>L - Piger under 16 (født 2000 og senere)</td>
+                            </tr>
+                            <tr>
+                                <td>E - Drenge under 14 (født 2002 og senere)</td><td>M - Piger under 14 (født 2002 og senere)</td>
+                            </tr>
+                            <tr>
+                                <td>F - Drenge under 12 (født 2004 og senere)</td><td>N - Piger under 12 (født 2004 og senere)</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+
+            <p>
+                <strong>Gruppe A og G (universitetshold)</strong><br />
+                I forbindelse med samarbejdet mellem University of Teramo, Interamnia World Cup og "Erasmus Interamnia" er der
+                oprettet en særlig gruppe for hold af universitetsstuderende i alle aldre.
+            </p>
+
+            <p>
+                <strong>Gruppe B og H (Herre og Dame hold)</strong><br />
+                Disse grupper har været en fast del af turneringen gennem de sidste fire år, på opfordring fra klubber
+                hvor deltagelse i stævnet er blevet en tradition. Med disse grupper får voksne spillere mulighed for at deltage selvom de
+                er passeret de 18 år som er aldersgrænsen for ungdomsholdene.
+            </p>
+    step4:
+        title: OPHOLD
+        body: >
+            <p>
+                Ophold under stævnet kan ske på skoler, i telt eller på hotel. Der er faste priser på disse typer ophold som er beskrevet
+                herunder.
+            </p>
+
+            <p>
+                Udlejningshuse, lejligheder, turistbyer ved havet og agritourisms er andre former for ophold som kan arrangeres via
+                stævnets serkretariat som står til rådighed for yderligere oplysninger.
+            </p>
+
+            <div class="panel panel-default">
+                <div class="panel-heading"><i class="fa fa-university fa-2x"></i>&nbsp;OPHOLD VED TERAMO</div>
+                <div class="panel-body">
+                    For ophold i Teramo er det muligt at tilkøbe frokost og aftensmad.
+                    Måltiderne serveres på restaurant fra aften den 4. juli til aften den 11. juli og koster €150 per person.
+                    Ekstra måltider kan tilkøbes for €10 per styk.
+                </div>
+                <div class="table-responsive">
+                    <table class="table table-condensed">
+                        <thead>
+                            <td></td><td></td><td>Pris per person</td><td>Tillæg per ekstra dag</td><td>Ankomst</td><td>Afrejse</td><td></td>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td>A</td><td>Skole i Teramo uden senge</td><td>€50</td><td>€5</td><td>4/7</td><td>12/7</td>
+                                <td>Hvert hold vil have et rum til deres rådighed.</td>
+                            </tr>
+                            <tr>
+                                <td>B</td><td>Skole i Teramo med senge</td><td>€80</td><td>€10</td><td>4/7</td><td>12/7</td>
+                                <td>Hvert hold vil have et rum til deres rådighed med senge med madras og lagen.</td>
+                            </tr>
+                            <tr>
+                                <td>C</td><td>Eget telt i Teramo</td><td>€30</td><td>€5</td><td>4/7</td><td>12/7</td>
+                                <td></td>
+                            </tr>
+                            <tr>
+                                <td>E</td><td>Hotel ved Teramo</td><td>€400</td><td>€50</td><td>4/7</td><td>12/7</td>
+                                <td>Opholdet er inkluderet morgenmad samt frokost og aftensmad (aftensmad ved ankomst og morgenmad ved afrejse).
+                                Der er tillæg på €100 for enkeltværelser.</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+            <div class="panel panel-default">
+                <div class="panel-heading"><i class="fa fa-leaf fa-2x"></i>&nbsp;OPHOLD VED KYSTEN</div>
+                <div class="panel-body">
+                    <p>Bemærk at klubber der vælger at bo ved havet selv skal sørge for transport til og fra Teramo.</p>
+                </div>
+                <div class="table-responsive">
+                    <table class="table table-condensed">
+                        <thead>
+                            <td></td><td></td><td>Pris per person</td><td>Tillæg per ekstra dag</td><td>Ankomst</td><td>Afrejse</td><td></td>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td>D</td><td>Eget telt på teltplads ved kysten</td><td>€55</td><td>€8</td><td>4/7</td><td>12/7</td>
+                                <td>Der vil være mulighed for at benytte teltpladsens facilliteter samt den nærliggende strand.</td>
+                            </tr>
+                            <tr>
+                                <td>F</td><td>Hotel ved kysten</td><td>€400</td><td>€50</td><td>4/7</td><td>12/7</td>
+                                <td>Opholdet er inkluderet morgenmad samt frokost og aftensmad (aftensmad ved ankomst og morgenmad ved afrejse).
+                                Der er tillæg på €100 for enkeltværelser.</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+    step5:
+        title: TRANSPORT
+        body: >
+            <h4>TRANSPORT TIL OG FRA TERAMO</h4>
+            <p>
+                Transport til og fra Teramo kan ske på egen hånd med offentlige transportmidler
+                (stævnets sekretariat giver gerne nærmere oplysninger herom) eller med stævnebus.
+            </p>
+
+            <p>
+                <strong>Offentlig transport</strong><br />
+                Gaspari Agency Travel kører mellem Rom og Teramo - for pladsreservation besøg www.gasparionline.it
+            </p>
+
+            <p>Prisen for offentlig transport mellem Rom og Teramo er €38 per person tur/retur.</p>
+
+            <p>Bemærk at det er muligt at flyve til Pescara og Ancona fra flere europæiske lufthavne (men ikke danske).
+            Stævnets sekretariat hjælper også gerne med transport fra disse lufthavne.</p>
+
+            <p>
+                <strong>Stævnebus</strong><br />
+                Prisen for en gruppe på op til 50 personer tur/retur med stævnebus er €1800. Turen skal bestilles ved tilmelding og inkluderer en guide/tolk.
+            </p>
+
+            <p>Hvis to klubber kan køre med samme bus halveres prisen.</p>
+
+            <p>Præcise oplysninger om ankomst og afgangstider samt fly numre skal oplyses til stævnet mindst tre dage før ankomst.</p>
+    step6:
+        title: BEKRÆFTELSE
+        body: >
+            <p>
+                Tilmelding er gennemført. Nu mangler blot betaling af holdgebyr og depositum.
+                Det samlede beløb for holdgebyr og depositum er vist her. I løbet af april 2016 vil en samlet opgørelse blive
+                fremsendt hvorefter sidste rate (deltagergebyr fratrukket depositum) skal være betalt.
+            </p>
+
+            <p>
+                Interamnia World Cup takker for tilmeldingen og glæder sig til at se klubbens hold til stævnet!
+            </p>
+
+            <h4>HOLDGEBYR OG DEPOSITUM</h4>
+            <p>
+                Tilmelding anses for at være gyldig og bindende når holdgebyr samt depositum er overført til stævnets bankkonto:<br />
+                c/o the bank Banca Tercas – Sede di Teramo – Bank Account CC0900053052 headed to INTERAMNIA WORLD CUP<br />
+                IBAN: IT05 B 06060 15300 CC0900053052 – SWIFT: TERCIT 3TXXX
+            </p>
+
+            <p>Depositum er €400 per hold uanset tidpunkt for tilmelding.</p>
+
+            <p>Ved tilmelding inden:</p>
+            <p>
+                30. november 2015 er holdgebyret €100.<br />
+                10. februar 2016 er holdgebyret €200.<br />
+                15. april 2016 er holdgebyret €300.
             </p>
 information:
     intro:

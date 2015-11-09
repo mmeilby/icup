@@ -25,58 +25,119 @@ FORM:
     ADDRESS: Club address
     CITY: City
     COUNTRY: Country
-    PHONE: Telefon til klubbens administration eller bestyrelse
-    FAX: Fax der kan benyttes i forbindelse med tilmeldingen
-    SKYPE: Skype adresse hvis klubben benytter det
-    EMAIL: E-mail adresse til klubbens administration eller bestyrelse 
-    WEB: Adresse på klubbens hjemmeside
-    MEMBERSHIP: Medlemsskab - angiv hvilket forbund
-    AFFILIATION: Tilhørsforhold - angiv kode eller blank
-    CHAMPIONSHIP: Bedste række klubben deltager i
-    BESTRESULT: Bedste resultat klubben har opnået
-    SUBMIT: Næste
-    MANAGER: Turleders navn
-    M_ADDRESS: Adresse
-    M_CITY: Postnummer og by
-    M_COUNTRY: Land
-    M_PHONE: Fastnetstelefon
-    M_FAX: Fax
-    M_SKYPE: Skype adresse hvis turlederen benytter det
-    M_MOBILE: Mobiltelefon til turlederen
-    M_EMAIL: E-mail adresse
-    NTMU18: Landshold drenge under 18
-    NTFU18: Landshold piger under 18
-    MO18: Herre senior
-    FO18: Dame senior
-    MU18: Drenge under 18
-    FU18: Piger under 18
-    MU16: Drenge under 16
-    FU16: Piger under 16
-    MU14: Drenge under 14
-    FU14: Piger under 14
-    MU12: Drenge under 12
-    FU12: Piger under 12
-    A_TERAMO_WB: Skole i Teramo med senge
-    A_TERAMO_WOB: Skole i Teramo uden senge
-    A_TERAMO_TENT: Telt i Teramo
-    A_GUILIANOVA_TENT: Telt ved havet
-    A_RESTAURANT: Restaurant i Teramo
-    A_TERAMO_HOTEL: Hotel i Teramo eller nærliggende område
-    A_GUILIANOVA_HOTEL: Trestjernet hotel ved havet
-    A_OTHER: Anden indkvartering (skriv ønske)
-    A_NONE: Hold uden indkvartering
-    arrival_date:
-    arrival_time:
-    departure_date:
-    departure_time:
-    b_arrival:
-    b_arrival_airport:
-    b_arrival_date:
-    b_arrival_time:
-    b_departure:
-    b_departure_airport:
-    b_departure_date:
-    b_departure_time:
+    PHONE: Phone no. for club administration
+    FAX: Fax no.
+    SKYPE: Skype address
+    EMAIL: E-mail address
+    WEB: Club website address
+    MEMBERSHIP: Federation membership
+    AFFILIATION: Affiliation code
+    CHAMPIONSHIP: Participation in federal championship
+    BESTRESULT: Best result achieved
+    SUBMIT: Next
+    BACK: Back
+    SEND: Enroll
+    MANAGER: Manager full name
+    M_ADDRESS: Address
+    M_CITY: City
+    M_COUNTRY: Country
+    M_PHONE: Phone no.
+    M_FAX: Fax no.
+    M_SKYPE: Skype address
+    M_MOBILE: Mobile
+    M_EMAIL: E-mail address
+    NTMU18: Category A
+    NTFU18: Category G
+    MO18: Category B
+    FO18: Category H
+    MU18: Category C
+    FU18: Category I
+    MU16: Category D
+    FU16: Category L
+    MU14: Category E
+    FU14: Category M
+    MU12: Category F
+    FU12: Category N
+    A_TERAMO_WOB: A - School in Teramo without bedding arrangements
+    A_TERAMO_WB: B - School in Teramo with bedding arrangements
+    A_TERAMO_TENT: C - Tent in Teramo
+    A_TERAMO_HOTEL: E - Hotel in Teramo or nearby area
+    A_GUILIANOVA_TENT: D - Tent at the seaside
+    A_GUILIANOVA_HOTEL: F - 3-star hotel at seaside
+    A_RESTAURANT: Restaurant in Teramo
+    A_OTHER: Other accommodation (please be specific)
+    A_NONE: Independent teams
+    ARRIVAL_DATE: Day of arrival
+    ARRIVAL_TIME: Time of aarival
+    DEPARTURE_DATE: Day of departure
+    DEPARTURE_TIME: Time of departure
+    B_ARRIVAL: Arrival by plane
+    B_ARRIVAL_AIRPORT: Airport of arrival
+    B_ARRIVAL_DATE: Day of arrival
+    B_ARRIVAL_TIME: Time of arrival
+    B_DEPARTURE: Departure by plane
+    B_DEPARTURE_AIRPORT: Airport of deprature
+    B_DEPARTURE_DATE: Day of departure
+    B_DEPARTURE_TIME: Time of departure
+    STEP1:
+      TITLE: The club
+      HEADER1: Required information
+      HEADER2: Optional information
+      HEADER3: Vital statistics
+    STEP2:
+      TITLE: The manager
+      HEADER1: Required information
+      HEADER2: Optional information
+    STEP3:
+      TITLE: The teams
+      HEADER1: Please enter the number of teams enrolled in each category
+      HEADER2: You can leave categories empty if no teams are enrolled in these categories.
+      CLASSUNI: University teams
+      CLASSO18: Over 18
+      CLASSU18: Under 18
+      CLASSU16: Under 16
+      CLASSU14: Under 14
+      CLASSU12: Under 12
+    STEP4:
+      TITLE: Lodging and catering
+      HEADER1: Lodging in Teramo
+      TEXT1: Lodging in Teramo is available at public schools, in tent or at hotel. Type the number of persons for each type of lodging.
+      HEADER2: Lodging at the seaside
+      TEXT2: Lodging at the seaside is available in tent or at hotel. Type the number of persons for each type of lodging. Clubs lodging this way must handle transportation to Teramo by themself.
+      HEADER3: Catering
+      TEXT3: Catering is available in Teramo.
+      HEADER4: Other type of lodging
+      TEXT4: If you like to request something special, type it here
+      TEXT5: Type the number of teams that organize their own lodging
+    STEP5:
+      TITLE: Arrival and departure details
+      HEADER1: Expected arrival to and departure from Teramo
+      TEXT1: Arrival to Teramo
+      HEADER2: Departure from Teramo
+      HEADER3: Type the expected time schedules if the teams need transfer service to and from an airport
+      TEXT3: Transfer service from airport by bus
+      TEXT4: Transfer service to airport by bus
+    STEP6:
+      TITLE: Your enrollment is complete for
+      TEXT1: Enrolled teams:
+      TEXT2: Enrollment fee and team deposit:
+
+    NOCLUB: Club name is missing
+    NOADDRESS: Address is missing
+    NOCITY: City is missing
+    NOCOUNTRY: Country is missing
+    NOEMAIL: E-mail address is missing
+    INVALIDEMAIL: E-mail address is not valid
+    NOMANAGER: Manager name is missing
+    NOMOBILE: Mobile no. is missing
+    NOCATEGORIES: No categories are enrolled
+    NOACCOMODATION: No lodging is selected
+    NOARRIVALDATE: Arrival date is missing
+    NOARRIVALTIME: Arrival time is missing
+    NODEPARTUREDATE: Departure date is missing
+    NODEPARTURETIME: Departure time is missing
+
+    MAILTITLE: Club enrollment
   CLUB: 
     WELLCOME: Wellcome to iCup
     TITLE:

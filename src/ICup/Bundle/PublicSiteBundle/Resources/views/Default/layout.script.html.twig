@@ -1,27 +1,33 @@
 {% block form_row %}
 {% spaceless %}
-    {% if form.vars.errors|length > 0 %}
-    <div class="form-group has-error has-feedback">
-    {% else %}
-    <div class="form-group">
-    {% endif %}
+    {{ form_errors(form) }}
+    <div class="form-group{% if form.vars.errors|length > 0 %} has-error has-feedback{% endif %}">
     {% set pholder = form.vars.help %}
-    {% if not form.vars.phonestyle %}
+    {% if not form.vars.phonestyle or form.vars.data is not null %}
         {{ form_label(form) }}
     {% else %}
         {% set pholder = form.vars.label %}
     {% endif %}
-        {{ form_errors(form) }}
+    {% if form.vars.icon is not null %}
+        <div class="input-group">
+    {% endif %}
         {% if form.vars.icon is not null %}
-            <div class="input-group">
-                <span class="input-group-addon">
-                    <i class="{{ form.vars.icon }}"></i>
-                </span>
-                {{ form_widget(form, { 'attr': {'class': 'form-control', 'placeholder': pholder}}) }}
-            </div>
-        {% else %}
-            {{ form_widget(form, { 'attr': {'class': 'form-control', 'placeholder': pholder}}) }}
+            <span class="input-group-addon">
+                <i class="{{ form.vars.icon }}"></i>
+            </span>
         {% endif %}
+        {% if form.vars.errors|length > 0 %}
+            {{ form_widget(form, { 'attr': {'placeholder': pholder, 'aria-describedby': form.vars.name ~ 'ErrorStatus'}}) }}
+        {% else %}
+            {{ form_widget(form, { 'attr': {'placeholder': pholder}}) }}
+        {% endif %}
+    {% if form.vars.icon is not null %}
+        </div>
+    {% endif %}
+    {% if form.vars.errors|length > 0 %}
+        <span class="fa fa-remove form-control-feedback" aria-hidden="true"></span>
+        <span id="{{ form.vars.name ~ 'ErrorStatus' }}" class="sr-only">(error)</span>
+    {% endif %}
     </div>
 {% endspaceless %}
 {% endblock form_row %}
@@ -34,11 +40,11 @@
             <span aria-hidden="true">&times;</span>
             <span class="sr-only">Close</span>
         </button>
-        <ul>
+        <p>
             {% for error in errors %}
-                <li>{{ error.message }}</li>
+                {{ error.message }}<br />
             {% endfor %}
-        </ul>
+        </p>
     </div>
     {% endif %}
 {% endspaceless %}

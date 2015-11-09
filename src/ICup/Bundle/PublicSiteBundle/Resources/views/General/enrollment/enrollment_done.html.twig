@@ -1,0 +1,40 @@
+{% extends "ICupPublicSiteBundle:Masters:standard.html.twig" %}
+
+{% trans_default_domain "club" %}
+
+{% block widebody %}
+    {% set teams = form.t_ntmu18+form.t_ntfu18+form.t_mo18+form.t_fo18+form.t_mu18+form.t_fu18+form.t_mu16+form.t_fu16+form.t_mu14+form.t_fu14+form.t_mu12+form.t_fu12 %}
+    <div class="navy">
+        <div class="container tall">
+            <div class="lead">
+                {{ sonata_block_render({'name': '/cms/content/blocks/enrollment/step6'}) }}
+            </div>
+        </div>
+    </div>
+    <div class="bg-olive white">
+        <div class="container tall">
+            <div class="lead">
+                <h3>{% trans %}FORM.ENROLLMENT.STEP6.TITLE{% endtrans %}</h3>
+                <div class="row">
+                    <div class="col-md-6">
+                        {{ form.club }}<br />
+                        {{ form.manager }}<br />
+                        {{ form.m_mobile }}<br />
+                        {{ form.m_email }}
+                    </div>
+                    <div class="col-md-6">
+                        {% trans %}FORM.ENROLLMENT.STEP6.TEXT1{% endtrans %} {{ teams }}<br />
+                        {% trans %}FORM.ENROLLMENT.STEP6.TEXT2{% endtrans %}
+{% if "now"|date("Ymd") < '20151201' %}
+                        €{{ teams*500 }}
+{% elseif "now"|date("Ymd") < '20160211' %}
+                        €{{ teams*600 }}
+{% else %}
+                        €{{ teams*700 }}
+{% endif %}
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock %}

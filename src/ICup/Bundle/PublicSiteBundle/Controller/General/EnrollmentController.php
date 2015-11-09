@@ -7,6 +7,7 @@ use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use ICup\Bundle\PublicSiteBundle\Entity\Enrollment;
 use Symfony\Component\HttpFoundation\Request;
+use Swift_Message;
 
 class EnrollmentController extends Controller
 {
@@ -19,13 +20,13 @@ class EnrollmentController extends Controller
         $enrollform = $request->getSession()->get('enrollform', new Enrollment());
         $form = $this->makeEnrollmentFormStep1($enrollform);
         $form->handleRequest($request);
-        if ($form->isValid()) {
+        if ($enrollform->checkForm($form, $this->get('validator'), $this->get('translator'))) {
             $request->getSession()->set('enrollform', $enrollform);
             return $this->redirectToRoute('_enrollment_step2');
         }
         return array('form' => $form->createView());
     }
-    
+
     /**
      * @Route("/enrollment/step2", name="_enrollment_step2")
      * @Template("ICupPublicSiteBundle:General:enrollment/enrollment_step2.html.twig")
@@ -35,7 +36,10 @@ class EnrollmentController extends Controller
         $enrollform = $request->getSession()->get('enrollform', new Enrollment());
         $form = $this->makeEnrollmentFormStep2($enrollform);
         $form->handleRequest($request);
-        if ($form->isValid()) {
+        if ($form->get('back')->isClicked()) {
+            return $this->redirectToRoute('_enrollment_step1');
+        }
+        if ($enrollform->checkForm2($form, $this->get('validator'), $this->get('translator'))) {
             $request->getSession()->set('enrollform', $enrollform);
             return $this->redirectToRoute('_enrollment_step3');
         }
@@ -51,7 +55,10 @@ class EnrollmentController extends Controller
         $enrollform = $request->getSession()->get('enrollform', new Enrollment());
         $form = $this->makeEnrollmentFormStep3($enrollform);
         $form->handleRequest($request);
-        if ($form->isValid()) {
+        if ($form->get('back')->isClicked()) {
+            return $this->redirectToRoute('_enrollment_step2');
+        }
+        if ($enrollform->checkForm3($form, $this->get('validator'), $this->get('translator'))) {
             $request->getSession()->set('enrollform', $enrollform);
             return $this->redirectToRoute('_enrollment_step4');
         }
@@ -67,7 +74,10 @@ class EnrollmentController extends Controller
         $enrollform = $request->getSession()->get('enrollform', new Enrollment());
         $form = $this->makeEnrollmentFormStep4($enrollform);
         $form->handleRequest($request);
-        if ($form->isValid()) {
+        if ($form->get('back')->isClicked()) {
+            return $this->redirectToRoute('_enrollment_step3');
+        }
+        if ($enrollform->checkForm4($form, $this->get('validator'), $this->get('translator'))) {
             $request->getSession()->set('enrollform', $enrollform);
             return $this->redirectToRoute('_enrollment_step5');
         }
@@ -83,13 +93,50 @@ class EnrollmentController extends Controller
         $enrollform = $request->getSession()->get('enrollform', new Enrollment());
         $form = $this->makeEnrollmentFormStep5($enrollform);
         $form->handleRequest($request);
-        if ($form->isValid()) {
+        if ($form->get('back')->isClicked()) {
+            return $this->redirectToRoute('_enrollment_step4');
+        }
+        if ($enrollform->checkForm5($form, $this->get('validator'), $this->get('translator'))) {
             $request->getSession()->set('enrollform', $enrollform);
-            return $this->redirectToRoute('_enrollment');
+            $this->sendMail($enrollform);
+            return $this->redirectToRoute('_enrollment_done');
         }
         return array('form' => $form->createView());
     }
-    
+
+    /**
+     * @Route("/enrollment/done", name="_enrollment_done")
+     * @Template("ICupPublicSiteBundle:General:enrollment/enrollment_done.html.twig")
+     */
+    public function showEnrollmentDone(Request $request)
+    {
+        $enrollform = $request->getSession()->get('enrollform', new Enrollment());
+        return array('form' => $enrollform);
+    }
+
+    private function sendMail(Enrollment $enrollform) {
+        $from = array($this->container->getParameter('mailer_user') => "icup.dk support");
+        $admins = $this->get('logic')->listAdminUsers();
+        if (count($admins) < 1) {
+            $recv = $from;
+        }
+        else {
+            $recv = array();
+            foreach ($admins as $admin) {
+                if ($admin->getEmail() != '' && $admin->getName() != '') {
+                    $recv[$admin->getEmail()] = $admin->getName();
+                }
+            }
+        }
+        $mailbody = $this->renderView('ICupPublicSiteBundle:Email:enrollmail.html.twig', array('form' => $enrollform));
+        $message = Swift_Message::newInstance()
+            ->setSubject($this->get('translator')->trans('FORM.ENROLLMENT.MAILTITLE', array(), 'club'))
+            ->setFrom($from)
+            ->setTo($recv)
+            ->setBody($mailbody, 'text/html');
+        $this->get('mailer')->send($message);
+    }
+
     private function makeEnrollmentFormStep1(Enrollment $enrollment) {
         $formDef = $this->createFormBuilder($enrollment);
         $formDef->add('club', 'text', array('label' => 'FORM.ENROLLMENT.CLUB', 'phonestyle' => true, 'required' => false, 'disabled' => false, 'translation_domain' => 'club'));
@@ -125,6 +172,10 @@ class EnrollmentController extends Controller
         $formDef->add('send', 'submit', array('label' => 'FORM.ENROLLMENT.SUBMIT',
                                                 'translation_domain' => 'club',
                                                 'icon' => 'fa fa-ticket'));
+        $formDef->add('back', 'submit', array('label' => 'FORM.ENROLLMENT.BACK',
+            'translation_domain' => 'club',
+            'buttontype' => 'btn btn-default',
+            'icon' => 'fa fa-arrow-left'));
         return $formDef->getForm();
     }
 
@@ -145,6 +196,10 @@ class EnrollmentController extends Controller
         $formDef->add('send', 'submit', array('label' => 'FORM.ENROLLMENT.SUBMIT',
                                                 'translation_domain' => 'club',
                                                 'icon' => 'fa fa-ticket'));
+        $formDef->add('back', 'submit', array('label' => 'FORM.ENROLLMENT.BACK',
+            'translation_domain' => 'club',
+            'buttontype' => 'btn btn-default',
+            'icon' => 'fa fa-arrow-left'));
         return $formDef->getForm();
     }
         
@@ -162,6 +217,10 @@ class EnrollmentController extends Controller
         $formDef->add('send', 'submit', array('label' => 'FORM.ENROLLMENT.SUBMIT',
                                                 'translation_domain' => 'club',
                                                 'icon' => 'fa fa-ticket'));
+        $formDef->add('back', 'submit', array('label' => 'FORM.ENROLLMENT.BACK',
+            'translation_domain' => 'club',
+            'buttontype' => 'btn btn-default',
+            'icon' => 'fa fa-arrow-left'));
         return $formDef->getForm();
     }
 
@@ -172,17 +231,19 @@ class EnrollmentController extends Controller
         $formDef->add('departure_date', 'text', array('label' => 'FORM.ENROLLMENT.DEPARTURE_DATE', 'phonestyle' => true, 'required' => false, 'disabled' => false, 'translation_domain' => 'club'));
         $formDef->add('departure_time', 'text', array('label' => 'FORM.ENROLLMENT.DEPARTURE_TIME', 'phonestyle' => true, 'required' => false, 'disabled' => false, 'translation_domain' => 'club'));
 
-        $formDef->add('b_arrival', 'choice', array('label' => 'FORM.ENROLLMENT.B_ARRIVAL', 'phonestyle' => true, 'required' => false, 'disabled' => false, 'translation_domain' => 'club'));
         $formDef->add('b_arrival_airport', 'text', array('label' => 'FORM.ENROLLMENT.B_ARRIVAL_AIRPORT', 'phonestyle' => true, 'required' => false, 'disabled' => false, 'translation_domain' => 'club'));
         $formDef->add('b_arrival_date', 'text', array('label' => 'FORM.ENROLLMENT.B_ARRIVAL_DATE', 'phonestyle' => true, 'required' => false, 'disabled' => false, 'translation_domain' => 'club'));
         $formDef->add('b_arrival_time', 'text', array('label' => 'FORM.ENROLLMENT.B_ARRIVAL_TIME', 'phonestyle' => true, 'required' => false, 'disabled' => false, 'translation_domain' => 'club'));
-        $formDef->add('b_departure', 'choice', array('label' => 'FORM.ENROLLMENT.B_DEPARTURE', 'phonestyle' => true, 'required' => false, 'disabled' => false, 'translation_domain' => 'club'));
         $formDef->add('b_departure_airport', 'text', array('label' => 'FORM.ENROLLMENT.B_DEPARTURE_AIRPORT', 'phonestyle' => true, 'required' => false, 'disabled' => false, 'translation_domain' => 'club'));
         $formDef->add('b_departure_date', 'text', array('label' => 'FORM.ENROLLMENT.B_DEPARTURE_DATE', 'phonestyle' => true, 'required' => false, 'disabled' => false, 'translation_domain' => 'club'));
         $formDef->add('b_departure_time', 'text', array('label' => 'FORM.ENROLLMENT.B_DEPARTURE_TIME', 'phonestyle' => true, 'required' => false, 'disabled' => false, 'translation_domain' => 'club'));
-        $formDef->add('send', 'submit', array('label' => 'FORM.ENROLLMENT.SUBMIT',
+        $formDef->add('send', 'submit', array('label' => 'FORM.ENROLLMENT.SEND',
                                                 'translation_domain' => 'club',
                                                 'icon' => 'fa fa-envelope'));
+        $formDef->add('back', 'submit', array('label' => 'FORM.ENROLLMENT.BACK',
+            'translation_domain' => 'club',
+            'buttontype' => 'btn btn-default',
+            'icon' => 'fa fa-arrow-left'));
         return $formDef->getForm();
     }
 }

@@ -20,6 +20,9 @@
 .bg-navy {
   background-color: #001F3F; }
 
+.bg-dustblue {
+  background-color: #275D97; }
+
 .bg-blue {
   background-color: #0074D9; }
 
@@ -71,6 +74,9 @@
 /* Colors */
 .navy {
   color: #001F3F; }
+
+.dustblue {
+  color: #275D97; }
 
 .blue {
   color: #0074D9; }

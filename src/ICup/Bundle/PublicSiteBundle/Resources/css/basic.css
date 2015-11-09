@@ -76,3 +76,8 @@ A:hover.nolink {
 DIV.form-control {
     height: 100%;
 }
+
+.tall {
+    padding-top: 30px;
+    padding-bottom: 30px;
+}

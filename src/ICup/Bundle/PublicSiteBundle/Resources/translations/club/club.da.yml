@@ -36,6 +36,8 @@ FORM:
     CHAMPIONSHIP: Bedste række klubben deltager i
     BESTRESULT: Bedste resultat klubben har opnået
     SUBMIT: Næste
+    BACK: Tilbage
+    SEND: Indsend tilmelding
     MANAGER: Turleders navn
     M_ADDRESS: Adresse
     M_CITY: Postnummer og by
@@ -45,18 +47,18 @@ FORM:
     M_SKYPE: Skype adresse hvis turlederen benytter det
     M_MOBILE: Mobiltelefon til turlederen
     M_EMAIL: E-mail adresse
-    NTMU18: Drenge
-    NTFU18: Piger
-    MO18: Herre senior
-    FO18: Dame senior
-    MU18: Drenge født fra 1998
-    FU18: Piger født fra 1998
-    MU16: Drenge født fra 2000
-    FU16: Piger født fra 2000
-    MU14: Drenge født fra 2002
-    FU14: Piger født fra 2002
-    MU12: Drenge født fra 2004
-    FU12: Piger født fra 2004
+    NTMU18: Gruppe A
+    NTFU18: Gruppe G
+    MO18: Gruppe B
+    FO18: Gruppe H
+    MU18: Gruppe C
+    FU18: Gruppe I
+    MU16: Gruppe D
+    FU16: Gruppe L
+    MU14: Gruppe E
+    FU14: Gruppe M
+    MU12: Gruppe F
+    FU12: Gruppe N
     A_TERAMO_WOB: A - Skole i Teramo uden senge
     A_TERAMO_WB: B - Skole i Teramo med senge
     A_TERAMO_TENT: C - Telt i Teramo
@@ -66,8 +68,8 @@ FORM:
     A_RESTAURANT: Restaurant i Teramo
     A_OTHER: Anden indkvartering (der håndteres af stævnet - skriv ønske)
     A_NONE: Hold uden indkvartering (der sørger for egen logi)
-    ARRIVAL_DATE: Ankomstdato til Teramo
-    ARRIVAL_TIME: Ankomsttidspunkt til Teramo
+    ARRIVAL_DATE: Ankomstdato
+    ARRIVAL_TIME: Ankomsttidspunkt
     DEPARTURE_DATE: Afrejsedato
     DEPARTURE_TIME: Afrejsetidspunkt
     B_ARRIVAL: Ankommer med fly
@@ -78,6 +80,65 @@ FORM:
     B_DEPARTURE_AIRPORT: Afrejselufthavn
     B_DEPARTURE_DATE: Afrejsedato
     B_DEPARTURE_TIME: Afrejsetidspunkt
+    STEP1:
+      TITLE: Oplysninger om klubben
+      HEADER1: Følgende data skal oplyses om klubben
+      HEADER2: Følgende oplysninger bør gives hvis det er muligt
+      HEADER3: Følgende oplysninger anvendes til statistiske formål
+    STEP2:
+      TITLE: Information om den ansvarlige turleder
+      HEADER1: Følgende data skal oplyses om den ansvarlige turleder
+      HEADER2: Følgende oplysninger bør gives hvis der er muligt
+    STEP3:
+      TITLE: Holdtilmelding
+      HEADER1: Angiv antal hold der tilmeldes i hver gruppe
+      HEADER2: Du kan nøjes med at udfylde de grupper hvor klubben stiller med hold.
+      CLASSUNI: Universitetshold
+      CLASSO18: Seniorer
+      CLASSU18: Unge under 18
+      CLASSU16: Unge under 16
+      CLASSU14: Unge under 14
+      CLASSU12: Unge under 12
+    STEP4:
+      TITLE: Ophold og forplejning
+      HEADER1: Ophold ved Teramo
+      TEXT1: Ophold i Teramo kan ske på skole, i telt eller på hotel. Angiv antal deltagere der ønsker de enkelte tilbud.
+      HEADER2: Ophold ved kysten
+      TEXT2: Ophold ved kysten kan ske i telt eller på hotel. Angiv antal deltagere der ønsker de enkelte tilbud. Bemærk at transport til og fra Teramo skal klares af klubben selv.
+      HEADER3: Forplejning
+      TEXT3: Forplejning tilbydes de klubber der ønsker en samlet pakke. Der findes dog mange gode muligheder for selv at finde spisesteder i Teramo og ved kysten.
+      HEADER4: Andre former for ophold
+      TEXT4: Hvis klubben har særlige ønsker kan de skrives her.
+      TEXT5: Deltagere der selv vil stå for logi angives her med antal.
+    STEP5:
+      TITLE: Ankomst- og afrejse-detaljer
+      HEADER1: Det forventede ankomst- og afrejsetidspunkt til Teramo
+      TEXT1: Ankomst til Teramo
+      HEADER2: Afrejse fra Teramo
+      HEADER3: Hvis klubben har behov for at blive hentet eller bragt til en lufthavn angives her det forventede fly ankomst- eller afgangstidspunkt
+      TEXT3: Transport fra lufthavn med bus
+      TEXT4: Transport til lufthavn med bus
+    STEP6:
+      TITLE: Du har nu tilmeldt følgende
+      TEXT1: Tilmeldte hold:
+      TEXT2: Holdgebyr og depositum:
+
+    NOCLUB: Klub navn mangler
+    NOADDRESS: Klubadresse mangler
+    NOCITY: By og postnr. mangler
+    NOCOUNTRY: Land mangler
+    NOEMAIL: E-mail adresse mangler
+    INVALIDEMAIL: E-mail adresse er ikke anvendelig
+    NOMANAGER: Turleder mangler
+    NOMOBILE: Mobilnr. mangler
+    NOCATEGORIES: Der er ikke tilmeldt hold til nogen gruppe
+    NOACCOMODATION: Der er ikke valgt logi
+    NOARRIVALDATE: Ankomstdato mangler
+    NOARRIVALTIME: Ankomsttidspunkt mangler
+    NODEPARTUREDATE: Afgangsdato mangler
+    NODEPARTURETIME: Afgangstidspunkt mangler
+
+    MAILTITLE: Klubtilmelding
   CLUB: 
     WELLCOME: Velkommen til iCup
     TITLE:

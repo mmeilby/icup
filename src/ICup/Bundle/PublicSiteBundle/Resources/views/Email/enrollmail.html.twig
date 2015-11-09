@@ -1,0 +1,49 @@
+{% trans_default_domain "admin" %}
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8" />
+    <title>Generated e-mail: online enrollment</title>
+</head>
+<body>
+    <p>Følgende gæst har efterspurgt information:</p>
+    <table cellpadding="0" cellspacing="0" border="0" width="100%">
+        <tr>
+            <td colspan="2" bgcolor="#225585" height="25" width="9"></td>
+            <td valign="middle" bgcolor="#225585" height="25">
+                <table cellpadding="0" cellspacing="0" border="0">
+                <tr>
+                <td style="font-family:Verdana, Geneva, sans-serif; font-size:12px; color:#ffffff" height="25">OPLYSNINGER PÅ AFSENDER</td>
+                </tr>
+                </table>
+            </td>
+            <td colspan="2" bgcolor="#225585" height="25" width="9"></td>
+        </tr>
+        <tr>
+            <td bgcolor="#225585" width="1"></td><td width="8"></td><td valign="top">
+                <p>
+                    {{ form.club }};{{ form.address }};{{ form.city }};{{ form.country }};{{ form.phone }};{{ form.fax }};{{ form.skype }};{{ form.email }};{{ form.website }};{{ form.membership }};{{ form.affiliation }};{{ form.championship }};{{ form.bestresult }}
+                </p>
+                <p>
+                    {{ form.manager }};{{ form.m_address }};{{ form.m_city }};{{ form.m_country }};{{ form.m_phone }};{{ form.m_fax }};{{ form.m_skype }};{{ form.m_mobile }};{{ form.m_email }}
+                </p>
+                <p>
+                    {{ form.t_ntmu18 }};{{ form.t_mo18 }};{{ form.t_mu18 }};{{ form.t_mu16 }};{{ form.t_mu14 }};{{ form.t_mu12 }}<br />
+                    {{ form.t_ntfu18 }};{{ form.t_fo18 }};{{ form.t_fu18 }};{{ form.t_fu16 }};{{ form.t_fu14 }};{{ form.t_fu12 }}
+                </p>
+                <p>
+                    {{ form.a_teramo_wob }};{{ form.a_teramo_wb }};{{ form.a_teramo_tent }};{{ form.a_teramo_hotel }};{{ form.a_guilianova_tent }};{{ form.a_guilianova_hotel }};{{ form.a_restaurant }};{{ form.a_other }};{{ form.a_none }}
+                </p>
+                <p>
+                    {{ form.arrival_date }};{{ form.arrival_time }};{{ form.departure_date }};{{ form.departure_time }}<br />
+                    {{ form.b_arrival_airport }};{{ form.b_arrival_date }};{{ form.b_arrival_time }};{{ form.b_departure_airport }};{{ form.b_departure_date }};{{ form.b_departure_time }}
+                </p>
+            </td><td width="8"></td><td bgcolor="#225585" width="1"></td>
+        </tr>
+        <tr>
+            <td style="font-size:1px;line-height:1px" colspan="5" bgcolor="#225585" height="1" width="100%"></td>
+        </tr>
+    </table>
+    <p>Med venlig hilsen<br>icup support</p>
+</body>
+</html>

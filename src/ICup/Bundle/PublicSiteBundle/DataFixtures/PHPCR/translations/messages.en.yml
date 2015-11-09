@@ -89,6 +89,74 @@ contact:
                 <a href="http://www.facebook.com/InteramniaWorldCup">www.facebook.com/InteramniaWorldCup</a>
             </p>
 enrollment:
+    preface:
+        title: WELCOME TO ALL THE WORLD
+        body: >
+            <h4>INVITATION</h4>
+            <p>
+            The Interamnia World Cup is approaching the 44th edition of the tournament stronger and prouder of its experience,
+            thanks also to the fame achieved on the international field for its originality and for the richness of its technical-sports and social-cultural contents.
+            </p>
+
+            <p>
+            We heartily invite you to take part in our tournament and to duly keep in mind that in Teramo you will experience what lacks in other tournament,
+            even though most other tournaments were actually created in the wake of ours.
+            </p>
+
+            <p>
+            In fact, in our city you will not find a great number of teams coming from bordering countries, but you will discover a more human dimension,
+            based on teams coming from various countries of the five continents.
+            </p>
+
+            <p>
+            You will have the occasion to be at ease in a friendly and hospitable city which through the tournament has always promoted original and significant initiatives
+            in favour of solidarity and brotherhood among peoples.
+            </p>
+
+            <p>
+            In view of the next tournament, even in consideration of the great number of clubs of various countries wanting to participate, we are reinvigorating
+            the event in all its contents and giving more attention to all those logistic aspects which have lately been overlooked.
+            We are also taking advantage of the precious support offered by a new and important partner of ours, the University of Teramo, with whom we have made a cooperation agreement.
+            </p>
+
+            <p>
+            Thus, keeping in mind the above, we feel ready to receive a greater number of enthusiastic participants, conscious of the fact that they are coming to Teramo
+            to give life to a unique “performance” in the world.
+            </p>
+
+            <p>
+            Our eager invitation to come and spend a whole week of sport, tourism and fun in Teramo, as always is addressed to everyone, without distinction of race,
+            tradition and political beliefs.
+            </p>
+
+            <h4>PROGRAMME</h4>
+            <p>
+            The Sports-Cultural Club “Interamnia World Cup” plans and organises the “44th Interamnia World Cup” – Memorial “Giorgio Binchi” - International Handball Tournament,
+            with the technical collaboration of the Italian Handball Federation and under the aegis of the National Olympic Committee,
+            the International Handball Federation and the European Handball Federation.
+            </p>
+
+            <h4>DURATION OF THE TOURNAMENT</h4>
+            <p>
+            The tournament will be taking place from the 5th to the 11th July, 2016 in Teramo and in some municipalities of its province.
+            </p>
+
+            <h4>ENROLLMENT PROCEDURE</h4>
+            <p>
+            Online enrollment is a new initiative made available for those clubs that prefer digital services. The online enrollment form should be considered no different from
+            the printed enrollment form and must be duly compiled within the stated deadlines. Use of online enrollment requires that all five steps of the enrollment wizzard are
+            completed.
+            </p>
+
+            <p>
+            Online enrollment is only valid if the club representative has received a receipt of the enrollment by e-mail. In case of any troubles the tournament office must be
+            advised in order to acknowldge the enrollment.
+            </p>
+
+            <p>
+            Please observe that online enrollment is valid when due fees have been wired to the following account:
+            c/o the bank Banca Tercas – Sede di Teramo – Bank Account CC0900053052 headed to INTERAMNIA WORLD CUP (IBAN: IT05 B 06060 15300 CC0900053052 – SWIFT: TERCIT 3TXXX).
+            </p>
     terms:
         title: Enrollment 2015
         body: >
@@ -362,6 +430,10 @@ enrollment:
             athletes who have participated in previous years and still want to participate despite having gone
             over the age of 18 (born in 1997 and before).
             </p>
+    whatnext:
+        title: SEND TILMELDING
+        body: >
+            TBD
 information:
     intro:
         title: The Interamnia World Cup for the 43rd time

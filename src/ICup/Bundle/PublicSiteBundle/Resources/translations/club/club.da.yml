@@ -67,7 +67,7 @@ FORM:
     A_GUILIANOVA_HOTEL: F - Trestjernet hotel ved havet
     A_RESTAURANT: Restaurant i Teramo
     A_OTHER: Anden indkvartering (der håndteres af stævnet - skriv ønske)
-    A_NONE: Hold uden indkvartering (der sørger for egen logi)
+    A_NONE: Deltagere uden indkvartering (der sørger for egen logi)
     ARRIVAL_DATE: Ankomstdato
     ARRIVAL_TIME: Ankomsttidspunkt
     DEPARTURE_DATE: Afrejsedato

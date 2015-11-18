@@ -184,13 +184,13 @@ class Enrollment
                 $form->get('arrival_date')->addError(new FormError($translator->trans('FORM.ENROLLMENT.NOARRIVALDATE', array(), 'club')));
             }
             if ($this->arrival_time == null || trim($this->arrival_time) == '') {
-                $form->get('arrival_time')->addError(new FormError($translator->trans('FORM.ENROLLMENT.NOARRIVALTIME', array(), 'club')));
+//                $form->get('arrival_time')->addError(new FormError($translator->trans('FORM.ENROLLMENT.NOARRIVALTIME', array(), 'club')));
             }
             if ($this->departure_date == null || trim($this->departure_date) == '') {
                 $form->get('departure_date')->addError(new FormError($translator->trans('FORM.ENROLLMENT.NODEPARTUREDATE', array(), 'club')));
             }
             if ($this->departure_time == null || trim($this->departure_time) == '') {
-                $form->get('departure_time')->addError(new FormError($translator->trans('FORM.ENROLLMENT.NODEPARTURETIME', array(), 'club')));
+//                $form->get('departure_time')->addError(new FormError($translator->trans('FORM.ENROLLMENT.NODEPARTURETIME', array(), 'club')));
             }
         }
         return $form->isValid();

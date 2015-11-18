@@ -65,7 +65,7 @@ FORM:
     A_GUILIANOVA_TENT: D - Tent at the seaside
     A_GUILIANOVA_HOTEL: F - 3-star hotel at seaside
     A_RESTAURANT: Restaurant in Teramo
-    A_OTHER: Other accommodation (please be specific)
+    A_OTHER: Other requests (please be specific)
     A_NONE: Independent teams
     ARRIVAL_DATE: Day of arrival
     ARRIVAL_TIME: Time of aarival
@@ -108,7 +108,7 @@ FORM:
       TEXT3: Catering is available in Teramo.
       HEADER4: Other type of lodging
       TEXT4: If you like to request something special, type it here
-      TEXT5: Type the number of teams that organize their own lodging
+      TEXT5: Type the number of persons that organize their own lodging
     STEP5:
       TITLE: Arrival and departure details
       HEADER1: Expected arrival to and departure from Teramo
@@ -120,7 +120,7 @@ FORM:
     STEP6:
       TITLE: Your enrollment is complete for
       TEXT1: Enrolled teams:
-      TEXT2: Enrollment fee and team deposit:
+      TEXT2: Enrollment fee and expenses deposit:
 
     NOCLUB: Club name is missing
     NOADDRESS: Address is missing

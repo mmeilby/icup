@@ -81,3 +81,65 @@ DIV.form-control {
     padding-top: 30px;
     padding-bottom: 30px;
 }
+
+.FlexCard {
+    background: #F4F4F4 none repeat scroll 0% 0%;
+    box-sizing: border-box;
+    position: relative;
+    width: 100%;
+}
+
+.FlexCard-background {
+    background: #000 none repeat scroll 0% 0%;
+    height: 100%;
+    left: 0;
+    position: absolute;
+    top: 0;
+    width: 100%;
+}
+
+.FlexCard-background > div {
+    background-position: center center;
+    background-size: cover;
+    filter: blur(7px);
+    height: 100%;
+    opacity: 0.7;
+    width: 100%;
+}
+
+.u-colorWhite {
+    color: #FFF;
+}
+
+.FlexCard-wrap {
+    font-size: 0px;
+    height: 100%;
+    min-height: 160px;
+    position: relative;
+    text-align: center;
+    white-space: nowrap;
+    z-index: 1;
+}
+
+.FlexCard-content {
+    box-sizing: border-box;
+    font-size: 16px;
+    max-width: 830px;
+    padding: 125px 80px;
+    text-align: left;
+    width: 100%;
+    display: inline-block;
+    vertical-align: middle;
+    white-space: normal;
+}
+
+.FlexCard-title {
+    font-size: 26px;
+    font-weight: 600;
+    line-height: 1.2;
+    margin-bottom: 22px;
+}
+
+.FlexCard-title--large {
+    font-size: 54px;
+}

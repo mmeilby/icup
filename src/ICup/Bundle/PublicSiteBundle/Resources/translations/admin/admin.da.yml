@@ -871,8 +871,10 @@ FORM:
     CANCEL: Retur
   INFOEMAIL:
     TITLE: Forespørgsel på mere information
+    SENDER: OPLYSNINGER PÅ AFSENDER
     NAME: Navn
     CLUB: Klub
     EMAIL: E-mail
     PHONE: Tlf.
+    REGARDS: Med venlig hilsen
     

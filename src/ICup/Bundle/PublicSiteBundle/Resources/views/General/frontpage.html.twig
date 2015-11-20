@@ -44,12 +44,56 @@
         </div>
     </div>
     {% if statuslist.active|length == 0 %}
-        <h1 class="text-center navy" style="margin-bottom: 20px;">{% trans %}FORM.FRONTPAGE.TITLE{% endtrans %}</h1>
-        <img src="{{ asset('bundles/icuppublicsite/images/IWC/cover.jpg') }}" alt="logo" class="img-responsive" />
-        <div class="container navy" style="padding-top: 10px; padding-bottom: 10px;">
-            {{ sonata_block_render({'name': '/cms/content/blocks/frontpage/section_1'}) }}
+        <div class="FlexCard">
+            <div class="FlexCard-background">
+                <div style="background-image: url({{ asset('bundles/icuppublicsite/images/IWC/cover.jpg') }})"></div>
+            </div>
+            <div class="FlexCard-wrap u-colorWhite">
+                <div class="FlexCard-content">
+                    <h1 class="FlexCard-title FlexCard-title--large">{% trans %}FORM.FRONTPAGE.TITLE{% endtrans %}</h1>
+                {% for tournament in statuslist.enroll %}
+                    <h2>{% trans %}FORM.FRONTPAGE.BLOCK2.TITLE{% endtrans %}</h2>
+                    <p class="lead">{% trans %}FORM.FRONTPAGE.BLOCK2.DESCRIPTION{% endtrans %}</p>
+                    <p>
+                        <a href="{{ path('_enrollment') }}" role="button">
+                            <h3><span class="label label-success"><i class="fa fa-ticket"></i>&nbsp;{{ tournament.name }}</span></h3>
+                        </a>
+                    </p>
+                {% endfor %}
+                </div>
+            </div>
         </div>
-        <hr />
+        <div class="container navy" style="padding-top: 30px; padding-bottom: 10px;">
+            <div class="row">
+                <div class="col-md-7 lead">
+                    {{ sonata_block_render({'name': '/cms/content/blocks/frontpage/section_1'}) }}
+                </div>
+                <div class="col-md-push-2 col-md-3" style="padding-top: 30px;">
+                    <div class="text-center" style="padding-bottom: 40px;">
+                        <i class="fa fa-info-circle fa-5x"></i>
+                        <h2>{% trans %}FORM.FRONTPAGE.BLOCK5.TITLE{% endtrans %}</h2>
+                        <p>{% trans %}FORM.FRONTPAGE.BLOCK5.DESCRIPTION{% endtrans %}</p>
+                        <p>
+                            <a href="{{ path('_information') }}" role="button">
+                                <h3><span class="label label-default"><i class="fa fa-info-circle"></i>&nbsp;{% trans %}FORM.FRONTPAGE.BLOCK5.TITLE{% endtrans %}</span></h3>
+                            </a>
+                        </p>
+                    </div>
+                    <div class="list-group">
+                        <div class="list-group-item">
+                            <i class="fa fa-facebook-official fa-5x text-primary"></i>&nbsp;
+                            <div class="fb-like"
+                                 data-href="http://icup.dk"
+                                 data-layout="box_count"
+                                 data-action="like"
+                                 data-show-faces="true"
+                                 data-share="true">
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
     {% endif %}
 {% endblock %}
 
@@ -132,79 +176,11 @@
             </div>
         </div>
     </div>
-    <hr />        
     {% endfor %}
 {# *******************************************
    INFO BANNERS
    ALL DEVICES
    ******************************************* #}
-{% set spaceleft = 8 - ((statuslist.enroll|length * 4) + (statuslist.done|length * 4)) %}
-    <div class="row">
-        <div class="col-md-12">
-            <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
-            <!-- icup.dk -->
-            <ins class="adsbygoogle"
-                 style="display:block"
-                 data-ad-client="ca-pub-4146313161751000"
-                 data-ad-slot="6977199688"
-                 data-ad-format="auto"></ins>
-            <script>
-            (adsbygoogle = window.adsbygoogle || []).push({});
-            </script>
-            <hr />
-        </div>
-{% if spaceleft > 0 %}
-        <div class="col-md-{{ spaceleft / 2 }}"></div>
-{% endif %}
-{% for tournament in statuslist.enroll %}
-        <div class="col-md-4">
-            <center>
-                <i class="fa fa-ticket fa-5x"></i>
-                <h2>{% trans %}FORM.FRONTPAGE.BLOCK2.TITLE{% endtrans %}</h2>
-                <p>{% trans %}FORM.FRONTPAGE.BLOCK2.DESCRIPTION{% endtrans %}</p>
-                <p>
-                    <a href="{{ path('_enrollment') }}" role="button">
-                        <h3><span class="label label-success"><i class="fa fa-ticket"></i>&nbsp;{{ tournament.name }}</span></h3>
-                    </a>
-                </p>
-            </center>
-            <br />
-            <hr class="visible-sm visible-xs" />
-        </div>
-{% endfor %}
-        <div class="col-md-4">
-            <center>
-                <i class="fa fa-info-circle fa-5x"></i>
-                <h2>{% trans %}FORM.FRONTPAGE.BLOCK5.TITLE{% endtrans %}</h2>
-                <p>{% trans %}FORM.FRONTPAGE.BLOCK5.DESCRIPTION{% endtrans %}</p>
-                <p>
-                    <a href="{{ path('_information') }}" role="button">
-                        <h3><span class="label label-default"><i class="fa fa-info-circle"></i>&nbsp;{% trans %}FORM.FRONTPAGE.BLOCK5.TITLE{% endtrans %}</span></h3>
-                    </a>
-                </p>
-            </center>
-            <br />
-            <hr class="visible-sm visible-xs" />
-        </div>
-{% for tournament in statuslist.done %}
-        <div class="col-md-4">
-            <center>
-                <i class="fa fa-trophy fa-5x"></i>
-                <h2>{% trans %}FORM.FRONTPAGE.BLOCK4.TITLE{% endtrans %}</h2>
-                <p>{% trans %}FORM.FRONTPAGE.BLOCK4.DESCRIPTION{% endtrans %}</p>
-                <p>
-                    <a href="{{ path('_tournament_winners', {'tournament': tournament.key}) }}" role="button">
-                        <h3><span class="label label-primary"><i class="fa fa-trophy"></i>&nbsp;{{ tournament.name }}</span></h3>
-                    </a>
-                </p>
-            </center>
-            <br />
-            <hr class="visible-sm visible-xs" />
-        </div>
-{% endfor %}
-{% if spaceleft > 0 %}
-        <div class="col-md-{{ spaceleft / 2 }}"></div>
-{% endif %}
     </div>
 {% endblock %}
 
@@ -213,6 +189,33 @@
    SEND MAIL BANNER
    ALL DEVICES
    ******************************************* #}
+    {% set spaceleft = 12 - ((statuslist.done|length * 4)) %}
+    {% if statuslist.done|length > 0 %}
+    <div class="row bg-aqua navy" style="padding-top: 50px; padding-bottom: 30px;">
+        {% if spaceleft > 0 %}
+            <div class="col-md-{{ spaceleft / 2 }}"></div>
+        {% endif %}
+        {% for tournament in statuslist.done %}
+            <div class="col-md-4">
+                <div class="text-center">
+                    <i class="fa fa-trophy fa-5x"></i>
+                    <h2>{% trans %}FORM.FRONTPAGE.BLOCK4.TITLE{% endtrans %}</h2>
+                    <p>{% trans %}FORM.FRONTPAGE.BLOCK4.DESCRIPTION{% endtrans %}</p>
+                    <p>
+                        <a href="{{ path('_tournament_winners', {'tournament': tournament.key}) }}" role="button">
+                            <h3><span class="label label-primary"><i class="fa fa-trophy"></i>&nbsp;{{ tournament.name }}</span></h3>
+                        </a>
+                    </p>
+                </div>
+                <br />
+                <hr class="visible-sm visible-xs" />
+            </div>
+        {% endfor %}
+        {% if spaceleft > 0 %}
+            <div class="col-md-{{ spaceleft / 2 }}"></div>
+        {% endif %}
+    </div>
+    {% endif %}
     <div class="jumbotron bg-silver navy">
         <div class="container">
             <h2>{% trans %}FORM.FRONTPAGE.SENDMAIL{% endtrans %}</h2>
@@ -227,4 +230,16 @@
     <script type="text/javascript">
         $("[data-toggle='tooltip']").tooltip();
     </script>
+
+    <!--
+    <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+    <ins class="adsbygoogle"
+         style="display:block"
+         data-ad-client="ca-pub-4146313161751000"
+         data-ad-slot="6977199688"
+         data-ad-format="auto"></ins>
+    <script>
+        (adsbygoogle = window.adsbygoogle || []).push({});
+    </script>
+    -->
 {% endblock %}

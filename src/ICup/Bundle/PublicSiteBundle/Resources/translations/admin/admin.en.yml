@@ -796,7 +796,9 @@ FORM:
     CANCEL: Cancel
   INFOEMAIL:
     TITLE: Request for more information
+    SENDER: CONTACT INFORMATION
     NAME: Name
     CLUB: Club
     EMAIL: E-mail
     PHONE: Phone
+    REGARDS: Best regards

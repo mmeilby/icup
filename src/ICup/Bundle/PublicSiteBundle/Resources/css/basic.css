@@ -82,37 +82,23 @@ DIV.form-control {
     padding-bottom: 30px;
 }
 
+/**
+ * FlexCard
+ */
+
 .FlexCard {
-    background: #F4F4F4 none repeat scroll 0% 0%;
+    background: #f4f4f4;
     box-sizing: border-box;
     position: relative;
     width: 100%;
 }
 
-.FlexCard-background {
-    background: #000 none repeat scroll 0% 0%;
-    height: 100%;
-    left: 0;
-    position: absolute;
-    top: 0;
-    width: 100%;
-}
-
-.FlexCard-background > div {
-    background-position: center center;
-    background-size: cover;
-    filter: blur(7px);
-    height: 100%;
-    opacity: 0.7;
-    width: 100%;
-}
-
-.u-colorWhite {
-    color: #FFF;
-}
+/**
+ * Vertical center content
+ */
 
 .FlexCard-wrap {
-    font-size: 0px;
+    font-size: 0;
     height: 100%;
     min-height: 160px;
     position: relative;
@@ -121,25 +107,228 @@ DIV.form-control {
     z-index: 1;
 }
 
+/* Fade out content */
+
+@media (min-width: 460px) {
+    .FlexCard-wrap {
+        -webkit-mask-image: linear-gradient(to bottom, #000 70%, rgba(0, 0, 0, 1) 85%, rgba(0, 0, 0, 0) 98%);
+        mask-image: linear-gradient(to bottom, #000 70%, rgba(0, 0, 0, 1) 85%, rgba(0, 0, 0, 0) 98%);
+    }
+}
+
+.FlexCard-wrap::before {
+    content: "";
+    display: inline-block;
+    height: 100%;
+    min-height: 160px;
+    vertical-align: middle;
+}
+
 .FlexCard-content {
-    box-sizing: border-box;
-    font-size: 16px;
-    max-width: 830px;
-    padding: 125px 80px;
-    text-align: left;
-    width: 100%;
     display: inline-block;
     vertical-align: middle;
     white-space: normal;
 }
 
+/* Clearfix */
+
+.FlexCard-content::before,
+.FlexCard-content::after {
+    content: " ";
+    display: table;
+}
+
+.FlexCard-content::after {
+    clear: both;
+}
+
+/**
+ * Card content
+ */
+
+.FlexCard-content {
+    box-sizing: border-box;
+    font-size: 16px;
+    max-width: 830px;
+    padding: 35px 22px 40px;
+    text-align: left;
+    width: 100%;
+}
+
+@media (min-width: 460px) {
+    .FlexCard-content {
+        padding: 42px 42px;
+    }
+}
+
+@media (min-width: 1000px) {
+    .FlexCard-content {
+        padding: 32px 80px;
+    }
+}
+
+/**
+ * Card background
+ */
+
+.FlexCard-background {
+    background: #000;
+    height: 106%;
+    left: -3%;
+    position: absolute;
+    top: -3%;
+    width: 106%;
+}
+
+.FlexCard-background > div {
+    background-position: center;
+    background-size: cover;
+    filter: url('data:image/svg+xml;charset=utf-8,<svg xmlns="http://www.w3.org/2000/svg"><filter id="filter"><feGaussianBlur stdDeviation="7" /></filter></svg>#filter');
+    -webkit-filter: blur(7px);
+    filter: blur(7px);
+    height: 100%;
+    opacity: 0.7;
+    width: 100%;
+}
+
+.FlexCard-background + * {
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+}
+
+/**
+ * Info button
+ */
+
+.FlexCard-info {
+    color: #26aae2;
+    position: absolute;
+    right: 12px;
+    top: 12px;
+    z-index: 3;
+}
+
+.FlexCard-info:hover, .FlexCard-info:focus {
+    color: rgb(38, 126, 163);
+    outline: 0;
+}
+
+.FlexCard-info:active {
+    color: #26aae2;
+}
+
+@media (min-width: 760px) {
+    .FlexCard-info {
+        right: 18px;
+        top: 18px;
+    }
+}
+
+@media (min-width: 1000px) {
+    .FlexCard-info {
+        right: 30px;
+        top: 30px;
+    }
+}
+
+/**
+ * Titles
+ */
+
 .FlexCard-title {
-    font-size: 26px;
+    font-size: 22px;
     font-weight: 600;
-    line-height: 1.2;
-    margin-bottom: 22px;
+    line-height: 1.3;
+    margin-bottom: 14px;
 }
 
 .FlexCard-title--large {
-    font-size: 54px;
+    font-size: 34px;
+    line-height: 1.1;
+}
+
+@media (min-width: 460px) {
+    .FlexCard-title--large {
+        font-size: 50px;
+    }
+}
+
+@media (min-width: 760px) {
+    .FlexCard-title {
+        font-size: 30px;
+        line-height: 1.2;
+    }
+
+    .FlexCard-title--large {
+        font-size: 54px;
+    }
+}
+
+@media (min-width: 1000px) {
+    .FlexCard-title {
+        font-size: 38px;
+        margin-bottom: 22px;
+    }
+
+    .FlexCard-title--large {
+        font-size: 54px;
+    }
+}
+
+/**
+ * With image
+ */
+
+.FlexCard-content > img {
+    float: left;
+    height: 70px;
+    margin-right: 24px;
+    width: 70px;
+}
+
+.FlexCard-content > img + * {
+    display: block;
+    overflow: hidden;
+    text-align: left;
+    width: auto;
+    position: relative;
+    top: 1px;
+}
+
+@media (min-width: 460px) {
+    .FlexCard-content > img {
+        float: none;
+        height: 84px;
+        margin: 0 auto 10px;
+        width: 84px;
+    }
+
+    .FlexCard-content > img + * {
+        text-align: center;
+    }
+}
+
+@media (min-width: 760px) {
+    .FlexCard-content > img {
+        float: left;
+        margin: 0 24px 0 0;
+    }
+
+    .FlexCard-content > img + * {
+        text-align: left;
+        top: 3px;
+    }
+}
+
+@media (min-width: 1000px) {
+    .FlexCard-content > img {
+        height: 84px;
+        position: relative;
+        top: 7px;
+        width: 84px;
+    }
+
+    .FlexCard-content > img + * {
+        text-align: left;
+    }
 }

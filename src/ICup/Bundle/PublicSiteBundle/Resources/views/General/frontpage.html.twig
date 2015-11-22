@@ -54,11 +54,18 @@
                 {% for tournament in statuslist.enroll %}
                     <h2 class="FlexCard-title">{% trans %}FORM.FRONTPAGE.BLOCK2.TITLE{% endtrans %}</h2>
                     <p class="lead">{% trans %}FORM.FRONTPAGE.BLOCK2.DESCRIPTION{% endtrans %}</p>
-                    <p>
-                        <a href="{{ path('_enrollment') }}" role="button">
-                            <h3><span class="label label-success"><i class="fa fa-ticket"></i>&nbsp;{{ tournament.name }}</span></h3>
-                        </a>
-                    </p>
+                    <div class="row">
+                        <div class="col-sm-6">
+                            <a href="{{ path('_enrollment') }}" role="button">
+                                <h3><span class="label label-default"><i class="fa fa-chevron-right"></i>&nbsp;{{ tournament.name }}</span></h3>
+                            </a>
+                        </div>
+                        <div class="col-sm-6">
+                            <a href="{{ path('_enrollment_step1') }}" role="button">
+                                <h3><span class="label label-success"><i class="fa fa-chevron-right"></i>&nbsp;Try online enrollment</span></h3>
+                            </a>
+                        </div>
+                    </div>
                 {% endfor %}
                 </div>
             </div>

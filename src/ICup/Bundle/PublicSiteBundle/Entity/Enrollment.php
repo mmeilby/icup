@@ -77,6 +77,7 @@ class Enrollment
 
     public function getArray() {
         return array(
+            // Club - step1
             "club" => $this->club,
             "address" => $this->address,
             "city" => $this->city,
@@ -89,7 +90,53 @@ class Enrollment
             "membership" => $this->membership,
             "affiliation" => $this->affiliation,
             "championship" => $this->championship,
-            "bestresult" => $this->bestresult
+            "bestresult" => $this->bestresult,
+            // Manager - step2
+            "manager" => $this->manager,
+            "m_address" => $this->m_address,
+            "m_city" => $this->m_city,
+            "m_country" => $this->m_country,
+            "m_phone" => $this->m_phone,
+            "m_fax" => $this->m_fax,
+            "m_skype" => $this->m_skype,
+            "m_mobile" => $this->m_mobile,
+            "m_email" => $this->m_email,
+            // Teams - step3
+            "male_uniteam" => $this->t_ntmu18,
+            "female_uniteam" => $this->t_ntfu18,
+            "male_o18" => $this->t_mo18,
+            "female_o18" => $this->t_fo18,
+            "male_u18" => $this->t_mu18,
+            "female_u18" => $this->t_fu18,
+            "male_u16" => $this->t_mu16,
+            "female_u16" => $this->t_fu16,
+            "male_u14" => $this->t_mu14,
+            "female_u14" => $this->t_fu14,
+            "male_u12" => $this->t_mu12,
+            "female_u12" => $this->t_fu12,
+            "team_total" => $this->t_total,
+            // Lodging - step4
+            "lodging_teramo_with_beds" => $this->a_teramo_wb,
+            "lodging_teramo_without_beds" => $this->a_teramo_wob,
+            "lodging_teramo_tents" => $this->a_teramo_tent,
+            "lodging_seaside_tents" => $this->a_guilianova_tent,
+            "lodging_with_meals" => $this->a_restaurant,
+            "lodging_teramo_hotel" => $this->a_teramo_hotel,
+            "lodging_seaside_hotel" => $this->a_guilianova_hotel,
+            "lodging_other_requests" => $this->a_other,
+            "lodging_independant_teams" => $this->a_none,
+            "lodging_total_people" => $this->a_total,
+            // Transport - step5
+            "arrival_date" => $this->arrival_date,
+            "arrival_time" => $this->arrival_time,
+            "departure_date" => $this->departure_date,
+            "departure_time" => $this->departure_time,
+            "arrival_airport" => $this->b_arrival_airport,
+            "b_arrival_date" => $this->b_arrival_date,
+            "b_arrival_time" => $this->b_arrival_time,
+            "departure_airport" => $this->b_departure_airport,
+            "b_departure_date" => $this->b_departure_date,
+            "b_departure_time" => $this->b_departure_time,
         );
     }
 

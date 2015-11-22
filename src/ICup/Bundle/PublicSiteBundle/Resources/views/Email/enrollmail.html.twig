@@ -22,64 +22,29 @@
         <tr>
             <td bgcolor="#225585" width="1"></td><td width="8"></td><td valign="top">
                 <p>
-                    CLUB<br />
-                    {{ form.club }};{{ form.address }};{{ form.city }};{{ form.country }};{{ form.phone }};{{ form.fax }};{{ form.skype }};{{ form.email }};{{ form.website }};{{ form.membership }};{{ form.affiliation }};{{ form.championship }};{{ form.bestresult }};
+                    <h2>CLUB</h2>
+                    Name: {{ form.club }}<br />
+                    Address:<br />
+                    <address>
+                    {{ form.address }}<br />
+                    {{ form.city }}<br />
+                    {{ form.country }}<br />
+                    </address>
+                    Phone: {{ form.phone }}<br />
+                    E-mail: {{ form.email }}
                 </p>
                 <p>
-                    MANAGER<br />
-                    {{ form.manager }};{{ form.m_address }};{{ form.m_city }};{{ form.m_country }};{{ form.m_phone }};{{ form.m_fax }};{{ form.m_skype }};{{ form.m_mobile }};{{ form.m_email }};
+                    <h2>MANAGER</h2>
+                    Name: {{ form.manager }}<br />
+                    Phone: {{ form.m_phone }}<br />
+                    Mobile: {{ form.m_mobile }}<br />
+                    E-mail: {{ form.m_email }}
                 </p>
                 <p>
-                    TEAMS<br />
-                    {{ form.t_ntmu18 }};{{ form.t_mo18 }};{{ form.t_mu18 }};{{ form.t_mu16 }};{{ form.t_mu14 }};{{ form.t_mu12 }};<br />
-                    {{ form.t_ntfu18 }};{{ form.t_fo18 }};{{ form.t_fu18 }};{{ form.t_fu16 }};{{ form.t_fu14 }};{{ form.t_fu12 }};
+                    Number of teams enrolled: {{ form.t_total }}<br />
+                    Number of people expected: {{ form.a_total }}
                 </p>
-                <p>
-                    LODGING<br />
-                    {{ form.a_teramo_wob }};{{ form.a_teramo_wb }};{{ form.a_teramo_tent }};{{ form.a_teramo_hotel }};{{ form.a_guilianova_tent }};{{ form.a_guilianova_hotel }};{{ form.a_restaurant }};{{ form.a_other }};{{ form.a_none }};
-                </p>
-                <p>
-                    TRANSPORT<br />
-                    {{ form.arrival_date }};{{ form.arrival_time }};{{ form.departure_date }};{{ form.departure_time }};<br />
-                    {{ form.b_arrival_airport }};{{ form.b_arrival_date }};{{ form.b_arrival_time }};{{ form.b_departure_airport }};{{ form.b_departure_date }};{{ form.b_departure_time }};
-                </p>
-            </td><td width="8"></td><td bgcolor="#225585" width="1"></td>
-        </tr>
-        <tr>
-            <td colspan="2" bgcolor="#225585" height="25" width="9"></td>
-            <td valign="middle" bgcolor="#225585" height="25">
-                <table cellpadding="0" cellspacing="0" border="0">
-                    <tr>
-                        <td style="font-family:Verdana, Geneva, sans-serif; font-size:12px; color:#ffffff" height="25">KEYS</td>
-                    </tr>
-                </table>
-            </td>
-            <td colspan="2" bgcolor="#225585" height="25" width="9"></td>
-        </tr>
-        <tr>
-            <td bgcolor="#225585" width="1"></td><td width="8"></td><td valign="top">
-                <p>
-                    CLUB<br />
-                    club;address;city;country;phone;fax;skype;email;website;membership;affiliation;championship;bestresult
-                </p>
-                <p>
-                    MANAGER<br />
-                    manager;address;city;country;phone;fax;skype;mobile;email
-                </p>
-                <p>
-                    TEAMS<br />
-                    male national teams;over 18;under 18;under 16;under 14;under 12<br />
-                    female national teams;over 18;under 18;under 16;under 14;under 12
-                </p>
-                <p>
-                    LODGING<br />
-                    teramo without beds;teramo with beds;teramo tent;teramo hotel;guilianova tent;guilianova hotel;restaurant;other;idependant teams
-                </p>
-                <p>
-                    TRANSPORT<br />
-                    arrival_date;arrival_time;departure_date;departure_time<br />
-                    arrival_airport;arrival_date;arrival_time;departure_airport;departure_date;departure_time
-                </p>
+                <p>For more details see attached file.</p>
             </td><td width="8"></td><td bgcolor="#225585" width="1"></td>
         </tr>
         <tr>

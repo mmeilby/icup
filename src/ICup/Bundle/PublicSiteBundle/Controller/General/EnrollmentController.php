@@ -7,7 +7,9 @@ use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use ICup\Bundle\PublicSiteBundle\Entity\Enrollment;
 use Symfony\Component\HttpFoundation\Request;
+use Swift_Mime_SimpleMessage;
 use Swift_Message;
+use Swift_Attachment;
 
 class EnrollmentController extends Controller
 {
@@ -129,11 +131,23 @@ class EnrollmentController extends Controller
             }
         }
         $mailbody = $this->renderView('ICupPublicSiteBundle:Email:enrollmail.html.twig', array('form' => $enrollform));
+        $tmpfname = tempnam("/tmp", "icup_enrollment_");
+
+        $fp = fopen($tmpfname, "w");
+        $data = $enrollform->getArray();
+        fputcsv($fp, array_keys($data), ';', '"');
+        fputcsv($fp, array_values($data), ';', '"');
+        fclose($fp);
+
+        $attachment = Swift_Attachment::fromPath($tmpfname)
+            ->setFilename('enroll_data.csv')
+            ->setContentType('text/csv');
         $message = Swift_Message::newInstance()
             ->setSubject($this->get('translator')->trans('FORM.ENROLLMENT.MAILTITLE', array(), 'club'))
             ->setFrom($from)
             ->setTo($recv)
             ->setBody($mailbody, 'text/html');
+        $message->attach($attachment);
         $this->get('mailer')->send($message);
     }
 

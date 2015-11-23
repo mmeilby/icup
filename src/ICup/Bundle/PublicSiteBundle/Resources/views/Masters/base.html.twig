@@ -6,7 +6,7 @@
         {% block meta %}{% endblock %}
         <title>{% block title %}{% endblock %}</title>
         {# CreateJS is only available for admins by default #}
-        {% if app.security is not null and is_granted('ROLE_ADMIN') %}
+        {% if app.security is not null and is_granted('ROLE_EDITOR_ADMIN') %}
             {% include "CmfCreateBundle::includecssfiles.html.twig" %}
         {% endif %}
         <link href="{{ asset( 'bundles/icuppublicsite/font-awesome-4.4.0/css/font-awesome.min.css' ) }}" rel="stylesheet" type="text/css" />

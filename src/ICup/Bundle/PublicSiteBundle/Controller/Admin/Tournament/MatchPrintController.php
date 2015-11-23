@@ -46,40 +46,42 @@ class MatchPrintController extends Controller
             $pattrList[$pattr->getPlayground()->getId()][] = $pattr;
         }
 
-        $matches = $this->get('match')->listMatchesByDate($tournament->getId(), $matchDate);
         $matchList = array();
-        foreach ($matches as $match) {
-            $slotid = 0;
-            foreach ($pattrList[$match['playground']['id']] as $pattr) {
-                /* @var $diffstart \DateInterval */
-                $diffstart = $pattr->getStartSchedule()->getTimestamp() - $match['schedule']->getTimestamp();
-                /* @var $diffend \DateInterval */
-                $diffend = $pattr->getEndSchedule()->getTimestamp() - $match['schedule']->getTimestamp();
-                if ($diffend >= 0 && $diffstart <= 0) {
-                    $slotid = $pattr->getTimeslot()->getId();
-                    $match['timeslot'] = $pattr->getTimeslot();
+        if ($matchDate != null) {
+            $matches = $this->get('match')->listMatchesByDate($tournament->getId(), $matchDate);
+            foreach ($matches as $match) {
+                $slotid = 0;
+                foreach ($pattrList[$match['playground']['id']] as $pattr) {
+                    /* @var $diffstart \DateInterval */
+                    $diffstart = $pattr->getStartSchedule()->getTimestamp() - $match['schedule']->getTimestamp();
+                    /* @var $diffend \DateInterval */
+                    $diffend = $pattr->getEndSchedule()->getTimestamp() - $match['schedule']->getTimestamp();
+                    if ($diffend >= 0 && $diffstart <= 0) {
+                        $slotid = $pattr->getTimeslot()->getId();
+                        $match['timeslot'] = $pattr->getTimeslot();
+                        $matchList[] = $match;
+                        break;
+                    }
+                }
+                if (!$slotid) {
+                    $match['timeslot'] = new Timeslot();
                     $matchList[] = $match;
-                    break;
                 }
             }
-            if (!$slotid) {
-                $match['timeslot'] = new Timeslot();
-                $matchList[] = $match;
-            }
+            usort($matchList, function ($match1, $match2) {
+                $p1 = $match2['timeslot']->getId() - $match1['timeslot']->getId();
+                $p2 = $match2['playground']['no'] - $match1['playground']['no'];
+                $p3 = $match2['schedule']->getTimestamp() - $match1['schedule']->getTimestamp();
+                $p4 = 0;
+                if ($p1 == 0 && $p2 == 0 && $p3 == 0 && $p4 == 0) {
+                    return 0;
+                } elseif ($p1 < 0 || ($p1 == 0 && $p2 < 0) || ($p1 == 0 && $p2 == 0 && $p3 < 0) || ($p1 == 0 && $p2 == 0 && $p3 == 0 && $p4 < 0)) {
+                    return 1;
+                } else {
+                    return -1;
+                }
+            });
         }
-        usort($matchList, function ($match1, $match2) {
-            $p1 = $match2['timeslot']->getId() - $match1['timeslot']->getId();
-            $p2 = $match2['playground']['no'] - $match1['playground']['no'];
-            $p3 = $match2['schedule']->getTimestamp() - $match1['schedule']->getTimestamp();
-            $p4 = 0;
-            if ($p1 == 0 && $p2 == 0 && $p3 == 0 && $p4 == 0) {
-                return 0;
-            } elseif ($p1 < 0 || ($p1 == 0 && $p2 < 0) || ($p1 == 0 && $p2 == 0 && $p3 < 0) || ($p1 == 0 && $p2 == 0 && $p3 == 0 && $p4 < 0)) {
-                return 1;
-            } else {
-                return -1;
-            }
-        });
 
         return array(
             'host' => $host,

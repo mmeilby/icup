@@ -121,7 +121,7 @@ class User implements AdvancedUserInterface, JsonSerializable
     /**
      * @var string $secret
      * Secret used for system routines like reset password
-     * @ORM\Column(name="secret", type="string", length=50, nullable=false)
+     * @ORM\Column(name="secret", type="string", length=50, nullable=true)
      */
     protected $secret;
 

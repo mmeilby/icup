@@ -1,0 +1,401 @@
+FORM:
+  TITLE: iCup registration
+  SELECTCLUB:
+    TITLE: Follow your club
+    PROMPT: >
+            You can arrange results and match lists to display only the information that include the clubs you want to follow.
+            You can follow as many clubs as you like. Just find the club by typing the name.
+            If you can not find a club then try typing a part of the name or spell the name differently.
+    CAPTION: Clubs you are following
+    LEGEND: Clubs
+    NOCLUBS: No club matches the name you typed. Try typing a different part of the name.
+    MORECLUBS: More clubs match the name you typed. A short list is shown here - try typing more letters or select one of the clubs shown.
+    INFO: If you like to follow this club - click here...
+    DEFAULT: Select...
+    NAME: Club name
+    COUNTRY: Residence
+    HELP:
+      NAME: Type a part of the name of the club. You can start with the first two letters.
+    SUBMIT: Save the list
+    CANCEL: Cancel
+  ENROLLMENT:
+    DOCUMENTS: Documents
+    DOWNLOAD: Download
+    CLUB: Club name
+    ADDRESS: Club address
+    CITY: City
+    COUNTRY: Country
+    PHONE: Phone no. for club administration
+    FAX: Fax no.
+    SKYPE: Skype address
+    EMAIL: E-mail address
+    WEB: Club website address
+    MEMBERSHIP: Federation membership
+    AFFILIATION: Affiliation code
+    CHAMPIONSHIP: Participation in federal championship
+    BESTRESULT: Best result achieved
+    SUBMIT: Next
+    BACK: Back
+    SEND: Enroll
+    MANAGER: Manager full name
+    M_ADDRESS: Address
+    M_CITY: City
+    M_COUNTRY: Country
+    M_PHONE: Phone no.
+    M_FAX: Fax no.
+    M_SKYPE: Skype address
+    M_MOBILE: Mobile
+    M_EMAIL: E-mail address
+    NTMU18: Category A
+    NTFU18: Category G
+    MO18: Category B
+    FO18: Category H
+    MU18: Category C
+    FU18: Category I
+    MU16: Category D
+    FU16: Category L
+    MU14: Category E
+    FU14: Category M
+    MU12: Category F
+    FU12: Category N
+    A_TERAMO_WOB: A - School in Teramo without bedding arrangements
+    A_TERAMO_WB: B - School in Teramo with bedding arrangements
+    A_TERAMO_TENT: C - Tent in Teramo
+    A_TERAMO_HOTEL: E - Hotel in Teramo or nearby area
+    A_GUILIANOVA_TENT: D - Tent at the seaside
+    A_GUILIANOVA_HOTEL: F - 3-star hotel at seaside
+    A_RESTAURANT: Restaurant in Teramo
+    A_OTHER: Other requests (please be specific)
+    A_NONE: Independent teams
+    ARRIVAL_DATE: Day of arrival
+    ARRIVAL_TIME: Time of aarival
+    DEPARTURE_DATE: Day of departure
+    DEPARTURE_TIME: Time of departure
+    B_ARRIVAL: Arrival by plane
+    B_ARRIVAL_AIRPORT: Airport of arrival
+    B_ARRIVAL_DATE: Day of arrival
+    B_ARRIVAL_TIME: Time of arrival
+    B_DEPARTURE: Departure by plane
+    B_DEPARTURE_AIRPORT: Airport of deprature
+    B_DEPARTURE_DATE: Day of departure
+    B_DEPARTURE_TIME: Time of departure
+    STEP1:
+      TITLE: The club
+      HEADER1: Required information
+      HEADER2: Optional information
+      HEADER3: Vital statistics
+    STEP2:
+      TITLE: The manager
+      HEADER1: Required information
+      HEADER2: Optional information
+    STEP3:
+      TITLE: The teams
+      HEADER1: Please enter the number of teams enrolled in each category
+      HEADER2: You can leave categories empty if no teams are enrolled in these categories.
+      CLASSUNI: University teams
+      CLASSO18: Over 18
+      CLASSU18: Under 18
+      CLASSU16: Under 16
+      CLASSU14: Under 14
+      CLASSU12: Under 12
+    STEP4:
+      TITLE: Lodging and catering
+      HEADER1: Lodging in Teramo
+      TEXT1: Lodging in Teramo is available at public schools, in tent or at hotel. Type the number of persons for each type of lodging.
+      HEADER2: Lodging at the seaside
+      TEXT2: Lodging at the seaside is available in tent or at hotel. Type the number of persons for each type of lodging. Clubs lodging this way must handle transportation to Teramo by themself.
+      HEADER3: Catering
+      TEXT3: Catering is available in Teramo.
+      HEADER4: Other type of lodging
+      TEXT4: If you like to request something special, type it here
+      TEXT5: Type the number of persons that organize their own lodging
+    STEP5:
+      TITLE: Arrival and departure details
+      HEADER1: Expected arrival to and departure from Teramo
+      TEXT1: Arrival to Teramo
+      HEADER2: Departure from Teramo
+      HEADER3: Type the expected time schedules if the teams need transfer service to and from an airport
+      TEXT3: Transfer service from airport by bus
+      TEXT4: Transfer service to airport by bus
+    STEP6:
+      TITLE: Your enrollment is complete for
+      TEXT1: Enrolled teams:
+      TEXT2: Enrollment fee and expenses deposit:
+
+    NOCLUB: Club name is missing
+    NOADDRESS: Address is missing
+    NOCITY: City is missing
+    NOCOUNTRY: Country is missing
+    NOEMAIL: E-mail address is missing
+    INVALIDEMAIL: E-mail address is not valid
+    NOMANAGER: Manager name is missing
+    NOMOBILE: Mobile no. is missing
+    NOCATEGORIES: No categories are enrolled
+    NOACCOMODATION: No lodging is selected
+    NOARRIVALDATE: Arrival date is missing
+    NOARRIVALTIME: Arrival time is missing
+    NODEPARTUREDATE: Departure date is missing
+    NODEPARTURETIME: Departure time is missing
+
+    MAILTITLE: Club enrollment
+  CLUB: 
+    WELLCOME: Wellcome to iCup
+    TITLE:
+      ADD: Register club
+      CHG: Change informations
+      DEL: REMOVE CLUB FROM iCup
+    PROMPT:
+      ADD: The club is registered in the iCup list of clubs and is allowed to enroll teams for the open tournaments.
+      CHG: Change club information. Change of log in information should be conducted using the link.
+      DEL: The club is removed from the list of clubs and all teams related are removed as well. You can not undo this action.
+  NEWUSER:
+    TITLE: You have decided to register a new profile. Enter the following information.
+    PROMPT: >
+            Inden du begynder at følge en klub eller tilmelde hold, skal vi bruge nogle få oplysninger fra dig.
+            Dit navn og e-mail adresse er nok til at danne en profil til dig.
+            Start nu med at oprette din personlige profil.
+    LOGIN: Jeg har en personlig profil - log på
+    SECTION1:
+      HEADER: First time?
+      TEXT: >
+            <p>Har du allerede en personlig profil kan du logge på direkte.</p>
+            <p>Men har du bemærket at du øverst til højre i menuen finder menupunktet "Bruger Login"?
+            Hvis du klikker på dette menupunkt kan du logge direkte på med din profil.</p>
+    SECTION2:
+      HEADER: Din personlige profil
+      TEXT: >
+            <p>En personlig profil giver dig mulighed for at følge hold fra din klub.
+            Med den rette myndighed kan du også tilmelde hold til turneringer.</p>
+            <p>Din e-mail skal bruges når du logger ind fremover (indtil du vælger dit eget kodeord,
+            svarer kodeordet til din e-mail adresse).</p>
+            <p>Når din profil er oprettet vælger du en klub at knytte dig til.</p>
+    SECTION3:
+      HEADER: Anvendelse af e-mail
+      TEXT: >
+            <p>Din e-mail adresse vil udelukkende blive brugt service meddelelser du selv
+            foranleder. Nyhedsbreve eller andre forsendelser vil kun blive sendt til dig
+            på din opfordring. Din e-mail adresse vil ikke blive videregivet til trediepart.</p>
+    NAME: Dit navn
+    EMAIL: E-mail
+    HELP:
+      NAME: Angiv dit fulde navn som du vil have det vist
+      EMAIL: Angiv din e-mail adresse
+    SUBMIT:
+      ADD: Opret profil
+    CANCEL:
+      ADD: Fortryd
+  NEWCLUB:
+    TITLE: Forbind din profil til en klub
+    PROMPT: >
+            Nu er du næsten klar til at følge en klub eller tilmelde hold. 
+            Find din klub ved at skrive klubbens navn. 
+            Hvis ikke den findes kan du oprette den og blive administrator for klubben.
+    CAPTION: Search result
+    LEGEND: Clubs
+    NOCLUBS: No clubs match the pattern
+    MORECLUBS: There are clubs not shown here that match the pattern. Select one from the list or continue narrow the search.
+    INFO: Hvis du vil knyttes til denne klub, skal du klikke her...
+    ADVISE:
+       TITLE: Ny klub?
+       TEXT: >
+            <p>Du har valgt at forbinde din profil med en klub.
+            Måske er klubben allerede oprettet - måske er du den første der opretter en profil for klubben.</p>
+            <ul>
+            <li><strong>Hvis du ønsker at følge en klub</strong> for at se holdenes resultater skal du knytte
+                din profil til en eksisterende klub. At oprette en ny klubprofil vil i dette tilfælde
+                ikke give dig adgang til at se og følge klubbens hold. Vær omhyggelig når du søger
+                klubben ved at skrive dens navn.</li>
+            <li><strong>Hvis du er klubansvarlig</strong> og skal tilmelde hold til en turnering kan du opleve at du
+                skal oprette en klubprofil først. Hvis du forventer at klubprofilen allerede er oprettet
+                skal du være omhyggelig når du søger klubben på dens navn.</li>
+            </ul>
+            <p><strong>Generelt når du søger efter en klub</strong><br />
+                Når du har skrevet to tegn eller mere fra klubbens navn vil du få mulighed for at vælge
+                mellem op til tre klubber der allerede er oprettet og som passer til din søgning.
+                Hvis du ser din klub i listen af klubber skal du klikke på klubbens navn i listen.</p>
+            <p><u>Hvis du ikke finder den klub du søger</u> skal du taste klubbens fulde navn og
+                klikke på knappen <em>tilknyt klub</em>. Dermed opretter du en ny klubprofil hvor du er
+                administrator. Denne rolle kan du senere videregive til andre der tilknyttes klubben.</p>
+    DEFAULT: Vælg...
+    NONAME: Et klubnavn skal angives.
+    NOCOUNTRY: Klubbens hjemland skal angives.
+    NAME: Klubnavn
+    COUNTRY: Hjemland
+    HELP:
+      NAME: Skriv et par bogstaver af klubbens navn eller udfyld hele navnet og opret klubben
+    SUBMIT: Tilknyt klub
+    CANCEL: Fortryd tilknytning
+  LOGIN_CLUB:
+    TITLE: Tilmelding af klub og hold kan ske med en aktiv profil. Log ind med dit brugernavn hvis du har en profil. Ellers opret en ny profil.
+    SECTION:
+      HEADER: Opret en ny profil
+      TEXT: Som holdleder eller klubansvarlig kan du oprette en gratis profil og tilmelde dine hold.
+      LINK: Klik her for at oprette en gratis profil
+  LOGIN:
+    TITLE: Log in
+    PROMPT: Log in using your username if you got a user profile
+    USERNAME: Username
+    PASSWORD: Password
+    HELP:
+      USERNAME: Enter your username - might be your e-mail address
+      PASSWORD: Enter your password (shown with dots)
+    LOGIN: Log in
+    LOSTPWD: Reset password
+    SECTION1:
+      HEADER: Have you lost your password?
+      TEXT: >
+            <p>If you lost your password you can easely reset your password.
+               Is this the first time you log in, you need to reset your password as well.</p>
+            <p><em>Click the button to get instructions explaining how to reset your password.</em></p>
+  LOSTPASS:
+    TITLE: Reset password
+    PROMPT: Reset your password and allow you to log in after failed attempts
+    USERNAME: Username
+    HELP:
+      USERNAME: Enter your username - might be your e-mail address
+    SEND: Send
+    CANCEL: Cancel
+    NOUSERNAME: A valid user name is mandatory.
+    MSGSENT: Instructions how to reset your password has been sent to your e-mail.
+    MESSAGE:
+      META: Generated e-mail: Reset password instructions
+      TITLE: Reset your password instructions
+      BLOCK1: >
+              You receive this message because someone requested a password reset.
+              If you need to reset your password please follow the link below.
+              This link will bring you to the reset password page on icup.dk
+      LINK: Reset your password
+      BLOCK2: >
+              If you did not request a password reset simply ignore this message.
+              Your password will not be changed without your action.
+              However if you suspect your password to be compromised you should consider changing it.
+      REGARDS: Best regards<br />iCup.dk Support
+  MYPAGE:
+    TITLE: My iCup
+    USERS:
+      TITLE: My iCup users
+      LINK: Maintain club users
+      DESCRIPTION: Maintain users attached to the club and connect new users
+    CHGPASS:
+      LINK: Change password
+      DESCRIPTION: Choose new password for log in
+    REFUSE:
+      LINK: Cancel connection to the club
+      DESCRIPTION: Revoke your connection if you no longer want to be a part of the club community
+    DASHBOARD:
+      LINK: Administration
+      DESCRIPTION: Open dashboard for tournament planning and administration
+    USERNAME: Username
+    EMAIL: E-mail
+    CLUB: Club
+    HOST: Host
+    ROLE: Role
+    EDITOR: Editor
+    EDITOR_ADMIN: Editor administrator
+    ADMIN: Administrator
+    DEFAULT_ADMIN: Standard administrator
+    CLUBUSER: Club user
+    CLUBADMIN: Club administrator
+    ATTACHEDTO: Affiliated to
+    CAPTION: Users affiliated to %club%
+    ATTACHED: Affiliated
+    CONNECT: Knyt brugeren til klubben
+    DISCONNECT: Placer brugeren som ansøger til klubben
+    PROMOTE: Gør bruger til ansvarlig
+    DEMOTE: Fjern klubansvar
+    IGNORE: Placer bruger som følger af klubben
+    IGNORED:
+      CAPTION: Brugere der følger %club%
+    PROSPECT: Requested for membership
+    PROSPECTS:
+      CAPTION: Ansøgere til %club%
+      AVAILABLE: Requests for membership are pending - show the list...
+    DEFADM:
+      WARNING: <b>Change password for administrator</b><br />Standard administrator is not a safe administrator. Please use the following link to change the password.
+      LINK: Add new password to administrator
+    TOURNAMENTS:
+      TITLE: Tilmeldte hold
+      CAPTION: Tournaments - open for enrollment
+      TOURNAMENT: Tournament
+      TEAMS: Enrolled teams
+    GREETING:
+      TITLE: Velkommen til %club%
+      TEXT: >
+          <p>Velkommen til klubben.<br/>
+          Klubbens administrator skal godkende din ansøgning om tilknytning.
+          Du kan afvente godkendelse eller du kan trække din ansøgning tilbage.</p>
+          <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Morbi id bibendum tortor.
+          Mauris varius fermentum elit vitae ultrices. Praesent vehicula nulla ut arcu accumsan suscipit.
+          Cras pellentesque elit quis quam aliquam, molestie viverra turpis semper.
+          Nam purus arcu, aliquet molestie tristique non, volutpat ac neque. Suspendisse id velit orci.
+          Maecenas eleifend condimentum turpis vitae dignissim. Ut a lorem leo.
+          Sed augue felis, vehicula ac urna ac, ultrices viverra sem.
+          Nulla dapibus ullamcorper lorem, sit amet posuere dui pulvinar eget.
+          Sed pulvinar lacus nisi, id fermentum turpis imperdiet sit amet.</p>
+    ENROLL:
+        TITLE: Holdtilmelding
+        DESCRIPTION: >
+                     Der er åbent for tilmelding af hold til turneringen.
+                     Hvis du er holdansvarlig bør du kontakte din klubansvarlige for at
+                     få tilladelse til at tilmelde hold til turneringen.
+        LEARNMORE: Tilmeld hold
+    REL:
+      TITLE: Holdansvarlig
+      TEXT: >
+            Med din nuværende brugerrolle kan du følge klubbens hold.
+            Men du har ikke mulighed for at tilmelde hold. Hvis du er ansvarlig for
+            hold fra klubben bør du kontakte den klubansvarlige og søge om rollen som klubbruger.
+      LINK: Tilmeld hold
+      DISMISS: Fjern denne besked
+    NONREL:
+      GREETING:
+        TITLE: Velkommen til mit iCup
+        TEXT: >
+            Lorem ipsum dolor sit amet, consectetur adipiscing elit. Morbi id bibendum tortor.
+            Mauris varius fermentum elit vitae ultrices. Praesent vehicula nulla ut arcu accumsan suscipit.
+            Cras pellentesque elit quis quam aliquam, molestie viverra turpis semper.
+            Nam purus arcu, aliquet molestie tristique non, volutpat ac neque. Suspendisse id velit orci.
+            Maecenas eleifend condimentum turpis vitae dignissim. Ut a lorem leo.
+            Sed augue felis, vehicula ac urna ac, ultrices viverra sem.
+            Nulla dapibus ullamcorper lorem, sit amet posuere dui pulvinar eget.
+            Sed pulvinar lacus nisi, id fermentum turpis imperdiet sit amet.
+      
+      TITLE: Connect to a club
+      TEXT: Your profile is not connected to a club. It is time to affiliate with an existing club. Or you can create your own club profile to connect to. Follow the link to connect to or create a club.
+      LINK: Connect to a club
+    SECTION:
+      EDITOR:
+        CAPTION: Tournaments
+        LEGEND:
+          NAME: Name of tournament
+          EDITION: Edition
+          DESCRIPTION: Description
+          STATUS: State
+        STATUS:
+          0: Archived
+          1: Enroll
+          2: Started
+          3: Finished
+          4: Under construction
+        NOTOURNAMENT: Add new tournament
+  NEWPASS: 
+    NOPASSWORD: You must enter a password.
+    BADPASSWORD: The password is not valid.
+    NOTEQUAL: Please retype the password properly. The typed passwords are not equal.
+    TITLE: Change password
+    CAPTION: Enter new password
+    PROMPT: >
+        A password should contain at least 8 characters, mixed case and digits.
+        You must type the password equal in both fields - mind that the passwords are shown with dots.
+    PASSWORD: Password
+    PASSWORD2: Retype password
+    SUBMIT: Change password
+    CANCEL: Cancel
+  LISTENROLLED:
+    TITLE: Show enrolled teams for the tournament
+    CAPTION: No. of enrolled teams per category
+  ERROR:
+    BACK: Back...
+    NAMEEXIST: The name of the club is in use by another club. Please connect or find a different name.
+    CANTCHANGENAME: The name of the club is in use by another club. You can not change the name.
+    NOTOURNAMENT: No tournament has been selected.

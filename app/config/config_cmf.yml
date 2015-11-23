@@ -63,6 +63,10 @@ cmf_routing:
             Symfony\Cmf\Bundle\SimpleCmsBundle\Doctrine\Phpcr\Page: ICupPublicSiteBundle:Page:index.html.twig
         locales: [ en, it, fr, de, es, po, da ]
 
+cmf_create:
+    security:
+        role: ROLE_EDITOR_ADMIN
+
 sonata_core: ~
 
 sonata_block:

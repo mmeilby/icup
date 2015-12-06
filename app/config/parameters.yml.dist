@@ -16,3 +16,12 @@ parameters:
 
     phpcr_user:        admin
     phpcr_password:    admin
+
+    facebook_client_id: ~
+    facebook_client_secret: XX
+
+    google_client_id: ~
+    google_client_secret: ~
+
+    linkedin_client_id: XX
+    linkedin_client_secret: XX

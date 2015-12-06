@@ -65,7 +65,7 @@ cmf_routing:
 
 cmf_create:
     security:
-        role: ROLE_EDITOR_ADMIN
+        role: ROLE_EDITOR_NEWS
 
 sonata_core: ~
 

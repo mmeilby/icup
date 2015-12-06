@@ -45,7 +45,11 @@ services:
         class: "ICup\\Bundle\\PublicSiteBundle\\Form\\Extension\\ButtonTypeExtension"
         tags:
           - { name: "form.type_extension", alias: "submit" }
-          
+
+    app.provider.oauth:
+        class: ICup\Bundle\PublicSiteBundle\Security\Core\User\OAuthUserProvider
+        arguments: [@fos_user.user_manager,{facebook: facebookID, google: googleID}]
+
 # REGISTER TWIG EXTENSIONS
     custom.twig.sandbox.policy:
         class: Twig_Sandbox_SecurityPolicy

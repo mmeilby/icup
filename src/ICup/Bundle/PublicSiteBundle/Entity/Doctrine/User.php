@@ -2,6 +2,7 @@
 
 namespace ICup\Bundle\PublicSiteBundle\Entity\Doctrine;
 
+use FOS\UserBundle\Model\User as BaseUser;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Security\Core\Role\Role;
@@ -23,7 +24,7 @@ use JsonSerializable;
  * @ORM\Table(name="users",uniqueConstraints={@ORM\UniqueConstraint(name="UserConstraint", columns={"username"})})
  * @ORM\Entity
  */
-class User implements AdvancedUserInterface, JsonSerializable
+class User extends BaseUser implements JsonSerializable
 {
     public static $CLUB = 1;
     public static $CLUB_ADMIN = 2;
@@ -44,12 +45,17 @@ class User implements AdvancedUserInterface, JsonSerializable
     /* System user */
     public static $SYSTEM = 9;
 
+    const ROLE_ADMIN = 'ROLE_ADMIN';
+    const ROLE_EDITOR_ADMIN = 'ROLE_EDITOR_ADMIN';
+    const ROLE_EDITOR = 'ROLE_EDITOR';
+    const ROLE_CLUB_ADMIN = 'ROLE_CLUB_ADMIN';
+
     /**
      * @var integer $id
      *
      * @ORM\Column(name="id", type="integer", nullable=false)
      * @ORM\Id
-     * @ORM\GeneratedValue(strategy="IDENTITY")
+     * @ORM\GeneratedValue(strategy="AUTO")
      */
     protected $id;
 
@@ -84,13 +90,6 @@ class User implements AdvancedUserInterface, JsonSerializable
     protected $name;
 
     /**
-     * @var string $email
-     * E-mail address used for system messages like reset password
-     * @ORM\Column(name="email", type="string", length=100, nullable=false)
-     */
-    protected $email;
-
-    /**
      * @var integer $status
      * User status: 1: authenticating, 2: verified, 3: prospector, 4: attached, 5: inform, 9: system
      * @ORM\Column(name="status", type="integer", nullable=false)
@@ -103,20 +102,6 @@ class User implements AdvancedUserInterface, JsonSerializable
      * @ORM\Column(name="role", type="integer", nullable=false)
      */
     protected $role;
-
-    /**
-     * @var string $username
-     * Username used for login (could be the e-mail address)
-     * @ORM\Column(name="username", type="string", length=50, nullable=false)
-     */
-    protected $username;
-
-    /**
-     * @var string $password
-     * Password used for login (crypted)
-     * @ORM\Column(name="password", type="string", length=128, nullable=false)
-     */
-    protected $password;
 
     /**
      * @var string $secret
@@ -133,18 +118,18 @@ class User implements AdvancedUserInterface, JsonSerializable
     protected $attempts;
 
     /**
-     * @var string $enabled
-     * Set to Y if account is enabled
-     * @ORM\Column(name="enabled", type="string", length=1, nullable=false)
+     * @var string
+     *
+     * @ORM\Column(name="facebook_id", type="string", nullable=true)
      */
-    protected $enabled;
+    protected $facebookID;
 
     /**
-     * @var DateTime $lastLogin
-     * Timestamp of last successfull login
-     * @ORM\Column(name="lastlogin", type="datetime", nullable=true)
+     * @var string
+     *
+     * @ORM\Column(name="google_id", type="string", nullable=true)
      */
-    protected $lastLogin;
+    protected $googleID;
 
     /**
      * @var ArrayCollection $enrollments
@@ -157,18 +142,13 @@ class User implements AdvancedUserInterface, JsonSerializable
      * User constructor.
      */
     public function __construct() {
+        parent::__construct();
         $this->enrollments = new ArrayCollection();
         $this->social_relations = new ArrayCollection();
-    }
-
-    /**
-     * Get id
-     *
-     * @return integer 
-     */
-    public function getId()
-    {
-        return $this->id;
+        $this->attempts = 0;
+        $this->name = '';
+        $this->role = static::$CLUB;
+        $this->status = static::$AUTH;
     }
 
     /**
@@ -241,6 +221,18 @@ class User implements AdvancedUserInterface, JsonSerializable
      */
     public function setRole($role)
     {
+        $role_map = array(
+            User::$ADMIN => static::ROLE_ADMIN,
+            User::$EDITOR_ADMIN => static::ROLE_EDITOR_ADMIN,
+            User::$EDITOR => static::ROLE_EDITOR,
+            User::$CLUB_ADMIN => static::ROLE_CLUB_ADMIN,
+            User::$CLUB => BaseUser::ROLE_DEFAULT,
+        );
+        if (isset($role_map[$role])) {
+            $roles = array_diff($this->getRoles(), array_values($role_map));
+            $roles[] = $role_map[$role];
+            $this->setRoles($roles);
+        }
         $this->role = $role;
     
         return $this;
@@ -332,219 +324,35 @@ class User implements AdvancedUserInterface, JsonSerializable
     {
         return $this->isEditor() && $this->getHost() && $this->getHost()->getId() == $hostid;
     }
+
+    /**
+     * @return string
+     */
+    public function getFacebookID() {
+        return $this->facebookID;
+    }
+
+    /**
+     * @param string $facebookID
+     */
+    public function setFacebookID($facebookID) {
+        $this->facebookID = $facebookID;
+    }
+
+    /**
+     * @return string
+     */
+    public function getGoogleID() {
+        return $this->googleID;
+    }
+
+    /**
+     * @param string $googleID
+     */
+    public function setGoogleID($googleID) {
+        $this->googleID = $googleID;
+    }
     
-    /**
-     * Set email
-     *
-     * @param string $email
-     * @return User
-     */
-    public function setEmail($email)
-    {
-        $this->email = $email;
-    
-        return $this;
-    }
-
-    /**
-     * Get email
-     *
-     * @return string 
-     */
-    public function getEmail()
-    {
-        return $this->email;
-    }
-
-    /**
-     * INTERFACE IMPLEMENTATION
-     * Returns the roles granted to the user.
-     *
-     * <code>
-     * public function getRoles()
-     * {
-     *     return array('ROLE_USER');
-     * }
-     * </code>
-     *
-     * Alternatively, the roles might be stored on a ``roles`` property,
-     * and populated in any number of different ways when the user object
-     * is created.
-     *
-     * @return Role[] The user roles
-     */
-    public function getRoles()
-    {
-        switch ($this->role) {
-            case User::$CLUB:
-                $roles = 'ROLE_USER';
-                break;
-            case User::$CLUB_ADMIN:
-                $roles = 'ROLE_CLUB_ADMIN';
-                break;
-            case User::$EDITOR:
-                $roles = 'ROLE_EDITOR';
-                break;
-            case User::$EDITOR_ADMIN:
-                $roles = 'ROLE_EDITOR_ADMIN';
-                break;
-            case User::$ADMIN:
-                $roles = 'ROLE_ADMIN';
-                break;
-            default:
-                $roles = '';
-                break;
-        }
-        return array($roles);
-    }
-
-    /**
-     * Sets the username used to authenticate the user.
-     *
-     * @param string $username
-     * @return User
-     */
-    public function setUsername($username)
-    {
-        $this->username = $username;
-    
-        return $this;
-    }
-
-    /**
-     * INTERFACE IMPLEMENTATION
-     * Returns the username used to authenticate the user.
-     *
-     * @return string The username
-     */
-    public function getUsername()
-    {
-        return $this->username;
-    }
-
-    /**
-     * Sets the password used to authenticate the user.
-     *
-     * This should be the encoded password. On authentication, a plain-text
-     * password will be salted, encoded, and then compared to this value.
-     *
-     * @param string $password
-     * @return User
-     */
-    public function setPassword($password)
-    {
-        $this->password = $password;
-    
-        return $this;
-    }
-
-    /**
-     * INTERFACE IMPLEMENTATION
-     * Returns the password used to authenticate the user.
-     *
-     * This should be the encoded password. On authentication, a plain-text
-     * password will be salted, encoded, and then compared to this value.
-     *
-     * @return string The password
-     */
-    public function getPassword()
-    {
-        return $this->password;
-    }
-
-    /**
-     * INTERFACE IMPLEMENTATION
-     * Returns the salt that was originally used to encode the password.
-     *
-     * This can return null if the password was not encoded using a salt.
-     *
-     * @return string The salt
-     */
-    public function getSalt()
-    {
-        return null;
-    }
-
-    /**
-     * INTERFACE IMPLEMENTATION
-     * Removes sensitive data from the user.
-     *
-     * This is important if, at any given point, sensitive information like
-     * the plain-text password is stored on this object.
-     *
-     * @return void
-     */
-    public function eraseCredentials()
-    {
-    }
-
-    /**
-     * INTERFACE IMPLEMENTATION
-     * Checks whether the user's account has expired.
-     *
-     * Internally, if this method returns false, the authentication system
-     * will throw an AccountExpiredException and prevent login.
-     *
-     * @return bool true if the user's account is non expired, false otherwise
-     *
-     * @see AccountExpiredException
-     */
-    public function isAccountNonExpired() {
-        return true;
-    }
-
-    /**
-     * INTERFACE IMPLEMENTATION
-     * Checks whether the user is locked.
-     *
-     * Internally, if this method returns false, the authentication system
-     * will throw a LockedException and prevent login.
-     *
-     * @return bool true if the user is not locked, false otherwise
-     *
-     * @see LockedException
-     */
-    public function isAccountNonLocked() {
-        return $this->attempts < 5;
-    }
-
-    /**
-     * INTERFACE IMPLEMENTATION
-     * Checks whether the user's credentials (password) has expired.
-     *
-     * Internally, if this method returns false, the authentication system
-     * will throw a CredentialsExpiredException and prevent login.
-     *
-     * @return bool true if the user's credentials are non expired, false otherwise
-     *
-     * @see CredentialsExpiredException
-     */
-    public function isCredentialsNonExpired() {
-        return true;
-    }
-
-    /**
-     * INTERFACE IMPLEMENTATION
-     * Checks whether the user is enabled.
-     *
-     * Internally, if this method returns false, the authentication system
-     * will throw a DisabledException and prevent login.
-     *
-     * @return bool true if the user is enabled, false otherwise
-     *
-     * @see DisabledException
-     */
-    public function isEnabled() {
-        return $this->enabled != 'N';
-    }
-
-    /**
-     * @param string $enabled
-     */
-    public function setEnabled($enabled) {
-        $this->enabled = $enabled ? 'Y' : 'N';
-    }
-
     /**
      * @return int
      */
@@ -557,20 +365,6 @@ class User implements AdvancedUserInterface, JsonSerializable
      */
     public function setAttempts($attempts) {
         $this->attempts = $attempts;
-    }
-
-    /**
-     * @return DateTime
-     */
-    public function getLastLogin() {
-        return $this->lastLogin;
-    }
-
-    /**
-     * @param DateTime $lastLogin
-     */
-    public function setLastLogin($lastLogin) {
-        $this->lastLogin = $lastLogin;
     }
 
     /**

@@ -28,6 +28,8 @@ class AppKernel extends Kernel
             new JMS\AopBundle\JMSAopBundle(),
             new JMS\SecurityExtraBundle\JMSSecurityExtraBundle(),
             new FOS\JsRoutingBundle\FOSJsRoutingBundle(),
+            new FOS\UserBundle\FOSUserBundle(),
+            new HWI\Bundle\OAuthBundle\HWIOAuthBundle(),
 
             // Symfony CMF Standard Edition Bundles
             new Doctrine\Bundle\PHPCRBundle\DoctrinePHPCRBundle(),

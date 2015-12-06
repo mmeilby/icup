@@ -71,6 +71,63 @@ doctrine:
         auto_generate_proxy_classes: %kernel.debug%
         auto_mapping: true
 
+fos_user:
+    db_driver: orm
+    firewall_name: main
+    user_class: ICup\Bundle\PublicSiteBundle\Entity\Doctrine\User
+    from_email:
+        address:        noreply@icup.dk
+        sender_name:    icup admin
+    service:
+        mailer: fos_user.mailer.twig_swift
+#    resetting:
+#        email:
+#            template: email/password_resetting.email.twig
+    registration:
+        confirmation:
+            enabled: true
+
+hwi_oauth:
+    firewall_name: main
+    connect:
+        confirmation: true
+#        account_connector: app.provider.oauth
+        #account_connector: hwi_oauth.user.provider.fosub_bridge
+        #registration_form_handler: hwi_oauth.registration.form.handler.fosub_bridge
+        #registration_form: fos_user.registration.form
+    resource_owners:
+        facebook:
+            type:               facebook
+            client_id:          %facebook_client_id%
+            client_secret:      %facebook_client_secret%
+            scope:              "email, public_profile"
+            infos_url:          "https://graph.facebook.com/me?fields=id,name,email,picture.type(large)"
+            paths:
+                email: email
+            options:
+                display: page
+        google:
+            type:               google
+            client_id:          %google_client_id%
+            client_secret:      %google_client_secret%
+            scope:              "https://www.googleapis.com/auth/userinfo.email https://www.googleapis.com/auth/userinfo.profile"
+            paths:
+                email: email
+        linkedin:
+            type:               linkedin
+            client_id:          %linkedin_client_id%
+            client_secret:      %linkedin_client_secret%
+            scope:              "r_basicprofile:r_emailaddress"
+    fosub:
+        # try 30 times to check if a username is available (foo, foo1, foo2 etc)
+        username_iterations: 30
+
+        # mapping between resource owners (see below) and properties
+        properties:
+            facebook: facebookID
+            google: googleID
+            linkedin: linkedinID
+
 # Swiftmailer Configuration
 swiftmailer:
     transport: %mailer_transport%

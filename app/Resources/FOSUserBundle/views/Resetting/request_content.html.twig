@@ -1,0 +1,39 @@
+{% trans_default_domain 'FOSUserBundle' %}
+
+<h2 style="margin-bottom: 0">
+    <i class="fa fa-unlock-alt"></i>&nbsp;
+    {% trans from "club" %}FORM.LOSTPASS.TITLE{% endtrans %}
+</h2>
+<p>{% trans from "club" %}FORM.LOSTPASS.PROMPT{% endtrans %}</p>
+<div class="row">
+    {% for flashMessage in app.session.flashbag.get('lostmsgsent') %}
+        <div class="col-md-12">
+            <p>&nbsp;</p>
+            <div class="alert alert-success alert-dismissible" role="alert">
+                <button type="button" class="close" data-dismiss="alert">
+                    <span aria-hidden="true">&times;</span><span class="sr-only">Close</span>
+                </button>
+                {{ flashMessage|trans }}
+            </div>
+        </div>
+    {% endfor %}
+</div>
+<div class="row">
+    <div class="col-sm-7">
+        <form action="{{ path('fos_user_resetting_send_email') }}" method="POST" class="fos_user_resetting_request">
+            {% if invalid_username is defined %}
+                <p>{{ 'resetting.request.invalid_username'|trans({'%username%': invalid_username}) }}</p>
+            {% endif %}
+            <div class="form-group">
+                <label class="control-label required" for="username">{{ 'resetting.request.username'|trans }}</label>
+                <div class="input-group">
+                    <span class="input-group-addon">
+                        <i class="fa fa-user"></i>
+                    </span>
+                    <input class="form-control" type="text" id="username" name="username" required="required" />
+                </div>
+            </div>
+            <input type="submit" id="_submit" name="_submit" value="{{ 'resetting.request.submit'|trans }}" class="btn btn-default" role="button" />
+        </form>
+    </div>
+</div>

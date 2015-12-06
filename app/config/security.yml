@@ -1,41 +1,50 @@
 security:
     encoders:
-        ICup\Bundle\PublicSiteBundle\Entity\Doctrine\User:
-            algorithm:  bcrypt
-            iterations: 13
-            encode_as_base64: true          
-        
+        FOS\UserBundle\Model\UserInterface: bcrypt
+
     role_hierarchy:
-        ROLE_CLUB_ADMIN:   [ROLE_USER]
-        ROLE_EDITOR:       [ROLE_USER]
-        ROLE_EDITOR_ADMIN: [ROLE_EDITOR]
-        ROLE_ADMIN:        [ROLE_EDITOR_ADMIN, ROLE_CLUB_ADMIN, ROLE_ALLOWED_TO_SWITCH]
+        ROLE_CLUB_ADMIN:   ROLE_USER
+        ROLE_EDITOR:       ROLE_USER
+        ROLE_EDITOR_NEWS:  ROLE_EDITOR
+        ROLE_EDITOR_ADMIN: ROLE_EDITOR
+        ROLE_ADMIN:        [ROLE_EDITOR_ADMIN, ROLE_EDITOR_NEWS, ROLE_CLUB_ADMIN, ROLE_ALLOWED_TO_SWITCH]
+        ROLE_SUPER_ADMIN:  ROLE_ADMIN
 
     providers:
-        user_db:
-            entity: { class: ICup\Bundle\PublicSiteBundle\Entity\Doctrine\User, property: username }
+        fos_userbundle:
+            id: fos_user.user_provider.username
+#            id: fos_user.user_manager
 
     firewalls:
         dev:
             pattern:  ^/(_(profiler|wdt)|css|images|js|fonts)/
             security: false
 
-        secured_area:
+        main:
             pattern:    ^/
-            anonymous: ~
             switch_user: true
 #            access_denied_url: /foo/error403
 #            access_denied_handler: some.service.id
             form_login:
-                check_path: _security_check
-                failure_path: _admin_login
-#                failure_path_parameter: _icup
-                login_path: _admin_login
-                username_parameter: 'form[username]'
-                password_parameter: 'form[password]'
-            logout:
-                path:   _admin_logout
-                target: _icup
+                provider: fos_userbundle
+                csrf_provider: security.csrf.token_manager
+
+            logout:       true
+            anonymous:    true
+
+            oauth:
+                failure_path: /connect
+                use_forward: false
+                login_path: /login
+                check_path: /connect
+                provider: fos_userbundle
+                resource_owners:
+                    facebook: facebook_login
+                    google: google_login
+#                    linkedin: linkedin_login
+                oauth_user_provider:
+                    service: hwi_oauth.user.provider.fosub_bridge
+#                    service: app.provider.oauth
 
     access_control:
         - { path: ^/user, roles: ROLE_USER }
@@ -44,4 +53,8 @@ security:
         - { path: ^/edit, roles: ROLE_EDITOR_ADMIN }
         - { path: ^/admin, roles: ROLE_ADMIN }
 
-        #- { path: ^/_internal/secure, roles: IS_AUTHENTICATED_ANONYMOUSLY, ip: 127.0.0.1, requires_channel: https }
+        - { path: ^/login, role: IS_AUTHENTICATED_ANONYMOUSLY }
+        - { path: ^/connect, role: IS_AUTHENTICATED_ANONYMOUSLY }
+        - { path: ^/register, role: IS_AUTHENTICATED_ANONYMOUSLY }
+        - { path: ^/resetting, role: IS_AUTHENTICATED_ANONYMOUSLY }
+        #- { path: ^/admin/, role: ROLE_ADMIN }

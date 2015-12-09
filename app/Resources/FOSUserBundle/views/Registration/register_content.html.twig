@@ -1,8 +1,43 @@
 {% trans_default_domain 'FOSUserBundle' %}
 
-{{ form_start(form, {'method': 'post', 'action': path('fos_user_registration_register'), 'attr': {'class': 'fos_user_registration_register'}}) }}
-    {{ form_widget(form) }}
-    <div>
-        <input type="submit" value="{{ 'registration.submit'|trans }}" />
+<h2>{% trans from "club" %}FORM.NEWUSER.TITLE{% endtrans %}</h2>
+<div class="row">
+    <div class="col-md-6">
+        <p>{% trans from "club" %}FORM.NEWUSER.PROMPT{% endtrans %}</p>
+        {{ form_start(form, {'method': 'post', 'action': path('fos_user_registration_register'), 'attr': {'class': 'fos_user_registration_register'}}) }}
+            {{ form_widget(form) }}
+            <div>
+                <input type="submit" value="{{ 'registration.submit'|trans }}" class="btn btn-default btn-lg" role="button" />
+            </div>
+        {{ form_end(form) }}
     </div>
-{{ form_end(form) }}
+    <div class="col-md-6">
+        <button type="button" onclick="window.location='{{ hwi_oauth_login_url('facebook') }}'" class="btn btn-facebook" role="button">
+            <div class="row">
+                <div class="col-xs-1"><i class="fa fa-facebook-f"></i></div>
+                <div class="col-xs-11">{% trans from "club" %}FORM.REGISTER.REGISTER_FACEBOOK{% endtrans %}</div>
+            </div>
+        </button>
+        <p></p>
+        <button type="button" onclick="window.location='{{ hwi_oauth_login_url('google') }}'" class="btn btn-google" role="button">
+            <div class="row">
+                <div class="col-xs-1"><i class="fa fa-google-plus"></i></div>
+                <div class="col-xs-11">{% trans from "club" %}FORM.REGISTER.REGISTER_GOOGLE{% endtrans %}</div>
+            </div>
+        </button>
+        <h1>
+            <span class="label label-primary">
+                <i class="fa fa-info-circle"></i>&nbsp;
+                {% trans from "club" %}FORM.NEWUSER.SECTION2.HEADER{% endtrans %}
+            </span>
+        </h1>
+        <p class="lead">{% trans from "club" %}FORM.NEWUSER.SECTION2.TEXT{% endtrans %}</p>
+        <h3>
+            <span class="label label-default">
+                <i class="fa fa-question-circle"></i>&nbsp;
+                {% trans from "club" %}FORM.NEWUSER.SECTION3.HEADER{% endtrans %}
+            </span>
+        </h3>
+        <p>{% trans from "club" %}FORM.NEWUSER.SECTION3.TEXT{% endtrans %}</p>
+    </div>
+</div>

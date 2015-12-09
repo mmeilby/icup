@@ -247,6 +247,7 @@ FORM:
             <p>If you lost your password you can easely reset your password.
                Is this the first time you log in, you need to reset your password as well.</p>
             <p><em>Click the button to get instructions explaining how to reset your password.</em></p>
+    REGISTER: Create an account
   LOSTPASS:
     TITLE: Reset password
     PROMPT: Reset your password and allow you to log in after failed attempts
@@ -394,6 +395,15 @@ FORM:
   LISTENROLLED:
     TITLE: Show enrolled teams for the tournament
     CAPTION: No. of enrolled teams per category
+  REGISTER:
+    TITLE: Create an account
+    CAPTION: Create an account
+    REGISTER_EMAIL: Create account with e-mail
+    REGISTER_FACEBOOK: Use facebook to register
+    REGISTER_GOOGLE: Use Google to register
+    GOT_A_PROFILE: Har du allerede en profil?
+    LOGIN: Log ind
+    CLOSE: Fortryd
   ERROR:
     BACK: Back...
     NAMEEXIST: The name of the club is in use by another club. Please connect or find a different name.

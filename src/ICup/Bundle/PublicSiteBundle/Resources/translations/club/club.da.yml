@@ -233,22 +233,28 @@ FORM:
       TEXT: Som holdleder eller klubansvarlig kan du oprette en gratis profil og tilmelde dine hold.
       LINK: Klik her for at oprette en gratis profil
   LOGIN:
-    TITLE: Log på
-    PROMPT: Log på med dit brugernavn hvis du har en profil.
+    TITLE: Log ind
+    PROMPT: Log ind med facebook eller Google konto.
     USERNAME: Brugernavn
     PASSWORD: Kodeord
     HELP:
       USERNAME: Angiv dit brugernavn
       PASSWORD: Tast dit kodeord (det vises med prikker)
-    LOGIN: Log på
+    LOGIN: Log ind
+    FACEBOOK: Log ind med facebook
+    GOOGLE: Log ind med Google
+    OR: Eller log ind med dit brugernavn og kodeord
     LOSTPWD: Nulstil dit kodeord
     SECTION1:
       HEADER: Mangler du dit kodeord?
       TEXT: >
-            <p>Har du glemt dit kodeord kan du nemt få nulstillet dit kodeord.
-               Er det første gang du logger på, skal du også nulstille dit kodeord.</p>
+            <p>Har du glemt dit kodeord kan du nemt få nulstillet dit kodeord.</p>
             <p><em>Klik på knappen for at få tilsendt instruktion der forklarer hvordan du nulstiller dit kodeord.</em></p>
-
+    SECTION2:
+      HEADER: Opret en ny profil
+      TEXT: >
+            <p>Du kan nemt oprette en profil. Udfyld formularen når du klikker på knappen herunder.</p>
+    REGISTER: Opret en gratis profil
   LOSTPASS:
     TITLE: Nulstil kodeord
     PROMPT: Nulstil dit kodeord og få mulighed for at logge på efter for mange mislykkede forsøg.
@@ -400,6 +406,15 @@ FORM:
   LISTENROLLED:
     TITLE: Vis tilmeldte hold til turneringen
     CAPTION: Antal tilmeldte hold per gruppe
+  REGISTER:
+    TITLE: Opret ny profil
+    CAPTION: Opret ny profil
+    REGISTER_EMAIL: Opret profil med e-mail
+    REGISTER_FACEBOOK: Opret profil med facebook
+    REGISTER_GOOGLE: Opret profil med Google
+    GOT_A_PROFILE: Har du allerede en profil?
+    LOGIN: Log ind
+    CLOSE: Fortryd
   ERROR:
     BACK: Videre...
     NAMEEXIST: Klubnavn er allerede anvendt (tilknytning til eksisterende klub foretages af klubadministrator).

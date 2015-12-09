@@ -82,6 +82,45 @@ DIV.form-control {
     padding-bottom: 30px;
 }
 
+.btn-facebook {
+    font-weight: 800;
+    border-color: #3b5998;
+    background-color: #3b5998;
+    color: white;
+    width: 100%;
+}
+
+:hover.btn-facebook {
+    font-weight: 800;
+    color: aliceblue;
+}
+
+.btn-google {
+    font-weight: 800;
+    border-color: lightgrey;
+    background-color: white;
+    color: #db3236;
+    width: 100%;
+}
+
+:hover.btn-google {
+    font-weight: 800;
+    color: darkred;
+}
+
+.btn-mostwantedresponse {
+    font-weight: 800;
+    border-color: #3cba54;
+    background-color: #3cba54;
+    color: white;
+    width: 100%;
+}
+
+:hover.btn-mostwantedresponse {
+    font-weight: 800;
+    color: lightgreen;
+}
+
 /**
  * FlexCard
  */

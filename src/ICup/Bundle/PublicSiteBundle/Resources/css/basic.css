@@ -91,21 +91,79 @@ DIV.form-control {
 }
 
 :hover.btn-facebook {
-    font-weight: 800;
-    color: aliceblue;
+    color: white;
+    background-color:#4b69a8
+}
+
+.list-group-item-facebook {
+    color: white;
+    background-color: #3b5998;
+}
+
+a.list-group-item-facebook, button.list-group-item-facebook {
+    color: white;
+}
+
+a.list-group-item-facebook .list-group-item-heading, button.list-group-item-facebook .list-group-item-heading {
+    color:inherit
+}
+
+a.list-group-item-facebook:focus, a.list-group-item-facebook:hover, button.list-group-item-facebook:focus, button.list-group-item-facebook:hover {
+    color: white;
+    background-color:#4b69a8
+}
+
+a.list-group-item-facebook.active,
+a.list-group-item-facebook.active:focus,
+a.list-group-item-facebook.active:hover,
+button.list-group-item-facebook.active,
+button.list-group-item-facebook.active:focus,
+button.list-group-item-facebook.active:hover {
+    color: white;
+    background-color: #3b5998;
+    border-color: #337ab7;
 }
 
 .btn-google {
     font-weight: 800;
-    border-color: lightgrey;
+    border-color: lightgray;
     background-color: white;
     color: #db3236;
     width: 100%;
 }
 
 :hover.btn-google {
-    font-weight: 800;
-    color: darkred;
+    color: #db3236;
+    background-color: #f5f5f5;
+}
+
+.list-group-item-google {
+    color: #db3236;
+    background-color: #fff;
+}
+
+a.list-group-item-google, button.list-group-item-google {
+    color: #db3236;
+}
+
+a.list-group-item-google .list-group-item-heading, button.list-group-item-google .list-group-item-heading {
+    color:inherit
+}
+
+a.list-group-item-google:focus, a.list-group-item-google:hover, button.list-group-item-google:focus, button.list-group-item-google:hover {
+    color: #db3236;
+    background-color: #f5f5f5;
+}
+
+a.list-group-item-google.active,
+a.list-group-item-google.active:focus,
+a.list-group-item-google.active:hover,
+button.list-group-item-google.active,
+button.list-group-item-google.active:focus,
+button.list-group-item-google.active:hover {
+    color: #db3236;
+    background-color: #3c763d;
+    border-color: #337ab7;
 }
 
 .btn-mostwantedresponse {
@@ -117,8 +175,8 @@ DIV.form-control {
 }
 
 :hover.btn-mostwantedresponse {
-    font-weight: 800;
-    color: lightgreen;
+    background-color: #4cca64;
+    color: white;
 }
 
 /**

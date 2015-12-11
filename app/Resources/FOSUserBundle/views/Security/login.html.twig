@@ -8,29 +8,27 @@
         {% trans from "club" %}FORM.LOGIN.TITLE{% endtrans %}
     </h2>
     <p>{% trans from "club" %}FORM.LOGIN.PROMPT{% endtrans %}</p>
-
-{% if error %}
-    <h2><span class="label label-danger"><i class="fa fa-user-secret"></i>&nbsp;{{ error.messageKey|trans(error.messageData, 'security') }}</span></h2>
-{% endif %}
-
     <div class="row">
         <div class="col-sm-5">
             <button type="button" onclick="window.location='{{ hwi_oauth_login_url('facebook') }}'" class="btn btn-facebook btn-lg" role="button">
                 <div class="row">
-                    <div class="col-xs-1"><i class="fa fa-facebook-f"></i></div>
-                    <div class="col-xs-11">{% trans from "club" %}FORM.LOGIN.FACEBOOK{% endtrans %}</div>
+                    <div class="col-xs-2"><i class="fa fa-facebook-f"></i></div>
+                    <div class="col-xs-10">{% trans from "club" %}FORM.LOGIN.FACEBOOK{% endtrans %}</div>
                 </div>
             </button>
             <p></p>
             <button type="button" onclick="window.location='{{ hwi_oauth_login_url('google') }}'" class="btn btn-google btn-lg" role="button">
                 <div class="row">
-                    <div class="col-xs-1"><i class="fa fa-google-plus"></i></div>
-                    <div class="col-xs-11">{% trans from "club" %}FORM.LOGIN.GOOGLE{% endtrans %}</div>
+                    <div class="col-xs-2"><i class="fa fa-google-plus"></i></div>
+                    <div class="col-xs-10">{% trans from "club" %}FORM.LOGIN.GOOGLE{% endtrans %}</div>
                 </div>
             </button>
             <p></p>
             <p>{% trans from "club" %}FORM.LOGIN.OR{% endtrans %}</p>
             <p></p>
+            {% if error %}
+                <h2><span class="label label-danger"><i class="fa fa-user-secret"></i>&nbsp;{{ error.messageKey|trans(error.messageData, 'security') }}</span></h2>
+            {% endif %}
             <form action="{{ path("fos_user_security_check") }}" method="post">
                 <input type="hidden" name="_csrf_token" value="{{ csrf_token }}" />
 
@@ -72,8 +70,8 @@
             <p>
                 <button type="button" onclick="window.location='{{ path('fos_user_registration_register') }}'" class="btn btn-mostwantedresponse btn-lg" role="button">
                     <div class="row">
-                        <div class="col-xs-1"><i class="fa fa-envelope"></i></div>
-                        <div class="col-xs-11">{% trans from "club" %}FORM.LOGIN.REGISTER{% endtrans %}</div>
+                        <div class="col-xs-2"><i class="fa fa-envelope"></i></div>
+                        <div class="col-xs-10">{% trans from "club" %}FORM.LOGIN.REGISTER{% endtrans %}</div>
                     </div>
                 </button>
 {#

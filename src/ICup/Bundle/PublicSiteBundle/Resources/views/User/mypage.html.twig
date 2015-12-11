@@ -42,6 +42,22 @@
                         <h4 class="list-group-item-heading">{% trans %}FORM.MYPAGE.CHGPASS.LINK{% endtrans %}</h4>
                         <p class="list-group-item-text">{% trans %}FORM.MYPAGE.CHGPASS.DESCRIPTION{% endtrans %}</p>
                     </a>
+                    <a class="list-group-item list-group-item-facebook" href="{{ hwi_oauth_login_url('facebook') }}">
+                        <h4 class="list-group-item-heading">
+                            <span><i class="fa fa-facebook-f"></i></span>
+                            <span>&nbsp;</span>
+                            <span>{% trans %}FORM.MYPAGE.FACEBOOK.LINK{% endtrans %}</span>
+                        </h4>
+                        <p class="list-group-item-text">{% trans %}FORM.MYPAGE.FACEBOOK.DESCRIPTION{% endtrans %}</p>
+                    </a>
+                    <a class="list-group-item list-group-item-google" href="{{ hwi_oauth_login_url('google') }}">
+                        <h4 class="list-group-item-heading">
+                            <span><i class="fa fa-google-plus"></i></span>
+                            <span>&nbsp;</span>
+                            <span>{% trans %}FORM.MYPAGE.GOOGLE.LINK{% endtrans %}</span>
+                        </h4>
+                        <p class="list-group-item-text">{% trans %}FORM.MYPAGE.GOOGLE.DESCRIPTION{% endtrans %}</p>
+                    </a>
 {% if is_granted('ROLE_EDITOR_ADMIN') %}
                     <a class="list-group-item" href="{{ path('_edit_dashboard') }}">
                         <h4 class="list-group-item-heading">{% trans %}FORM.MYPAGE.DASHBOARD.LINK{% endtrans %}</h4>

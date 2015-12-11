@@ -284,6 +284,12 @@ FORM:
       TITLE: Klubbrugere
       LINK: Vedligehold klubbrugere
       DESCRIPTION: Administrer klubbens brugere og luk nye tilkomne ind
+    FACEBOOK:
+      LINK: Forbind facebook
+      DESCRIPTION: Tilknyt din facebook konto så du let kan logge ind
+    GOOGLE:
+      LINK: Forbind Google
+      DESCRIPTION: Tilknyt din Google konto så du let kan logge ind
     CHGPASS:
       LINK: Skift kodeord
       DESCRIPTION: Angiv nyt kodeord som du bruger ved log ind

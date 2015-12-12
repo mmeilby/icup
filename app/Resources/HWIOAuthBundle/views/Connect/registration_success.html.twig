@@ -1,5 +1,9 @@
 {% extends 'HWIOAuthBundle::layout.html.twig' %}
 
 {% block hwi_oauth_content %}
-    <h3>{{ 'header.registration_success' | trans({'%username%': app.user.username}, 'HWIOAuthBundle') }}</h3>
+    <h2 style="margin-bottom: 0">
+        <i class="fa fa-lock"></i>&nbsp;
+        {% trans from "club" %}FORM.REGISTRATION.TITLE{% endtrans %}
+    </h2>
+    <p>{{ 'FORM.REGISTRATION.SUCCESS' | trans({'%username%': app.user.username}, 'club') }}</p>
 {% endblock hwi_oauth_content %}

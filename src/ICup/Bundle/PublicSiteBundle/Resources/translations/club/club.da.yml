@@ -421,6 +421,20 @@ FORM:
     GOT_A_PROFILE: Har du allerede en profil?
     LOGIN: Log ind
     CLOSE: Fortryd
+  CONNECTING:
+    TITLE: Forbind konto
+    PROMPT: Forbind din konto
+    TEXT: Er du sikker på at du vil forbinde din %service% konto '%name%' med din konto her?
+    SUCCESS: Kontoen '%name%' blev forbundet med succes!
+    CANCEL: Fortryd
+    SUBMIT: Forbind konto
+  REGISTRATION:
+    TITLE: Registrer
+    PROMPT: Registrer oplysninger fra kontoen '%name%'
+    TEXT: Registrer oplysninger fra kontoen '%name%'
+    SUCCESS: Kontoen '%username%' blev registreret og forbundet med succes!
+    CANCEL: Fortryd
+    SUBMIT: Registrer konto
   ERROR:
     BACK: Videre...
     NAMEEXIST: Klubnavn er allerede anvendt (tilknytning til eksisterende klub foretages af klubadministrator).

@@ -1,22 +1,26 @@
 {% extends 'HWIOAuthBundle::layout.html.twig' %}
 
 {% block hwi_oauth_content %}
-    <h3>{{ 'header.register' | trans({'%name%': userInformation.realName}, 'HWIOAuthBundle') }}</h3>
+    <h2 style="margin-bottom: 0">
+        <i class="fa fa-lock"></i>&nbsp;
+        {% trans from "club" %}FORM.REGISTRATION.TITLE{% endtrans %}
+    </h2>
+    <p>{% trans from "club" %}FORM.REGISTRATION.PROMPT{% endtrans %}</p>
     <div class="row">
-        <div class="span6">
+        <div class="col-sm-6">
+            <p>{{ 'FORM.REGISTRATION.TEXT' | trans({'%name%': userInformation.realName}, 'club') }}</p>
             <form action="{{ path('hwi_oauth_connect_registration', {'key': key}) }}" {{ form_enctype(form) }} method="POST" class="hwi_oauth_registration_register">
                 {{ form_widget(form) }}
                 <div>
-                    <button type="submit" class="btn btn-primary">{{ 'connect.registration.submit'|trans({}, 'HWIOAuthBundle') }}</button>
-                    <a href="{{ path('hwi_oauth_connect') }}" class="btn">{{ 'connect.registration.cancel' | trans({}, 'HWIOAuthBundle') }}</a>
+                    <button type="submit" class="btn btn-primary">{{ 'FORM.REGISTRATION.SUBMIT'|trans({}, 'club') }}</button>
+                    <a href="{{ path('hwi_oauth_connect') }}" class="btn">{{ 'FORM.REGISTRATION.CANCEL' | trans({}, 'club') }}</a>
                 </div>
             </form>
         </div>
-        <div class="span6">
+        <div class="col-sm-6">
             {% if userInformation.profilePicture is not empty %}
                 <img src="{{ userInformation.profilePicture }}" />
             {% endif %}
         </div>
     </div>
-
 {% endblock hwi_oauth_content %}

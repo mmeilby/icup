@@ -28,7 +28,6 @@ class ListEnrollmentController extends Controller
         /* @var $utilService Util */
         $utilService = $this->get('util');
         
-
         /* @var $user User */
         $user = $utilService->getCurrentUser();
         $utilService->validateClubUser($user);

@@ -59,12 +59,11 @@ class SocialGroup
     protected $hidden;
 
     /**
-     * @var Club $club
-     * Social group relation a specific club
-     * @ORM\ManyToOne(targetEntity="Club", inversedBy="social_groups")
-     * @ORM\JoinColumn(name="club", referencedColumnName="id")
+     * @var ArrayCollection $teams
+     * Social group relation a specific teams
+     * @ORM\ManyToMany(targetEntity="Team", mappedBy="social_groups")
      */
-    protected $club;
+    protected $teams;
 
     /**
      * @var ArrayCollection $social_relations
@@ -77,6 +76,7 @@ class SocialGroup
      * Club constructor.
      */
     public function __construct() {
+        $this->teams = new ArrayCollection();
         $this->social_relations = new ArrayCollection();
     }
 
@@ -171,19 +171,10 @@ class SocialGroup
     }
 
     /**
-     * @return Club
+     * @return ArrayCollection
      */
-    public function getClub() {
-        return $this->club;
-    }
-
-    /**
-     * @param Club $club
-     * @return SocialGroup
-     */
-    public function setClub($club) {
-        $this->club = $club;
-        return $this;
+    public function getTeams() {
+        return $this->teams;
     }
 
     /**

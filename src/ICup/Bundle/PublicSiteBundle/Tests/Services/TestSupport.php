@@ -105,10 +105,7 @@ class TestSupport
         $editor->setName("Test user");
         $editor->setPassword("");
         $editor->setEmail("test@test.com");
-        $editor->setRole(User::$EDITOR_ADMIN);
-        $editor->setStatus(User::$SYSTEM);
-        $editor->setSecret("");
-        $editor->setAttempts(0);
+        $editor->addRole(User::ROLE_EDITOR_ADMIN);
         $editor->setEnabled(true);
         $editor->setHost($host);
         $host->getUsers()->add($editor);

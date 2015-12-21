@@ -40,11 +40,14 @@ class AuthenticationListener implements EventSubscriberInterface
         /* @var $user User */
         $user = $this->container->get('logic')->getUserByName($token->getUsername());
         if ($user) {
-            $user->loginFailed();
-            $this->em->flush();
-            if (!$user->isAccountNonLocked()) {
+            $attempts = $user->getAttempts();
+            $attempts++;
+            $user->setAttempts($attempts);
+            if ($attempts > 5) {
+                $user->setLocked(true);
                 $this->logger->addWarning("User account ".$user->getUsername()." is locked.");
             }
+            $this->em->flush();
         }
     }
 
@@ -53,7 +56,7 @@ class AuthenticationListener implements EventSubscriberInterface
         /* @var $user User */
         $user = $this->container->get('logic')->getUserByName($token->getUsername());
         if ($user) {
-            $user->loginSucceeded();
+            $user->setAttempts(0);
             $this->em->flush();
         }
     }

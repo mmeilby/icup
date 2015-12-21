@@ -276,6 +276,12 @@ FORM:
       TITLE: My iCup users
       LINK: Maintain club users
       DESCRIPTION: Maintain users attached to the club and connect new users
+    FACEBOOK:
+      LINK: Connesso con facebook
+      DESCRIPTION: Connesso tuo facebook account
+    GOOGLE:
+      LINK: Connesso con Google
+      DESCRIPTION: Connesso tuo Google account
     CHGPASS:
       LINK: Change password
       DESCRIPTION: Choose new password for log in
@@ -394,6 +400,29 @@ FORM:
   LISTENROLLED:
     TITLE: Show enrolled teams for the tournament
     CAPTION: No. of enrolled teams per category
+  REGISTER:
+    TITLE: Create an account
+    CAPTION: Create an account
+    REGISTER_EMAIL: Create account with e-mail
+    REGISTER_FACEBOOK: Use facebook to register
+    REGISTER_GOOGLE: Use Google to register
+    GOT_A_PROFILE: Do you got a profile?
+    LOGIN: Login
+    CLOSE: Annulla
+  CONNECTING:
+    TITLE: Connessione in corso
+    PROMPT: Connetti il tuo account
+    TEXT: Sei sicuro di voler connettere il tuo account %service% '%name%' al tuo account attuale?
+    SUCCESS: Connesso con successo all'account '%name%'!
+    CANCEL: Annulla
+    SUBMIT: Connetti account
+  REGISTRATION:
+    TITLE: Registra account
+    PROMPT: Registrati con l'account '%name%'
+    TEXT: Registrati con l'account '%name%'
+    SUCCESS: Registrato con successo e connesso all'account '%username%'!
+    CANCEL: Annulla
+    SUBMIT: Registra account
   ERROR:
     BACK: Back...
     NAMEEXIST: The name of the club is in use by another club. Please connect or find a different name.

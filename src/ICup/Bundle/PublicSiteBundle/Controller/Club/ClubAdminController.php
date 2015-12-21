@@ -5,6 +5,7 @@ use ICup\Bundle\PublicSiteBundle\Entity\Doctrine\Tournament;
 use ICup\Bundle\PublicSiteBundle\Entity\Doctrine\Club;
 use ICup\Bundle\PublicSiteBundle\Entity\Doctrine\User;
 use ICup\Bundle\PublicSiteBundle\Entity\NewClub;
+use ICup\Bundle\PublicSiteBundle\Exceptions\ValidationException;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
@@ -31,7 +32,7 @@ class ClubAdminController extends Controller
         $user = $utilService->getCurrentUser();
         if (!$user->isClub()) {
             // The user is not a club user...
-            throw new ValidationException("NOTCLUBUSER", "userid=".$user->getId().", role=".$user->getRole());
+            throw new ValidationException("NOTCLUBUSER", "user=".$user->__toString());
         }
         // Validate user - must be a non related club user
         if ($user->isRelated()) {
@@ -48,8 +49,8 @@ class ClubAdminController extends Controller
         if ($this->checkForm($form, $clubFormData)) {
             $club = $this->get('logic')->getClubByName($clubFormData->getName(), $clubFormData->getCountry());
             if ($club != null) {
-                $user->setStatus(User::$PRO);
-                $user->setRole(User::$CLUB);
+//                $user->setStatus(User::$PRO);
+//                $user->setRole(User::$CLUB);
             }
             else {
                 $club = new Club();
@@ -58,8 +59,9 @@ class ClubAdminController extends Controller
                 $em = $this->getDoctrine()->getManager();
                 $em->persist($club);
                 $em->flush();
-                $user->setStatus(User::$ATT);
-                $user->setRole(User::$CLUB_ADMIN);
+//                $user->setStatus(User::$ATT);
+                $user->addRole(User::ROLE_CLUB_ADMIN);
+//                $user->setRole(User::$CLUB_ADMIN);
             }
             $user->setClub($club);
             $em = $this->getDoctrine()->getManager();

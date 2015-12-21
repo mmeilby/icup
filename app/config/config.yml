@@ -104,6 +104,7 @@ hwi_oauth:
             infos_url:          "https://graph.facebook.com/me?fields=id,name,email,picture.type(large)"
             paths:
                 email: email
+                name:  name
             options:
                 display: page
         google:
@@ -113,6 +114,7 @@ hwi_oauth:
             scope:              "https://www.googleapis.com/auth/userinfo.email https://www.googleapis.com/auth/userinfo.profile"
             paths:
                 email: email
+                name:  profile
         linkedin:
             type:               linkedin
             client_id:          %linkedin_client_id%

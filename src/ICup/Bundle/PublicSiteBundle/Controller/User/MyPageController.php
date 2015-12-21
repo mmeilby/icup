@@ -101,6 +101,7 @@ class MyPageController extends Controller
 
     private function getMyPageParameters(User $user) {
         $parms = array();
+/*
         if ($user->isClub() && $user->isRelated()) {
             $club = $user->getClub();
             $users = $club->getUsers();
@@ -119,7 +120,8 @@ class MyPageController extends Controller
                         $this->listTeams($club)
                      );
         }
-        elseif ($user->isEditor()) {
+*/
+        if ($user->isEditor()) {
             $host = $user->getHost();
             $users = $host->getEditors();
             $parms = array(

@@ -4,6 +4,7 @@ namespace ICup\Bundle\PublicSiteBundle\Services;
 
 use ICup\Bundle\PublicSiteBundle\Entity\Doctrine\Club;
 use ICup\Bundle\PublicSiteBundle\Entity\Doctrine\Host;
+use ICup\Bundle\PublicSiteBundle\Entity\Doctrine\SocialRelation;
 use ICup\Bundle\PublicSiteBundle\Entity\Doctrine\Tournament;
 use ICup\Bundle\PublicSiteBundle\Entity\Doctrine\User;
 use ICup\Bundle\PublicSiteBundle\Services\Doctrine\Entity;
@@ -163,7 +164,23 @@ class Util
     public function generateSecret() {
         return uniqid();
     }
-    
+
+    /**
+     * @return Club
+     */
+    public function getClub(User $user) {
+        /* @var $rel SocialRelation */
+        foreach ($user->getSocialRelations()->toArray() as $rel) {
+            if ($rel->getStatus() == SocialRelation::$MEM) {
+                $teams = $rel->getGroup()->getTeams();
+                if ($teams->count() > 0) {
+                    return $teams->first()->getClub();
+                }
+            }
+        }
+        return null;
+    }
+
     /**
      * Get the current logged in user
      * @return User
@@ -203,11 +220,11 @@ class Util
             // Since this is not the admin - validate for editor
             if (!$user->isEditor()) {
                 // Controller is called by club user user
-                throw new ValidationException("NOTEDITORADMIN", "userid=".$user->getId().", role=".$user->getRole());
+                throw new ValidationException("NOTEDITORADMIN", "user=".$user->__toString());
             }
             if (!$user->isEditorFor($host->getId())) {
                 // Controller is called by editor - however editor is not allowed to access this host
-                throw new ValidationException("NOTEDITORADMIN", "userid=".$user->getId().", hostid=".$host->getId());
+                throw new ValidationException("NOTEDITORADMIN", "user=".$user->__toString().", hostid=".$host->getId());
             }
         }
     }
@@ -225,11 +242,11 @@ class Util
             // Since this is not the admin - validate for club admin
             if (!$user->isClub()) {
                 // Controller is called by club user user
-                throw new ValidationException("NOTCLUBADMIN", "userid=".$user->getId().", role=".$user->getRole());
+                throw new ValidationException("NOTCLUBADMIN", "user=".$user->__toString());
             }
             if (!$user->isRelatedTo($club->getId())) {
                 // Even though this is a club admin - the admin does not administer this club
-                throw new ValidationException("NOTCLUBADMIN", "userid=".$user->getId().", clubid=".$club->getId());
+                throw new ValidationException("NOTCLUBADMIN", "user=".$user->__toString().", clubid=".$club->getId());
             }
         }
     }
@@ -244,7 +261,7 @@ class Util
         if ($this->entity->isLocalAdmin($user) || !$user->isEditor()) {
             // Controller is called by admin user - switch to my page
             throw new ValidationException("NEEDTOBEEDITOR", $this->entity->isLocalAdmin($user) ?
-                    "Local admin" : "userid=".$user->getId().", role=".$user->getRole());
+                    "Local admin" : "user=".$user->__toString());
         }
     }
 
@@ -258,7 +275,7 @@ class Util
         if ($this->entity->isLocalAdmin($user) || !$user->isClub() || !$user->isRelated()) {
             // Controller is called by editor or admin user - switch to my page
             throw new ValidationException("NEEDTOBERELATED", $this->entity->isLocalAdmin($user) ?
-                    "Local admin" : "userid=".$user->getId().", role=".$user->getRole());
+                    "Local admin" : "user=".$user->__toString());
         }
     }
 }

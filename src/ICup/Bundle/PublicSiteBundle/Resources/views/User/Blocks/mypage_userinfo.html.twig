@@ -33,11 +33,8 @@
                             <p>
                                 <span class="label label-default">{% trans %}FORM.MYPAGE.ROLE{% endtrans %}</span><br />
 {% if currentuser.role == 1 %}
-    {% if currentuser.status == 4 %}
                                 {% trans %}FORM.MYPAGE.CLUBUSER{% endtrans %}
-    {% else %}
-                                {% trans %}FORM.MYPAGE.PROSPECT{% endtrans %}
-    {% endif %}
+{#                                {% trans %}FORM.MYPAGE.PROSPECT{% endtrans %} #}
 {% endif %}
 {% if currentuser.role == 2 %}
                                 {% trans %}FORM.MYPAGE.CLUBADMIN{% endtrans %}

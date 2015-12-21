@@ -71,6 +71,30 @@
 .bg-black {
   background-color: #111; }
 
+.bg-google-green {
+  background-color: #3cba54; }
+
+.bg-google-yellow {
+  background-color: #f4c20d; }
+
+.bg-google-red {
+  background-color: #db3236; }
+
+.bg-google-blue {
+  background-color: #4885ed; }
+
+.bg-facebook-darkblue {
+  background-color: #3b5998; }
+
+.bg-facebook-blue {
+  background-color: #8b9dc3; }
+
+.bg-facebook-lightblue {
+  background-color: #dfe3ee; }
+
+.bg-facebook-lightgrey {
+  background-color: #f7f7f7; }
+
 /* Colors */
 .navy {
   color: #001F3F; }
@@ -126,7 +150,31 @@
 .black {
   color: #111; }
 
-/* Border colors 
+.google-green {
+  color: #3cba54; }
+
+.google-yellow {
+  color: #f4c20d; }
+
+.google-red {
+  color: #db3236; }
+
+.google-blue {
+  color: #4885ed; }
+
+.facebook-darkblue {
+  color: #3b5998; }
+
+.facebook-blue {
+  color: #8b9dc3; }
+
+.facebook-lightblue {
+  color: #dfe3ee; }
+
+.facebook-lightgrey {
+  color: #f7f7f7; }
+
+/* Border colors
 
    Use with another border utility that sets border-width and style 
    i.e .border { border-width: 1px; border-style: solid; }     
@@ -181,6 +229,30 @@
 
 .border--black {
   border-color: #111; }
+
+.border--google-green {
+  border-color: #3cba54; }
+
+.border--google-yellow {
+  border-color: #f4c20d; }
+
+.border--google-red {
+  border-color: #db3236; }
+
+.border--google-blue {
+  border-color: #4885ed; }
+
+.border--facebook-darkblue {
+  border-color: #3b5998; }
+
+.border--facebook-blue {
+  border-color: #8b9dc3; }
+
+.border--facebook-lightblue {
+  border-color: #dfe3ee; }
+
+.border--facebook-lightgrey {
+  border-color: #f7f7f7; }
 
 /* Fills for SVG */
 .fill-navy {

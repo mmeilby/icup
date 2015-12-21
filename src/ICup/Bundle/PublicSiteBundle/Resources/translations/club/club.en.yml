@@ -407,9 +407,9 @@ FORM:
     REGISTER_EMAIL: Create account with e-mail
     REGISTER_FACEBOOK: Use facebook to register
     REGISTER_GOOGLE: Use Google to register
-    GOT_A_PROFILE: Har du allerede en profil?
-    LOGIN: Log ind
-    CLOSE: Fortryd
+    GOT_A_PROFILE: Do you got a profile?
+    LOGIN: Login
+    CLOSE: Cancel
   CONNECTING:
     TITLE: Connecting
     PROMPT: Connect your social account

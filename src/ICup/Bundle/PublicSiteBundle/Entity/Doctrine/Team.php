@@ -81,12 +81,23 @@ class Team
     protected $enrollments;
 
     /**
+     * @var ArrayCollection $social_groups
+     * @ORM\ManyToMany(targetEntity="SocialGroup", inversedBy="teams")
+     * @ORM\JoinTable(name="teamrelations",
+     *      joinColumns={@ORM\JoinColumn(name="social_group", referencedColumnName="id")},
+     *      inverseJoinColumns={@ORM\JoinColumn(name="team", referencedColumnName="id")}
+     *      )
+     **/
+    protected $social_groups;
+
+    /**
      * Group constructor.
      */
     public function __construct() {
         $this->matchrelations = new ArrayCollection();
         $this->grouporder = new ArrayCollection();
         $this->enrollments = new ArrayCollection();
+        $this->social_groups = new ArrayCollection();
     }
 
     /**
@@ -263,6 +274,13 @@ class Team
      */
     public function getEnrollments() {
         return $this->enrollments;
+    }
+
+    /**
+     * @return ArrayCollection
+     */
+    public function getSocialGroups() {
+        return $this->social_groups;
     }
 
     /**

@@ -114,7 +114,20 @@
         <div class="col-md-12 visible-xs-block">
             <h4 style="margin-bottom: 0;"><i class="fa fa-flag"></i>&nbsp;{% trans %}FORM.FRONTPAGE.BLOCK3.TITLE{% endtrans %}</h4>
             <div class="small">{{ tournament.edition }} - {{ tournament.name }}</div>
+    {% if matchlist|length > 0 %}
             {{ tformatter.listmatchesxs(matchlist, _context) }}
+    {% else %}
+            <div class="FlexCard">
+                <div class="FlexCard-background">
+                    <div style="background-image: url({{ asset('bundles/icuppublicsite/images/IWC/notmnt.png') }})"></div>
+                </div>
+                <div class="FlexCard-wrap white">
+                    <div class="FlexCard-content" style="height: 200px">
+                        <h1 class="FlexCard-title">{% trans from 'tournament' %}TOURNAMENTNOTREADY{% endtrans %}</h1>
+                    </div>
+                </div>
+            </div>
+    {% endif %}
         </div>
 {# *******************************************
    TOP BANNER
@@ -126,7 +139,20 @@
             <hr />
         </div>
         <div class="col-md-8 hidden-xs">
+    {% if matchlist|length > 0 %}
             {{ tformatter.listmatches(matchlist, _context) }}
+    {% else %}
+            <div class="FlexCard">
+                <div class="FlexCard-background">
+                    <div style="background-image: url({{ asset('bundles/icuppublicsite/images/IWC/notmnt.png') }})"></div>
+                </div>
+                <div class="FlexCard-wrap white">
+                    <div class="FlexCard-content" style="height: 400px">
+                        <h1 class="FlexCard-title">{% trans from 'tournament' %}TOURNAMENTNOTREADY{% endtrans %}</h1>
+                    </div>
+                </div>
+            </div>
+    {% endif %}
         </div>
 {# *******************************************
    MORE OPTIONS

@@ -270,11 +270,11 @@ button.list-group-item-google.active:hover {
 
 .FlexCard-background {
     background: #000;
-    height: 106%;
-    left: -3%;
+    height: 100%;
+    left: 0;
     position: absolute;
-    top: -3%;
-    width: 106%;
+    top: 0;
+    width: 100%;
 }
 
 .FlexCard-background > div {

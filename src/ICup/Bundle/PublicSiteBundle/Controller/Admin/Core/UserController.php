@@ -26,8 +26,7 @@ class UserController extends Controller
 
         $user = new User();
         // User should be attached to the club when created this way
-        $user->setStatus(User::$ATT);
-        $user->setRole(User::$CLUB);
+//        $user->setStatus(User::$ATT);
         $form = $this->makeUserForm($user, 'add');
         $form->handleRequest($request);
         if ($form->get('cancel')->isClicked()) {
@@ -38,9 +37,8 @@ class UserController extends Controller
                 $form->addError(new FormError($this->get('translator')->trans('FORM.USER.NAMEEXIST', array(), 'admin')));
             }
             else {
-                $user->setAttempts(0);
                 $user->setEnabled(true);
-                $user->setClub($club);
+//                $user->setClub($club);
                 $this->get('util')->generatePassword($user);
                 $em = $this->getDoctrine()->getManager();
                 $em->persist($user);
@@ -66,8 +64,7 @@ class UserController extends Controller
         $this->get('util')->validateEditorAdminUser($thisuser, $host);
 
         $user = new User();
-        $user->setStatus(User::$SYSTEM);
-        $user->setRole(User::$EDITOR);
+        $user->addRole(User::ROLE_EDITOR);
         $form = $this->makeUserForm($user, 'add');
         $form->handleRequest($request);
         if ($form->get('cancel')->isClicked()) {
@@ -78,7 +75,6 @@ class UserController extends Controller
                 $form->addError(new FormError($this->get('translator')->trans('FORM.USER.NAMEEXIST', array(), 'admin')));
             }
             else {
-                $user->setAttempts(0);
                 $user->setEnabled(true);
                 $user->setHost($host);
                 $this->get('util')->generatePassword($user);
@@ -101,8 +97,7 @@ class UserController extends Controller
         $returnUrl = $this->get('util')->getReferer();
 
         $user = new User();
-        $user->setStatus(User::$SYSTEM);
-        $user->setRole(User::$ADMIN);
+        $user->addRole(User::ROLE_ADMIN);
         $form = $this->makeUserForm($user, 'add');
         $form->handleRequest($request);
         if ($form->get('cancel')->isClicked()) {
@@ -113,7 +108,6 @@ class UserController extends Controller
                 $form->addError(new FormError($this->get('translator')->trans('FORM.USER.NAMEEXIST', array(), 'admin')));
             }
             else {
-                $user->setAttempts(0);
                 $user->setEnabled(true);
                 $this->get('util')->generatePassword($user);
                 $em = $this->getDoctrine()->getManager();
@@ -136,7 +130,7 @@ class UserController extends Controller
 
         /* @var $user User */
         $user = $this->get('entity')->getUserById($userid);
-        $previousUserRole = $user->getRole();
+        $previousUserRole = $user->getRoles();
 
         /* @var $thisuser User */
         $thisuser = $this->get('util')->getCurrentUser();
@@ -160,18 +154,13 @@ class UserController extends Controller
                 $form->addError(new FormError($this->get('translator')->trans('FORM.USER.CANTCHANGENAME', array(), 'admin')));
             }
             else {
-                $this->validateUserRole($user->getRole(), $previousUserRole);
+                $this->validateUserRole($user->getRoles(), $previousUserRole);
                 $em = $this->getDoctrine()->getManager();
                 $em->flush();
                 return $this->redirect($returnUrl);
             }
         }
-        if ($user->isClub() && $user->isRelated()) {
-            $club = $user->getClub();
-        }
-        else {
-            $club = null;
-        }
+        $club = null;
         return array('form' => $form->createView(), 'action' => 'chg', 'host' => $user->getHost(), 'club' => $club, 'user' => $user);
     }
     
@@ -216,26 +205,21 @@ class UserController extends Controller
             $em->flush();
             return $this->redirect($returnUrl);
         }
-        if ($user->isClub() && $user->isRelated()) {
-            $club = $user->getClub();
-        }
-        else {
-            $club = null;
-        }
+        $club = null;
         return array('form' => $form->createView(), 'action' => 'del', 'host' => $user->getHost(), 'club' => $club, 'user' => $user);
     }
     
     private function makeUserForm(User $user, $action) {
         $roleMap = array(
-            array(User::$CLUB, User::$CLUB_ADMIN),
-            array(User::$EDITOR, User::$EDITOR_ADMIN),
+            array(User::$EDITOR => User::ROLE_EDITOR, User::$EDITOR_ADMIN => User::ROLE_EDITOR_ADMIN),
+            array(User::$CLUB => User::ROLE_DEFAULT, User::$CLUB_ADMIN => User::ROLE_CLUB_ADMIN),
         );
         $found = false;
         foreach ($roleMap as $roleCategory) {
             $roles = array();
-            foreach ($roleCategory as $role) {
-                $roles[$role] = 'FORM.USER.CHOICE.ROLE.'.$role;
-                if ($user->getRole() === $role) {
+            foreach ($roleCategory as $rolekey => $role) {
+                $roles[$rolekey] = 'FORM.USER.CHOICE.ROLE.'.$rolekey;
+                if ($user->hasRole($role)) {
                     $found = true;
                 }
             }
@@ -281,14 +265,16 @@ class UserController extends Controller
                 $form->addError(new FormError($this->get('translator')->trans('FORM.USER.NOUSERNAME', array(), 'admin')));
                 return false;
             }
-            if ($user->getRole() == null) {
+            if ($user->getRoles() == null) {
                 $form->addError(new FormError($this->get('translator')->trans('FORM.USER.NOROLE', array(), 'admin')));
                 return false;
             }
+/*
             if ($user->getStatus() == null) {
                 $form->addError(new FormError($this->get('translator')->trans('FORM.USER.NOSTATUS', array(), 'admin')));
                 return false;
             }
+*/
             return true;
         }
         return false;
@@ -363,12 +349,7 @@ class UserController extends Controller
             $em->flush();
             return $this->redirect($returnUrl);
         }
-        if ($user->isClub() && $user->isRelated()) {
-            $club = $user->getClub();
-        }
-        else {
-            $club = null;
-        }
+        $club = null;
         return array('form' => $form->createView(), 'host' => $user->getHost(), 'club' => $club, 'user' => $user);
     }
 }

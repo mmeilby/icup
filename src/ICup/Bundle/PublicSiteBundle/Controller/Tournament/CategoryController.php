@@ -79,11 +79,21 @@ class CategoryController extends Controller
         }
         // count number of playoff matches - if any - required to show the playoff tab
         $grpc = $category->getGroupsPlayoff();
+        if (count($pyramid) > 0) {
+            $finals = $this->fold($pyramid);
+        }
+        else {
+            $finals = array(
+                'teams' => null,
+                'levels' => 0,
+                'bronze' => null
+            );
+        }
         return array(
             'tournament' => $tournament,
             'category' => $category,
             'grouplist' => $groupList,              // list for small devices
-            'pyramid' => $this->fold($pyramid),     // list for larger devices
+            'pyramid' => $finals,                   // list for larger devices
             'classifications' => count($grpc));
     }
 

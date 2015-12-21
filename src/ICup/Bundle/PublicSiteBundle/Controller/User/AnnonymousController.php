@@ -41,8 +41,6 @@ class AnnonymousController extends Controller
         }
         if ($this->checkForm($form, $user)) {
             $user->setUsername($user->getEmail());
-            $user->setStatus(User::$AUTH);
-            $user->setRole(User::$CLUB);
             $em = $this->getDoctrine()->getManager();
             $em->persist($user);
             $em->flush();

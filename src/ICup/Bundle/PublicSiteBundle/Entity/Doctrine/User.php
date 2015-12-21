@@ -5,9 +5,6 @@ namespace ICup\Bundle\PublicSiteBundle\Entity\Doctrine;
 use FOS\UserBundle\Model\User as BaseUser;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\ORM\Mapping as ORM;
-use Symfony\Component\Security\Core\Role\Role;
-use Symfony\Component\Security\Core\User\AdvancedUserInterface;
-use DateTime;
 use JsonSerializable;
 
 /**
@@ -32,19 +29,6 @@ class User extends BaseUser implements JsonSerializable
     public static $EDITOR_ADMIN = 4;
     public static $ADMIN = 9;
 
-    /* Authenticated user - just created and not yet verified */
-    public static $AUTH = 1;
-    /* Verified user - verified by email response however not connected to a club */
-    public static $VER = 2;
-    /* Prospector - verified user requesting a reference to a club - cid must be valid */
-    public static $PRO = 3;
-    /* Attached user - verified user - accepted to reference a club - cid must be valid */
-    public static $ATT = 4;
-    /* Inform - ignored user - accepted to reference a club - cid must be valid */
-    public static $INF = 5;
-    /* System user */
-    public static $SYSTEM = 9;
-
     const ROLE_ADMIN = 'ROLE_ADMIN';
     const ROLE_EDITOR_ADMIN = 'ROLE_EDITOR_ADMIN';
     const ROLE_EDITOR = 'ROLE_EDITOR';
@@ -61,54 +45,18 @@ class User extends BaseUser implements JsonSerializable
 
     /**
      * @var Host $host
-     * Editor relation to a specific host (for system admins this is the host used recently)
+     * Editor relation to a specific host (for other users this is the host used recently)
      * @ORM\ManyToOne(targetEntity="Host", inversedBy="users")
-     * @ORM\JoinColumn(name="pid", referencedColumnName="id")
+     * @ORM\JoinColumn(name="host", referencedColumnName="id")
      */
     protected $host;
 
     /**
-     * @var Club $club_membership
-     * Club user relation a specific club
-     * @ORM\ManyToOne(targetEntity="Club", inversedBy="users")
-     * @ORM\JoinColumn(name="cid", referencedColumnName="id")
-     */
-    protected $club_membership;
-
-    /**
-     * @var ArrayCollection $social_relations
-     * User relation to social groups
-     * @ORM\OneToMany(targetEntity="SocialRelation", mappedBy="user", cascade={"persist", "remove"})
-     **/
-    protected $social_relations;
-
-    /**
      * @var string $name
      * Formal name used by the system
-     * @ORM\Column(name="name", type="string", length=50, nullable=false)
+     * @ORM\Column(name="name", type="string", length=50, nullable=true)
      */
     protected $name;
-
-    /**
-     * @var integer $status
-     * User status: 1: authenticating, 2: verified, 3: prospector, 4: attached, 5: inform, 9: system
-     * @ORM\Column(name="status", type="integer", nullable=false)
-     */
-    protected $status;
-
-    /**
-     * @var integer $role
-     * User role: 1: user, 2: club_admin, 3: editor, 4: tournament_admin, 9: admin
-     * @ORM\Column(name="role", type="integer", nullable=false)
-     */
-    protected $role;
-
-    /**
-     * @var string $secret
-     * Secret used for system routines like reset password
-     * @ORM\Column(name="secret", type="string", length=50, nullable=true)
-     */
-    protected $secret;
 
     /**
      * @var integer $attempts
@@ -119,14 +67,14 @@ class User extends BaseUser implements JsonSerializable
 
     /**
      * @var string
-     *
+     * Reference to facebook account connected for this user
      * @ORM\Column(name="facebook_id", type="string", nullable=true)
      */
     protected $facebookID;
 
     /**
      * @var string
-     *
+     * Reference to Google account connected for this user
      * @ORM\Column(name="google_id", type="string", nullable=true)
      */
     protected $googleID;
@@ -139,16 +87,21 @@ class User extends BaseUser implements JsonSerializable
     protected $enrollments;
 
     /**
+     * @var ArrayCollection $social_relations
+     * User relation to social groups
+     * @ORM\OneToMany(targetEntity="SocialRelation", mappedBy="user", cascade={"persist", "remove"})
+     **/
+    protected $social_relations;
+
+    /**
      * User constructor.
      */
     public function __construct() {
         parent::__construct();
+        $this->name = '';
+        $this->attempts = 0;
         $this->enrollments = new ArrayCollection();
         $this->social_relations = new ArrayCollection();
-        $this->attempts = 0;
-        $this->name = '';
-        $this->role = static::$CLUB;
-        $this->status = static::$AUTH;
     }
 
     /**
@@ -165,29 +118,6 @@ class User extends BaseUser implements JsonSerializable
     public function setHost($host) {
         $this->host = $host;
         return $this;
-    }
-
-    /**
-     * @return Club
-     */
-    public function getClub() {
-        return $this->club_membership;
-    }
-
-    /**
-     * @param Club $club
-     * @return User
-     */
-    public function setClub($club) {
-        $this->club_membership = $club;
-        return $this;
-    }
-
-    /**
-     * @return ArrayCollection
-     */
-    public function getSocialRelations() {
-        return $this->social_relations;
     }
 
     /**
@@ -214,47 +144,12 @@ class User extends BaseUser implements JsonSerializable
     }
 
     /**
-     * Set role
-     * User role: CLUB: user, CLUB_ADMIN: club_admin, EDITOR: editor, EDITOR_ADMIN: tournament_admin, ADMIN: admin
-     * @param integer $role
-     * @return User
-     */
-    public function setRole($role)
-    {
-        $role_map = array(
-            User::$ADMIN => static::ROLE_ADMIN,
-            User::$EDITOR_ADMIN => static::ROLE_EDITOR_ADMIN,
-            User::$EDITOR => static::ROLE_EDITOR,
-            User::$CLUB_ADMIN => static::ROLE_CLUB_ADMIN,
-            User::$CLUB => BaseUser::ROLE_DEFAULT,
-        );
-        if (isset($role_map[$role])) {
-            $roles = array_diff($this->getRoles(), array_values($role_map));
-            $roles[] = $role_map[$role];
-            $this->setRoles($roles);
-        }
-        $this->role = $role;
-    
-        return $this;
-    }
-
-    /**
-     * Get role
-     * User role: CLUB: user, CLUB_ADMIN: club_admin, EDITOR: editor, EDITOR_ADMIN: tournament_admin, ADMIN: admin
-     * @return integer 
-     */
-    public function getRole()
-    {
-        return $this->role;
-    }
-
-    /**
      * Test for club role
      * @return boolean - true if the user has the club role 
      */
     public function isClub()
     {
-        return $this->role === User::$CLUB || $this->role === User::$CLUB_ADMIN;
+        return $this->hasRole(BaseUser::ROLE_DEFAULT) || $this->hasRole(static::ROLE_CLUB_ADMIN);
     }
 
     /**
@@ -263,7 +158,7 @@ class User extends BaseUser implements JsonSerializable
      */
     public function isEditor()
     {
-        return $this->role === User::$EDITOR || $this->role === User::$EDITOR_ADMIN;
+        return $this->hasRole(static::ROLE_EDITOR) || $this->hasRole(static::ROLE_EDITOR_ADMIN);
     }
 
     /**
@@ -272,57 +167,31 @@ class User extends BaseUser implements JsonSerializable
      */
     public function isAdmin()
     {
-        return $this->role === User::$ADMIN;
-    }
-    
-    /**
-     * Set status
-     * User status: AUTH: authenticating, VER: verified, PRO: prospector, ATT: attached, INF: inform, SYSTEM: system
-     * @param integer $status
-     * @return User
-     */
-    public function setStatus($status)
-    {
-        $this->status = $status;
-    
-        return $this;
+        return $this->hasRole(static::ROLE_ADMIN);
     }
 
-    /**
-     * Get status
-     * User status: AUTH: authenticating, VER: verified, PRO: prospector, ATT: attached, INF: inform, SYSTEM: system
-     * @return integer 
-     */
-    public function getStatus()
-    {
-        return $this->status;
-    }
-
-    /**
-     * Test for club relation
-     * @return boolean - true if the user is attached or prospector to a club - cid refers to a valid club
-     */
-    public function isRelated()
-    {
-        return $this->status === User::$PRO || $this->status === User::$ATT || $this->status === User::$INF;
-    }
-    
-    /**
-     * Test for club relation to specific club
-     * @return boolean - true if the user is attached or prospector to the club - cid refers to the specific club
-     */
-    public function isRelatedTo($clubid)
-    {
-        return $this->isRelated() && $this->getClub() && $this->getClub()->getId() == $clubid;
-    }
-    
     /**
      * Test for host relation to specific host
-     * @return boolean - true if the user is editor for the host - pid refers to the specific host
+     * @param $hostid
+     * @return bool - true if the user is editor for the host - 'host' refers to the specific host
      */
     public function isEditorFor($hostid)
     {
         return $this->isEditor() && $this->getHost() && $this->getHost()->getId() == $hostid;
+    }
+
+    /**
+     * @return int
+     */
+    public function getAttempts() {
+        return $this->attempts;
+    }
+
+    /**
+     * @param int $attempts
+     */
+    public function setAttempts($attempts) {
+        $this->attempts = $attempts;
     }
 
     /**
@@ -354,40 +223,10 @@ class User extends BaseUser implements JsonSerializable
     }
     
     /**
-     * @return int
+     * @return ArrayCollection
      */
-    public function getAttempts() {
-        return $this->attempts;
-    }
-
-    /**
-     * @param int $attempts
-     */
-    public function setAttempts($attempts) {
-        $this->attempts = $attempts;
-    }
-
-    /**
-     * @return string
-     */
-    public function getSecret() {
-        return $this->secret;
-    }
-
-    /**
-     * @param string $secret
-     */
-    public function setSecret($secret) {
-        $this->secret = $secret;
-    }
-
-    public function loginFailed() {
-        $this->attempts++;
-    }
-
-    public function loginSucceeded() {
-        $this->attempts = 0;
-        $this->lastLogin = new DateTime();
+    public function getSocialRelations() {
+        return $this->social_relations;
     }
 
     /**
@@ -404,18 +243,59 @@ class User extends BaseUser implements JsonSerializable
      * @return mixed data which can be serialized by <b>json_encode</b>,
      * which is a value of any type other than a resource.
      */
-    function jsonSerialize() {
+    public function jsonSerialize() {
         return array(
             "id" => $this->getId(),
             "username" => $this->getUsername(),
             "name" => $this->getName(),
             "email" => $this->getEmail(),
-            "club" => $this->getClub() ? $this->getClub()->getName() : "",
             "host" => $this->getHost() ? $this->getHost()->getName() : "",
-            "role" => $this->getRole(),
-            "status" => $this->getStatus(),
-            "locked" => $this->isAccountNonLocked() ? 'N' : 'Y',
-            "enabled" => $this->isEnabled() ? 'Y' : 'N'
+            "roles" => implode(",", $this->getRoles()),
+            "locked" => $this->isLocked() ? 'Y' : 'N',
+            "enabled" => $this->isEnabled() ? 'Y' : 'N',
+            "expired" => $this->isExpired() ? 'Y' : 'N',
         );
+    }
+
+    /**
+     * Serializes the user.
+     *
+     * The serialized data have to contain the fields used during check for
+     * changes and the id.
+     *
+     * @return string
+     */
+    public function serialize()
+    {
+        return serialize(array(
+            parent::serialize(),
+            $this->name,
+            $this->attempts,
+            $this->facebookID,
+            $this->googleID,
+        ));
+    }
+
+    /**
+     * Unserializes the user.
+     *
+     * @param string $serialized
+     */
+    public function unserialize($serialized)
+    {
+        $data = unserialize($serialized);
+
+        list(
+            $parentdata,
+            $this->name,
+            $this->attempts,
+            $this->facebookID,
+            $this->googleID,
+            ) = $data;
+        parent::unserialize($parentdata);
+    }
+
+    public function __toString() {
+        return $this->getUsername()." - email: ".$this->getEmail()." roles: ".implode(",", $this->getRoles());
     }
 }

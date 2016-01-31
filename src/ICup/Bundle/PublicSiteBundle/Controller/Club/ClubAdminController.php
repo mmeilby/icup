@@ -30,7 +30,7 @@ class ClubAdminController extends Controller
         $utilService = $this->get('util');
         /* @var $user User */
         $user = $utilService->getCurrentUser();
-        if (!$user->isClub()) {
+        if (!$user->isClubUser()) {
             // The user is not a club user...
             throw new ValidationException("NOTCLUBUSER", "user=".$user->__toString());
         }

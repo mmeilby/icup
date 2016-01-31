@@ -99,10 +99,11 @@ class ClubController extends Controller
         }
         if ($form->isValid() && $teams == null) {
             $users = $club->getClubMembers();
+            /* @var $usr User */
             foreach ($users as $usr) {
-                $usr->setRole(User::$CLUB);
-                $usr->setStatus(User::$VER);
-                $usr->setClub(null);
+                $usr->removeRole(User::ROLE_CLUB_ADMIN);
+//                $usr->setStatus(User::$VER);
+//                $usr->setClub(null);
             }
             $em = $this->getDoctrine()->getManager();
             $em->remove($club);

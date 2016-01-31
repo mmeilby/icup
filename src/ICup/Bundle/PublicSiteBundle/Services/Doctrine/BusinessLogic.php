@@ -856,12 +856,15 @@ class BusinessLogic
     }
     
     public function listAdminUsers() {
-        $qb = $this->em->createQuery(
-                "select u ".
-                "from ".$this->entity->getRepositoryPath('User')." u ".
-                "where u.role in (".User::$ADMIN.") ".
-                "order by u.name");
-        return $qb->getResult();
+        $admins = array();
+        $users = $this->entity->getUserRepo()->findAll();
+        /* @var $user User */
+        foreach ($users as $user) {
+            if ($user->hasRole(User::ROLE_ADMIN) || $user->hasRole(User::ROLE_SUPER_ADMIN)) {
+                $admins[] = $user;
+            }
+        }
+        return $admins;
     }
     
     public function isUserKnown($username) {

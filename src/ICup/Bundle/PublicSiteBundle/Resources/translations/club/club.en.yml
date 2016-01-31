@@ -280,9 +280,11 @@ FORM:
     FACEBOOK:
       LINK: Connect facebook
       DESCRIPTION: Connect with your facebook account
+      CONNECTED: Connected with Facebook
     GOOGLE:
       LINK: Connect Google
       DESCRIPTION: Connect with your Google account
+      CONNECTED: Connected with Google
     CHGPASS:
       LINK: Change password
       DESCRIPTION: Choose new password for log in

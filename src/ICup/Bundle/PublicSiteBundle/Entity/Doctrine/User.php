@@ -23,12 +23,6 @@ use JsonSerializable;
  */
 class User extends BaseUser implements JsonSerializable
 {
-    public static $CLUB = 1;
-    public static $CLUB_ADMIN = 2;
-    public static $EDITOR = 3;
-    public static $EDITOR_ADMIN = 4;
-    public static $ADMIN = 9;
-
     const ROLE_ADMIN = 'ROLE_ADMIN';
     const ROLE_EDITOR_ADMIN = 'ROLE_EDITOR_ADMIN';
     const ROLE_EDITOR = 'ROLE_EDITOR';
@@ -121,19 +115,6 @@ class User extends BaseUser implements JsonSerializable
     }
 
     /**
-     * Set name
-     *
-     * @param string $name
-     * @return User
-     */
-    public function setName($name)
-    {
-        $this->name = $name;
-    
-        return $this;
-    }
-
-    /**
      * Get name
      *
      * @return string 
@@ -144,40 +125,16 @@ class User extends BaseUser implements JsonSerializable
     }
 
     /**
-     * Test for club role
-     * @return boolean - true if the user has the club role 
+     * Set name
+     *
+     * @param string $name
+     * @return User
      */
-    public function isClub()
+    public function setName($name)
     {
-        return $this->hasRole(BaseUser::ROLE_DEFAULT) || $this->hasRole(static::ROLE_CLUB_ADMIN);
-    }
+        $this->name = $name;
 
-    /**
-     * Test for editor role
-     * @return boolean - true if the user has the editor role 
-     */
-    public function isEditor()
-    {
-        return $this->hasRole(static::ROLE_EDITOR) || $this->hasRole(static::ROLE_EDITOR_ADMIN);
-    }
-
-    /**
-     * Test for admin role
-     * @return boolean - true if the user has the admin role 
-     */
-    public function isAdmin()
-    {
-        return $this->hasRole(static::ROLE_ADMIN);
-    }
-
-    /**
-     * Test for host relation to specific host
-     * @param $hostid
-     * @return bool - true if the user is editor for the host - 'host' refers to the specific host
-     */
-    public function isEditorFor($hostid)
-    {
-        return $this->isEditor() && $this->getHost() && $this->getHost()->getId() == $hostid;
+        return $this;
     }
 
     /**
@@ -234,6 +191,42 @@ class User extends BaseUser implements JsonSerializable
      */
     public function getEnrollments() {
         return $this->enrollments;
+    }
+
+    /**
+     * Test for club role
+     * @return boolean - true if the user has the club role
+     */
+    public function isClubUser()
+    {
+        return $this->hasRole(static::ROLE_CLUB_ADMIN);
+    }
+
+    /**
+     * Test for editor role
+     * @return boolean - true if the user has the editor role
+     */
+    public function isEditor()
+    {
+        return $this->hasRole(static::ROLE_EDITOR) || $this->hasRole(static::ROLE_EDITOR_ADMIN);
+    }
+
+    /**
+     * Test for editor admin role
+     * @return boolean - true if the user has the editor admin role
+     */
+    public function isEditorAdmin()
+    {
+        return $this->hasRole(static::ROLE_EDITOR_ADMIN);
+    }
+
+    /**
+     * Test for admin role
+     * @return boolean - true if the user has the admin role
+     */
+    public function isAdmin()
+    {
+        return $this->hasRole(static::ROLE_ADMIN);
     }
 
     /**

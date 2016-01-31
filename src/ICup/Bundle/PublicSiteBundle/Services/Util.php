@@ -222,7 +222,7 @@ class Util
                 // Controller is called by club user user
                 throw new ValidationException("NOTEDITORADMIN", "user=".$user->__toString());
             }
-            if (!$user->isEditorFor($host->getId())) {
+            if ($user->getHost() == null || $user->getHost()->getId() != $host->getId()) {
                 // Controller is called by editor - however editor is not allowed to access this host
                 throw new ValidationException("NOTEDITORADMIN", "user=".$user->__toString().", hostid=".$host->getId());
             }
@@ -240,7 +240,7 @@ class Util
         // If user is admin anything is allowed...
         if (!$this->isAdminUser($user)) {
             // Since this is not the admin - validate for club admin
-            if (!$user->isClub()) {
+            if (!$user->isClubUser()) {
                 // Controller is called by club user user
                 throw new ValidationException("NOTCLUBADMIN", "user=".$user->__toString());
             }
@@ -272,7 +272,7 @@ class Util
      */
     public function validateClubUser(User $user) {
         // Validate the user - must be a club user
-        if ($this->entity->isLocalAdmin($user) || !$user->isClub() || !$user->isRelated()) {
+        if ($this->entity->isLocalAdmin($user) || !$user->isClubUser() || !$user->isRelated()) {
             // Controller is called by editor or admin user - switch to my page
             throw new ValidationException("NEEDTOBERELATED", $this->entity->isLocalAdmin($user) ?
                     "Local admin" : "user=".$user->__toString());

@@ -98,6 +98,7 @@ DIV.form-control {
 .list-group-item-facebook {
     color: white;
     background-color: #3b5998;
+    border-color: #337ab7;
 }
 
 a.list-group-item-facebook, button.list-group-item-facebook {
@@ -126,24 +127,25 @@ button.list-group-item-facebook.active:hover {
 
 .btn-google {
     font-weight: 800;
-    border-color: lightgray;
-    background-color: white;
-    color: #db3236;
+    border-color: #DE4D3A;
+    background-color: #DE4D3A;
+    color: white;
     width: 100%;
 }
 
 :hover.btn-google {
-    color: #db3236;
-    background-color: #f5f5f5;
+    color: white;
+    background-color: #EE5D4A;
 }
 
 .list-group-item-google {
-    color: #db3236;
-    background-color: #fff;
+    color: white;
+    background-color: #DE4D3A;
+    border-color: #DE4D3A;
 }
 
 a.list-group-item-google, button.list-group-item-google {
-    color: #db3236;
+    color: white;
 }
 
 a.list-group-item-google .list-group-item-heading, button.list-group-item-google .list-group-item-heading {
@@ -151,8 +153,8 @@ a.list-group-item-google .list-group-item-heading, button.list-group-item-google
 }
 
 a.list-group-item-google:focus, a.list-group-item-google:hover, button.list-group-item-google:focus, button.list-group-item-google:hover {
-    color: #db3236;
-    background-color: #f5f5f5;
+    color: white;
+    background-color: #EE5D4A;
 }
 
 a.list-group-item-google.active,
@@ -161,9 +163,9 @@ a.list-group-item-google.active:hover,
 button.list-group-item-google.active,
 button.list-group-item-google.active:focus,
 button.list-group-item-google.active:hover {
-    color: #db3236;
-    background-color: #3c763d;
-    border-color: #337ab7;
+    color: white;
+    background-color: #DE4D3A;
+    border-color: #DE4D3A;
 }
 
 .btn-mostwantedresponse {

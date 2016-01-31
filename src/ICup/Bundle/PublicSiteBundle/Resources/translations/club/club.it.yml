@@ -279,9 +279,11 @@ FORM:
     FACEBOOK:
       LINK: Connesso con facebook
       DESCRIPTION: Connesso tuo facebook account
+      CONNECTED: Connected with Facebook
     GOOGLE:
       LINK: Connesso con Google
       DESCRIPTION: Connesso tuo Google account
+      CONNECTED: Connected with Google
     CHGPASS:
       LINK: Change password
       DESCRIPTION: Choose new password for log in

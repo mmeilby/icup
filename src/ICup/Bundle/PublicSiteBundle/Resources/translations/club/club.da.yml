@@ -287,9 +287,11 @@ FORM:
     FACEBOOK:
       LINK: Forbind facebook
       DESCRIPTION: Tilknyt din facebook konto så du let kan logge ind
+      CONNECTED: Forbundet til Facebook
     GOOGLE:
       LINK: Forbind Google
       DESCRIPTION: Tilknyt din Google konto så du let kan logge ind
+      CONNECTED: Forbundet til Google
     CHGPASS:
       LINK: Skift kodeord
       DESCRIPTION: Angiv nyt kodeord som du bruger ved log ind

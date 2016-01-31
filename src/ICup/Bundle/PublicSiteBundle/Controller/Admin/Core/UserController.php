@@ -4,15 +4,23 @@ namespace ICup\Bundle\PublicSiteBundle\Controller\Admin\Core;
 use ICup\Bundle\PublicSiteBundle\Entity\Doctrine\Host;
 use ICup\Bundle\PublicSiteBundle\Entity\Doctrine\User;
 use ICup\Bundle\PublicSiteBundle\Entity\Password;
+use ICup\Bundle\PublicSiteBundle\Entity\UserForm;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
+use Symfony\Component\Form\Form;
 use Symfony\Component\Form\FormError;
 use ICup\Bundle\PublicSiteBundle\Exceptions\ValidationException;
 use Symfony\Component\HttpFoundation\Request;
 
 class UserController extends Controller
 {
+    private static $CLUB = 1;
+    private static $CLUB_ADMIN = 2;
+    private static $EDITOR = 3;
+    private static $EDITOR_ADMIN = 4;
+    private static $ADMIN = 9;
+
     /**
      * Add new club attached user
      * @Route("/admin/add/club/{clubid}", name="_edit_user_add")
@@ -32,7 +40,7 @@ class UserController extends Controller
         if ($form->get('cancel')->isClicked()) {
             return $this->redirect($returnUrl);
         }
-        if ($form->isValid()) {
+        if ($this->checkForm($form, $user)) {
             if ($this->get('logic')->isUserKnown($user->getUsername())) {
                 $form->addError(new FormError($this->get('translator')->trans('FORM.USER.NAMEEXIST', array(), 'admin')));
             }
@@ -70,7 +78,7 @@ class UserController extends Controller
         if ($form->get('cancel')->isClicked()) {
             return $this->redirect($returnUrl);
         }
-        if ($form->isValid()) {
+        if ($this->checkForm($form, $user)) {
             if ($this->get('logic')->isUserKnown($user->getUsername())) {
                 $form->addError(new FormError($this->get('translator')->trans('FORM.USER.NAMEEXIST', array(), 'admin')));
             }
@@ -211,15 +219,17 @@ class UserController extends Controller
     
     private function makeUserForm(User $user, $action) {
         $roleMap = array(
-            array(User::$EDITOR => User::ROLE_EDITOR, User::$EDITOR_ADMIN => User::ROLE_EDITOR_ADMIN),
-            array(User::$CLUB => User::ROLE_DEFAULT, User::$CLUB_ADMIN => User::ROLE_CLUB_ADMIN),
+            array(static::$EDITOR => User::ROLE_EDITOR, static::$EDITOR_ADMIN => User::ROLE_EDITOR_ADMIN),
+            array(static::$CLUB => User::ROLE_DEFAULT, static::$CLUB_ADMIN => User::ROLE_CLUB_ADMIN),
         );
         $found = false;
+        $userform = new UserForm($user);
         foreach ($roleMap as $roleCategory) {
             $roles = array();
             foreach ($roleCategory as $rolekey => $role) {
                 $roles[$rolekey] = 'FORM.USER.CHOICE.ROLE.'.$rolekey;
                 if ($user->hasRole($role)) {
+                    $userform->setRole($rolekey);
                     $found = true;
                 }
             }
@@ -227,23 +237,18 @@ class UserController extends Controller
                 break;
             }
         }
-        $status = array();
-        foreach (array(User::$AUTH, User::$VER, User::$PRO, User::$INF, User::$ATT) as $stat) {
-            $status[$stat] = 'FORM.USER.CHOICE.STATUS.'.$stat;
-        }
-        $formDef = $this->createFormBuilder($user);
+        $formDef = $this->createFormBuilder($userform);
         $formDef->add('name', 'text', array('label' => 'FORM.USER.NAME', 'required' => false, 'disabled' => $action == 'del', 'translation_domain' => 'admin'));
         $formDef->add('email', 'text', array('label' => 'FORM.USER.EMAIL', 'required' => false, 'disabled' => $action == 'del', 'translation_domain' => 'admin'));
         $formDef->add('username', 'text', array('label' => 'FORM.USER.USERNAME', 'required' => false, 'disabled' => $action == 'del', 'translation_domain' => 'admin'));
         if (!$user->isAdmin()) {
             /* @var $thisuser User */
             $thisuser = $this->get('util')->getCurrentUser();
+
             $formDef->add('role', 'choice', array('label' => 'FORM.USER.ROLE', 'required' => false, 'choices' => $roles, 'empty_value' => 'FORM.USER.DEFAULT',
                                                   'disabled' => $action == 'del' || ($action == 'chg' && $thisuser->getId() == $user->getId()),
                                                   'translation_domain' => 'admin'));
-        }
-        if ($user->isClub()) {
-            $formDef->add('status', 'choice', array('label' => 'FORM.USER.STATUS', 'required' => false, 'choices' => $status, 'empty_value' => 'FORM.USER.DEFAULT', 'disabled' => $action == 'del', 'translation_domain' => 'admin'));
+
         }
         $formDef->add('cancel', 'submit', array('label' => 'FORM.USER.CANCEL.'.strtoupper($action),
                                                 'translation_domain' => 'admin',
@@ -255,38 +260,37 @@ class UserController extends Controller
         return $formDef->getForm();
     }
     
-    private function checkForm($form, User $user) {
+    private function checkForm(Form $form, User $user) {
         if ($form->isValid()) {
-            if ($user->getName() == null || trim($user->getName()) == '') {
+            /* @var $userform UserForm */
+            $userform = $form->getData();
+            if ($userform->getName() == null || trim($userform->getName()) == '') {
                 $form->addError(new FormError($this->get('translator')->trans('FORM.USER.NONAME', array(), 'admin')));
-                return false;
             }
-            if ($user->getUsername() == null || trim($user->getUsername()) == '') {
+            if ($userform->getUsername() == null || trim($userform->getUsername()) == '') {
                 $form->addError(new FormError($this->get('translator')->trans('FORM.USER.NOUSERNAME', array(), 'admin')));
-                return false;
             }
-            if ($user->getRoles() == null) {
+            if ($userform->getRole() == null) {
                 $form->addError(new FormError($this->get('translator')->trans('FORM.USER.NOROLE', array(), 'admin')));
-                return false;
             }
-/*
-            if ($user->getStatus() == null) {
-                $form->addError(new FormError($this->get('translator')->trans('FORM.USER.NOSTATUS', array(), 'admin')));
-                return false;
+            if ($form->isValid()) {
+                $roleMap = array(static::$EDITOR => User::ROLE_EDITOR, static::$EDITOR_ADMIN => User::ROLE_EDITOR_ADMIN, static::$CLUB => User::ROLE_DEFAULT, static::$CLUB_ADMIN => User::ROLE_CLUB_ADMIN);
+                $user->setName($userform->getName());
+                $user->setEmail($userform->getEmail());
+                $user->setUsername($userform->getUsername());
+                $user->setRoles(array($roleMap[$userform->getRole()]));
             }
-*/
-            return true;
         }
-        return false;
+        return $form->isValid();
     }
     
     private function validateUserRole($userRole, $previousUserRole) {
         $roleMap = array(
-            User::$CLUB => 1,
-            User::$CLUB_ADMIN => 1,
-            User::$EDITOR => 2,
-            User::$EDITOR_ADMIN => 2,
-            User::$ADMIN => 3
+            static::$CLUB => 1,
+            static::$CLUB_ADMIN => 1,
+            static::$EDITOR => 2,
+            static::$EDITOR_ADMIN => 2,
+            static::$ADMIN => 3
         );
         if ($roleMap[$userRole] != $roleMap[$previousUserRole]) {
             /* @var $thisuser User */

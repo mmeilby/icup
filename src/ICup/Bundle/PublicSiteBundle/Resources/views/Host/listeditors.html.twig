@@ -46,10 +46,10 @@
                     </td>
                     <td>
                         <span class="label label-primary">
-    {% if user.role == 3 %}
-                        {{ 'FORM.MYPAGE.EDITOR'|trans({},'club') }}
+    {% if user.EditorAdmin %}
+                            {{ 'FORM.MYPAGE.EDITOR_ADMIN'|trans({},'club') }}
     {% else %}
-                        {{ 'FORM.MYPAGE.EDITOR_ADMIN'|trans({},'club') }}
+                            {{ 'FORM.MYPAGE.EDITOR'|trans({},'club') }}
     {% endif %}
                         </span>
                     </td>

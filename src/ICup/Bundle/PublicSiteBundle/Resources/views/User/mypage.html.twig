@@ -43,36 +43,24 @@
             <div class="col-md-6">
                 <div class="list-group">
                     <a class="list-group-item" href="{{ path('_user_chg_pass') }}">
-                        <h4 class="list-group-item-heading">{% trans %}FORM.MYPAGE.CHGPASS.LINK{% endtrans %}</h4>
+                        <h3 class="list-group-item-heading">{% trans %}FORM.MYPAGE.CHGPASS.LINK{% endtrans %}</h3>
                         <p class="list-group-item-text">{% trans %}FORM.MYPAGE.CHGPASS.DESCRIPTION{% endtrans %}</p>
-                    </a>
-                    <a class="list-group-item list-group-item-facebook" href="{{ hwi_oauth_login_url('facebook') }}">
-                        <h4 class="list-group-item-heading">
-                            <span><i class="fa fa-facebook-f"></i></span>
-                            <span>&nbsp;</span>
-                            <span>{% trans %}FORM.MYPAGE.FACEBOOK.LINK{% endtrans %}</span>
-                        </h4>
-                        <p class="list-group-item-text">{% trans %}FORM.MYPAGE.FACEBOOK.DESCRIPTION{% endtrans %}</p>
-                    </a>
-                    <a class="list-group-item list-group-item-google" href="{{ hwi_oauth_login_url('google') }}">
-                        <h4 class="list-group-item-heading">
-                            <span><i class="fa fa-google-plus"></i></span>
-                            <span>&nbsp;</span>
-                            <span>{% trans %}FORM.MYPAGE.GOOGLE.LINK{% endtrans %}</span>
-                        </h4>
-                        <p class="list-group-item-text">{% trans %}FORM.MYPAGE.GOOGLE.DESCRIPTION{% endtrans %}</p>
                     </a>
 {% if is_granted('ROLE_EDITOR_ADMIN') %}
                     <a class="list-group-item" href="{{ path('_edit_dashboard') }}">
-                        <h4 class="list-group-item-heading">{% trans %}FORM.MYPAGE.DASHBOARD.LINK{% endtrans %}</h4>
+                        <h3 class="list-group-item-heading">{% trans %}FORM.MYPAGE.DASHBOARD.LINK{% endtrans %}</h3>
                         <p class="list-group-item-text">{% trans %}FORM.MYPAGE.DASHBOARD.DESCRIPTION{% endtrans %}</p>
+                    </a>
+                    <a class="list-group-item" href="{{ path('_edit_editors_list') }}">
+                        <h3 class="list-group-item-heading">{% trans from "admin" %}FORM.DASHBOARD.EDITORS.CAPTION{% endtrans %}</h3>
+                        <p class="list-group-item-text">{% trans from "admin" %}FORM.DASHBOARD.EDITORS.DESCRIPTION{% endtrans %}</p>
                     </a>
 {% endif %}
 {% if not is_granted('ROLE_EDITOR') %}
 {#        {% if currentuser.status == 4 %} #}
             {% if is_granted('ROLE_CLUB_ADMIN') %}
                     <a class="list-group-item" href="{{ path('_user_my_page_users') }}">
-                        <h4 class="list-group-item-heading">{% trans %}FORM.MYPAGE.USERS.LINK{% endtrans %}</h4>
+                        <h3 class="list-group-item-heading">{% trans %}FORM.MYPAGE.USERS.LINK{% endtrans %}</h3>
                         <p class="list-group-item-text">{% trans %}FORM.MYPAGE.USERS.DESCRIPTION{% endtrans %}</p>
                 {% if prospectors is defined and prospectors|length > 0 %}
                         <span class="label label-success">
@@ -115,7 +103,24 @@
 #}
             </div>
         </div>
-{% endif %}        
+{% endif %}
+{% if tournaments is defined and tournaments %}
+        <div class="col-sm-12">
+            <h2>{% trans from "admin" %}FORM.DASHBOARD.TOURNAMENTS.CAPTION{% endtrans %}</h2>
+            <div class="list-group">
+                {% for tournament in tournaments %}
+                    <a class="list-group-item" href="{{ path('_edit_tournamentboard', { 'tournamentid': tournament.tournament.id }) }}">
+                        <h3 class="list-group-item-heading">{{ tournament.tournament.name }}</h3>
+                        <p class="list-group-item-text">
+                            {{ ['FORM.DASHBOARD.TOURNAMENTS.STATUS.', tournament.status]|join|trans([],'admin') }}
+                        </p>
+                        <h4 class="list-group-item-text">{% trans from "admin" %}FORM.DASHBOARD.TOURNAMENTS.LEGEND.EDITION{% endtrans %}: {{ tournament.tournament.edition }}</h4>
+                        <p class="list-group-item-text">{{ tournament.tournament.description }}</p>
+                    </a>
+                {% endfor %}
+            </div>
+        </div>
+{% endif %}
 {% if teams is defined and teams|length > 0 %}
         <div class="row">
             <div class="col-sm-12">

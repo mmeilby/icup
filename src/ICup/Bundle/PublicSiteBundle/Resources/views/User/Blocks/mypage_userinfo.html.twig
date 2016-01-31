@@ -1,56 +1,82 @@
 {% trans_default_domain "club" %}
 
-        <div class="panel panel-default">
-            <div class="panel-heading">
-                <span class="lead"><i class="fa fa-user"></i>&nbsp;{{ currentuser.name }}</span>
-            </div>
-            <table class="table table-striped">
-                <tbody>
-                    <tr>
-                        <td>
-                            <p>
-                                <span class="label label-default">{% trans %}FORM.MYPAGE.USERNAME{% endtrans %}</span><br />
-                                {{ currentuser.username|lower }}
-                            </p>
+<div class="panel panel-default">
+    <div class="panel-heading">
+        <span class="lead"><i class="fa fa-user"></i>&nbsp;{{ currentuser.name }}</span>
+    </div>
+    <table class="table table-striped">
+        <tbody>
+            <tr>
+                <td>
+                    <p>
+                        <span class="label label-default">{% trans %}FORM.MYPAGE.USERNAME{% endtrans %}</span><br />
+                        {{ currentuser.username|lower }}
+                    </p>
 {% if currentuser.email %}
-                            <p>
-                                <span class="label label-default">{% trans %}FORM.MYPAGE.EMAIL{% endtrans %}</span><br />
-                                {{ currentuser.email|lower }}
-                            </p>
+                    <p>
+                        <span class="label label-default">{% trans %}FORM.MYPAGE.EMAIL{% endtrans %}</span><br />
+                        {{ currentuser.email|lower }}
+                    </p>
 {% endif %}
 {% if club is defined and club %}
-                            <p>
-                                <span class="label label-default">{% trans %}FORM.MYPAGE.CLUB{% endtrans %}</span><br />
-                                {{ formatter.displayclub(club, _context) }}
-                            </p>
+                    <p>
+                        <span class="label label-default">{% trans %}FORM.MYPAGE.CLUB{% endtrans %}</span><br />
+                        {{ formatter.displayclub(club, _context) }}
+                    </p>
 {% endif %}
 {% if host is defined and host %}
-                            <p>
-                                <span class="label label-default">{% trans %}FORM.MYPAGE.HOST{% endtrans %}</span><br />
-                                {{ host.name }}
-                            </p>
+                    <p>
+                        <span class="label label-default">{% trans %}FORM.MYPAGE.HOST{% endtrans %}</span><br />
+                        {{ host.name }}
+                    </p>
 {% endif %}
-                            <p>
-                                <span class="label label-default">{% trans %}FORM.MYPAGE.ROLE{% endtrans %}</span><br />
-{% if currentuser.role == 1 %}
-                                {% trans %}FORM.MYPAGE.CLUBUSER{% endtrans %}
+                    <p>
+                        <span class="label label-default">{% trans %}FORM.MYPAGE.ROLE{% endtrans %}</span><br />
+{% if is_granted('ROLE_ADMIN') %}
+                        {% trans %}FORM.MYPAGE.ADMIN{% endtrans %}
+{% elseif is_granted('ROLE_EDITOR_ADMIN') %}
+                        {% trans %}FORM.MYPAGE.EDITOR_ADMIN{% endtrans %}
+{% elseif is_granted('ROLE_EDITOR') %}
+                        {% trans %}FORM.MYPAGE.EDITOR{% endtrans %}
+{% elseif is_granted('ROLE_CLUB_ADMIN') %}
+                        {% trans %}FORM.MYPAGE.CLUBADMIN{% endtrans %}
+{% elseif is_granted('ROLE_USER') %}
+                        {% trans %}FORM.MYPAGE.CLUBUSER{% endtrans %}
 {#                                {% trans %}FORM.MYPAGE.PROSPECT{% endtrans %} #}
 {% endif %}
-{% if currentuser.role == 2 %}
-                                {% trans %}FORM.MYPAGE.CLUBADMIN{% endtrans %}
+                    </p>
+{% if currentuser.facebookid > 0 %}
+                    <p>
+                        <span class="label label-default bg-facebook-darkblue white">{% trans %}FORM.MYPAGE.FACEBOOK.CONNECTED{% endtrans %}</span>
+                    </p>
 {% endif %}
-{% if currentuser.role == 3 %}
-                                {% trans %}FORM.MYPAGE.EDITOR{% endtrans %}
+{% if currentuser.googleid > 0 %}
+                    <p>
+                        <span class="label label-default bg-google-red white">{% trans %}FORM.MYPAGE.GOOGLE.CONNECTED{% endtrans %}</span>
+                    </p>
 {% endif %}
-{% if currentuser.role == 4 %}
-                                {% trans %}FORM.MYPAGE.EDITOR_ADMIN{% endtrans %}
+                </td>
+            </tr>
+        </tbody>
+    </table>
+{% if currentuser.googleid == 0 and currentuser.facebookid == 0 %}
+    <div class="list-group">
+        <a class="list-group-item list-group-item-facebook" href="{{ hwi_oauth_login_url('facebook') }}">
+            <h4 class="list-group-item-heading">
+                <span><i class="fa fa-facebook-f"></i></span>
+                <span>&nbsp;</span>
+                <span>{% trans %}FORM.MYPAGE.FACEBOOK.LINK{% endtrans %}</span>
+            </h4>
+            <p class="list-group-item-text">{% trans %}FORM.MYPAGE.FACEBOOK.DESCRIPTION{% endtrans %}</p>
+        </a>
+        <a class="list-group-item list-group-item-google" href="{{ hwi_oauth_login_url('google') }}">
+            <h4 class="list-group-item-heading">
+                <span><i class="fa fa-google-plus"></i></span>
+                <span>&nbsp;</span>
+                <span>{% trans %}FORM.MYPAGE.GOOGLE.LINK{% endtrans %}</span>
+            </h4>
+            <p class="list-group-item-text">{% trans %}FORM.MYPAGE.GOOGLE.DESCRIPTION{% endtrans %}</p>
+        </a>
+    </div>
 {% endif %}
-{% if currentuser.role == 9 %}
-                                {% trans %}FORM.MYPAGE.ADMIN{% endtrans %}
-{% endif %}
-                            </p>
-                        </td>
-                    </tr>
-                </tbody>
-            </table>
-        </div>
+</div>

@@ -33,10 +33,10 @@ security:
             anonymous:    true
 
             oauth:
-                failure_path: /connect
-                use_forward: false
                 login_path: /login
-                check_path: /connect
+                check_path: hwi_oauth_connect
+                failure_path: hwi_oauth_connect
+                use_forward: false
                 provider: fos_userbundle
                 resource_owners:
                     facebook: facebook_login

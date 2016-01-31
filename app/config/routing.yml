@@ -11,7 +11,7 @@ hwi_oauth_connect:
     prefix:   /connect
 
 _admin_logout:
-     pattern: /logout
+    pattern: /logout
 
 google_login:
     pattern: /login/check-google

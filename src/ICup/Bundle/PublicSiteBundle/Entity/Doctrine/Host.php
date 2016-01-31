@@ -50,7 +50,7 @@ class Host
      * @var ArrayCollection $users
      * Collection of users with access to this host
      * @ORM\OneToMany(targetEntity="User", mappedBy="host", cascade={"persist"})
-     * @ORM\OrderBy({"role" = "desc", "name" = "asc"})
+     * @ORM\OrderBy({"name" = "asc"})
      */
     protected $users;
 

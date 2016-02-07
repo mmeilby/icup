@@ -19,6 +19,7 @@ use ICup\Bundle\PublicSiteBundle\Services\Entity\PlaygroundAttribute as PA;
 use ICup\Bundle\PublicSiteBundle\Entity\MatchPlan;
 use ICup\Bundle\PublicSiteBundle\Entity\QMatchPlan;
 use ICup\Bundle\PublicSiteBundle\Services\Entity\PlanningOptions;
+use ICup\Bundle\PublicSiteBundle\Services\Entity\QRelation;
 use ICup\Bundle\PublicSiteBundle\Tests\Services\TestSupport;
 use Symfony\Bundle\FrameworkBundle\Test\WebTestCase;
 use Symfony\Component\DependencyInjection\ContainerInterface;
@@ -50,11 +51,7 @@ class MatchPlanningTest extends WebTestCase
 
     public function testDB() {
         $playgrounds = $this->tournament->getPlaygrounds();
-        $this->assertTrue(count($playgrounds) === 4);
-        /* @var $playground Playground */
-        foreach ($playgrounds as $playground) {
-            $this->assertTrue($playground->getPlaygroundAttributes()->count() === 8);
-        }
+        $this->assertEquals(4, count($playgrounds));
     }
 
     public function testMatchPlanning() {
@@ -109,19 +106,84 @@ class MatchPlanningTest extends WebTestCase
         $options->setPreferpg(false);
         $this->container->get("planning")->planTournamentFinals($this->tournament, $options);
         $match_schedule = $this->container->get("planning")->getSchedule($this->tournament);
+
+        $this->assertCount(0, $match_schedule["unassigned"], "Not all eliminating matches have been planned.");
+
+        $groups = array();
         /* @var $match QMatchPlan */
         foreach ($match_schedule["matches"] as $match) {
-            echo $match->getDate();
-            echo "  ";
-            echo $match->getTime();
-            echo "  ";
-            echo $match->getCategory()->getName() . "|" . $match->getClassification().":".$match->getLitra() . "|" . $match->getPlayground()->getName();
-            echo "  ";
-            echo $match->getRelA();
-            echo " - ";
-            echo $match->getRelB();
-            echo "\n";
+            $cl = $match->getClassification().':'.$match->getLitra();
+            if (!isset($groups[$cl])) {
+                $groups[$cl] = $match;
+            }
+            else {
+                // For playoff matches save the latest match to verify the time line
+                if ($groups[$cl]->getSchedule() < $match->getSchedule()) {
+                    $groups[$cl] = $match;
+                }
+                // Playoff matches must be played at the same venue
+                $this->assertEquals($groups[$cl]->getPlayground()->getId(), $match->getPlayground()->getId(), "Play off matches must be played on the same venue");
+            }
         }
+
+        /* Test for proper time line */
+
+        foreach ($match_schedule["matches"] as $match) {
+            if ($match->getRelA()->getClassification() > Group::$PRE) {
+                $cla = $match->getRelA()->getClassification().':'.$match->getRelA()->getLitra().$match->getRelA()->getBranch();
+                $this->assertArrayHasKey($cla, $groups, "No entry for ".$cla." has been added");
+                /* @var $qma QMatchPlan */
+                $qma = $groups[$cla];
+                /* @var $diff DateInterval */
+                $diff = $match->getSchedule()->diff($qma->getSchedule());
+                $this->assertTrue($diff->d*24*60 + $diff->h*60 + $diff->i >= $match->getCategory()->getMatchtime()*2,
+                    "Time between matches is less than ".($match->getCategory()->getMatchtime()*2)." min - actual time is ".($diff->d*24*60 + $diff->h*60 + $diff->i)." min");
+            }
+            if ($match->getRelB()->getClassification() > Group::$PRE) {
+                $clb = $match->getRelB()->getClassification() . ':' . $match->getRelB()->getLitra() . $match->getRelB()->getBranch();
+                $this->assertArrayHasKey($clb, $groups, "No entry for ".$clb." has been added");
+                /* @var $qmb QMatchPlan */
+                $qmb = $groups[$clb];
+                /* @var $diff DateInterval */
+                $diff = $match->getSchedule()->diff($qmb->getSchedule());
+                $this->assertTrue($diff->d*24*60 + $diff->h*60 + $diff->i >= $match->getCategory()->getMatchtime()*2,
+                    "Time between matches is less than ".($match->getCategory()->getMatchtime()*2)." min - actual time is ".($diff->d*24*60 + $diff->h*60 + $diff->i)." min");
+            }
+        }
+
+        foreach ($match_schedule["matches"] as $match) {
+            if ($match->getClassification() >= Group::$BRONZE) {
+                $this->printMatch($match);
+                $this->digMatch($match->getRelA(), $groups, 1);
+                $this->digMatch($match->getRelB(), $groups, 1);
+                echo "\n";
+            }
+        }
+    }
+
+    private function digMatch(QRelation $rel, $groups, $level) {
+        if ($rel->getClassification() > Group::$PRE) {
+            $cla = $rel->getClassification() . ':' . $rel->getLitra() . $rel->getBranch();
+            $this->assertArrayHasKey($cla, $groups, "No entry for " . $cla . " has been added");
+            /* @var $match QMatchPlan */
+            $match = $groups[$cla];
+            $this->printMatch($match, $level);
+            $this->digMatch($match->getRelA(), $groups, $level+1);
+            $this->digMatch($match->getRelB(), $groups, $level+1);
+        }
+    }
+
+    private function printMatch(QMatchPlan $match, $level = 0) {
+        echo $match->getDate();
+        echo "  ";
+        echo $match->getTime();
+        echo str_repeat(" ", $level*4+1);
+        echo $match->getCategory()->getName() . "|" . $match->getClassification().":".$match->getLitra() . "|" . $match->getPlayground()->getName();
+        echo "  ";
+        echo $match->getRelA();
+        echo " - ";
+        echo $match->getRelB();
+        echo "\n";
     }
 
     public function tstMatchPlanningOutput() {

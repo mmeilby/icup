@@ -11,28 +11,10 @@ use ICup\Bundle\PublicSiteBundle\Entity\Doctrine\PlaygroundAttribute as PA;
 class PlaygroundAttribute
 {
     /**
-     * @var integer $id
-     * Id for this attribute
-     */
-    private $id;
-
-    /**
      * @var integer $pa
      * Master for this attribute
      */
     private $pa;
-
-    /**
-     * @var integer $pid
-     * Relation to Playground - pid=playground.id
-     */
-    private $playground;
-
-    /**
-     * @var integer $timeslot
-     * Relation to Timeslot - pid=timeslot.id 
-     */
-    private $timeslot;
 
     /**
      * @var array $categories
@@ -53,26 +35,13 @@ class PlaygroundAttribute
     private $matchlist;
 
     /**
-     * Set id
-     *
-     * @param integer $id
-     * @return PlaygroundAttribute
-     */
-    public function setId($id)
-    {
-        $this->id = $id;
-    
-        return $this;
-    }
-
-    /**
      * Get id
      *
      * @return integer 
      */
     public function getId()
     {
-        return $this->id;
+        return $this->getPA()->getId();
     }
 
     /**
@@ -99,39 +68,13 @@ class PlaygroundAttribute
     }
 
     /**
-     * Set parent id - related tournament
-     *
-     * @param Playground $playground
-     * @return PlaygroundAttribute
-     */
-    public function setPlayground($playground)
-    {
-        $this->playground = $playground;
-    
-        return $this;
-    }
-
-    /**
      * Get parent id - related tournament
      *
      * @return Playground 
      */
     public function getPlayground()
     {
-        return $this->playground;
-    }
-
-    /**
-     * Set child id - related timeslot
-     *
-     * @param Timeslot $timeslot
-     * @return PlaygroundAttribute
-     */
-    public function setTimeslot($timeslot)
-    {
-        $this->timeslot = $timeslot;
-    
-        return $this;
+        return $this->getPA()->getPlayground();
     }
 
     /**
@@ -141,7 +84,7 @@ class PlaygroundAttribute
      */
     public function getTimeslot()
     {
-        return $this->timeslot;
+        return $this->getPA()->getTimeslot();
     }
 
     /**
@@ -163,7 +106,6 @@ class PlaygroundAttribute
     public function setCategories($categories)
     {
         $this->categories = $categories;
-    
         return $this;
     }
     
@@ -235,5 +177,10 @@ class PlaygroundAttribute
 
     public function isCategoryAllowed(Category $category) {
         return count($this->categories) == 0 || isset($this->categories[$category->getId()]);
+    }
+
+    public function isClassificationAllowed($classification) {
+        $cls = $this->getPA()->getClassification();
+        return $cls == 0 || $cls == $classification;
     }
 }

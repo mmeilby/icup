@@ -12,9 +12,11 @@ use ICup\Bundle\PublicSiteBundle\Entity\Doctrine\MatchSchedulePlan;
 use ICup\Bundle\PublicSiteBundle\Entity\Doctrine\MatchScheduleRelation;
 use ICup\Bundle\PublicSiteBundle\Entity\Doctrine\Playground;
 use ICup\Bundle\PublicSiteBundle\Entity\Doctrine\PlaygroundAttribute;
+use ICup\Bundle\PublicSiteBundle\Entity\Doctrine\QMatchRelation;
 use ICup\Bundle\PublicSiteBundle\Entity\Doctrine\QMatchScheduleRelation;
 use ICup\Bundle\PublicSiteBundle\Entity\Doctrine\Tournament;
 use ICup\Bundle\PublicSiteBundle\Entity\Doctrine\User;
+use ICup\Bundle\PublicSiteBundle\Entity\QMatchPlan;
 use ICup\Bundle\PublicSiteBundle\Entity\TeamInfo;
 use ICup\Bundle\PublicSiteBundle\Services\Doctrine\MatchSupport;
 use ICup\Bundle\PublicSiteBundle\Services\Doctrine\TournamentSupport;
@@ -112,10 +114,10 @@ class MatchPlanningController extends Controller
             /* @var $group Group */
             foreach ($groups as $group) {
                 $teams = count($this->get('logic')->listTeamsByGroup($group->getId()));
-                if ($teams > 0) {
+//                if ($teams > 0) {
                     $groupList[] = array('group' => $group, 'count' => $teams);
                     $mincount = min($mincount, $teams);
-                }
+//                }
             }
             $matchForm = array('strategy' => $category->getStrategy(), 'trophys' => $category->getTrophys(), 'topteams' => $mincount);
         }
@@ -474,7 +476,8 @@ class MatchPlanningController extends Controller
      */
     public function resetMatchesAction($tournamentid) {
         $tournament = $this->checkArgs($tournamentid);
-        $this->get('logic')->removeMatchSchedules($tournamentid);
+        $this->get('logic')->removeMatchSchedules($tournament);
+        $this->get('logic')->removeQMatchSchedules($tournament);
         return $this->redirect($this->generateUrl("_edit_match_planning_result", array('tournamentid' => $tournament->getId())));
     }
 
@@ -504,36 +507,91 @@ class MatchPlanningController extends Controller
         // Only if tournament has not been started we are allowed to wipe the teams
         if ($this->get('tmnt')->getTournamentStatus($tournamentid, new DateTime()) == TournamentSupport::$TMNT_ENROLL) {
             $this->get('tmnt')->wipeMatches($tournamentid);
+            $this->get('tmnt')->wipeQMatches($tournamentid);
+            $this->get('tmnt')->wipeQualifyingGroups($tournamentid);
 
             $em = $this->getDoctrine()->getEntityManager();
+            foreach ($result['matches'] as $match) {
+                if ($match instanceof QMatchPlan) {
+                    /* @var $match QMatchPlan */
+                    $group = new Group();
+                    $group->setName($match->getLitra());
+                    $group->setCategory($match->getCategory());
+                    $group->setClassification($match->getClassification());
+                    $em->persist($group);
+                }
+            }
+            $em->flush();
+
             $em->beginTransaction();
             try {
-                /* @var $match MatchPlan */
                 foreach ($result['matches'] as $match) {
-                    $matchrec = new Match();
-                    $matchrec->setMatchno($match->getMatchno());
-                    $matchrec->setDate($match->getDate());
-                    $matchrec->setTime($match->getTime());
-                    $matchrec->setGroup($match->getGroup());
-                    $matchrec->setPlayground($match->getPlayground());
+                    if ($match instanceof QMatchPlan) {
+                        /* @var $match QMatchPlan */
+                        $matchrec = new Match();
+                        $matchrec->setMatchno($match->getMatchno());
+                        $matchrec->setDate($match->getDate());
+                        $matchrec->setTime($match->getTime());
+                        $matchrec->setGroup($this->getQualifyingGroup($match->getCategory(),
+                                                                      $match->getClassification(),
+                                                                      $match->getLitra()));
+                        $matchrec->setPlayground($match->getPlayground());
 
-                    $resultreqA = new MatchRelation();
-                    $resultreqA->setTeam($match->getTeamA());
-                    $resultreqA->setAwayteam(MatchSupport::$HOME);
-                    $resultreqA->setScorevalid(false);
-                    $resultreqA->setScore(0);
-                    $resultreqA->setPoints(0);
-                    $matchrec->addMatchRelation($resultreqA);
+                        $resultreqA = new QMatchRelation();
+                        $resultreqA->setAwayteam(MatchSupport::$HOME);
+                        if ($match->getRelA()->getClassification() == Group::$PRE) {
+                            $resultreqA->setGroup($match->getRelA()->getGroup());
+                        }
+                        else {
+                            $resultreqA->setGroup($this->getQualifyingGroup($match->getCategory(),
+                                                                            $match->getRelA()->getClassification(),
+                                                                            $match->getRelA()->getLitra().$match->getRelA()->getBranch()));
+                        }
+                        $resultreqA->setRank($match->getRelA()->getRank());
+                        $matchrec->addMatchRelation($resultreqA);
 
-                    $resultreqB = new MatchRelation();
-                    $resultreqB->setTeam($match->getTeamB());
-                    $resultreqB->setAwayteam(MatchSupport::$AWAY);
-                    $resultreqB->setScorevalid(false);
-                    $resultreqB->setScore(0);
-                    $resultreqB->setPoints(0);
-                    $matchrec->addMatchRelation($resultreqB);
+                        $resultreqB = new QMatchRelation();
+                        $resultreqB->setAwayteam(MatchSupport::$AWAY);
+                        if ($match->getRelB()->getClassification() == Group::$PRE) {
+                            $resultreqB->setGroup($match->getRelB()->getGroup());
+                        }
+                        else {
+                            $resultreqB->setGroup($this->getQualifyingGroup($match->getCategory(),
+                                                                            $match->getRelB()->getClassification(),
+                                                                            $match->getRelB()->getLitra().$match->getRelB()->getBranch()));
+                        }
+                        $resultreqB->setRank($match->getRelB()->getRank());
+                        $matchrec->addMatchRelation($resultreqB);
 
-                    $em->persist($matchrec);
+                        $em->persist($matchrec);
+                    }
+                    else {
+                        /* @var $match MatchPlan */
+                        $matchrec = new Match();
+                        $matchrec->setMatchno($match->getMatchno());
+                        $matchrec->setDate($match->getDate());
+                        $matchrec->setTime($match->getTime());
+                        $matchrec->setGroup($match->getGroup());
+                        $matchrec->setPlayground($match->getPlayground());
+
+                        $resultreqA = new MatchRelation();
+                        $resultreqA->setTeam($match->getTeamA());
+                        $resultreqA->setAwayteam(MatchSupport::$HOME);
+                        $resultreqA->setScorevalid(false);
+                        $resultreqA->setScore(0);
+                        $resultreqA->setPoints(0);
+                        $matchrec->addMatchRelation($resultreqA);
+
+                        $resultreqB = new MatchRelation();
+                        $resultreqB->setTeam($match->getTeamB());
+                        $resultreqB->setAwayteam(MatchSupport::$AWAY);
+                        $resultreqB->setScorevalid(false);
+                        $resultreqB->setScore(0);
+                        $resultreqB->setPoints(0);
+                        $matchrec->addMatchRelation($resultreqB);
+
+                        $em->persist($matchrec);
+                    }
                 }
                 $em->flush();
                 $em->commit();
@@ -555,7 +613,19 @@ class MatchPlanningController extends Controller
         }
         return $this->redirect($this->generateUrl("_edit_match_planning_result", array('tournamentid' => $tournament->getId())));
     }
-    
+
+    /**
+     * @param Category $category
+     * @param $classification
+     * @param $litra
+     * @return Group
+     */
+    private function getQualifyingGroup(Category $category, $classification, $litra) {
+        return $category->getGroups()->filter(function (Group $group) use ($classification, $litra) {
+            return $group->getClassification() == $classification && $group->getName() == $litra;
+        })->first();
+    }
+
     /**
      * List the latest matches for a tournament
      * @Route("/edit/m/view/plan/{tournamentid}", name="_edit_match_planning_view")

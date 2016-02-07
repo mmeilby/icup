@@ -291,6 +291,10 @@ FORM:
     FINALS:
       PROMPT: Reserveret til slutrunder
       HELP: Ved at vælge denne indstilling kan banepræferencen kun benyttes til slutrunder
+    CLASSIFICATION:
+      PROMPT: Reserveret til slutrundetype
+      HELP: Slutrundetype denne banepræference reserveres til
+      DEFAULT: Ingen begrænsning
     SUBMIT:
       ADD: Tilføj ny banepræference
       CHG: Gem banepræference

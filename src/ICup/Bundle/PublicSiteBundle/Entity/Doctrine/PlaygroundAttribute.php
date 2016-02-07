@@ -78,6 +78,13 @@ class PlaygroundAttribute
     protected $finals;
 
     /**
+     * @var integer $classification
+     * Indicates this timeslot is restricted to a specific classification (only valid for timeslots restricted to finals)
+     * @ORM\Column(name="classification", type="integer", nullable=true)
+     */
+    protected $classification;
+
+    /**
      * PlaygroundAttribute constructor.
      */
     public function __construct() {
@@ -223,9 +230,9 @@ class PlaygroundAttribute
     }
 
     /**
-     * Set match level
+     * Set timeslot restriction
      *
-     * @param boolean $final
+     * @param boolean $final true if timeslot should be restricted to finals only
      * @return PlaygroundAttribute
      */
     public function setFinals($final)
@@ -235,12 +242,30 @@ class PlaygroundAttribute
     }
 
     /**
-     * Get match level
+     * Get timeslot restriction
      *
-     * @return boolean
+     * @return boolean true if timeslot is restricted to finals only
      */
     public function getFinals()
     {
         return $this->finals;
+    }
+
+    /**
+     * Get classification restriction
+     * @return int restriction level - 0 = none
+     */
+    public function getClassification() {
+        return $this->classification;
+    }
+
+    /**
+     * Set classification restriction
+     * @param int $classification restriction level - 0 = none
+     * @return PlaygroundAttribute
+     */
+    public function setClassification($classification) {
+        $this->classification = $classification;
+        return $this;
     }
 }

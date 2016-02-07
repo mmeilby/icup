@@ -109,7 +109,7 @@ class Match
     /**
      * Set playground relation
      *
-     * @param integer $playground
+     * @param Playground $playground
      * @return Match
      */
     public function setPlayground($playground)
@@ -122,7 +122,7 @@ class Match
     /**
      * Get playground relation
      *
-     * @return integer 
+     * @return Playground
      */
     public function getPlayground()
     {

@@ -223,6 +223,7 @@ class TestSupport
     }
 
     public function makePlaygrounds(Tournament $tournament) {
+        $venues = array();
         for ($s=1; $s<=2; $s++) {
             $site = new Site();
             $site->setName("Test site ".$s);
@@ -234,6 +235,7 @@ class TestSupport
                 $playground->setNo($n);
                 $playground->setSite($site);
                 $site->getPlaygrounds()->add($playground);
+                $venues[$s."-".$n] = $playground;
             }
             $tournament->getSites()->add($site);
             $this->em->persist($site);
@@ -248,16 +250,28 @@ class TestSupport
         $tournament->getTimeslots()->add($timeslot);
         $this->addSchedules($tournament, $timeslot,
             date_create_from_format("j-n-Y G.i", "5-7-2015 9.00"),
-            date_create_from_format("j-n-Y G.i", "5-7-2015 12.00"), false);
+            date_create_from_format("j-n-Y G.i", "5-7-2015 12.00"));
         $this->addSchedules($tournament, $timeslot,
             date_create_from_format("j-n-Y G.i", "6-7-2015 9.00"),
-            date_create_from_format("j-n-Y G.i", "6-7-2015 12.00"), false);
+            date_create_from_format("j-n-Y G.i", "6-7-2015 12.00"));
         $this->addSchedules($tournament, $timeslot,
             date_create_from_format("j-n-Y G.i", "7-7-2015 9.00"),
-            date_create_from_format("j-n-Y G.i", "7-7-2015 12.00"), false);
-        $this->addSchedules($tournament, $timeslot,
+            date_create_from_format("j-n-Y G.i", "7-7-2015 12.00"));
+        $this->addSchedulesFinal($timeslot, $venues['1-1'], 7,
             date_create_from_format("j-n-Y G.i", "8-7-2015 9.00"),
-            date_create_from_format("j-n-Y G.i", "8-7-2015 12.00"), true);
+            date_create_from_format("j-n-Y G.i", "8-7-2015 12.00"));
+        $this->addSchedulesFinal($timeslot, $venues['1-2'], 7,
+            date_create_from_format("j-n-Y G.i", "8-7-2015 9.00"),
+            date_create_from_format("j-n-Y G.i", "8-7-2015 12.00"));
+        $this->addSchedulesFinal($timeslot, $venues['2-1'], 6,
+            date_create_from_format("j-n-Y G.i", "8-7-2015 9.00"),
+            date_create_from_format("j-n-Y G.i", "8-7-2015 12.00"));
+        $this->addSchedulesFinal($timeslot, $venues['2-2'], 1,
+            date_create_from_format("j-n-Y G.i", "8-7-2015 9.00"),
+            date_create_from_format("j-n-Y G.i", "8-7-2015 12.00"));
+        $this->addSchedulesFinal($timeslot, $venues['1-1'], 8,
+            date_create_from_format("j-n-Y G.i", "9-7-2015 9.00"),
+            date_create_from_format("j-n-Y G.i", "9-7-2015 12.00"));
         $this->em->persist($timeslot);
 
         $timeslot = new Timeslot();
@@ -269,21 +283,36 @@ class TestSupport
         $tournament->getTimeslots()->add($timeslot);
         $this->addSchedules($tournament, $timeslot,
             date_create_from_format("j-n-Y G.i", "5-7-2015 13.00"),
-            date_create_from_format("j-n-Y G.i", "5-7-2015 19.00"), false);
+            date_create_from_format("j-n-Y G.i", "5-7-2015 19.00"));
         $this->addSchedules($tournament, $timeslot,
             date_create_from_format("j-n-Y G.i", "6-7-2015 13.00"),
-            date_create_from_format("j-n-Y G.i", "6-7-2015 19.00"), false);
+            date_create_from_format("j-n-Y G.i", "6-7-2015 19.00"));
         $this->addSchedules($tournament, $timeslot,
             date_create_from_format("j-n-Y G.i", "7-7-2015 13.00"),
-            date_create_from_format("j-n-Y G.i", "7-7-2015 19.00"), false);
-        $this->addSchedules($tournament, $timeslot,
+            date_create_from_format("j-n-Y G.i", "7-7-2015 19.00"));
+        $this->addSchedulesFinal($timeslot, $venues['1-1'], 7,
             date_create_from_format("j-n-Y G.i", "8-7-2015 13.00"),
-            date_create_from_format("j-n-Y G.i", "8-7-2015 22.00"), true);
+            date_create_from_format("j-n-Y G.i", "8-7-2015 22.00"));
+        $this->addSchedulesFinal($timeslot, $venues['1-2'], 8,
+            date_create_from_format("j-n-Y G.i", "8-7-2015 13.00"),
+            date_create_from_format("j-n-Y G.i", "8-7-2015 22.00"));
+        $this->addSchedulesFinal($timeslot, $venues['2-1'], 8,
+            date_create_from_format("j-n-Y G.i", "8-7-2015 13.00"),
+            date_create_from_format("j-n-Y G.i", "8-7-2015 22.00"));
+        $this->addSchedulesFinal($timeslot, $venues['2-2'], 8,
+            date_create_from_format("j-n-Y G.i", "8-7-2015 13.00"),
+            date_create_from_format("j-n-Y G.i", "8-7-2015 22.00"));
+        $this->addSchedulesFinal($timeslot, $venues['1-1'], 10,
+            date_create_from_format("j-n-Y G.i", "9-7-2015 13.00"),
+            date_create_from_format("j-n-Y G.i", "9-7-2015 22.00"));
+        $this->addSchedulesFinal($timeslot, $venues['1-2'], 9,
+            date_create_from_format("j-n-Y G.i", "9-7-2015 13.00"),
+            date_create_from_format("j-n-Y G.i", "9-7-2015 22.00"));
         $this->em->persist($timeslot);
         $this->em->flush();
     }
 
-    private function addSchedules(Tournament $tournament, Timeslot $timeslot, DateTime $start, DateTime $end, $final) {
+    private function addSchedules(Tournament $tournament, Timeslot $timeslot, DateTime $start, DateTime $end) {
         /* @var $site Site */
         foreach ($tournament->getSites() as $site) {
             /* @var $playground Playground */
@@ -294,10 +323,24 @@ class TestSupport
                 $pattr->setDate(Date::getDate($start));
                 $pattr->setStart(Date::getTime($start));
                 $pattr->setEnd(Date::getTime($end));
-                $pattr->setFinals($final);
+                $pattr->setFinals(false);
+                $pattr->setClassification(Group::$PRE);
                 $playground->getPlaygroundAttributes()->add($pattr);
                 $timeslot->getPlaygroundattributes()->add($pattr);
             }
         }
+    }
+
+    private function addSchedulesFinal(Timeslot $timeslot, Playground $playground, $classification, DateTime $start, DateTime $end) {
+        $pattr = new PlaygroundAttribute();
+        $pattr->setTimeslot($timeslot);
+        $pattr->setPlayground($playground);
+        $pattr->setDate(Date::getDate($start));
+        $pattr->setStart(Date::getTime($start));
+        $pattr->setEnd(Date::getTime($end));
+        $pattr->setFinals(true);
+        $pattr->setClassification($classification);
+        $playground->getPlaygroundAttributes()->add($pattr);
+        $timeslot->getPlaygroundattributes()->add($pattr);
     }
 }

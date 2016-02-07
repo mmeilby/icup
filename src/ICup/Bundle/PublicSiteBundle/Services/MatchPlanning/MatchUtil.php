@@ -49,9 +49,6 @@ class MatchUtil
                 if ($pattr->getFinals() == $options->isFinals()) {
                     $pa = new PA();
                     $pa->setPA($pattr);
-                    $pa->setId($pattr->getId());
-                    $pa->setPlayground($pattr->getPlayground());
-                    $pa->setTimeslot($pattr->getTimeslot());
                     $pa->setSchedule($pattr->getStartSchedule());
                     $categories = array();
                     foreach ($pattr->getCategories() as $category) {

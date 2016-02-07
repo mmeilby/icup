@@ -47,6 +47,12 @@ class PAttrForm
     private $finals;
 
     /**
+     * @var integer $classification
+     * Indicates this timeslot is restricted to a specific classification (only valid for timeslots restricted to finals)
+     */
+    private $classification;
+
+    /**
      * @var array $categories
      * List of categories related to playground attribute
      */
@@ -207,6 +213,24 @@ class PAttrForm
     }
 
     /**
+     * Get classification restriction
+     * @return int restriction level - 0 = none
+     */
+    public function getClassification() {
+        return $this->classification;
+    }
+
+    /**
+     * Set classification restriction
+     * @param int $classification restriction level - 0 = none
+     * @return PAttrForm
+     */
+    public function setClassification($classification) {
+        $this->classification = $classification;
+        return $this;
+    }
+
+    /**
      * Set related categories
      *
      * @param array $categories
@@ -215,7 +239,6 @@ class PAttrForm
     public function setCategories($categories)
     {
         $this->categories = $categories;
-    
         return $this;
     }
 

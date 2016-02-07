@@ -2,6 +2,7 @@
 namespace ICup\Bundle\PublicSiteBundle\Controller\Admin\Tournament;
 
 use ICup\Bundle\PublicSiteBundle\Entity\Doctrine\Date;
+use ICup\Bundle\PublicSiteBundle\Entity\Doctrine\Group;
 use ICup\Bundle\PublicSiteBundle\Entity\Doctrine\Playground;
 use ICup\Bundle\PublicSiteBundle\Entity\Doctrine\PlaygroundAttribute;
 use ICup\Bundle\PublicSiteBundle\Entity\Doctrine\Site;
@@ -158,6 +159,7 @@ class PlaygroundAttributeController extends Controller
         $endtime = date_create_from_format($timeformat, $pattrForm->getEnd());
         $pattr->setEnd(Date::getTime($endtime));
         $pattr->setFinals($pattrForm->isFinals());
+        $pattr->setClassification($pattrForm->getClassification());
     }
     
     private function copyPAttrForm(PlaygroundAttribute $pattr) {
@@ -173,6 +175,7 @@ class PlaygroundAttributeController extends Controller
         $endtime = $pattr->getEndSchedule();
         $pattrForm->setEnd(date_format($endtime, $timeformat));
         $pattrForm->setFinals($pattr->getFinals());
+        $pattrForm->setClassification($pattr->getClassification());
         $pattrForm->setCategories($pattr->getCategories());
         return $pattrForm;
     }
@@ -182,7 +185,11 @@ class PlaygroundAttributeController extends Controller
         foreach ($tournament->getTimeslots() as $timeslot) {
             $timeslots[$timeslot->getId()] = $timeslot->getName();
         }
-        
+        $classifications = array();
+        foreach (array(Group::$PLAYOFF,6,7,Group::$SEMIFINAL,Group::$BRONZE,Group::$FINAL) as $id) {
+            $classifications[$id] = 'FORM.GROUP.CLASS.'.$id;
+        }
+
         $formDef = $this->createFormBuilder($pattrForm);
         $formDef->add('timeslot', 'choice',
               array('label' => 'FORM.PLAYGROUNDATTR.TIMESLOT.PROMPT',
@@ -213,6 +220,14 @@ class PlaygroundAttributeController extends Controller
         $formDef->add('finals', 'checkbox',
               array('label' => 'FORM.PLAYGROUNDATTR.FINALS.PROMPT',
                     'help' => 'FORM.PLAYGROUNDATTR.FINALS.HELP',
+                    'required' => false,
+                    'disabled' => $action == 'del',
+                    'translation_domain' => 'admin'));
+        $formDef->add('classification', 'choice',
+              array('label' => 'FORM.PLAYGROUNDATTR.CLASSIFICATION.PROMPT',
+                    'help' => 'FORM.PLAYGROUNDATTR.CLASSIFICATION.HELP',
+                    'choices' => $classifications,
+                    'empty_value' => 'FORM.PLAYGROUNDATTR.CLASSIFICATION.DEFAULT',
                     'required' => false,
                     'disabled' => $action == 'del',
                     'translation_domain' => 'admin'));

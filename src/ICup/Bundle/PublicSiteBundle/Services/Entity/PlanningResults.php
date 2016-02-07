@@ -117,14 +117,14 @@ class PlanningResults
                 return false;
             }
         } else {
-            $scheduleA = $this->getQSchedule($match->getRelA());
-            if ($scheduleA) {
-                /* @var $diff DateInterval */
-                $diff = $slotschedule->diff($scheduleA);
-                if ($diff->d*24*60 + $diff->h*60 + $diff->i < $match->getCategory()->getMatchtime() + $timeslot->getRestperiod()) {
-                    return false;
-                }
-            }
+//            $scheduleA = $this->getQSchedule($match->getRelA());
+//            if ($scheduleA) {
+//                /* @var $diff DateInterval */
+//                $diff = $slotschedule->diff($scheduleA);
+//                if ($diff->d*24*60 + $diff->h*60 + $diff->i < $match->getCategory()->getMatchtime() + $timeslot->getRestperiod()) {
+ //                   return false;
+//                }
+//            }
         }
         if ($match->getRelB()->getClassification() > Group::$PRE) {
             $scheduleB = $this->getQSchedule($match->getRelB());
@@ -132,14 +132,14 @@ class PlanningResults
                 return false;
             }
         } else {
-            $scheduleB = $this->getQSchedule($match->getRelB());
-            if ($scheduleB) {
-                /* @var $diff DateInterval */
-                $diff = $slotschedule->diff($scheduleB);
-                if ($diff->d*24*60 + $diff->h*60 + $diff->i < $match->getCategory()->getMatchtime() + $timeslot->getRestperiod()) {
-                    return false;
-                }
-            }
+//            $scheduleB = $this->getQSchedule($match->getRelB());
+//            if ($scheduleB) {
+//                /* @var $diff DateInterval */
+//                $diff = $slotschedule->diff($scheduleB);
+//                if ($diff->d*24*60 + $diff->h*60 + $diff->i < $match->getCategory()->getMatchtime() + $timeslot->getRestperiod()) {
+//                    return false;
+//                }
+//            }
         }
         return true;
     }

@@ -274,9 +274,6 @@ class MatchPlanning
         foreach ($pattrs as $pattr) {
             $pa = new PA();
             $pa->setPA($pattr);
-            $pa->setId($pattr->getId());
-            $pa->setPlayground($pattr->getPlayground());
-            $pa->setTimeslot($pattr->getTimeslot());
             $pa->setSchedule($pattr->getStartSchedule());
 
             $categories = array();

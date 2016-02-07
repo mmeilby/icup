@@ -14,7 +14,6 @@ use ICup\Bundle\PublicSiteBundle\Entity\QMatchPlan;
 use ICup\Bundle\PublicSiteBundle\Services\Entity\PlaygroundAttribute as PA;
 use ICup\Bundle\PublicSiteBundle\Services\Entity\PlanningResults;
 use DateInterval;
-use ICup\Bundle\PublicSiteBundle\Services\Entity\PlaygroundAttribute;
 use Monolog\Logger;
 
 class QMatchPlanner
@@ -37,8 +36,11 @@ class QMatchPlanner
         while ($match = $result->nextUnresolved()) {
             $slot_found = $this->planMatch($result, $match);
             if (!$slot_found) {
-                // if this was not possible to register the match as finally unassigned
-                $unplaceable[] = $match;
+                $slot_found = $this->replanMatch_1run($result, $match);
+                if (!$slot_found) {
+                    // if this was not possible to register the match as finally unassigned
+                    $unplaceable[] = $match;
+                }
             }
         }
         foreach ($unplaceable as $match) {
@@ -46,10 +48,10 @@ class QMatchPlanner
         }
 
         if ($result->unresolved() > 0) {
-            $this->replan_1run($result);
+//            $this->replan_1run($result);
         }
         if ($result->unresolved() > 0) {
-            $this->replan_2run($result);
+//            $this->replan_2run($result);
         }
     }
 
@@ -60,18 +62,18 @@ class QMatchPlanner
      * @return bool
      */
     private function planMatch(PlanningResults $result, QMatchPlan $match) {
-        $result->mark(function (PlaygroundAttribute $ats1, PlaygroundAttribute $ats2) {
+        $result->mark(function (PA $ats1, PA $ats2) {
             $p1 = (count($ats2->getPA()->getCategories()) ? 1 : 0) - (count($ats1->getPA()->getCategories()) ? 1 : 0);
-            $p2 = $ats1->getPA()->getStartSchedule()->getTimestamp() - $ats2->getPA()->getStartSchedule()->getTimestamp();
-            $p3 = $ats2->getTimeleft() - $ats1->getTimeleft();
-            $test = min(1, max(-1, $p1))*4 + min(1, max(-1, $p2))*2 + min(1, max(-1, $p3));
+            $p2 = $ats1->getPA()->getPlayground()->getId() - $ats2->getPA()->getPlayground()->getId();
+            $p3 = $ats1->getPA()->getStartSchedule()->getTimestamp() - $ats2->getPA()->getStartSchedule()->getTimestamp();
+            $p4 = $ats2->getTimeleft() - $ats1->getTimeleft();
+            $test = min(1, max(-1, $p1))*8 + min(1, max(-1, $p2))*4 + min(1, max(-1, $p3))*2 + min(1, max(-1, $p4));
             return min(1, max(-1, $test));
         });
         $matchtime = $match->getCategory()->getMatchtime();
         /* @var $pa PA */
         while ($pa = $result->cycleTimeslot()) {
-            $categories = $pa->getCategories();
-            if (count($categories) == 0 || isset($categories[$match->getCategory()->getId()])) {
+            if ($pa->isCategoryAllowed($match->getCategory()) && $pa->isClassificationAllowed($match->getClassification())) {
                 $slotschedule = $pa->getSchedule();
                 $slot_time_left = $pa->getTimeleft();
 
@@ -122,7 +124,7 @@ class QMatchPlanner
      * @return bool
      */
     private function replanMatch_1run(PlanningResults $result, QMatchPlan $match) {
-        $result->mark(function (PlaygroundAttribute $ats1, PlaygroundAttribute $ats2) {
+        $result->mark(function (PA $ats1, PA $ats2) {
             $p1 = $ats2->getTimeleft() - $ats1->getTimeleft();
             $p2 = $ats1->getPA()->getStartSchedule()->getTimestamp() - $ats2->getPA()->getStartSchedule()->getTimestamp();
             $test = min(1, max(-1, $p1))*2 + min(1, max(-1, $p2));

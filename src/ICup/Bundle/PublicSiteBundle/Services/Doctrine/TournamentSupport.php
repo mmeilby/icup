@@ -5,6 +5,7 @@ namespace ICup\Bundle\PublicSiteBundle\Services\Doctrine;
 use ICup\Bundle\PublicSiteBundle\Entity\Doctrine\Category;
 use ICup\Bundle\PublicSiteBundle\Entity\Doctrine\Champion;
 use ICup\Bundle\PublicSiteBundle\Entity\Doctrine\Date;
+use ICup\Bundle\PublicSiteBundle\Entity\Doctrine\Group;
 use ICup\Bundle\PublicSiteBundle\Entity\Doctrine\Team;
 use ICup\Bundle\PublicSiteBundle\Entity\Doctrine\Tournament;
 use Symfony\Component\DependencyInjection\ContainerInterface;
@@ -648,5 +649,16 @@ class TournamentSupport
                 "where t.id=:tournament");
         $qbt->setParameter('tournament', $tournamentid);
         $qbt->getResult();
+    }
+
+    public function wipeQualifyingGroups($tournamentid) {
+        // wipe groups
+        $qbg = $this->em->createQuery(
+            "delete from ".$this->entity->getRepositoryPath('Group')." g ".
+            "where g.classification>0 and g.category in (select c.id ".
+                "from ".$this->entity->getRepositoryPath('Category')." c ".
+                "where c.tournament=:tournament)");
+        $qbg->setParameter('tournament', $tournamentid);
+        $qbg->getResult();
     }
 }

@@ -59,7 +59,8 @@ class ListPlaygroundAttributesController extends Controller
                 'start' => $attr->getStartSchedule(),
                 'end' => $attr->getEndSchedule(),
                 'categories' => $categories,
-                'finals' => $attr->getFinals()
+                'finals' => $attr->getFinals(),
+                'classification' => $attr->getClassification()
             );
         }
 

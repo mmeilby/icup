@@ -1,7 +1,6 @@
 To Do List
 ----------
 Definer champions ved gem af kampplan
-Planlæg slutrunde kampe og puljer
 Færdiggørelse af planlæg indledende kampe
 Kig på Indlæs kampplan til slutrunde/Påsæt hold til slutrunde - lav generel import funktion under planlæg turnering
 Ret ændring af kodeord
@@ -32,6 +31,8 @@ Opret turnering
 
 Done List
 ---------
+Playground fejlhåndtering i tilpas kamp rettet
+Planlæg slutrunde kampe og puljer
 Venue = bane !
 Kontrolleret oprettelse af nye PHPCR data tilføjet til translations filerne
 Fejlrettelse - vis playoff og finaler korrekt før hold er fundet

@@ -57,6 +57,11 @@
             {% endif %}
                     </a>
                 </td>
+                <td>
+                    {% if attr.finals and attr.classification > 0 %}
+                        {{ ['FORM.GROUP.CLASS', attr.classification]|join('.')|trans([],'admin') }}
+                    {% endif %}
+                </td>
                 <td class="narrow-col">
                     <a href="{{ path('_edit_pattr_add', { 'playgroundid': playground.id }) }}">
                         <span class="fa fa-file"></span>
@@ -80,6 +85,7 @@
                         {{'FORM.LISTPLAYGROUNDATTRS.NOATTR'|trans|upper}}
                     </a>    
                 </td>
+                <td></td>
                 <td></td>
                 <td></td>
                 <td></td>

@@ -9,6 +9,7 @@
 namespace ICup\Bundle\PublicSiteBundle\Services\MatchPlanning;
 
 use Doctrine\ORM\EntityManager;
+use ICup\Bundle\PublicSiteBundle\Entity\Doctrine\Group;
 use ICup\Bundle\PublicSiteBundle\Entity\Doctrine\MatchAlternative;
 use ICup\Bundle\PublicSiteBundle\Entity\Doctrine\MatchSchedule;
 use ICup\Bundle\PublicSiteBundle\Entity\Doctrine\MatchSchedulePlan;
@@ -20,6 +21,7 @@ use ICup\Bundle\PublicSiteBundle\Entity\Doctrine\Timeslot;
 use ICup\Bundle\PublicSiteBundle\Entity\Doctrine\Tournament;
 use ICup\Bundle\PublicSiteBundle\Entity\MatchPlan;
 use ICup\Bundle\PublicSiteBundle\Entity\QMatchPlan;
+use ICup\Bundle\PublicSiteBundle\Services\Doctrine\MatchSupport;
 use ICup\Bundle\PublicSiteBundle\Services\Entity\PlanningOptions;
 use ICup\Bundle\PublicSiteBundle\Services\Entity\PlanningResults;
 use ICup\Bundle\PublicSiteBundle\Services\Entity\PlaygroundAttribute as PA;
@@ -91,7 +93,7 @@ class MatchUtil
             foreach ($pa->getMatchlist() as $match) {
                 $ms = $this->makeMatchSchedule($tournament, $match);
                 $mp = new MatchSchedulePlan();
-                $mp->setPlaygroundAttribute($this->em->merge($pa->getPA()));
+                $mp->setPlaygroundAttribute($pa->getPA());
                 $mp->setMatchstart($match->getTime());
                 $mp->setFixed($match->isFixed());
                 $ms->setPlan($mp);
@@ -111,7 +113,7 @@ class MatchUtil
                     if ($results->getTeamCheck()->isCapacity($match, $pa->getSchedule(), $pa->getPlayground(), $pa->getTimeslot())) {
                         $matchAlternative = new MatchAlternative();
                         $matchAlternative->setMatchSchedule($ms);
-                        $matchAlternative->setPlaygroundAttribute($this->em->merge($pa->getPA()));
+                        $matchAlternative->setPlaygroundAttribute($pa->getPA());
                         $this->em->persist($matchAlternative);
                     }
                 }
@@ -127,7 +129,7 @@ class MatchUtil
             /* @var $match QMatchPlan */
             $ms = new QMatchSchedule();
             $ms->setTournament($tournament);
-            $ms->setCategory($this->em->merge($match->getCategory()));
+            $ms->setCategory($match->getCategory());
             $ms->setBranch('');
             $ms->setClassification($match->getClassification());
             $ms->setLitra($match->getLitra());
@@ -136,27 +138,27 @@ class MatchUtil
             $hr->setClassification($match->getRelA()->getClassification());
             $hr->setLitra($match->getRelA()->getLitra());
             $hr->setRank($match->getRelA()->getRank());
-            $hr->setAwayteam(false);
+            $hr->setAwayteam(MatchSupport::$HOME);
             $ms->addQMatchRelation($hr);
             $ar = new QMatchScheduleRelation();
             $ar->setBranch($match->getRelB()->getBranch());
             $ar->setClassification($match->getRelB()->getClassification());
             $ar->setLitra($match->getRelB()->getLitra());
             $ar->setRank($match->getRelB()->getRank());
-            $ar->setAwayteam(true);
+            $ar->setAwayteam(MatchSupport::$AWAY);
             $ms->addQMatchRelation($ar);
         }
         else {
             $ms = new MatchSchedule();
             $ms->setTournament($tournament);
-            $ms->setGroup($this->em->merge($match->getGroup()));
+            $ms->setGroup($match->getGroup());
             $hr = new MatchScheduleRelation();
-            $hr->setTeam($this->em->merge($match->getTeamA()));
-            $hr->setAwayteam(false);
+            $hr->setTeam($match->getTeamA());
+            $hr->setAwayteam(MatchSupport::$HOME);
             $ms->addMatchRelation($hr);
             $ar = new MatchScheduleRelation();
-            $ar->setTeam($this->em->merge($match->getTeamB()));
-            $ar->setAwayteam(true);
+            $ar->setTeam($match->getTeamB());
+            $ar->setAwayteam(MatchSupport::$AWAY);
             $ms->addMatchRelation($ar);
         }
         return $ms;

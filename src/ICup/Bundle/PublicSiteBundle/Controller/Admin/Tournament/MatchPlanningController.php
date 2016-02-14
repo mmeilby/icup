@@ -13,6 +13,8 @@ use ICup\Bundle\PublicSiteBundle\Entity\Doctrine\MatchScheduleRelation;
 use ICup\Bundle\PublicSiteBundle\Entity\Doctrine\Playground;
 use ICup\Bundle\PublicSiteBundle\Entity\Doctrine\PlaygroundAttribute;
 use ICup\Bundle\PublicSiteBundle\Entity\Doctrine\QMatchRelation;
+use ICup\Bundle\PublicSiteBundle\Entity\Doctrine\QMatchSchedule;
+use ICup\Bundle\PublicSiteBundle\Entity\Doctrine\QMatchSchedulePlan;
 use ICup\Bundle\PublicSiteBundle\Entity\Doctrine\QMatchScheduleRelation;
 use ICup\Bundle\PublicSiteBundle\Entity\Doctrine\Tournament;
 use ICup\Bundle\PublicSiteBundle\Entity\Doctrine\User;
@@ -312,6 +314,7 @@ class MatchPlanningController extends Controller
      *                                  rank group name
      *
      * Examples:    385;10-7-2015;13.00;C;(A);7;1 A;2 B
+     *              361;11-7-2015;9.00;F;10:1A;3;8:1A#1;8:2A#1
      *              212;5-7-2015;9.15;C;A;7;AETNA MASCALUCIA (ITA);TVIS KFUM 'A' (DNK)
      *
      * Country is only used if team name is ambigious - however syntax must be maintained.
@@ -328,7 +331,7 @@ class MatchPlanningController extends Controller
                 $match = array();
                 foreach ($csv as $idx => $data) {
                     if ($data) {
-                        if (array_key_exists($idx, $keys)) {
+                        if (isset($keys[$idx])) {
                             if ($keys[$idx] == 'teamA' || $keys[$idx] == 'teamB') {
                                 $match[$keys[$idx]] = $this->parseImportTeam($data);
                             }
@@ -350,9 +353,13 @@ class MatchPlanningController extends Controller
     }
 
     private function parseImportTeam($token) {
-        if (preg_match('/#(?<rank>\d+) (?<group>\w+)/', $token, $args)) {}
-        elseif (preg_match('/(?<name>[^\'\(]+) \'(?<division>\w+)\' \((?<country>\w+)\)/', $token, $args)) {}
-        elseif (preg_match('/(?<name>[^\'\(]+) \((?<country>\w+)\)/', $token, $args)) {}
+        if (preg_match('/0:(?<litra>[^\#]+)#(?<rank>\d+)/', $token, $args)) {
+            $args['classification'] = Group::$PRE;
+            $args['branch'] = "";
+        }
+        elseif (preg_match('/(?<classification>\d+):(?<litra>\d+)(?<branch>\w*)#(?<rank>\d+)/', $token, $args)) {}
+        elseif (preg_match('/(?<name>[^\|\(]+) \|(?<division>\w+)\| \((?<country>\w+)\)/', $token, $args)) {}
+        elseif (preg_match('/(?<name>[^\|\(]+) \((?<country>\w+)\)/', $token, $args)) {}
         else {
             $args = array('name' => $token);
         }
@@ -362,14 +369,27 @@ class MatchPlanningController extends Controller
     private function validateData(Tournament $tournament, $matchListRaw) {
         $matchList = array();
         foreach ($matchListRaw as $matchRaw) {
+            $isFinal = false;
+            /* @var $category Category */
+            $category = $this->get('logic')->getCategoryByName($tournament->getId(), $matchRaw['category']);
+            if ($category == null) {
+                throw new ValidationException("BADCATEGORY", "tournament=".$tournament->getId()." category=".$matchRaw['category']);
+            }
             /* @var $playground Playground */
             $playground = $this->get('logic')->getPlaygroundByNo($tournament->getId(), $matchRaw['playground']);
             if ($playground == null) {
                 throw new ValidationException("BADPLAYGROUND", "tournament=".$tournament->getId()." no=".$matchRaw['playground']);
             }
-            $group = $this->get('logic')->getGroupByCategory($tournament->getId(), $matchRaw['category'], $matchRaw['group']);
-            if ($group == null) {
-                throw new ValidationException("BADGROUP", "tournament=".$tournament->getId()." category=".$matchRaw['category']." group=".$matchRaw['group']);
+            $groupname = $matchRaw['group'];
+            if (preg_match('/(?<classification>\d+)-(?<litra>\d+)(?<branch>\w*)/', $groupname, $args)) {
+                $isFinal = true;
+                $group = $args;
+            }
+            else {
+                $group = $this->get('logic')->getGroupByCategory($tournament->getId(), $matchRaw['category'], $groupname);
+                if ($group == null) {
+                    throw new ValidationException("BADGROUP", "tournament=".$tournament->getId()." category=".$matchRaw['category']." group=".$groupname);
+                }
             }
             $matchdate = date_create_from_format($this->get('translator')->trans('FORMAT.DATE'), $matchRaw['date']);
             $matchtime = date_create_from_format($this->get('translator')->trans('FORMAT.TIME'), $matchRaw['time']);
@@ -389,25 +409,52 @@ class MatchPlanningController extends Controller
             if (!$pattr) {
                 throw new ValidationException("BADDATE", "No playground attribute for date=".$matchRaw['date']);
             }
-            $teamA = $this->getTeam($group->getId(), $matchRaw['teamA']);
-            $teamB = $this->getTeam($group->getId(), $matchRaw['teamB']);
+            if ($isFinal) {
+                $teamA = $this->getQRel($category, $matchRaw['teamA'], MatchSupport::$HOME);
+                $teamB = $this->getQRel($category, $matchRaw['teamB'], MatchSupport::$AWAY);
+            }
+            else {
+                $teamA = $this->getTeam($group->getId(), $matchRaw['teamA'], MatchSupport::$HOME);
+                $teamB = $this->getTeam($group->getId(), $matchRaw['teamB'], MatchSupport::$AWAY);
+            }
             $match = array(
                 'matchno' => $matchRaw['matchno'],
                 'date' => $date,
                 'time' => $time,
                 'pa' => $pattr,
-                'category' => $matchRaw['category'],
+                'category' => $category,
                 'group' => $group,
                 'playground' => $playground,
                 'teamA' => $teamA,
-                'teamB' => $teamB
+                'teamB' => $teamB,
+                'final' => $isFinal
             );
             $matchList[] = $match;
         }
         return $matchList;
     }
 
-    private function getTeam($groupid, $teamRaw) {
+    private function getQRel(Category $category, $teamRaw, $away) {
+        $qrel = new QMatchScheduleRelation();
+        $qrel->setClassification($teamRaw['classification']);
+        $qrel->setLitra($teamRaw['litra']);
+        $qrel->setBranch($teamRaw['branch']);
+        if ($teamRaw['classification'] == Group::$PRE) {
+            /* @var $group Group */
+            foreach ($category->getGroupsClassified(Group::$PRE)->getValues() as $nth => $group) {
+                if ($teamRaw['litra'] == $group->getName()) {
+                    $qrel->setLitra($nth+1);
+                    $qrel->setBranch("");
+                    break;
+                }
+            }
+        }
+        $qrel->setRank($teamRaw['rank']);
+        $qrel->setAwayteam($away);
+        return $qrel;
+    }
+
+    private function getTeam($groupid, $teamRaw, $away) {
         if (isset($teamRaw['rank'])) {
             $rankingGroup = $this->get('logic')->getGroup($groupid, $teamRaw['group']);
             if ($rankingGroup == null) {
@@ -419,6 +466,7 @@ class MatchPlanningController extends Controller
             $relation = new QMatchScheduleRelation();
             $relation->setRank($teamRaw['rank']);
             $relation->setGroup($rankingGroup);
+            $relation->setAwayteam($away);
         }
         else {
             $infoteam = null;
@@ -442,6 +490,7 @@ class MatchPlanningController extends Controller
             }
             $relation = new MatchScheduleRelation();
             $relation->setTeam($this->get('entity')->getTeamById($infoteam->getId()));
+            $relation->setAwayteam($away);
         }
         return $relation;
     }
@@ -450,15 +499,22 @@ class MatchPlanningController extends Controller
         $em = $this->getDoctrine()->getManager();
 
         foreach ($matchList as $match) {
-            $matchrec = new MatchSchedule();
+            if ($match['final']) {
+                $matchrec = new QMatchSchedule();
+                $matchrec->setCategory($match['category']);
+                $matchrec->setClassification($match['group']['classification']);
+                $matchrec->setLitra($match['group']['litra']);
+                $matchrec->setBranch($match['group']['branch']);
+                $matchrec->addQMatchRelation($match['teamA']);
+                $matchrec->addQMatchRelation($match['teamB']);
+            }
+            else {
+                $matchrec = new MatchSchedule();
+                $matchrec->setGroup($match['group']);
+                $matchrec->addMatchRelation($match['teamA']);
+                $matchrec->addMatchRelation($match['teamB']);
+            }
             $matchrec->setTournament($tournament);
-            $matchrec->setGroup($match['group']);
-            $hr = $match['teamA'];
-            $hr->setAwayteam(MatchSupport::$HOME);
-            $matchrec->addMatchRelation($hr);
-            $ar = $match['teamB'];
-            $ar->setAwayteam(MatchSupport::$AWAY);
-            $matchrec->addMatchRelation($ar);
             $matchPlan = new MatchSchedulePlan();
             $matchPlan->setPlaygroundAttribute($match['pa']);
             $matchPlan->setMatchstart($match['time']);
@@ -775,41 +831,72 @@ class MatchPlanningController extends Controller
     
     private function getResponses($result) {
         $outputar = array("matchno;date;time;category;group;playground;teamA;teamB");
-        /* @var $match MatchPlan */
         foreach ($result['matches'] as $match) {
-            $schedule = Date::getDateTime($match->getDate(), $match->getTime());
-            $date = date_format($schedule, "j-n-Y");
-            $time = date_format($schedule, "G.i");
-            $outputstr = $match->getMatchno().';'.$date.';'.$time.
+            if ($match instanceof QMatchPlan) {
+                /* @var $match QMatchPlan */
+                $schedule = Date::getDateTime($match->getDate(), $match->getTime());
+                $date = date_format($schedule, "j-n-Y");
+                $time = date_format($schedule, "G.i");
+                $outputstr = $match->getMatchno().';'.$date.';'.$time.
+                    ';"'.$match->getCategory()->getName().
+                    '";"'.$match->getClassification()."-".$match->getLitra().
+                    '";"'.$match->getPlayground()->getNo().
+                    '";"'.$match->getRelA().
+                    '";"'.$match->getRelB().
+                    '";';
+                $outputar[] = $outputstr;
+            }
+            else {
+                /* @var $match MatchPlan */
+                $schedule = Date::getDateTime($match->getDate(), $match->getTime());
+                $date = date_format($schedule, "j-n-Y");
+                $time = date_format($schedule, "G.i");
+                $outputstr = $match->getMatchno().';'.$date.';'.$time.
                     ';"'.$match->getCategory()->getName().
                     '";"'.$match->getGroup()->getName().
                     '";"'.$match->getPlayground()->getNo().
-                    '";"'.str_replace('"', "'", $match->getTeamA()->getName())." (".$match->getTeamA()->getCountry().")".
-                    '";"'.str_replace('"', "'", $match->getTeamB()->getName())." (".$match->getTeamB()->getCountry().")".
-                    '"';
-            $outputar[] = $outputstr;
+                    '";"'.str_replace('"', "|", $match->getTeamA()->getTeamName())." (".$match->getTeamA()->getClub()->getCountry().")".
+                    '";"'.str_replace('"', "|", $match->getTeamB()->getTeamName())." (".$match->getTeamB()->getClub()->getCountry().")".
+                    '";';
+                $outputar[] = $outputstr;
+            }
         }
         if (count($result['unassigned']) > 0) {
             $outputar[] = ";;;;;;;";
             foreach ($result['unassigned'] as $match) {
-                $outputstr =
+                if ($match instanceof QMatchPlan) {
+                    /* @var $match QMatchPlan */
+                    $outputstr =
+                        ';;;"'.$match->getCategory()->getName().
+                        '";"'.$match->getClassification()."-".$match->getLitra().
+                        '";;"'.$match->getRelA().
+                        '";"'.$match->getRelB().
+                        '";';
+                    $outputar[] = $outputstr;
+                }
+                else {
+                    /* @var $match MatchPlan */
+                    $outputstr =
                         ';;;"'.$match->getCategory()->getName().
                         '";"'.$match->getGroup()->getName().
-                        '";;"'.str_replace('"', "'", $match->getTeamA()->getName())." (".$match->getTeamA()->getCountry().")".
-                        '";"'.str_replace('"', "'", $match->getTeamB()->getName())." (".$match->getTeamB()->getCountry().")".
-                        '"';
-                $outputar[] = $outputstr;
+                        '";;"'.str_replace('"', "|", $match->getTeamA()->getTeamName())." (".$match->getTeamA()->getClub()->getCountry().")".
+                        '";"'.str_replace('"', "|", $match->getTeamB()->getTeamName())." (".$match->getTeamB()->getClub()->getCountry().")".
+                        '";';
+                    $outputar[] = $outputstr;
+                }
             }
         }
         $outputar[] = ";;;;;;;";
         $tid = array();
         foreach ($result['matches'] as $match) {
-            if (!isset($tid[$match->getTeamA()->getId()])) {
-                $outputstr = '"'.$match->getCategory()->getName().
-                        '";"'.$match->getGroup()->getName().
-                        '";"'.str_replace('"', "'", $match->getTeamA()->getName())." (".$match->getTeamA()->getCountry().")".'"';
-                $tid[$match->getTeamA()->getId()] = $match->getTeamA()->getName();
-                $outputar[] = $outputstr;
+            if (!$match instanceof QMatchPlan) {
+                if (!isset($tid[$match->getTeamA()->getId()])) {
+                    $outputstr = '"' . $match->getCategory()->getName() .
+                        '";"' . $match->getGroup()->getName() .
+                        '";"' . str_replace('"', "'", $match->getTeamA()->getTeamName()) . " (" . $match->getTeamA()->getClub()->getCountry() . ")" . '"';
+                    $tid[$match->getTeamA()->getId()] = $match->getTeamA()->getTeamName();
+                    $outputar[] = $outputstr;
+                }
             }
         }
         

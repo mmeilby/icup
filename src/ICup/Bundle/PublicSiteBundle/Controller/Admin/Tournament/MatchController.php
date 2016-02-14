@@ -6,6 +6,7 @@ use ICup\Bundle\PublicSiteBundle\Entity\Doctrine\Date;
 use ICup\Bundle\PublicSiteBundle\Entity\Doctrine\Group;
 use ICup\Bundle\PublicSiteBundle\Entity\Doctrine\Match;
 use ICup\Bundle\PublicSiteBundle\Entity\Doctrine\MatchRelation;
+use ICup\Bundle\PublicSiteBundle\Entity\Doctrine\Playground;
 use ICup\Bundle\PublicSiteBundle\Entity\Doctrine\QMatchRelation;
 use ICup\Bundle\PublicSiteBundle\Entity\Doctrine\Tournament;
 use ICup\Bundle\PublicSiteBundle\Entity\Doctrine\User;
@@ -14,6 +15,7 @@ use ICup\Bundle\PublicSiteBundle\Services\Util;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
+use Symfony\Component\Form\Form;
 use Symfony\Component\Form\FormError;
 use ICup\Bundle\PublicSiteBundle\Entity\MatchForm;
 use Symfony\Component\HttpFoundation\Request;
@@ -192,7 +194,9 @@ class MatchController extends Controller
         $timeformat = $this->get('translator')->trans('FORMAT.TIME');
         $matchtime = date_create_from_format($timeformat, $matchForm->getTime());
         $match->setTime(Date::getTime($matchtime));
-        $match->setPlayground($matchForm->getPlayground());
+        /* @var $playground Playground */
+        $playground = $this->get('entity')->getPlaygroundById($matchForm->getPlayground());
+        $match->setPlayground($playground);
     }
     
     private function copyMatchForm(Match $match) {
@@ -205,13 +209,14 @@ class MatchController extends Controller
         $matchForm->setDate(date_format($matchdate, $dateformat));
         $timeformat = $this->get('translator')->trans('FORMAT.TIME');
         $matchForm->setTime(date_format($matchdate, $timeformat));
-        $matchForm->setPlayground($match->getPlayground());
+        $matchForm->setPlayground($match->getPlayground()->getId());
         return $matchForm;
     }
 
     private function makeMatchForm(MatchForm $matchForm, $tournamentid, $action) {
         $playgrounds = $this->get('logic')->listPlaygroundsByTournament($tournamentid);
         $playgroundnames = array();
+        /* @var $playground Playground */
         foreach ($playgrounds as $playground) {
             $playgroundnames[$playground->getId()] = $playground->getName();
         }
@@ -238,7 +243,7 @@ class MatchController extends Controller
         return $formDef->getForm();
     }
     
-    private function checkForm($form, MatchForm $matchForm) {
+    private function checkForm(Form $form, MatchForm $matchForm) {
         if (!$form->isValid()) {
             return false;
         }

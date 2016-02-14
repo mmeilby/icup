@@ -287,6 +287,13 @@ FORM:
     END:
       PROMPT: Matches end
       HELP: Latest time of match end for this preference
+    FINALS:
+      PROMPT: Reserved for final rounds
+      HELP: Selecting this option the preference is only available for planning of final rounds
+    CLASSIFICATION:
+      PROMPT: Reserved for group classification
+      HELP: Specify which classification this preference is reserved for
+      DEFAULT: No restrictions
     SUBMIT:
       ADD: Add new preference
       CHG: Save information

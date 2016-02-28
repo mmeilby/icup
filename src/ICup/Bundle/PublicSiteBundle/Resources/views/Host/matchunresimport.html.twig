@@ -1,0 +1,106 @@
+{% extends "ICupPublicSiteBundle:Masters:edit.html.twig" %}
+
+{% form_theme form 'ICupPublicSiteBundle:Default:layout.script.html.twig' %}
+{% trans_default_domain "admin" %}
+
+{% block adminbody %}
+    <div class="row">
+        <div class="col-lg-6">
+            <h2 style="margin-bottom: 0">
+                <i class="fa fa-cogs"></i>&nbsp;
+                {% trans %}FORM.MATCHIMPORTUNRES.TITLE{% endtrans %}
+            </h2>
+            <p>{% trans %}FORM.MATCHIMPORTUNRES.PROMPT{% endtrans %}</p>
+        </div>
+        <div class="col-lg-6 text-right">
+            <p>&nbsp;</p>
+            <a id="unres" class="btn btn-lg btn-success">
+                <i class="fa fa-search"></i>
+                {% trans %}FORM.MATCHIMPORTUNRES.BUTTON.RESOLVE{% endtrans %}
+            </a>
+        </div>
+    </div>
+    <div id="alert"></div>
+    <div class="panel panel-default">
+        <div class="panel-body">
+        {{ form(form) }}
+        </div>
+    </div>
+<!--
+    <div class="modal fade" id="infobox" tabindex="-1" role="dialog" aria-hidden="true">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                    <h4 class="modal-title">I am a modal window, and no one can beat me!</h4>
+                </div>
+                <div id="infobox_content" class="modal-body"></div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-danger" data-dismiss="modal">Close Window</button>
+                </div>
+            </div><!-- /.modal-content --
+        </div><!-- /.modal-dialog --
+    </div>
+    <div id="infobox" class="alert hidden"
+         style="position: relative; left: 100px; top: -300px; border: 1px solid black; padding: 15px; width: 200px;"
+    ></div>
+-->
+{% endblock %}
+{% block javascripts %}
+    <script type="text/javascript">
+        $(function onLoad() {
+            // Add key awareness
+            $("#unres").click(function() {
+                $("#unres").html("<i class=\"fa fa-spinner fa-pulse\"></i>{% trans %}FORM.MATCHIMPORTUNRES.FINDQ.TITLE{% endtrans %}");
+                $.ajax({
+                    dataType: "json",
+                    url: Routing.generate('_rest_match_planning_list_qualified', { 'tournamentid': {{ tournament.id }} }),
+                    async: false
+                })
+                .done(function( result ) {
+                    $("#unres").html("<i class=\"fa fa-search\"></i>{% trans %}FORM.MATCHIMPORTUNRES.BUTTON.RESOLVE{% endtrans %}");
+                    if (result.success) {
+                        if (result.matches.length > 0) {
+                            result.matches.forEach(function (match, index) {
+                                $("#form_import").text($("#form_import").val()+match.matchno+" "+match.home.name+" "+match.away.name+"\n");
+                            });
+                        }
+                        else {
+                            $("#alert").html(alertwindow(
+                                    "{% trans %}FORM.MATCHIMPORTUNRES.FINDQ.NODATA.TITLE{% endtrans %}",
+                                    "{% trans %}FORM.MATCHIMPORTUNRES.FINDQ.NODATA.MESSAGE{% endtrans %}",
+                                    "{% trans %}FORM.MATCHIMPORTUNRES.FINDQ.NODATA.OK{% endtrans %}",
+                                    "info"
+                            ));
+                        }
+                    }
+                    else {
+                        $("#alert").html(alertwindow(
+                                "{% trans %}FORM.MATCHIMPORTUNRES.FINDQ.FAIL.TITLE{% endtrans %}",
+                                "{% trans %}FORM.MATCHIMPORTUNRES.FINDQ.FAIL.MESSAGE{% endtrans %} "+result.error+" - "+result.info,
+                                "{% trans %}FORM.MATCHIMPORTUNRES.FINDQ.FAIL.OK{% endtrans %}",
+                                "danger"
+                        ));
+                    }
+                })
+                .fail(function( jqXHR, textStatus, errorThrown) {
+                    $("#alert").html(alertwindow(
+                        "{% trans %}FORM.MATCHIMPORTUNRES.FINDQ.ERROR.TITLE{% endtrans %}",
+                        "{% trans %}FORM.MATCHIMPORTUNRES.FINDQ.ERROR.MESSAGE{% endtrans %} "+textStatus+" - "+errorThrown,
+                        "{% trans %}FORM.MATCHIMPORTUNRES.FINDQ.ERROR.OK{% endtrans %}",
+                        "danger"
+                    ));
+                });
+            });
+        });
+
+        function alertwindow(title, message, button, css) {
+            return  "<div class=\"alert alert-"+css+" alert-dismissible fade in\" role=\"alert\">"+
+                        "<button type=\"button\" class=\"close\" data-dismiss=\"alert\" aria-label=\"Close\"><span aria-hidden=\"true\">×</span></button>"+
+                        "<h4>"+title+"</h4>"+
+                        "<p>"+message+"</p>"+
+                        "<p><button type=\"button\" class=\"btn btn-"+css+"\" data-dismiss=\"alert\">"+button+"</button></p>"+
+                    "</div>";
+        }
+    </script>
+{% endblock %}

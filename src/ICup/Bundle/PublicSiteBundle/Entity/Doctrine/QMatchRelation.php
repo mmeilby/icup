@@ -137,4 +137,8 @@ class QMatchRelation
     {
         return $this->awayteam == 'Y';
     }
+
+    public function __toString() {
+        return $this->getGroup()->getClassification().":".$this->getGroup()->getName()."#".$this->getRank();
+    }
 }

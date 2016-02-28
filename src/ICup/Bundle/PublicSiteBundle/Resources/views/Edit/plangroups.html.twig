@@ -72,6 +72,9 @@
                     </li>
                 {% endfor %}
             </ul>
+            <a class="btn btn-lg btn-default" href="{{ path('_edit_import_team', { 'tournamentid': tournament.id }) }}">
+                {% trans %}FORM.TEAMIMPORT.TITLE{% endtrans %}
+            </a>
         </div>
         <div class="col-sm-5">
             {% if category %}

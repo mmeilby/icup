@@ -1,8 +1,7 @@
 To Do List
 ----------
-Definer champions ved gem af kampplan
 Færdiggørelse af planlæg indledende kampe
-Kig på Indlæs kampplan til slutrunde/Påsæt hold til slutrunde - lav generel import funktion under planlæg turnering
+Vis gruppenavn på slutrundekampe - Semifinale 1
 Ret ændring af kodeord
     1. returner korrekt til forrige side
     2. vis dannet kodeord
@@ -31,6 +30,8 @@ Opret turnering
 
 Done List
 ---------
+Kig på Indlæs kampplan til slutrunde/Påsæt hold til slutrunde - lav generel import funktion under planlæg turnering
+Definer champions ved gem af kampplan
 Playground fejlhåndtering i tilpas kamp rettet
 Planlæg slutrunde kampe og puljer
 Venue = bane !

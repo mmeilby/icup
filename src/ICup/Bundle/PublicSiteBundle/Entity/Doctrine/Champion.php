@@ -24,7 +24,7 @@ class Champion
     /**
      * @var Category $category
      * Relation to Category
-     * @ORM\ManyToOne(targetEntity="Category", inversedBy="champions")
+     * @ORM\ManyToOne(targetEntity="Category", inversedBy="champions", cascade={"persist"})
      * @ORM\JoinColumn(name="category", referencedColumnName="id")
      */
     protected $category;
@@ -39,7 +39,7 @@ class Champion
     /**
      * @var Group $group
      * The qualifying group
-     * @ORM\ManyToOne(targetEntity="Group")
+     * @ORM\ManyToOne(targetEntity="Group", cascade={"persist"})
      * @ORM\JoinColumn(name="cid", referencedColumnName="id")
      */
     protected $group;

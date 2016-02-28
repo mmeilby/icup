@@ -6,6 +6,9 @@ use ICup\Bundle\PublicSiteBundle\Entity\Doctrine\Category;
 use ICup\Bundle\PublicSiteBundle\Entity\Doctrine\Champion;
 use ICup\Bundle\PublicSiteBundle\Entity\Doctrine\Date;
 use ICup\Bundle\PublicSiteBundle\Entity\Doctrine\Group;
+use ICup\Bundle\PublicSiteBundle\Entity\Doctrine\Match;
+use ICup\Bundle\PublicSiteBundle\Entity\Doctrine\MatchRelation;
+use ICup\Bundle\PublicSiteBundle\Entity\Doctrine\QMatchRelation;
 use ICup\Bundle\PublicSiteBundle\Entity\Doctrine\Team;
 use ICup\Bundle\PublicSiteBundle\Entity\Doctrine\Tournament;
 use Symfony\Component\DependencyInjection\ContainerInterface;
@@ -70,7 +73,7 @@ class TournamentSupport
     }
 
     public function isTournamentInProgress($tournamentid, $date) {
-        return $this->isDateWithinInterval($tournamentid, $date, Event::$MATCH_START, Event::$MATCH_STOP, true);
+        return $this->isDateWithinInterval($tournamentid, $date, Event::$MATCH_START, Event::$MATCH_STOP, false);
     }
 
     public function isTournamentArchived($tournamentid, $date) {
@@ -248,6 +251,49 @@ class TournamentSupport
             }
         }
         return $teams;
+    }
+
+    public function listQualifiedTeamsByTournament(Tournament $tournament) {
+        $sortedGroups = array();
+        $matches = array();
+        /* @var $category Category */
+        foreach ($tournament->getCategories() as $category) {
+            /* @var $group Group */
+            foreach ($category->getGroups() as $group) {
+                // only inspect matches for groups in the elimination rounds
+                if ($group->getClassification() > Group::$PRE) {
+                    /* @var $match Match */
+                    foreach ($group->getMatches() as $match) {
+                        // search for matches with no teams qualified yet
+                        if ($match->getMatchRelations()->count() == 0) {
+                            $teams = array();
+                            /* @var $qmatchrelation QMatchRelation */
+                            foreach ($match->getQMatchRelations() as $qmatchrelation) {
+                                // get current standing for the qualifying group if not yet found
+                                $groupid = $qmatchrelation->getGroup()->getId();
+                                if (!isset($sortedGroups[$groupid])) {
+                                    $sortedGroups[$groupid] = $this->container->get('orderTeams')->sortCompletedGroup($groupid);
+                                }
+                                $rankedTeams = $sortedGroups[$groupid];
+                                if ($rankedTeams && isset($rankedTeams[$qmatchrelation->getRank()-1])) {
+                                    $team = $this->entity->getTeamById($rankedTeams[$qmatchrelation->getRank()-1]->getId());
+                                    $teams[$qmatchrelation->getAwayteam()]= $team;
+                                }
+                            }
+                            // if we got two teams ready for elimination then we got a match
+                            if (count($teams) == 2) {
+                                $matches[] = array(
+                                    'match' => $match,
+                                    'home' => $teams[MatchSupport::$HOME],
+                                    'away' => $teams[MatchSupport::$AWAY],
+                                );
+                            }
+                        }
+                    }
+                }
+            }
+        }
+        return $matches;
     }
 
     public function getStatTournamentCounts($tournamentid) {
@@ -469,13 +515,13 @@ class TournamentSupport
         // wipe clubs
         $qbc = $this->em->createQuery(
                 "delete from ".$this->entity->getRepositoryPath('Club')." clb ".
-                "where clb.id in (select t.club ".
+                "where clb.id in (select identity(t.club) ".
                                 "from ".$this->entity->getRepositoryPath('Category')." c, ".
                                         $this->entity->getRepositoryPath('Group')." g, ".
                                         $this->entity->getRepositoryPath('GroupOrder')." o, ".
                                         $this->entity->getRepositoryPath('Team')." t ".
                                 "where c.tournament=:tournament and g.category=c.id and o.group=g.id and o.team=t.id) ".
-                  "and clb.id not in (select tt.club ".
+                  "and clb.id not in (select identity(tt.club) ".
                                 "from ".$this->entity->getRepositoryPath('Category')." cc, ".
                                         $this->entity->getRepositoryPath('Group')." gg, ".
                                         $this->entity->getRepositoryPath('GroupOrder')." oo, ".
@@ -486,7 +532,7 @@ class TournamentSupport
         // wipe teams
         $qbt = $this->em->createQuery(
                 "delete from ".$this->entity->getRepositoryPath('Team')." t ".
-                "where t.id in (select o.team ".
+                "where t.id in (select identity(o.team) ".
                                 "from ".$this->entity->getRepositoryPath('Category')." c, ".
                                         $this->entity->getRepositoryPath('Group')." g, ".
                                         $this->entity->getRepositoryPath('GroupOrder')." o ".
@@ -552,7 +598,7 @@ class TournamentSupport
                                 "from ".$this->entity->getRepositoryPath('Category')." c, ".
                                         $this->entity->getRepositoryPath('Group')." g ".
                                 "where c.tournament=:tournament and g.category=c.id) ".
-                "and m.id not in (select r.match ".
+                "and m.id not in (select identity(r.match) ".
                                  "from ".$this->entity->getRepositoryPath('MatchRelation')." r)");
         $qbm->setParameter('tournament', $tournamentid);
         $qbm->getResult();
@@ -567,14 +613,6 @@ class TournamentSupport
                                 "where c.tournament=:tournament)");
         $qbg->setParameter('tournament', $tournamentid);
         $qbg->getResult();
-        // wipe playground attribute relations
-        $qbp = $this->em->createQuery(
-                "delete from ".$this->entity->getRepositoryPath('PARelation')." p ".
-                "where p.category in (select c.id ".
-                                "from ".$this->entity->getRepositoryPath('Category')." c ".
-                                "where c.tournament=:tournament)");
-        $qbp->setParameter('tournament', $tournamentid);
-        $qbp->getResult();
         // wipe categories
         $qbc = $this->em->createQuery(
                 "delete from ".$this->entity->getRepositoryPath('Category')." c ".
@@ -584,16 +622,6 @@ class TournamentSupport
     }
     
     public function wipeSites($tournamentid) {
-        // wipe playground attribute relations
-        $qbr = $this->em->createQuery(
-                "delete from ".$this->entity->getRepositoryPath('PARelation')." r ".
-                "where r.playgroundattribute in (select a.id ".
-                                "from ".$this->entity->getRepositoryPath('Site')." s, ".
-                                        $this->entity->getRepositoryPath('Playground')." p, ".
-                                        $this->entity->getRepositoryPath('PlaygroundAttribute')." a ".
-                                "where s.tournament=:tournament and p.site=s.id and a.playground=p.id)");
-        $qbr->setParameter('tournament', $tournamentid);
-        $qbr->getResult();
         // wipe playground attributes
         $qbm = $this->em->createQuery(
                 "delete from ".$this->entity->getRepositoryPath('PlaygroundAttribute')." a ".
@@ -623,6 +651,7 @@ class TournamentSupport
         $this->wipeQMatches($tournamentid);
         $this->wipeMatches($tournamentid);
         $this->wipeTeams($tournamentid);
+        $this->wipeChampions($tournamentid);
         $this->wipeCategories($tournamentid);
         $this->wipeSites($tournamentid);
         // wipe timeslots
@@ -658,6 +687,17 @@ class TournamentSupport
             "where g.classification>0 and g.category in (select c.id ".
                 "from ".$this->entity->getRepositoryPath('Category')." c ".
                 "where c.tournament=:tournament)");
+        $qbg->setParameter('tournament', $tournamentid);
+        $qbg->getResult();
+    }
+
+    public function wipeChampions($tournamentid) {
+        // wipe champions
+        $qbg = $this->em->createQuery(
+            "delete from ".$this->entity->getRepositoryPath('Champion')." t ".
+            "where t.category in (select c.id ".
+            "from ".$this->entity->getRepositoryPath('Category')." c ".
+            "where c.tournament=:tournament)");
         $qbg->setParameter('tournament', $tournamentid);
         $qbg->getResult();
     }

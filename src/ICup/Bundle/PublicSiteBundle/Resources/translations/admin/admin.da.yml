@@ -13,6 +13,7 @@ FORM:
     BADPLAYGROUND: Den valgte bane findes ikke
     BADCATEGORY: Den valgte gruppe findes ikke
     BADGROUP: Den valgte pulje findes ikke
+    BADMATCH: Den valgte kamp er ikke gyldig
     BADTEAM: Holdet er ikke gyldigt
     NOTOURNAMENT: Turnering er ikke valgt
   DASHBOARD:
@@ -717,6 +718,26 @@ FORM:
     CANCEL: Fortryd ændringer
   MATCHIMPORTUNRES:
     TITLE: Påsæt hold til slutrunde
+    PROMPT: Specificer hold der har kvalificeret sig til kampe i slutrunden
+    IMPORT: Holdliste
+    BUTTON:
+      RESOLVE: Find hold der har kvalificeret sig
+    FINDQ:
+      TITLE: Søger nye kampe hvor begge hold har kvalificeret sig...
+      NODATA:
+        TITLE: Søgningen gav intet resultat
+        MESSAGE: Der er ingen nye kampe i slutrunden hvor begge hold er fundet.
+        OK: OK
+      FAIL:
+        TITLE: Der opstod en fejl under søgning af hold
+        MESSAGE: Fejlbeskrivelse:
+        OK: OK
+      ERROR:
+        TITLE: Der opstod en fejl under søgning af hold
+        MESSAGE: Fejlbeskrivelse:
+        OK: OK
+    SUBMIT: Indlæs
+    CANCEL: Fortryd indlæsning
   QMATCHIMPORT:
     TITLE: Indlæs kampplan til slutrunde
   MATCHIMPORT: 

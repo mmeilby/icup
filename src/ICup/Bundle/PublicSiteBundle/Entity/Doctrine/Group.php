@@ -9,7 +9,7 @@ use JsonSerializable;
 /**
  * ICup\Bundle\PublicSiteBundle\Entity\Doctrine\Group
  *
- * @ORM\Table(name="groups",uniqueConstraints={@ORM\UniqueConstraint(name="IdxByCatAndName", columns={"pid", "name"})})
+ * @ORM\Table(name="groups",uniqueConstraints={@ORM\UniqueConstraint(name="IdxByCatAndName", columns={"pid", "classification", "name"})})
  * @ORM\Entity
  */
 class Group implements JsonSerializable

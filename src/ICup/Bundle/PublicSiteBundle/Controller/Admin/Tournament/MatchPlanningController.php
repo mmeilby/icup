@@ -3,6 +3,7 @@ namespace ICup\Bundle\PublicSiteBundle\Controller\Admin\Tournament;
 
 use Doctrine\Common\Collections\ArrayCollection;
 use ICup\Bundle\PublicSiteBundle\Entity\Doctrine\Category;
+use ICup\Bundle\PublicSiteBundle\Entity\Doctrine\Champion;
 use ICup\Bundle\PublicSiteBundle\Entity\Doctrine\Date;
 use ICup\Bundle\PublicSiteBundle\Entity\Doctrine\Group;
 use ICup\Bundle\PublicSiteBundle\Entity\Doctrine\Match;
@@ -357,7 +358,7 @@ class MatchPlanningController extends Controller
             $args['classification'] = Group::$PRE;
             $args['branch'] = "";
         }
-        elseif (preg_match('/(?<classification>\d+):(?<litra>\d+)(?<branch>\w*)#(?<rank>\d+)/', $token, $args)) {}
+        elseif (preg_match('/(?<classification>\d+):(?<litra>\d+)(?<branch>[AB]*)#(?<rank>\d+)/', $token, $args)) {}
         elseif (preg_match('/(?<name>[^\|\(]+) \|(?<division>\w+)\| \((?<country>\w+)\)/', $token, $args)) {}
         elseif (preg_match('/(?<name>[^\|\(]+) \((?<country>\w+)\)/', $token, $args)) {}
         else {
@@ -560,27 +561,21 @@ class MatchPlanningController extends Controller
         $tournament = $this->checkArgs($tournamentid);
         $result = $this->get('planning')->getSchedule($tournament);
 
-        // Only if tournament has not been started we are allowed to wipe the teams
+        // Only if tournament has not been started we are allowed to wipe the matches and qualifying groups
         if ($this->get('tmnt')->getTournamentStatus($tournamentid, new DateTime()) == TournamentSupport::$TMNT_ENROLL) {
-            $this->get('tmnt')->wipeMatches($tournamentid);
-            $this->get('tmnt')->wipeQMatches($tournamentid);
-            $this->get('tmnt')->wipeQualifyingGroups($tournamentid);
-
+            $champions = array(
+                Group::$FINAL => array(1 => 1, 2 => 2),
+                Group::$BRONZE => array(1 => 3, 2 => 4),
+            );
             $em = $this->getDoctrine()->getEntityManager();
-            foreach ($result['matches'] as $match) {
-                if ($match instanceof QMatchPlan) {
-                    /* @var $match QMatchPlan */
-                    $group = new Group();
-                    $group->setName($match->getLitra());
-                    $group->setCategory($match->getCategory());
-                    $group->setClassification($match->getClassification());
-                    $em->persist($group);
-                }
-            }
-            $em->flush();
-
             $em->beginTransaction();
+            $qgroups = array();
             try {
+                $this->get('tmnt')->wipeMatches($tournamentid);
+                $this->get('tmnt')->wipeQMatches($tournamentid);
+                $this->get('tmnt')->wipeQualifyingGroups($tournamentid);
+                $this->get('tmnt')->wipeChampions($tournamentid);
+
                 foreach ($result['matches'] as $match) {
                     if ($match instanceof QMatchPlan) {
                         /* @var $match QMatchPlan */
@@ -588,9 +583,35 @@ class MatchPlanningController extends Controller
                         $matchrec->setMatchno($match->getMatchno());
                         $matchrec->setDate($match->getDate());
                         $matchrec->setTime($match->getTime());
-                        $matchrec->setGroup($this->getQualifyingGroup($match->getCategory(),
-                                                                      $match->getClassification(),
-                                                                      $match->getLitra()));
+                        if (isset($qgroups[$match->getCategory()->getId()."-".$match->getClassification()."-".$match->getLitra()])) {
+                            $group = $qgroups[$match->getCategory()->getId()."-".$match->getClassification()."-".$match->getLitra()];
+                        }
+                        else {
+                            $group = new Group();
+                            $group->setName($match->getLitra());
+                            $group->setCategory($match->getCategory());
+                            $group->setClassification($match->getClassification());
+                            $qgroups[$match->getCategory()->getId()."-".$match->getClassification()."-".$match->getLitra()] = $group;
+                        }
+                        if (isset($champions[$match->getClassification()])) {
+                            foreach ($champions[$match->getClassification()] as $rank => $champ) {
+                                if ($champ <= $match->getCategory()->getTrophys()) {
+                                    $champion = new Champion();
+                                    $champion->setCategory($match->getCategory());
+                                    // if champion is found from the B finals then shift the rank below the A finalists
+                                    if (preg_match('/\d+B/', $match->getLitra())) {
+                                        $champion->setChampion($champ + $match->getCategory()->getTrophys());
+                                    }
+                                    else {
+                                        $champion->setChampion($champ);
+                                    }
+                                    $champion->setGroup($group);
+                                    $champion->setRank($rank);
+                                    $em->persist($champion);
+                                }
+                            }
+                        }
+                        $matchrec->setGroup($group);
                         $matchrec->setPlayground($match->getPlayground());
 
                         $resultreqA = new QMatchRelation();
@@ -599,9 +620,8 @@ class MatchPlanningController extends Controller
                             $resultreqA->setGroup($match->getRelA()->getGroup());
                         }
                         else {
-                            $resultreqA->setGroup($this->getQualifyingGroup($match->getCategory(),
-                                                                            $match->getRelA()->getClassification(),
-                                                                            $match->getRelA()->getLitra().$match->getRelA()->getBranch()));
+                            $group = $qgroups[$match->getCategory()->getId()."-".$match->getRelA()->getClassification()."-".$match->getRelA()->getLitra().$match->getRelA()->getBranch()];
+                            $resultreqA->setGroup($group);
                         }
                         $resultreqA->setRank($match->getRelA()->getRank());
                         $matchrec->addMatchRelation($resultreqA);
@@ -612,9 +632,8 @@ class MatchPlanningController extends Controller
                             $resultreqB->setGroup($match->getRelB()->getGroup());
                         }
                         else {
-                            $resultreqB->setGroup($this->getQualifyingGroup($match->getCategory(),
-                                                                            $match->getRelB()->getClassification(),
-                                                                            $match->getRelB()->getLitra().$match->getRelB()->getBranch()));
+                            $group = $qgroups[$match->getCategory()->getId()."-".$match->getRelB()->getClassification()."-".$match->getRelB()->getLitra().$match->getRelB()->getBranch()];
+                            $resultreqB->setGroup($group);
                         }
                         $resultreqB->setRank($match->getRelB()->getRank());
                         $matchrec->addMatchRelation($resultreqB);
@@ -668,18 +687,6 @@ class MatchPlanningController extends Controller
             );
         }
         return $this->redirect($this->generateUrl("_edit_match_planning_result", array('tournamentid' => $tournament->getId())));
-    }
-
-    /**
-     * @param Category $category
-     * @param $classification
-     * @param $litra
-     * @return Group
-     */
-    private function getQualifyingGroup(Category $category, $classification, $litra) {
-        return $category->getGroups()->filter(function (Group $group) use ($classification, $litra) {
-            return $group->getClassification() == $classification && $group->getName() == $litra;
-        })->first();
     }
 
     /**

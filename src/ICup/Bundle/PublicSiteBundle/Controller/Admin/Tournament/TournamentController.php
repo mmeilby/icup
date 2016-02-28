@@ -113,6 +113,7 @@ class TournamentController extends Controller
             return $this->redirect($returnUrl);
         }
         if ($form->isValid()) {
+/*
             if ($tournament->getSites()->count() > 0) {
                 $form->addError(new FormError($this->get('translator')->trans('FORM.TOURNAMENT.SITESEXIST', array(), 'admin')));
             }
@@ -125,6 +126,7 @@ class TournamentController extends Controller
             if ($tournament->getEvents()->count() > 0) {
                 $form->addError(new FormError($this->get('translator')->trans('FORM.TOURNAMENT.EVENTSEXIST', array(), 'admin')));
             }
+*/
             if ($form->isValid()) {
                 $em = $this->getDoctrine()->getManager();
                 $em->remove($tournament);

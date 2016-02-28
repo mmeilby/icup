@@ -13,6 +13,7 @@ FORM:
     BADPLAYGROUND: Venue does not exist
     BADCATEGORY: The category does not exist
     BADGROUP: The group does not exist
+    BADTEAM: The match is not valid
     BADTEAM: The team is not valid
     NOTOURNAMENT: No tournament selected
   DASHBOARD:
@@ -645,6 +646,26 @@ FORM:
     CANCEL: Cancel
   MATCHIMPORTUNRES:
     TITLE: Assign teams for elimination round
+    PROMPT: Specify teams qualified for matches in the elimination rounds
+    IMPORT: Team list
+    BUTTON:
+      RESOLVE: Search for qualified teams
+    FINDQ:
+      TITLE: Searching for new matches where both teams are qualified
+      NODATA:
+        TITLE: The search was not successful
+        MESSAGE: No new matches were found to be settled
+        OK: OK
+      FAIL:
+        TITLE: An error was caught while searching for matches
+        MESSAGE: Description:
+        OK: OK
+      ERROR:
+        TITLE: An error was caught while searching for matches
+        MESSAGE: Description:
+        OK: OK
+    SUBMIT: Import
+    CANCEL: Cancel
   QMATCHIMPORT:
     TITLE: Import match plan for elimination round
   MATCHIMPORT: 

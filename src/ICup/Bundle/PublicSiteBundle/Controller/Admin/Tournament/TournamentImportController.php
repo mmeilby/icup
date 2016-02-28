@@ -99,6 +99,8 @@ class TournamentImportController extends Controller
             $tournament->getOption()->setTpoints($source_tournament->getOption()->getTpoints());
             $tournament->getOption()->setLpoints($source_tournament->getOption()->getLpoints());
             $tournament->getOption()->setDscore($source_tournament->getOption()->getDscore());
+            $tournament->getOption()->setEr($source_tournament->getOption()->isEr());
+            $tournament->getOption()->setSvd($source_tournament->getOption()->isSvd());
             $em->persist($tournament);
             $em->flush();
             $this->importSites($source_tournament, $tournament);
@@ -161,6 +163,7 @@ class TournamentImportController extends Controller
             $new_pattr->setStart($pattr->getStart());
             $new_pattr->setEnd($pattr->getEnd());
             $new_pattr->setFinals($pattr->getFinals());
+            $new_pattr->setClassification($pattr->getClassification());
             foreach ($pattr->getCategories() as $category) {
                 $new_pattr->getCategories()->add($cconversion[$category->getId()]);
             }
@@ -181,6 +184,9 @@ class TournamentImportController extends Controller
             $new_category->setClassification($category->getClassification());
             $new_category->setAge($category->getAge());
             $new_category->setMatchtime($category->getMatchtime());
+            $new_category->setStrategy($category->getStrategy());
+            $new_category->setTopteams($category->getTopteams());
+            $new_category->setTrophys($category->getTrophys());
             $em->persist($new_category);
             $cconversion[$category->getId()] = $new_category;
             foreach ($category->getGroups() as $group) {

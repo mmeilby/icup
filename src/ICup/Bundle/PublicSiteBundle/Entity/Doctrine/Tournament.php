@@ -287,6 +287,7 @@ class Tournament
     }
 
     /**
+     * return all venues used for this tournament
      * @return mixed
      */
     public function getPlaygrounds() {
@@ -296,5 +297,21 @@ class Tournament
             return true;
         });
         return $playgrounds;
+    }
+
+    /**
+     * Return all matches for this tournament
+     * @return mixed
+     */
+    public function getMatches() {
+        $matches = array();
+        $this->categories->forAll(function ($n, Category $category) use (&$matches) {
+            $category->getGroups()->forAll(function ($n, Group $group) use (&$matches) {
+                $matches = array_merge($matches, $group->getMatches()->toArray());
+                return true;
+            });
+            return true;
+        });
+        return $matches;
     }
 }

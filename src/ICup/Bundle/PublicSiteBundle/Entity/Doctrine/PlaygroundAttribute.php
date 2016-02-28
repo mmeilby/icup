@@ -35,8 +35,8 @@ class PlaygroundAttribute
      * @var ArrayCollection $categories
      * @ORM\ManyToMany(targetEntity="Category", inversedBy="playgroundattributes")
      * @ORM\JoinTable(name="parelations",
-     *      joinColumns={@ORM\JoinColumn(name="pid", referencedColumnName="id")},
-     *      inverseJoinColumns={@ORM\JoinColumn(name="cid", referencedColumnName="id")}
+     *      joinColumns={@ORM\JoinColumn(name="pid", referencedColumnName="id", onDelete="CASCADE")},
+     *      inverseJoinColumns={@ORM\JoinColumn(name="cid", referencedColumnName="id", onDelete="CASCADE")}
      *      )
      **/
     protected $categories;

@@ -82,6 +82,10 @@ DIV.form-control {
     padding-bottom: 30px;
 }
 
+A.btn I.fa {
+    margin-right: 10px;
+}
+
 .btn-facebook {
     font-weight: 800;
     border-color: #3b5998;

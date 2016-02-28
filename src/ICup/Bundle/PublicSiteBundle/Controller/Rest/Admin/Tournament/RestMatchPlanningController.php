@@ -1,6 +1,8 @@
 <?php
 namespace ICup\Bundle\PublicSiteBundle\Controller\Rest\Admin\Tournament;
 
+use ICup\Bundle\PublicSiteBundle\Entity\Doctrine\Match;
+use ICup\Bundle\PublicSiteBundle\Entity\Doctrine\Team;
 use ICup\Bundle\PublicSiteBundle\Entity\Doctrine\Tournament;
 use ICup\Bundle\PublicSiteBundle\Entity\Doctrine\User;
 use ICup\Bundle\PublicSiteBundle\Exceptions\ValidationException;
@@ -40,6 +42,48 @@ class RestMatchPlanningController extends Controller
         }
         $done = $planningCard['level'] >= 100;
         return new Response(json_encode(array('success' => true, 'done' => $done, 'unresolved' => $unresolved, 'level' => $planningCard['level'])));
+    }
+
+    /**
+     * Plan matches according to assigned groups and match configuration
+     * @Route("/edit/rest/m/plan/listq/{tournamentid}", name="_rest_match_planning_list_qualified", options={"expose"=true})
+     */
+    public function listQualifiedAction($tournamentid, Request $request) {
+        try {
+            $tournament = $this->checkArgs($tournamentid);
+        }
+        catch (ValidationException $e) {
+            return new Response(json_encode(array('success' => false, 'error' => $e->getMessage(), 'info' => $e->getDebugInfo())));
+        }
+        try {
+            $matches = $this->get("tmnt")->listQualifiedTeamsByTournament($tournament);
+        }
+        catch (\Exception $e) {
+            return new Response(json_encode(array('success' => false, 'error' => $e->getMessage(), 'info' => '')));
+        }
+        $result = array();
+        foreach ($matches as $matchrec) {
+            /* @var $match Match */
+            $match = $matchrec['match'];
+            /* @var $teamA Team */
+            $teamA = $matchrec['home'];
+            /* @var $teamB Team */
+            $teamB = $matchrec['away'];
+            $result[] = array(
+                'matchno' => $match->getMatchno(),
+                'home' => array(
+                    'id' => $teamA->getId(),
+                    'name' => $teamA->getTeamName()." (".$teamA->getClub()->getCountry().")",
+                    'country' => $this->get('translator')->trans($teamA->getClub()->getCountry(), array(), 'lang')
+                ),
+                'away' => array(
+                    'id' => $teamB->getId(),
+                    'name' => $teamB->getTeamName()." (".$teamB->getClub()->getCountry().")",
+                    'country' => $this->get('translator')->trans($teamB->getClub()->getCountry(), array(), 'lang')
+                )
+            );
+        }
+        return new Response(json_encode(array('success' => true, 'matches' => $result)));
     }
 
     /**

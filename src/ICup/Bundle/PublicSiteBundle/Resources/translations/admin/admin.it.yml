@@ -638,6 +638,10 @@ FORM:
     CANCEL: Cancella
   MATCHIMPORTUNRES:
     TITLE: Assign teams for elimination round
+    PROMPT: Specify teams qualified for elimination rounds
+    IMPORT: Team list
+    SUBMIT: Import
+    CANCEL: Cancel
   QMATCHIMPORT:
     TITLE: Importa il programma delle gare per la fase eliminatoria
   MATCHIMPORT: 

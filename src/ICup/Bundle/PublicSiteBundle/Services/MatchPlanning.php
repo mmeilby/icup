@@ -3,12 +3,17 @@ namespace ICup\Bundle\PublicSiteBundle\Services;
 
 use DateInterval;
 use Doctrine\ORM\EntityManager;
+use ICup\Bundle\PublicSiteBundle\Entity\Doctrine\Category;
+use ICup\Bundle\PublicSiteBundle\Entity\Doctrine\Champion;
 use ICup\Bundle\PublicSiteBundle\Entity\Doctrine\Date;
 use ICup\Bundle\PublicSiteBundle\Entity\Doctrine\Group;
+use ICup\Bundle\PublicSiteBundle\Entity\Doctrine\Match;
 use ICup\Bundle\PublicSiteBundle\Entity\Doctrine\MatchAlternative;
+use ICup\Bundle\PublicSiteBundle\Entity\Doctrine\MatchRelation;
 use ICup\Bundle\PublicSiteBundle\Entity\Doctrine\MatchSchedule;
 use ICup\Bundle\PublicSiteBundle\Entity\Doctrine\MatchSchedulePlan;
 use ICup\Bundle\PublicSiteBundle\Entity\Doctrine\MatchScheduleRelation;
+use ICup\Bundle\PublicSiteBundle\Entity\Doctrine\QMatchRelation;
 use ICup\Bundle\PublicSiteBundle\Entity\Doctrine\QMatchSchedule;
 use ICup\Bundle\PublicSiteBundle\Entity\Doctrine\QMatchScheduleRelation;
 use ICup\Bundle\PublicSiteBundle\Entity\Doctrine\Timeslot;
@@ -16,6 +21,7 @@ use ICup\Bundle\PublicSiteBundle\Entity\Doctrine\Tournament;
 use ICup\Bundle\PublicSiteBundle\Entity\MatchPlan;
 use ICup\Bundle\PublicSiteBundle\Entity\QMatchPlan;
 use ICup\Bundle\PublicSiteBundle\Services\Doctrine\BusinessLogic;
+use ICup\Bundle\PublicSiteBundle\Services\Doctrine\MatchSupport;
 use ICup\Bundle\PublicSiteBundle\Services\Entity\PlanningOptions;
 use ICup\Bundle\PublicSiteBundle\Services\Entity\PlanningResults;
 use ICup\Bundle\PublicSiteBundle\Services\Entity\PlaygroundAttribute as PA;
@@ -261,6 +267,160 @@ class MatchPlanning
             'advices' => $advice,
             'unassigned_by_category' => $catcnt
         );
+    }
+
+    public function publishSchedule(Tournament $tournament) {
+        $result = $this->getSchedule($tournament);
+        $matches = $result['matches'];
+
+        $champions = array(
+            Group::$FINAL => array(1 => 1, 2 => 2),
+            Group::$BRONZE => array(1 => 3, 2 => 4),
+        );
+
+        $this->em->beginTransaction();
+        $qgroups = array();
+        try {
+            $tournament->getCategories()->forAll(function ($n, Category $category) {
+                foreach ($category->getGroups() as $idx => $group) {
+                    /* @var $group Group */
+                    if ($group->getClassification() > Group::$PRE) {
+                        $category->getGroups()->remove($idx);
+                        $this->em->remove($group);
+                    }
+                    else {
+                        foreach ($group->getMatches() as $match) {
+                            $this->em->remove($match);
+                        }
+                        $group->getMatches()->clear();
+                    }
+                }
+                foreach ($category->getChampions() as $champion) {
+                    $this->em->remove($champion);
+                }
+                $category->getChampions()->clear();
+                return true;
+            });
+
+            usort($matches, function (MatchPlan $match1, MatchPlan $match2) {
+                if ($match1 instanceof QMatchPlan && $match2 instanceof QMatchPlan) {
+                    $p1 = $match1->getClassification() - $match2->getClassification();
+                }
+                else {
+                    $p1 = ($match1 instanceof QMatchPlan ? 1 : 0) - ($match2 instanceof QMatchPlan ? 1 : 0);
+                }
+                $p2 = $match1->getDate() - $match2->getDate();
+                $p3 = $match1->getPlayground()->getNo() - $match2->getPlayground()->getNo();
+                $p4 = $match1->getTime() - $match2->getTime();
+                $test = min(1, max(-1, $p1))*8 + min(1, max(-1, $p2))*4 + min(1, max(-1, $p3))*2 + min(1, max(-1, $p4));
+                return min(1, max(-1, $test));
+            });
+
+            foreach ($matches as $match) {
+                if ($match instanceof QMatchPlan) {
+                    /* @var $match QMatchPlan */
+                    $matchrec = new Match();
+                    $matchrec->setMatchno($match->getMatchno());
+                    $matchrec->setDate($match->getDate());
+                    $matchrec->setTime($match->getTime());
+                    if (isset($qgroups[$match->getCategory()->getId()."-".$match->getClassification()."-".$match->getLitra()])) {
+                        $group = $qgroups[$match->getCategory()->getId()."-".$match->getClassification()."-".$match->getLitra()];
+                    }
+                    else {
+                        $group = new Group();
+                        $group->setName($match->getLitra());
+                        $group->setCategory($match->getCategory());
+                        $group->setClassification($match->getClassification());
+                        $qgroups[$match->getCategory()->getId()."-".$match->getClassification()."-".$match->getLitra()] = $group;
+                        $group->getCategory()->getGroups()->add($group);
+                        $this->em->persist($group);
+                    }
+                    if (isset($champions[$match->getClassification()])) {
+                        foreach ($champions[$match->getClassification()] as $rank => $champ) {
+                            if ($champ <= $match->getCategory()->getTrophys()) {
+                                $champion = new Champion();
+                                $champion->setCategory($match->getCategory());
+                                // if champion is found from the B finals then shift the rank below the A finalists
+                                if (preg_match('/\d+B/', $match->getLitra())) {
+                                    $champion->setChampion($champ + $match->getCategory()->getTrophys());
+                                }
+                                else {
+                                    $champion->setChampion($champ);
+                                }
+                                $champion->setGroup($group);
+                                $champion->setRank($rank);
+                                $champion->getCategory()->getChampions()->add($champion);
+                                $this->em->persist($champion);
+                            }
+                        }
+                    }
+                    $matchrec->setGroup($group);
+                    $matchrec->setPlayground($match->getPlayground());
+
+                    $resultreqA = new QMatchRelation();
+                    $resultreqA->setAwayteam(MatchSupport::$HOME);
+                    if ($match->getRelA()->getClassification() == Group::$PRE) {
+                        $resultreqA->setGroup($match->getRelA()->getGroup());
+                    }
+                    else {
+                        $group = $qgroups[$match->getCategory()->getId()."-".$match->getRelA()->getClassification()."-".$match->getRelA()->getLitra().$match->getRelA()->getBranch()];
+                        $resultreqA->setGroup($group);
+                    }
+                    $resultreqA->setRank($match->getRelA()->getRank());
+                    $matchrec->addMatchRelation($resultreqA);
+
+                    $resultreqB = new QMatchRelation();
+                    $resultreqB->setAwayteam(MatchSupport::$AWAY);
+                    if ($match->getRelB()->getClassification() == Group::$PRE) {
+                        $resultreqB->setGroup($match->getRelB()->getGroup());
+                    }
+                    else {
+                        $group = $qgroups[$match->getCategory()->getId()."-".$match->getRelB()->getClassification()."-".$match->getRelB()->getLitra().$match->getRelB()->getBranch()];
+                        $resultreqB->setGroup($group);
+                    }
+                    $resultreqB->setRank($match->getRelB()->getRank());
+                    $matchrec->addMatchRelation($resultreqB);
+
+                    $matchrec->getGroup()->getMatches()->add($matchrec);
+                    $matchrec->getPlayground()->getMatches()->add($matchrec);
+                    $this->em->persist($matchrec);
+                }
+                else {
+                    /* @var $match MatchPlan */
+                    $matchrec = new Match();
+                    $matchrec->setMatchno($match->getMatchno());
+                    $matchrec->setDate($match->getDate());
+                    $matchrec->setTime($match->getTime());
+                    $matchrec->setGroup($match->getGroup());
+                    $matchrec->setPlayground($match->getPlayground());
+
+                    $resultreqA = new MatchRelation();
+                    $resultreqA->setTeam($match->getTeamA());
+                    $resultreqA->setAwayteam(MatchSupport::$HOME);
+                    $resultreqA->setScorevalid(false);
+                    $resultreqA->setScore(0);
+                    $resultreqA->setPoints(0);
+                    $matchrec->addMatchRelation($resultreqA);
+
+                    $resultreqB = new MatchRelation();
+                    $resultreqB->setTeam($match->getTeamB());
+                    $resultreqB->setAwayteam(MatchSupport::$AWAY);
+                    $resultreqB->setScorevalid(false);
+                    $resultreqB->setScore(0);
+                    $resultreqB->setPoints(0);
+                    $matchrec->addMatchRelation($resultreqB);
+
+                    $matchrec->getGroup()->getMatches()->add($matchrec);
+                    $matchrec->getPlayground()->getMatches()->add($matchrec);
+                    $this->em->persist($matchrec);
+                }
+            }
+            $this->em->flush();
+            $this->em->commit();
+        } catch (\Exception $e) {
+            $this->em->rollback();
+            throw $e;
+        }
     }
 
     private function makeTimeslotTable(Tournament $tournament) {

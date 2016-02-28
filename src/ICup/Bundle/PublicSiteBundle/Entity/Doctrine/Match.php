@@ -26,7 +26,7 @@ class Match
     /**
      * @var Group $group
      * Relation to Group
-     * @ORM\ManyToOne(targetEntity="Group", inversedBy="matches")
+     * @ORM\ManyToOne(targetEntity="Group", inversedBy="matches", cascade={"persist"})
      * @ORM\JoinColumn(name="pid", referencedColumnName="id")
      */
     protected $group;
@@ -34,7 +34,7 @@ class Match
     /**
      * @var Playground $playground
      * Relation to Playground
-     * @ORM\ManyToOne(targetEntity="Playground", inversedBy="matches")
+     * @ORM\ManyToOne(targetEntity="Playground", inversedBy="matches", cascade={"persist"})
      * @ORM\JoinColumn(name="playground", referencedColumnName="id")
      */
     protected $playground;
@@ -43,6 +43,7 @@ class Match
      * @var ArrayCollection $matchrelation
      * Collection of match relations to teams
      * @ORM\OneToMany(targetEntity="MatchRelation", mappedBy="match", cascade={"persist", "remove"})
+     * @ORM\OrderBy({"awayteam" = "asc"})
      */
     protected $matchrelation;
 
@@ -50,6 +51,7 @@ class Match
      * @var ArrayCollection $qmatchrelation
      * Collection of match relations to qualifying prerequisites
      * @ORM\OneToMany(targetEntity="QMatchRelation", mappedBy="match", cascade={"persist", "remove"})
+     * @ORM\OrderBy({"awayteam" = "asc"})
      */
     protected $qmatchrelation;
 
@@ -229,5 +231,18 @@ class Match
 
     public function getSchedule() {
         return Date::getDateTime($this->date, $this->time);
+    }
+
+    public function __toString() {
+        $txt =  $this->getDate()."  ".$this->getTime()."  ".
+                $this->getGroup()->getCategory()->getName()."|".$this->getGroup()->getClassification().":".$this->getGroup()->getName()."  ".
+                $this->getPlayground()->getName();
+        if ($this->getQMatchRelations()->count() == 2) {
+            $txt .= "  [".$this->getQMatchRelations()->first()." - ".$this->getQMatchRelations()->last()."]";
+        }
+        if ($this->getMatchRelations()->count() == 2) {
+            $txt .= "  ".$this->getMatchRelations()->first()." - ".$this->getMatchRelations()->last();
+        }
+        return $txt;
     }
 }

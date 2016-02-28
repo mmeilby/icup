@@ -21,7 +21,7 @@ class MatchUnresImportController extends Controller
     /**
      * Import match for tournament
      * @Route("/edit/import/matchunres/{tournamentid}", name="_edit_import_match_unres")
-     * @Template("ICupPublicSiteBundle:Host:matchimport.html.twig")
+     * @Template("ICupPublicSiteBundle:Host:matchunresimport.html.twig")
      */
     public function matchImportAction($tournamentid, Request $request) {
         /* @var $utilService Util */
@@ -55,16 +55,16 @@ class MatchUnresImportController extends Controller
     private function makeImportForm($matchImport) {
         $formDef = $this->createFormBuilder($matchImport);
         $formDef->add('import', 'textarea', array(
-            'label' => 'FORM.MATCHIMPORT.IMPORT',
+            'label' => 'FORM.MATCHIMPORTUNRES.IMPORT',
             'help' => 'MATCHNO [TEAM A (ITA)] [TEAM B "DIV" (DNK)]',
             'required' => false,
             'translation_domain' => 'admin',
             'attr' => array('rows' => '10')));
-        $formDef->add('cancel', 'submit', array('label' => 'FORM.MATCHIMPORT.CANCEL',
+        $formDef->add('cancel', 'submit', array('label' => 'FORM.MATCHIMPORTUNRES.CANCEL',
                                                 'translation_domain' => 'admin',
                                                 'buttontype' => 'btn btn-default',
                                                 'icon' => 'fa fa-times'));
-        $formDef->add('save', 'submit', array('label' => 'FORM.MATCHIMPORT.SUBMIT',
+        $formDef->add('save', 'submit', array('label' => 'FORM.MATCHIMPORTUNRES.SUBMIT',
                                                 'translation_domain' => 'admin',
                                                 'icon' => 'fa fa-check'));
         return $formDef->getForm();
@@ -143,8 +143,12 @@ class MatchUnresImportController extends Controller
     }
 
     private function validateData(Tournament $tournament, &$parseObj) {
+        /* @var $match Match */
         $match = $this->get('match')->getMatchByNo($tournament->getId(), $parseObj['id']);
         if ($match == null) {
+            throw new ValidationException("BADMATCH", "tournament=".$tournament->getId()." match=".$parseObj['id']);
+        }
+        if ($match->getQMatchRelations()->count() < 2) {
             throw new ValidationException("BADMATCH", "tournament=".$tournament->getId()." match=".$parseObj['id']);
         }
         $qmh = $this->get('match')->getQMatchRelationByMatch($match->getId(), false);

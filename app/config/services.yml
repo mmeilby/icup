@@ -135,12 +135,6 @@ services:
           - "@service_container"
           - "@logger"
 
-    planningFinals:
-        class: "ICup\\Bundle\\PublicSiteBundle\\Services\\MatchPlanningFinals"
-        arguments:
-          - "@service_container"
-          - "@logger"
-
     util:
         class: "ICup\\Bundle\\PublicSiteBundle\\Services\\Util"
         arguments:

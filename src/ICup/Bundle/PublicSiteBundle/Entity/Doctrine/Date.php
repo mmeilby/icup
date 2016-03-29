@@ -8,6 +8,7 @@
 
 namespace ICup\Bundle\PublicSiteBundle\Entity\Doctrine;
 
+use DateInterval;
 use DateTime;
 
 class Date {
@@ -24,5 +25,10 @@ class Date {
 
     public static function getTime(DateTime $datetime) {
         return $datetime->format(Date::$db_time_format);
+    }
+
+    public static function addTime(DateTime $datetime, $ti) {
+        $datetime->add(new DateInterval('PT'.$ti.'M'));
+        return $datetime;
     }
 }

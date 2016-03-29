@@ -41,7 +41,7 @@ twig:
     form:
         resources: ['bootstrap_3_layout.html.twig']
     globals:
-        supported_locales: { en: 'GBR', it: 'ITA', fr: 'FRA', de: 'DEU', es: 'ESP', po: 'POL', da: 'DNK' }
+        supported_locales: { en: 'GBR', it: 'ITA', fr: 'FRA', de: 'DEU', es: 'ESP', pl: 'POL', da: 'DNK' }
         
 # Assetic Configuration
 assetic:

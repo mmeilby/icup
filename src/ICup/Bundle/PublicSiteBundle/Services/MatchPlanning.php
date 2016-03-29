@@ -13,6 +13,7 @@ use ICup\Bundle\PublicSiteBundle\Entity\Doctrine\MatchRelation;
 use ICup\Bundle\PublicSiteBundle\Entity\Doctrine\MatchSchedule;
 use ICup\Bundle\PublicSiteBundle\Entity\Doctrine\MatchSchedulePlan;
 use ICup\Bundle\PublicSiteBundle\Entity\Doctrine\MatchScheduleRelation;
+use ICup\Bundle\PublicSiteBundle\Entity\Doctrine\Playground;
 use ICup\Bundle\PublicSiteBundle\Entity\Doctrine\QMatchRelation;
 use ICup\Bundle\PublicSiteBundle\Entity\Doctrine\QMatchSchedule;
 use ICup\Bundle\PublicSiteBundle\Entity\Doctrine\QMatchScheduleRelation;
@@ -46,6 +47,11 @@ class MatchPlanning
     /* @var $logger Logger */
     protected $logger;
 
+    /**
+     * MatchPlanning constructor.
+     * @param ContainerInterface $container
+     * @param Logger $logger
+     */
     public function __construct(ContainerInterface $container, Logger $logger)
     {
         $this->container = $container;
@@ -212,6 +218,7 @@ class MatchPlanning
         /* @var $ms MatchSchedule */
         foreach ($matchschedules as $ms) {
             $match = new MatchPlan();
+            $match->setId($ms->getId());
             $this->buildMatchPlan($ms, $match);
             if ($ms->getPlan()) {
                 $this->prepareMatch($match, $ms->getPlan(), $ts);
@@ -227,6 +234,7 @@ class MatchPlanning
         /* @var $qms QMatchSchedule */
         foreach ($qmatchschedules as $qms) {
             $match = new QMatchPlan();
+            $match->setId($qms->getId());
             $this->buildQMatchPlan($qms, $match);
             if ($qms->getPlan()) {
                 $this->prepareMatch($match, $qms->getPlan(), $ts);
@@ -269,6 +277,13 @@ class MatchPlanning
         );
     }
 
+    /**
+     * Publish planned matches as tournament schedule
+     * Planned matches are copied to match schedule. Previous schedule is removed
+     * Elimination groups and champion requirements are redefined
+     * @param Tournament $tournament
+     * @throws \Exception
+     */
     public function publishSchedule(Tournament $tournament) {
         $result = $this->getSchedule($tournament);
         $matches = $result['matches'];
@@ -423,6 +438,45 @@ class MatchPlanning
         }
     }
 
+    /**
+     * Return planned and unassigned matches for a specified venue and match date
+     * @param Playground $playground reference to venue
+     * @param String $matchDate match date (YYYYMMDD)
+     * @return array
+     */
+    public function listMatchesByPlaygroundDate(Playground $playground, $matchDate) {
+        $result = $this->getSchedule($playground->getSite()->getTournament());
+        $matches = array();
+        $playground->getPlaygroundAttributes()->forAll(function ($idx, PlaygroundAttribute $pattr) use ($matchDate, &$matches) {
+            if ($pattr->getDate() == $matchDate) {
+                $matches[$pattr->getId()] = array();
+            }
+            return true;
+        });
+
+        foreach ($result['advices'] as $advice) {
+            foreach ($advice['alternatives'] as $alt) {
+                /* @var $aitem PA */
+                foreach ($alt as $aitem) {
+                    if ($aitem->getPlayground()->getId() == $playground->getId() && Date::getDate($aitem->getSchedule()) == $matchDate) {
+                        $matches[$aitem->getPA()->getId()][] = $advice['match'];
+                    }
+                }
+            }
+        }
+        foreach ($result['matches'] as $match) {
+            /* @var $match MatchPlan */
+            if ($match->getPlayground()->getId() == $playground->getId() && $match->getDate() == $matchDate) {
+                $matches[$match->getPlaygroundAttribute()->getId()][] = $match;
+            }
+        }
+        return $matches;
+    }
+
+    /**
+     * @param Tournament $tournament
+     * @return array
+     */
     private function makeTimeslotTable(Tournament $tournament) {
         $ts = array();
         $pattrs = array();
@@ -447,6 +501,10 @@ class MatchPlanning
         return $ts;
     }
 
+    /**
+     * @param MatchSchedule $ms
+     * @param MatchPlan $match
+     */
     private function buildMatchPlan(MatchSchedule $ms, MatchPlan $match) {
         $match->setGroup($ms->getGroup());
         $match->setCategory($ms->getGroup()->getCategory());
@@ -461,6 +519,10 @@ class MatchPlanning
         }
     }
 
+    /**
+     * @param QMatchSchedule $ms
+     * @param QMatchPlan $match
+     */
     private function buildQMatchPlan(QMatchSchedule $ms, QMatchPlan $match) {
         $match->setCategory($ms->getCategory());
         $match->setClassification($ms->getClassification());
@@ -486,8 +548,10 @@ class MatchPlanning
     private function prepareMatch(MatchPlan $match, MatchSchedulePlan $plan, &$ts) {
         $match->setTime($plan->getMatchstart());
         $match->setFixed($plan->isFixed());
+        $match->setAssigned(true);
         /* @var $pattr PlaygroundAttribute */
         $pattr = $plan->getPlaygroundAttribute();
+        $match->setPlaygroundAttribute($pattr);
         $match->setPlayground($pattr->getPlayground());
         $match->setDate($pattr->getDate());
         if (isset($ts[$pattr->getId()])) {
@@ -502,11 +566,20 @@ class MatchPlanning
         }
     }
 
+    /**
+     * @param MatchPlan $match
+     * @param $msid
+     * @param $ts
+     * @param $catcnt
+     * @return array
+     */
     private function prepareUnassignedMatch(MatchPlan $match, $msid, &$ts, &$catcnt) {
         $match->setTime('');
         $match->setPlayground(null);
+        $match->setPlaygroundAttribute(null);
         $match->setDate('');
         $match->setFixed(false);
+        $match->setAssigned(false);
         $category = $match->getCategory();
         if (isset($catcnt[$category->getId()])) {
             $catcnt[$category->getId()]['matchcount']++;

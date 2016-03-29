@@ -11,7 +11,7 @@ use ICup\Bundle\PublicSiteBundle\Entity\Doctrine\PlaygroundAttribute as PA;
 class PlaygroundAttribute
 {
     /**
-     * @var integer $pa
+     * @var PlaygroundAttribute $pa
      * Master for this attribute
      */
     private $pa;
@@ -45,9 +45,9 @@ class PlaygroundAttribute
     }
 
     /**
-     * Set id
+     * Set PlaygroundAttribute
      *
-     * @param PA $id
+     * @param PA $pa
      * @return PlaygroundAttribute
      */
     public function setPA($pa)
@@ -58,7 +58,7 @@ class PlaygroundAttribute
     }
 
     /**
-     * Get id
+     * Get PlaygroundAttribute
      *
      * @return PA
      */

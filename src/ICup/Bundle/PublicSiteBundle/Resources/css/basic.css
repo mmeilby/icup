@@ -52,7 +52,8 @@ TD.flag IMG {
 }
 IMG.flag {
     position: relative;
-    top: -2px;
+    top: -1px;
+    padding-right: 3px;
 }
 /*
     This class disables the hover underline for labels with a link

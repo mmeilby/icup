@@ -1,10 +1,6 @@
 {% extends "ICupPublicSiteBundle:Masters:edit.html.twig" %}
 {% trans_default_domain "admin" %}
 
-{% import 'ICupPublicSiteBundle:Masters:club.html.twig' as formatter %}
-{% import 'ICupPublicSiteBundle:Masters:tournament.html.twig' as tformatter %}
-{% import 'ICupPublicSiteBundle:Masters:planning.html.twig' as mformatter %}
-
 {% block adminbody %}
     <h2 style="margin-bottom: 0">
         <i class="fa fa-university"></i>&nbsp;
@@ -50,26 +46,302 @@
             </a>
         </li>
     </ul>
-    {% if matchlist|length > 0 %}
-    <div class="hidden-xs" style="margin-top: 10px">
-        {{ mformatter.listmatches(matchlist, _context) }}
-    </div>
-    <div class="visible-xs-block" style="margin-top: 10px">
-        {{ mformatter.listmatchesxs(matchlist, _context) }}
-    </div>
-    {% else %}
-    <div class="panel panel-warning" style="margin-top: 10px">
-        <div class="panel-heading">
-            <div class="row">
-                <div class="col-sm-10">
-                    <h4>{% trans %}FORM.MATCHPLANNING.PLANNOTREADY.TITLE{% endtrans %}</h4>
-                    <p>{% trans %}FORM.MATCHPLANNING.PLANNOTREADY.DESCRIPTION{% endtrans %}</p>
+    <p>&nbsp;</p>
+<div ng-app="changeScheduleModule">
+
+    <style>
+        *{
+            -moz-box-sizing: border-box; -webkit-box-sizing: border-box; box-sizing: border-box;
+        }
+        [ng-drag] {
+            -moz-user-select: -moz-none;
+            -khtml-user-select: none;
+            -webkit-user-select: none;
+            -ms-user-select: none;
+            user-select: none;
+        }
+        [ng-drag] {
+            cursor: move;
+        }
+        [ng-drag].drag-over {
+            background: rgba(0,0,0, 0.1);
+/*            background: rgba(0,0,0, 0.3); */
+/*            border:solid 1px red; */
+        }
+        [ng-drag].dragging {
+            background: rgba(0,0,0, 0.4);
+            opacity: 0.25;
+        }
+        [ng-drop] {
+            border: solid 1px white;
+/*            background: rgba(0,255,0, 0.5);
+            text-align: center;
+            width: 600px;
+            height: 200px;
+            padding-top:90px;
+            display: block;
+            margin:20px auto;
+            position: relative;
+*/        }
+        [ng-drop].drag-enter {
+            border: dotted 1px black;
+        }
+        DIV.row.title {
+            border-bottom: 1px solid darkgray;
+        }
+        DIV.row.title DIV {
+            font-size: 125%;
+            padding-bottom: 5px;
+        }
+    </style>
+
+    <div ng-controller="changeScheduleController" ng-cloak>
+        <form name="criteriaForm" layout="row">
+            <md-input-container class="md-block">
+                <label>{% trans %}FORM.MATCHPLANNING.PLAYGROUND{% endtrans %}</label>
+                <md-select name="venue" ng-model="selectedvenue" ng-model-options="{trackBy: '$value.id'}" required>
+                    <md-option ng-repeat="venue in venues" ng-value="{{ '{{ venue }}' }}">{{ '{{ venue.name }}' }}</md-option>
+                </md-select>
+                <div class="errors" ng-messages="criteriaForm.selectedvenue.$error" ng-if="criteriaForm.$dirty">
+                    <div ng-message="required">Required</div>
                 </div>
-                <div class="col-sm-2 text-center">
-                    <span class="fa fa-exclamation fa-5x"></span>
+            </md-input-container>
+            <md-datepicker ng-model="matchDate" md-placeholder="{% trans from "tournament" %}FORM.MATCHPLANNING.DATE{% endtrans %}"
+                           md-min-date="minDate" md-max-date="maxDate" style="padding-top: 15px;"></md-datepicker>
+            <div layout="row">
+                <md-button ng-click="save()" ng-disabled="criteriaForm.$invalid" class="md-primary" layout layout-align="center end">
+                    <i class="fa fa-check"></i>
+                    {% trans %}FORM.MATCHPLANNING.SEARCHMATCHES{% endtrans %}
+                </md-button>
+                <md-button ng-click="toggleRight()" ng-hide="isOpenRight()" class="md-primary">
+                    <i class="fa fa-right"></i>
+                    {% trans %}FORM.MATCHPLANNING.RIGHTNAV{% endtrans %}
+                </md-button>
+            </div>
+        </form>
+
+        <section layout="row" flex>
+            <md-sidenav class="md-sidenav-right md-whiteframe-4dp" md-component-id="right">
+                <md-toolbar class="md-theme-light">
+                    <h1 class="md-toolbar-tools">Sidenav Right</h1>
+                </md-toolbar>
+                <md-content ng-controller="RightCtrl" layout-padding>
+                    <md-button ng-click="close()" class="md-primary">
+                        Close Sidenav Right
+                    </md-button>
+                </md-content>
+            </md-sidenav>
+        </section>
+
+        <div class="panel panel-default" ng-repeat="pa in matches">
+            <div class="panel-heading">
+                <div class="row">
+                    <div class="col-md-6">
+                        <h4 style="margin-bottom: 3px;">{{ '{{ pa.pa.timeslot }}' }}</h4>
+                        <p>{{ '{{ pa.pa.start }}' }}-{{ '{{ pa.pa.end }}' }}</p>
+                    </div>
+                    <div class="col-md-6 text-right">
+                        <h4 style="margin-bottom: 3px;">{{ '{{ selectedvenue.name }}' }}</h4>
+                        <p>{{ '{{ matchDate | date:"fullDate" }}' }}</p>
+                    </div>
+                </div>
+            </div>
+            <div class="panel-body">
+                <div class="row title" ng-drop="true" ng-drop-success="onDropFirstComplete(pa.pa.id)">
+                    <div class="col-md-1 text-center">{% trans from "tournament" %}LEGEND.NO{% endtrans %}</div>
+                    <div class="col-md-1 text-right">{% trans from "tournament" %}LEGEND.TIME{% endtrans %}</div>
+                    <div class="col-md-1 text-center">{% trans from "tournament" %}LEGEND.CATEGORY{% endtrans %}</div>
+                    <div class="col-md-2 text-center">{% trans from "tournament" %}LEGEND.GROUP{% endtrans %}</div>
+                    <div class="col-md-3">{% trans from "tournament" %}LEGEND.HOMETEAM{% endtrans %}</div>
+                    <div class="col-md-4">{% trans from "tournament" %}LEGEND.AWAYTEAM{% endtrans %}</div>
+                </div>
+                <div ng-repeat="match in pa.matches track by match.uid">
+                    <div class="row{{ '{{ getStatusClass(match) }}' }}"
+                         data-allow-transform="true"
+                         ng-drag="true" ng-drag-data="pa.matches" ng-drag-success="onDragComplete(match.uid)"
+                         ng-drop="true" ng-drop-success="onDropComplete(match.uid)"
+                    >
+                        <div class="col-md-1 text-center">{{ '{{ match.matchno }}' }}</div>
+                        <div class="col-md-1 text-right">{{ '{{ match.time.text }}' }}</div>
+                        <div class="col-md-1 text-center">{{ '{{ match.category.name }}' }}</div>
+                        <div class="col-md-2 text-center">{{ '{{ match.group.name }}' }}</div>
+                        <div class="col-md-3">
+                            <img src="{{ asset('bundles/icuppublicsite/images/flags/') }}{{ '{{ match.home.flag }}' }}"
+                                 alt="{{ '{{ match.home.country }}' }}"
+                                 title="{{ '{{ match.home.country }}' }}" ng-if="match.home.flag" class="flag">
+                            {{ '{{ match.home.name }}' }}
+                        </div>
+                        <div class="col-md-3">
+                            <img src="{{ asset('bundles/icuppublicsite/images/flags/') }}{{ '{{ match.away.flag }}' }}"
+                                 alt="{{ '{{ match.away.country }}' }}"
+                                 title="{{ '{{ match.away.country }}' }}" ng-if="match.away.flag" class="flag">
+                            {{ '{{ match.away.name }}' }}
+                        </div>
+                        <div class="col-md-1"></div>
+                    </div>
                 </div>
             </div>
         </div>
     </div>
-    {% endif %}
+</div>
+{% endblock %}
+
+{% block javascripts %}
+    <script type="text/javascript">
+        angular.module('changeScheduleModule', ['ngMaterial', 'ngMessages','ngDraggable'])
+                .controller('changeScheduleController', function($scope, $http, $mdDialog, $mdSidenav) {
+                    $scope.fetchData=function(uid, url) {
+                        // set spinner
+                        if (uid) {
+                            $mdDialog.show({
+                                parent: angular.element(document.body),
+                                template:
+                                    '<md-dialog aria-label="Wait for change of schedule to complete">' +
+                                    '  <md-dialog-content>'+
+                                    '    <div style="padding: 40px;">' +
+                                    '       <div layout="row" layout-sm="column" layout-align="space-around">' +
+                                    '          <div class="lead">Please wait for the change of schedule to complete.</div>' +
+                                    '       </div>' +
+                                    '       <div layout="row" layout-sm="column" layout-align="space-around">' +
+                                    '          <md-progress-circular md-mode="indeterminate"></md-progress-circular>' +
+                                    '       </div>' +
+                                    '    </div>' +
+                                    '  </md-dialog-content>' +
+                                    '</md-dialog>'
+                            });
+                        }
+                        $http.get(url).
+                            then(function(data) {
+                                    // clear spinner
+                                    if (uid) {
+                                        $mdDialog.hide();
+                                    }
+                                    if (data.data.success) {
+                                        $scope.matches = data.data.matches;
+                                    }
+                                    else {
+                                        $mdDialog.show(
+                                                $mdDialog.alert()
+                                                        .parent(angular.element(document.querySelector('#criteriaForm')))
+                                                        .clickOutsideToClose(true)
+                                                        .title('Server communication failed')
+                                                        .textContent(data.data.error)
+                                                        .ariaLabel('Description')
+                                                        .ok('Close')
+                                        );
+                                    }
+                                },
+                                function(data) {
+                                    // clear spinner
+                                    if (uid) {
+                                        $mdDialog.hide();
+                                    }
+                                    $mdDialog.show(
+                                            $mdDialog.alert()
+                                                    .parent(angular.element(document.querySelector('#criteriaForm')))
+                                                    .clickOutsideToClose(true)
+                                                    .title('Server communication failed')
+                                                    .textContent(data.status+": "+data.statusText)
+                                                    .ariaLabel('Description')
+                                                    .ok('Close')
+                                    );
+                                }
+                            );
+                    };
+                    $scope.onDragComplete=function(uid){
+                        angular.forEach($scope.matches, function (pa) {
+                            angular.forEach(pa.matches, function (match, innerIndex) {
+                                if (match.uid == uid) {
+                                    pa.matches.splice(innerIndex, 1);
+                                    $scope.source_match = match;
+                                }
+                            });
+                        });
+                        $scope.draggingAllowed = true;
+                    };
+                    $scope.onDropFirstComplete=function(paid){
+                        if ($scope.draggingAllowed) {
+                            $scope.draggingAllowed = false;
+                            angular.forEach($scope.matches, function (pa) {
+                                if (pa.pa.id == paid) {
+                                    pa.matches.splice(0, 0, $scope.source_match);
+                                }
+                            });
+                            var url = Routing.generate('_rest_match_planning_move_match',
+                                    {
+                                        'matchtype': $scope.source_match.elimination ? 'Q' : 'M',
+                                        'matchid': $scope.source_match.id,
+                                        'paid': paid,
+                                        'matchtime': 'X'
+                                    });
+                            $scope.fetchData(paid, url);
+                        }
+                    };
+                    $scope.onDropComplete=function(uid){
+                        if ($scope.draggingAllowed) {
+                            $scope.draggingAllowed = false;
+                            angular.forEach($scope.matches, function (pa) {
+                                angular.forEach(pa.matches, function (match, innerIndex) {
+                                    if (match.uid == uid) {
+                                        pa.matches.splice(innerIndex+1, 0, $scope.source_match);
+                                        $scope.dest_pa = pa.pa;
+                                        $scope.dest_match = match;
+                                    }
+                                });
+                            });
+                            var url = Routing.generate('_rest_match_planning_move_match',
+                                    {
+                                        'matchtype': $scope.source_match.elimination ? 'Q' : 'M',
+                                        'matchid': $scope.source_match.id,
+                                        'paid': $scope.dest_pa.id,
+                                        'matchtime': $scope.dest_match.time.raw
+                                    });
+                            $scope.fetchData($scope.dest_pa.id, url);
+                        }
+                    };
+                    $scope.getStatusClass=function(match){
+                        if (match.status == 'W') {
+                            return " alert-warning";
+                        }
+                        else if (match.status == 'A') {
+                            return " alert-danger";
+                        }
+                        else {
+                            return "";
+                        }
+                    };
+                    $scope.toggleRight = buildToggler('right');
+                    $scope.isOpenRight = function(){
+                        return $mdSidenav('right').isOpen();
+                    };
+                    $scope.matches = [];
+                    $scope.save = function() {
+                        var url = Routing.generate('_rest_match_planning_list_matches',
+                                {
+                                    'playgroundid': $scope.selectedvenue.id,
+                                    'date': $scope.matchDate.getDate()+'-'+($scope.matchDate.getMonth()+1)+'-'+$scope.matchDate.getFullYear()
+                                });
+                        $scope.fetchData(null, url);
+                    };
+                    $http.get(Routing.generate('_rest_list_playgrounds', { 'tournamentid': {{ tournament.id }} })).then(function(data) {
+                        $scope.venues = data.data;
+                        $scope.selectedvenue = $scope.venues[0];
+                    });
+                    $http.get(Routing.generate('_rest_get_match_calendar', { 'tournamentid': {{ tournament.id }} })).then(function(data) {
+                        $scope.matchDate = new Date(data.data.start);
+                        $scope.minDate = new Date(data.data.start);
+                        $scope.maxDate = new Date(data.data.end);
+                    });
+                    function buildToggler(navID) {
+                        return function() {
+                            $mdSidenav(navID).toggle();
+                        }
+                    }
+                })
+                .controller('RightCtrl', function ($scope, $mdSidenav) {
+                    $scope.close = function () {
+                        $mdSidenav('right').close();
+                    };
+                });
+    </script>
 {% endblock %}

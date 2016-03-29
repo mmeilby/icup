@@ -102,6 +102,7 @@ Matches	Timeslots	Matches/day	Teams
                     $match->setDate(Date::getDate($slotschedule));
                     $match->setTime(Date::getTime($slotschedule));
                     $match->setPlayground($pa->getPlayground());
+                    $match->setPlaygroundAttribute($pa->getPA());
                     $slotschedule->add(new DateInterval('PT'.$matchtime.'M'));
                     $pa->setSchedule($slotschedule);
                     $matchlist = $pa->getMatchlist();
@@ -162,6 +163,7 @@ Matches	Timeslots	Matches/day	Teams
                     $match->setDate($date);
                     $match->setTime($time);
                     $match->setPlayground($pa->getPlayground());
+                    $match->setPlaygroundAttribute($pa->getPA());
                     $slotschedule->add(new DateInterval('PT'.$matchtime.'M'));
                     $pa->setSchedule($slotschedule);
                     $matchlist = $pa->getMatchlist();
@@ -240,6 +242,7 @@ Matches	Timeslots	Matches/day	Teams
                     $match->setDate($replan_match->getDate());
                     $match->setTime($replan_match->getTime());
                     $match->setPlayground($replan_match->getPlayground());
+                    $match->setPlaygroundAttribute($pa->getPA());
                     $matchlist[$idx] = $match;
                     $pa->setMatchlist($matchlist);
                     $result->getTeamCheck()->reserveCapacity($match, $pa->getTimeslot());
@@ -303,6 +306,7 @@ Matches	Timeslots	Matches/day	Teams
                         $match->setDate($replan_match->getDate());
                         $match->setTime($replan_match->getTime());
                         $match->setPlayground($replan_match->getPlayground());
+                        $match->setPlaygroundAttribute($pa->getPA());
                         $match->setFixed(true);
                         $matchlist[$idx] = $match;
                         $pa->setMatchlist($matchlist);

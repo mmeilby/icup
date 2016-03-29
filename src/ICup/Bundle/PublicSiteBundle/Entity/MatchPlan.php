@@ -6,10 +6,17 @@ use ICup\Bundle\PublicSiteBundle\Entity\Doctrine\Category;
 use ICup\Bundle\PublicSiteBundle\Entity\Doctrine\Date;
 use ICup\Bundle\PublicSiteBundle\Entity\Doctrine\Group;
 use ICup\Bundle\PublicSiteBundle\Entity\Doctrine\Playground;
+use ICup\Bundle\PublicSiteBundle\Entity\Doctrine\PlaygroundAttribute;
 use ICup\Bundle\PublicSiteBundle\Entity\Doctrine\Team;
 
 class MatchPlan
 {
+    /**
+     * @var integer $id
+     * Reference id
+     */
+    private $id;
+
     /**
      * @var Category $category
      * Category object
@@ -63,6 +70,34 @@ class MatchPlan
      * Indicates this match to be fixed - not available for change
      */
     private $fixed;
+
+    /**
+     * @var boolean $assigned
+     * Indicates this match has been assigned to venue and timeslot
+     */
+    private $assigned;
+
+    /**
+     * @var PlaygroundAttribute $playgroundAttribute
+     * PlaygroundAttribute object
+     */
+    private $playgroundAttribute;
+
+    /**
+     * @return int
+     */
+    public function getId() {
+        return $this->id;
+    }
+
+    /**
+     * @param int $id
+     * @return MatchPlan
+     */
+    public function setId($id) {
+        $this->id = $id;
+        return $this;
+    }
 
     /**
      * Set category
@@ -262,6 +297,38 @@ class MatchPlan
     public function setFixed($fixed)
     {
         $this->fixed = $fixed;
+    }
+
+    /**
+     * @return boolean
+     */
+    public function isAssigned() {
+        return $this->assigned;
+    }
+
+    /**
+     * @param boolean $assigned
+     * @return MatchPlan
+     */
+    public function setAssigned($assigned) {
+        $this->assigned = $assigned;
+        return $this;
+    }
+
+    /**
+     * @return PlaygroundAttribute
+     */
+    public function getPlaygroundAttribute() {
+        return $this->playgroundAttribute;
+    }
+
+    /**
+     * @param PlaygroundAttribute $playgroundAttribute
+     * @return MatchPlan
+     */
+    public function setPlaygroundAttribute($playgroundAttribute) {
+        $this->playgroundAttribute = $playgroundAttribute;
+        return $this;
     }
 
     public function getSchedule() {

@@ -13,6 +13,8 @@
         <link href="{{ asset( 'bundles/icuppublicsite/bootstrap-3.3.5-dist/css/bootstrap-theme.min.css' ) }}" rel="stylesheet" type="text/css" />
         <link href="{{ asset( 'bundles/icuppublicsite/bootstrap-fileinput-4.0.0/css/fileinput.min.css' ) }}" media="all" rel="stylesheet" type="text/css" />
         <link href="{{ asset( 'bundles/icuppublicsite/bootstrap-switch-3.3.2/css/bootstrap-switch.min.css' ) }}" media="all" rel="stylesheet" type="text/css" />
+        <!-- Angular Material style sheet -->
+        <link href="{{ asset( 'bundles/icuppublicsite/angular_material/1.0.4/angular-material.min.css' ) }}" media="all" rel="stylesheet" type="text/css" />
         {% stylesheets '@ICupPublicSiteBundle/Resources/css/*' output="bundles/icuppublicsite/css/style.css" %}
             <link href="{{ asset_url }}" rel="stylesheet" type="text/css" />
         {% endstylesheets %}
@@ -40,6 +42,18 @@
         <script src="{{ asset('bundles/icuppublicsite/bootstrap-switch-3.3.2/js/bootstrap-switch.min.js') }}"></script>
         <script src="{{ asset('bundles/fosjsrouting/js/router.js') }}"></script>
         <script src="{{ path('fos_js_routing_js', {"callback": "fos.Router.setData"}) }}"></script>
+        <!-- Angular Material requires Angular.js Libraries -->
+        <script src="{{ asset('bundles/icuppublicsite/angular/1.5.3/angular.min.js') }}"></script>
+        <script src="{{ asset('bundles/icuppublicsite/angular/1.5.3/angular-animate.min.js') }}"></script>
+        <script src="{{ asset('bundles/icuppublicsite/angular/1.5.3/angular-aria.min.js') }}"></script>
+        <script src="{{ asset('bundles/icuppublicsite/angular/1.5.3/angular-messages.min.js') }}"></script>
+        {% if app.session.get('_locale') is not null %}
+        <script src="{{ asset(['bundles/icuppublicsite/angular/1.5.3/i18n/angular-locale_',app.session.get('_locale'),'.js']|join) }}"></script>
+        {% endif %}
+        <!-- Angular Material Library -->
+        <script src="{{ asset('bundles/icuppublicsite/angular_material/1.0.4/angular-material.min.js') }}"></script>
+        <!-- ngDraggable -->
+        <script src="{{ asset('bundles/icuppublicsite/ng-draggable/ngDraggable.js') }}"></script>
     </head>
     <body role="document">
         {% block header %}{% endblock %}

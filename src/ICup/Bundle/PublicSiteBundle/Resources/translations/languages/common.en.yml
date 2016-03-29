@@ -1,7 +1,7 @@
 # Common expressions for all locales
 LANG:
   EN: English
-  PO: Polski
+  PL: Polski
   ES: Español
   DA: Dansk
   IT: Italiano
@@ -10,7 +10,7 @@ LANG:
 
 LANG_LOCAL:
   EN: English
-  PO: Polish
+  PL: Polish
   ES: Spanish
   DA: Danish
   IT: Italian

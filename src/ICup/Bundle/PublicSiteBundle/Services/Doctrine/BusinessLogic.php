@@ -509,6 +509,38 @@ class BusinessLogic
         return $qmatchschedules;
     }
 
+    /**
+     * List assigned match schedules ordered by match time ascending, search by playground attribute
+     * @param PlaygroundAttribute $pattr
+     * @return array sorted match schedule list
+     */
+    public function listMatchSchedulesByPlaygroundAttribute(PlaygroundAttribute $pattr) {
+        $qb = $this->em->createQuery(
+                "select ms ".
+                "from ".$this->entity->getRepositoryPath('MatchSchedule')." ms, ".
+                        $this->entity->getRepositoryPath('MatchSchedulePlan')." mp ".
+                "where mp.playgroundAttribute=:paid and ms.plan=mp.id ".
+                "order by mp.matchstart asc");
+        $qb->setParameter('paid', $pattr->getId());
+        return $qb->getResult();
+    }
+
+    /**
+     * List assigned qualifying match schedules ordered by match time ascending, search by playground attribute
+     * @param PlaygroundAttribute $pattr
+     * @return array sorted match schedule list
+     */
+    public function listQMatchSchedulesByPlaygroundAttribute(PlaygroundAttribute $pattr) {
+        $qb = $this->em->createQuery(
+            "select ms ".
+            "from ".$this->entity->getRepositoryPath('QMatchSchedule')." ms, ".
+                    $this->entity->getRepositoryPath('MatchSchedulePlan')." mp ".
+            "where mp.playgroundAttribute=:paid and ms.plan=mp.id ".
+            "order by mp.matchstart asc");
+        $qb->setParameter('paid', $pattr->getId());
+        return $qb->getResult();
+    }
+
     public function listMatchAlternatives($matchscheduleid) {
         return $this->entity->getMatchAlternativeRepo()->findBy(array('matchschedule' => $matchscheduleid));
     }

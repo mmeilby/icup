@@ -296,6 +296,9 @@ class Tournament
             $playgrounds = array_merge($playgrounds, $site->getPlaygrounds()->toArray());
             return true;
         });
+        usort($playgrounds, function (Playground $p1, Playground $p2) {
+           return $p1->getNo() > $p2->getNo() ? 1 : -1;
+        });
         return $playgrounds;
     }
 

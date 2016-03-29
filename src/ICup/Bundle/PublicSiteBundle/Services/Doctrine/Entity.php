@@ -15,6 +15,7 @@ use ICup\Bundle\PublicSiteBundle\Entity\Doctrine\MatchSchedule;
 use ICup\Bundle\PublicSiteBundle\Entity\Doctrine\News;
 use ICup\Bundle\PublicSiteBundle\Entity\Doctrine\Playground;
 use ICup\Bundle\PublicSiteBundle\Entity\Doctrine\PlaygroundAttribute;
+use ICup\Bundle\PublicSiteBundle\Entity\Doctrine\QMatchSchedule;
 use ICup\Bundle\PublicSiteBundle\Entity\Doctrine\Timeslot;
 use ICup\Bundle\PublicSiteBundle\Entity\Doctrine\Site;
 use ICup\Bundle\PublicSiteBundle\Entity\Doctrine\Team;
@@ -432,6 +433,21 @@ class Entity
             throw new ValidationException("BADMATCHSCHEDULE", "Unknown matchscheduleid=".$matchscheduleid);
         }
         return $matchschedule;
+    }
+
+    /**
+     * Get the qualifying match schedule from the qmatchschedule id
+     * @param $qmatchscheduleid
+     * @return QMatchSchedule
+     * @throws ValidationException
+     */
+    public function getQMatchScheduleById($qmatchscheduleid) {
+        /* @var $qmatchschedule QMatchSchedule */
+        $qmatchschedule = $this->getQMatchScheduleRepo()->find($qmatchscheduleid);
+        if ($qmatchschedule == null) {
+            throw new ValidationException("BADMATCHSCHEDULE", "Unknown qmatchscheduleid=".$qmatchscheduleid);
+        }
+        return $qmatchschedule;
     }
 
     /**

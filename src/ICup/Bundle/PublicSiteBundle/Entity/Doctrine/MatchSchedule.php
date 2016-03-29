@@ -127,4 +127,11 @@ class MatchSchedule
         $matchRelation->setMatchSchedule($this);
         return $this;
     }
+
+    /**
+     * @return Category
+     */
+    public function getCategory() {
+        return $this->group->getCategory();
+    }
 }

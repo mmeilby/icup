@@ -82,6 +82,7 @@ class QMatchPlanner
                         $match->setDate(Date::getDate($slotschedule));
                         $match->setTime(Date::getTime($slotschedule));
                         $match->setPlayground($pa->getPlayground());
+                        $match->setPlaygroundAttribute($pa->getPA());
                         $slotschedule->add(new DateInterval('PT'.$matchtime.'M'));
                         $pa->setSchedule($slotschedule);
                         $matchlist = $pa->getMatchlist();
@@ -151,6 +152,7 @@ class QMatchPlanner
                     $match->setDate(Date::getDate($slotschedule));
                     $match->setTime(Date::getTime($slotschedule));
                     $match->setPlayground($pa->getPlayground());
+                    $match->setPlaygroundAttribute($pa->getPA());
                     $slotschedule->add(new DateInterval('PT'.$matchtime.'M'));
                     $pa->setSchedule($slotschedule);
                     $matchlist = $pa->getMatchlist();
@@ -228,6 +230,7 @@ class QMatchPlanner
                     $match->setDate($replan_match->getDate());
                     $match->setTime($replan_match->getTime());
                     $match->setPlayground($replan_match->getPlayground());
+                    $match->setPlaygroundAttribute($pa->getPA());
                     $matchlist[$idx] = $match;
                     $pa->setMatchlist($matchlist);
                     $result->setQSchedule($match, $replan_match->getSchedule());

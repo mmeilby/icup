@@ -440,6 +440,7 @@ FORM:
     DEFAULT: Vælg...
     TIMEUSED: Oversigt af ledig tid
     SEARCH: Søg kamp
+    SEARCHMATCHES: Vis kampplan
     ADD: Ny kamp
     CHG: Tilpas kamp
     DEL: Fjern kamp

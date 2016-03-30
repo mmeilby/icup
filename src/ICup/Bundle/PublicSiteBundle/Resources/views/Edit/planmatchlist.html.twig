@@ -196,11 +196,11 @@
                             $mdDialog.show({
                                 parent: angular.element(document.body),
                                 template:
-                                    '<md-dialog aria-label="Wait for change of schedule to complete">' +
+                                    '<md-dialog aria-label="{% trans %}FORM.MATCHPLANNING.WAIT.TITLE{% endtrans %}">' +
                                     '  <md-dialog-content>'+
                                     '    <div style="padding: 40px;">' +
                                     '       <div layout="row" layout-sm="column" layout-align="space-around">' +
-                                    '          <div class="lead">Please wait for the change of schedule to complete.</div>' +
+                                    '          <div class="lead">{% trans %}FORM.MATCHPLANNING.WAIT.TEXT{% endtrans %}</div>' +
                                     '       </div>' +
                                     '       <div layout="row" layout-sm="column" layout-align="space-around">' +
                                     '          <md-progress-circular md-mode="indeterminate"></md-progress-circular>' +

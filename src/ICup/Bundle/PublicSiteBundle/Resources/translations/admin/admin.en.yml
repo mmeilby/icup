@@ -373,6 +373,11 @@ FORM:
     RESULT: Dashboard
     ADVICE: Advices
     MAINT: Change matches
+    WAIT:
+      TITLE: Wait for the change of schedule to complete
+      TEXT: Please wait for the change of schedule to complete.
+    SEARCHMATCHES: Show match schedule
+    RIGHTNAV: ...
     SOLVEXCHG: No timeslots fit the requirements for this match. Try to exchange timeslot with another match from the group.
     SOLVEXPND: This match requires more time than available. Expand a timeslot to make space for this match.
     PLAN_SAVED: The match schedule has been accepted and registered for the tournament

@@ -185,7 +185,7 @@ class RestMatchPlanningController extends Controller
                 'matchno' => $match->getMatchno() ? $match->getMatchno() : '',
                 'elimination' => true,
                 'status' => $match->isAssigned() ? ($validmatch ? '' : 'A') : 'W',
-                'time' => $match->getTime() ? date_format($match->getSchedule(), $this->get('translator')->trans('FORMAT.TIME')) : '',
+                'time' => array('text' => $match->getTime() ? date_format($match->getSchedule(), $this->get('translator')->trans('FORMAT.TIME')) : '', 'raw' => $match->getTime()),
                 'classification' => $match->getClassification(),
                 'category' => array('id' => $match->getCategory()->getId(), 'name' => $match->getCategory()->getName()),
                 'group' => array('id' => -1, 'name' => $this->getGroupNameFromLitra($match->getLitra(), $match->getClassification()), 'classification' => $match->getClassification()),

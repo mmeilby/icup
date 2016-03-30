@@ -421,6 +421,11 @@ FORM:
     RESULT: Planlæg kampe
     ADVICE: Løsninger
     MAINT: Tilpas kampplan
+    WAIT:
+      TITLE: Vent på at kamplanen opdateres
+      TEXT: Kamplanen opdateres - vent venligst
+    SEARCHMATCHES: Vis kampplan
+    RIGHTNAV: ...
     SOLVEXCHG: Ingen perioder passer for denne kamp. Forsøg at bytte andre kampe fra puljen med denne kamp.
     SOLVEXPND: Der er ikke ledig plads til denne kamp. Forsøg at udvide en periode så der bliver plads til kampen.
     PLAN_SAVED: Kampplanen er godkendt og gemt som turneringens officielle kampprogram.
@@ -440,7 +445,6 @@ FORM:
     DEFAULT: Vælg...
     TIMEUSED: Oversigt af ledig tid
     SEARCH: Søg kamp
-    SEARCHMATCHES: Vis kampplan
     ADD: Ny kamp
     CHG: Tilpas kamp
     DEL: Fjern kamp

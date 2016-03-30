@@ -557,7 +557,7 @@ class MatchPlanning
         if (isset($ts[$pattr->getId()])) {
             /* @var $pa PA */
             $pa = $ts[$pattr->getId()];
-            $ml = $pa->getMatchList();
+            $ml = $pa->getMatchlist();
             $ml[] = $match;
             $pa->setMatchlist($ml);
             $slotschedule = $match->getSchedule();

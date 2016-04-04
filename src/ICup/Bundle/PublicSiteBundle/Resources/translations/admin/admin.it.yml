@@ -395,26 +395,46 @@ FORM:
     TITLE: Amministrazione Torneo
     CAPTION: Pianifica le gare eliminatorie
     PLANNINGINCOMPLETE: Non è stato possibile pianificare tutte le gare
+    SELECTCATEGORY:
+      TITLE: Choose a category from the list
+      TEXT: Click on that category from the list you want to configure
+    PROMPT:
+      TROPHYS: No of trophys in each final branch
+      TOPTEAMS: No of teams that qualify for the best final branch
+    HELP:
+      TROPHYS: Usually three throphys will be given - gold, silver and bronze
+      TOPTEAMS: The no of top teams that will qualify for the best final branch - normally 4 or 8
     TEAMS: Squadre
+    GROUPS: Preliminary groups
+    NOGROUPS: There are no preliminary groups defined
+    ADDGROUP: Add group
     GROUP:
+      ZERO: Nessun gruppi
       ONE: Un gruppo
       TWO: Due gruppi
       THREE: Tre gruppi
       FOUR: Quattro gruppi
     RADIO:
+      GROUP0:
+        OPTION0: All teams play eliminating rounds. Top seeded teams await the low rated teams to run pre eliminating rounds
       GROUP1:
+        OPTION0: Top ranked teams qualify for the best final branch, the rest are assigned to the other branch
         OPTION1: Top four teams qualify for semifinal
         OPTION2: Top two teams qualify for final
       GROUP2:
+        OPTION0: Top ranked teams qualify for the best final branch, the rest are assigned to the other branch
         OPTION1: Top four teams qualify for quater final
         OPTION2: Top two teams qualify for semifinal
         OPTION3: Group winners quaify for final
       GROUP3:
+        OPTION0: Top ranked teams qualify for the best final branch, the rest are assigned to the other branch
         OPTION1: Group winners qualify for semifinal, group 2nd place qualify for playoff
         OPTION2: Top two teams qualify for quater final, group 3rd and 4th place qualify for playoff
       GROUP4:
+        OPTION0: Top ranked teams qualify for the best final branch, the rest are assigned to the other branch
         OPTION1: Top two teams qualify for quater final
         OPTION2: Group winners quaify for semifinal
+    SUBMIT: Save configuration
   TOURNAMENTIMPORT:
     TITLE: Amministrazione del torneo
     CAPTION: Copia le informazioni da altro torneo.

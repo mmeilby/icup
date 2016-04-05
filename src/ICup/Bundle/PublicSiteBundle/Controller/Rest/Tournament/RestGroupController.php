@@ -58,6 +58,6 @@ class RestGroupController extends Controller
                 'flag' => $utilService->getFlag($team->getCountry())
             );
         }
-        return new Response(json_encode(array('groups' => $groups, 'unassigned' => $teamsUnassigned)));
+        return new Response(json_encode(array('groups' => $groups, 'unassigned' => array('teams' => $teamsUnassigned))));
     }
 }

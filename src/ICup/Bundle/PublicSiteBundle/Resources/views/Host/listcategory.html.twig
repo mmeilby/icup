@@ -7,34 +7,202 @@
         {% trans %}FORM.LISTGROUPS.TITLE{% endtrans %}
     </h2>
     <p></p>
-<div class="panel panel-default">
-    <div class="panel-body lead">
-        <div class="col-lg-6">
-            <a href="{{ path('_edit_tournamentboard', { 'tournamentid': tournament.id }) }}">
-                {{ host.name|upper }}
-            </a>
-            <br />
-            {{ tournament.name }}
-            <br />
-            <a href="{{ path('_edit_category_list', {'tournamentid': tournament.id }) }}">
-                {% trans from 'tournament' %}CATEGORY{% endtrans %} {{ category.name }}<br />
-                {{ ['GENDER.',
-                category.gender,
-                category.classification]|join|transchoice(category.age, { '%age%': category.age },'tournament') }}
-            </a>
-        </div>
-        <div class="col-lg-6 text-right">
-    {% if grouplist|length > 0 %}
-            <a class="btn btn-primary btn-lg" href="{{ path('_host_assign_vacant', { 'groupid': selectedgroup.id }) }}">
-                <span class="fa fa-archive"></span>&nbsp;{% trans %}FORM.LISTGROUPS.ADD_VACANT{% endtrans %}
-            </a>
-    {% endif %}
-    {% if is_granted('ROLE_ADMIN') %}
-    {% endif %}
+    <div class="panel panel-default">
+        <div class="panel-body lead">
+            <div class="col-lg-6">
+                <a href="{{ path('_edit_tournamentboard', { 'tournamentid': tournament.id }) }}">
+                    {{ host.name|upper }}
+                </a>
+                <br />
+                {{ tournament.name }}
+                <br />
+                <a href="{{ path('_edit_category_list', {'tournamentid': tournament.id }) }}">
+                    {% trans from 'tournament' %}CATEGORY{% endtrans %} {{ category.name }}<br />
+                    {{ ['GENDER.',
+                    category.gender,
+                    category.classification]|join|transchoice(category.age, { '%age%': category.age },'tournament') }}
+                </a>
+            </div>
+            <div class="col-lg-6 text-right">
+            </div>
         </div>
     </div>
-</div>
-{% if grouplist|length > 0 %}
+
+    <div ng-app="groupModule">
+
+        <style>
+            *{
+                -moz-box-sizing: border-box; -webkit-box-sizing: border-box; box-sizing: border-box;
+            }
+            [ng-drag] {
+                -moz-user-select: -moz-none;
+                -khtml-user-select: none;
+                -webkit-user-select: none;
+                -ms-user-select: none;
+                user-select: none;
+            }
+            [ng-drag] {
+                cursor: move;
+            }
+            [ng-drag].drag-over {
+                background: rgba(0,0,0, 0.1);
+    /*            background: rgba(0,0,0, 0.3); */
+    /*            border:solid 1px red; */
+            }
+            [ng-drag].dragging {
+                background: rgba(0,0,0, 0.4);
+                opacity: 0.25;
+            }
+            [ng-drop] {
+                border: solid 1px white;
+    /*            background: rgba(0,255,0, 0.5);
+                text-align: center;
+                width: 600px;
+                height: 200px;
+                padding-top:90px;
+                display: block;
+                margin:20px auto;
+                position: relative;
+    */        }
+            [ng-drop].drag-enter {
+                border: dotted 1px black;
+            }
+            DIV.row.title {
+                border-bottom: 1px solid darkgray;
+            }
+            DIV.row.title DIV {
+                font-size: 125%;
+                padding-bottom: 5px;
+            }
+        </style>
+
+        <div ng-controller="assignTeamsController" ng-cloak>
+            {# Show group cards #}
+            <div ng-repeat="group in groups track by group.group.id" class="col-md-3">
+                <div class="panel panel-default"
+                     ng-drop="true" ng-drop-success="onDropGroupComplete(group.group.id)"
+                >
+                    <div class="panel-heading">
+                        <div class="row">
+                            <div class="col-lg-6">
+                                <b>{% trans from 'tournament' %}GROUP{% endtrans %} {{ '{{ group.group.name }}' }}</b>
+                            </div>
+                            <div class="col-lg-6 text-right">
+                                <div ng-click="assignVacant(group.group.id)">
+                                    <span class="fa fa-archive"></span>&nbsp;{% trans %}FORM.LISTGROUPS.ADD_VACANT{% endtrans %}
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="panel-body">
+                        <div class="row"
+                             data-allow-transform="true"
+                             ng-drag="true" ng-drag-data="team" ng-drag-success="onDragGroupComplete(group.group.id, team.id)"
+                             ng-repeat="team in group.teams track by team.id"
+                        >
+                            <div class="col-md-12">
+                                <img src="{{ asset('bundles/icuppublicsite/images/flags/') }}{{ '{{ team.flag }}' }}"
+                                     alt="{{ '{{ team.country }}' }}"
+                                     title="{{ '{{ team.country }}' }}" ng-if="team.flag" class="flag">
+                                {{ '{{ team.name }}' }}
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            {# Show unassigned teams card #}
+            <div class="col-md-3">
+                <div class="panel panel-default"
+                     ng-drop="true" ng-drop-success="onDropUnassignedComplete()"
+                >
+                    <div class="panel-heading"><b>{{ 'FORM.LISTGROUPS.UNASSIGNED'|trans|upper }}</b></div>
+                    <div class="panel-body">
+                        <div class="row"
+                             data-allow-transform="true"
+                             ng-drag="true" ng-drag-data="team" ng-drag-success="onDragUnassignedComplete(team.id)"
+                             ng-repeat="team in unassigned.teams track by team.id"
+                        >
+                            <div class="col-md-12">
+                                <img src="{{ asset('bundles/icuppublicsite/images/flags/') }}{{ '{{ team.flag }}' }}"
+                                     alt="{{ '{{ team.country }}' }}"
+                                     title="{{ '{{ team.country }}' }}" ng-if="team.flag" class="flag">
+                                {{ '{{ team.name }}' }}
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+    </div>
+{% endblock %}
+
+{% block javascripts %}
+    <script type="text/javascript">
+        angular.module('groupModule', ['ngMaterial','ngMessages','ngDraggable'])
+                .controller('assignTeamsController', function($scope, $http, $mdDialog, $mdSidenav, $mdToast) {
+                    $scope.closeToast = function() {
+                        $mdToast.hide();
+                    };
+                    $scope.onDragUnassignedComplete=function(teamid){
+                        $scope.teamid = teamid;
+                        $scope.draggingAllowed = true;
+                    };
+                    $scope.onDragGroupComplete=function(groupid, teamid){
+                        $http.get(Routing.generate('_rest_assign_del', { 'groupid': groupid, 'teamid': teamid })).then(function(data) {
+                        });
+                        $scope.teamid = teamid;
+                        $scope.draggingAllowed = true;
+                    };
+                    $scope.onDropUnassignedComplete=function(){
+                        if ($scope.draggingAllowed) {
+                            $scope.draggingAllowed = false;
+                            getGroups();
+                        }
+                    };
+                    $scope.onDropGroupComplete=function(groupid){
+                        if ($scope.draggingAllowed) {
+                            $scope.draggingAllowed = false;
+                            $http.get(Routing.generate('_rest_assign_add', { 'groupid': groupid, 'teamid': $scope.teamid })).then(function(data) {
+                                getGroups();
+                            });
+                        }
+                    };
+                    $scope.toggleRight = buildToggler('right');
+                    $scope.isOpenRight = function(){
+                        return $mdSidenav('right').isOpen();
+                    };
+                    $scope.assignVacant = function(groupid){
+                        $http.get(Routing.generate('_rest_assign_vacant', { 'groupid': groupid })).then(function(data) {
+                            getGroups();
+                        });
+                    };
+                    $scope.groups = [];
+                    $scope.unassigned = [];
+                    getGroups();
+                    function getGroups() {
+                        $http.get(Routing.generate('_rest_list_groups_with_teams', {'categoryid': {{ category.id }} })).then(function (data) {
+                            $scope.groups = data.data.groups;
+                            $scope.unassigned = data.data.unassigned;
+                        });
+                    };
+                    function buildToggler(navID) {
+                        return function() {
+                            $mdSidenav(navID).toggle();
+                        }
+                    }
+                })
+                .controller('RightCtrl', function ($scope, $mdSidenav) {
+                    $scope.close = function () {
+                        $mdSidenav('right').close();
+                    };
+                });
+    </script>
+{% endblock %}
+
+{#
+    {% if grouplist|length > 0 %}
     {% for group in grouplist %}
         {% if selectedgroup.id == group.group.id %}
 <div class="col-md-6">
@@ -124,4 +292,4 @@
 </div>
     {% endif %}
 {% endfor %}
-{% endblock %}
+#}

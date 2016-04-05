@@ -349,7 +349,38 @@ FORM:
   MATCHPLANNING:
     TITLE: Tournament administration
     CAPTION: Schedule matches
-    PLANNINGINCOMPLETE: It was not possible to schedule all matches
+    PLANNINGINCOMPLETE:
+      TITLE: It was not possible to schedule all matches
+      DESCRIPTION: >
+                  Det var ikke muligt at planlægge alle kampe. Du kan se de kampe der blev planlagt i kampoplægget.
+                  Kampe der ikke blev planlagt er vist under løsninger. Der kan du også se årsagen til de faldt ud.
+                  Herunder ser du resume af de grupper, hvor der mangler kampe at blive planlagt.<br />
+                  Du kan også hente kampplanen som en tekstfil og ændre oplægget på din pc.
+                  Hvis du er tilfreds med kampoplægget kan du godkende det og få gemt kampplanen som turneringens officielle
+                  kampprogram.<br />
+    PLANNINGCOMPLETE:
+      TITLE: Kampplanen er lagt
+      DESCRIPTION: >
+                  Alle hold har fået tildelt kampe inden for planen. Du kan justere kampplanen efter behov i kampoplægget.
+                  Du kan også hente kampplanen som en tekstfil og ændre oplægget på din pc.
+                  Hvis du er tilfreds med kampoplægget kan du godkende det og få gemt kampplanen som turneringens officielle
+                  kampprogram.
+    PLANNOTREADY:
+      TITLE: Kampoplæg er ikke klar endnu
+      DESCRIPTION: Indlæs kampplan eller lad systemet planlægge et kampprogram. Du kan starte med at planlægge puljerne. Når det er på plads er du klar til at planlægge kampe.
+    NEEDTOPLAN:
+      TITLE: Planlæg kampprogram
+      DESCRIPTION: >
+                  Planlægning af et kampprogram kan ske ved at indlæse en færdig kampplan eller lade systemet planlægge
+                  kampprogrammet. Men først skal du have styr på puljerne. Hvilke hold skal spille mod hinanden og hvor mange
+                  hold skal der være i hver pulje. Du skal også tage stilling til på hvilke tidspunkter der kan spilles
+                  på turneringens baner. Når det er på plads er du klar til at planlægge kampe.
+    PLANNING:
+      TITLE: Kampplanen er ved at blive lagt
+      DESCRIPTION: Turneringens kampplan er ved at blive lagt - hav lidt tålmodighed.
+      FAILURE: Der optod en fejl under planlægningen. Prøv igen.
+      ERROR: Der optod en fejl under planlægningen. Fejlen var:
+      DONE: Voila - så er kampplanen lagt.
     DOUBLEMATCH:
       PROMPT: Plan for Double Round Robin tournament
       HELP: If you plan for Double Round Robin every team will play twice against same opponent
@@ -365,8 +396,24 @@ FORM:
     TEAMS: Teams
     MATCHES: Matches
     NOTEAMS: No teams
-    DOWNLOAD: Download match schedule as textfile
-    SAVE: Accept and save match schedule
+    DOWNLOAD:
+      TITLE: Download match schedule
+      DESCRIPTION: Export match schedule as textfile. If you change the file you can upload the changes later.
+    PLAN:
+      TITLE: Plan match schedule
+      DESCRIPTION: Start automated match planning based on your current tournament configuration.
+    RESET:
+      TITLE: Delete match schedule
+      DESCRIPTION: Delete the current match schedule and prepare for a new schedule.
+    SAVE:
+      TITLE: Save match schedule
+      DESCRIPTION: Accept and save match schedule as the official match program.
+    MATCHIMPORT:
+      TITLE: Upload match schedule
+      DESCRIPTION: Import match schedule from text file. The match schedule can be inspected and eventually saved as the match program.
+      FILE: Name of the file to be imported:
+      UPLOAD: Import
+      BROWSE: Select file
     OPTIONS: Planning options
     GROUPS: Plan groups
     VIEW: Match schedule
@@ -381,6 +428,8 @@ FORM:
     SOLVEXCHG: No timeslots fit the requirements for this match. Try to exchange timeslot with another match from the group.
     SOLVEXPND: This match requires more time than available. Expand a timeslot to make space for this match.
     PLAN_SAVED: The match schedule has been accepted and registered for the tournament
+    PLAN_NOT_SAVED: The match schedule can not be saved after tournament start. You must save the schedule before tournament start.
+    NOFILE: No file has been selected for match schedule import
     PLAYGROUND: Venue
     TIMESLOT: Timeslot
     PATTRS: Preferred categories
@@ -390,9 +439,10 @@ FORM:
     DATE: Match date
     MATCHNO: Match no.
     HELP:
-        MATCHNO: Et officielt kampnr. som det fremgår af programmet
-        DATE: En dato hvor der er planlagt kampe for denne turnering
+        MATCHNO: An official number for the match as shown in the match schedule
+        DATE: A date scheduled for matches in this tournament
     DEFAULT: Select...
+    TIMEUSED: Spare time
     SEARCH: Search match
     ADD: New match
     CHG: Change match

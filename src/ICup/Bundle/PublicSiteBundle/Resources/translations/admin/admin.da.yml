@@ -425,7 +425,6 @@ FORM:
       TITLE: Vent på at kamplanen opdateres
       TEXT: Kamplanen opdateres - vent venligst
     SEARCHMATCHES: Vis kampplan
-    RIGHTNAV: ...
     SOLVEXCHG: Ingen perioder passer for denne kamp. Forsøg at bytte andre kampe fra puljen med denne kamp.
     SOLVEXPND: Der er ikke ledig plads til denne kamp. Forsøg at udvide en periode så der bliver plads til kampen.
     PLAN_SAVED: Kampplanen er godkendt og gemt som turneringens officielle kampprogram.
@@ -472,6 +471,10 @@ FORM:
     GROUPS: Grundspilspuljer
     NOGROUPS: Ingen puljer i grundspillet
     ADDGROUP: Tilføj pulje
+    WAIT:
+      TITLE: Puljer og hold hentes
+      TEXT: Listen med puljer opdateres - vent venligst
+    OPTIONS: Gruppeoplysninger
     GROUP:
       ZERO: Ingen puljer
       ONE: En pulje

@@ -350,37 +350,36 @@ FORM:
     TITLE: Tournament administration
     CAPTION: Schedule matches
     PLANNINGINCOMPLETE:
-      TITLE: It was not possible to schedule all matches
+      TITLE: The match schedule is incomplete
       DESCRIPTION: >
-                  Det var ikke muligt at planlægge alle kampe. Du kan se de kampe der blev planlagt i kampoplægget.
-                  Kampe der ikke blev planlagt er vist under løsninger. Der kan du også se årsagen til de faldt ud.
-                  Herunder ser du resume af de grupper, hvor der mangler kampe at blive planlagt.<br />
-                  Du kan også hente kampplanen som en tekstfil og ændre oplægget på din pc.
-                  Hvis du er tilfreds med kampoplægget kan du godkende det og få gemt kampplanen som turneringens officielle
-                  kampprogram.<br />
+                  It was not possible to schedule all matches. You may review the scheduled matches in the match schedule.
+                  To reschedule matches that did not fit in the schedule you can plan the matches from the advices tab.
+                  Below is a list of categories that need to be rescheduled.<br />
+                  You may want to download the match schedule as a text file and change the schedule in your favorite editor.
+                  However, if you feel comfortable with the match schedule so far, you can accept and save the schedule as the official match plan.<br />
     PLANNINGCOMPLETE:
-      TITLE: Kampplanen er lagt
+      TITLE: The match schedule is done
       DESCRIPTION: >
-                  Alle hold har fået tildelt kampe inden for planen. Du kan justere kampplanen efter behov i kampoplægget.
-                  Du kan også hente kampplanen som en tekstfil og ændre oplægget på din pc.
-                  Hvis du er tilfreds med kampoplægget kan du godkende det og få gemt kampplanen som turneringens officielle
-                  kampprogram.
+                  All matches have been scheduled. You can change the schedule if you like using the advices tab.
+                  You may want to download the match schedule as a text file and change the schedule in your favorite editor.
+                  If you feel comfortable with the match schedule, you can accept and save the schedule as the official match plan.<br />
     PLANNOTREADY:
-      TITLE: Kampoplæg er ikke klar endnu
-      DESCRIPTION: Indlæs kampplan eller lad systemet planlægge et kampprogram. Du kan starte med at planlægge puljerne. Når det er på plads er du klar til at planlægge kampe.
-    NEEDTOPLAN:
-      TITLE: Planlæg kampprogram
+      TITLE: The match schedule is not ready yet
       DESCRIPTION: >
-                  Planlægning af et kampprogram kan ske ved at indlæse en færdig kampplan eller lade systemet planlægge
-                  kampprogrammet. Men først skal du have styr på puljerne. Hvilke hold skal spille mod hinanden og hvor mange
-                  hold skal der være i hver pulje. Du skal også tage stilling til på hvilke tidspunkter der kan spilles
-                  på turneringens baner. Når det er på plads er du klar til at planlægge kampe.
+                  Upload a match schedule or let the program plan your match schedule. Start arranging groups and assign teams.
+                  When you are done with the groups you are ready plan matches.
+    NEEDTOPLAN:
+      TITLE: Plan match schedule
+      DESCRIPTION: >
+                  You can create a match schedule from an imported text file or you can let the program plan your schedule.
+                  However you need to arrange the groups intially. You must assign teams to each group and you have to plan
+                  when matches can be played at the venues. When you have completed that you are ready to plan the match schedule.
     PLANNING:
-      TITLE: Kampplanen er ved at blive lagt
-      DESCRIPTION: Turneringens kampplan er ved at blive lagt - hav lidt tålmodighed.
-      FAILURE: Der optod en fejl under planlægningen. Prøv igen.
-      ERROR: Der optod en fejl under planlægningen. Fejlen var:
-      DONE: Voila - så er kampplanen lagt.
+      TITLE: The match planning is in progress
+      DESCRIPTION: The match schedule is about to be ready - hold on...
+      FAILURE: Match planning failed. Please try again.
+      ERROR: Match planning failed. The cause was:
+      DONE: That's it - the match schedule is ready.
     DOUBLEMATCH:
       PROMPT: Plan for Double Round Robin tournament
       HELP: If you plan for Double Round Robin every team will play twice against same opponent
@@ -424,7 +423,6 @@ FORM:
       TITLE: Wait for the change of schedule to complete
       TEXT: Please wait for the change of schedule to complete.
     SEARCHMATCHES: Show match schedule
-    RIGHTNAV: ...
     SOLVEXCHG: No timeslots fit the requirements for this match. Try to exchange timeslot with another match from the group.
     SOLVEXPND: This match requires more time than available. Expand a timeslot to make space for this match.
     PLAN_SAVED: The match schedule has been accepted and registered for the tournament
@@ -471,6 +469,10 @@ FORM:
     GROUPS: Preliminary groups
     NOGROUPS: There are no preliminary groups defined
     ADDGROUP: Add group
+    WAIT:
+      TITLE: Fetching groups and teams
+      TEXT: The list of groups is updated - please wait
+    OPTIONS: Category options
     GROUP:
       ZERO: No groups
       ONE: One group
@@ -488,7 +490,7 @@ FORM:
         OPTION0: Top ranked teams qualify for the best final branch, the rest are assigned to the other branch
         OPTION1: Top four teams qualify for quater final
         OPTION2: Top two teams qualify for semifinal
-        OPTION3: Group winners quaify for final
+        OPTION3: Group winners qualify for final
       GROUP3:
         OPTION0: Top ranked teams qualify for the best final branch, the rest are assigned to the other branch
         OPTION1: Group winners qualify for semifinal, group 2nd place qualify for playoff
@@ -496,7 +498,7 @@ FORM:
       GROUP4:
         OPTION0: Top ranked teams qualify for the best final branch, the rest are assigned to the other branch
         OPTION1: Top two teams qualify for quater final
-        OPTION2: Group winners quaify for semifinal
+        OPTION2: Group winners qualify for semifinal
     SUBMIT: Save configuration
   TOURNAMENTIMPORT:
     TITLE: Tournament administration

@@ -4,6 +4,7 @@ namespace ICup\Bundle\PublicSiteBundle\Entity\Doctrine;
 
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\ORM\Mapping as ORM;
+use JsonSerializable;
 
 /**
  * ICup\Bundle\PublicSiteBundle\Entity\Doctrine\Category
@@ -11,7 +12,7 @@ use Doctrine\ORM\Mapping as ORM;
  * @ORM\Table(name="categories",uniqueConstraints={@ORM\UniqueConstraint(name="CategoryNameConstraint", columns={"name", "pid"})})
  * @ORM\Entity
  */
-class Category
+class Category implements JsonSerializable
 {
     /**
      * @var integer $id
@@ -77,24 +78,24 @@ class Category
      * @var integer $strategy
      * Group planning strategy:
      *   When no groups:
-     *     0: Gruppens hold spiller slutspil. A-slutspils seedede hold sidder over til senere runder
+     *     0: All teams play eliminating rounds. Top seeded teams await the low rated teams to run pre eliminating rounds
      *   For one group:
-     *     0: De bedst placerede hold går til A-slutspil, resten går til B-slutspil
-     *     1: Fire bedst placerede hold går til semifinale
-     *     2: To bedst placerede hold går til finale
+     *     0: Top ranked teams qualify for the best final branch, the rest are assigned to the other branch
+     *     1: Top four teams qualify for semifinal
+     *     2: Top two teams qualify for final
      *   For 2 groups:
-     *     0: De bedst placerede hold går til A-slutspil, resten går til B-slutspil
-     *     1: Fire bedst placerede hold går til kvartfinale
-     *     2: To bedst placerede hold går til semifinale
-     *     3: Puljevindere går til finale
+     *     0: Top ranked teams qualify for the best final branch, the rest are assigned to the other branch
+     *     1: Top four teams qualify for quater final
+     *     2: Top two teams qualify for semifinal
+     *     3: Group winners qualify for final
      *   For 3 groups:
-     *     0: De bedst placerede hold går til A-slutspil, resten går til B-slutspil
-     *     1: Puljevindere går til semifinale, pulje 2-ere mødes i playoff
-     *     2: To bedst placerede hold går til kvartfinale, pulje 3-ere og 4-ere går i playoff
+     *     0: Top ranked teams qualify for the best final branch, the rest are assigned to the other branch
+     *     1: Group winners qualify for semifinal, group 2nd place qualify for playoff
+     *     2: Top two teams qualify for quater final, group 3rd and 4th place qualify for playoff
      *   For 4 and more groups:
-     *     0: De bedst placerede hold går til A-slutspil, resten går til B-slutspil
-     *     1: To bedst placerede hold går til kvartfinale
-     *     2: Puljevindere går til semifinale
+     *     0: Top ranked teams qualify for the best final branch, the rest are assigned to the other branch
+     *     1: Top two teams qualify for quater final
+     *     2: Group winners qualify for semifinal
      * @ORM\Column(name="strategy", type="integer", nullable=false)
      */
     protected $strategy;
@@ -399,5 +400,24 @@ class Category
      */
     public function getChampions() {
         return $this->champions;
+    }
+
+    public function __toString() {
+        return $this->getName()." (".$this->getGender().$this->getClassification().$this->getAge().")";
+    }
+
+    /**
+     * (PHP 5 &gt;= 5.4.0)<br/>
+     * Specify data which should be serialized to JSON
+     * @link http://php.net/manual/en/jsonserializable.jsonserialize.php
+     * @return mixed data which can be serialized by <b>json_encode</b>,
+     * which is a value of any type other than a resource.
+     */
+    function jsonSerialize() {
+        return array(
+            "id" => $this->id, "name" => $this->name, "gender" => $this->getGender(), "classification" => $this->classification, "age" => $this->age,
+            "trophys" => $this->trophys, "premier_branch_teams" => $this->topteams,
+            "preliminary_groups" => $this->getGroupsClassified(Group::$PRE)->count(), "strategy" => $this->strategy, "matchtime" => $this->matchtime
+        );
     }
 }

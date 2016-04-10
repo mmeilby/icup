@@ -94,56 +94,13 @@ class MatchPlanningController extends Controller
      * @Route("/edit/m/groups/plan/{tournamentid}", name="_edit_match_planning_groups")
      * @Template("ICupPublicSiteBundle:Edit:plangroups.html.twig")
      */
-    public function planGroupsAction($tournamentid, Request $request) {
+    public function planGroupsAction($tournamentid) {
         /* @var $tournament Tournament */
         $tournament = $this->checkArgs($tournamentid);
         $host = $tournament->getHost();
-        $session = $request->getSession();
-        $categoryid = $session->get('admin.group.plan.category', 0);
-        /* @var $category Category */
-        $category = null;
-        $categoryList = array();
-        foreach ($tournament->getCategories() as $cat) {
-            $categoryList[] = array('category' => $cat, 'groups' => $cat->getGroupsClassified(Group::$PRE));
-            if ($cat->getId() == $categoryid) {
-                $category = $cat;
-            }
-        }
-
-        $groupList = array();
-        if ($category) {
-            $mincount = $category->getTopteams();
-            $groups = $category->getGroupsClassified(Group::$PRE);
-            /* @var $group Group */
-            foreach ($groups as $group) {
-                $teams = count($this->get('logic')->listTeamsByGroup($group->getId()));
-//                if ($teams > 0) {
-                    $groupList[] = array('group' => $group, 'count' => $teams);
-                    $mincount = min($mincount, $teams);
-//                }
-            }
-            $matchForm = array('strategy' => $category->getStrategy(), 'trophys' => $category->getTrophys(), 'topteams' => $mincount);
-        }
-        else {
-            $matchForm = array('strategy' => 0, 'trophys' => 0, 'topteams' => 0);
-        }
-        $form = $this->makeMatchForm($matchForm, count($groupList));
-        $form->handleRequest($request);
-        if ($category && $form->isValid()) {
-            $matchForm = $form->getData();
-            $category->setStrategy($matchForm['strategy']);
-            $category->setTrophys($matchForm['trophys']);
-            $category->setTopteams($matchForm['topteams']);
-            $em = $this->getDoctrine()->getManager();
-            $em->flush();
-        }
         return array(
-            'form' => $form->createView(),
             'host' => $host,
-            'tournament' => $tournament,
-            'category' => $category,
-            'categoryList' => $categoryList,
-            'groupList' => $groupList);
+            'tournament' => $tournament);
     }
 
     private function makeMatchForm($matchForm, $noofgroups) {

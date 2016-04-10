@@ -1,6 +1,4 @@
 {% extends "ICupPublicSiteBundle:Masters:edit.html.twig" %}
-
-{% form_theme form 'ICupPublicSiteBundle:Default:layout.script.html.twig' %}
 {% trans_default_domain "admin" %}
 
 {% block adminbody %}
@@ -48,79 +46,247 @@
             </a>
         </li>
     </ul>
-    <div class="row" style="margin-top: 10px;">
-        <div class="col-sm-4">
-            <ul class="list-group">
-                {% for categoryStat in categoryList %}
-                    <li class="list-group-item">
-                        <span class="badge">{{ categoryStat.groups|length }}</span>
-                        {% if category and categoryStat.category.id == category.id %}
-                        <strong>
-                        {% endif %}
-                            <a href="{{ path('_edit_match_planning_groups_select_category', {
-                                                'categoryid': categoryStat.category.id,
-                                                'tournamentid': tournament.id
-                                            }) }}">
-                                {% trans from 'tournament' %}CATEGORY{% endtrans %} {{ categoryStat.category.name }} -
-                                {{ ['GENDER.',
-                                categoryStat.category.gender,
-                                categoryStat.category.classification]|join|transchoice(categoryStat.category.age, { '%age%': categoryStat.category.age },'tournament') }}
-                            </a>
-                        {% if category and categoryStat.category.id == category.id %}
-                        </strong>
-                        {% endif %}
-                    </li>
-                {% endfor %}
-            </ul>
-            <a class="btn btn-lg btn-default" href="{{ path('_edit_import_team', { 'tournamentid': tournament.id }) }}">
-                {% trans %}FORM.TEAMIMPORT.TITLE{% endtrans %}
-            </a>
-        </div>
-        <div class="col-sm-5">
-            {% if category %}
-                <h3>
-                    {% trans from 'tournament' %}CATEGORY{% endtrans %} {{ category.name }} -
-                    {{ ['GENDER.',
-                    category.gender,
-                    category.classification]|join|transchoice(category.age, { '%age%': category.age },'tournament') }}
-                </h3>
-                <p>
-                    {{ form(form) }}
-                </p>
-            {% else %}
-                <h3><span class="fa fa-hand-o-left"></span>&nbsp;{% trans %}FORM.QMATCHPLANNING.SELECTCATEGORY.TITLE{% endtrans %}</h3>
-                <p>{% trans %}FORM.QMATCHPLANNING.SELECTCATEGORY.TEXT{% endtrans %}</p>
-            {% endif %}
-        </div>
-        <div class="col-sm-3">
-            {% if category %}
-                <h3>{% trans %}FORM.QMATCHPLANNING.GROUPS{% endtrans %}</h3>
-                <hr />
-                {% for group in groupList %}
-                    <h4>
-                        <span class="label label-primary">{% trans from "tournament" %}GROUP{% endtrans %} {{ group.group.name }}</span>
-                        {% if group.count > 0 %}
-                            <span class="badge">{{ group.count }} {% trans %}FORM.QMATCHPLANNING.TEAMS{% endtrans %}</span>
-                        {% else %}
-                            <span class="badge">{% trans %}FORM.MATCHPLANNING.NOTEAMS{% endtrans %}</span>
-                        {% endif %}
-                    </h4>
-                {% else %}
-                    <h4>{% trans %}FORM.QMATCHPLANNING.NOGROUPS{% endtrans %}</h4>
-                {% endfor %}
-                <hr />
-                <p>
-                    {% if groupList|length > 0 %}
-                        <a class="btn btn-lg btn-default" href="{{ path('_host_list_groups', { 'categoryid': category.id }) }}">
-                            {% trans %}FORM.LISTGROUPS.TITLE{% endtrans %}
-                        </a>
-                    {% else %}
-                        <a class="btn btn-lg btn-default" href="{{ path('_edit_group_add', { 'categoryid': category.id }) }}">
-                            {% trans %}FORM.QMATCHPLANNING.ADDGROUP{% endtrans %}
-                        </a>
-                    {% endif %}
-                </p>
-            {% endif %}
+
+    <div ng-app="assignGroupsModule">
+        <div ng-controller="assignGroupsController" ng-cloak>
+            <section layout="row" flex>
+                <md-sidenav
+                        class="md-sidenav-left"
+                        md-component-id="right"
+                        md-disable-backdrop
+                        md-whiteframe="4">
+                    <md-toolbar class="md-tall md-theme-indigo">
+                        <h1 class="md-toolbar-tools" style="padding-top: 90px;">
+                            {% trans %}FORM.QMATCHPLANNING.OPTIONS{% endtrans %}
+                        </h1>
+                    </md-toolbar>
+                    <md-content layout-padding ng-controller="RightCtrl">
+                        <h4>
+                            {% trans from 'tournament' %}CATEGORY{% endtrans %} {{ '{{ category.name }}' }} - {{ '{{ category.classification_translated }}' }}
+                        </h4>
+                        <form ng-submit="submit()" ng-cloak>
+                            <div ng-show="category.preliminary_groups==0">
+                                <h4>{% trans %}FORM.QMATCHPLANNING.GROUP.ZERO{% endtrans %}</h4>
+                                <p>{% trans %}FORM.QMATCHPLANNING.RADIO.GROUP0.OPTION0{% endtrans %}</p>
+                            </div>
+                            <div ng-show="category.preliminary_groups==1">
+                                <h4>{% trans %}FORM.QMATCHPLANNING.GROUP.ONE{% endtrans %}</h4>
+                                <md-radio-group ng-model="category.strategy">
+                                    <md-radio-button value="0" class="md-primary">{% trans %}FORM.QMATCHPLANNING.RADIO.GROUP1.OPTION0{% endtrans %}</md-radio-button>
+                                    <md-radio-button value="1" class="md-primary">{% trans %}FORM.QMATCHPLANNING.RADIO.GROUP1.OPTION1{% endtrans %}</md-radio-button>
+                                    <md-radio-button value="2" class="md-primary">{% trans %}FORM.QMATCHPLANNING.RADIO.GROUP1.OPTION2{% endtrans %}</md-radio-button>
+                                </md-radio-group>
+                            </div>
+                            <div ng-show="category.preliminary_groups==2">
+                                <h4>{% trans %}FORM.QMATCHPLANNING.GROUP.TWO{% endtrans %}</h4>
+                                <md-radio-group ng-model="category.strategy">
+                                    <md-radio-button value="0" class="md-primary">{% trans %}FORM.QMATCHPLANNING.RADIO.GROUP2.OPTION0{% endtrans %}</md-radio-button>
+                                    <md-radio-button value="1" class="md-primary">{% trans %}FORM.QMATCHPLANNING.RADIO.GROUP2.OPTION1{% endtrans %}</md-radio-button>
+                                    <md-radio-button value="2" class="md-primary">{% trans %}FORM.QMATCHPLANNING.RADIO.GROUP2.OPTION2{% endtrans %}</md-radio-button>
+                                    <md-radio-button value="3" class="md-primary">{% trans %}FORM.QMATCHPLANNING.RADIO.GROUP2.OPTION3{% endtrans %}</md-radio-button>
+                                </md-radio-group>
+                            </div>
+                            <div ng-show="category.preliminary_groups==3">
+                                <h4>{% trans %}FORM.QMATCHPLANNING.GROUP.THREE{% endtrans %}</h4>
+                                <md-radio-group ng-model="category.strategy">
+                                    <md-radio-button value="0" class="md-primary">{% trans %}FORM.QMATCHPLANNING.RADIO.GROUP3.OPTION0{% endtrans %}</md-radio-button>
+                                    <md-radio-button value="1" class="md-primary">{% trans %}FORM.QMATCHPLANNING.RADIO.GROUP3.OPTION1{% endtrans %}</md-radio-button>
+                                    <md-radio-button value="2" class="md-primary">{% trans %}FORM.QMATCHPLANNING.RADIO.GROUP3.OPTION2{% endtrans %}</md-radio-button>
+                                </md-radio-group>
+                            </div>
+                            <div ng-show="category.preliminary_groups>=4">
+                                <h4>{% trans %}FORM.QMATCHPLANNING.GROUP.FOUR{% endtrans %}</h4>
+                                <md-radio-group ng-model="category.strategy">
+                                    <md-radio-button value="0" class="md-primary">{% trans %}FORM.QMATCHPLANNING.RADIO.GROUP4.OPTION0{% endtrans %}</md-radio-button>
+                                    <md-radio-button value="1" class="md-primary">{% trans %}FORM.QMATCHPLANNING.RADIO.GROUP4.OPTION1{% endtrans %}</md-radio-button>
+                                    <md-radio-button value="2" class="md-primary">{% trans %}FORM.QMATCHPLANNING.RADIO.GROUP4.OPTION2{% endtrans %}</md-radio-button>
+                                </md-radio-group>
+                            </div>
+                            <p>&nbsp;</p>
+                            <md-input-container>
+                                <label for="trophys">{% trans %}FORM.QMATCHPLANNING.PROMPT.TROPHYS{% endtrans %}</label>
+                                <input type="text" id="trophys" ng-model="category.trophys" md-autofocus>
+                            </md-input-container>
+                            <md-input-container>
+                                <label for="premier_branch_teams">{% trans %}FORM.QMATCHPLANNING.PROMPT.TOPTEAMS{% endtrans %}</label>
+                                <input type="text" id="premier_branch_teams" ng-model="category.premier_branch_teams">
+                            </md-input-container>
+                        </form>
+                        <md-button ng-click="close()" class="md-raised md-primary">
+                            Close Sidenav Right
+                        </md-button>
+                    </md-content>
+                </md-sidenav>
+
+                <md-content flex layout-padding>
+                    <div class="row" style="margin-top: 10px;">
+                        <div class="col-sm-4">
+                            <ul class="list-group">
+                                <li class="list-group-item" ng-repeat="category in categories track by category.id">
+                                    <span class="badge">{{ '{{ category.preliminary_groups }}' }}</span>
+                                    <strong ng-show="category.id==selectedCategory">
+                                        <span ng-click="selectCategory(category.id)">
+                                            {% trans from 'tournament' %}CATEGORY{% endtrans %} {{ '{{ category.name }}' }} - {{ '{{ category.classification_translated }}' }}
+                                        </span>
+                                    </strong>
+                                    <span ng-click="selectCategory(category.id)" ng-show="category.id!=selectedCategory">
+                                        {% trans from 'tournament' %}CATEGORY{% endtrans %} {{ '{{ category.name }}' }} - {{ '{{ category.classification_translated }}' }}
+                                    </span>
+                                </li>
+                            </ul>
+                        </div>
+                        <div class="col-sm-8" ng-show="selectedCategory && dataReady">
+                            <h3>{% trans %}FORM.QMATCHPLANNING.GROUPS{% endtrans %}</h3>
+                            <hr />
+                            <div class="row">
+                                {# Show group cards #}
+                                <div class="col-md-4" ng-repeat="group in groups track by group.group.id">
+                                    <div ng-drop="true" ng-drop-success="onDropGroup(group.group.id)">
+                                        <h4>
+                                            <span class="label label-primary">{% trans from "tournament" %}GROUP{% endtrans %} {{ '{{ group.group.name }}' }}</span>
+                                        </h4>
+                                        <div class="row"
+                                             data-allow-transform="true"
+                                             ng-drag="true" ng-drag-data="team" ng-drag-success="onDragTeam(group.group.id, team.id)"
+                                             ng-repeat="team in group.teams track by team.id"
+                                        >
+                                            <div class="col-md-12">
+                                                <img src="{{ asset('bundles/icuppublicsite/images/flags/') }}{{ '{{ team.flag }}' }}"
+                                                     alt="{{ '{{ team.country }}' }}"
+                                                     title="{{ '{{ team.country }}' }}" ng-if="team.flag" class="flag">
+                                                {{ '{{ team.name }}' }}
+                                            </div>
+                                        </div>
+                                        <h4 ng-hide="group.teams.length">
+                                            <span class="badge">{% trans %}FORM.MATCHPLANNING.NOTEAMS{% endtrans %}</span>
+                                        </h4>
+                                    </div>
+                                </div>
+                                {# Show unassigned teams card #}
+                                <div class="col-md-4">
+                                    <div ng-drop="true" ng-drop-success="onDropUnassigned()">
+                                        <h4>
+                                            <span class="label label-primary">{{ 'FORM.LISTGROUPS.UNASSIGNED'|trans|upper }}</span>
+                                        </h4>
+                                        <div class="row"
+                                             data-allow-transform="true"
+                                             ng-drag="true" ng-drag-data="team" ng-drag-success="onDragUnassignedTeam(team.id)"
+                                             ng-repeat="team in unassigned.teams track by team.id"
+                                        >
+                                            <div class="col-md-12">
+                                                <img src="{{ asset('bundles/icuppublicsite/images/flags/') }}{{ '{{ team.flag }}' }}"
+                                                     alt="{{ '{{ team.country }}' }}"
+                                                     title="{{ '{{ team.country }}' }}" ng-if="team.flag" class="flag">
+                                                {{ '{{ team.name }}' }}
+                                            </div>
+                                        </div>
+                                        <h4 ng-hide="unassigned.teams.length">
+                                            <span class="badge">{% trans %}FORM.MATCHPLANNING.NOTEAMS{% endtrans %}</span>
+                                        </h4>
+                                    </div>
+                                </div>
+                            </div>
+                            <hr />
+                            <h4 ng-hide="groups.length">{% trans %}FORM.QMATCHPLANNING.NOGROUPS{% endtrans %}</h4>
+                            <div>
+                                <md-button class="md-raised md-primary md-hue-1" ng-hide="groups.length">
+                                    {% trans %}FORM.QMATCHPLANNING.ADDGROUP{% endtrans %}
+                                </md-button>
+                                <md-button class="md-raised md-hue-1" ng-click="toggleRight()" ng-hide="isOpenRight()">
+                                    {% trans %}FORM.QMATCHPLANNING.OPTIONS{% endtrans %}
+                                </md-button>
+                                <md-button class="md-raised md-hue-1"> <!-- href="{{ path('_edit_import_team', { 'tournamentid': tournament.id }) }}" -->
+                                    {% trans %}FORM.TEAMIMPORT.TITLE{% endtrans %}
+                                </md-button>
+                            </div>
+                        </div>
+                        <div class="col-sm-8" ng-hide="selectedCategory || !dataReady">
+                            <h3><span class="fa fa-hand-o-left"></span>&nbsp;{% trans %}FORM.QMATCHPLANNING.SELECTCATEGORY.TITLE{% endtrans %}</h3>
+                            <p>{% trans %}FORM.QMATCHPLANNING.SELECTCATEGORY.TEXT{% endtrans %}</p>
+                        </div>
+                        <div ng-hide="dataReady" style="padding: 40px;">
+                            <div layout="row" layout-sm="column" layout-align="space-around">
+                                <div class="lead">{% trans %}FORM.QMATCHPLANNING.WAIT.TEXT{% endtrans %}</div>
+                            </div>
+                            <div layout="row" layout-sm="column" layout-align="space-around">
+                                <md-progress-circular md-mode="indeterminate"></md-progress-circular>
+                            </div>
+                        </div>
+
+                    </div>
+                </md-content>
+            </section>
+
         </div>
     </div>
+{% endblock %}
+
+{% block javascripts %}
+    <script type="text/javascript">
+        angular.module('assignGroupsModule', ['ngMaterial', 'ngMessages','ngDraggable'])
+                .controller('assignGroupsController', function($scope, $http, $mdDialog, $mdSidenav) {
+                    $scope.onDragUnassignedTeam=function(teamid){
+                        $scope.teamid = teamid;
+                        $scope.draggingAllowed = true;
+                    };
+                    $scope.onDragTeam=function(groupid, teamid){
+                        $http.get(Routing.generate('_rest_assign_del', { 'groupid': groupid, 'teamid': teamid })).then(function(data) {});
+                        $scope.teamid = teamid;
+                        $scope.draggingAllowed = true;
+                    };
+                    $scope.onDropUnassigned=function(){
+                        if ($scope.draggingAllowed) {
+                            $scope.draggingAllowed = false;
+                            getGroups();
+                        }
+                    };
+                    $scope.onDropGroup=function(groupid){
+                        if ($scope.draggingAllowed) {
+                            $scope.draggingAllowed = false;
+                            $http.get(Routing.generate('_rest_assign_add', { 'groupid': groupid, 'teamid': $scope.teamid })).then(function(data) {
+                                getGroups();
+                            });
+                        }
+                    };
+                    $scope.toggleRight = function() {
+                        $mdSidenav('right').toggle();
+                    };
+                    $scope.isOpenRight = function(){
+                        return $mdSidenav('right').isOpen();
+                    };
+                    $scope.dataReady = true;
+                    $scope.categories = [];
+                    $http.get(Routing.generate('_rest_list_categories', { 'tournamentid': {{ tournament.id }} })).then(function(data) {
+                        $scope.categories = data.data.categories;
+                        angular.forEach($scope.categories, function (category) {
+                            category.classification_translated = data.data.translation[category.id];
+                        });
+                    });
+                    $scope.selectedCategory = 0;
+                    $scope.selectCategory = function (id) {
+                        $scope.selectedCategory = id;
+                        angular.forEach($scope.categories, function (category) {
+                            if (category.id == id) {
+                                $scope.category = category;
+                            }
+                        });
+                        getGroups();
+                    };
+                    $scope.groups = [];
+                    $scope.unassigned = [];
+                    function getGroups() {
+                        $scope.dataReady = false;
+                        $http.get(Routing.generate('_rest_list_groups_with_teams', {'categoryid': $scope.selectedCategory })).then(function (data) {
+                            $scope.groups = data.data.groups;
+                            $scope.unassigned = data.data.unassigned;
+                            $scope.dataReady = true;
+                        });
+                    }
+                })
+                .controller('RightCtrl', function ($scope, $mdSidenav) {
+                    $scope.close = function () {
+                        $mdSidenav('right').close();
+                    };
+                });
+    </script>
 {% endblock %}

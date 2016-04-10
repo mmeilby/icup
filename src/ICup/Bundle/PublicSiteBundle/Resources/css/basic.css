@@ -83,8 +83,26 @@ DIV.form-control {
     padding-bottom: 30px;
 }
 
+/*
+    Make space after fa icons in link text
+*/
 A.btn I.fa {
     margin-right: 10px;
+}
+
+/*
+    Solid line below titles in bootstrap tables
+*/
+DIV.row.title {
+    border-bottom: 1px solid darkgray;
+}
+
+/*
+    Title font for bootstrap tables
+*/
+DIV.row.title DIV {
+    font-size: 125%;
+    padding-bottom: 5px;
 }
 
 .btn-facebook {

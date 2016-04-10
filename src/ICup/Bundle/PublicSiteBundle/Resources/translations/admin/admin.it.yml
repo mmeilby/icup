@@ -341,7 +341,37 @@ FORM:
   MATCHPLANNING:
     TITLE: Amministrazione torneo
     CAPTION: Calendario gare
-    PLANNINGINCOMPLETE: Non è stato possibile schedulare tutte le gare
+    PLANNINGINCOMPLETE:
+      TITLE: The match schedule is incomplete
+      DESCRIPTION: >
+                  Non è stato possibile schedulare tutte le gare. You may review the scheduled matches in the match schedule.
+                  To reschedule matches that did not fit in the schedule you can plan the matches from the advices tab.
+                  Below is a list of categories that need to be rescheduled.<br />
+                  You may want to download the match schedule as a text file and change the schedule in your favorite editor.
+                  However, if you feel comfortable with the match schedule so far, you can accept and save the schedule as the official match plan.<br />
+    PLANNINGCOMPLETE:
+      TITLE: The match schedule is done
+      DESCRIPTION: >
+                  All matches have been scheduled. You can change the schedule if you like using the advices tab.
+                  You may want to download the match schedule as a text file and change the schedule in your favorite editor.
+                  If you feel comfortable with the match schedule, you can accept and save the schedule as the official match plan.<br />
+    PLANNOTREADY:
+      TITLE: The match schedule is not ready yet
+      DESCRIPTION: >
+                  Upload a match schedule or let the program plan your match schedule. Start arranging groups and assign teams.
+                  When you are done with the groups you are ready plan matches.
+    NEEDTOPLAN:
+      TITLE: Plan match schedule
+      DESCRIPTION: >
+                  You can create a match schedule from an imported text file or you can let the program plan your schedule.
+                  However you need to arrange the groups intially. You must assign teams to each group and you have to plan
+                  when matches can be played at the venues. When you have completed that you are ready to plan the match schedule.
+    PLANNING:
+      TITLE: The match planning is in progress
+      DESCRIPTION: The match schedule is about to be ready - hold on...
+      FAILURE: Match planning failed. Please try again.
+      ERROR: Match planning failed. The cause was:
+      DONE: That's it - the match schedule is ready.
     DOUBLEMATCH:
       PROMPT: Plan for Double Round Robin tournament
       HELP: If you plan for Double Round Robin every team will play twice against same opponent
@@ -357,17 +387,39 @@ FORM:
     TEAMS: Squadre
     MATCHES: Partite
     NOTEAMS: No teams
-    DOWNLOAD: Download il programma delle gare come file di testo
-    SAVE: Accetta e salva il calendario gare
+    DOWNLOAD:
+      TITLE: Download match schedule
+      DESCRIPTION: Download il programma delle gare come file di testo. If you change the file you can upload the changes later.
+    PLAN:
+      TITLE: Plan match schedule
+      DESCRIPTION: Start automated match planning based on your current tournament configuration.
+    RESET:
+      TITLE: Delete match schedule
+      DESCRIPTION: Delete the current match schedule and prepare for a new schedule.
+    SAVE:
+      TITLE: Save match schedule
+      DESCRIPTION: Accetta e salva il calendario gare.
+    MATCHIMPORT:
+      TITLE: Upload match schedule
+      DESCRIPTION: Import match schedule from text file. The match schedule can be inspected and eventually saved as the match program.
+      FILE: Name of the file to be imported:
+      UPLOAD: Import
+      BROWSE: Select file
     OPTIONS: Opzioni
     GROUPS: Plan groups
     VIEW: Calendario gare
     RESULT: Dashboard
     ADVICE: Consigli
     MAINT: Change matches
+    WAIT:
+      TITLE: Wait for the change of schedule to complete
+      TEXT: Please wait for the change of schedule to complete.
+    SEARCHMATCHES: Show match schedule
     SOLVEXCHG: No timeslots fit the requirements for this match. Try to exchange timeslot with another match from the group.
     SOLVEXPND: This match requires more time than available. Expand a timeslot to make space for this match.
     PLAN_SAVED: The match schedule has been accepted and registered for the tournament
+    PLAN_NOT_SAVED: The match schedule can not be saved after tournament start. You must save the schedule before tournament start.
+    NOFILE: No file has been selected for match schedule import
     PLAYGROUND: Campo di gioco
     TIMESLOT: Periodo
     PATTRS: Categorie preferite
@@ -377,9 +429,10 @@ FORM:
     DATE: Match date
     MATCHNO: Match no.
     HELP:
-        MATCHNO: Et officielt kampnr. som det fremgår af programmet
-        DATE: En dato hvor der er planlagt kampe for denne turnering
+        MATCHNO: An official number for the match as shown in the match schedule
+        DATE: A date scheduled for matches in this tournament
     DEFAULT: Select...
+    TIMEUSED: Spare time
     SEARCH: Search match
     ADD: New match
     CHG: Change match
@@ -408,6 +461,10 @@ FORM:
     GROUPS: Preliminary groups
     NOGROUPS: There are no preliminary groups defined
     ADDGROUP: Add group
+    WAIT:
+      TITLE: Fetching groups and teams
+      TEXT: The list of groups is updated - please wait
+    OPTIONS: Category options
     GROUP:
       ZERO: Nessun gruppi
       ONE: Un gruppo
@@ -457,7 +514,7 @@ FORM:
     DEFAULT: Seleziona...
     NONAME: The category must be given a name.
     NOGENDER: The gender preference is mandatory.
-    NOCLASSIFICATION: The classification of age is mandatory. 
+    NOCLASSIFICATION: The classification of age is mandatory.
     NOAGE: Age limit is mandatory.
     NOMATCHTIME: Match time is mandatory (expressed in minutes).
     GROUPSEXIST: Groups are defined for this category. The category can not be removed.
@@ -548,7 +605,7 @@ FORM:
     NOCLUB: Aggiungi un club
     BUTTON:
       WIPE: Pulisci tutte le squadre
-  CLUB: 
+  CLUB:
     DEFAULT: Seleziona...
     NONAME: Deve essere assegnato un nome al club.
     NOCOUNTRY: The home of the club is mandatory.
@@ -596,7 +653,7 @@ FORM:
     TITLE: Amministrazione utente
     CAPTION: Utenti
     NOUSER: Aggiungi un nuovo utente
-  USER: 
+  USER:
     DEFAULT: Seleziona...
     NONAME: L'utente deve specificare un nome.
     NOUSERNAME: Il campo username è obbligatorio.
@@ -642,7 +699,7 @@ FORM:
       ADD: Elimina
       CHG: Cancella le modifiche
       DEL: Elimina
-  NEWPASS: 
+  NEWPASS:
     NOPASSWORD: Devi inserire la password.
     BADPASSWORD: La password non è valida.
     NOTEQUAL: Please retype the password properly. The typed passwords are not equal.
@@ -664,7 +721,7 @@ FORM:
     CANCEL: Cancel
   QMATCHIMPORT:
     TITLE: Importa il programma delle gare per la fase eliminatoria
-  MATCHIMPORT: 
+  MATCHIMPORT:
     NODATE: Match schedule is required
     BADDATE: The match schedule is not a valid date
     TITLE: Importa il programma delle gare

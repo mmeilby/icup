@@ -30,52 +30,6 @@
 
     <div ng-app="groupModule">
 
-        <style>
-            *{
-                -moz-box-sizing: border-box; -webkit-box-sizing: border-box; box-sizing: border-box;
-            }
-            [ng-drag] {
-                -moz-user-select: -moz-none;
-                -khtml-user-select: none;
-                -webkit-user-select: none;
-                -ms-user-select: none;
-                user-select: none;
-            }
-            [ng-drag] {
-                cursor: move;
-            }
-            [ng-drag].drag-over {
-                background: rgba(0,0,0, 0.1);
-    /*            background: rgba(0,0,0, 0.3); */
-    /*            border:solid 1px red; */
-            }
-            [ng-drag].dragging {
-                background: rgba(0,0,0, 0.4);
-                opacity: 0.25;
-            }
-            [ng-drop] {
-                border: solid 1px white;
-    /*            background: rgba(0,255,0, 0.5);
-                text-align: center;
-                width: 600px;
-                height: 200px;
-                padding-top:90px;
-                display: block;
-                margin:20px auto;
-                position: relative;
-    */        }
-            [ng-drop].drag-enter {
-                border: dotted 1px black;
-            }
-            DIV.row.title {
-                border-bottom: 1px solid darkgray;
-            }
-            DIV.row.title DIV {
-                font-size: 125%;
-                padding-bottom: 5px;
-            }
-        </style>
-
         <div ng-controller="assignTeamsController" ng-cloak>
             {# Show group cards #}
             <div ng-repeat="group in groups track by group.group.id" class="col-md-3">

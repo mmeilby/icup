@@ -492,6 +492,8 @@ FORM:
         OPTION1: Top two teams qualify for quater final
         OPTION2: Group winners quaify for semifinal
     SUBMIT: Save configuration
+    UPDATE: Save
+    CLOSE: Close
   TOURNAMENTIMPORT:
     TITLE: Amministrazione del torneo
     CAPTION: Copia le informazioni da altro torneo.

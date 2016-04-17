@@ -60,7 +60,7 @@
                             {% trans %}FORM.QMATCHPLANNING.OPTIONS{% endtrans %}
                         </h1>
                     </md-toolbar>
-                    <md-content layout-padding ng-controller="RightCtrl">
+                    <md-content layout-padding>
                         <h4>
                             {% trans from 'tournament' %}CATEGORY{% endtrans %} {{ '{{ category.name }}' }} - {{ '{{ category.classification_translated }}' }}
                         </h4>
@@ -71,7 +71,7 @@
                             </div>
                             <div ng-show="category.preliminary_groups==1">
                                 <h4>{% trans %}FORM.QMATCHPLANNING.GROUP.ONE{% endtrans %}</h4>
-                                <md-radio-group ng-model="category.strategy">
+                                <md-radio-group ng-model="category_object.strategy">
                                     <md-radio-button value="0" class="md-primary">{% trans %}FORM.QMATCHPLANNING.RADIO.GROUP1.OPTION0{% endtrans %}</md-radio-button>
                                     <md-radio-button value="1" class="md-primary">{% trans %}FORM.QMATCHPLANNING.RADIO.GROUP1.OPTION1{% endtrans %}</md-radio-button>
                                     <md-radio-button value="2" class="md-primary">{% trans %}FORM.QMATCHPLANNING.RADIO.GROUP1.OPTION2{% endtrans %}</md-radio-button>
@@ -79,7 +79,7 @@
                             </div>
                             <div ng-show="category.preliminary_groups==2">
                                 <h4>{% trans %}FORM.QMATCHPLANNING.GROUP.TWO{% endtrans %}</h4>
-                                <md-radio-group ng-model="category.strategy">
+                                <md-radio-group ng-model="category_object.strategy">
                                     <md-radio-button value="0" class="md-primary">{% trans %}FORM.QMATCHPLANNING.RADIO.GROUP2.OPTION0{% endtrans %}</md-radio-button>
                                     <md-radio-button value="1" class="md-primary">{% trans %}FORM.QMATCHPLANNING.RADIO.GROUP2.OPTION1{% endtrans %}</md-radio-button>
                                     <md-radio-button value="2" class="md-primary">{% trans %}FORM.QMATCHPLANNING.RADIO.GROUP2.OPTION2{% endtrans %}</md-radio-button>
@@ -88,7 +88,7 @@
                             </div>
                             <div ng-show="category.preliminary_groups==3">
                                 <h4>{% trans %}FORM.QMATCHPLANNING.GROUP.THREE{% endtrans %}</h4>
-                                <md-radio-group ng-model="category.strategy">
+                                <md-radio-group ng-model="category_object.strategy">
                                     <md-radio-button value="0" class="md-primary">{% trans %}FORM.QMATCHPLANNING.RADIO.GROUP3.OPTION0{% endtrans %}</md-radio-button>
                                     <md-radio-button value="1" class="md-primary">{% trans %}FORM.QMATCHPLANNING.RADIO.GROUP3.OPTION1{% endtrans %}</md-radio-button>
                                     <md-radio-button value="2" class="md-primary">{% trans %}FORM.QMATCHPLANNING.RADIO.GROUP3.OPTION2{% endtrans %}</md-radio-button>
@@ -96,24 +96,28 @@
                             </div>
                             <div ng-show="category.preliminary_groups>=4">
                                 <h4>{% trans %}FORM.QMATCHPLANNING.GROUP.FOUR{% endtrans %}</h4>
-                                <md-radio-group ng-model="category.strategy">
+                                <md-radio-group ng-model="category_object.strategy">
                                     <md-radio-button value="0" class="md-primary">{% trans %}FORM.QMATCHPLANNING.RADIO.GROUP4.OPTION0{% endtrans %}</md-radio-button>
                                     <md-radio-button value="1" class="md-primary">{% trans %}FORM.QMATCHPLANNING.RADIO.GROUP4.OPTION1{% endtrans %}</md-radio-button>
                                     <md-radio-button value="2" class="md-primary">{% trans %}FORM.QMATCHPLANNING.RADIO.GROUP4.OPTION2{% endtrans %}</md-radio-button>
                                 </md-radio-group>
                             </div>
-                            <p>&nbsp;</p>
-                            <md-input-container>
-                                <label for="trophys">{% trans %}FORM.QMATCHPLANNING.PROMPT.TROPHYS{% endtrans %}</label>
-                                <input type="text" id="trophys" ng-model="category.trophys" md-autofocus>
-                            </md-input-container>
-                            <md-input-container>
-                                <label for="premier_branch_teams">{% trans %}FORM.QMATCHPLANNING.PROMPT.TOPTEAMS{% endtrans %}</label>
-                                <input type="text" id="premier_branch_teams" ng-model="category.premier_branch_teams">
-                            </md-input-container>
+                            <div style="padding-top: 50px;">
+                                <md-input-container>
+                                    <label for="trophys">{% trans %}FORM.QMATCHPLANNING.PROMPT.TROPHYS{% endtrans %}</label>
+                                    <input type="text" id="trophys" ng-model="category_object.trophys" md-autofocus>
+                                </md-input-container>
+                                <md-input-container ng-show="category_object.strategy==0">
+                                    <label for="premier_branch_teams">{% trans %}FORM.QMATCHPLANNING.PROMPT.TOPTEAMS{% endtrans %}</label>
+                                    <input type="text" id="premier_branch_teams" ng-model="category_object.topteams">
+                                </md-input-container>
+                            </div>
                         </form>
-                        <md-button ng-click="close()" class="md-raised md-primary">
-                            Close Sidenav Right
+                        <md-button ng-click="updateCategory()" class="md-raised md-primary">
+                            {% trans %}FORM.QMATCHPLANNING.UPDATE{% endtrans %}
+                        </md-button>
+                        <md-button ng-click="close()" class="md-raised">
+                            {% trans %}FORM.QMATCHPLANNING.CLOSE{% endtrans %}
                         </md-button>
                     </md-content>
                 </md-sidenav>
@@ -219,6 +223,9 @@
 
         </div>
     </div>
+
+    <script src="{{ url('bazinga_jstranslation_js', { 'domain': 'tournament' }) }}?locales={{ app.request.locale|split('_')[0] }}"></script>
+
 {% endblock %}
 
 {% block javascripts %}
@@ -249,17 +256,42 @@
                         }
                     };
                     $scope.toggleRight = function() {
+                        $scope.category_object = {
+                            'name': $scope.category.name,
+                            'gender': $scope.category.gender,
+                            'classification': $scope.category.classification,
+                            'age': $scope.category.age,
+                            'trophys': $scope.category.trophys,
+                            'topteams': $scope.category.topteams,
+                            'strategy': $scope.category.strategy,
+                            'matchtime': $scope.category.matchtime
+                        };
                         $mdSidenav('right').toggle();
                     };
                     $scope.isOpenRight = function(){
                         return $mdSidenav('right').isOpen();
                     };
+                    $scope.updateCategory = function () {
+                        $http.put(Routing.generate('rest_category_update', {'categoryid': $scope.selectedCategory }), $scope.category_object).then(function (data) {
+                            angular.forEach($scope.categories, function (category, index, categories) {
+                                if (category.id == $scope.selectedCategory) {
+                                    categories[index].trophys = $scope.category_object.trophys;
+                                    categories[index].topteams = $scope.category_object.topteams;
+                                    categories[index].strategy = $scope.category_object.strategy;
+                                }
+                            });
+                            $mdSidenav('right').close();
+                        });
+                    };
+                    $scope.close = function () {
+                        $mdSidenav('right').close();
+                    };
                     $scope.dataReady = true;
                     $scope.categories = [];
                     $http.get(Routing.generate('_rest_list_categories', { 'tournamentid': {{ tournament.id }} })).then(function(data) {
-                        $scope.categories = data.data.categories;
+                        $scope.categories = data.data;
                         angular.forEach($scope.categories, function (category) {
-                            category.classification_translated = data.data.translation[category.id];
+                            category.classification_translated = Translator.transChoice('GENDER.'+category.gender+category.classification, category.age, {'age' : category.age}, 'tournament');
                         });
                     });
                     $scope.selectedCategory = 0;
@@ -282,11 +314,6 @@
                             $scope.dataReady = true;
                         });
                     }
-                })
-                .controller('RightCtrl', function ($scope, $mdSidenav) {
-                    $scope.close = function () {
-                        $mdSidenav('right').close();
-                    };
                 });
     </script>
 {% endblock %}

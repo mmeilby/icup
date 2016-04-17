@@ -130,6 +130,10 @@ hwi_oauth:
             google: googleID
             linkedin: linkedinID
 
+bazinga_js_translation:
+    locale_fallback:      en
+    default_domain:       messages
+
 # Swiftmailer Configuration
 swiftmailer:
     transport: %mailer_transport%

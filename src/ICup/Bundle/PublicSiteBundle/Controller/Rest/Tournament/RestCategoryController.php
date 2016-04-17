@@ -7,29 +7,14 @@ use ICup\Bundle\PublicSiteBundle\Entity\Doctrine\Tournament;
 use ICup\Bundle\PublicSiteBundle\Entity\TeamInfo;
 use ICup\Bundle\PublicSiteBundle\Services\Util;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
+use Symfony\Component\HttpFoundation\JsonResponse;
+use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 
 class RestCategoryController extends Controller
 {
-    /**
-     * List the categories identified by tournament id
-     * @Route("/rest/category/list/{tournamentid}", name="_rest_list_categories", options={"expose"=true})
-     * @param $tournamentid
-     * @return Response
-     */
-    public function restListCategoriesAction($tournamentid)
-    {
-        /* @var $tournament Tournament */
-        $tournament = $this->get('entity')->getTournamentById($tournamentid);
-        $txt = array();
-        foreach ($tournament->getCategories() as $category) {
-            /* @var $category Category */
-            $txt[$category->getId()] = $this->get('translator')->transChoice('GENDER.'.$category->getGender().$category->getClassification(), $category->getAge(), array('%age%' => $category->getAge()), 'tournament');
-        }
-        return new Response(json_encode(array("categories" => $tournament->getCategories()->toArray(), "translation" => $txt)));
-    }
-
     /**
      * List the clubs by groups assigned in the category
      * @Route("/rest/category/list/assigned/{categoryid}", name="_rest_list_groups_with_teams", options={"expose"=true})
@@ -65,6 +50,6 @@ class RestCategoryController extends Controller
                 'flag' => $utilService->getFlag($team->getCountry())
             );
         }
-        return new Response(json_encode(array('groups' => $groups, 'unassigned' => array('teams' => $teamsUnassigned))));
+        return new JsonResponse(array('groups' => $groups, 'unassigned' => array('teams' => $teamsUnassigned)));
     }
 }

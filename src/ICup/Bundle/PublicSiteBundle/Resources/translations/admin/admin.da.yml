@@ -502,6 +502,8 @@ FORM:
         OPTION1: To bedst placerede hold går til kvartfinale
         OPTION2: Puljevindere går til semifinale
     SUBMIT: Gem indstillinger
+    UPDATE: Gem
+    CLOSE: Luk
   TOURNAMENTIMPORT:
     TITLE: Vedligehold turnering
     CAPTION: Kopier fra turnering

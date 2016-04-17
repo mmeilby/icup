@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html>
+<html lang="{{ app.request.locale|split('_')[0] }}">
     <head>
         <meta charset="UTF-8" />
         <meta name="viewport" content="width=device-width, initial-scale=1"/>
@@ -47,9 +47,10 @@
         <script src="{{ asset('bundles/icuppublicsite/angular/1.5.3/angular-animate.min.js') }}"></script>
         <script src="{{ asset('bundles/icuppublicsite/angular/1.5.3/angular-aria.min.js') }}"></script>
         <script src="{{ asset('bundles/icuppublicsite/angular/1.5.3/angular-messages.min.js') }}"></script>
-        {% if app.session.get('_locale') is not null %}
-        <script src="{{ asset(['bundles/icuppublicsite/angular/1.5.3/i18n/angular-locale_',app.session.get('_locale'),'.js']|join) }}"></script>
-        {% endif %}
+        <script src="{{ asset(['bundles/icuppublicsite/angular/1.5.3/i18n/angular-locale_',app.request.locale|split('_')[0],'.js']|join) }}"></script>
+        {% javascripts 'bundles/bazingajstranslation/js/translator.min.js' 'js/translations/config.js' %}
+        <script src="{{ asset_url }}"></script>
+        {% endjavascripts %}
         <!-- Angular Material Library -->
         <script src="{{ asset('bundles/icuppublicsite/angular_material/1.0.4/angular-material.min.js') }}"></script>
         <!-- ngDraggable -->

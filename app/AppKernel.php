@@ -51,6 +51,7 @@ class AppKernel extends Kernel
             new Symfony\Cmf\Bundle\CreateBundle\CmfCreateBundle(),
             new FOS\RestBundle\FOSRestBundle(),
             new JMS\SerializerBundle\JMSSerializerBundle(),
+            new Bazinga\Bundle\JsTranslationBundle\BazingaJsTranslationBundle(),
             
             new ICup\Bundle\PublicSiteBundle\ICupPublicSiteBundle(),
        );

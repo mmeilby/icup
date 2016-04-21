@@ -105,6 +105,10 @@ DIV.row.title DIV {
     padding-bottom: 5px;
 }
 
+.bold {
+    font-weight: bold;
+}
+
 .btn-facebook {
     font-weight: 800;
     border-color: #3b5998;

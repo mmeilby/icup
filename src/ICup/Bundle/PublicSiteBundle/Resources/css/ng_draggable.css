@@ -14,30 +14,16 @@
     cursor: move;
 }
 
-[ng-drag].drag-over {
-    background: rgba(0,0,0, 0.1);
-    /*            background: rgba(0,0,0, 0.3); */
-    /*            border:solid 1px red; */
-}
-
 [ng-drag].dragging {
-    background: rgba(0,0,0, 0.4);
-    opacity: 0.25;
+    background: white;
+    border: solid 1px darkgray;
 }
 
 [ng-drop] {
-    border: solid 1px white;
-    /*            background: rgba(0,255,0, 0.5);
-                text-align: center;
-                width: 600px;
-                height: 200px;
-                padding-top:90px;
-                display: block;
-                margin:20px auto;
-                position: relative;
-    */
+    border: solid 2px white;
 }
 
 [ng-drop].drag-enter {
-    border: dotted 1px black;
+    background: whitesmoke;
+    border: dashed 2px black;
 }

@@ -464,6 +464,7 @@ FORM:
     PROMPT:
       TROPHYS: Antal medaljemodtagere i hvert slutspil
       TOPTEAMS: Antal hold der går til A-slutspil
+      GROUPNAME: Navn på den nye pulje
     HELP:
       TROPHYS: Normalt angives 3 for første, anden og tredie plads
       TOPTEAMS: Antal af de bedst seedede/placerede hold der går til A-slutspil
@@ -526,6 +527,7 @@ FORM:
   CATEGORY:
     DEFAULT: Vælg...
     NONAME: Et gruppenavn skal angives.
+    NAMEEXISTS: En anden gruppe med dette navn eksisterer allerede.
     NOGENDER: Gruppens forudsætning for køn for de tilmeldte hold skal angives.
     NOCLASSIFICATION: Alderskategori for gruppen skal angives.
     NOAGE: Aldersgrænse skal angives (i antal år).
@@ -569,6 +571,7 @@ FORM:
     DEFAULT: Vælg...
     NONAME: Et puljenavn skal angives.
     NOCLASSIFICATION: Type for gruppen skal angives.
+    NAMEEXISTS: En anden pulje med dette navn eksisterer allerede.
     ORDEREXIST: Der er knyttet hold til denne pulje. Puljen kan ikke fjernes.
     MATCHESEXIST: Der er planlagt kampe til denne pulje. Puljen kan ikke fjernes.
     TITLE:

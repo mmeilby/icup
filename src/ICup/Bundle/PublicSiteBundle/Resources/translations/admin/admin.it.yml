@@ -454,6 +454,7 @@ FORM:
     PROMPT:
       TROPHYS: No of trophys in each final branch
       TOPTEAMS: No of teams that qualify for the best final branch
+      GROUPNAME: Name of the new group
     HELP:
       TROPHYS: Usually three throphys will be given - gold, silver and bronze
       TOPTEAMS: The no of top teams that will qualify for the best final branch - normally 4 or 8
@@ -515,6 +516,7 @@ FORM:
   CATEGORY:
     DEFAULT: Seleziona...
     NONAME: The category must be given a name.
+    NAMEEXISTS: Another category with the same name exists. This name must be unique.
     NOGENDER: The gender preference is mandatory.
     NOCLASSIFICATION: The classification of age is mandatory.
     NOAGE: Age limit is mandatory.
@@ -557,6 +559,7 @@ FORM:
   GROUP:
     DEFAULT: Seleziona...
     NONAME: Il gruppo deve avere un nome
+    NAMEEXISTS: Another group with the same name exists. This name must be unique.
     NOCLASSIFICATION: La classifica del gruppo è obbligatoria.
     ORDEREXIST: Le squadre sono state già assegnate al gruppo. Il gruppo non può essere rimosso.
     MATCHESEXIST: Le partite sono già state programmate per il gruppo. Il gruppo non può essere rimosso.

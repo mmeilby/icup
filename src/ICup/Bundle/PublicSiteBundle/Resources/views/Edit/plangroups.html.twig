@@ -52,15 +52,13 @@
             <section layout="row" flex>
                 <md-sidenav
                         class="md-sidenav-left"
-                        md-component-id="right"
+                        md-component-id="categoryOptions"
                         md-disable-backdrop
                         md-whiteframe="4">
-                    <md-toolbar class="md-tall md-theme-indigo">
-                        <h1 class="md-toolbar-tools" style="padding-top: 90px;">
-                            {% trans %}FORM.QMATCHPLANNING.OPTIONS{% endtrans %}
-                        </h1>
-                    </md-toolbar>
                     <md-content layout-padding>
+                        <h2 style="margin-top: 150px;">
+                            {% trans %}FORM.QMATCHPLANNING.OPTIONS{% endtrans %}
+                        </h2>
                         <h4>
                             {% trans from 'tournament' %}CATEGORY{% endtrans %} {{ '{{ category.name }}' }} - {{ '{{ category.classification_translated }}' }}
                         </h4>
@@ -116,7 +114,36 @@
                         <md-button ng-click="updateCategory()" class="md-raised md-primary">
                             {% trans %}FORM.QMATCHPLANNING.UPDATE{% endtrans %}
                         </md-button>
-                        <md-button ng-click="close()" class="md-raised">
+                        <md-button ng-click="close('categoryOptions')" class="md-raised">
+                            {% trans %}FORM.QMATCHPLANNING.CLOSE{% endtrans %}
+                        </md-button>
+                    </md-content>
+                </md-sidenav>
+
+                <md-sidenav
+                        class="md-sidenav-right"
+                        md-component-id="groupOptions"
+                        md-disable-backdrop
+                        md-whiteframe="4">
+                    <md-content layout-padding>
+                        <h2 style="margin-top: 150px;">
+                            {% trans %}FORM.GROUP.TITLE.ADD{% endtrans %}
+                        </h2>
+                        <h4>
+                            {% trans from 'tournament' %}CATEGORY{% endtrans %} {{ '{{ category.name }}' }} - {{ '{{ category.classification_translated }}' }}
+                        </h4>
+                        <form ng-submit="submit()" ng-cloak>
+                            <div style="padding-top: 50px;">
+                                <md-input-container>
+                                    <label for="name">{% trans %}FORM.QMATCHPLANNING.PROMPT.GROUPNAME{% endtrans %}</label>
+                                    <input type="text" id="name" ng-model="group_object.name" md-autofocus>
+                                </md-input-container>
+                            </div>
+                        </form>
+                        <md-button ng-click="addGroup()" class="md-raised md-primary">
+                            {% trans %}FORM.QMATCHPLANNING.ADDGROUP{% endtrans %}
+                        </md-button>
+                        <md-button ng-click="close('groupOptions')" class="md-raised">
                             {% trans %}FORM.QMATCHPLANNING.CLOSE{% endtrans %}
                         </md-button>
                     </md-content>
@@ -128,12 +155,7 @@
                             <ul class="list-group">
                                 <li class="list-group-item" ng-repeat="category in categories track by category.id">
                                     <span class="badge">{{ '{{ category.preliminary_groups }}' }}</span>
-                                    <strong ng-show="category.id==selectedCategory">
-                                        <span ng-click="selectCategory(category.id)">
-                                            {% trans from 'tournament' %}CATEGORY{% endtrans %} {{ '{{ category.name }}' }} - {{ '{{ category.classification_translated }}' }}
-                                        </span>
-                                    </strong>
-                                    <span ng-click="selectCategory(category.id)" ng-show="category.id!=selectedCategory">
+                                    <span ng-click="selectCategory(category.id)" ng-class="{'bold': category.id==selectedCategory}">
                                         {% trans from 'tournament' %}CATEGORY{% endtrans %} {{ '{{ category.name }}' }} - {{ '{{ category.classification_translated }}' }}
                                     </span>
                                 </li>
@@ -144,59 +166,55 @@
                             <hr />
                             <div class="row">
                                 {# Show group cards #}
-                                <div class="col-md-4" ng-repeat="group in groups track by group.group.id">
-                                    <div ng-drop="true" ng-drop-success="onDropGroup(group.group.id)">
-                                        <h4>
-                                            <span class="label label-primary">{% trans from "tournament" %}GROUP{% endtrans %} {{ '{{ group.group.name }}' }}</span>
-                                        </h4>
-                                        <div class="row"
-                                             data-allow-transform="true"
-                                             ng-drag="true" ng-drag-data="team" ng-drag-success="onDragTeam(group.group.id, team.id)"
-                                             ng-repeat="team in group.teams track by team.id"
-                                        >
-                                            <div class="col-md-12">
-                                                <img src="{{ asset('bundles/icuppublicsite/images/flags/') }}{{ '{{ team.flag }}' }}"
-                                                     alt="{{ '{{ team.country }}' }}"
-                                                     title="{{ '{{ team.country }}' }}" ng-if="team.flag" class="flag">
-                                                {{ '{{ team.name }}' }}
-                                            </div>
+                                <div class="col-md-4" ng-repeat="group in groups track by group.group.id" ng-drop="true" ng-drop-success="onDropGroup(group.group.id)">
+                                    <h4>
+                                        <span class="label label-primary">{% trans from "tournament" %}GROUP{% endtrans %} {{ '{{ group.group.name }}' }}</span>
+                                    </h4>
+                                    <div class="row"
+                                         data-allow-transform="true"
+                                         ng-drag="true" ng-drag-data="team" ng-drag-success="onDragTeam(group.group.id, team.id)"
+                                         ng-repeat="team in group.teams track by team.id"
+                                    >
+                                        <div class="col-md-12">
+                                            <img src="{{ asset('bundles/icuppublicsite/images/flags/') }}{{ '{{ team.flag }}' }}"
+                                                 alt="{{ '{{ team.country }}' }}"
+                                                 title="{{ '{{ team.country }}' }}" ng-if="team.flag" class="flag">
+                                            {{ '{{ team.name }}' }}
                                         </div>
-                                        <h4 ng-hide="group.teams.length">
-                                            <span class="badge">{% trans %}FORM.MATCHPLANNING.NOTEAMS{% endtrans %}</span>
-                                        </h4>
                                     </div>
+                                    <h4 ng-hide="group.teams.length">
+                                        <span class="badge">{% trans %}FORM.MATCHPLANNING.NOTEAMS{% endtrans %}</span>
+                                    </h4>
                                 </div>
                                 {# Show unassigned teams card #}
-                                <div class="col-md-4">
-                                    <div ng-drop="true" ng-drop-success="onDropUnassigned()">
-                                        <h4>
-                                            <span class="label label-primary">{{ 'FORM.LISTGROUPS.UNASSIGNED'|trans|upper }}</span>
-                                        </h4>
-                                        <div class="row"
-                                             data-allow-transform="true"
-                                             ng-drag="true" ng-drag-data="team" ng-drag-success="onDragUnassignedTeam(team.id)"
-                                             ng-repeat="team in unassigned.teams track by team.id"
-                                        >
-                                            <div class="col-md-12">
-                                                <img src="{{ asset('bundles/icuppublicsite/images/flags/') }}{{ '{{ team.flag }}' }}"
-                                                     alt="{{ '{{ team.country }}' }}"
-                                                     title="{{ '{{ team.country }}' }}" ng-if="team.flag" class="flag">
-                                                {{ '{{ team.name }}' }}
-                                            </div>
+                                <div class="col-md-4" ng-drop="true" ng-drop-success="onDropUnassigned()">
+                                    <h4>
+                                        <span class="label label-primary">{{ 'FORM.LISTGROUPS.UNASSIGNED'|trans|upper }}</span>
+                                    </h4>
+                                    <div class="row"
+                                         data-allow-transform="true"
+                                         ng-drag="true" ng-drag-data="team" ng-drag-success="onDragUnassignedTeam(team.id)"
+                                         ng-repeat="team in unassigned.teams track by team.id"
+                                    >
+                                        <div class="col-md-12">
+                                            <img src="{{ asset('bundles/icuppublicsite/images/flags/') }}{{ '{{ team.flag }}' }}"
+                                                 alt="{{ '{{ team.country }}' }}"
+                                                 title="{{ '{{ team.country }}' }}" ng-if="team.flag" class="flag">
+                                            {{ '{{ team.name }}' }}
                                         </div>
-                                        <h4 ng-hide="unassigned.teams.length">
-                                            <span class="badge">{% trans %}FORM.MATCHPLANNING.NOTEAMS{% endtrans %}</span>
-                                        </h4>
                                     </div>
+                                    <h4 ng-hide="unassigned.teams.length">
+                                        <span class="badge">{% trans %}FORM.MATCHPLANNING.NOTEAMS{% endtrans %}</span>
+                                    </h4>
                                 </div>
                             </div>
                             <hr />
                             <h4 ng-hide="groups.length">{% trans %}FORM.QMATCHPLANNING.NOGROUPS{% endtrans %}</h4>
                             <div>
-                                <md-button class="md-raised md-primary md-hue-1" ng-hide="groups.length">
+                                <md-button class="md-raised md-hue-1" ng-class="{'md-primary': groups.length==0}" ng-click="toggleGroupOptions()" ng-hide="isOpen('groupOptions')">
                                     {% trans %}FORM.QMATCHPLANNING.ADDGROUP{% endtrans %}
                                 </md-button>
-                                <md-button class="md-raised md-hue-1" ng-click="toggleRight()" ng-hide="isOpenRight()">
+                                <md-button class="md-raised md-hue-1" ng-click="toggleCategoryOptions()" ng-hide="isOpen('categoryOptions')">
                                     {% trans %}FORM.QMATCHPLANNING.OPTIONS{% endtrans %}
                                 </md-button>
                                 <md-button class="md-raised md-hue-1"> <!-- href="{{ path('_edit_import_team', { 'tournamentid': tournament.id }) }}" -->
@@ -204,11 +222,11 @@
                                 </md-button>
                             </div>
                         </div>
-                        <div class="col-sm-8" ng-hide="selectedCategory || !dataReady">
+                        <div class="col-sm-8" ng-show="!selectedCategory && dataReady">
                             <h3><span class="fa fa-hand-o-left"></span>&nbsp;{% trans %}FORM.QMATCHPLANNING.SELECTCATEGORY.TITLE{% endtrans %}</h3>
                             <p>{% trans %}FORM.QMATCHPLANNING.SELECTCATEGORY.TEXT{% endtrans %}</p>
                         </div>
-                        <div ng-hide="dataReady" style="padding: 40px;">
+                        <div ng-show="!dataReady" style="padding: 40px;">
                             <div layout="row" layout-sm="column" layout-align="space-around">
                                 <div class="lead">{% trans %}FORM.QMATCHPLANNING.WAIT.TEXT{% endtrans %}</div>
                             </div>
@@ -233,29 +251,59 @@
         angular.module('assignGroupsModule', ['ngMaterial', 'ngMessages','ngDraggable'])
                 .controller('assignGroupsController', function($scope, $http, $mdDialog, $mdSidenav) {
                     $scope.onDragUnassignedTeam=function(teamid){
-                        $scope.teamid = teamid;
+                        var index = $scope.unassigned.teams.findIndex(function (team) {
+                            return team.id == teamid;
+                        });
+                        var team = $scope.unassigned.teams.splice(index, 1);
+                        $scope.team = team[0];
+                        $scope.group = null;
                         $scope.draggingAllowed = true;
                     };
                     $scope.onDragTeam=function(groupid, teamid){
-                        $http.get(Routing.generate('_rest_assign_del', { 'groupid': groupid, 'teamid': teamid })).then(function(data) {});
-                        $scope.teamid = teamid;
+                        var group = $scope.groups.find(function (group) {
+                            return group.group.id == groupid;
+                        });
+                        var index = group.teams.findIndex(function (team) {
+                            return team.id == teamid;
+                        });
+                        var team = group.teams.splice(index, 1);
+                        $scope.team = team[0];
+                        $scope.group = group.group;
                         $scope.draggingAllowed = true;
                     };
                     $scope.onDropUnassigned=function(){
                         if ($scope.draggingAllowed) {
                             $scope.draggingAllowed = false;
-                            getGroups();
+                            $scope.unassigned.teams.push($scope.team);
+                            if ($scope.group) {
+                                $http.get(Routing.generate('_rest_assign_del', { 'groupid': $scope.group.id, 'teamid': $scope.team.id })).then(function(data) {
+                                    getGroups();
+                                });
+                            }
                         }
                     };
                     $scope.onDropGroup=function(groupid){
                         if ($scope.draggingAllowed) {
                             $scope.draggingAllowed = false;
-                            $http.get(Routing.generate('_rest_assign_add', { 'groupid': groupid, 'teamid': $scope.teamid })).then(function(data) {
-                                getGroups();
+                            var group = $scope.groups.find(function (group) {
+                                return group.group.id == groupid;
                             });
+                            group.teams.push($scope.team);
+                            if ($scope.group) {
+                                $http.get(Routing.generate('_rest_assign_del', { 'groupid': $scope.group.id, 'teamid': $scope.team.id })).then(function(data) {
+                                    $http.get(Routing.generate('_rest_assign_add', { 'groupid': groupid, 'teamid': $scope.team.id })).then(function(data) {
+                                        getGroups();
+                                    });
+                                });
+                            }
+                            else {
+                                $http.get(Routing.generate('_rest_assign_add', { 'groupid': groupid, 'teamid': $scope.team.id })).then(function(data) {
+                                    getGroups();
+                                });
+                            }
                         }
                     };
-                    $scope.toggleRight = function() {
+                    $scope.toggleCategoryOptions = function() {
                         $scope.category_object = {
                             'name': $scope.category.name,
                             'gender': $scope.category.gender,
@@ -266,10 +314,7 @@
                             'strategy': $scope.category.strategy,
                             'matchtime': $scope.category.matchtime
                         };
-                        $mdSidenav('right').toggle();
-                    };
-                    $scope.isOpenRight = function(){
-                        return $mdSidenav('right').isOpen();
+                        $mdSidenav('categoryOptions').toggle();
                     };
                     $scope.updateCategory = function () {
                         $http.put(Routing.generate('rest_category_update', {'categoryid': $scope.selectedCategory }), $scope.category_object).then(function (data) {
@@ -280,27 +325,50 @@
                                     categories[index].strategy = $scope.category_object.strategy;
                                 }
                             });
-                            $mdSidenav('right').close();
+                            $mdSidenav('categoryOptions').close();
                         });
                     };
-                    $scope.close = function () {
-                        $mdSidenav('right').close();
+                    $scope.toggleGroupOptions = function() {
+                        $scope.group_object = {
+                            'name': '',
+                            'classification': 0
+                        };
+                        $mdSidenav('groupOptions').toggle();
+                    };
+                    $scope.addGroup = function () {
+                        $http.post(Routing.generate('rest_group_create', {'categoryid': $scope.category.id }), $scope.group_object).then(function (data) {
+                            $mdSidenav('groupOptions').close();
+                            getGroups();
+                        },
+                        function (response) {
+                            $mdDialog.show(
+                                    $mdDialog.alert()
+                                            .clickOutsideToClose(true)
+                                            .title('{% trans %}FORM.GROUP.TITLE.ADD{% endtrans %}')
+                                            .textContent(response.data.errors.join('. '))
+                                            .ok('{% trans %}FORM.QMATCHPLANNING.CLOSE{% endtrans %}')
+                            );
+                        });
+                    };
+                    $scope.isOpen = function(id){
+                        return $mdSidenav(id).isOpen();
+                    };
+                    $scope.close = function (id) {
+                        $mdSidenav(id).close();
                     };
                     $scope.dataReady = true;
                     $scope.categories = [];
                     $http.get(Routing.generate('_rest_list_categories', { 'tournamentid': {{ tournament.id }} })).then(function(data) {
-                        $scope.categories = data.data;
-                        angular.forEach($scope.categories, function (category) {
+                        angular.forEach(data.data, function (category) {
                             category.classification_translated = Translator.transChoice('GENDER.'+category.gender+category.classification, category.age, {'age' : category.age}, 'tournament');
+                            $scope.categories.push(category);
                         });
                     });
                     $scope.selectedCategory = 0;
                     $scope.selectCategory = function (id) {
                         $scope.selectedCategory = id;
-                        angular.forEach($scope.categories, function (category) {
-                            if (category.id == id) {
-                                $scope.category = category;
-                            }
+                        $scope.category = $scope.categories.find(function (category) {
+                            return category.id == id;
                         });
                         getGroups();
                     };

@@ -169,6 +169,7 @@
                                 <div class="col-md-4" ng-repeat="group in groups track by group.group.id" ng-drop="true" ng-drop-success="onDropGroup(group.group.id)">
                                     <h4>
                                         <span class="label label-primary">{% trans from "tournament" %}GROUP{% endtrans %} {{ '{{ group.group.name }}' }}</span>
+                                        &nbsp;<i class="fa fa-trash" ng-hide="group.teams.length" ng-click="deleteGroup(group.group.id)"></i>
                                     </h4>
                                     <div class="row"
                                          data-allow-transform="true"
@@ -345,6 +346,20 @@
                                     $mdDialog.alert()
                                             .clickOutsideToClose(true)
                                             .title('{% trans %}FORM.GROUP.TITLE.ADD{% endtrans %}')
+                                            .textContent(response.data.errors.join('. '))
+                                            .ok('{% trans %}FORM.QMATCHPLANNING.CLOSE{% endtrans %}')
+                            );
+                        });
+                    };
+                    $scope.deleteGroup = function (groupid) {
+                        $http.delete(Routing.generate('rest_group_delete', {'groupid': groupid })).then(function (data) {
+                            getGroups();
+                        },
+                        function (response) {
+                            $mdDialog.show(
+                                    $mdDialog.alert()
+                                            .clickOutsideToClose(true)
+                                            .title('{% trans %}FORM.GROUP.TITLE.DEL{% endtrans %}')
                                             .textContent(response.data.errors.join('. '))
                                             .ok('{% trans %}FORM.QMATCHPLANNING.CLOSE{% endtrans %}')
                             );

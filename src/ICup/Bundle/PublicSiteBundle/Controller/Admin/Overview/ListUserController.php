@@ -19,7 +19,8 @@ class ListUserController extends Controller
     {
         /* @var $club Club */
         $club = $this->get('entity')->getClubById($clubid);
-        $users = $club->getClubMembers();
+        // TODO: Get users connected to teams for this club
+        $users = array();
 
         return array('club' => $club, 'users' => $users);
     }

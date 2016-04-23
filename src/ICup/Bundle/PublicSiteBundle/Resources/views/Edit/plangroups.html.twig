@@ -55,10 +55,12 @@
                         md-component-id="categoryOptions"
                         md-disable-backdrop
                         md-whiteframe="4">
-                    <md-content layout-padding>
-                        <h2 style="margin-top: 150px;">
+                    <md-toolbar class="md-theme-light" style="top: 50px;">
+                        <h1 class="md-toolbar-tools">
                             {% trans %}FORM.QMATCHPLANNING.OPTIONS{% endtrans %}
-                        </h2>
+                        </h1>
+                    </md-toolbar>
+                    <md-content layout-padding style="margin-top: 50px;">
                         <h4>
                             {% trans from 'tournament' %}CATEGORY{% endtrans %} {{ '{{ category.name }}' }} - {{ '{{ category.classification_translated }}' }}
                         </h4>
@@ -125,20 +127,20 @@
                         md-component-id="groupOptions"
                         md-disable-backdrop
                         md-whiteframe="4">
-                    <md-content layout-padding>
-                        <h2 style="margin-top: 150px;">
+                    <md-toolbar class="md-theme-light" style="top: 50px;">
+                        <h1 class="md-toolbar-tools">
                             {% trans %}FORM.GROUP.TITLE.ADD{% endtrans %}
-                        </h2>
+                        </h1>
+                    </md-toolbar>
+                    <md-content layout-padding style="margin-top: 50px;">
                         <h4>
                             {% trans from 'tournament' %}CATEGORY{% endtrans %} {{ '{{ category.name }}' }} - {{ '{{ category.classification_translated }}' }}
                         </h4>
                         <form ng-submit="submit()" ng-cloak>
-                            <div style="padding-top: 50px;">
-                                <md-input-container>
-                                    <label for="name">{% trans %}FORM.QMATCHPLANNING.PROMPT.GROUPNAME{% endtrans %}</label>
-                                    <input type="text" id="name" ng-model="group_object.name" md-autofocus>
-                                </md-input-container>
-                            </div>
+                            <md-input-container>
+                                <label for="name">{% trans %}FORM.QMATCHPLANNING.PROMPT.GROUPNAME{% endtrans %}</label>
+                                <input type="text" id="name" ng-model="group_object.name" md-autofocus>
+                            </md-input-container>
                         </form>
                         <md-button ng-click="addGroup()" class="md-raised md-primary">
                             {% trans %}FORM.QMATCHPLANNING.ADDGROUP{% endtrans %}
@@ -151,7 +153,7 @@
 
                 <md-content flex layout-padding>
                     <div class="row" style="margin-top: 10px;">
-                        <div class="col-sm-4">
+                        <div class="col-md-4 col-sm-6">
                             <ul class="list-group">
                                 <li class="list-group-item" ng-repeat="category in categories track by category.id">
                                     <span class="badge">{{ '{{ category.preliminary_groups }}' }}</span>
@@ -161,81 +163,83 @@
                                 </li>
                             </ul>
                         </div>
-                        <div class="col-sm-8" ng-show="selectedCategory && dataReady">
-                            <h3>{% trans %}FORM.QMATCHPLANNING.GROUPS{% endtrans %}</h3>
-                            <hr />
-                            <div class="row">
-                                {# Show group cards #}
-                                <div class="col-md-4" ng-repeat="group in groups track by group.group.id" ng-drop="true" ng-drop-success="onDropGroup(group.group.id)">
-                                    <h4>
-                                        <span class="label label-primary">{% trans from "tournament" %}GROUP{% endtrans %} {{ '{{ group.group.name }}' }}</span>
-                                        &nbsp;<i class="fa fa-trash" ng-hide="group.teams.length" ng-click="deleteGroup(group.group.id)"></i>
-                                    </h4>
-                                    <div class="row"
-                                         data-allow-transform="true"
-                                         ng-drag="true" ng-drag-data="team" ng-drag-success="onDragTeam(group.group.id, team.id)"
-                                         ng-repeat="team in group.teams track by team.id"
-                                    >
-                                        <div class="col-md-12">
-                                            <img src="{{ asset('bundles/icuppublicsite/images/flags/') }}{{ '{{ team.flag }}' }}"
-                                                 alt="{{ '{{ team.country }}' }}"
-                                                 title="{{ '{{ team.country }}' }}" ng-if="team.flag" class="flag">
-                                            {{ '{{ team.name }}' }}
+                        <div class="col-md-8 col-sm-6">
+                            <div ng-show="selectedCategory && dataReady">
+                                <h3>{% trans %}FORM.QMATCHPLANNING.GROUPS{% endtrans %}</h3>
+                                <p>{% trans %}FORM.QMATCHPLANNING.EXPLAIN{% endtrans %}</p>
+                                <hr />
+                                <div class="row">
+                                    {# Show group cards #}
+                                    <div class="col-md-6" ng-repeat="group in groups track by group.group.id" ng-drop="true" ng-drop-success="onDropGroup(group.group.id)">
+                                        <h4>
+                                            <span class="label label-primary">{% trans from "tournament" %}GROUP{% endtrans %} {{ '{{ group.group.name }}' }}</span>
+                                            &nbsp;<i class="fa fa-trash" ng-hide="group.teams.length" ng-click="deleteGroup(group.group.id)"></i>
+                                        </h4>
+                                        <div class="row"
+                                             data-allow-transform="true"
+                                             ng-drag="true" ng-drag-data="team" ng-drag-success="onDragTeam(group.group.id, team.id)"
+                                             ng-repeat="team in group.teams track by team.id"
+                                        >
+                                            <div class="col-md-12">
+                                                <img src="{{ asset('bundles/icuppublicsite/images/flags/') }}{{ '{{ team.flag }}' }}"
+                                                     alt="{{ '{{ team.country }}' }}"
+                                                     title="{{ '{{ team.country }}' }}" ng-if="team.flag" class="flag">
+                                                {{ '{{ team.name }}' }}
+                                            </div>
                                         </div>
+                                        <h4 ng-hide="group.teams.length">
+                                            <span class="badge">{% trans %}FORM.MATCHPLANNING.NOTEAMS{% endtrans %}</span>
+                                        </h4>
                                     </div>
-                                    <h4 ng-hide="group.teams.length">
-                                        <span class="badge">{% trans %}FORM.MATCHPLANNING.NOTEAMS{% endtrans %}</span>
-                                    </h4>
-                                </div>
-                                {# Show unassigned teams card #}
-                                <div class="col-md-4" ng-drop="true" ng-drop-success="onDropUnassigned()">
-                                    <h4>
-                                        <span class="label label-primary">{{ 'FORM.LISTGROUPS.UNASSIGNED'|trans|upper }}</span>
-                                    </h4>
-                                    <div class="row"
-                                         data-allow-transform="true"
-                                         ng-drag="true" ng-drag-data="team" ng-drag-success="onDragUnassignedTeam(team.id)"
-                                         ng-repeat="team in unassigned.teams track by team.id"
-                                    >
-                                        <div class="col-md-12">
-                                            <img src="{{ asset('bundles/icuppublicsite/images/flags/') }}{{ '{{ team.flag }}' }}"
-                                                 alt="{{ '{{ team.country }}' }}"
-                                                 title="{{ '{{ team.country }}' }}" ng-if="team.flag" class="flag">
-                                            {{ '{{ team.name }}' }}
+                                    {# Show unassigned teams card #}
+                                    <div class="col-md-6" ng-drop="true" ng-drop-success="onDropUnassigned()">
+                                        <h4>
+                                            <span class="label label-primary">{{ 'FORM.LISTGROUPS.UNASSIGNED'|trans|upper }}</span>
+                                        </h4>
+                                        <div class="row"
+                                             data-allow-transform="true"
+                                             ng-drag="true" ng-drag-data="team" ng-drag-success="onDragUnassignedTeam(team.id)"
+                                             ng-repeat="team in unassigned.teams track by team.id"
+                                        >
+                                            <div class="col-md-12">
+                                                <img src="{{ asset('bundles/icuppublicsite/images/flags/') }}{{ '{{ team.flag }}' }}"
+                                                     alt="{{ '{{ team.country }}' }}"
+                                                     title="{{ '{{ team.country }}' }}" ng-if="team.flag" class="flag">
+                                                {{ '{{ team.name }}' }}
+                                            </div>
                                         </div>
+                                        <h4 ng-hide="unassigned.teams.length">
+                                            <span class="badge">{% trans %}FORM.MATCHPLANNING.NOTEAMS{% endtrans %}</span>
+                                        </h4>
                                     </div>
-                                    <h4 ng-hide="unassigned.teams.length">
-                                        <span class="badge">{% trans %}FORM.MATCHPLANNING.NOTEAMS{% endtrans %}</span>
-                                    </h4>
+                                </div>
+                                <hr />
+                                <h4 ng-hide="groups.length">{% trans %}FORM.QMATCHPLANNING.NOGROUPS{% endtrans %}</h4>
+                                <div>
+                                    <md-button class="md-raised md-hue-1" ng-class="{'md-primary': groups.length==0}" ng-click="toggleGroupOptions()" ng-hide="isOpen('groupOptions')">
+                                        {% trans %}FORM.QMATCHPLANNING.ADDGROUP{% endtrans %}
+                                    </md-button>
+                                    <md-button class="md-raised md-hue-1" ng-click="toggleCategoryOptions()" ng-hide="isOpen('categoryOptions')">
+                                        {% trans %}FORM.QMATCHPLANNING.OPTIONS{% endtrans %}
+                                    </md-button>
+                                    <md-button class="md-raised md-hue-1"> <!-- href="{{ path('_edit_import_team', { 'tournamentid': tournament.id }) }}" -->
+                                        {% trans %}FORM.TEAMIMPORT.TITLE{% endtrans %}
+                                    </md-button>
                                 </div>
                             </div>
-                            <hr />
-                            <h4 ng-hide="groups.length">{% trans %}FORM.QMATCHPLANNING.NOGROUPS{% endtrans %}</h4>
-                            <div>
-                                <md-button class="md-raised md-hue-1" ng-class="{'md-primary': groups.length==0}" ng-click="toggleGroupOptions()" ng-hide="isOpen('groupOptions')">
-                                    {% trans %}FORM.QMATCHPLANNING.ADDGROUP{% endtrans %}
-                                </md-button>
-                                <md-button class="md-raised md-hue-1" ng-click="toggleCategoryOptions()" ng-hide="isOpen('categoryOptions')">
-                                    {% trans %}FORM.QMATCHPLANNING.OPTIONS{% endtrans %}
-                                </md-button>
-                                <md-button class="md-raised md-hue-1"> <!-- href="{{ path('_edit_import_team', { 'tournamentid': tournament.id }) }}" -->
-                                    {% trans %}FORM.TEAMIMPORT.TITLE{% endtrans %}
-                                </md-button>
+                            <div ng-show="!selectedCategory && dataReady">
+                                <h3><span class="fa fa-hand-o-left"></span>&nbsp;{% trans %}FORM.QMATCHPLANNING.SELECTCATEGORY.TITLE{% endtrans %}</h3>
+                                <p>{% trans %}FORM.QMATCHPLANNING.SELECTCATEGORY.TEXT{% endtrans %}</p>
+                            </div>
+                            <div ng-show="!dataReady" style="padding: 40px;">
+                                <div layout="row" layout-sm="column" layout-align="space-around">
+                                    <div class="lead">{% trans %}FORM.QMATCHPLANNING.WAIT.TEXT{% endtrans %}</div>
+                                </div>
+                                <div layout="row" layout-sm="column" layout-align="space-around">
+                                    <md-progress-circular md-mode="indeterminate"></md-progress-circular>
+                                </div>
                             </div>
                         </div>
-                        <div class="col-sm-8" ng-show="!selectedCategory && dataReady">
-                            <h3><span class="fa fa-hand-o-left"></span>&nbsp;{% trans %}FORM.QMATCHPLANNING.SELECTCATEGORY.TITLE{% endtrans %}</h3>
-                            <p>{% trans %}FORM.QMATCHPLANNING.SELECTCATEGORY.TEXT{% endtrans %}</p>
-                        </div>
-                        <div ng-show="!dataReady" style="padding: 40px;">
-                            <div layout="row" layout-sm="column" layout-align="space-around">
-                                <div class="lead">{% trans %}FORM.QMATCHPLANNING.WAIT.TEXT{% endtrans %}</div>
-                            </div>
-                            <div layout="row" layout-sm="column" layout-align="space-around">
-                                <md-progress-circular md-mode="indeterminate"></md-progress-circular>
-                            </div>
-                        </div>
-
                     </div>
                 </md-content>
             </section>

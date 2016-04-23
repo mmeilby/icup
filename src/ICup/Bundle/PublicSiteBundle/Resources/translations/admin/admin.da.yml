@@ -470,6 +470,7 @@ FORM:
       TOPTEAMS: Antal af de bedst seedede/placerede hold der går til A-slutspil
     TEAMS: Hold
     GROUPS: Grundspilspuljer
+    EXPLAIN: Placer holdene ved at trække dem over i en pulje
     NOGROUPS: Ingen puljer i grundspillet
     ADDGROUP: Tilføj pulje
     WAIT:

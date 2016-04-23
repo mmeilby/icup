@@ -468,6 +468,7 @@ FORM:
       TOPTEAMS: The no of top teams that will qualify for the best final branch - normally 4 or 8
     TEAMS: Teams
     GROUPS: Preliminary groups
+    EXPLAIN: Assign the teams by dragging them over a group
     NOGROUPS: There are no preliminary groups defined
     ADDGROUP: Add group
     WAIT:

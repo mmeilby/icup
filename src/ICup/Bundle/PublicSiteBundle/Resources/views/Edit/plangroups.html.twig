@@ -246,12 +246,10 @@
 
         </div>
     </div>
-
-    <script src="{{ url('bazinga_jstranslation_js', { 'domain': 'tournament' }) }}?locales={{ app.request.locale|split('_')[0] }}"></script>
-
 {% endblock %}
 
 {% block javascripts %}
+    <script src="{{ url('bazinga_jstranslation_js', { 'domain': 'tournament' }) }}?locales={{ app.request.locale|split('_')[0] }}"></script>
     <script type="text/javascript">
         angular.module('assignGroupsModule', ['ngMaterial', 'ngMessages','ngDraggable'])
                 .controller('assignGroupsController', function($scope, $http, $mdDialog, $mdSidenav) {

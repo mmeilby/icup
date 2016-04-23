@@ -375,6 +375,11 @@
                     $scope.close = function (id) {
                         $mdSidenav(id).close();
                     };
+                    $scope.assignVacant = function(groupid){
+                        $http.get(Routing.generate('_rest_assign_vacant', { 'groupid': groupid })).then(function(data) {
+                            getGroups();
+                        });
+                    };
                     $scope.dataReady = true;
                     $scope.categories = [];
                     $http.get(Routing.generate('_rest_list_categories', { 'tournamentid': {{ tournament.id }} })).then(function(data) {

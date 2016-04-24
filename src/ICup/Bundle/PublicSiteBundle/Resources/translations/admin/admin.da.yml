@@ -16,6 +16,8 @@ FORM:
     BADMATCH: Den valgte kamp er ikke gyldig
     BADTEAM: Holdet er ikke gyldigt
     NOTOURNAMENT: Turnering er ikke valgt
+  SUBMIT: Gem
+  CLOSE: Luk
   DASHBOARD:
     TITLE: Kontrolpanel
     SEARCHCAPTION: Vælg turneringsvært

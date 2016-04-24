@@ -4,6 +4,7 @@ namespace ICup\Bundle\PublicSiteBundle\Entity\Doctrine;
 
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\ORM\Mapping as ORM;
+use JsonSerializable;
 
 /**
  * Club entity
@@ -13,7 +14,7 @@ use Doctrine\ORM\Mapping as ORM;
  * @ORM\Table(name="clubs", uniqueConstraints={@ORM\UniqueConstraint(name="ClubNameConstraint", columns={"name", "country"})})
  * @ORM\Entity
  */
-class Club
+class Club implements JsonSerializable
 {
     /**
      * @var integer $id
@@ -44,6 +45,12 @@ class Club
      * @ORM\OneToMany(targetEntity="Team", mappedBy="club", cascade={"persist", "remove"})
      */
     protected $teams;
+
+    /**
+     * Fixed name and country code for placeholder club for vacant teams
+     */
+    public static $VACANT_CLUB_NAME = "VACANT";
+    public static $VACANT_CLUB_COUNTRYCODE = "[V]";
 
     /**
      * Club constructor.
@@ -113,5 +120,28 @@ class Club
      */
     public function getTeams() {
         return $this->teams;
+    }
+
+    /**
+     * Test if this club is placeholder for vacant teams
+     * @return bool true if club is placeholder
+     */
+    public function isVacant() {
+        return $this->name == static::$VACANT_CLUB_NAME && $this->country == static::$VACANT_CLUB_COUNTRYCODE;
+    }
+    
+    public function __toString() {
+        return $this->getName()." (".$this->getCountry().")";
+    }
+
+    /**
+     * (PHP 5 &gt;= 5.4.0)<br/>
+     * Specify data which should be serialized to JSON
+     * @link http://php.net/manual/en/jsonserializable.jsonserialize.php
+     * @return mixed data which can be serialized by <b>json_encode</b>,
+     * which is a value of any type other than a resource.
+     */
+    function jsonSerialize() {
+        return array("id" => $this->id, "name" => $this->name, "country_code" => $this->country);
     }
 }

@@ -33,12 +33,14 @@ class ListClubController extends Controller
         }
         return array('teams' => $teamList);
     }
-    
+
     /**
      * List the clubs enrolled for a tournament
      * @Route("/edit/club/list/{tournamentid}", name="_host_list_clubs")
      * @Method("GET")
      * @Template("ICupPublicSiteBundle:Host:listclubs.html.twig")
+     * @param $tournamentid
+     * @return array
      */
     public function listClubsActionEditor($tournamentid) {
         /* @var $utilService Util */
@@ -49,31 +51,6 @@ class ListClubController extends Controller
         $tournament = $this->get('entity')->getTournamentById($tournamentid);
         $host = $tournament->getHost();
         $utilService->validateEditorAdminUser($user, $host);
-        $clubs = $this->get('logic')->listEnrolled($tournament->getId());
-        $teamcount = 0;
-        $teamList = array();
-        $countries = $utilService->getCountries();
-        foreach ($clubs as $clb) {
-            $club = $clb['club'];
-            $country = $club->getCountry();
-            if (array_search($country, $countries)) {
-                $teamList[$country][$club->getId()] = $clb;
-                $teamcount++;
-            }
-        }
-
-        $teamcount /= 2;
-        $teamColumns = array();
-        $ccount = 0;
-        $column = 0;
-        foreach ($teamList as $country => $clubs) {
-            $teamColumns[$column][] = array($country => $clubs);
-            $ccount += count($clubs);
-            if ($ccount > $teamcount && $column < 1) {
-                $column++;
-                $ccount = 0;
-            }
-        }
-        return array('host' => $host, 'tournament' => $tournament, 'teams' => $teamColumns);
+        return array('host' => $host, 'tournament' => $tournament);
     }
 }

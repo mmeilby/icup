@@ -70,7 +70,7 @@
         });
         function OnKeyUp() {
             if ($('input#form_name').val().length > 1) {
-                $.getJSON(Routing.generate('_rest_list_clubs',
+                $.getJSON(Routing.generate('_rest_search_clubs',
                                             {
                                                 'countrycode': $('select#form_country').val(),
                                                 'pattern': '%'+$('input#form_name').val()+'%'

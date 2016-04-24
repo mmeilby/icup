@@ -252,17 +252,14 @@ class BusinessLogic
         return $groupOrder;
     }
 
-    private static $VACANT_CLUB_NAME = "VACANT";
-    private static $VACANT_CLUB_COUNTRYCODE = "[V]";
-
     public function assignVacant($groupid, User $user) {
         /* @var $group Group */
         $group = $this->entity->getGroupById($groupid);
-        $club = $this->getClubByName(BusinessLogic::$VACANT_CLUB_NAME, BusinessLogic::$VACANT_CLUB_COUNTRYCODE);
+        $club = $this->getClubByName(Club::$VACANT_CLUB_NAME, Club::$VACANT_CLUB_COUNTRYCODE);
         if ($club == null) {
             $club = new Club();
-            $club->setName(BusinessLogic::$VACANT_CLUB_NAME);
-            $club->setCountry(BusinessLogic::$VACANT_CLUB_COUNTRYCODE);
+            $club->setName(Club::$VACANT_CLUB_NAME);
+            $club->setCountry(Club::$VACANT_CLUB_COUNTRYCODE);
             $this->em->persist($club);
             $this->em->flush();
         }
@@ -360,7 +357,12 @@ class BusinessLogic
         $qb->setParameter('club', $clubid);
         return $qb->getResult();
     }
-        
+
+    /**
+     * List the clubs enrolled (including the count of teams enrolled) to tournament id
+     * @param $tournamentid
+     * @return array
+     */
     public function listEnrolled($tournamentid) {
         $qb = $this->em->createQuery(
                 "select clb as club, count(e) as enrolled ".
@@ -848,7 +850,12 @@ class BusinessLogic
     public function listClubs() {
         return $this->entity->getClubRepo()->findBy(array(), array('country' => 'asc', 'name' => 'asc'));
     }
-    
+
+    /**
+     * List the clubs with teams assigned to a group in a tournament
+     * @param $tournamentid
+     * @return array
+     */
     public function listClubsByTournament($tournamentid) {
         $qb = $this->em->createQuery(
                 "select c ".

@@ -2,34 +2,117 @@
 {% trans_default_domain "admin" %}
 
 {% block adminbody %}
-    <h2 style="margin-bottom: 0">
-        <i class="fa fa-cogs"></i>&nbsp;
-        {% trans %}FORM.LISTCLUBS.TITLE{% endtrans %}
-    </h2>
-    <p></p>
+    <div ng-app="listClubsModule">
+        <div ng-controller="listClubsController" ng-cloak>
+            <section layout="column">
+                <md-content flex>
+                    <h2 style="margin-bottom: 0">
+                        <i class="fa fa-cogs"></i>&nbsp;
+                        {% trans %}FORM.LISTCLUBS.TITLE{% endtrans %}
+                    </h2>
+                    <p>{% trans %}FORM.LISTCLUBS.CAPTION{% endtrans %}</p>
+                    <div class="row">
+                        <div class="col-lg-6 lead">
+                            <a href="{{ path('_edit_tournamentboard', { 'tournamentid': tournament.id }) }}">
+                                {{ host.name|upper }}
+                                <br />
+                                {{ tournament.name }}
+                            </a>
+                        </div>
+                        <div class="col-lg-6 lead text-right">
+                            <a href="{{ path('_host_club_new', {'tournamentid': tournament.id }) }}" class="btn btn-info">
+                                {% trans %}FORM.CLUB.TITLE.ADD{% endtrans %}
+                            </a>
+                            <a href="{{ path('_edit_import_team', {'tournamentid': tournament.id }) }}" class="btn btn-info">
+                                {% trans %}FORM.TEAMIMPORT.TITLE{% endtrans %}
+                            </a>
+                            {% if is_granted('ROLE_ADMIN') %}
+                                <a href="{{ path('_admin_wipe_teams', {'tournamentid': tournament.id }) }}" class="btn btn-danger">
+                                    {% trans %}FORM.LISTCLUBS.BUTTON.WIPE{% endtrans %}
+                                </a>
+                            {% endif %}
+                        </div>
+                    </div>
+                </md-content>
+
+                <md-content flex>
+                    <hr />
+                </md-content>
+
+                <md-content flex>
+                    <md-sidenav
+                            class="md-sidenav-right"
+                            md-component-id="clubOptions"
+                            md-disable-backdrop
+                            md-whiteframe="4">
+                        <md-toolbar class="md-theme-light">
+                            <h1 class="md-toolbar-tools">
+                                {% trans %}FORM.CLUB.TITLE.CHG{% endtrans %}
+                            </h1>
+                        </md-toolbar>
+                        <md-content layout-padding>
+                            <div>
+                                <img src="{{ asset('bundles/icuppublicsite/images/flags/') }}{{ '{{ club.flag }}' }}"
+                                     alt="{{ '{{ club.name }}' }}"
+                                     title="{{ '{{ club.name }}' }}" ng-if="club.flag" class="flag">
+                                <b>{{ '{{ club.name }}' }}</b>
+                            </div>
+                            <form ng-submit="submit()" ng-cloak>
+                                <md-input-container>
+                                    <label for="name">{% trans %}FORM.CLUB.NAME{% endtrans %}</label>
+                                    <input type="text" id="name" ng-model="club_object.name" md-autofocus>
+                                </md-input-container>
+                            </form>
+                            <md-button ng-click="updateClub()" class="md-raised md-primary">
+                                {% trans %}FORM.SUBMIT{% endtrans %}
+                            </md-button>
+                            <md-button ng-click="close('clubOptions')" class="md-raised">
+                                {% trans %}FORM.CLOSE{% endtrans %}
+                            </md-button>
+                        </md-content>
+                    </md-sidenav>
+
+                    <div class="row" ng-show="countries.length">
+                        {# list countries #}
+                        <div class="col-md-6 col-lg-4" ng-repeat="country in countries">
+                            <div class="panel panel-default">
+                                <div class="panel-heading">
+                                    <img src="{{ asset('bundles/icuppublicsite/images/flags/') }}{{ '{{ country.flag }}' }}"
+                                         alt="{{ '{{ country.name }}' }}"
+                                         title="{{ '{{ country.name }}' }}" ng-if="country.flag" class="flag">
+                                    <b>{{ '{{ country.name }}' }}</b>
+                                </div>
+                                {# list clubs #}
+                                <table class="table table-striped">
+                                    <tr ng-repeat="club in country.clubs">
+                                        <td>
+                                            {{ '{{ club.name }}' }}
+                                        </td>
+                                        <td class="narrow-col">
+                                            <span ng-show="club.enrolled">{{ '{{ club.enrolled }}' }}</span>
+                                        </td>
+                                        <td class="narrow-col">
+                                            <span class="fa fa-cog" aria-label="{% trans %}FORM.CLUB.PROMPT.CHG{% endtrans %}" ng-click="toggleClubOptions(club)">
+                                                <md-tooltip md-direction="top" md-visible="tooltipVisible" md-autohide="false">
+                                                    {% trans %}FORM.CLUB.PROMPT.CHG{% endtrans %}
+                                                </md-tooltip>
+                                            </span>
+                                        </td>
+                                    </tr>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                    <h1 ng-show="!countries.length">
+                        <span class="badge">{% trans %}FORM.MATCHPLANNING.NOTEAMS{% endtrans %}</span>
+                    </h1>
+                </md-content>
+            </section>
+        </div>
+    </div>
+{#
 <div class="panel panel-default">
     <div class="panel-body">
-        <div class="row">
-            <div class="col-lg-7 lead">
-                <a href="{{ path('_edit_tournamentboard', { 'tournamentid': tournament.id }) }}">
-                    {{ host.name|upper }}
-                </a><br />
-                {{ tournament.name }}
-            </div>
-            <div class="col-lg-5 lead">
-                <a href="{{ path('_host_club_new', {'tournamentid': tournament.id }) }}" class="btn btn-info">
-                    {% trans %}FORM.CLUB.TITLE.ADD{% endtrans %}
-                </a>
-                <a href="{{ path('_edit_import_team', {'tournamentid': tournament.id }) }}" class="btn btn-info">
-                    {% trans %}FORM.TEAMIMPORT.TITLE{% endtrans %}
-                </a>
-{% if is_granted('ROLE_ADMIN') %}
-                <a href="{{ path('_admin_wipe_teams', {'tournamentid': tournament.id }) }}" class="btn btn-danger">
-                    {% trans %}FORM.LISTCLUBS.BUTTON.WIPE{% endtrans %}
-                </a>
-{% endif %}    
-            </div>
-        </div>
 {% if teams|length > 0 %}
         <p></p>
         <div class="row">
@@ -93,4 +176,173 @@
         </div>
     </div>
 </div>
+#}
+{% endblock %}
+
+{% block javascripts %}
+    <script src="{{ url('bazinga_jstranslation_js', { 'domain': 'tournament' }) }}?locales={{ app.request.locale|split('_')[0] }}"></script>
+    <script type="text/javascript">
+        angular.module('listClubsModule', ['ngMaterial', 'ngMessages','ngDraggable'])
+                .controller('listClubsController', function($scope, $http, $mdDialog, $mdSidenav) {
+                    $scope.onDragUnassignedTeam=function(teamid){
+                        var index = $scope.unassigned.teams.findIndex(function (team) {
+                            return team.id == teamid;
+                        });
+                        var team = $scope.unassigned.teams.splice(index, 1);
+                        $scope.team = team[0];
+                        $scope.group = null;
+                        $scope.draggingAllowed = true;
+                    };
+                    $scope.onDragTeam=function(groupid, teamid){
+                        var group = $scope.groups.find(function (group) {
+                            return group.group.id == groupid;
+                        });
+                        var index = group.teams.findIndex(function (team) {
+                            return team.id == teamid;
+                        });
+                        var team = group.teams.splice(index, 1);
+                        $scope.team = team[0];
+                        $scope.group = group.group;
+                        $scope.draggingAllowed = true;
+                    };
+                    $scope.onDropUnassigned=function(){
+                        if ($scope.draggingAllowed) {
+                            $scope.draggingAllowed = false;
+                            $scope.unassigned.teams.push($scope.team);
+                            if ($scope.group) {
+                                $http.get(Routing.generate('_rest_assign_del', { 'groupid': $scope.group.id, 'teamid': $scope.team.id })).then(function(data) {
+                                    getGroups();
+                                });
+                            }
+                        }
+                    };
+                    $scope.onDropGroup=function(groupid){
+                        if ($scope.draggingAllowed) {
+                            $scope.draggingAllowed = false;
+                            var group = $scope.groups.find(function (group) {
+                                return group.group.id == groupid;
+                            });
+                            group.teams.push($scope.team);
+                            if ($scope.group) {
+                                $http.get(Routing.generate('_rest_assign_del', { 'groupid': $scope.group.id, 'teamid': $scope.team.id })).then(function(data) {
+                                    $http.get(Routing.generate('_rest_assign_add', { 'groupid': groupid, 'teamid': $scope.team.id })).then(function(data) {
+                                        getGroups();
+                                    });
+                                });
+                            }
+                            else {
+                                $http.get(Routing.generate('_rest_assign_add', { 'groupid': groupid, 'teamid': $scope.team.id })).then(function(data) {
+                                    getGroups();
+                                });
+                            }
+                        }
+                    };
+                    $scope.toggleCategoryOptions = function() {
+                        $scope.category_object = {
+                            'name': $scope.category.name,
+                            'gender': $scope.category.gender,
+                            'classification': $scope.category.classification,
+                            'age': $scope.category.age,
+                            'trophys': $scope.category.trophys,
+                            'topteams': $scope.category.topteams,
+                            'strategy': $scope.category.strategy,
+                            'matchtime': $scope.category.matchtime
+                        };
+                        $mdSidenav('categoryOptions').toggle();
+                    };
+                    $scope.toggleClubOptions = function(club) {
+                        $scope.club = club;
+                        $scope.club_object = {
+                            'name': $scope.club.name,
+                            'country': $scope.club.country_code
+                        };
+                        $mdSidenav('clubOptions').toggle();
+                    };
+                    $scope.updateClub = function () {
+                        $http.put(Routing.generate('rest_club_update', {'clubid': $scope.club.id }), $scope.club_object).then(function (data) {
+                            $scope.club.name = $scope.club_object.name;
+                            $mdSidenav('clubOptions').close();
+                        });
+                    };
+                    $scope.addGroup = function () {
+                        $http.post(Routing.generate('rest_group_create', {'categoryid': $scope.category.id }), $scope.group_object).then(function (data) {
+                                    $mdSidenav('groupOptions').close();
+                                    getGroups();
+                                },
+                                function (response) {
+                                    $mdDialog.show(
+                                            $mdDialog.alert()
+                                                    .clickOutsideToClose(true)
+                                                    .title('{% trans %}FORM.GROUP.TITLE.ADD{% endtrans %}')
+                                                    .textContent(response.data.errors.join('. '))
+                                                    .ok('{% trans %}FORM.QMATCHPLANNING.CLOSE{% endtrans %}')
+                                    );
+                                });
+                    };
+                    $scope.deleteGroup = function (groupid) {
+                        $http.delete(Routing.generate('rest_group_delete', {'groupid': groupid })).then(function (data) {
+                                    getGroups();
+                                },
+                                function (response) {
+                                    $mdDialog.show(
+                                            $mdDialog.alert()
+                                                    .clickOutsideToClose(true)
+                                                    .title('{% trans %}FORM.GROUP.TITLE.DEL{% endtrans %}')
+                                                    .textContent(response.data.errors.join('. '))
+                                                    .ok('{% trans %}FORM.QMATCHPLANNING.CLOSE{% endtrans %}')
+                                    );
+                                });
+                    };
+                    $scope.isOpen = function(id){
+                        return $mdSidenav(id).isOpen();
+                    };
+                    $scope.close = function (id) {
+                        $mdSidenav(id).close();
+                    };
+                    $scope.assignVacant = function(groupid){
+                        $http.get(Routing.generate('_rest_assign_vacant', { 'groupid': groupid })).then(function(data) {
+                            getGroups();
+                        });
+                    };
+                    $scope.dataReady = false;
+                    $scope.countries = [];
+                    $http.get(Routing.generate('_rest_list_clubs', { 'tournamentid': {{ tournament.id }} })).then(function(data) {
+                        angular.forEach(data.data, function (club) {
+                            var country = $scope.countries.find(function (country) {
+                                return country.country_code == club.country_code;
+                            });
+                            if (country) {
+                                country.clubs.push(club);
+                            }
+                            else {
+                                $scope.countries.push({
+                                    'name': club.country,
+                                    'country_code': club.country_code,
+                                    'flag': club.flag,
+                                    'clubs': [club]
+                                });
+                            }
+                        });
+                        $scope.dataReady = true;
+                    });
+                    $scope.selectedCategory = 0;
+                    $scope.selectCategory = function (id) {
+                        $scope.selectedCategory = id;
+                        $scope.category = $scope.categories.find(function (category) {
+                            return category.id == id;
+                        });
+                        getGroups();
+                    };
+                    $scope.groups = [];
+                    $scope.unassigned = [];
+                    function getGroups() {
+                        $scope.dataReady = false;
+                        $http.get(Routing.generate('_rest_list_groups_with_teams', {'categoryid': $scope.selectedCategory })).then(function (data) {
+                            $scope.groups = data.data.groups;
+                            $scope.unassigned = data.data.unassigned;
+                            $scope.dataReady = true;
+                        });
+                    }
+                });
+    </script>
 {% endblock %}

@@ -16,6 +16,8 @@ FORM:
     BADTEAM: The match is not valid
     BADTEAM: The team is not valid
     NOTOURNAMENT: No tournament selected
+  SUBMIT: Save
+  CLOSE: Close
   DASHBOARD:
     TITLE: Dashboard
     SEARCHCAPTION: Select host

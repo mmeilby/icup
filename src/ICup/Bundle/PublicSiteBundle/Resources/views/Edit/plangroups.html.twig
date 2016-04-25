@@ -320,13 +320,22 @@
                         $mdSidenav('categoryOptions').toggle();
                     };
                     $scope.updateCategory = function () {
-                        $http.put(Routing.generate('rest_category_update', {'categoryid': $scope.selectedCategory }), $scope.category_object).then(function (data) {
+                        $http.post(Routing.generate('rest_category_update', {'categoryid': $scope.selectedCategory }), $scope.category_object).then(function (data) {
                             angular.forEach($scope.categories, function (category, index, categories) {
                                 if (category.id == $scope.selectedCategory) {
                                     categories[index].trophys = $scope.category_object.trophys;
                                     categories[index].topteams = $scope.category_object.topteams;
                                     categories[index].strategy = $scope.category_object.strategy;
                                 }
+                            },
+                            function (response) {
+                                $mdDialog.show(
+                                        $mdDialog.alert()
+                                                .clickOutsideToClose(true)
+                                                .title('{% trans %}FORM.QMATCHPLANNING.OPTIONS{% endtrans %}')
+                                                .textContent(response.data.errors.join('. '))
+                                                .ok('{% trans %}FORM.CLOSE{% endtrans %}')
+                                );
                             });
                             $mdSidenav('categoryOptions').close();
                         });

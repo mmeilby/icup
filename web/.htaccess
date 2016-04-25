@@ -9,6 +9,3 @@
     RewriteCond %{REQUEST_FILENAME} !-f
     RewriteRule ^(.*)$ app.php [QSA,L]
 </IfModule>
-<Limit GET POST PUT DELETE>
-  Allow from all
-</Limit>

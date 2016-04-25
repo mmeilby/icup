@@ -19,6 +19,7 @@ use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
 use ICup\Bundle\PublicSiteBundle\Entity\Doctrine\Category;
 use ICup\Bundle\PublicSiteBundle\Form\Doctrine\CategoryType;
+use RuntimeException;
 
 /**
  * Doctrine\Category controller.
@@ -68,31 +69,33 @@ class RestCategoryController extends Controller
 
     /**
      * Creates a new Doctrine\Category entity.
-     *
-     * @Route("/{tournamentid}", name="rest_category_create", options={"expose"=true})
+     * Tournament id must be added to the request parameters
+     * @Route("/", name="rest_category_create", options={"expose"=true})
      * @Method("POST")
      * @param Request $request
-     * @param $tournamentid
      * @return JsonResponse
      */
-    public function newAction(Request $request, $tournamentid)
+    public function newAction(Request $request)
     {
-        /* @var $utilService Util */
-        $utilService = $this->get('util');
-        /* @var $user User */
-        $user = $utilService->getCurrentUser();
         /* @var $tournament Tournament */
         try {
-            $tournament = $this->get('entity')->getTournamentById($tournamentid);
+            $tournament = $this->get('entity')->getTournamentById($request->get('tournamentid', 0));
         }
         catch (ValidationException $e) {
             return new JsonResponse(array('errors' => array($e->getMessage())), Response::HTTP_NOT_FOUND);
         }
         try {
+            /* @var $utilService Util */
+            $utilService = $this->get('util');
+            /* @var $user User */
+            $user = $utilService->getCurrentUser();
             $host = $tournament->getHost();
             $utilService->validateEditorAdminUser($user, $host);
         }
         catch (ValidationException $e) {
+            return new JsonResponse(array('errors' => array($e->getMessage())), Response::HTTP_FORBIDDEN);
+        }
+        catch (RuntimeException $e) {
             return new JsonResponse(array('errors' => array($e->getMessage())), Response::HTTP_FORBIDDEN);
         }
 
@@ -120,17 +123,13 @@ class RestCategoryController extends Controller
      * Edits an existing Doctrine\Category entity.
      *
      * @Route("/{categoryid}", name="rest_category_update", options={"expose"=true})
-     * @Method("PUT")
+     * @Method("POST")
      * @param Request $request
      * @param $categoryid
      * @return JsonResponse
      */
     public function updateAction(Request $request, $categoryid)
     {
-        /* @var $utilService Util */
-        $utilService = $this->get('util');
-        /* @var $user User */
-        $user = $utilService->getCurrentUser();
         /* @var $category Category */
         try {
             $category = $this->get('entity')->getCategoryById($categoryid);
@@ -139,14 +138,21 @@ class RestCategoryController extends Controller
             return new JsonResponse(array('errors' => array($e->getMessage())), Response::HTTP_NOT_FOUND);
         }
         try {
+            /* @var $utilService Util */
+            $utilService = $this->get('util');
+            /* @var $user User */
+            $user = $utilService->getCurrentUser();
             $host = $category->getTournament()->getHost();
             $utilService->validateEditorAdminUser($user, $host);
         }
         catch (ValidationException $e) {
             return new JsonResponse(array('errors' => array($e->getMessage())), Response::HTTP_FORBIDDEN);
         }
+        catch (RuntimeException $e) {
+            return new JsonResponse(array('errors' => array($e->getMessage())), Response::HTTP_FORBIDDEN);
+        }
 
-        $form = $this->createForm(new CategoryType(), $category, array('method' => 'PUT'));
+        $form = $this->createForm(new CategoryType(), $category);
         $form->handleRequest($request);
 
         if ($this->checkForm($form, $category)) {
@@ -172,10 +178,6 @@ class RestCategoryController extends Controller
      */
     public function deleteAction($categoryid)
     {
-        /* @var $utilService Util */
-        $utilService = $this->get('util');
-        /* @var $user User */
-        $user = $utilService->getCurrentUser();
         /* @var $category Category */
         try {
             $category = $this->get('entity')->getCategoryById($categoryid);
@@ -184,10 +186,17 @@ class RestCategoryController extends Controller
             return new JsonResponse(array('errors' => array($e->getMessage())), Response::HTTP_NOT_FOUND);
         }
         try {
+            /* @var $utilService Util */
+            $utilService = $this->get('util');
+            /* @var $user User */
+            $user = $utilService->getCurrentUser();
             $host = $category->getTournament()->getHost();
             $utilService->validateEditorAdminUser($user, $host);
         }
         catch (ValidationException $e) {
+            return new JsonResponse(array('errors' => array($e->getMessage())), Response::HTTP_FORBIDDEN);
+        }
+        catch (RuntimeException $e) {
             return new JsonResponse(array('errors' => array($e->getMessage())), Response::HTTP_FORBIDDEN);
         }
 
@@ -217,8 +226,9 @@ class RestCategoryController extends Controller
             }
             else {
                 $em = $this->getDoctrine()->getManager();
-                $othercategory = $em->getRepository($form->getConfig()->getOption("data_class"))->findBy(array('tournament' => $category->getTournament()->getId(), 'name' => $category->getName()));
-                if ($othercategory) {
+                /* @var $othercategory Category */
+                $othercategory = $em->getRepository($form->getConfig()->getOption("data_class"))->findOneBy(array('tournament' => $category->getTournament()->getId(), 'name' => $category->getName()));
+                if ($othercategory != null && $othercategory->getId() != $category->getId()) {
                     $form->addError(new FormError($this->get('translator')->trans('FORM.CATEGORY.NAMEEXISTS', array(), 'admin')));
                 }
             }

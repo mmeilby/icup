@@ -631,6 +631,7 @@ FORM:
     NAMEEXIST: En anden klub er allerede oprettet med samme navn og land. Er oplysningerne korrekte, så ret i stedet kluboplysningerne.
     CANTCHANGENAME: En anden klub er allerede oprettet med samme navn og land. Vælg et andet navn til klubben.
     TEAMSEXIST: Der er tilmeldt hold i en turnering for denne klub. Klubben kan ikke fjernes.
+    UPDATED: Klubinformationer blev opdateret
     TITLE:
       ADD: Tilføj ny klub
       CHG: Rediger klubinformationer

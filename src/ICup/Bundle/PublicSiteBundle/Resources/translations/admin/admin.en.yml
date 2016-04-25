@@ -628,6 +628,7 @@ FORM:
     NAMEEXIST: A different club has the same name. Consider to change the information of the existing club.
     CANTCHANGENAME: A different club has the same name. Please use another name.
     TEAMSEXIST: Teams are defined for this club. The club can not be removed.
+    UPDATED: Club data has been changed
     TITLE:
       ADD: Add new club
       CHG: Modify club

@@ -6,45 +6,7 @@
         <div ng-controller="listClubsController" ng-cloak>
             <section layout="column">
                 <md-content flex>
-                    <h2 style="margin-bottom: 0">
-                        <i class="fa fa-cogs"></i>&nbsp;
-                        {% trans %}FORM.LISTCLUBS.TITLE{% endtrans %}
-                    </h2>
-                    <p>{% trans %}FORM.LISTCLUBS.CAPTION{% endtrans %}</p>
-                    <div class="row">
-                        <div class="col-lg-6 lead">
-                            <a href="{{ path('_edit_tournamentboard', { 'tournamentid': tournament.id }) }}">
-                                {{ host.name|upper }}
-                                <br />
-                                {{ tournament.name }}
-                            </a>
-                        </div>
-                        <div class="col-lg-6 lead text-right">
-                            <a href="{{ path('_host_club_new', {'tournamentid': tournament.id }) }}" class="btn btn-info">
-                                {% trans %}FORM.CLUB.TITLE.ADD{% endtrans %}
-                            </a>
-                            <a href="{{ path('_edit_import_team', {'tournamentid': tournament.id }) }}" class="btn btn-info">
-                                {% trans %}FORM.TEAMIMPORT.TITLE{% endtrans %}
-                            </a>
-                            {% if is_granted('ROLE_ADMIN') %}
-                                <a href="{{ path('_admin_wipe_teams', {'tournamentid': tournament.id }) }}" class="btn btn-danger">
-                                    {% trans %}FORM.LISTCLUBS.BUTTON.WIPE{% endtrans %}
-                                </a>
-                            {% endif %}
-                        </div>
-                    </div>
-                </md-content>
-
-                <md-content flex>
-                    <hr />
-                </md-content>
-
-                <md-content flex>
-                    <md-sidenav
-                            class="md-sidenav-right"
-                            md-component-id="clubOptions"
-                            md-disable-backdrop
-                            md-whiteframe="4">
+                    <md-sidenav class="md-sidenav-right" md-component-id="clubOptions" md-whiteframe="20">
                         <md-toolbar class="md-theme-light">
                             <h1 class="md-toolbar-tools">
                                 {% trans %}FORM.CLUB.TITLE.CHG{% endtrans %}
@@ -72,40 +34,76 @@
                         </md-content>
                     </md-sidenav>
 
-                    <div class="row" ng-show="countries.length">
-                        {# list countries #}
-                        <div class="col-md-6 col-lg-4" ng-repeat="country in countries">
-                            <div class="panel panel-default">
-                                <div class="panel-heading">
-                                    <img src="{{ asset('bundles/icuppublicsite/images/flags/') }}{{ '{{ country.flag }}' }}"
-                                         alt="{{ '{{ country.name }}' }}"
-                                         title="{{ '{{ country.name }}' }}" ng-if="country.flag" class="flag">
-                                    <b>{{ '{{ country.name }}' }}</b>
-                                </div>
-                                {# list clubs #}
-                                <table class="table table-striped">
-                                    <tr ng-repeat="club in country.clubs">
-                                        <td>
-                                            {{ '{{ club.name }}' }}
-                                        </td>
-                                        <td class="narrow-col">
-                                            <span ng-show="club.enrolled">{{ '{{ club.enrolled }}' }}</span>
-                                        </td>
-                                        <td class="narrow-col">
-                                            <span class="fa fa-cog" aria-label="{% trans %}FORM.CLUB.PROMPT.CHG{% endtrans %}" ng-click="toggleClubOptions(club)">
-                                                <md-tooltip md-direction="top" md-visible="tooltipVisible" md-autohide="false">
-                                                    {% trans %}FORM.CLUB.PROMPT.CHG{% endtrans %}
-                                                </md-tooltip>
-                                            </span>
-                                        </td>
-                                    </tr>
-                                </table>
+                    <md-content flex>
+                        <h2 style="margin-bottom: 0">
+                            <i class="fa fa-cogs"></i>&nbsp;
+                            {% trans %}FORM.LISTCLUBS.TITLE{% endtrans %}
+                        </h2>
+                        <p>{% trans %}FORM.LISTCLUBS.CAPTION{% endtrans %}</p>
+                        <div class="row">
+                            <div class="col-lg-6 lead">
+                                <a href="{{ path('_edit_tournamentboard', { 'tournamentid': tournament.id }) }}">
+                                    {{ host.name|upper }}
+                                    <br />
+                                    {{ tournament.name }}
+                                </a>
+                            </div>
+                            <div class="col-lg-6 lead text-right">
+                                <a href="{{ path('_host_club_new', {'tournamentid': tournament.id }) }}" class="btn btn-info">
+                                    {% trans %}FORM.CLUB.TITLE.ADD{% endtrans %}
+                                </a>
+                                <a href="{{ path('_edit_import_team', {'tournamentid': tournament.id }) }}" class="btn btn-info">
+                                    {% trans %}FORM.TEAMIMPORT.TITLE{% endtrans %}
+                                </a>
+                                {% if is_granted('ROLE_ADMIN') %}
+                                    <a href="{{ path('_admin_wipe_teams', {'tournamentid': tournament.id }) }}" class="btn btn-danger">
+                                        {% trans %}FORM.LISTCLUBS.BUTTON.WIPE{% endtrans %}
+                                    </a>
+                                {% endif %}
                             </div>
                         </div>
-                    </div>
-                    <h1 ng-show="!countries.length">
-                        <span class="badge">{% trans %}FORM.MATCHPLANNING.NOTEAMS{% endtrans %}</span>
-                    </h1>
+                    </md-content>
+
+                    <md-content flex>
+                        <hr />
+                    </md-content>
+
+                    <md-content flex>
+                        <div class="row" ng-show="countries.length && dataReady">
+                            {# list countries #}
+                            <div class="col-md-6 col-lg-4" ng-repeat="country in countries">
+                                <div class="panel panel-default">
+                                    <div class="panel-heading">
+                                        <img src="{{ asset('bundles/icuppublicsite/images/flags/') }}{{ '{{ country.flag }}' }}"
+                                             alt="{{ '{{ country.name }}' }}"
+                                             title="{{ '{{ country.name }}' }}" ng-if="country.flag" class="flag">
+                                        <b>{{ '{{ country.name }}' }}</b>
+                                    </div>
+                                    {# list clubs #}
+                                    <table class="table table-striped">
+                                        <tr ng-repeat="club in country.clubs">
+                                            <td>
+                                                {{ '{{ club.name }}' }}
+                                            </td>
+                                            <td class="narrow-col">
+                                                <span ng-show="club.enrolled">{{ '{{ club.enrolled }}' }}</span>
+                                            </td>
+                                            <td class="narrow-col">
+                                                <span class="fa fa-cog" aria-label="{% trans %}FORM.CLUB.TITLE.CHG{% endtrans %}" ng-click="toggleClubOptions(club)">
+                                                    <md-tooltip md-direction="top" md-visible="tooltipVisible" md-autohide="false">
+                                                        {% trans %}FORM.CLUB.TITLE.CHG{% endtrans %}
+                                                    </md-tooltip>
+                                                </span>
+                                            </td>
+                                        </tr>
+                                    </table>
+                                </div>
+                            </div>
+                        </div>
+                        <h1 ng-show="!countries.length && dataReady">
+                            <span class="badge">{% trans %}FORM.MATCHPLANNING.NOTEAMS{% endtrans %}</span>
+                        </h1>
+                    </md-content>
                 </md-content>
             </section>
         </div>
@@ -183,7 +181,7 @@
     <script src="{{ url('bazinga_jstranslation_js', { 'domain': 'tournament' }) }}?locales={{ app.request.locale|split('_')[0] }}"></script>
     <script type="text/javascript">
         angular.module('listClubsModule', ['ngMaterial', 'ngMessages','ngDraggable'])
-                .controller('listClubsController', function($scope, $http, $mdDialog, $mdSidenav) {
+                .controller('listClubsController', function($scope, $http, $mdDialog, $mdSidenav, $mdToast) {
                     $scope.onDragUnassignedTeam=function(teamid){
                         var index = $scope.unassigned.teams.findIndex(function (team) {
                             return team.id == teamid;
@@ -259,9 +257,24 @@
                         $mdSidenav('clubOptions').toggle();
                     };
                     $scope.updateClub = function () {
-                        $http.put(Routing.generate('rest_club_update', {'clubid': $scope.club.id }), $scope.club_object).then(function (data) {
+                        $http.post(Routing.generate('rest_club_update', {'clubid': $scope.club.id }), $scope.club_object).then(function (data) {
                             $scope.club.name = $scope.club_object.name;
                             $mdSidenav('clubOptions').close();
+                            $mdToast.show(
+                                    $mdToast.simple()
+                                            .textContent('{% trans %}FORM.CLUB.UPDATED{% endtrans %}')
+                                            .position('top right')
+                                            .hideDelay(3000)
+                            );
+                        },
+                        function (response) {
+                            $mdDialog.show(
+                                    $mdDialog.alert()
+                                            .clickOutsideToClose(true)
+                                            .title('{% trans %}FORM.CLUB.TITLE.CHG{% endtrans %}')
+                                            .textContent(response.data.errors.join('. '))
+                                            .ok('{% trans %}FORM.CLOSE{% endtrans %}')
+                            );
                         });
                     };
                     $scope.addGroup = function () {
@@ -298,11 +311,6 @@
                     };
                     $scope.close = function (id) {
                         $mdSidenav(id).close();
-                    };
-                    $scope.assignVacant = function(groupid){
-                        $http.get(Routing.generate('_rest_assign_vacant', { 'groupid': groupid })).then(function(data) {
-                            getGroups();
-                        });
                     };
                     $scope.dataReady = false;
                     $scope.countries = [];

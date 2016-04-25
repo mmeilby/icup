@@ -18,6 +18,7 @@ use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
 use ICup\Bundle\PublicSiteBundle\Entity\Doctrine\Category;
 use Symfony\Component\HttpKernel\Exception\HttpException;
+use RuntimeException;
 
 /**
  * Doctrine\Group controller.
@@ -67,31 +68,33 @@ class RestGroupController extends Controller
 
     /**
      * Creates a new Doctrine\Group entity.
-     *
-     * @Route("/{categoryid}", name="rest_group_create", options={"expose"=true})
+     * Category id must be added to the request parameters
+     * @Route("/", name="rest_group_create", options={"expose"=true})
      * @Method("POST")
      * @param Request $request
-     * @param $categoryid
      * @return JsonResponse
      */
-    public function newAction(Request $request, $categoryid)
+    public function newAction(Request $request)
     {
-        /* @var $utilService Util */
-        $utilService = $this->get('util');
-        /* @var $user User */
-        $user = $utilService->getCurrentUser();
         /* @var $category Category */
         try {
-            $category = $this->get('entity')->getCategoryById($categoryid);
+            $category = $this->get('entity')->getCategoryById($request->get('categoryid', 0));
         }
         catch (ValidationException $e) {
             return new JsonResponse(array('errors' => array($e->getMessage())), Response::HTTP_NOT_FOUND);
         }
         try {
+            /* @var $utilService Util */
+            $utilService = $this->get('util');
+            /* @var $user User */
+            $user = $utilService->getCurrentUser();
             $host = $category->getTournament()->getHost();
             $utilService->validateEditorAdminUser($user, $host);
         }
         catch (ValidationException $e) {
+            return new JsonResponse(array('errors' => array($e->getMessage())), Response::HTTP_FORBIDDEN);
+        }
+        catch (RuntimeException $e) {
             return new JsonResponse(array('errors' => array($e->getMessage())), Response::HTTP_FORBIDDEN);
         }
 
@@ -119,17 +122,13 @@ class RestGroupController extends Controller
      * Edits an existing Doctrine\Group entity.
      *
      * @Route("/{groupid}", name="rest_group_update", options={"expose"=true})
-     * @Method("PUT")
+     * @Method("POST")
      * @param Request $request
      * @param $groupid
      * @return JsonResponse
      */
     public function updateAction(Request $request, $groupid)
     {
-        /* @var $utilService Util */
-        $utilService = $this->get('util');
-        /* @var $user User */
-        $user = $utilService->getCurrentUser();
         /* @var $group Group */
         try {
             $group = $this->get('entity')->getGroupById($groupid);
@@ -138,14 +137,21 @@ class RestGroupController extends Controller
             return new JsonResponse(array('errors' => array($e->getMessage())), Response::HTTP_NOT_FOUND);
         }
         try {
+            /* @var $utilService Util */
+            $utilService = $this->get('util');
+            /* @var $user User */
+            $user = $utilService->getCurrentUser();
             $host = $group->getCategory()->getTournament()->getHost();
             $utilService->validateEditorAdminUser($user, $host);
         }
         catch (ValidationException $e) {
             return new JsonResponse(array('errors' => array($e->getMessage())), Response::HTTP_FORBIDDEN);
         }
+        catch (RuntimeException $e) {
+            return new JsonResponse(array('errors' => array($e->getMessage())), Response::HTTP_FORBIDDEN);
+        }
         
-        $form = $this->createForm(new GroupType(), $group, array('method' => 'PUT'));
+        $form = $this->createForm(new GroupType(), $group);
         $form->handleRequest($request);
 
         if ($this->checkForm($form, $group)) {
@@ -171,10 +177,6 @@ class RestGroupController extends Controller
      */
     public function deleteAction($groupid)
     {
-        /* @var $utilService Util */
-        $utilService = $this->get('util');
-        /* @var $user User */
-        $user = $utilService->getCurrentUser();
         /* @var $group Group */
         try {
             $group = $this->get('entity')->getGroupById($groupid);
@@ -183,10 +185,17 @@ class RestGroupController extends Controller
             return new JsonResponse(array('errors' => array($e->getMessage())), Response::HTTP_NOT_FOUND);
         }
         try {
+            /* @var $utilService Util */
+            $utilService = $this->get('util');
+            /* @var $user User */
+            $user = $utilService->getCurrentUser();
             $host = $group->getCategory()->getTournament()->getHost();
             $utilService->validateEditorAdminUser($user, $host);
         }
         catch (ValidationException $e) {
+            return new JsonResponse(array('errors' => array($e->getMessage())), Response::HTTP_FORBIDDEN);
+        }
+        catch (RuntimeException $e) {
             return new JsonResponse(array('errors' => array($e->getMessage())), Response::HTTP_FORBIDDEN);
         }
 
@@ -213,8 +222,9 @@ class RestGroupController extends Controller
             }
             else {
                 $em = $this->getDoctrine()->getManager();
-                $othergroup = $em->getRepository($form->getConfig()->getOption("data_class"))->findBy(array('category' => $group->getCategory()->getId(), 'name' => $group->getName()));
-                if ($othergroup) {
+                /* @var $othergroup Group */
+                $othergroup = $em->getRepository($form->getConfig()->getOption("data_class"))->findOneBy(array('category' => $group->getCategory()->getId(), 'name' => $group->getName()));
+                if ($othergroup != null && $othergroup->getId() != $group->getId()) {
                     $form->addError(new FormError($this->get('translator')->trans('FORM.GROUP.NAMEEXISTS', array(), 'admin')));
                 }
             }

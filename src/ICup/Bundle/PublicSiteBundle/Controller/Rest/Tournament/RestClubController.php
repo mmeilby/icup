@@ -17,6 +17,7 @@ use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
 use ICup\Bundle\PublicSiteBundle\Form\Doctrine\ClubType;
+use RuntimeException;
 
 /**
  * Doctrine\Club controller.
@@ -33,10 +34,15 @@ class RestClubController extends Controller
      */
     public function indexAction()
     {
-        /* @var $utilService Util */
-        $utilService = $this->get('util');
-        /* @var $user User */
-        $user = $utilService->getCurrentUser();
+        try {
+            /* @var $utilService Util */
+            $utilService = $this->get('util');
+            /* @var $user User */
+            $user = $utilService->getCurrentUser();
+        }
+        catch (RuntimeException $e) {
+            return new JsonResponse(array('errors' => array($e->getMessage())), Response::HTTP_FORBIDDEN);
+        }
         if (!$user->isAdmin()) {
             return new JsonResponse(array('errors' => array("NEEDTOBEADMIN")), Response::HTTP_FORBIDDEN);
         }
@@ -71,10 +77,6 @@ class RestClubController extends Controller
      */
     public function listEnrolledClubs($tournamentid)
     {
-        /* @var $utilService Util */
-        $utilService = $this->get('util');
-        /* @var $user User */
-        $user = $utilService->getCurrentUser();
         /* @var $tournament Tournament */
         try {
             $tournament = $this->get('entity')->getTournamentById($tournamentid);
@@ -83,10 +85,17 @@ class RestClubController extends Controller
             return new JsonResponse(array('errors' => array($e->getMessage())), Response::HTTP_NOT_FOUND);
         }
         try {
+            /* @var $utilService Util */
+            $utilService = $this->get('util');
+            /* @var $user User */
+            $user = $utilService->getCurrentUser();
             $host = $tournament->getHost();
             $utilService->validateEditorAdminUser($user, $host);
         }
         catch (ValidationException $e) {
+            return new JsonResponse(array('errors' => array($e->getMessage())), Response::HTTP_FORBIDDEN);
+        }
+        catch (RuntimeException $e) {
             return new JsonResponse(array('errors' => array($e->getMessage())), Response::HTTP_FORBIDDEN);
         }
         $list = $this->get('logic')->listEnrolled($tournament->getId());
@@ -136,10 +145,15 @@ class RestClubController extends Controller
      */
     public function newAction(Request $request)
     {
-        /* @var $utilService Util */
-        $utilService = $this->get('util');
-        /* @var $user User */
-        $user = $utilService->getCurrentUser();
+        try {
+            /* @var $utilService Util */
+            $utilService = $this->get('util');
+            /* @var $user User */
+            $user = $utilService->getCurrentUser();
+        }
+        catch (RuntimeException $e) {
+            return new JsonResponse(array('errors' => array($e->getMessage())), Response::HTTP_FORBIDDEN);
+        }
         if (!$user->isEditor() && !$user->isAdmin()) {
             return new JsonResponse(array('errors' => array("NEEDTOBEEDITOR")), Response::HTTP_FORBIDDEN);
         }
@@ -166,17 +180,22 @@ class RestClubController extends Controller
      * Edits an existing Doctrine\Club entity.
      *
      * @Route("/{clubid}", name="rest_club_update", options={"expose"=true})
-     * @Method("PUT")
+     * @Method("POST")
      * @param Request $request
      * @param $clubid
      * @return JsonResponse
      */
     public function updateAction(Request $request, $clubid)
     {
-        /* @var $utilService Util */
-        $utilService = $this->get('util');
-        /* @var $user User */
-        $user = $utilService->getCurrentUser();
+        try {
+            /* @var $utilService Util */
+            $utilService = $this->get('util');
+            /* @var $user User */
+            $user = $utilService->getCurrentUser();
+        }
+        catch (RuntimeException $e) {
+            return new JsonResponse(array('errors' => array($e->getMessage())), Response::HTTP_FORBIDDEN);
+        }
         if (!$user->isEditor() && !$user->isAdmin()) {
             return new JsonResponse(array('errors' => array("NEEDTOBEEDITOR")), Response::HTTP_FORBIDDEN);
         }
@@ -189,7 +208,7 @@ class RestClubController extends Controller
             return new JsonResponse(array('errors' => array($e->getMessage())), Response::HTTP_NOT_FOUND);
         }
 
-        $form = $this->createForm(new ClubType(), $club, array('method' => 'PUT'));
+        $form = $this->createForm(new ClubType(), $club);
         $form->handleRequest($request);
 
         if ($this->checkForm($form, $club)) {
@@ -220,10 +239,15 @@ class RestClubController extends Controller
      */
     public function deleteAction($clubid)
     {
-        /* @var $utilService Util */
-        $utilService = $this->get('util');
-        /* @var $user User */
-        $user = $utilService->getCurrentUser();
+        try {
+            /* @var $utilService Util */
+            $utilService = $this->get('util');
+            /* @var $user User */
+            $user = $utilService->getCurrentUser();
+        }
+        catch (RuntimeException $e) {
+            return new JsonResponse(array('errors' => array($e->getMessage())), Response::HTTP_FORBIDDEN);
+        }
         if (!$user->isEditor() && !$user->isAdmin()) {
             return new JsonResponse(array('errors' => array("NEEDTOBEEDITOR")), Response::HTTP_FORBIDDEN);
         }
@@ -256,8 +280,9 @@ class RestClubController extends Controller
             }
             else {
                 $em = $this->getDoctrine()->getManager();
-                $otherclub = $em->getRepository($form->getConfig()->getOption("data_class"))->findBy(array('name' => $club->getName(), 'country' => $club->getCountry()));
-                if ($otherclub) {
+                /* @var $otherclub Club */
+                $otherclub = $em->getRepository($form->getConfig()->getOption("data_class"))->findOneBy(array('name' => $club->getName(), 'country' => $club->getCountry()));
+                if ($otherclub != null && $otherclub->getId() != $club->getId()) {
                     $form->addError(new FormError($this->get('translator')->trans('FORM.CLUB.NAMEEXISTS', array(), 'admin')));
                 }
             }

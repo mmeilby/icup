@@ -6,6 +6,41 @@
         <div ng-controller="listClubsController" ng-cloak>
             <section layout="column">
                 <md-content flex>
+                    <md-sidenav class="md-sidenav-left" md-component-id="enrollmentOptions" md-whiteframe="20">
+                        <md-toolbar class="md-theme-light">
+                            <h1 class="md-toolbar-tools">
+                                {% trans from "club" %}FORM.LISTENROLLED.TITLE{% endtrans %}
+                            </h1>
+                        </md-toolbar>
+                        <md-content layout-padding>
+                            <div>
+                                <img src="{{ asset('bundles/icuppublicsite/images/flags/') }}{{ '{{ club.flag }}' }}"
+                                     alt="{{ '{{ club.name }}' }}"
+                                     title="{{ '{{ club.name }}' }}" ng-if="club.flag" class="flag">
+                                <b>{{ '{{ club.name }}' }}</b>
+                            </div>
+                            <hr />
+                            <div class="row" ng-repeat="category in categories | orderBy: ['gender', 'classification', '-age'] track by category.id">
+                                <div class="col-sm-7">
+                                    <h5>{% trans from 'tournament' %}CATEGORY{% endtrans %} {{ '{{ category.name }}' }} - {{ '{{ category.classification_translated }}' }}</h5>
+                                </div>
+                                <div class="col-sm-2">
+                                    <h4><span class="badge">{{ '{{ category.enrolled }}' }}</span></h4>
+                                </div>
+                                <div class="col-sm-1">
+                                    <h4><i class="fa fa-plus-circle google-green" ng-click="addEnrollment(category, club)"></i></h4>
+                                </div>
+                                <div class="col-sm-1">
+                                    <h4><i class="fa fa-minus-circle google-red" ng-click="removeEnrollment(category, club)" ng-show="category.enrolled"></i></h4>
+                                </div>
+                            </div>
+                            <hr />
+                            <md-button ng-click="close('enrollmentOptions')" class="md-raised">
+                                {% trans %}FORM.CLOSE{% endtrans %}
+                            </md-button>
+                        </md-content>
+                    </md-sidenav>
+
                     <md-sidenav class="md-sidenav-right" md-component-id="clubOptions" md-whiteframe="20">
                         <md-toolbar class="md-theme-light">
                             <h1 class="md-toolbar-tools">
@@ -82,11 +117,11 @@
                                     {# list clubs #}
                                     <table class="table table-striped">
                                         <tr ng-repeat="club in country.clubs">
-                                            <td>
-                                                {{ '{{ club.name }}' }}
+                                            <td flex>
+                                                <span>{{ '{{ club.name }}' }}</span>
                                             </td>
                                             <td class="narrow-col">
-                                                <span ng-show="club.enrolled">{{ '{{ club.enrolled }}' }}</span>
+                                                <span class="badge" ng-show="club.enrolled" ng-click="toggleEnrollment(club)">{{ '{{ club.enrolled }}' }}</span>
                                             </td>
                                             <td class="narrow-col">
                                                 <span class="fa fa-cog" aria-label="{% trans %}FORM.CLUB.TITLE.CHG{% endtrans %}" ng-click="toggleClubOptions(club)">
@@ -101,7 +136,7 @@
                             </div>
                         </div>
                         <h1 ng-show="!countries.length && dataReady">
-                            <span class="badge">{% trans %}FORM.MATCHPLANNING.NOTEAMS{% endtrans %}</span>
+                            <span class="label">{{'FORM.LISTCLUBS.NOCLUB'|trans|upper}}</span>
                         </h1>
                     </md-content>
                 </md-content>
@@ -109,49 +144,6 @@
         </div>
     </div>
 {#
-<div class="panel panel-default">
-    <div class="panel-body">
-{% if teams|length > 0 %}
-        <p></p>
-        <div class="row">
-{% for column in teams %}
-            <div class="col-sm-6">
-    {% for countrylist in column %}
-    {% for country,teamlist in countrylist %}
-                <div class="panel panel-default">
-                    <div class="panel-heading">
-                        <img src="{{ asset(['bundles/icuppublicsite/images/flags/',countries[country].flag]|join) }}"
-                             alt="{{ country|trans({},'lang') }}"
-                             title="{{ country|trans({},'lang') }}"
-                             class="flag"
-                        >
-                        <b>{{ country|trans({},'lang') }}</b>
-                    </div>
-                    <table class="table table-striped">
-            {% for id,clb in teamlist %}
-                        <tr>
-                            <td>
-                                <a href="{{ path('_club_enroll_list_admin', { 'tournament': tournament.id, 'club': clb.club.id }) }}">{{ clb.club.name|upper }}</a>
-                            </td>
-                            <td class="narrow-col">
-                {% if clb.enrolled > 0 %}
-                                {{ clb.enrolled }}
-                {% endif %}                
-                            </td>
-                            <td class="narrow-col">
-                                <a href="{{ path('_club_enroll_list_admin', { 'tournament': tournament.id, 'club': clb.club.id }) }}">
-                                    <span class="fa fa-list-alt"></span>
-                                </a>    
-                            </td>
-                        </tr>
-            {% endfor %}
-                    </table>
-                </div>
-        {% endfor %}
-        {% endfor %}
-            </div>
-    {% endfor %}
-{% else %}
             <div class="panel panel-default">
                 <div class="panel-heading">
                     {{'FORM.LISTCLUBS.NOCLUB'|trans|upper}}
@@ -170,10 +162,6 @@
                     </tr>
                 </table>
             </div>
-{% endif %}
-        </div>
-    </div>
-</div>
 #}
 {% endblock %}
 
@@ -275,6 +263,27 @@
                                             .textContent(response.data.errors.join('. '))
                                             .ok('{% trans %}FORM.CLOSE{% endtrans %}')
                             );
+                        });
+                    };
+                    $scope.toggleEnrollment = function (club) {
+                        $scope.club = club;
+                        $http.get(Routing.generate('_rest_list_enrolled_teams', { 'tournamentid': {{ tournament.id }}, 'clubid': club.id })).then(function(data) {
+                            $scope.categories = data.data;
+                            $mdSidenav('enrollmentOptions').toggle();
+                        });
+                    };
+                    $scope.addEnrollment = function (category, club) {
+                        $scope.club = club;
+                        $http.get(Routing.generate('_rest_club_enroll_add', { 'categoryid': category.id, 'clubid': club.id })).then(function(data) {
+                            category.enrolled++;
+                            club.enrolled++;
+                        });
+                    };
+                    $scope.removeEnrollment = function (category, club) {
+                        $scope.club = club;
+                        $http.get(Routing.generate('_rest_club_enroll_del', { 'categoryid': category.id, 'clubid': club.id })).then(function(data) {
+                            category.enrolled--;
+                            club.enrolled--;
                         });
                     };
                     $scope.addGroup = function () {

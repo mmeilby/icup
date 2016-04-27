@@ -1,7 +1,9 @@
 <?php
 namespace ICup\Bundle\PublicSiteBundle\Controller\Rest\Tournament;
 
+use ICup\Bundle\PublicSiteBundle\Entity\Doctrine\Category;
 use ICup\Bundle\PublicSiteBundle\Entity\Doctrine\Club;
+use ICup\Bundle\PublicSiteBundle\Entity\Doctrine\Enrollment;
 use ICup\Bundle\PublicSiteBundle\Entity\Doctrine\Team;
 use ICup\Bundle\PublicSiteBundle\Entity\Doctrine\Tournament;
 use ICup\Bundle\PublicSiteBundle\Entity\Doctrine\User;
@@ -114,7 +116,65 @@ class RestClubController extends Controller
         }
         return new JsonResponse($translatedList);
     }
-    
+
+    /**
+     * List the categories the club is enrolled for in tournament
+     * @Route("/list/{tournamentid}/{clubid}", name="_rest_list_enrolled_teams", options={"expose"=true})
+     * @Method("GET")
+     * @param $tournamentid
+     * @param $clubid
+     * @return JsonResponse
+     */
+    public function listEnrolledCategories($tournamentid, $clubid)
+    {
+        /* @var $tournament Tournament */
+        try {
+            $tournament = $this->get('entity')->getTournamentById($tournamentid);
+        }
+        catch (ValidationException $e) {
+            return new JsonResponse(array('errors' => array($e->getMessage())), Response::HTTP_NOT_FOUND);
+        }
+        try {
+            /* @var $utilService Util */
+            $utilService = $this->get('util');
+            /* @var $user User */
+            $user = $utilService->getCurrentUser();
+            $host = $tournament->getHost();
+            $utilService->validateEditorAdminUser($user, $host);
+        }
+        catch (ValidationException $e) {
+            return new JsonResponse(array('errors' => array($e->getMessage())), Response::HTTP_FORBIDDEN);
+        }
+        catch (RuntimeException $e) {
+            return new JsonResponse(array('errors' => array($e->getMessage())), Response::HTTP_FORBIDDEN);
+        }
+        /* @var $club Club */
+        try {
+            $club = $this->get('entity')->getClubById($clubid);
+        }
+        catch (ValidationException $e) {
+            return new JsonResponse(array('errors' => array($e->getMessage())), Response::HTTP_NOT_FOUND);
+        }
+        $enrolled = $this->get('logic')->listEnrolledByClub($tournament->getId(), $club->getId());
+        $enrolledByCategory = array();
+        /* @var $enroll Enrollment */
+        foreach ($enrolled as $enroll) {
+            $enrolledByCategory[$enroll->getCategory()->getId()][] = $enroll;
+        }
+        $translatedList = array();
+        foreach ($tournament->getCategories() as $category) {
+            $translatedList[] = array_merge($category->jsonSerialize(), array(
+                'classification_translated' => $this->get('translator')->transChoice(
+                                                            'GENDER.'.$category->getGender().$category->getClassification(),
+                                                            $category->getAge(),
+                                                            array('%age%' => $category->getAge()),
+                                                            'tournament'),
+                'enrolled' => isset($enrolledByCategory[$category->getId()]) ? count($enrolledByCategory[$category->getId()]) : 0
+            ));
+        }
+        return new JsonResponse($translatedList);
+    }
+
     /**
      * Finds and displays a Doctrine\Club entity.
      *
@@ -313,5 +373,105 @@ class RestClubController extends Controller
             ));
         }
         return $translatedList;
+    }
+
+    /**
+     * Enrolls a club in a tournament by adding new team to category
+     * @Route("/enroll/add/{categoryid}/{clubid}", name="_rest_club_enroll_add", options={"expose"=true})
+     * @Method("GET")
+     * @param $categoryid
+     * @param $clubid
+     * @return JsonResponse
+     */
+    public function addEnrollAction($categoryid, $clubid) {
+        /* @var $category Category */
+        try {
+            $category = $this->get('entity')->getCategoryById($categoryid);
+        }
+        catch (ValidationException $e) {
+            return new JsonResponse(array('errors' => array($e->getMessage())), Response::HTTP_NOT_FOUND);
+        }
+        // Check that user is editor
+        try {
+            /* @var $utilService Util */
+            $utilService = $this->get('util');
+            /* @var $user User */
+            $user = $utilService->getCurrentUser();
+            /* @var $tournament Tournament */
+            $tournament = $category->getTournament();
+            $host = $tournament->getHost();
+            $utilService->validateEditorAdminUser($user, $host);
+        }
+        catch (ValidationException $e) {
+            return new JsonResponse(array('errors' => array($e->getMessage())), Response::HTTP_FORBIDDEN);
+        }
+        catch (RuntimeException $e) {
+            return new JsonResponse(array('errors' => array($e->getMessage())), Response::HTTP_FORBIDDEN);
+        }
+        /* @var $club Club */
+        try {
+            $club = $this->get('entity')->getClubById($clubid);
+        }
+        catch (ValidationException $e) {
+            return new JsonResponse(array('errors' => array($e->getMessage())), Response::HTTP_NOT_FOUND);
+        }
+
+        try {
+            $this->get('logic')->addEnrolled($category, $club, $user);
+        }
+        catch (ValidationException $e) {
+            return new JsonResponse(array('errors' => array($e->getMessage())), Response::HTTP_BAD_REQUEST);
+        }
+        return new JsonResponse(array(), Response::HTTP_NO_CONTENT);
+    }
+
+    /**
+     * Remove last team from category - including all related match results
+     * @Route("/enroll/del/{categoryid}/{clubid}", name="_rest_club_enroll_del", options={"expose"=true})
+     * @Method("GET")
+     * @param $categoryid
+     * @param $clubid
+     * @return JsonResponse
+     */
+    public function delEnrollAction($categoryid, $clubid) {
+        /* @var $category Category */
+        try {
+            $category = $this->get('entity')->getCategoryById($categoryid);
+        }
+        catch (ValidationException $e) {
+            return new JsonResponse(array('errors' => array($e->getMessage())), Response::HTTP_NOT_FOUND);
+        }
+        // Check that user is editor
+        try {
+            /* @var $utilService Util */
+            $utilService = $this->get('util');
+            /* @var $user User */
+            $user = $utilService->getCurrentUser();
+            /* @var $tournament Tournament */
+            $tournament = $category->getTournament();
+            $host = $tournament->getHost();
+            $utilService->validateEditorAdminUser($user, $host);
+        }
+        catch (ValidationException $e) {
+            return new JsonResponse(array('errors' => array($e->getMessage())), Response::HTTP_FORBIDDEN);
+        }
+        catch (RuntimeException $e) {
+            return new JsonResponse(array('errors' => array($e->getMessage())), Response::HTTP_FORBIDDEN);
+        }
+        /* @var $club Club */
+        try {
+            $club = $this->get('entity')->getClubById($clubid);
+        }
+        catch (ValidationException $e) {
+            return new JsonResponse(array('errors' => array($e->getMessage())), Response::HTTP_NOT_FOUND);
+        }
+
+        try {
+            $this->get('logic')->deleteEnrolled($category->getId(), $club->getId());
+        }
+        catch (ValidationException $e) {
+            return new JsonResponse(array('errors' => array($e->getMessage())), Response::HTTP_BAD_REQUEST);
+        }
+        return new JsonResponse(array(), Response::HTTP_NO_CONTENT);
     }
 }

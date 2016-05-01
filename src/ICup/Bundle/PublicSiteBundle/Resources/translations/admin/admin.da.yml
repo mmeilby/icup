@@ -618,9 +618,10 @@ FORM:
       LOGIN: Sidst logget på
     NOUSER: Tilføj ny redaktør
   LISTCLUBS:
-    TITLE: Vedligehold klubber
-    CAPTION: Klubliste på tværs af alle turneringer
+    TITLE: Tilmeldte klubber og hold
+    CAPTION: Vis klubber og hold tilmeldt turneringen
     LEGEND: Klubber sorteret efter land
+    LEGEND_TEAMS: Hold sorteret efter gruppe
     NOCLUB: Tilføj ny klub
     BUTTON:
       WIPE: Ryd alle hold

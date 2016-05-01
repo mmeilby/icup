@@ -390,6 +390,17 @@ class BusinessLogic
         return $qb->getResult();
     }
 
+    public function listEnrolledByCategory($tournamentid) {
+        $qb = $this->em->createQuery(
+            "select e ".
+            "from ".$this->entity->getRepositoryPath('Enrollment')." e, ".
+                    $this->entity->getRepositoryPath('Category')." c ".
+            "where c.tournament=:tournament and e.category=c.id ".
+            "order by e.category");
+        $qb->setParameter('tournament', $tournamentid);
+        return $qb->getResult();
+    }
+
     public function listEnrolledTeamsByCategory($categoryid, $clubid) {
         $qb = $this->em->createQuery(
                 "select t ".

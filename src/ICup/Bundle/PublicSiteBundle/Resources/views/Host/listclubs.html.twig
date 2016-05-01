@@ -100,44 +100,73 @@
                     </md-content>
 
                     <md-content flex>
-                        <hr />
-                    </md-content>
-
-                    <md-content flex>
-                        <div class="row" ng-show="countries.length && dataReady">
-                            {# list countries #}
-                            <div class="col-md-6 col-lg-4" ng-repeat="country in countries">
-                                <div class="panel panel-default">
-                                    <div class="panel-heading">
-                                        <img src="{{ asset('bundles/icuppublicsite/images/flags/') }}{{ '{{ country.flag }}' }}"
-                                             alt="{{ '{{ country.name }}' }}"
-                                             title="{{ '{{ country.name }}' }}" ng-if="country.flag" class="flag">
-                                        <b>{{ '{{ country.name }}' }}</b>
+                        <md-tabs md-dynamic-height md-border-bottom>
+                            <md-tab label="{% trans %}FORM.LISTCLUBS.LEGEND{% endtrans %}">
+                                <md-content class="md-padding">
+                                    <div class="row" ng-show="countries.length && dataReady">
+                                        {# list countries #}
+                                        <div class="col-md-6 col-lg-4" ng-repeat="country in countries">
+                                            <div class="panel panel-default">
+                                                <div class="panel-heading">
+                                                    <img src="{{ asset('bundles/icuppublicsite/images/flags/') }}{{ '{{ country.flag }}' }}"
+                                                         alt="{{ '{{ country.name }}' }}"
+                                                         title="{{ '{{ country.name }}' }}" ng-if="country.flag" class="flag">
+                                                    <b>{{ '{{ country.name }}' }}</b>
+                                                </div>
+                                                {# list clubs #}
+                                                <table class="table table-striped">
+                                                    <tr ng-repeat="club in country.clubs">
+                                                        <td>
+                                                            <span>{{ '{{ club.name }}' }}</span>
+                                                        </td>
+                                                        <td class="narrow-col">
+                                                            <span class="label label-default" ng-show="club.enrolled" ng-click="toggleEnrollment(club)">{{ '{{ club.enrolled }}' }}</span>
+                                                        </td>
+                                                        <td class="narrow-col">
+                                                            <span class="fa fa-cog" aria-label="{% trans %}FORM.CLUB.TITLE.CHG{% endtrans %}" ng-click="toggleClubOptions(club)">
+                                                                <md-tooltip md-direction="top" md-visible="tooltipVisible" md-autohide="false">
+                                                                    {% trans %}FORM.CLUB.TITLE.CHG{% endtrans %}
+                                                                </md-tooltip>
+                                                            </span>
+                                                        </td>
+                                                    </tr>
+                                                </table>
+                                            </div>
+                                        </div>
                                     </div>
-                                    {# list clubs #}
-                                    <table class="table table-striped">
-                                        <tr ng-repeat="club in country.clubs">
-                                            <td flex>
-                                                <span>{{ '{{ club.name }}' }}</span>
-                                            </td>
-                                            <td class="narrow-col">
-                                                <span class="badge" ng-show="club.enrolled" ng-click="toggleEnrollment(club)">{{ '{{ club.enrolled }}' }}</span>
-                                            </td>
-                                            <td class="narrow-col">
-                                                <span class="fa fa-cog" aria-label="{% trans %}FORM.CLUB.TITLE.CHG{% endtrans %}" ng-click="toggleClubOptions(club)">
-                                                    <md-tooltip md-direction="top" md-visible="tooltipVisible" md-autohide="false">
-                                                        {% trans %}FORM.CLUB.TITLE.CHG{% endtrans %}
-                                                    </md-tooltip>
-                                                </span>
-                                            </td>
-                                        </tr>
-                                    </table>
-                                </div>
-                            </div>
-                        </div>
-                        <h1 ng-show="!countries.length && dataReady">
-                            <span class="label">{{'FORM.LISTCLUBS.NOCLUB'|trans|upper}}</span>
-                        </h1>
+                                    <div ng-show="!countries.length && dataReady">
+                                        <h1 class="label">{{'FORM.LISTCLUBS.NOCLUB'|trans|upper}}</h1>
+                                    </div>
+                                </md-content>
+                            </md-tab>
+                            <md-tab label="{% trans %}FORM.LISTCLUBS.LEGEND_TEAMS{% endtrans %}">
+                                <md-content class="md-padding">
+                                    <div class="row">
+                                        <div class="col-sm-4" ng-repeat="category in team_categories | orderBy: ['gender', 'classification', '-age'] track by category.id">
+                                            <div class="panel panel-default">
+                                                <div class="panel-heading">
+                                                    <h3>{% trans from 'tournament' %}CATEGORY{% endtrans %} {{ '{{ category.name }}' }} - {{ '{{ category.classification_translated }}' }}</h3>
+                                                </div>
+                                                {# list clubs #}
+                                                <table class="table table-striped">
+                                                    <tr ng-repeat="team in category.teams">
+                                                        <td>
+                                                            <img src="{{ asset('bundles/icuppublicsite/images/flags/') }}{{ '{{ team.country.flag }}' }}"
+                                                                 alt="{{ '{{ team.country.name }}' }}"
+                                                                 title="{{ '{{ team.country.name }}' }}" ng-if="team.country.flag" class="flag">
+                                                            {{ '{{ team.name }}' }}
+                                                        </td>
+                                                    </tr>
+                                                </table>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div ng-show="!countries.length && dataReady">
+                                        <h1 class="label">{{'FORM.LISTCLUBS.NOCLUB'|trans|upper}}</h1>
+                                    </div>
+                                </md-content>
+                            </md-tab>
+                        </md-tabs>
                     </md-content>
                 </md-content>
             </section>
@@ -342,24 +371,10 @@
                         });
                         $scope.dataReady = true;
                     });
-                    $scope.selectedCategory = 0;
-                    $scope.selectCategory = function (id) {
-                        $scope.selectedCategory = id;
-                        $scope.category = $scope.categories.find(function (category) {
-                            return category.id == id;
-                        });
-                        getGroups();
-                    };
-                    $scope.groups = [];
-                    $scope.unassigned = [];
-                    function getGroups() {
-                        $scope.dataReady = false;
-                        $http.get(Routing.generate('_rest_list_groups_with_teams', {'categoryid': $scope.selectedCategory })).then(function (data) {
-                            $scope.groups = data.data.groups;
-                            $scope.unassigned = data.data.unassigned;
-                            $scope.dataReady = true;
-                        });
-                    }
+                    $scope.team_categories = [];
+                    $http.get(Routing.generate('_rest_list_enrolled_categories', { 'tournamentid': {{ tournament.id }} })).then(function(data) {
+                        $scope.team_categories = data.data;
+                    });
                 });
     </script>
 {% endblock %}

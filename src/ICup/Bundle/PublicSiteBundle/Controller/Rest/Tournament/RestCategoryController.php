@@ -2,7 +2,9 @@
 
 namespace ICup\Bundle\PublicSiteBundle\Controller\Rest\Tournament;
 
+use ICup\Bundle\PublicSiteBundle\Entity\Doctrine\Enrollment;
 use ICup\Bundle\PublicSiteBundle\Entity\Doctrine\Group;
+use ICup\Bundle\PublicSiteBundle\Entity\Doctrine\Team;
 use ICup\Bundle\PublicSiteBundle\Entity\Doctrine\Tournament;
 use ICup\Bundle\PublicSiteBundle\Entity\Doctrine\User;
 use ICup\Bundle\PublicSiteBundle\Entity\TeamInfo;
@@ -286,6 +288,53 @@ class RestCategoryController extends Controller
             );
         }
         return new JsonResponse(array('groups' => $groups, 'unassigned' => array('teams' => $teamsUnassigned)));
+    }
+
+    /**
+     * List all the categories identified by tournament id
+     * @Route("/list/enrolled/{tournamentid}", name="_rest_list_enrolled_categories", options={"expose"=true})
+     * @Method("GET")
+     * @param $tournamentid
+     * @return JsonResponse
+     */
+    public function restListEnrolled($tournamentid)
+    {
+        /* @var $utilService Util */
+        $utilService = $this->get('util');
+        /* @var $tournament Tournament */
+        try {
+            $tournament = $this->get('entity')->getTournamentById($tournamentid);
+        }
+        catch (ValidationException $e) {
+            return new JsonResponse(array('errors' => array($e->getMessage())), Response::HTTP_NOT_FOUND);
+        }
+        $categories = array();
+        foreach ($tournament->getCategories() as $category) {
+            /* @var $category Category */
+            $categories[$category->getId()] = array_merge($category->jsonSerialize(), array(
+                'classification_translated' =>
+                    $this->get('translator')->transChoice(
+                        'GENDER.'.$category->getGender().$category->getClassification(),
+                        $category->getAge(),
+                        array('%age%' => $category->getAge()),
+                        'tournament'),
+                'teams' => array()
+            ));
+        }
+        foreach ($this->get('logic')->listEnrolledByCategory($tournamentid) as $enrollment) {
+            /* @var $enrollment Enrollment */
+            $categories[$enrollment->getCategory()->getId()]['teams'][] = array(
+                'id' => $enrollment->getTeam()->getId(),
+                'name' => $enrollment->getTeam()->isVacant() ?
+                    $this->get('translator')->trans('VACANT_TEAM', array('%division%' => $enrollment->getTeam()->getDivision()), 'teamname') :
+                    $enrollment->getTeam()->getTeamName(),
+                'country' => array(
+                    'name' => $this->get('translator')->trans($enrollment->getTeam()->getClub()->getCountry(), array(), 'lang'),
+                    'flag' => $utilService->getFlag($enrollment->getTeam()->getClub()->getCountry())
+                )
+            );
+        }
+        return new JsonResponse(array_values($categories));
     }
 }
 

@@ -607,9 +607,10 @@ FORM:
       LOGIN: Ultimo accesso
     NOUSER: Aggiungi un nuovo editor
   LISTCLUBS:
-    TITLE: Amministrazione club
-    CAPTION: Lista dei club per tutti i tornei
+    TITLE: Enrolled clubs and teams
+    CAPTION: Show clubs and teams enrolled this tournaments
     LEGEND: Club ordinati per paese
+    LEGEND_TEAMS: Teams sorted by category
     NOCLUB: Aggiungi un club
     BUTTON:
       WIPE: Pulisci tutte le squadre

@@ -615,13 +615,14 @@ FORM:
       LOGIN: Last log in
     NOUSER: Add new editor
   LISTCLUBS:
-    TITLE: Club administration
-    CAPTION: List of clubs by all tournaments
+    TITLE: Enrolled clubs and teams
+    CAPTION: Show clubs and teams enrolled this tournaments
     LEGEND: Clubs sorted by country
+    LEGEND_TEAMS: Teams sorted by category
     NOCLUB: Add new club
     BUTTON:
       WIPE: Wipe all teams
-  CLUB: 
+  CLUB:
     DEFAULT: Please select...
     NONAME: The club must be given a name.
     NOCOUNTRY: The home of the club is mandatory.

@@ -258,11 +258,15 @@ class RestCategoryController extends Controller
      */
     public function restListTeamsByGroupAction($categoryid)
     {
+        /* @var $category Category */
+        try {
+            $category = $this->get('entity')->getCategoryById($categoryid);
+        }
+        catch (ValidationException $e) {
+            return new JsonResponse(array('errors' => array($e->getMessage())), Response::HTTP_NOT_FOUND);
+        }
         /* @var $utilService Util */
         $utilService = $this->get('util');
-        /* @var $category Category */
-        $category = $this->get('entity')->getCategoryById($categoryid);
-
         $groups = array();
         foreach ($category->getGroupsClassified(Group::$PRE) as $group) {
             $teams = array();
@@ -299,14 +303,18 @@ class RestCategoryController extends Controller
      */
     public function restListEnrolled($tournamentid)
     {
-        /* @var $utilService Util */
-        $utilService = $this->get('util');
         /* @var $tournament Tournament */
         try {
             $tournament = $this->get('entity')->getTournamentById($tournamentid);
         }
         catch (ValidationException $e) {
             return new JsonResponse(array('errors' => array($e->getMessage())), Response::HTTP_NOT_FOUND);
+        }
+        try {
+            $enrollments = $this->get('logic')->listEnrolledByCategory($tournamentid);
+        }
+        catch (RuntimeException $e) {
+            return new JsonResponse(array('errors' => array($e->getMessage())), Response::HTTP_INTERNAL_SERVER_ERROR);
         }
         $categories = array();
         foreach ($tournament->getCategories() as $category) {
@@ -321,8 +329,8 @@ class RestCategoryController extends Controller
                 'teams' => array()
             ));
         }
-        $enrollments = $this->get('logic')->listEnrolledByCategory($tournamentid);
-        $country_count = array();
+        /* @var $utilService Util */
+        $utilService = $this->get('util');
         foreach ($enrollments as $enrollment) {
             /* @var $enrollment Enrollment */
             if (!$enrollment->getTeam()->isVacant()) {

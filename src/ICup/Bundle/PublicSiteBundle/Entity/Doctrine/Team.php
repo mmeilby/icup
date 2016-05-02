@@ -152,9 +152,9 @@ class Team
      *
      * @return string
      */
-    public function getTeamName()
+    public function getTeamName($vacant_name = null)
     {
-        $teamname = $this->name;
+        $teamname = $this->isVacant() && $vacant_name ? $vacant_name : $this->name;
         if ($this->division != '') {
             $teamname.= ' "'.$this->division.'"';
         }

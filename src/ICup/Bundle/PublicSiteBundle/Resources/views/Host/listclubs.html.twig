@@ -142,14 +142,14 @@
                             <md-tab label="{% trans %}FORM.LISTCLUBS.LEGEND_TEAMS{% endtrans %}">
                                 <md-content class="md-padding">
                                     <div class="row">
-                                        <div class="col-sm-4" ng-repeat="category in team_categories | orderBy: ['gender', 'classification', '-age'] track by category.id">
+                                        <div class="col-md-6 col-lg-4" ng-repeat="category in team_categories | orderBy: ['gender', 'classification', '-age'] track by category.id">
                                             <div class="panel panel-default">
                                                 <div class="panel-heading">
-                                                    <h3>{% trans from 'tournament' %}CATEGORY{% endtrans %} {{ '{{ category.name }}' }} - {{ '{{ category.classification_translated }}' }}</h3>
+                                                    <h4>{% trans from 'tournament' %}CATEGORY{% endtrans %} {{ '{{ category.name }}' }} - {{ '{{ category.classification_translated }}' }}</h4>
                                                 </div>
                                                 {# list clubs #}
                                                 <table class="table table-striped">
-                                                    <tr ng-repeat="team in category.teams">
+                                                    <tr ng-repeat="team in category.teams | orderBy: ['index', 'country.name', 'name']">
                                                         <td>
                                                             <img src="{{ asset('bundles/icuppublicsite/images/flags/') }}{{ '{{ team.country.flag }}' }}"
                                                                  alt="{{ '{{ team.country.name }}' }}"

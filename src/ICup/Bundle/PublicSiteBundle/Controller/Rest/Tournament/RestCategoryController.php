@@ -321,18 +321,23 @@ class RestCategoryController extends Controller
                 'teams' => array()
             ));
         }
-        foreach ($this->get('logic')->listEnrolledByCategory($tournamentid) as $enrollment) {
+        $enrollments = $this->get('logic')->listEnrolledByCategory($tournamentid);
+        $country_count = array();
+        foreach ($enrollments as $enrollment) {
             /* @var $enrollment Enrollment */
-            $categories[$enrollment->getCategory()->getId()]['teams'][] = array(
-                'id' => $enrollment->getTeam()->getId(),
-                'name' => $enrollment->getTeam()->isVacant() ?
-                    $this->get('translator')->trans('VACANT_TEAM', array('%division%' => $enrollment->getTeam()->getDivision()), 'teamname') :
-                    $enrollment->getTeam()->getTeamName(),
-                'country' => array(
-                    'name' => $this->get('translator')->trans($enrollment->getTeam()->getClub()->getCountry(), array(), 'lang'),
-                    'flag' => $utilService->getFlag($enrollment->getTeam()->getClub()->getCountry())
-                )
-            );
+            if (!$enrollment->getTeam()->isVacant()) {
+                $categories[$enrollment->getCategory()->getId()]['teams'][] = array(
+                    'id' => $enrollment->getTeam()->getId(),
+                    'name' => $enrollment->getTeam()->getTeamName($this->get('translator')->trans('VACANT_TEAM', array(), 'teamname')),
+                    'country' => array(
+                        'name' => $this->get('translator')->trans($enrollment->getTeam()->getClub()->getCountry(), array(), 'lang'),
+                        'flag' => $utilService->getFlag($enrollment->getTeam()->getClub()->getCountry())
+                    ),
+                    'index' => count(array_filter($enrollments, function (Enrollment $e) use ($enrollment) {
+                        return $e->getCategory()->getId() == $enrollment->getCategory()->getId() && $e->getTeam()->getClub()->getCountry() == $enrollment->getTeam()->getClub()->getCountry();
+                    }))
+                );
+            }
         }
         return new JsonResponse(array_values($categories));
     }

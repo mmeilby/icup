@@ -34,6 +34,11 @@ FORM:
         DESCRIPTION: >
                      Læs om det der er værd at vide om stævnet. Hvad koster det? Hvormange
                      kampe spiller man? Hvad kan du pakke? Hvor bor og spiser man i Teramo?
+    BLOCK6:
+        TITLE: Næste stævne
+        DESCRIPTION: >
+                     Det næste stævne er allerede planlagt. Følg her hvilke hold der har tilmeldt
+                     sig. Når puljerne er lagt kan du også se dem her.
     SENDMAIL: Få mere information - udfyld og send
     NAME: Dit navn
     CLUB: Angiv hvilken klub du henvender dig på vegne af

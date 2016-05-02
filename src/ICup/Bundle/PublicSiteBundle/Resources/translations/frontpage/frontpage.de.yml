@@ -33,6 +33,12 @@ FORM:
         DESCRIPTION: >
                      Hier sind alle interesanten Informationen, die man kennen sollte.
                      Nützlich für allen Gelegenheiten bei einer Reise nach Teramo.
+    BLOCK6:
+        TITLE: Das nächste Turnier
+        DESCRIPTION: >
+                     Das nächste Turnier ist geplant. Verschaffen Sie sich einen Überblick über dem
+                     Mannschaften eingeschrieben, und wenn die Gruppen geplant sind, können Sie diese hier
+                     überprüfen.
     SENDMAIL: Für weitere Informationen das Formblatt ausfüllen und abschicken
     NAME: Name
     CLUB: Name des Vereins, den Du vertrittst oder für den Du spielst

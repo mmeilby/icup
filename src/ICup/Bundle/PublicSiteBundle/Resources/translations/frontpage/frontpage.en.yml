@@ -33,6 +33,11 @@ FORM:
         DESCRIPTION: >
                      Here you will find all sorts of interesting information - good to know.
                      Handy in every occasion when you travel to Teramo.
+    BLOCK6:
+        TITLE: The next tournament
+        DESCRIPTION: >
+                     The next tournament has been scheduled. Get an overview of the teams enrolled,
+                     and when the groups are planned you can check them here.
     SENDMAIL: Receive more information - complete the form and submit
     NAME: Your name
     CLUB: Type the name of the club you represent or play for

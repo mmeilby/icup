@@ -1,6 +1,7 @@
 <?php
 namespace ICup\Bundle\PublicSiteBundle\Controller\Tournament;
 
+use ICup\Bundle\PublicSiteBundle\Entity\Doctrine\Club;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
@@ -64,9 +65,12 @@ class TournamentController extends Controller
         $clubs = $this->get('logic')->listClubsByTournament($tournament->getId());
         $teamList = array();
         foreach ($clubs as $club) {
-            $country = $club->getCountry();
-            $name = $club->getName();
-            $teamList[$country][$club->getId()] = $name;
+            /* @var $club Club */
+            if (!$club->isVacant()) {
+                $country = $club->getCountry();
+                $name = $club->getName();
+                $teamList[$country][$club->getId()] = $name;
+            }
         }
 
         $teamcount = count($teamList, COUNT_RECURSIVE)/3;

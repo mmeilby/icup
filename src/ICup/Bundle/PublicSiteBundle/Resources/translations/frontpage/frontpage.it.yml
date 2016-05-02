@@ -34,6 +34,11 @@ FORM:
         DESCRIPTION: >
                      Qui potrai trovare tutte le informazioni necessarie.
                      Organizza il tuo viaggio a Teramo.
+    BLOCK6:
+        TITLE: Il prossimo torneo
+        DESCRIPTION: >
+                     Il torneo successivo è stata programmata. Ecco una panoramica delle squadre iscritte,
+                     e quando i gruppi sono in programma è possibile controllare qui.
     SENDMAIL: Ricevi maggiori informazioni - compila il modulo e invialo
     NAME: Nome
     CLUB: Scrivi il nome del tuo club

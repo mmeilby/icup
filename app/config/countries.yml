@@ -247,6 +247,7 @@ twig:
             VUT: { name: 'Vanuatu', flag: 'vu.png' }
             WLF: { name: 'Wallis og Futuna', flag: 'wf.png' }
             WSM: { name: 'Samoa', flag: 'ws.png' }
+            XKX: { name: 'Kosovo', flag: 'xk.png' }
             YEM: { name: 'Yemen', flag: 'ye.png' }
             ZAF: { name: 'Sydafrika', flag: 'za.png' }
             ZMB: { name: 'Zambia', flag: 'zm.png' }

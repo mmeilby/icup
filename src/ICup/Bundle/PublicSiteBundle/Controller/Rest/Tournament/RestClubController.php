@@ -86,20 +86,8 @@ class RestClubController extends Controller
         catch (ValidationException $e) {
             return new JsonResponse(array('errors' => array($e->getMessage())), Response::HTTP_NOT_FOUND);
         }
-        try {
-            /* @var $utilService Util */
-            $utilService = $this->get('util');
-            /* @var $user User */
-            $user = $utilService->getCurrentUser();
-            $host = $tournament->getHost();
-            $utilService->validateEditorAdminUser($user, $host);
-        }
-        catch (ValidationException $e) {
-            return new JsonResponse(array('errors' => array($e->getMessage())), Response::HTTP_FORBIDDEN);
-        }
-        catch (RuntimeException $e) {
-            return new JsonResponse(array('errors' => array($e->getMessage())), Response::HTTP_FORBIDDEN);
-        }
+        /* @var $utilService Util */
+        $utilService = $this->get('util');
         $list = $this->get('logic')->listEnrolled($tournament->getId());
         $translatedList = array();
         /* @var $club Club */

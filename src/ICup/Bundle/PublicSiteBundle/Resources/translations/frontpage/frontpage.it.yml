@@ -37,8 +37,7 @@ FORM:
     BLOCK6:
         TITLE: Il prossimo torneo
         DESCRIPTION: >
-                     Il torneo successivo è stata programmata. Ecco una panoramica delle squadre iscritte,
-                     e quando i gruppi sono in programma è possibile controllare qui.
+                     Visualizza l’elenco dei club inscritti.
     SENDMAIL: Ricevi maggiori informazioni - compila il modulo e invialo
     NAME: Nome
     CLUB: Scrivi il nome del tuo club

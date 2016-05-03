@@ -5,9 +5,11 @@ TEAM: Team
 FIELD: Venue
 CATEGORIES: Categories
 PLAYGROUNDS: Venues
+TEAMS: Teams
 CLUBS: Participating clubs
 TOWNANDNO: Town and field
-CLUBSBYCOUNTRY: Ordered by country
+CLUBSBYCOUNTRY: Sorted by country
+TEAMSBYCATEGORY: Sorted by category
 TEAMSBYCLUB: Teams enrolled by the club
 WINNERS: The champions
 WINNING_COUNTRIES: Medals by country

@@ -62,34 +62,11 @@ class TournamentController extends Controller
         if ($tournament == null) {
             return $this->redirect($this->generateUrl('_tournament_select'));
         }
-        $clubs = $this->get('logic')->listClubsByTournament($tournament->getId());
-        $teamList = array();
-        foreach ($clubs as $club) {
-            /* @var $club Club */
-            if (!$club->isVacant()) {
-                $country = $club->getCountry();
-                $name = $club->getName();
-                $teamList[$country][$club->getId()] = $name;
-            }
-        }
-
-        $teamcount = count($teamList, COUNT_RECURSIVE)/3;
-        $teamColumns = array();
-        $ccount = 0;
-        $column = 0;
-        foreach ($teamList as $country => $clubs) {
-            $teamColumns[$column][] = array($country => $clubs);
-            $ccount += count($clubs) + 1;
-            if ($ccount > $teamcount && $column < 2) {
-                $column++;
-                $ccount = 0;
-            }
-        }
-        return array('tournament' => $tournament, 'teams' => $teamColumns);
+        return array('tournament' => $tournament);
     }
     
     /**
-     * @Route("/tmnt/tms/{tournament}/{clubId}", name="_tournament_teams")
+     * @Route("/tmnt/tms/{tournament}/{clubId}", name="_tournament_teams", options={"expose"=true})
      * @Template("ICupPublicSiteBundle:Tournament:teams.html.twig")
      */
     public function listTeamsAction($tournament, $clubId)

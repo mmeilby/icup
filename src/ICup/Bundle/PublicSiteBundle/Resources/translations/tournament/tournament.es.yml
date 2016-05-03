@@ -5,10 +5,12 @@ TEAM: El equipo
 FIELD: Campo de juegos 
 CATEGORIES: Categorías
 PLAYGROUNDS: Campos de juegos
-CLUBS: Los clubes participantes 
+TEAMS: Equipos
+CLUBS: Los clubes participantes
 TOWNANDNO: Ciudad y campo 
 CLUBSBYCOUNTRY: Pedido por país 
-TEAMSBYCLUB: Equipos inscritos por el club 
+TEAMSBYCATEGORY: Pedido por categorías
+TEAMSBYCLUB: Equipos inscritos por el club
 WINNERS: Los campeones 
 WINNING_COUNTRIES: Medallas por país 
 WINNING_CLUBS: Medallistas por el club 

@@ -5,10 +5,12 @@ TEAM: Mannschaft
 FIELD: Spielfeld
 CATEGORIES: Kategorien 
 PLAYGROUNDS: Spielfelder 
-CLUBS: Teilnehmende Vereine 
+TEAMS: Mannschaften
+CLUBS: Teilnehmende Vereine
 TOWNANDNO: Stadt und Postleitzahl 
 CLUBSBYCOUNTRY: Vereine nach Ländern 
-TEAMSBYCLUB: Mannschaften des Vereins 
+TEAMSBYCATEGORY: Vereine nach Kategorien
+TEAMSBYCLUB: Mannschaften des Vereins
 WINNERS: Sieger 
 WINNING_COUNTRIES: Sieger nach Ländern 
 WINNING_CLUBS: Sieger nach Vereinen

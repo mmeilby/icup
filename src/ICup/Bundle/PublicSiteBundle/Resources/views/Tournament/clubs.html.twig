@@ -8,50 +8,121 @@
 {% endblock %}
 
 {% block body %}
-<p class="lead">
-    {% trans %}CLUBS{% endtrans %}
-</p>
-{% if teams|length > 0 %}
-<div class="row">
-{% for column in teams %}
-    <div class="col-sm-4">
-    {% for countrylist in column %}
-    {% for country,teamlist in countrylist %}
-        <div class="panel panel-default">
-            <div class="panel-heading">
-                <img src="{{ asset(['bundles/icuppublicsite/images/flags/',countries[country].flag]|join) }}"
-                     alt="{{ country|trans({},'lang') }}"
-                     title="{{ country|trans({},'lang') }}"
-                     class="flag"
-                >
-                <b>{{ country|trans({},'lang') }}</b>
-            </div>
-            <div class="panel-body">
-                <table>
-        {% for id,team in teamlist %}
-                    <tr>
-                        <td>
-                            <a href="{{ path('_tournament_teams', { 'tournament': tournament.key, 'clubId': id }) }}">
-                                {{ team }}
-                            </a>
-                        </td>
-                    </tr>
-        {% endfor %}
-                </table>
-            </div>
-        </div>
-    {% endfor %}
-    {% endfor %}
+<div ng-app="listClubsModule">
+    <div ng-controller="listClubsController" ng-cloak>
+        <section layout="column">
+            <md-content flex>
+                <md-content flex>
+                    <p class="lead">
+                        {% trans %}CLUBS{% endtrans %}
+                    </p>
+                </md-content>
+
+                <md-content flex>
+                    <md-tabs md-dynamic-height md-border-bottom>
+                        <md-tab label="{% trans %}CLUBSBYCOUNTRY{% endtrans %}">
+                            <md-content class="md-padding">
+                                <div class="row" ng-show="countries.length && dataReady">
+                                    {# list countries #}
+                                    <div class="col-md-6 col-lg-4" ng-repeat="country in countries">
+                                        <div class="panel panel-default">
+                                            <div class="panel-heading">
+                                                <img src="{{ asset('bundles/icuppublicsite/images/flags/') }}{{ '{{ country.flag }}' }}"
+                                                     alt="{{ '{{ country.name }}' }}"
+                                                     title="{{ '{{ country.name }}' }}" ng-if="country.flag" class="flag">
+                                                <b>{{ '{{ country.name }}' }}</b>
+                                            </div>
+                                            {# list clubs #}
+                                            <table class="table table-striped">
+                                                <tr ng-repeat="club in country.clubs">
+                                                    <td>
+                                                        <span ng-click="showClub(club)">{{ '{{ club.name }}' }}</span>
+                                                    </td>
+                                                    <td class="narrow-col">
+                                                        <span class="label label-default" ng-show="club.enrolled">
+                                                            {{ '{{ club.enrolled }}' }}&nbsp;
+                                                            <span ng-show="club.enrolled==1">{{ 'TEAM'|trans({},'tournament')|upper }}</span>
+                                                            <span ng-show="club.enrolled!=1">{{ 'TEAMS'|trans({},'tournament')|upper }}</span>
+                                                        </span>
+
+                                                    </td>
+                                                </tr>
+                                            </table>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div ng-show="!countries.length && dataReady">
+                                    <h1 class="label">{% trans %}TOURNAMENTNOTREADY{% endtrans %}</h1>
+                                </div>
+                            </md-content>
+                        </md-tab>
+                        <md-tab label="{% trans %}TEAMSBYCATEGORY{% endtrans %}">
+                            <md-content class="md-padding">
+                                <div class="row">
+                                    <div class="col-md-6 col-lg-4" ng-repeat="category in team_categories | orderBy: ['gender', 'classification', '-age'] track by category.id">
+                                        <div class="panel panel-default">
+                                            <div class="panel-heading">
+                                                <h4>{% trans from 'tournament' %}CATEGORY{% endtrans %} {{ '{{ category.name }}' }} - {{ '{{ category.classification_translated }}' }}</h4>
+                                            </div>
+                                            {# list clubs #}
+                                            <table class="table table-striped">
+                                                <tr ng-repeat="team in category.teams | orderBy: ['index', 'country.name', 'name']">
+                                                    <td>
+                                                        <img src="{{ asset('bundles/icuppublicsite/images/flags/') }}{{ '{{ team.country.flag }}' }}"
+                                                             alt="{{ '{{ team.country.name }}' }}"
+                                                             title="{{ '{{ team.country.name }}' }}" ng-if="team.country.flag" class="flag">
+                                                        {{ '{{ team.name }}' }}
+                                                    </td>
+                                                </tr>
+                                            </table>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div ng-show="!countries.length && dataReady">
+                                    <h1 class="label">{% trans %}TOURNAMENTNOTREADY{% endtrans %}</h1>
+                                </div>
+                            </md-content>
+                        </md-tab>
+                    </md-tabs>
+                </md-content>
+            </md-content>
+        </section>
     </div>
-{% endfor %}
 </div>
-{% else %}
-<div class="panel panel-warning">
-    <div class="panel-heading">
-        <b>
-            {% trans %}TOURNAMENTNOTREADY{% endtrans %}
-        </b>
-    </div>
-</div>
-{% endif %}
+{% endblock %}
+
+{% block javascripts %}
+    <script type="text/javascript">
+        angular.module('listClubsModule', ['ngMaterial', 'ngMessages'])
+                .controller('listClubsController', function($scope, $http, $window) {
+                    $scope.showClub = function (club) {
+                        window.location.href = Routing.generate('_tournament_teams', { 'tournament': '{{ tournament.key }}', 'clubId': club.id });
+                    };
+                    $scope.dataReady = false;
+                    $scope.countries = [];
+                    $http.get(Routing.generate('_rest_list_clubs', { 'tournamentid': {{ tournament.id }} })).then(function(data) {
+                        angular.forEach(data.data, function (club) {
+                            var country = $scope.countries.find(function (country) {
+                                return country.country_code == club.country_code;
+                            });
+                            if (country) {
+                                country.clubs.push(club);
+                            }
+                            else {
+                                $scope.countries.push({
+                                    'name': club.country,
+                                    'country_code': club.country_code,
+                                    'flag': club.flag,
+                                    'clubs': [club]
+                                });
+                            }
+                        });
+                        $scope.dataReady = true;
+                    });
+                    $scope.team_categories = [];
+                    $http.get(Routing.generate('_rest_list_enrolled_categories', { 'tournamentid': {{ tournament.id }} })).then(function(data) {
+                        $scope.team_categories = data.data;
+                    });
+                });
+    </script>
 {% endblock %}

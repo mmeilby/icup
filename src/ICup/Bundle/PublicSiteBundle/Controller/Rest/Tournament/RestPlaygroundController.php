@@ -43,7 +43,7 @@ class RestPlaygroundController extends Controller
         catch (ValidationException $e) {
             return new JsonResponse(array('errors' => array($e->getMessage())), Response::HTTP_NOT_FOUND);
         }
-        return new JsonResponse($tournament->getPlaygrounds()->toArray());
+        return new JsonResponse($tournament->getPlaygrounds());
     }
 
     /**

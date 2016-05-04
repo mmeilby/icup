@@ -299,7 +299,7 @@ class Tournament
         usort($playgrounds, function (Playground $p1, Playground $p2) {
            return $p1->getNo() > $p2->getNo() ? 1 : -1;
         });
-        return new $playgrounds;
+        return $playgrounds;
     }
 
     /**

@@ -453,17 +453,6 @@ class BusinessLogic
         return $qb->getOneOrNullResult();
     }
 
-    public function listPlaygroundsByTournament($tournamentid) {
-        $qb = $this->em->createQuery(
-                "select p ".
-                "from ".$this->entity->getRepositoryPath('Playground')." p, ".
-                        $this->entity->getRepositoryPath('Site')." s ".
-                "where s.tournament=:tournament and p.site=s.id ".
-                "order by p.no asc");
-        $qb->setParameter('tournament', $tournamentid);
-        return $qb->getResult();
-    }
-    
     public function getTournamentByKey($key) {
         return $this->entity->getTournamentRepo()->findOneBy(array('key' => $key));
     }

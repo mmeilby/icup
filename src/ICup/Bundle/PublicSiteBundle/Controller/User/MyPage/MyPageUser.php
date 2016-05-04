@@ -3,6 +3,7 @@ namespace ICup\Bundle\PublicSiteBundle\Controller\User\MyPage;
 
 use ICup\Bundle\PublicSiteBundle\Entity\Doctrine\Club;
 use ICup\Bundle\PublicSiteBundle\Entity\Doctrine\Host;
+use ICup\Bundle\PublicSiteBundle\Entity\Doctrine\Team;
 use ICup\Bundle\PublicSiteBundle\Entity\Doctrine\Tournament;
 use ICup\Bundle\PublicSiteBundle\Entity\Doctrine\User;
 use ICup\Bundle\PublicSiteBundle\Exceptions\RedirectException;
@@ -85,17 +86,19 @@ class MyPageUser implements MyPageInterface
                 foreach ($categories as $category) {
                     $categoryList[$category->getId()] = $category;
                 }
-                $teams = $this->container->get('tmnt')->listTeamsByClub($tournament->getId(), $club->getId());
+                /* @var $club Club */
+                $teams = $club->getTeams();
                 $teamList = array();
                 foreach ($teams as $team) {
-                    $name = $team['name'];
-                    if ($team['division'] != '') {
-                        $name.= ' "'.$team['division'].'"';
+                    /* @var $team Team */
+                    if ($team->getCategory()->getTournament()->getId() == $tournament->getId()) {
+                        $teamList[$team->getCategory()->getId()][] = array(
+                            'id' => $team->getId(),
+                            'name' => $team->getTeamName(),
+                            'group' => $team->getPreliminaryGroup()->getName()
+                        );
                     }
-                    $team['name'] = $name;
-                    $teamList[$team['catid']][$team['id']] = $team;
                 }
-
                 return array('teams' => $teamList, 'categories' => $categoryList);
             }
         }

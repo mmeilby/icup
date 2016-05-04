@@ -2,6 +2,9 @@
 namespace ICup\Bundle\PublicSiteBundle\Controller\Tournament;
 
 use ICup\Bundle\PublicSiteBundle\Entity\Doctrine\Club;
+use ICup\Bundle\PublicSiteBundle\Entity\Doctrine\Playground;
+use ICup\Bundle\PublicSiteBundle\Entity\Doctrine\Team;
+use ICup\Bundle\PublicSiteBundle\Entity\Doctrine\Tournament;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
@@ -15,14 +18,14 @@ class TournamentController extends Controller
     public function listCategoriesAction($tournament)
     {
         $this->get('util')->setTournamentKey($tournament);
+        /* @var $tournament Tournament */
         $tournament = $this->get('util')->getTournament();
         if ($tournament == null) {
             return $this->redirect($this->generateUrl('_tournament_select'));
         }
-        $categories = $tournament->getCategories();
         $classMap = array();
         $categoryMap = array();
-        foreach ($categories as $category) {
+        foreach ($tournament->getCategories() as $category) {
             $classification = $category->getClassification() . $category->getAge();
             $classMap[$classification] = $classification;
             $cls = $category->getGender() . $classification;
@@ -38,15 +41,15 @@ class TournamentController extends Controller
     public function listPlaygroundsAction($tournament)
     {
         $this->get('util')->setTournamentKey($tournament);
+        /* @var $tournament Tournament */
         $tournament = $this->get('util')->getTournament();
         if ($tournament == null) {
             return $this->redirect($this->generateUrl('_tournament_select'));
         }
-        $playgrounds = $this->get('tmnt')->listPlaygroundsByTournament($tournament->getId());
         $playgroundList = array();
-        foreach ($playgrounds as $playground) {
-            $site = $playground['site'];
-            $playgroundList[$site][$playground['id']] = $playground['name'];
+        foreach ($tournament->getPlaygrounds() as $playground) {
+            /* @var $playground Playground */
+            $playgroundList[$playground->getSite()->getName()][$playground->getId()] = $playground->getName();
         }
         return array('tournament' => $tournament, 'playgrounds' => $playgroundList);
     }
@@ -72,6 +75,7 @@ class TournamentController extends Controller
     public function listTeamsAction($tournament, $clubId)
     {
         $this->get('util')->setTournamentKey($tournament);
+        /* @var $tournament Tournament */
         $tournament = $this->get('util')->getTournament();
         if ($tournament == null) {
             return $this->redirect($this->generateUrl('_tournament_select'));
@@ -81,16 +85,19 @@ class TournamentController extends Controller
         foreach ($categories as $category) {
             $categoryList[$category->getId()] = $category;
         }
+        /* @var $club Club */
         $club = $this->get('entity')->getClubById($clubId);
-        $teams = $this->get('tmnt')->listTeamsByClub($tournament->getId(), $clubId);
+        $teams = $club->getTeams();
         $teamList = array();
         foreach ($teams as $team) {
-            $name = $team['name'];
-            if ($team['division'] != '') {
-                $name.= ' "'.$team['division'].'"';
+            /* @var $team Team */
+            if ($team->getCategory()->getTournament()->getId() == $tournament->getId()) {
+                $teamList[$team->getCategory()->getId()][] = array(
+                    'id' => $team->getId(),
+                    'name' => $team->getTeamName(),
+                    'group' => $team->getPreliminaryGroup()->getName()
+                );
             }
-            $team['name'] = $name;
-            $teamList[$team['catid']][$team['id']] = $team;
         }
 
         return array('tournament' => $tournament, 'club' => $club, 'teams' => $teamList, 'categories' => $categoryList);

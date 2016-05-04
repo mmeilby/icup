@@ -2,6 +2,7 @@
 namespace ICup\Bundle\PublicSiteBundle\Controller\Admin\Overview;
 
 use ICup\Bundle\PublicSiteBundle\Entity\Doctrine\Group;
+use ICup\Bundle\PublicSiteBundle\Entity\Doctrine\Playground;
 use ICup\Bundle\PublicSiteBundle\Entity\Doctrine\Tournament;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
@@ -68,7 +69,7 @@ class ListMatchController extends Controller
         $utilService->validateEditorAdminUser($user, $host);
 
         $date = $this->getSelectedDate($tournament->getId(), $request);
-        $playgroundid = $this->getSelectedPlayground($tournament->getId(), $request);
+        $playgroundid = $this->getSelectedPlayground($tournament, $request);
 
         return $this->redirect($this->generateUrl('_edit_match_score',
                 array('playgroundid' => $playgroundid, 'date' => date_format($date, "d-m-Y"))));
@@ -97,13 +98,14 @@ class ListMatchController extends Controller
         return $date;
     }
     
-    private function getSelectedPlayground($tournamentid, Request $request) {
+    private function getSelectedPlayground(Tournament $tournament, Request $request) {
         /* @var $request Request */
         $session = $request->getSession();
         $playgroundid = $session->get('icup.matchedit.playground');
-        $playgrounds = $this->get('logic')->listPlaygroundsByTournament($tournamentid);
+        $playgrounds = $tournament->getPlaygrounds();
         if ($playgroundid != null) {
             foreach ($playgrounds as $playground) {
+                /* @var $playground Playground */
                 if ($playground->getId() == $playgroundid) {
                     return $playground->getId();
                 }
@@ -113,7 +115,7 @@ class ListMatchController extends Controller
             $playgroundid = $playgrounds[0]->getId();
         }
         else {
-            throw new ValidationException("NOTOURNAMENTDATA", "Match playground missing: tournamentid=".$tournamentid);
+            throw new ValidationException("NOTOURNAMENTDATA", "Match playground missing: tournamentid=".$tournament->getId());
         }
         $session->set('icup.matchedit.playground', $playgroundid);
         return $playgroundid;

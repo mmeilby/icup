@@ -25,7 +25,7 @@
     </div>
     <div class="panel-body">
         <div class="row">
-            {% for catid,category in teams %}
+            {% for catid,enrolled in teams %}
             <div class="col-sm-4">
                 <p class="lead">
                     <a href="{{ path('_showcategory', { 'categoryid': categories[catid].id }) }}">
@@ -36,9 +36,9 @@
                         categories[catid].classification]|join|transchoice(categories[catid].age, { '%age%': categories[catid].age },'tournament') }}
                 </p>
                 <div class="list-group">
-                {% for team in category %}
+                {% for team in enrolled %}
                     <a class="list-group-item" href="{{ path('_showteam_all', { 'teamid': team.id }) }}">
-                        <h4 class="list-group-item-heading">{% trans %}GROUP{% endtrans %} {{ team.grp }}</h4>
+                        <h4 class="list-group-item-heading">{% trans %}GROUP{% endtrans %} {{ team.group }}</h4>
                         <p class="list-group-item-text">{{ team.name }}</p>
                     </a>
                 {% endfor %}

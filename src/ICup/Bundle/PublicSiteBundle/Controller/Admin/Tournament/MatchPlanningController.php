@@ -493,9 +493,9 @@ class MatchPlanningController extends Controller
                     array('%age%' => $category->getAge()),
                     'tournament');
         }
-        $playgroundList = $this->get('logic')->listPlaygroundsByTournament($tournament->getId());
         $playgrounds = array();
-        foreach ($playgroundList as $playground) {
+        foreach ($tournament->getPlaygrounds() as $playground) {
+            /* @var $playground Playground */
             $playgrounds[$playground->getId()] = $playground->getName();
         }
 

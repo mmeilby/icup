@@ -31,11 +31,9 @@ class ListSiteController extends Controller
         $host = $tournament->getHost();
         $utilService->validateEditorAdminUser($user, $host);
         $sites = $tournament->getSites();
-        $playgrounds = $this->get('logic')->listPlaygroundsByTournament($tournamentid);
-
         $siteList = array();
-        /* @var $playground Playground */
-        foreach ($playgrounds as $playground) {
+        foreach ($tournament->getPlaygrounds() as $playground) {
+            /* @var $playground Playground */
             $siteList[$playground->getSite()->getId()][] = $playground;
         }
 

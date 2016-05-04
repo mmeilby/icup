@@ -166,18 +166,6 @@ class TournamentSupport
         return TournamentSupport::$TMNT_ANNOUNCE;
     }
 
-    public function listPlaygroundsByTournament($tournamentid) {
-        $qb = $this->em->createQuery(
-                "select p.id,p.name,s.name as site ".
-                "from ".$this->entity->getRepositoryPath('Playground')." p, ".
-                        $this->entity->getRepositoryPath('Site')." s ".
-                "where s.tournament=:tournament and ".
-                        "p.site=s.id ".
-                "order by p.no asc");
-        $qb->setParameter('tournament', $tournamentid);
-        return $qb->getResult();
-    }
-
     public function listNewsByTournament($tournamentid) {
         $qb = $this->em->createQuery(
             "select n.id as nid,n.date,n.newstype,n.newsno,n.language,n.title,n.context,".
@@ -210,25 +198,6 @@ class TournamentSupport
             "n.newsno=:newsno");
         $qb->setParameter('tournament', $tournamentid);
         $qb->setParameter('newsno', $newsno);
-        return $qb->getResult();
-    }
-
-    public function listTeamsByClub($tournamentid, $clubid) {
-        $qb = $this->em->createQuery(
-                "select t.id,t.name,t.division,c.id as catid,c.name as category,c.classification,c.age,c.gender,g.id as groupid,g.name as grp ".
-                "from ".$this->entity->getRepositoryPath('Team')." t, ".
-                        $this->entity->getRepositoryPath('GroupOrder')." o, ".
-                        $this->entity->getRepositoryPath('Group')." g, ".
-                        $this->entity->getRepositoryPath('Category')." c ".
-                "where t.club=:club and ".
-                        "o.team=t.id and ".
-                        "o.group=g.id and ".
-                        "g.classification=0 and ".
-                        "g.category=c.id and ".
-                        "c.tournament=:tournament ".
-                "order by c.gender asc, c.classification desc, c.age desc, t.division asc");
-        $qb->setParameter('club', $clubid);
-        $qb->setParameter('tournament', $tournamentid);
         return $qb->getResult();
     }
 

@@ -48,7 +48,7 @@ class MatchController extends Controller
 
         $matchForm = new MatchForm();
         $matchForm->setGroup($group);
-        $form = $this->makeMatchForm($matchForm, $tournament->getId(), 'add');
+        $form = $this->makeMatchForm($matchForm, $tournament, 'add');
         $form->handleRequest($request);
         if ($form->get('cancel')->isClicked()) {
             return $this->redirect($returnUrl);
@@ -95,7 +95,7 @@ class MatchController extends Controller
         $utilService->validateEditorAdminUser($user, $host);
 
         $matchForm = $this->copyMatchForm($match);
-        $form = $this->makeMatchForm($matchForm, $tournament->getId(), 'chg');
+        $form = $this->makeMatchForm($matchForm, $tournament, 'chg');
         $form->handleRequest($request);
         if ($form->get('cancel')->isClicked()) {
             return $this->redirect($returnUrl);
@@ -145,7 +145,7 @@ class MatchController extends Controller
         $utilService->validateEditorAdminUser($user, $host);
 
         $matchForm = $this->copyMatchForm($match);
-        $form = $this->makeMatchForm($matchForm, $tournament->getId(), 'del');
+        $form = $this->makeMatchForm($matchForm, $tournament, 'del');
         $form->handleRequest($request);
         if ($form->get('cancel')->isClicked()) {
             return $this->redirect($returnUrl);
@@ -213,11 +213,10 @@ class MatchController extends Controller
         return $matchForm;
     }
 
-    private function makeMatchForm(MatchForm $matchForm, $tournamentid, $action) {
-        $playgrounds = $this->get('logic')->listPlaygroundsByTournament($tournamentid);
+    private function makeMatchForm(MatchForm $matchForm, Tournament $tournament, $action) {
         $playgroundnames = array();
-        /* @var $playground Playground */
-        foreach ($playgrounds as $playground) {
+        foreach ($tournament->getPlaygrounds() as $playground) {
+            /* @var $playground Playground */
             $playgroundnames[$playground->getId()] = $playground->getName();
         }
 

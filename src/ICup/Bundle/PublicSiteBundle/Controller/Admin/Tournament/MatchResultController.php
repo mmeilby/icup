@@ -45,16 +45,16 @@ class MatchResultController extends Controller
             
         $matchList = $this->get('match')->listMatchesByPlaygroundDate($playgroundid, $matchDate);
 
-        $playgrounds = $this->get('logic')->listPlaygroundsByTournament($tournament->getId());
-        $playgroundsList = array();
-        foreach ($playgrounds as $playground) {
-            $playgroundsList[$playground->getId()] = $playground;
+        $playgroundList = array();
+        foreach ($tournament->getPlaygrounds() as $playground) {
+            /* @var $playground Playground */
+            $playgroundList[$playground->getId()] = $playground;
         }
 
         return array('host' => $host,
                      'tournament' => $tournament,
-                     'playgrounds' => $playgroundsList,
-                     'playground' => $playgroundsList[$playgroundid],
+                     'playgrounds' => $playgroundList,
+                     'playground' => $playgroundList[$playgroundid],
                      'dates' => $this->get('match')->listMatchCalendar($tournament->getId()),
                      'matchdate' => $matchDate,
                      'matchlist' => $matchList

@@ -91,11 +91,13 @@ class TournamentController extends Controller
         $teamList = array();
         foreach ($teams as $team) {
             /* @var $team Team */
-            if ($team->getCategory()->getTournament()->getId() == $tournament->getId()) {
-                $teamList[$team->getCategory()->getId()][] = array(
+            $category = $team->getCategory();
+            if ($category->getTournament()->getId() == $tournament->getId()) {
+                $group = $team->getPreliminaryGroup();
+                $teamList[$category->getId()][] = array(
                     'id' => $team->getId(),
                     'name' => $team->getTeamName(),
-                    'group' => $team->getPreliminaryGroup()->getName()
+                    'group' => $group ? $group->getName() : null
                 );
             }
         }

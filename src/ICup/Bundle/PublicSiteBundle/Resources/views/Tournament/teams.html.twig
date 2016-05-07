@@ -37,10 +37,17 @@
                 </p>
                 <div class="list-group">
                 {% for team in enrolled %}
+                {% if team.group %}
                     <a class="list-group-item" href="{{ path('_showteam_all', { 'teamid': team.id }) }}">
                         <h4 class="list-group-item-heading">{% trans %}GROUP{% endtrans %} {{ team.group }}</h4>
                         <p class="list-group-item-text">{{ team.name }}</p>
                     </a>
+                {% else %}
+                    <div class="list-group-item">
+                        <h4 class="list-group-item-heading">{% trans %}PRELIMINARY{% endtrans %}</h4>
+                        <p class="list-group-item-text">{{ team.name }}</p>
+                    </div>
+                {% endif %}
                 {% endfor %}
                 </div>
             </div>

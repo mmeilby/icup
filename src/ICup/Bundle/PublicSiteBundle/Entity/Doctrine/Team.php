@@ -287,13 +287,10 @@ class Team
      * @return Category
      */
     public function getCategory() {
-        if ($this->enrollments->count() > 1) {
-            throw new ValidationException("INVALIDENROLLMENT", "A team can not be enrolled for more than one category - team id=".$this->id);
-        }
         if ($this->enrollments->count() == 1) {
             return $this->enrollments->first()->getCategory();
         }
-        return null;
+        throw new ValidationException("INVALIDENROLLMENT", "A team must be enrolled for exactly one category - team id=".$this->id." - enrolled=".$this->enrollments->count());
     }
 
     public function __toString() {

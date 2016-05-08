@@ -10,10 +10,10 @@ namespace ICup\Bundle\PublicSiteBundle\Services\MatchPlanning;
 
 use ICup\Bundle\PublicSiteBundle\Entity\Doctrine\Date;
 use ICup\Bundle\PublicSiteBundle\Entity\MatchPlan;
+use ICup\Bundle\PublicSiteBundle\Services\Entity\PlaygroundAttribute as PA;
 use ICup\Bundle\PublicSiteBundle\Services\Entity\PlanningResults;
 use DateTime;
 use DateInterval;
-use ICup\Bundle\PublicSiteBundle\Services\Entity\PlaygroundAttribute;
 use Monolog\Logger;
 
 class MatchPlanner
@@ -29,28 +29,23 @@ class MatchPlanner
         $this->statistics = array();
     }
 
-    /*
-
-Matches	Timeslots	Matches/day	Teams
-45	    9	        5	        10
-36	    9	        4	        9
-28	    7	        4	        8
-21	    7	        3	        7
-15	    5	        3	        6
-10	    5	        2	        5
-6	    3	        2	        4
-3	    3	        1	        3
-1	    1	        1	        2
-
-     */
-
-
     /**
      * Plan matches (preliminary rounds) for tournament
      * @param PlanningResults $result
      */
     public function plan(PlanningResults $result) {
         $unplaceable = array();
+        $matchtime = 60;
+        // Sort playground attributes and prepare for inspection
+        $result->mark(function (PA $ats1, PA $ats2) use ($matchtime) {
+            $p1 = (count($ats1->getPA()->getCategories()) ? count($ats1->getPA()->getCategories()) : 100)
+                - (count($ats2->getPA()->getCategories()) ? count($ats2->getPA()->getCategories()) : 100);
+            $p2 = min($ats2->getTimeleft(), 2*$matchtime)  - min($ats1->getTimeleft(), 2*$matchtime);
+            $p3 = $ats1->getPA()->getStartSchedule()->getTimestamp() - $ats2->getPA()->getStartSchedule()->getTimestamp();
+            $test = min(1, max(-1, $p1))*4 + min(1, max(-1, $p2))*2 + min(1, max(-1, $p3));
+            return min(1, max(-1, $test));
+        });
+        $result->rewind();
         while ($match = $result->nextUnresolved()) {
             $slot_found = $this->planMatch($result, $match);
             if (!$slot_found) {
@@ -66,14 +61,6 @@ Matches	Timeslots	Matches/day	Teams
             $this->replan_1run($result);
         }
 */
-        if ($result->unresolved() > 0) {
-            $this->replan_2run($result);
-        }
-
-        if ($result->unresolved() > 0) {
-            $this->replan_3run($result);
-        }
-
     }
 
     /**
@@ -82,39 +69,68 @@ Matches	Timeslots	Matches/day	Teams
      * @return boolean
      */
     private function planMatch(PlanningResults $result, MatchPlan $match) {
-        $matchtime = $match->getCategory()->getMatchtime();
-        // Sort playground attributes and prepare for inspection
-        $result->mark(function (PlaygroundAttribute $ats1, PlaygroundAttribute $ats2) use ($matchtime) {
-            $p1 = (count($ats1->getPA()->getCategories()) ? count($ats1->getPA()->getCategories()) : 100)
-                - (count($ats2->getPA()->getCategories()) ? count($ats2->getPA()->getCategories()) : 100);
-            $p2 = min($ats2->getTimeleft(), 2*$matchtime)  - min($ats1->getTimeleft(), 2*$matchtime);
-            $p3 = $ats1->getPA()->getStartSchedule()->getTimestamp() - $ats2->getPA()->getStartSchedule()->getTimestamp();
-            $test = min(1, max(-1, $p1))*4 + min(1, max(-1, $p2))*2 + min(1, max(-1, $p3));
-            return min(1, max(-1, $test));
-        });
-        /* @var $pa PlaygroundAttribute */
+        $searchTree = array();
+        $result->mark();
+        /* @var $pa PA */
         while ($pa = $result->cycleTimeslot()) {
-            if ($pa->isCategoryAllowed($match->getCategory()) && $matchtime <= $pa->getTimeleft()) {
-                /* @var $slotschedule DateTime */
-                $slotschedule = $pa->getSchedule();
-                /* Both teams must be allowed to play now */
-                if ($result->getTeamCheck()->isCapacity($match, $slotschedule, $pa->getPlayground(), $pa->getTimeslot())) {
-                    $match->setDate(Date::getDate($slotschedule));
-                    $match->setTime(Date::getTime($slotschedule));
-                    $match->setPlayground($pa->getPlayground());
-                    $match->setPlaygroundAttribute($pa->getPA());
-                    $slotschedule->add(new DateInterval('PT'.$matchtime.'M'));
-                    $pa->setSchedule($slotschedule);
-                    $matchlist = $pa->getMatchlist();
-                    $matchlist[] = $match;
-                    $pa->setMatchlist($matchlist);
-                    $result->getTeamCheck()->reserveCapacity($match, $pa->getTimeslot());
-                    $result->rewind();
-                    return true;
-                }
+            /* @var $slotschedule DateTime */
+            $slotschedule = $pa->getSchedule();
+            /* Both teams must be allowed to play now */
+            if ($result->getTeamCheck()->isCapacity($match, $slotschedule, $pa->getPlayground(), $pa->getTimeslot())) {
+                $e = $this->dEd($result, $pa, $match, $slotschedule);
+                $searchTree[] = array('schedule' => $slotschedule, 'pa' => $pa, 'error' => $e);
             }
         }
-        return false;
+
+        if (count($searchTree) > 0) {
+            usort($searchTree, function ($r1, $r2) {
+                return $r1['error'] > $r2['error'] ? 1 : -1;
+            });
+            /* @var $slotschedule DateTime */
+            $slotschedule = $searchTree[0]['schedule'];
+            $pa = $searchTree[0]['pa'];
+            $match->setDate(Date::getDate($slotschedule));
+            $match->setTime(Date::getTime($slotschedule));
+            $match->setPlayground($pa->getPlayground());
+            $match->setPlaygroundAttribute($pa->getPA());
+            $slotschedule->add(new DateInterval('PT'.$match->getCategory()->getMatchtime().'M'));
+            $pa->setSchedule($slotschedule);
+            $matchlist = $pa->getMatchlist();
+            $matchlist[] = $match;
+            $pa->setMatchlist($matchlist);
+            $result->getTeamCheck()->reserveCapacity($match, $pa->getTimeslot());
+        }
+        return count($searchTree) > 0;
+    }
+
+    /**
+     * Error function - calculates the score for the current planning result.
+     * A value closer to zero is better - any score will be positive or zero
+     * @param PlanningResults $result
+     * @return float The score for the current planning result. Closer to zero is better.
+     */
+
+    const CATEGORY_PENALTY = 60.0;
+    const TIMESLOT_EXCESS_PENALTY = 2.0;
+    const REST_PENALTY = 2.0;           // multiplied with the number of matches between two matches (3 is max)
+    const VENUE_PENALTY = 0.1;          // multiplied with the no of a venue
+    const TIME_LEFT_PENALTY = 0.01;     // multiplied with minutes left in a timeslot
+    
+    private function dEd(PlanningResults $result, PA $pa, MatchPlan $match, DateTime $mschedule) {
+        $dE = 100.0;
+        $excess = $pa->getTimeleft()-$match->getCategory()->getMatchtime();
+        if (count($pa->getMatchlist()) > 0) {
+            if ($excess >= 0) {
+                $dE -= $match->getCategory()->getMatchtime()*MatchPlanner::TIME_LEFT_PENALTY;
+            }
+        }
+        else {
+            $dE += ($pa->getTimeleft()-$match->getCategory()->getMatchtime())*MatchPlanner::TIME_LEFT_PENALTY;
+        }
+        $dE += max(-$excess, 0)*MatchPlanner::TIMESLOT_EXCESS_PENALTY;
+        $dE += $pa->getPlayground()->getNo()*MatchPlanner::VENUE_PENALTY;
+        $dE += $pa->isCategoryAllowed($match->getCategory()) ? 0 : MatchPlanner::CATEGORY_PENALTY;
+        return $dE;
     }
 
     /**
@@ -123,14 +139,22 @@ Matches	Timeslots	Matches/day	Teams
      */
     private function replan_1run(PlanningResults $result) {
         $this->statistics['1run']['unresolved before'] = $result->unresolved();
+        // Sort playground attributes and prepare for inspection
+        $result->mark(function (PA $ats1, PA $ats2) {
+            $p1 = $ats2->getTimeleft() - $ats1->getTimeleft();
+            $p2 = $ats1->getPA()->getStartSchedule()->getTimestamp() - $ats2->getPA()->getStartSchedule()->getTimestamp();
+            $test = min(1, max(-1, $p1))*2 + min(1, max(-1, $p2));
+            return min(1, max(-1, $test));
+        });
+        $result->rewind();
         $unplaceable = array();
         while ($match = $result->nextUnresolved()) {
             $slot_found = $this->replanMatch_1run($result, $match);
             if (!$slot_found) {
+                // if this was not possible to register the match as finally unassigned
                 $unplaceable[] = $match;
             }
         }
-
         foreach ($unplaceable as $match) {
             $result->appendUnresolved($match);
         }
@@ -143,39 +167,42 @@ Matches	Timeslots	Matches/day	Teams
      * @return boolean
      */
     private function replanMatch_1run(PlanningResults $result, MatchPlan $match) {
-        // Sort playground attributes and prepare for inspection
-        $result->mark(function (PlaygroundAttribute $ats1, PlaygroundAttribute $ats2) {
-            $p1 = $ats2->getTimeleft() - $ats1->getTimeleft();
-            $p2 = $ats1->getPA()->getStartSchedule()->getTimestamp() - $ats2->getPA()->getStartSchedule()->getTimestamp();
-            $test = min(1, max(-1, $p1))*2 + min(1, max(-1, $p2));
-            return min(1, max(-1, $test));
-        });
+        $result->mark();
         $matchtime = $match->getCategory()->getMatchtime();
+        $searchTree = array();
+        /* @var $pa PA */
         while ($pa = $result->cycleTimeslot()) {
             /* @var $slotschedule DateTime */
             $slotschedule = $pa->getSchedule();
-            $date = Date::getDate($slotschedule);
-            $time = Date::getTime($slotschedule);
             $slot_time_left = $pa->getTimeleft();
             if ($matchtime <= $slot_time_left) {
                 /* Both teams must be allowed to play now */
                 if ($result->getTeamCheck()->isCapacity($match, $slotschedule, $pa->getPlayground(), $pa->getTimeslot())) {
-                    $match->setDate($date);
-                    $match->setTime($time);
-                    $match->setPlayground($pa->getPlayground());
-                    $match->setPlaygroundAttribute($pa->getPA());
-                    $slotschedule->add(new DateInterval('PT'.$matchtime.'M'));
-                    $pa->setSchedule($slotschedule);
-                    $matchlist = $pa->getMatchlist();
-                    $matchlist[] = $match;
-                    $pa->setMatchlist($matchlist);
-                    $result->getTeamCheck()->reserveCapacity($match, $pa->getTimeslot());
-                    $result->rewind();
-                    return true;
+                    $e = $this->dEd($result, $pa, $match, $slotschedule);
+                    $searchTree[] = array('schedule' => $slotschedule, 'pa' => $pa, 'error' => $e);
                 }
             }
         }
-        return false;
+
+        if (count($searchTree) > 0) {
+            usort($searchTree, function ($r1, $r2) {
+                return $r1['error'] > $r2['error'] ? 1 : -1;
+            });
+            /* @var $slotschedule DateTime */
+            $slotschedule = $searchTree[0]['schedule'];
+            $pa = $searchTree[0]['pa'];
+            $match->setDate(Date::getDate($slotschedule));
+            $match->setTime(Date::getTime($slotschedule));
+            $match->setPlayground($pa->getPlayground());
+            $match->setPlaygroundAttribute($pa->getPA());
+            $slotschedule->add(new DateInterval('PT'.$matchtime.'M'));
+            $pa->setSchedule($slotschedule);
+            $matchlist = $pa->getMatchlist();
+            $matchlist[] = $match;
+            $pa->setMatchlist($matchlist);
+            $result->getTeamCheck()->reserveCapacity($match, $pa->getTimeslot());
+        }
+        return count($searchTree) > 0;
     }
 
     /**
@@ -226,10 +253,11 @@ Matches	Timeslots	Matches/day	Teams
      * @return MatchPlan|null
      */
     private function replanMatch_2run(PlanningResults $result, MatchPlan $match) {
-        $result->mark(function (PlaygroundAttribute $ats1, PlaygroundAttribute $ats2) {
+        $result->mark(function (PA $ats1, PA $ats2) {
             $test = $ats2->getTimeleft() - $ats1->getTimeleft();
             return min(1, max(-1, $test));
         });
+        /* @var $pa PA */
         while ($pa = $result->cycleTimeslot()) {
             /* Find a candidate for replacement */
             $matchlist = $pa->getMatchlist();
@@ -291,6 +319,7 @@ Matches	Timeslots	Matches/day	Teams
      */
     private function findAngel(PlanningResults $result, MatchPlan $match) {
         $result->mark();
+        /* @var $pa PA */
         while ($pa = $result->cycleTimeslot()) {
             /* Find a candidate for replacement */
             $matchlist = $pa->getMatchlist();
@@ -336,5 +365,83 @@ Matches	Timeslots	Matches/day	Teams
             $match->getTeamA()->getId() == $replanMatch->getTeamB()->getId() ||
             $match->getTeamB()->getId() == $replanMatch->getTeamA()->getId() ||
             $match->getTeamB()->getId() == $replanMatch->getTeamB()->getId();
+    }
+
+    /*
+
+        Matches	Timeslots	Matches/day	Teams
+        45	    9	        5	        10
+        36	    9	        4	        9
+        28	    7	        4	        8
+        21	    7	        3	        7
+        15	    5	        3	        6
+        10	    5	        2	        5
+        6	    3	        2	        4
+        3	    3	        1	        3
+        1	    1	        1	        2
+
+     */
+
+
+    const UNRESOLVED_PENALTY = 10.0;
+
+    private function E(PlanningResults $result) {
+        $e = $result->unresolved()*MatchPlanner::UNRESOLVED_PENALTY;
+        $teams = array();
+        $result->mark();
+        /* @var $pa PA */
+        while ($pa = $result->cycleTimeslot()) {
+            if (count($pa->getMatchlist()) > 0) {
+                $e += $pa->getTimeleft()*MatchPlanner::TIME_LEFT_PENALTY;
+            }
+            /* @var $match MatchPlan */
+            foreach ($pa->getMatchlist() as $match) {
+                $e += $pa->getPlayground()->getNo()*MatchPlanner::VENUE_PENALTY;
+                $e += $pa->isCategoryAllowed($match->getCategory()) ? 0 : MatchPlanner::CATEGORY_PENALTY;
+                $teams[$match->getTeamA()->getId()][] = $match;
+                $teams[$match->getTeamB()->getId()][] = $match;
+            }
+        }
+        foreach ($teams as $team_matches) {
+            usort($team_matches, function (MatchPlan $m1, MatchPlan $m2) {
+                /* @var $diff DateInterval */
+                $diff = $m1->getSchedule()->diff($m2->getSchedule());
+                if ($diff->d == 0 && $diff->h == 0 && $diff->i == 0) {
+                    return 0;
+                } else {
+                    return $diff->invert === 1 ? -1 : 1;
+                }
+            });
+        }
+        foreach ($teams as $team_matches) {
+            /* @var $schedule DateTime */
+            $schedule = null;
+            /* @var $match MatchPlan */
+            foreach ($team_matches as $match) {
+                if ($schedule) {
+                    /* @var $diff DateInterval */
+                    $diff = $schedule->diff($match->getSchedule());
+                    $difftime = $diff->d*24*60 + $diff->h*60 + $diff->i;
+                    if ($difftime < $match->getCategory()->getMatchtime()*3) {
+                        $e += (3 - $difftime / $match->getCategory()->getMatchtime())*MatchPlanner::REST_PENALTY;
+                    }
+                }
+                $schedule = $match->getSchedule();
+            }
+        }
+        return $e;
+    }
+
+    private function dEs(PlanningResults $result, PA $pa, MatchPlan $match) {
+        $dE = 0.0;
+        if (count($pa->getMatchlist()) > 1) {
+            $dE += $match->getCategory()->getMatchtime()*MatchPlanner::TIME_LEFT_PENALTY;
+        }
+        else {
+            $dE -= $pa->getTimeleft()*MatchPlanner::TIME_LEFT_PENALTY;
+        }
+        $dE -= $pa->getPlayground()->getNo()*MatchPlanner::VENUE_PENALTY;
+        $dE -= $pa->isCategoryAllowed($match->getCategory()) ? 0 : MatchPlanner::CATEGORY_PENALTY;
+        return $dE;
     }
 }

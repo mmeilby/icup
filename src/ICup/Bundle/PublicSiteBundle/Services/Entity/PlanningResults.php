@@ -77,27 +77,55 @@ class PlanningResults
         return count($this->timeslots);
     }
 
-    public function getQSchedule(QRelation $rel) {
-        $key = $rel->getClassification().":".$rel->getLitra().$rel->getBranch();
-        return isset($this->dependency_check[$key]) ? $this->dependency_check[$key] : null;
+    /**
+     * Get QMatchPlan for specific classification and litra
+     * @param $classification
+     * @param $litra
+     * @return QMatchPlan
+     */
+    public function getQMatchPlan($classification, $litra) {
+        $key = $classification.':'.$litra;
+        return isset($this->dependency_check[$key]) ? $this->dependency_check[$key]['match'] : null;
     }
 
+    /**
+     * Get schedule for specific relation
+     * @param QRelation $rel
+     * @return DateTime
+     */
+    public function getQSchedule(QRelation $rel) {
+        $key = $rel->getClassification().":".$rel->getLitra().$rel->getBranch();
+        return isset($this->dependency_check[$key]) ? $this->dependency_check[$key]['schedule'] : null;
+    }
+
+    /**
+     * Set schedule for specific match
+     * @param QMatchPlan $match
+     * @param DateTime $schedule
+     */
     public function setQSchedule(QMatchPlan $match, DateTime $schedule) {
         $key = $match->getClassification().":".$match->getLitra();
-        $this->dependency_check[$key] = $schedule;
+        $this->dependency_check[$key] = array('match' => $match, 'schedule' => $schedule);
+/*
         if ($match->getRelA()->getClassification() == Group::$PRE) {
             $keyh = $match->getRelA()->getClassification().":".$match->getRelA()->getLitra().$match->getRelA()->getBranch();
-            $this->dependency_check[$keyh] = $schedule;
+            $this->dependency_check[$keyh] = array('match' => $match, 'schedule' => $schedule);
         }
         if ($match->getRelB()->getClassification() == Group::$PRE) {
             $keya = $match->getRelB()->getClassification().":".$match->getRelB()->getLitra().$match->getRelB()->getBranch();
-            $this->dependency_check[$keya] = $schedule;
+            $this->dependency_check[$keya] = array('match' => $match, 'schedule' => $schedule);
         }
+*/
     }
 
+    /**
+     * Clear cached schedule for specific match
+     * @param QMatchPlan $match
+     */
     public function resetQSchedule(QMatchPlan $match) {
         $key = $match->getClassification().":".$match->getLitra();
         unset($this->dependency_check[$key]);
+/*
         if ($match->getRelA()->getClassification() == Group::$PRE) {
             $keyh = $match->getRelA()->getClassification().":".$match->getRelA()->getLitra().$match->getRelA()->getBranch();
             unset($this->dependency_check[$keyh]);
@@ -106,8 +134,16 @@ class PlanningResults
             $keya = $match->getRelB()->getClassification().":".$match->getRelB()->getLitra().$match->getRelB()->getBranch();
             unset($this->dependency_check[$keya]);
         }
+*/
     }
 
+    /**
+     * Validate slotschedule for the specific match and timeslot
+     * @param QMatchPlan $match
+     * @param DateTime $slotschedule
+     * @param Timeslot $timeslot
+     * @return bool
+     */
     public function isQScheduleAvailable(QMatchPlan $match, DateTime $slotschedule, Timeslot $timeslot) {
         // Group dependency must be respected when deciding match schedule
         // No schedule is expected for relations to preliminary groups
@@ -144,6 +180,14 @@ class PlanningResults
         return true;
     }
 
+    /**
+     * Test if match can be scheduled for timeslot and slotschedule given the dependent schedule 
+     * @param QMatchPlan $match
+     * @param DateTime $schedule
+     * @param DateTime $slotschedule
+     * @param Timeslot $timeslot
+     * @return bool
+     */
     private function testQSchedule(QMatchPlan $match, DateTime $schedule, DateTime $slotschedule, Timeslot $timeslot) {
         if ($slotschedule < $schedule) {
             return false;

@@ -113,4 +113,16 @@ class TeamCheck
     private function makeKey(Team $team, $date, Timeslot $timeslot) {
         return $timeslot->getId()."-".$team->getId()."-".$date;
     }
+
+    /**
+     * List schedules assigned to team
+     * @param Team $team team to search for
+     * @return array list of match schedules assigned to this team
+     */
+    public function listSchedules(Team $team) {
+        return array_filter($this->teams, function (MatchPlan $match) use ($team) {
+            return $team->getId() == $match->getTeamA()->getId() ||
+                   $team->getId() == $match->getTeamB()->getId();
+        });
+    }
 }

@@ -17,7 +17,7 @@ FORM:
                      Iscriviti al torneo.
                      Le informazioni e le condizioni per partecipare al prossimo torneo.
         LEARNMORE: Iscrivi la tua squadra
-        ONLINE: Prova iscrizione on-line
+        ONLINE: Iscriviti on-line
     BLOCK3:
         TITLE: Le partite
         DESCRIPTION: >
@@ -37,7 +37,7 @@ FORM:
     BLOCK6:
         TITLE: Il prossimo torneo
         DESCRIPTION: >
-                     Visualizza l’elenco dei club inscritti.
+                     Visualizza l'elenco dei club inscritti.
     SENDMAIL: Ricevi maggiori informazioni - compila il modulo e invialo
     NAME: Nome
     CLUB: Scrivi il nome del tuo club

@@ -6,11 +6,11 @@ FIELD: Campo
 CATEGORIES: Categorie
 PLAYGROUNDS: Campi
 TEAMS: Squadre
-CLUBS: Squadre partecipanti
+CLUBS: Club
 TOWNANDNO: Città e campo
-CLUBSBYCOUNTRY: Ordinati per paese
-TEAMSBYCATEGORY: Ordinati per categorie
-TEAMSBYCLUB: Squadre inscritte per club
+CLUBSBYCOUNTRY: Ordina per paese
+TEAMSBYCATEGORY: Ordina per categorie
+TEAMSBYCLUB: Squadre iscritte per club
 WINNERS: I vincitori
 WINNING_COUNTRIES: Vincitori per paese
 WINNING_CLUBS: Squadre vincitrici
@@ -37,7 +37,7 @@ GROUPCLASS:
   8: Semifinale
   9: Finale 3/4 posto
   10: Finale
-    
+
 LEGEND:
   NO: Gara
   TIME: Orario
@@ -70,26 +70,26 @@ FORM:
     SEL_TMNT:
       TITLE: iCup Selezione torneo
       SUBTITLE: Scegli il torneo da visualizzare
-      DESCRIPTION: Guarda i risultati e lo statoi del torneo. Basta un click sul nome del torneo che desideri visualizzare.
+      DESCRIPTION: Guarda i risultati e lo stato del torneo. Basta un click sul nome del torneo che desideri visualizzare.
       CAPTION: Tornei
       LEGEND:
           NAME: Torneo
           EDITION: Edizione
           DESCRIPTION: Descrizione
       STATUS:
-          1: This tournament is open for enrollments. Groups and matches may be incomplete or missing.
-          2: This tournament is live - check out the latest results.
-          3: This is a completed tournament. You can review the winners and hall of fame.
+          1: Le iscrizioni sono aperte. Gruppi e gare possono essere mancanti.
+          2: Il torneo è in corso - gurda gli ultimi risultati.
+          3: Torneo completato. Puoi vedere i vincitori nell'albo d'oro.
 
 # Statistics page translations
     STATISTICS:
       TITLE: Il torneo in numeri
       LEGEND:
         KEY: In evidenza...
-        FIGURE: Numeri
+        FIGURE: Nume
       KEY:
         COUNTRIES: Paesi partecipanti
-        CLUBS: Squadre inscritte
+        CLUBS: Squadre iscritte
         TEAMS: Squadre partecipanti alla fase preliminare
         FEMALETEAMS: -- squadre femminili
         MALETEAMS: -- squadre maschili
@@ -103,7 +103,7 @@ FORM:
         GOALS: Reti segnate
         MOSTGOALS: Maggior numero di reti segnate per squadra in una gara
         MOSTTROPHYS: Maggior numero di trofei vinti per paese
-        DAYS: Lunghezza del torneo in giorni
+        DAYS: Durata del torneo in giorni
         MOSTTROPHYSBYCLUB: Maggior numero di trofei vinti per club
         MOSTGOALSTOTAL: Maggior numero di reti segnate per squadra nel torneo
       GROUP:
@@ -117,8 +117,8 @@ FORM:
           TITLE: Incontri per tutte le squadre che segui
           DESC: Prendi il quadro completo di tutte le partite con i club che segui
         MOREMATCHES:
-          TITLE: Scheduled matches
-          DESC: Show matches for the following match day.
+          TITLE: Partite in programma
+          DESC: Visualizza le partite per il seguente gorno di gara.
         GROUPS:
           TITLE: Risultati
           DESC: Guarda la composizione delle categorie o ricerca i risultati per squadra e categoria.
@@ -126,7 +126,7 @@ FORM:
           TITLE: Campi di gioco
           DESC: Segui gli incontri sui campi.
         TEAMS:
-          TITLE: Squadre inscritte
+          TITLE: Squadre iscritte
           DESC: Trova le squadre partecipanti e visualizza i risultati.
         WINNERS:
           TITLE: I campioni
@@ -134,7 +134,7 @@ FORM:
         STATISTICS:
           TITLE: Statistiche
           DESC:  Alcuni dati interessanti sul torneo.
-          
+
     EDITRESULTS:
         TITLE: Aggiornamento dei risultati
         SUBMIT: Salva i risultati
@@ -142,52 +142,52 @@ FORM:
 
     CONTACT:
         DATA:
-            PROGRAM: Development and design
+            PROGRAM: Progettazione e sviluppo
             TRANSLATION:
-                ITA: Text in italian
-                FRA: French translation
-                ENG: English translation
-                POL: Polish translation
-                DAN: Danish translation
-                GER: German translation
-                ESP: Spanish translation
-        TITLE: Contact
-        SUBTITLE: Maintenance and development
-        DESCRIPTION: Contact
-        CAPTION: Special thanks to...
+                ITA: Italiano
+                FRA: Francese
+                ENG: Inglese
+                POL: Polacco
+                DAN: Danese
+                GER: Tedesco
+                ESP: Spagnolo
+        TITLE: Contatti
+        SUBTITLE: Manutenzione e sviluppo
+        DESCRIPTION: Contatti
+        CAPTION: Grazie a...
         LEGEND:
-            NAME: Language
-            EDITION: Author
+            NAME: Testi
+            EDITION: Autori
 
     RESULTREPORT:
-        NONO: An official match no. is required.
-        NOHOMESCORE: Number of goals scored by the home team is required.
-        NOAWAYSCORE: Number of goals scored by the away team is required.
-        INVALIDMATCHNO: Match no. is not available for this tournament.
-        INVALIDHOMESCORE: Number of goals scored by the home team is invalid.
-        INVALIDAWAYSCORE: Number of goals scored by the away team is invalid.
-        MATCHNOTREADY: It is not possible to report a result for this match. The match is not planed yet.
-        CANTCHANGE: It is not possible to report a result for this match. A result for the match has been reported.
-        TOOEARLY: It is not possible to report a result for this match. Please wait until after match start.
-        TITLE: Report result
-        PROMPT: Enter the result for a match
-        SUCCESS: The match result has been reported
-        TOURNAMENT: Tournament
-        MATCHNO: Match no.
-        HOME: Home team
-        AWAY: Away team
-        EVENT: Event
+        NONO: Il numero di gara è obbligatorio.
+        NOHOMESCORE: Il numero di goal segnati dalla squadra di casa è obbligatorio.
+        NOAWAYSCORE: Il numero di goal segnati dalla squadra ospite è obbligatorio.
+        INVALIDMATCHNO: La gara non è diponibile per il torneo.
+        INVALIDHOMESCORE: Il numero di goal segnato dalla squadra di casa non è valido.
+        INVALIDAWAYSCORE: Il numero di goal segnato dalla squadra ospite non è valido.
+        MATCHNOTREADY: Non è possibile inserire il risultato per questa gara. La gara non è ancora stata giocata.
+        CANTCHANGE: Non è possibile inserire il risultato per questa gara. Il risultato è stato riportato.
+        TOOEARLY: Non è possibile inserire il risultato per questa gara. Aspetta l'inizio della gara.
+        TITLE: Report
+        PROMPT: Inserisci il risultato della gara
+        SUCCESS: Il risultato è stato registrato
+        TOURNAMENT: Torneo
+        MATCHNO: Gara n.
+        HOME: Squadra di casa
+        AWAY: Squadra ospite
+        EVENT: Evento
         EVENTTYPE:
-            MP: The match was played
-            HD: Home team lost
-            AD: Away team lost
-            NP: The match was canceled
+            MP: La gara è stata giocata
+            HD: La squadra di casa ha perso
+            AD: La squadra ospite ha perso
+            NP: La gara è stata cancellata
         HELP:
-            MATCHNO: An official match no. from the match schedule.
-            HOME: Number of goals scored by the home team.
-            AWAY: Number of goals scored by the away team.
-        SUBMIT: Report result
-        CANCEL: Cancel
+            MATCHNO: La gara ufficiale n. del programma delle gare.
+            HOME: Numero di goal segnati dalla squadra di casa.
+            AWAY: Numero di goal segnati dalla squadra ospite.
+        SUBMIT: Report dei risultati
+        CANCEL: Cancella
 
     COOKIES:
         CONSENT: >

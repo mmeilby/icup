@@ -347,14 +347,14 @@ FORM:
       TITLE: Il calendario gare è incompleto
       DESCRIPTION: >
                   Non è stato possibile programmare tutte le gare. Puoi rivedere le gare in programma nel calendario.
-	              Per generare le gare che non sono state programmate puoi utilizzare la sezione consigli.
+                  Per generare le gare che non sono state programmate puoi utilizzare la sezione consigli.
                   Sotto la lista delle categorie che devono essere riprogrammate.<br />
                   Puoi scaricare il programma come file di testo e modificarlo sul tuo editor preferito.<br />
     PLANNINGCOMPLETE:
       TITLE: Il calendario gare è generato
       DESCRIPTION: >
                   Tutte le gare sono state inserite. Puoi cambiare il programma usando i consigli.
-	              Puoi scaricare il calendario gare come file di testo e modificarlo in un editor di testo.
+                  Puoi scaricare il calendario gare come file di testo e modificarlo in un editor di testo.
                   Oppure puoi accettarlo e salvarlo affinchè diventi ufficiale.<br />
     PLANNOTREADY:
       TITLE: IL calendario gare non è ancora pronto
@@ -364,8 +364,8 @@ FORM:
     NEEDTOPLAN:
       TITLE: Programma il calendario gare
       DESCRIPTION: >
-	              Puoi creare il calendario gare importando un file di testo o puoi lasciarlo generare dall'applicativo.
-		          Devi comunque prima definire i gruppi. Devi asseganere le squadre per ogni gruppo  definire quando gli incontri possono essere giocati 		  	  sui campi. Quando hai completato queste fasi puoi generare il calendario.
+                  Puoi creare il calendario gare importando un file di testo o puoi lasciarlo generare dall'applicativo.
+                  Devi comunque prima definire i gruppi. Devi asseganere le squadre per ogni gruppo  definire quando gli incontri possono essere giocati 		  	  sui campi. Quando hai completato queste fasi puoi generare il calendario.
     PLANNING:
       TITLE: La generazione del calendario è in corso
       DESCRIPTION: Il calendario gare è in fase di generazione. Attendi...

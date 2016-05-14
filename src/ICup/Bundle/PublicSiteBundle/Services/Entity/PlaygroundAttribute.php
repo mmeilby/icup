@@ -156,8 +156,9 @@ class PlaygroundAttribute
      */
     public function getTimeleft()
     {
-        $diff = $this->getPA()->getEndSchedule()->diff($this->getSchedule());
-        return $diff->d*24*60 + $diff->h*60 + $diff->i;
+        $diff = $this->getSchedule()->diff($this->getPA()->getEndSchedule());
+        $difftime = $diff->d*24*60 + $diff->h*60 + $diff->i;
+        return $diff->invert === 1 ? -$difftime : $difftime;
     }
 
     /**

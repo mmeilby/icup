@@ -1,8 +1,10 @@
 <?php
 namespace ICup\Bundle\PublicSiteBundle\Services\Entity;
 
+use Doctrine\Common\Collections\ArrayCollection;
 use ICup\Bundle\PublicSiteBundle\Entity\Doctrine\Date;
 use ICup\Bundle\PublicSiteBundle\Entity\Doctrine\Playground;
+use ICup\Bundle\PublicSiteBundle\Entity\Doctrine\Site;
 use ICup\Bundle\PublicSiteBundle\Entity\Doctrine\Team;
 use ICup\Bundle\PublicSiteBundle\Entity\Doctrine\Timeslot;
 use ICup\Bundle\PublicSiteBundle\Entity\MatchPlan;
@@ -35,25 +37,27 @@ class TeamCheck
         $date = Date::getDate($slotschedule);
         $time = Date::getTime($slotschedule);
         $key = $this->makeKey($team, $date, $timeslot);
-        if (isset($this->teams[$key])) {
-            if (count($this->teams[$key]) < $timeslot->getCapacity() && !isset($this->teams[$key][$time])) {
+        if (isset($this->teams[$team->getId()][$key])) {
+            if (count($this->teams[$team->getId()][$key]) < $timeslot->getCapacity() && !isset($this->teams[$team->getId()][$key][$time])) {
                 /* @var $match MatchPlan */
-                foreach ($this->teams[$key] as $match) {
-                    /* @var $diff DateInterval */
-                    $diff = $match->getSchedule()->diff($slotschedule);
-                    if ($diff->h*60 + $diff->i < $team->getCategory()->getMatchtime() + $timeslot->getRestperiod()) {
-                        return false;
-                    }
-                    if ($timeslot->getPenalty() &&
-                        $match->getPlayground()->getSite()->getId() != $playground->getSite()->getId()) {
-                        return false;
+                foreach ($this->teams[$team->getId()] as $calendar) {
+                    foreach ($calendar as $match) {
+                        /* @var $diff DateInterval */
+                        $diff = $match->getSchedule()->diff($slotschedule, true);
+                        if ($diff->d*24*60 + $diff->h*60 + $diff->i < $team->getCategory()->getMatchtime() + $timeslot->getRestperiod()) {
+                            return false;
+                        }
+                        if ($timeslot->getPenalty() &&
+                            $match->getPlayground()->getSite()->getId() != $playground->getSite()->getId()) {
+                            return false;
+                        }
                     }
                 }
                 return true;
             }
             return false;
         }
-        $this->teams[$key] = array();
+        $this->teams[$team->getId()][$key] = array();
         return $timeslot->getCapacity() > 0;
     }
 
@@ -80,7 +84,7 @@ class TeamCheck
         $date = Date::getDate($match->getSchedule());
         $time = Date::getTime($match->getSchedule());
         $key = $this->makeKey($team, $date, $timeslot);
-        $this->teams[$key][$time] = $match;
+        $this->teams[$team->getId()][$key][$time] = $match;
     }
 
     /**
@@ -97,7 +101,7 @@ class TeamCheck
         $date = Date::getDate($match->getSchedule());
         $time = Date::getTime($match->getSchedule());
         $key = $this->makeKey($team, $date, $timeslot);
-        unset($this->teams[$key][$time]);
+        unset($this->teams[$team->getId()][$key][$time]);
     }
 
     /**
@@ -115,14 +119,69 @@ class TeamCheck
     }
 
     /**
-     * List schedules assigned to team
+     * Get minimum rest time for a team
      * @param Team $team team to search for
-     * @return array list of match schedules assigned to this team
+     * @return mixed number of minutes of minimum rest time for the team
      */
-    public function listSchedules(Team $team) {
-        return array_filter($this->teams, function (MatchPlan $match) use ($team) {
-            return $team->getId() == $match->getTeamA()->getId() ||
-                   $team->getId() == $match->getTeamB()->getId();
-        });
+    private function getTeamMinRestTime(Team $team, DateTime $slotschedule) {
+        $schedules = array($slotschedule);
+        if (isset($this->teams[$team->getId()])) {
+            foreach ($this->teams[$team->getId()] as $calendar) {
+                /* @var $match MatchPlan */
+                foreach ($calendar as $match) {
+                    $schedules[] = $match->getSchedule();
+                }
+            }
+            usort($schedules, function (DateTime $s1, DateTime $s2) {
+                return $s1 == $s2 ? 0 : ($s1 < $s2 ? -1 : 1);
+            });
+        }
+        $minRestTime = 24*60;
+        /* @var $slotschedule DateTime */
+        for ($idx = 1; $idx < count($schedules); $idx++) {
+            /* @var $diff DateInterval */
+            $diff = $schedules[$idx-1]->diff($schedules[$idx]);
+            $difftime = $diff->d*24*60 + $diff->h*60 + $diff->i;
+            $minRestTime = $idx == 1 ? $difftime : min($minRestTime, $difftime); 
+        }
+        return $minRestTime;
+    }
+
+    public function getMinRestTime(MatchPlan $match, DateTime $slotschedule) {
+        return min($this->getTeamMinRestTime($match->getTeamA(), $slotschedule), $this->getTeamMinRestTime($match->getTeamB(), $slotschedule));
+    }
+
+    private function travelTeamPenalty(Team $team, Site $site) {
+        if (isset($this->teams[$team->getId()])) {
+            foreach ($this->teams[$team->getId()] as $calendar) {
+                /* @var $match MatchPlan */
+                foreach ($calendar as $match) {
+                    if ($match->getPlayground()->getSite()->getId() != $site->getId()) {
+                        return 1;
+                    }
+                }
+            }
+        }
+        return 0;
+    }
+
+    public function travelPenalty(MatchPlan $match, Site $site) {
+        return $this->travelTeamPenalty($match->getTeamA(), $site) + $this->travelTeamPenalty($match->getTeamB(), $site);
+    }
+
+    private function timeslotTeamPenalty(Team $team, DateTime $slotschedule, Timeslot $timeslot) {
+        $key = $this->makeKey($team, Date::getDate($slotschedule), $timeslot);
+        if (isset($this->teams[$team->getId()][$key])) {
+            if (count($this->teams[$team->getId()][$key]) < $timeslot->getCapacity()) {
+                return 0;
+            }
+            return count($this->teams[$team->getId()][$key]) - $timeslot->getCapacity() + 1;
+        }
+        $this->teams[$team->getId()][$key] = array();
+        return $timeslot->getCapacity() ? 0 : 1;
+    }
+
+    public function timeslotPenalty(MatchPlan $match, DateTime $slotschedule, Timeslot $timeslot) {
+        return $this->timeslotTeamPenalty($match->getTeamA(), $slotschedule, $timeslot) + $this->timeslotTeamPenalty($match->getTeamB(), $slotschedule, $timeslot);
     }
 }

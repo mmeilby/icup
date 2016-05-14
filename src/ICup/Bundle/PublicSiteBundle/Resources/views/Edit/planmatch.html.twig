@@ -255,6 +255,7 @@
                             $("#progress_text").text("{% trans %}FORM.MATCHPLANNING.PLANNING.ERROR{% endtrans %}" +
                                                      " " + textStatus + " - " + errorThrown);
                             success = false;
+                            done = true;
                         });
             };
             if (success) {

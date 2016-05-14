@@ -224,18 +224,19 @@ class TestSupport
 
     public function makePlaygrounds(Tournament $tournament) {
         $venues = array();
-        for ($s=1; $s<=2; $s++) {
+        $playgroundno = 1;
+        foreach (array('SiteA', 'SiteB') as $sitename) {
             $site = new Site();
-            $site->setName("Test site ".$s);
+            $site->setName($sitename);
             $site->setTournament($tournament);
-            for ($n = 1; $n <= 2; $n++) {
+            foreach (array("VenueA", "VenueB") as $venue) {
                 $playground = new Playground();
-                $playground->setName("Test playground ".$s."-".$n);
+                $playground->setName($sitename."-".$venue);
                 $playground->setLocation("");
-                $playground->setNo($n);
+                $playground->setNo($playgroundno++);
                 $playground->setSite($site);
                 $site->getPlaygrounds()->add($playground);
-                $venues[$s."-".$n] = $playground;
+                $venues[$playground->getNo()] = $playground;
             }
             $tournament->getSites()->add($site);
             $this->em->persist($site);
@@ -257,19 +258,19 @@ class TestSupport
         $this->addSchedules($tournament, $timeslot,
             date_create_from_format("j-n-Y G.i", "7-7-2015 9.00"),
             date_create_from_format("j-n-Y G.i", "7-7-2015 12.00"));
-        $this->addSchedulesFinal($timeslot, $venues['1-1'], 7,
+        $this->addSchedulesFinal($timeslot, $venues[1], 7,
             date_create_from_format("j-n-Y G.i", "8-7-2015 9.00"),
             date_create_from_format("j-n-Y G.i", "8-7-2015 12.00"));
-        $this->addSchedulesFinal($timeslot, $venues['1-2'], 7,
+        $this->addSchedulesFinal($timeslot, $venues[2], 7,
             date_create_from_format("j-n-Y G.i", "8-7-2015 9.00"),
             date_create_from_format("j-n-Y G.i", "8-7-2015 12.00"));
-        $this->addSchedulesFinal($timeslot, $venues['2-1'], 6,
+        $this->addSchedulesFinal($timeslot, $venues[3], 6,
             date_create_from_format("j-n-Y G.i", "8-7-2015 9.00"),
             date_create_from_format("j-n-Y G.i", "8-7-2015 12.00"));
-        $this->addSchedulesFinal($timeslot, $venues['2-2'], 1,
+        $this->addSchedulesFinal($timeslot, $venues[4], Group::$PLAYOFF,
             date_create_from_format("j-n-Y G.i", "8-7-2015 9.00"),
             date_create_from_format("j-n-Y G.i", "8-7-2015 12.00"));
-        $this->addSchedulesFinal($timeslot, $venues['1-1'], 8,
+        $this->addSchedulesFinal($timeslot, $venues[1], Group::$SEMIFINAL,
             date_create_from_format("j-n-Y G.i", "9-7-2015 9.00"),
             date_create_from_format("j-n-Y G.i", "9-7-2015 12.00"));
         $this->em->persist($timeslot);
@@ -290,22 +291,22 @@ class TestSupport
         $this->addSchedules($tournament, $timeslot,
             date_create_from_format("j-n-Y G.i", "7-7-2015 13.00"),
             date_create_from_format("j-n-Y G.i", "7-7-2015 19.00"));
-        $this->addSchedulesFinal($timeslot, $venues['1-1'], 7,
+        $this->addSchedulesFinal($timeslot, $venues[1], 7,
             date_create_from_format("j-n-Y G.i", "8-7-2015 13.00"),
             date_create_from_format("j-n-Y G.i", "8-7-2015 22.00"));
-        $this->addSchedulesFinal($timeslot, $venues['1-2'], 8,
+        $this->addSchedulesFinal($timeslot, $venues[2], Group::$SEMIFINAL,
             date_create_from_format("j-n-Y G.i", "8-7-2015 13.00"),
             date_create_from_format("j-n-Y G.i", "8-7-2015 22.00"));
-        $this->addSchedulesFinal($timeslot, $venues['2-1'], 8,
+        $this->addSchedulesFinal($timeslot, $venues[3], Group::$SEMIFINAL,
             date_create_from_format("j-n-Y G.i", "8-7-2015 13.00"),
             date_create_from_format("j-n-Y G.i", "8-7-2015 22.00"));
-        $this->addSchedulesFinal($timeslot, $venues['2-2'], 8,
+        $this->addSchedulesFinal($timeslot, $venues[4], Group::$SEMIFINAL,
             date_create_from_format("j-n-Y G.i", "8-7-2015 13.00"),
             date_create_from_format("j-n-Y G.i", "8-7-2015 22.00"));
-        $this->addSchedulesFinal($timeslot, $venues['1-1'], 10,
+        $this->addSchedulesFinal($timeslot, $venues[1], Group::$FINAL,
             date_create_from_format("j-n-Y G.i", "9-7-2015 13.00"),
             date_create_from_format("j-n-Y G.i", "9-7-2015 22.00"));
-        $this->addSchedulesFinal($timeslot, $venues['1-2'], 9,
+        $this->addSchedulesFinal($timeslot, $venues[2], Group::$BRONZE,
             date_create_from_format("j-n-Y G.i", "9-7-2015 13.00"),
             date_create_from_format("j-n-Y G.i", "9-7-2015 22.00"));
         $this->em->persist($timeslot);

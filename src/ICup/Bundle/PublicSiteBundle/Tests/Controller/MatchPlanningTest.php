@@ -55,7 +55,7 @@ class MatchPlanningTest extends WebTestCase
         $this->assertEquals(4, count($playgrounds));
     }
 
-    public function tstMatchPlanning() {
+    public function testMatchPlanning() {
         $options = new PlanningOptions();
         $options->setDoublematch(false);
         $options->setPreferpg(false);
@@ -84,21 +84,42 @@ class MatchPlanningTest extends WebTestCase
             $schedule = null;
             /* @var $match MatchPlan */
             foreach ($team_matches as $match) {
+                echo $match->getDate();
+                echo "  ";
+                echo $match->getTime();
+                echo "  ";
+                echo $match->getCategory()->getName() . "|" . $match->getGroup()->getName() . ":" . $match->getPlayground()->getName();
+                echo "  ";
+                echo $match->getTeamA();
+                echo " - ";
+                echo $match->getTeamB();
+                echo "\n";
                 $this->assertNotEquals($match->getTeamA()->getId(), $match->getTeamB()->getId());
                 if ($schedule) {
                     /* @var $diff DateInterval */
                     $diff = $schedule->diff($match->getSchedule());
-                    $this->assertTrue($diff->d*24*60 + $diff->h*60 + $diff->i >= $match->getCategory()->getMatchtime()*2);
+                    $rest = $match->getCategory()->getMatchtime()+$match->getPlaygroundAttribute()->getTimeslot()->getRestperiod();
+                    $this->assertTrue(
+                        $diff->d*24*60 + $diff->h*60 + $diff->i >= $rest,
+                        "Time between matches is less than ".$rest." min - actual time is ".($diff->d*24*60 + $diff->h*60 + $diff->i)." min.\n".
+                        "Match does not respect rest time: ".$match->getDate()."  ".$match->getTime()."  ".$match->getTeamA()." - ".$match->getTeamB()
+                    );
                 }
                 $schedule = $match->getSchedule();
             }
+            echo "\n";
         }
-        foreach ($match_schedule["unassigned"] as $match) {
-            $teams[$match->getTeamA()->getId()][] = $match;
-            $teams[$match->getTeamB()->getId()][] = $match;
-        }
+
+        $this->assertCount(0, $match_schedule["unassigned"], "Not all preliminary matches have been planned.");
+        /*
+                foreach ($match_schedule["unassigned"] as $match) {
+                    $teams[$match->getTeamA()->getId()][] = $match;
+                    $teams[$match->getTeamB()->getId()][] = $match;
+                }
+        */
+
         foreach ($teams as $team_matches) {
-            $this->assertCount(5, $team_matches);
+            $this->assertCount(5, $team_matches, "Not all matches have been set up for each team.");
         }
     }
 
@@ -108,9 +129,6 @@ class MatchPlanningTest extends WebTestCase
         $options->setPreferpg(false);
         $this->container->get("planning")->planTournamentFinals($this->tournament, $options);
         $match_schedule = $this->container->get("planning")->getSchedule($this->tournament);
-
-//        $this->assertCount(0, $match_schedule["unassigned"], "Not all eliminating matches have been planned.");
-        echo "Unasssigned: ".count($match_schedule["unassigned"])."\n";
 
         $groups = array();
         /* @var $match QMatchPlan */
@@ -139,8 +157,12 @@ class MatchPlanningTest extends WebTestCase
                 $qma = $groups[$cla];
                 /* @var $diff DateInterval */
                 $diff = $match->getSchedule()->diff($qma->getSchedule());
-                $this->assertTrue($diff->d*24*60 + $diff->h*60 + $diff->i >= $match->getCategory()->getMatchtime()*2,
-                    "Time between matches is less than ".($match->getCategory()->getMatchtime()*2)." min - actual time is ".($diff->d*24*60 + $diff->h*60 + $diff->i)." min");
+                $rest = $match->getCategory()->getMatchtime()+$match->getPlaygroundAttribute()->getTimeslot()->getRestperiod();
+                $this->assertTrue(
+                    $diff->d*24*60 + $diff->h*60 + $diff->i >= $rest,
+                    "Time between matches is less than ".$rest." min - actual time is ".($diff->d*24*60 + $diff->h*60 + $diff->i)." min.\n".
+                    "Match does not respect rest time: ".$match->getDate()."  ".$match->getTime()."  ".$match->getRelA()." - ".$match->getRelB()
+                );
             }
             if ($match->getRelB()->getClassification() > Group::$PRE) {
                 $clb = $match->getRelB()->getClassification() . ':' . $match->getRelB()->getLitra() . $match->getRelB()->getBranch();
@@ -149,8 +171,12 @@ class MatchPlanningTest extends WebTestCase
                 $qmb = $groups[$clb];
                 /* @var $diff DateInterval */
                 $diff = $match->getSchedule()->diff($qmb->getSchedule());
-                $this->assertTrue($diff->d*24*60 + $diff->h*60 + $diff->i >= $match->getCategory()->getMatchtime()*2,
-                    "Time between matches is less than ".($match->getCategory()->getMatchtime()*2)." min - actual time is ".($diff->d*24*60 + $diff->h*60 + $diff->i)." min");
+                $rest = $match->getCategory()->getMatchtime()+$match->getPlaygroundAttribute()->getTimeslot()->getRestperiod();
+                $this->assertTrue(
+                    $diff->d*24*60 + $diff->h*60 + $diff->i >= $rest,
+                    "Time between matches is less than ".$rest." min - actual time is ".($diff->d*24*60 + $diff->h*60 + $diff->i)." min.\n".
+                    "Match does not respect rest time: ".$match->getDate()."  ".$match->getTime()."  ".$match->getRelA()." - ".$match->getRelB()
+                );
             }
         }
 
@@ -162,6 +188,8 @@ class MatchPlanningTest extends WebTestCase
                 echo "\n";
             }
         }
+
+        $this->assertCount(0, $match_schedule["unassigned"], "Not all eliminating matches have been planned.");
     }
 
     private function digMatch(QRelation $rel, $groups, $level) {
@@ -187,53 +215,5 @@ class MatchPlanningTest extends WebTestCase
         echo " - ";
         echo $match->getRelB();
         echo "\n";
-    }
-
-    public function tstMatchPlanningOutput() {
-        $options = new PlanningOptions();
-        $options->setDoublematch(false);
-        $options->setPreferpg(false);
-        $this->container->get("planning")->planTournamentPre($this->tournament, $options);
-        $match_schedule = $this->container->get("planning")->getSchedule($this->tournament);
-        /* @var $match MatchPlan */
-        foreach ($match_schedule["matches"] as $match) {
-            echo $match->getDate();
-            echo "  ";
-            echo $match->getTime();
-            echo "  ";
-            echo $match->getCategory()->getName() . "|" . $match->getGroup()->getName() . ":" . $match->getPlayground()->getName();
-            echo "  ";
-            echo $match->getTeamA();
-            echo " - ";
-            echo $match->getTeamB();
-            echo "\n";
-        }
-        $teams = array();
-        /* @var $match MatchPlan */
-        foreach ($match_schedule["matches"] as $match) {
-            $teams[$match->getTeamA()->getId()][] = $match;
-            $teams[$match->getTeamB()->getId()][] = $match;
-        }
-/*
-        foreach ($match_schedule["unassigned"] as $match) {
-            $teams[$match->getTeamA()->getId()][] = $match;
-            $teams[$match->getTeamB()->getId()][] = $match;
-        }
-*/
-        foreach ($teams as $team_matches) {
-            foreach ($team_matches as $match) {
-                echo $match->getDate();
-                echo "  ";
-                echo $match->getTime();
-                echo "  ";
-                echo $match->getCategory()->getName() . "|" . $match->getGroup()->getName() . ":" . $match->getPlayground()->getName();
-                echo "  ";
-                echo $match->getTeamA();
-                echo " - ";
-                echo $match->getTeamB();
-                echo "\n";
-            }
-            echo "\n";
-        }
     }
 }

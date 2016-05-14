@@ -222,4 +222,8 @@ class PlanningResults
     {
         array_push($this->unresolved, $match);
     }
+
+    public function shuffleUnresolved() {
+        shuffle($this->unresolved);
+    }
 }

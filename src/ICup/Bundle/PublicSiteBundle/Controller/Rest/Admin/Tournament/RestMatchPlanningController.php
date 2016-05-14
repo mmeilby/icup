@@ -22,6 +22,7 @@ use ICup\Bundle\PublicSiteBundle\Services\Doctrine\MatchSupport;
 use ICup\Bundle\PublicSiteBundle\Services\Entity\PlanningOptions;
 use ICup\Bundle\PublicSiteBundle\Services\Entity\QRelation;
 use ICup\Bundle\PublicSiteBundle\Services\Util;
+use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
@@ -40,13 +41,13 @@ class RestMatchPlanningController extends Controller
             $tournament = $this->checkArgs($tournamentid);
         }
         catch (ValidationException $e) {
-            return new Response(json_encode(array('success' => false, 'done' => true, 'unresolved' => 0)));
+            return new JsonResponse(array('success' => false, 'done' => true, 'unresolved' => 0));
         }
         try {
             $planningCard = $this->get('planning')->planTournamentByStep($tournament, $level);
         }
         catch (\Exception $e) {
-            return new Response(json_encode(array('success' => false, 'done' => true, 'unresolved' => 0)));
+            return new JsonResponse(array('success' => false, 'done' => true, 'unresolved' => 0));
         }
         $unresolved = 0;
         if (isset($planningCard['preliminary'])) {
@@ -56,7 +57,7 @@ class RestMatchPlanningController extends Controller
             $unresolved += $planningCard['elimination']->unresolved();
         }
         $done = $planningCard['level'] >= 100;
-        return new Response(json_encode(array('success' => true, 'done' => $done, 'unresolved' => $unresolved, 'level' => $planningCard['level'])));
+        return new JsonResponse(array('success' => true, 'done' => $done, 'unresolved' => $unresolved, 'level' => $planningCard['level']));
     }
 
     /**
@@ -68,13 +69,13 @@ class RestMatchPlanningController extends Controller
             $tournament = $this->checkArgs($tournamentid);
         }
         catch (ValidationException $e) {
-            return new Response(json_encode(array('success' => false, 'error' => $e->getMessage(), 'info' => $e->getDebugInfo())));
+            return new JsonResponse(array('success' => false, 'error' => $e->getMessage(), 'info' => $e->getDebugInfo()));
         }
         try {
             $matches = $this->get("tmnt")->listQualifiedTeamsByTournament($tournament);
         }
         catch (\Exception $e) {
-            return new Response(json_encode(array('success' => false, 'error' => $e->getMessage(), 'info' => '')));
+            return new JsonResponse(array('success' => false, 'error' => $e->getMessage(), 'info' => ''));
         }
         $result = array();
         foreach ($matches as $matchrec) {
@@ -98,7 +99,7 @@ class RestMatchPlanningController extends Controller
                 )
             );
         }
-        return new Response(json_encode(array('success' => true, 'matches' => $result)));
+        return new JsonResponse(array('success' => true, 'matches' => $result));
     }
 
     /**
@@ -125,13 +126,13 @@ class RestMatchPlanningController extends Controller
             }
         }
         catch (ValidationException $e) {
-            return new Response(json_encode(array('success' => false, 'error' => $e->getMessage(), 'info' => $e->getDebugInfo())));
+            return new JsonResponse(array('success' => false, 'error' => $e->getMessage(), 'info' => $e->getDebugInfo()));
         }
         try {
             $matches = $this->get('planning')->listMatchesByPlaygroundDate($playground, Date::getDate($matchDate));
         }
         catch (\Exception $e) {
-            return new Response(json_encode(array('success' => false, 'error' => $e->getMessage(), 'info' => '')));
+            return new JsonResponse(array('success' => false, 'error' => $e->getMessage(), 'info' => ''));
         }
         $result = array();
         foreach ($matches as $paid => $pamatches) {
@@ -148,7 +149,7 @@ class RestMatchPlanningController extends Controller
         usort($result, function($ar1, $ar2) {
             return $ar1['pa']['start'] > $ar2['pa']['start'] ? 1 : -1;
         });
-        return new Response(json_encode(array('success' => true, 'matches' => $result)));
+        return new JsonResponse(array('success' => true, 'matches' => $result));
     }
 
     /**
@@ -278,7 +279,7 @@ class RestMatchPlanningController extends Controller
             $host = $tournament->getHost();
             $utilService->validateEditorAdminUser($user, $host);
         } catch (ValidationException $e) {
-            return new Response(json_encode(array('success' => false, 'error' => $e->getMessage(), 'info' => $e->getDebugInfo())));
+            return new JsonResponse(array('success' => false, 'error' => $e->getMessage(), 'info' => $e->getDebugInfo()));
         }
         try {
             if ($matchtype == 'Q') {
@@ -308,12 +309,12 @@ class RestMatchPlanningController extends Controller
             $em = $this->get('doctrine')->getManager();
             $em->flush();
         } catch (\Exception $e) {
-            return new Response(json_encode(array('success' => false, 'error' => $e->getMessage(), 'info' => '')));
+            return new JsonResponse(array('success' => false, 'error' => $e->getMessage(), 'info' => ''));
         }
         try {
             $matches = $this->get('planning')->listMatchesByPlaygroundDate($playground, $matchDate);
         } catch (\Exception $e) {
-            return new Response(json_encode(array('success' => false, 'error' => $e->getMessage(), 'info' => '')));
+            return new JsonResponse(array('success' => false, 'error' => $e->getMessage(), 'info' => ''));
         }
         $result = array();
         foreach ($matches as $paid => $pamatches) {
@@ -331,7 +332,7 @@ class RestMatchPlanningController extends Controller
         usort($result, function($ar1, $ar2) {
             return $ar1['pa']['start'] > $ar2['pa']['start'] ? 1 : -1;
         });
-        return new Response(json_encode(array('success' => true, 'matches' => $result)));
+        return new JsonResponse(array('success' => true, 'matches' => $result));
     }
 
     private function checkValidity(MatchSchedule $sourcematch, PlaygroundAttribute $pattr) {
@@ -423,7 +424,7 @@ class RestMatchPlanningController extends Controller
         /* @var $tournament Tournament */
         $tournament = $this->get('entity')->getTournamentById($tournamentid);
         $dates = $this->get('match')->listMatchCalendar($tournament->getId());
-        return new Response(json_encode(array("start" => date_format($dates[0], "m/d/Y"), "end" => date_format($dates[count($dates)-1], "m/d/Y"))));
+        return new JsonResponse(array("start" => date_format($dates[0], "m/d/Y"), "end" => date_format($dates[count($dates)-1], "m/d/Y")));
     }
     
     /**

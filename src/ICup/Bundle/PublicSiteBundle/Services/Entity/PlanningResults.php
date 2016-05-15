@@ -200,8 +200,18 @@ class PlanningResults
         return true;
     }
 
+
     /**
-     * @return mixed
+     * @param array $unresolved
+     * @return PlanningResults
+     */
+    public function setUnresolved($unresolved) {
+        $this->unresolved = $unresolved;
+        return $this;
+    }
+
+    /**
+     * @return array
      */
     public function getUnresolved()
     {

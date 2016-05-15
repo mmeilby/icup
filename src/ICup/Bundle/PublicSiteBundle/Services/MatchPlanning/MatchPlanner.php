@@ -49,19 +49,54 @@ class MatchPlanner
     public function plan(PlanningResults $result) {
         $this->statistics['plan']['unresolved before'] = $result->unresolved();
         $unplaceable = array();
-        $result->shuffleUnresolved();
         while ($match = $result->nextUnresolved()) {
-            $slot_found = $this->planMatch($result, $match);
-            if (!$slot_found) {
+            $mpe = $this->planMatch($result, $match);
+            if ($mpe === false) {
                 // if this was not possible register the match as finally unassigned
                 $unplaceable[] = $match;
             }
+            else {
+                $this->placeMatch($result, $mpe);
+            }
         }
-        foreach ($unplaceable as $match) {
-            $result->appendUnresolved($match);
-        }
+        $result->setUnresolved($unplaceable);
         $this->statistics['plan']['unresolved after'] = $result->unresolved();
-//        $this->replanSwapSchedules($result);
+    }
+
+    /**
+     * Plan matches (preliminary rounds) for tournament
+     * @param PlanningResults $result
+     */
+    public function xplan(PlanningResults $result) {
+        $this->statistics['plan']['unresolved before'] = $result->unresolved();
+        do {
+            $unplaceable = array();
+            $bestschedules = array();
+//            $result->shuffleUnresolved();
+            while ($match = $result->nextUnresolved()) {
+                $mpe = $this->planMatch($result, $match);
+                if ($mpe === false) {
+                    // if this was not possible register the match as finally unassigned
+                    $unplaceable[] = $match;
+                }
+                else {
+                    $bestschedules[] = $mpe;
+                }
+            }
+            usort($bestschedules, function (MatchPlanningError $r1, MatchPlanningError $r2) {
+                return $r1->getError() > $r2->getError() ? 1 : -1;
+            });
+            $bestmpe = array_shift($bestschedules);
+            if ($bestmpe) {
+                $this->placeMatch($result, $bestmpe);
+                foreach ($bestschedules as $mpe) {
+                    /* @var $mpe MatchPlanningError */
+                    $unplaceable[] = $mpe->getMatch();
+                }
+            }
+            $result->setUnresolved($unplaceable);
+        } while ($result->unresolved());
+        $this->statistics['plan']['unresolved after'] = $result->unresolved();
     }
 
     /**
@@ -77,36 +112,34 @@ class MatchPlanner
             /* @var $slotschedule DateTime */
             $slotschedule = $pa->getSchedule();
             $e = $this->dE($result, $pa, $match, $slotschedule);
-            $searchTree[] = new MatchPlanningError($pa, $slotschedule, $e);
+            $searchTree[] = new MatchPlanningError($match, $pa, $slotschedule, $e);
         }
-
-        if (count($searchTree)) {
-            usort($searchTree, function (MatchPlanningError $r1, MatchPlanningError $r2) {
-                return $r1->getError() > $r2->getError() ? 1 : -1;
-            });
-            /* @var $mpe MatchPlanningError *
-            foreach ($searchTree as $mpe) {
-                echo Date::getDate($mpe->getSlotschedule())." ".Date::getTime($mpe->getSlotschedule())." ".$mpe->getPA()->getPlayground()->getNo().": ".$mpe->getError()."\n";
-            }
-            echo "\n"; */
-            /* @var $mpe MatchPlanningError */
-            $mpe = reset($searchTree);            
-            $slotschedule = $mpe->getSlotschedule();
-            $pa = $mpe->getPA();
-            $match->setDate(Date::getDate($slotschedule));
-            $match->setTime(Date::getTime($slotschedule));
-            $match->setPlayground($pa->getPlayground());
-            $match->setPlaygroundAttribute($pa->getPA());
-            $slotschedule->add(new DateInterval('PT'.$match->getCategory()->getMatchtime().'M'));
-            $pa->setSchedule($slotschedule);
-            $matchlist = $pa->getMatchlist();
-            $matchlist[] = $match;
-            $pa->setMatchlist($matchlist);
-            $result->getTeamCheck()->reserveCapacity($match, $pa->getTimeslot());
+        usort($searchTree, function (MatchPlanningError $r1, MatchPlanningError $r2) {
+            return $r1->getError() > $r2->getError() ? 1 : -1;
+        });
+        /* @var $mpe MatchPlanningError *
+        foreach ($searchTree as $mpe) {
+            echo Date::getDate($mpe->getSlotschedule())." ".Date::getTime($mpe->getSlotschedule())." ".$mpe->getPA()->getPlayground()->getNo().": ".$mpe->getError()."\n";
         }
-        return count($searchTree);
+        echo "\n"; */
+        return reset($searchTree);
     }
 
+    private function placeMatch(PlanningResults $result, MatchPlanningError $mpe) {
+        $slotschedule = $mpe->getSlotschedule();
+        $pa = $mpe->getPA();
+        $match = $mpe->getMatch();
+        $match->setDate(Date::getDate($slotschedule));
+        $match->setTime(Date::getTime($slotschedule));
+        $match->setPlayground($pa->getPlayground());
+        $match->setPlaygroundAttribute($pa->getPA());
+        $slotschedule->add(new DateInterval('PT'.$match->getCategory()->getMatchtime().'M'));
+        $pa->setSchedule($slotschedule);
+        $matchlist = $pa->getMatchlist();
+        $matchlist[] = $match;
+        $pa->setMatchlist($matchlist);
+        $result->getTeamCheck()->reserveCapacity($match, $pa->getTimeslot());
+    }
     /**
      * Error function - calculates the score for the current planning result.
      * A value closer to zero is better - any score will be positive or zero
@@ -119,7 +152,7 @@ class MatchPlanner
     const CATEGORY_PENALTY = 10.0;
     const TIMESLOT_EXCESS_PENALTY = 10.0;
     const SITE_PENALTY = 5.0;
-    const REST_PENALTY = 5.0;           // multiplied with the number of matches between two matches (3 is max)
+    const REST_PENALTY = 5.0;           // multiplied with the number of minutes between two matches - less than required rest period
     const VENUE_PENALTY = 0.1;          // multiplied with the no of a venue
     const TIME_LEFT_PENALTY = 0.01;     // multiplied with minutes left in a timeslot
     
@@ -135,15 +168,19 @@ class MatchPlanner
                 $dE += ($excess - $match->getCategory()->getMatchtime())*MatchPlanner::TIME_LEFT_PENALTY;
             }
             $dE += max($match->getCategory()->getMatchtime() - $excess, 0)*MatchPlanner::TIMESLOT_EXCESS_PENALTY;
-            $rest = $result->getTeamCheck()->getMinRestTime($match, $slotschedule);
-            $restPenalty = $pa->getTimeslot()->getRestperiod() - min($pa->getTimeslot()->getRestperiod(), $rest);
-            $dE += $restPenalty*MatchPlanner::REST_PENALTY;
-            $dE += $pa->getPlayground()->getNo()*MatchPlanner::VENUE_PENALTY;
-            $dE += $pa->isCategoryAllowed($match->getCategory()) ? 0 : MatchPlanner::CATEGORY_PENALTY;
-            if ($pa->getTimeslot()->getPenalty()) {
-                $dE += $result->getTeamCheck()->travelPenalty($match, $pa->getPlayground()->getSite())*MatchPlanner::SITE_PENALTY;
+            $rest = $result->getTeamCheck()->getMinRestTime($match, $slotschedule) - $match->getCategory()->getMatchtime();
+            if ($rest >= 0) {
+                $dE += ($pa->getTimeslot()->getRestperiod() - min($pa->getTimeslot()->getRestperiod(), $rest))*MatchPlanner::REST_PENALTY;
+                $dE += $pa->getPlayground()->getNo()*MatchPlanner::VENUE_PENALTY;
+                $dE += $pa->isCategoryAllowed($match->getCategory()) ? 0 : MatchPlanner::CATEGORY_PENALTY;
+                if ($pa->getTimeslot()->getPenalty()) {
+                    $dE += $result->getTeamCheck()->travelPenalty($match, $pa->getPlayground()->getSite())*MatchPlanner::SITE_PENALTY;
+                }
+                $dE += $result->getTeamCheck()->timeslotPenalty($match, $slotschedule, $pa->getTimeslot())*MatchPlanner::TIMESLOT_CAPACITY_PENALTY;
             }
-            $dE += $result->getTeamCheck()->timeslotPenalty($match, $slotschedule, $pa->getTimeslot())*MatchPlanner::TIMESLOT_CAPACITY_PENALTY;
+            else {
+                $dE = MatchPlanner::IMPOSSIBLE;
+            }
         }
         else {
             $dE = MatchPlanner::IMPOSSIBLE;

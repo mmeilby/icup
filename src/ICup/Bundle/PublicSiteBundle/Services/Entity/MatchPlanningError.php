@@ -1,6 +1,7 @@
 <?php
 namespace ICup\Bundle\PublicSiteBundle\Services\Entity;
 
+use ICup\Bundle\PublicSiteBundle\Entity\MatchPlan;
 use ICup\Bundle\PublicSiteBundle\Services\Entity\PlaygroundAttribute as PA;
 use DateTime;
 
@@ -10,6 +11,10 @@ use DateTime;
  */
 class MatchPlanningError
 {
+    /**
+     * @var $match MatchPlan
+     */
+    private $match;
     /**
      * @var $pa PA
      */
@@ -29,10 +34,27 @@ class MatchPlanningError
      * @param DateTime $slotschedule
      * @param $error
      */
-    public function __construct(PA $pa, DateTime $slotschedule, $error) {
+    public function __construct(MatchPlan $match, PA $pa, DateTime $slotschedule, $error) {
+        $this->match = $match;
         $this->pa = $pa;
         $this->slotschedule = $slotschedule;
         $this->error = $error;
+    }
+
+    /**
+     * @return MatchPlan
+     */
+    public function getMatch() {
+        return $this->match;
+    }
+
+    /**
+     * @param MatchPlan $match
+     * @return MatchPlanningError
+     */
+    public function setMatch($match) {
+        $this->match = $match;
+        return $this;
     }
 
     /**

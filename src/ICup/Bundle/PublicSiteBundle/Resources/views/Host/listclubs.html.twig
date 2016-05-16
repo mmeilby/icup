@@ -304,16 +304,34 @@
                     $scope.addEnrollment = function (category, club) {
                         $scope.club = club;
                         $http.get(Routing.generate('_rest_club_enroll_add', { 'categoryid': category.id, 'clubid': club.id })).then(function(data) {
-                            category.enrolled++;
-                            club.enrolled++;
-                        });
+                                    category.enrolled++;
+                                    club.enrolled++;
+                                },
+                                function (response) {
+                                    $mdDialog.show(
+                                            $mdDialog.alert()
+                                                    .clickOutsideToClose(true)
+                                                    .title('{% trans from 'club' %}FORM.LISTENROLLED.TITLE{% endtrans %}')
+                                                    .textContent(response.data.errors.join('. '))
+                                                    .ok('{% trans %}FORM.CLOSE{% endtrans %}')
+                                    );
+                                });
                     };
                     $scope.removeEnrollment = function (category, club) {
                         $scope.club = club;
                         $http.get(Routing.generate('_rest_club_enroll_del', { 'categoryid': category.id, 'clubid': club.id })).then(function(data) {
-                            category.enrolled--;
-                            club.enrolled--;
-                        });
+                                    category.enrolled--;
+                                    club.enrolled--;
+                                },
+                                function (response) {
+                                    $mdDialog.show(
+                                            $mdDialog.alert()
+                                                    .clickOutsideToClose(true)
+                                                    .title('{% trans from 'club' %}FORM.LISTENROLLED.TITLE{% endtrans %}')
+                                                    .textContent(response.data.errors.join('. '))
+                                                    .ok('{% trans %}FORM.CLOSE{% endtrans %}')
+                                    );
+                                });
                     };
                     $scope.addGroup = function () {
                         $http.post(Routing.generate('rest_group_create', {'categoryid': $scope.category.id }), $scope.group_object).then(function (data) {

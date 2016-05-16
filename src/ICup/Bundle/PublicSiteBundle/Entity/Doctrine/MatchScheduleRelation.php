@@ -33,7 +33,7 @@ class MatchScheduleRelation
      * @var Team $team
      * Relation to Team
      * @ORM\ManyToOne(targetEntity="Team")
-     * @ORM\JoinColumn(name="cid", referencedColumnName="id")
+     * @ORM\JoinColumn(name="cid", referencedColumnName="id", onDelete="CASCADE")
      */
     protected $team;
 

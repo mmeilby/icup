@@ -207,8 +207,6 @@ class RestMatchPlanningController extends Controller
             );
         } else {
             /* @var $match MatchPlan */
-            $teamA = $match->getTeamA();
-            $teamB = $match->getTeamB();
             $result = array(
                 'uid' => 'M'.$match->getId(),
                 'id' => $match->getId(),
@@ -219,21 +217,31 @@ class RestMatchPlanningController extends Controller
                 'classification' => Group::$PRE,
                 'category' => array('id' => $match->getCategory()->getId(), 'name' => $match->getCategory()->getName()),
                 'group' => array('id' => $match->getGroup()->getId(), 'name' => $match->getGroup()->getName(), 'classification' => $match->getGroup()->getClassification()),
-                'home' => array(
-                    'id' => $teamA->getId(),
-                    'name' => $teamA->getTeamName(),
-                    'country' => $this->get('translator')->trans($teamA->getClub()->getCountry(), array(), 'lang'),
-                    'flag' => $this->get('util')->getFlag($teamA->getClub()->getCountry())
-                ),
-                'away' => array(
-                    'id' => $teamB->getId(),
-                    'name' => $teamB->getTeamName(),
-                    'country' => $this->get('translator')->trans($teamB->getClub()->getCountry(), array(), 'lang'),
-                    'flag' => $this->get('util')->getFlag($teamB->getClub()->getCountry())
-                )
+                'home' => $this->getTeamRecord($match->getTeamA()),
+                'away' => $this->getTeamRecord($match->getTeamB())
             );
         }
         return $result;
+    }
+
+    private function getTeamRecord($team) {
+        /* @var $team Team */
+        if ($team) {
+            return array(
+                'id' => $team->getId(),
+                'name' => $team->getTeamName(),
+                'country' => $this->get('translator')->trans($team->getClub()->getCountry(), array(), 'lang'),
+                'flag' => $this->get('util')->getFlag($team->getClub()->getCountry())
+            );
+        }
+        else {
+            return array(
+                'id' => 0,
+                'name' => $this->get('translator')->trans("VACANT_TEAM", array(), 'teamname'),
+                'country' => "",
+                'flag' => ""
+            );
+        }
     }
 
     private function getGroupName(QRelation $rel) {

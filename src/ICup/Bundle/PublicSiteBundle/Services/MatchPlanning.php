@@ -402,32 +402,35 @@ class MatchPlanning
                 }
                 else {
                     /* @var $match MatchPlan */
-                    $matchrec = new Match();
-                    $matchrec->setMatchno($match->getMatchno());
-                    $matchrec->setDate($match->getDate());
-                    $matchrec->setTime($match->getTime());
-                    $matchrec->setGroup($match->getGroup());
-                    $matchrec->setPlayground($match->getPlayground());
+                    if ($match->getTeamA() && $match->getTeamB()) {
+                        // both home and away team must be defined
+                        $matchrec = new Match();
+                        $matchrec->setMatchno($match->getMatchno());
+                        $matchrec->setDate($match->getDate());
+                        $matchrec->setTime($match->getTime());
+                        $matchrec->setGroup($match->getGroup());
+                        $matchrec->setPlayground($match->getPlayground());
 
-                    $resultreqA = new MatchRelation();
-                    $resultreqA->setTeam($match->getTeamA());
-                    $resultreqA->setAwayteam(MatchSupport::$HOME);
-                    $resultreqA->setScorevalid(false);
-                    $resultreqA->setScore(0);
-                    $resultreqA->setPoints(0);
-                    $matchrec->addMatchRelation($resultreqA);
+                        $resultreqA = new MatchRelation();
+                        $resultreqA->setTeam($match->getTeamA());
+                        $resultreqA->setAwayteam(MatchSupport::$HOME);
+                        $resultreqA->setScorevalid(false);
+                        $resultreqA->setScore(0);
+                        $resultreqA->setPoints(0);
+                        $matchrec->addMatchRelation($resultreqA);
 
-                    $resultreqB = new MatchRelation();
-                    $resultreqB->setTeam($match->getTeamB());
-                    $resultreqB->setAwayteam(MatchSupport::$AWAY);
-                    $resultreqB->setScorevalid(false);
-                    $resultreqB->setScore(0);
-                    $resultreqB->setPoints(0);
-                    $matchrec->addMatchRelation($resultreqB);
+                        $resultreqB = new MatchRelation();
+                        $resultreqB->setTeam($match->getTeamB());
+                        $resultreqB->setAwayteam(MatchSupport::$AWAY);
+                        $resultreqB->setScorevalid(false);
+                        $resultreqB->setScore(0);
+                        $resultreqB->setPoints(0);
+                        $matchrec->addMatchRelation($resultreqB);
 
-                    $matchrec->getGroup()->getMatches()->add($matchrec);
-                    $matchrec->getPlayground()->getMatches()->add($matchrec);
-                    $this->em->persist($matchrec);
+                        $matchrec->getGroup()->getMatches()->add($matchrec);
+                        $matchrec->getPlayground()->getMatches()->add($matchrec);
+                        $this->em->persist($matchrec);
+                    }
                 }
             }
             $this->em->flush();

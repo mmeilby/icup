@@ -17,6 +17,7 @@ use ICup\Bundle\PublicSiteBundle\Entity\Doctrine\QMatchRelation;
 use ICup\Bundle\PublicSiteBundle\Entity\Doctrine\QMatchSchedule;
 use ICup\Bundle\PublicSiteBundle\Entity\Doctrine\QMatchSchedulePlan;
 use ICup\Bundle\PublicSiteBundle\Entity\Doctrine\QMatchScheduleRelation;
+use ICup\Bundle\PublicSiteBundle\Entity\Doctrine\Team;
 use ICup\Bundle\PublicSiteBundle\Entity\Doctrine\Tournament;
 use ICup\Bundle\PublicSiteBundle\Entity\Doctrine\User;
 use ICup\Bundle\PublicSiteBundle\Entity\QMatchPlan;
@@ -585,8 +586,8 @@ class MatchPlanningController extends Controller
                     ';"'.$match->getCategory()->getName().
                     '";"'.$match->getGroup()->getName().
                     '";"'.$match->getPlayground()->getNo().
-                    '";"'.str_replace('"', "|", $match->getTeamA()->getTeamName())." (".$match->getTeamA()->getClub()->getCountry().")".
-                    '";"'.str_replace('"', "|", $match->getTeamB()->getTeamName())." (".$match->getTeamB()->getClub()->getCountry().")".
+                    '";"'.$this->getTeamRecord($match->getTeamA()).
+                    '";"'.$this->getTeamRecord($match->getTeamB()).
                     '";';
                 $outputar[] = $outputstr;
             }
@@ -609,8 +610,8 @@ class MatchPlanningController extends Controller
                     $outputstr =
                         ';;;"'.$match->getCategory()->getName().
                         '";"'.$match->getGroup()->getName().
-                        '";;"'.str_replace('"', "|", $match->getTeamA()->getTeamName())." (".$match->getTeamA()->getClub()->getCountry().")".
-                        '";"'.str_replace('"', "|", $match->getTeamB()->getTeamName())." (".$match->getTeamB()->getClub()->getCountry().")".
+                        '";;"'.$this->getTeamRecord($match->getTeamA()).
+                        '";"'.$this->getTeamRecord($match->getTeamB()).
                         '";';
                     $outputar[] = $outputstr;
                 }
@@ -620,10 +621,11 @@ class MatchPlanningController extends Controller
         $tid = array();
         foreach ($result['matches'] as $match) {
             if (!$match instanceof QMatchPlan) {
-                if (!isset($tid[$match->getTeamA()->getId()])) {
-                    $outputstr = '"' . $match->getCategory()->getName() .
+                if ($match->getTeamA() && !isset($tid[$match->getTeamA()->getId()])) {
+                    $outputstr =
+                        '"' . $match->getCategory()->getName() .
                         '";"' . $match->getGroup()->getName() .
-                        '";"' . str_replace('"', "'", $match->getTeamA()->getTeamName()) . " (" . $match->getTeamA()->getClub()->getCountry() . ")" . '"';
+                        '";"' . $this->getTeamRecord($match->getTeamA()) . '"';
                     $tid[$match->getTeamA()->getId()] = $match->getTeamA()->getTeamName();
                     $outputar[] = $outputstr;
                 }
@@ -633,6 +635,16 @@ class MatchPlanningController extends Controller
         return $outputar;
     }
 
+    private function getTeamRecord($team) {
+        /* @var $team Team */
+        if ($team) {
+            return str_replace('"', "|", $team->getTeamName())." (".$team->getClub()->getCountry().")";
+        }
+        else {
+            return $this->get('translator')->trans("VACANT_TEAM", array(), 'teamname');
+        }
+    }
+    
     /**
      * Check tournament id and validate current user rights to change tournament
      * @param $tournamentid

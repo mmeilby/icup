@@ -11,6 +11,7 @@ use ICup\Bundle\PublicSiteBundle\Entity\Doctrine\Enrollment;
 use ICup\Bundle\PublicSiteBundle\Entity\Doctrine\Group;
 use ICup\Bundle\PublicSiteBundle\Entity\Doctrine\GroupOrder;
 use ICup\Bundle\PublicSiteBundle\Entity\Doctrine\MatchSchedule;
+use ICup\Bundle\PublicSiteBundle\Entity\Doctrine\MatchScheduleRelation;
 use ICup\Bundle\PublicSiteBundle\Entity\Doctrine\PlaygroundAttribute;
 use ICup\Bundle\PublicSiteBundle\Entity\Doctrine\QMatchSchedule;
 use ICup\Bundle\PublicSiteBundle\Entity\Doctrine\Team;
@@ -144,6 +145,7 @@ class BusinessLogic
         }
         else {
             foreach ($enrolled as $idx => $team) {
+                /* @var $team Team */
                 $division = chr($idx + 65);
                 $team->setDivision($division);
             }
@@ -166,7 +168,19 @@ class BusinessLogic
         $teamsAssigned = $qbt->getOneOrNullResult();
         return $teamsAssigned != null ? $teamsAssigned['teams'] > 0 : false;
     }
-    
+
+    public function isTeamScheduled($teamid) {
+        $qb = $this->em->createQuery(
+            "select count(r) as schedules ".
+            "from ".$this->entity->getRepositoryPath('MatchScheduleRelation')." r, ".
+                    $this->entity->getRepositoryPath('MatchSchedule')." m ".
+            "where r.matchschedule=m.id and r.team=:team ".
+            "order by r.matchschedule");
+        $qb->setParameter('team', $teamid);
+        $results = $qb->getOneOrNullResult();
+        return $results != null ? $results['schedules'] > 0 : false;
+    }
+
     public function enrollTeam(Category $category, User $user, Club $club, $name, $division, $vacant = false) {
         $team = new Team();
         $team->setClub($club);
@@ -244,6 +258,7 @@ class BusinessLogic
             $this->em->persist($groupOrder);
         }
         else {
+            /* @var $vacantTeam Team */
             $vacantTeam = $groupOrder->getTeam();
             $this->moveMatches($groupid, $vacantTeam->getId(), $teamid);
             $groupOrder->setTeam($team);
@@ -300,6 +315,11 @@ class BusinessLogic
         }
         if ($this->isTeamActive($groupid, $teamid)) {
             throw new ValidationException("TEAMISACTIVE", "Team has matchresults - team=".$teamid.", group=".$groupid);
+        }
+        // wipe matchschedules
+        foreach ($this->entity->getRepository('MatchScheduleRelation')->findBy(array('team' => $teamid)) as $rel) {
+            /* @var $rel MatchScheduleRelation */
+            $this->em->remove($rel->getMatchSchedule());
         }
         $this->em->remove($groupOrder);
         $this->em->flush();

@@ -316,7 +316,7 @@ class BusinessLogic
         if ($this->isTeamActive($groupid, $teamid)) {
             throw new ValidationException("TEAMISACTIVE", "Team has matchresults - team=".$teamid.", group=".$groupid);
         }
-        // wipe matchschedules
+        // remove planned matches in which this team appear - in general reassigning a team with planned matches is reckless behaviour, but you never know...
         foreach ($this->entity->getRepository('MatchScheduleRelation')->findBy(array('team' => $teamid)) as $rel) {
             /* @var $rel MatchScheduleRelation */
             $this->em->remove($rel->getMatchSchedule());

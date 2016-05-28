@@ -117,6 +117,22 @@ FORM:
     MATCHPRINT:
         CAPTION: Udskriv kampliste
         DESCRIPTION: Vis kampliste for en dag til udskrift
+    SEARCH:
+        TITLE: Find kampe
+        SUBTITLE: Vælg og se de kampe der passer
+    ADDCATEGORY: Tilføj ny gruppe
+    ANY: - VIS ALLE -
+    LIMIT: Begræns antal rækker
+    LIMIT10: Vis 10 kampe
+    LIMIT25: Vis 25 kampe
+    LIMIT100: Vis 100 kampe
+    LIMIT500: Vis 500 kampe
+    TEAM: Hold
+    CATEGORY: Gruppe
+    GROUP: Pulje
+    PLAYGROUND: Bane
+    DATE: Kampdato
+    NORESULTS: Der er ingen kampe der passer til det søgte
   LISTHOSTS:
     TITLE: Vedligehold turneringer og værter
     CAPTION: Værter og turneringer

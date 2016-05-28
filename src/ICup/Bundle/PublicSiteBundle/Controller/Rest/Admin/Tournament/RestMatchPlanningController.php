@@ -2,6 +2,7 @@
 namespace ICup\Bundle\PublicSiteBundle\Controller\Rest\Admin\Tournament;
 
 use Doctrine\ORM\EntityManager;
+use ICup\Bundle\PublicSiteBundle\Entity\Doctrine\Category;
 use ICup\Bundle\PublicSiteBundle\Entity\Doctrine\Date;
 use ICup\Bundle\PublicSiteBundle\Entity\Doctrine\Group;
 use ICup\Bundle\PublicSiteBundle\Entity\Doctrine\GroupOrder;
@@ -20,6 +21,7 @@ use ICup\Bundle\PublicSiteBundle\Entity\QMatchPlan;
 use ICup\Bundle\PublicSiteBundle\Exceptions\ValidationException;
 use ICup\Bundle\PublicSiteBundle\Services\Doctrine\MatchSupport;
 use ICup\Bundle\PublicSiteBundle\Services\Entity\PlanningOptions;
+use ICup\Bundle\PublicSiteBundle\Services\Entity\PlanningResults;
 use ICup\Bundle\PublicSiteBundle\Services\Entity\QRelation;
 use ICup\Bundle\PublicSiteBundle\Services\Util;
 use Symfony\Component\HttpFoundation\JsonResponse;
@@ -30,39 +32,153 @@ use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use DateTime;
 use DateInterval;
 
+/**
+ * Doctrine\Category controller.
+ *
+ * @Route("/rest/m/plan")
+ */
 class RestMatchPlanningController extends Controller
 {
     /**
      * Plan matches according to assigned groups and match configuration
-     * @Route("/edit/rest/m/plan/plan/{tournamentid}/{level}", name="_rest_match_planning_plan", options={"expose"=true})
+     * @Route("/plan/{tournamentid}/{level}", name="_rest_match_planning_plan", options={"expose"=true})
      */
-    public function planMatchesAction($tournamentid, $level, Request $request) {
+    public function planMatchesAction($tournamentid, $level) {
         try {
             $tournament = $this->checkArgs($tournamentid);
         }
         catch (ValidationException $e) {
-            return new JsonResponse(array('success' => false, 'done' => true, 'unresolved' => 0));
+            return new JsonResponse(array('errors' => array($e->getMessage())), Response::HTTP_FORBIDDEN);
         }
         try {
             $planningCard = $this->get('planning')->planTournamentByStep($tournament, $level);
         }
         catch (\Exception $e) {
-            return new JsonResponse(array('success' => false, 'done' => true, 'unresolved' => 0));
+            return new JsonResponse(array('errors' => array($e->getMessage())), Response::HTTP_BAD_REQUEST);
         }
-        $unresolved = 0;
+        $catcnt = array();
         if (isset($planningCard['preliminary'])) {
-            $unresolved += $planningCard['preliminary']->unresolved();
+            $this->addUnresolved($planningCard['preliminary'], $catcnt);
         }
         if (isset($planningCard['elimination'])) {
-            $unresolved += $planningCard['elimination']->unresolved();
+            $this->addUnresolved($planningCard['elimination'], $catcnt);
         }
         $done = $planningCard['level'] >= 100;
-        return new JsonResponse(array('success' => true, 'done' => $done, 'unresolved' => $unresolved, 'level' => $planningCard['level']));
+        $categories = array();
+        foreach ($catcnt as $catrec) {
+            /* @var $category Category */
+            $category = $catrec['category'];
+            $categories[] = array_merge($category->jsonSerialize(), array(
+                'matchcount' => $catrec['matchcount'],
+                'classification_translated' =>
+                    $this->get('translator')->transChoice(
+                        'GENDER.'.$category->getGender().$category->getClassification(),
+                        $category->getAge(),
+                        array('%age%' => $category->getAge()),
+                        'tournament')
+            ));
+        }
+        return new JsonResponse(array('done' => $done, 'unassigned_by_category' => $categories, 'level' => $planningCard['level']));
+    }
+
+    private function addUnresolved(PlanningResults $result, &$catcnt) {
+        foreach ($result->getUnresolved() as $match) {
+            /* @var $match MatchPlan */
+            $category = $match->getCategory();
+            if (isset($catcnt[$category->getId()])) {
+                $catcnt[$category->getId()]['matchcount']++;
+            } else {
+                $catcnt[$category->getId()] = array(
+                    'category' => $category,
+                    'matchcount' => 1
+                );
+            }
+        }
+    }
+    
+    /**
+     * Get planned matches
+     * @Route("/get/{tournamentid}", name="_rest_match_planning_get_plan", options={"expose"=true})
+     */
+    public function getPlanAction($tournamentid) {
+        try {
+            $tournament = $this->checkArgs($tournamentid);
+        }
+        catch (ValidationException $e) {
+            return new JsonResponse(array('errors' => array($e->getMessage())), Response::HTTP_FORBIDDEN);
+        }
+        try {
+            $schedule = $this->get('planning')->getSchedule($tournament);
+        }
+        catch (\Exception $e) {
+            return new JsonResponse(array('errors' => array($e->getMessage())), Response::HTTP_BAD_REQUEST);
+        }
+        $result = array();
+        foreach ($schedule['matches'] as $match) {
+            /* @var $match MatchPlan */
+            $result[] = $this->getJsonMatchPlan($match, true);
+        }
+        $categories = array();
+        foreach ($schedule['unassigned_by_category'] as $catrec) {
+            /* @var $category Category */
+            $category = $catrec['category'];
+            $categories[] = array_merge($category->jsonSerialize(), array(
+                'matchcount' => $catrec['matchcount'],
+                'classification_translated' =>
+                    $this->get('translator')->transChoice(
+                        'GENDER.'.$category->getGender().$category->getClassification(),
+                        $category->getAge(),
+                        array('%age%' => $category->getAge()),
+                        'tournament')
+            ));
+        }
+        return new JsonResponse(array('matches' => $result, 'unassigned_by_category' => $categories));
     }
 
     /**
      * Plan matches according to assigned groups and match configuration
-     * @Route("/edit/rest/m/plan/listq/{tournamentid}", name="_rest_match_planning_list_qualified", options={"expose"=true})
+     * @Route("/save/{tournamentid}", name="_rest_match_planning_save_plan", options={"expose"=true})
+     */
+    public function savePlanAction($tournamentid) {
+        try {
+            $tournament = $this->checkArgs($tournamentid);
+        }
+        catch (ValidationException $e) {
+            return new JsonResponse(array('errors' => array($e->getMessage())), Response::HTTP_FORBIDDEN);
+        }
+        try {
+            $this->get('planning')->publishSchedule($tournament);
+        }
+        catch (\Exception $e) {
+            return new JsonResponse(array('errors' => array($e->getMessage())), Response::HTTP_BAD_REQUEST);
+        }
+        return new JsonResponse(array(), Response::HTTP_NO_CONTENT);
+    }
+
+    /**
+     * Plan matches according to assigned groups and match configuration
+     * @Route("/reset/{tournamentid}", name="_rest_match_planning_reset_plan", options={"expose"=true})
+     */
+    public function resetPlanAction($tournamentid) {
+        try {
+            $tournament = $this->checkArgs($tournamentid);
+        }
+        catch (ValidationException $e) {
+            return new JsonResponse(array('errors' => array($e->getMessage())), Response::HTTP_FORBIDDEN);
+        }
+        try {
+            $this->get('logic')->removeMatchSchedules($tournament);
+            $this->get('logic')->removeQMatchSchedules($tournament);
+        }
+        catch (\Exception $e) {
+            return new JsonResponse(array('errors' => array($e->getMessage())), Response::HTTP_BAD_REQUEST);
+        }
+        return new JsonResponse(array(), Response::HTTP_NO_CONTENT);
+    }
+
+    /**
+     * List matches where both teams are found by elimination matches
+     * @Route("/listq/{tournamentid}", name="_rest_match_planning_list_qualified", options={"expose"=true})
      */
     public function listQualifiedAction($tournamentid, Request $request) {
         try {
@@ -104,7 +220,7 @@ class RestMatchPlanningController extends Controller
 
     /**
      * Return planned and unassigned matches for a specified venue and match date
-     * @Route("/edit/rest/m/plan/listm/{playgroundid}/{date}", name="_rest_match_planning_list_matches", options={"expose"=true})
+     * @Route("/listm/{playgroundid}/{date}", name="_rest_match_planning_list_matches", options={"expose"=true})
      */
     public function listMatchesAction($playgroundid, $date, Request $request) {
         try {
@@ -186,10 +302,12 @@ class RestMatchPlanningController extends Controller
                 'matchno' => $match->getMatchno() ? $match->getMatchno() : '',
                 'elimination' => true,
                 'status' => $match->isAssigned() ? ($validmatch ? '' : 'A') : 'W',
+                'date' => array('text' => $match->getDate() ? date_format($match->getSchedule(), $this->get('translator')->trans('FORMAT.DATE')) : '', 'raw' => $match->getDate()),
                 'time' => array('text' => $match->getTime() ? date_format($match->getSchedule(), $this->get('translator')->trans('FORMAT.TIME')) : '', 'raw' => $match->getTime()),
                 'classification' => $match->getClassification(),
-                'category' => array('id' => $match->getCategory()->getId(), 'name' => $match->getCategory()->getName()),
+                'category' => $match->getCategory()->jsonSerialize(),
                 'group' => array('id' => -1, 'name' => $this->getGroupNameFromLitra($match->getLitra(), $match->getClassification()), 'classification' => $match->getClassification()),
+                'venue' => $match->getPlayground()->jsonSerialize(),
                 'home' => array(
                     'name' => $this->getGroupName($relA),
                     'group' => $relA->getGroup() ? $relA->getGroup()->getId() : -1,
@@ -213,10 +331,12 @@ class RestMatchPlanningController extends Controller
                 'matchno' => $match->getMatchno() ? $match->getMatchno() : '',
                 'elimination' => false,
                 'status' => $match->isAssigned() ? ($validmatch ? '' : 'A') : 'W',
+                'date' => array('text' => $match->getDate() ? date_format($match->getSchedule(), $this->get('translator')->trans('FORMAT.DATE')) : '', 'raw' => $match->getDate()),
                 'time' => array('text' => $match->getTime() ? date_format($match->getSchedule(), $this->get('translator')->trans('FORMAT.TIME')) : '', 'raw' => $match->getTime()),
                 'classification' => Group::$PRE,
-                'category' => array('id' => $match->getCategory()->getId(), 'name' => $match->getCategory()->getName()),
-                'group' => array('id' => $match->getGroup()->getId(), 'name' => $match->getGroup()->getName(), 'classification' => $match->getGroup()->getClassification()),
+                'category' => $match->getCategory()->jsonSerialize(),
+                'group' => $match->getGroup()->jsonSerialize(),
+                'venue' => $match->getPlayground()->jsonSerialize(),
                 'home' => $this->getTeamRecord($match->getTeamA()),
                 'away' => $this->getTeamRecord($match->getTeamB())
             );
@@ -264,7 +384,7 @@ class RestMatchPlanningController extends Controller
 
     /**
      * Return planned and unassigned matches for a specified venue and match date
-     * @Route("/edit/rest/m/plan/movem/{matchtype}/{matchid}/{paid}/{matchtime}", name="_rest_match_planning_move_match", options={"expose"=true})
+     * @Route("/movem/{matchtype}/{matchid}/{paid}/{matchtime}", name="_rest_match_planning_move_match", options={"expose"=true})
      * @param $matchtype
      * @param $matchid
      * @param $paid
@@ -423,7 +543,7 @@ class RestMatchPlanningController extends Controller
 
     /**
      * Get the match calendar for the tournament identified by tournament id
-     * @Route("/edit/rest/m/plan/get/calendar/{tournamentid}", name="_rest_get_match_calendar", options={"expose"=true})
+     * @Route("/get/calendar/{tournamentid}", name="_rest_get_match_calendar", options={"expose"=true})
      * @param $tournamentid
      * @return Response
      */

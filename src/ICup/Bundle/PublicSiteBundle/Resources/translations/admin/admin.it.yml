@@ -116,6 +116,22 @@ FORM:
     MATCHPRINT:
         CAPTION: Stampa il report dei risultati
         DESCRIPTION: Visulizza il report delle gare per giorno
+    SEARCH:
+        TITLE: Search matches
+        SUBTITLE: Select search criteria to find the matches you seek
+    ADDCATEGORY: Add new category
+    ANY: - SHOW ANY -
+    LIMIT: Risultati limitato
+    LIMIT10: Show 10 matches
+    LIMIT25: Show 25 matches
+    LIMIT100: Show 100 matches
+    LIMIT500: Show 500 matches
+    TEAM: Squadra
+    CATEGORY: Categoria
+    GROUP: Girone
+    PLAYGROUND: Campo
+    DATE: Data di gara
+    NORESULTS: No matches fit the search criteria
   LISTHOSTS:
     TITLE: Amministrazione
     CAPTION: Host e tornei

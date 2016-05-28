@@ -46,7 +46,19 @@ class RestCategoryController extends Controller
         catch (ValidationException $e) {
             return new JsonResponse(array('errors' => array($e->getMessage())), Response::HTTP_NOT_FOUND);
         }
-        return new JsonResponse($tournament->getCategories()->toArray());
+        $categories = array();
+        foreach ($tournament->getCategories() as $category) {
+            /* @var $category Category */
+            $categories[] = array_merge($category->jsonSerialize(), array(
+                'classification_translated' =>
+                    $this->get('translator')->transChoice(
+                        'GENDER.'.$category->getGender().$category->getClassification(),
+                        $category->getAge(),
+                        array('%age%' => $category->getAge()),
+                        'tournament')
+            ));
+        }
+        return new JsonResponse(array_values($categories));
     }
 
     /**

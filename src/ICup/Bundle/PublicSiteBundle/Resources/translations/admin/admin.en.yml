@@ -117,6 +117,22 @@ FORM:
     MATCHPRINT:
         CAPTION: Print match report
         DESCRIPTION: Show match report for a specific day for output
+    SEARCH:
+        TITLE: Search matches
+        SUBTITLE: Select search criteria to find the matches you seek
+    ADDCATEGORY: Add new category
+    ANY: - SHOW ANY -
+    LIMIT: Limit rows
+    LIMIT10: Show 10 matches
+    LIMIT25: Show 25 matches
+    LIMIT100: Show 100 matches
+    LIMIT500: Show 500 matches
+    TEAM: Team
+    CATEGORY: Category
+    GROUP: Group
+    PLAYGROUND: Venue
+    DATE: Match date
+    NORESULTS: No matches fit the search criteria
   LISTHOSTS:
     TITLE: Hosts and tournaments administration
     CAPTION: Hosts and tournaments

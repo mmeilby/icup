@@ -421,7 +421,7 @@ FORM:
     SUBMIT: Connect account
   REGISTRATION:
     TITLE: Register
-    PROMPT: Register with the account '%name%'
+    PROMPT: Register with your social account
     TEXT: Register with the account '%name%'
     SUCCESS: Successfully registered and connected the account '%username%'!
     CANCEL: Cancel

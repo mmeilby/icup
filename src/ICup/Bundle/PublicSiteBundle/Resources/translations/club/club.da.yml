@@ -432,7 +432,7 @@ FORM:
     SUBMIT: Forbind konto
   REGISTRATION:
     TITLE: Registrer
-    PROMPT: Registrer oplysninger fra kontoen '%name%'
+    PROMPT: Registrer din facebook eller Google konto så du let kan logge ind
     TEXT: Registrer oplysninger fra kontoen '%name%'
     SUCCESS: Kontoen '%username%' blev registreret og forbundet med succes!
     CANCEL: Fortryd

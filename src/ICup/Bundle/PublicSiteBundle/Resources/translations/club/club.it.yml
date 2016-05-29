@@ -420,7 +420,7 @@ FORM:
     SUBMIT: Connetti account
   REGISTRATION:
     TITLE: Registra account
-    PROMPT: Registrati con l'account '%name%'
+    PROMPT: Registrati con tuo account
     TEXT: Registrati con l'account '%name%'
     SUCCESS: Registrato con successo e connesso all'account '%username%'!
     CANCEL: Annulla

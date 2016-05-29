@@ -397,7 +397,7 @@ FORM:
       DESCRIPTION: The match schedule is about to be ready - hold on...
       FAILURE: Match planning failed. Please try again.
       ERROR: Match planning failed. The cause was:
-      DONE: That's it - the match schedule is ready.
+      DONE: That is it - the match schedule is ready.
     DOUBLEMATCH:
       PROMPT: Plan for Double Round Robin tournament
       HELP: If you plan for Double Round Robin every team will play twice against same opponent

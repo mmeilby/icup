@@ -610,7 +610,7 @@
 {% endblock %}
 
 {% block javascripts %}
-{#    <script src="{{ url('bazinga_jstranslation_js', { 'domain': 'tournament' }) }}?locales={{ app.request.locale|split('_')[0] }}"></script>  #}
+    <script src="{{ url('bazinga_jstranslation_js', { 'domain': 'errors' }) }}"></script>
     <script type="text/javascript">
         angular.module('tournamentBoardModule', ['ngMaterial', 'ngMessages','ngDraggable'])
                 /*
@@ -618,7 +618,24 @@
                  TOURNAMENT BOARD
                  ------------------------------------
                  */
-                .controller('tournamentBoardController', function($scope, $http, $mdDialog, $mdSidenav, $mdToast) {})
+                .controller('tournamentBoardController', function($scope, $http, $mdDialog) {
+                    $scope.categories = [];
+                    $http.get(Routing.generate('_rest_list_categories', { 'tournamentid': {{ tournament.id }} })).then(
+                        function(data) {
+                            $scope.categories = data.data;
+                        },
+                        function (response) {
+                            ShowError($mdDialog, response.data.errors, '{% trans %}FORM.LISTCATEGORIES.CAPTION{% endtrans %}');
+                        });
+                    $scope.venues = [];
+                    $http.get(Routing.generate('_rest_list_playgrounds', { 'tournamentid': {{ tournament.id }} })).then(
+                        function(data) {
+                            $scope.venues = data.data;
+                        },
+                        function (response) {
+                            ShowError($mdDialog, response.data.errors, '{% trans %}FORM.LISTSITES.CAPTION{% endtrans %}');
+                        });
+                })
                 /*
                  ------------------------------------
                  LIST CLUBS
@@ -674,7 +691,7 @@
                                         );
                                     },
                                     function (response) {
-                                        PresentError(response.data.errors, '{% trans %}FORM.CLUB.TITLE.CHG{% endtrans %}');
+                                        ShowError($mdDialog, response.data.errors, '{% trans %}FORM.CLUB.TITLE.CHG{% endtrans %}');
                                     });
                             });
                     };
@@ -738,7 +755,7 @@
                                 club.enrolled++;
                             },
                             function (response) {
-                                PresentError(response.data.errors, '{% trans from 'club' %}FORM.LISTENROLLED.TITLE{% endtrans %}');
+                                ShowError($mdDialog, response.data.errors, '{% trans from 'club' %}FORM.LISTENROLLED.TITLE{% endtrans %}');
                             });
                     };
                     $scope.removeEnrollment = function (category, club) {
@@ -749,7 +766,7 @@
                                 club.enrolled--;
                             },
                             function (response) {
-                                PresentError(response.data.errors, '{% trans from 'club' %}FORM.LISTENROLLED.TITLE{% endtrans %}');
+                                ShowError($mdDialog, response.data.errors, '{% trans from 'club' %}FORM.LISTENROLLED.TITLE{% endtrans %}');
                             });
                     };
                     $scope.dataReady = false;
@@ -778,17 +795,6 @@
                         function(data) {
                             $scope.team_categories = data.data;
                         });
-                    function DialogController($scope, $mdDialog) {
-                        $scope.submit = function(param) {
-                            $mdDialog.hide(param);
-                        };
-                        $scope.cancel = function() {
-                            $mdDialog.cancel();
-                        };
-                    };
-                    function PresentError(errors, title) {
-                        $mdDialog.show($mdDialog.alert().clickOutsideToClose(true).title(title).textContent(errors.join('. ')).ok('{% trans %}FORM.CLOSE{% endtrans %}'));
-                    };
                 })
                 /*
                  ------------------------------------
@@ -827,7 +833,7 @@
                                         getGroups();
                                     },
                                     function (response) {
-                                        PresentError(response.data.errors, '{% trans %}FORM.QMATCHPLANNING.GROUPS{% endtrans %}');
+                                        ShowError($mdDialog, response.data.errors, '{% trans %}FORM.QMATCHPLANNING.GROUPS{% endtrans %}');
                                     });
                             }
                         }
@@ -847,11 +853,11 @@
                                                 getGroups();
                                             },
                                             function (response) {
-                                                PresentError(response.data.errors, '{% trans %}FORM.QMATCHPLANNING.GROUPS{% endtrans %}');
+                                                ShowError($mdDialog, response.data.errors, '{% trans %}FORM.QMATCHPLANNING.GROUPS{% endtrans %}');
                                             });
                                 },
                                 function (response) {
-                                    PresentError(response.data.errors, '{% trans %}FORM.QMATCHPLANNING.GROUPS{% endtrans %}');
+                                    ShowError($mdDialog, response.data.errors, '{% trans %}FORM.QMATCHPLANNING.GROUPS{% endtrans %}');
                                 });
                             }
                             else {
@@ -860,7 +866,7 @@
                                         getGroups();
                                     },
                                     function (response) {
-                                        PresentError(response.data.errors, '{% trans %}FORM.QMATCHPLANNING.GROUPS{% endtrans %}');
+                                        ShowError($mdDialog, response.data.errors, '{% trans %}FORM.QMATCHPLANNING.GROUPS{% endtrans %}');
                                     });
                             }
                         }
@@ -923,7 +929,7 @@
 
                                         },
                                         function (response) {
-                                            PresentError(response.data.errors, '{% trans %}FORM.CATEGORY.TITLE.ADD{% endtrans %}');
+                                            ShowError($mdDialog, response.data.errors, '{% trans %}FORM.CATEGORY.TITLE.ADD{% endtrans %}');
                                         });
                             });
                     };
@@ -1018,7 +1024,7 @@
                                     category.strategy = category_object.strategy;
                                  },
                                  function (response) {
-                                    PresentError(response.data.errors, '{% trans %}FORM.QMATCHPLANNING.OPTIONS{% endtrans %}');
+                                    ShowError($mdDialog, response.data.errors, '{% trans %}FORM.QMATCHPLANNING.OPTIONS{% endtrans %}');
                                  });
                         });
                     };
@@ -1059,7 +1065,7 @@
                                     getGroups();
                                 },
                                 function (response) {
-                                    PresentError(response.data.errors, '{% trans %}FORM.GROUP.TITLE.ADD{% endtrans %}');
+                                    ShowError($mdDialog, response.data.errors, '{% trans %}FORM.GROUP.TITLE.ADD{% endtrans %}');
                                 });
                         });
                     };
@@ -1069,7 +1075,7 @@
                                     getGroups();
                                 },
                                 function (response) {
-                                    PresentError(response.data.errors, '{% trans %}FORM.GROUP.TITLE.DEL{% endtrans %}');
+                                    ShowError($mdDialog, response.data.errors, '{% trans %}FORM.GROUP.TITLE.DEL{% endtrans %}');
                                 });
                     };
                     $scope.assignVacant = function(groupid){
@@ -1078,18 +1084,10 @@
                                 getGroups();
                             },
                             function (response) {
-                                PresentError(response.data.errors, '{% trans %}FORM.QMATCHPLANNING.OPTIONS{% endtrans %}');
+                                ShowError($mdDialog, response.data.errors, '{% trans %}FORM.QMATCHPLANNING.OPTIONS{% endtrans %}');
                             });
                     };
                     $scope.dataReady = true;
-                    $scope.categories = [];
-                    $http.get(Routing.generate('_rest_list_categories', { 'tournamentid': {{ tournament.id }} })).then(
-                        function(data) {
-                            $scope.categories = data.data;
-                        },
-                        function (response) {
-                            PresentError(response.data.errors, '{% trans %}FORM.QMATCHPLANNING.GROUPS{% endtrans %}');
-                        });
                     $scope.selectedCategory = 0;
                     $scope.selectCategory = function (id) {
                         $scope.selectedCategory = id;
@@ -1109,22 +1107,11 @@
                                 $scope.dataReady = true;
                             },
                             function (response) {
-                                PresentError(response.data.errors, '{% trans %}FORM.QMATCHPLANNING.GROUPS{% endtrans %}');
+                                ShowError($mdDialog, response.data.errors, '{% trans %}FORM.QMATCHPLANNING.GROUPS{% endtrans %}');
                                 $scope.groups = [];
                                 $scope.unassigned = [];
                                 $scope.dataReady = true;
                             });
-                    };
-                    function DialogController($scope, $mdDialog) {
-                        $scope.submit = function(param) {
-                            $mdDialog.hide(param);
-                        };
-                        $scope.cancel = function() {
-                            $mdDialog.cancel();
-                        };
-                    };
-                    function PresentError(errors, title) {
-                        $mdDialog.show($mdDialog.alert().clickOutsideToClose(true).title(title).textContent(errors.join('. ')).ok('{% trans %}FORM.CLOSE{% endtrans %}'));
                     };
                 })
                 /*
@@ -1161,7 +1148,7 @@
                                         $scope.groups = data.data;
                                     },
                                     function (response) {
-                                        PresentError(response.data.errors, '{% trans %}FORM.QMATCHPLANNING.GROUPS{% endtrans %}');
+                                        ShowError($mdDialog, response.data.errors, '{% trans %}FORM.QMATCHPLANNING.GROUPS{% endtrans %}');
                                     });
                             }
                             if (id != previous_id) {
@@ -1279,7 +1266,7 @@
 
                             },
                             function (response) {
-                                PresentError(response.data.errors, '{% trans %}FORM.MATCHPLANNING.SAVE.TITLE{% endtrans %}');
+                                ShowError($mdDialog, response.data.errors, '{% trans %}FORM.MATCHPLANNING.SAVE.TITLE{% endtrans %}');
                             });
                     };
                     $scope.resetPlan = function () {
@@ -1290,7 +1277,7 @@
                                 $scope.planning_level = -1;
                             },
                             function (response) {
-                                PresentError(response.data.errors, '{% trans %}FORM.MATCHPLANNING.RESET.TITLE{% endtrans %}');
+                                ShowError($mdDialog, response.data.errors, '{% trans %}FORM.MATCHPLANNING.RESET.TITLE{% endtrans %}');
                             });
                     };
                     function GetMatchesPlanned() {
@@ -1316,7 +1303,7 @@
                                 });
                             },
                             function (response) {
-                                PresentError(response.data.errors, '{% trans %}FORM.QMATCHPLANNING.GROUPS{% endtrans %}');
+                                ShowError($mdDialog, response.data.errors, '{% trans %}FORM.QMATCHPLANNING.GROUPS{% endtrans %}');
                             });
                     }
                     function planTournament(level, dlgScope) {
@@ -1336,20 +1323,22 @@
                                 }
                             },
                             function (response) {
-                                PresentError(response.data.errors, '{% trans %}FORM.MATCHPLANNING.PLANNING.ERROR{% endtrans %}');
+                                ShowError($mdDialog, response.data.errors, '{% trans %}FORM.MATCHPLANNING.PLANNING.ERROR{% endtrans %}');
                             });
                     };
-                    function DialogController($scope, $mdDialog) {
-                        $scope.submit = function(param) {
-                            $mdDialog.hide(param);
-                        };
-                        $scope.cancel = function() {
-                            $mdDialog.cancel();
-                        };
-                    };
-                    function PresentError(errors, title) {
-                        $mdDialog.show($mdDialog.alert().clickOutsideToClose(true).title(title).textContent(errors.join('. ')).ok('{% trans %}FORM.CLOSE{% endtrans %}'));
-                    };
                 });
+        function DialogController($scope, $mdDialog) {
+            $scope.submit = function(param) {
+                $mdDialog.hide(param);
+            };
+            $scope.cancel = function() {
+                $mdDialog.cancel();
+            };
+        };
+        function ShowError($mdDialog, errors, title) {
+            var error = Translator.trans('ERROR.'+errors.join('.')+'.TITLE', {}, 'errors');
+            var solution = Translator.trans('ERROR.'+errors.join('.')+'.SOLUTION', {}, 'errors');
+            $mdDialog.show($mdDialog.alert().clickOutsideToClose(true).title(error).textContent(solution).ok('{% trans %}FORM.CLOSE{% endtrans %}'));
+        };
     </script>
 {% endblock %}

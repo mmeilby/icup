@@ -2,6 +2,7 @@
 
 namespace ICup\Bundle\PublicSiteBundle\Entity\Doctrine;
 
+use JsonSerializable;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\ORM\Mapping as ORM;
 
@@ -11,7 +12,7 @@ use Doctrine\ORM\Mapping as ORM;
  * @ORM\Table(name="timeslots",uniqueConstraints={@ORM\UniqueConstraint(name="TimeslotNameConstraint", columns={"name", "pid"})})
  * @ORM\Entity
  */
-class Timeslot
+class Timeslot implements JsonSerializable
 {
     /**
      * @var integer $id
@@ -199,5 +200,20 @@ class Timeslot
      */
     public function getPlaygroundattributes() {
         return $this->playgroundattributes;
+    }
+
+    public function __toString() {
+        return $this->getName();
+    }
+
+    /**
+     * (PHP 5 &gt;= 5.4.0)<br/>
+     * Specify data which should be serialized to JSON
+     * @link http://php.net/manual/en/jsonserializable.jsonserialize.php
+     * @return mixed data which can be serialized by <b>json_encode</b>,
+     * which is a value of any type other than a resource.
+     */
+    function jsonSerialize() {
+        return array("id" => $this->getId(), "name" => $this->getName(), "capacity" => $this->getCapacity(), "restperiod" => $this->getRestperiod(), "penalty" => $this->getPenalty());
     }
 }

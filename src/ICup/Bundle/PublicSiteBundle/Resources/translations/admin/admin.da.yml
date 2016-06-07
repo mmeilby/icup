@@ -132,6 +132,8 @@ FORM:
     GROUP: Pulje
     PLAYGROUND: Bane
     DATE: Kampdato
+    TIME: Tidspunkt
+    TIMESLOT: Periode
     NORESULTS: Der er ingen kampe der passer til det søgte
   LISTHOSTS:
     TITLE: Vedligehold turneringer og værter
@@ -433,6 +435,9 @@ FORM:
       FILE: Angiv navn på tekstfil der ønskes indlæst:
       UPLOAD: Indlæs
       BROWSE: Find fil
+    EDITMATCH:
+      TITLE: Ændring af planlagt kamp
+      MATCH: Kamp der flyttes
     OPTIONS: Indstillinger
     GROUPS: Planlæg puljer
     VIEW: Kampoplæg

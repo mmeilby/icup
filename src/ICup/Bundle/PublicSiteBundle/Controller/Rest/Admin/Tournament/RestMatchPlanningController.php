@@ -14,23 +14,31 @@ use ICup\Bundle\PublicSiteBundle\Entity\Doctrine\Playground;
 use ICup\Bundle\PublicSiteBundle\Entity\Doctrine\PlaygroundAttribute;
 use ICup\Bundle\PublicSiteBundle\Entity\Doctrine\QMatchSchedule;
 use ICup\Bundle\PublicSiteBundle\Entity\Doctrine\Team;
+use ICup\Bundle\PublicSiteBundle\Entity\Doctrine\Timeslot;
 use ICup\Bundle\PublicSiteBundle\Entity\Doctrine\Tournament;
 use ICup\Bundle\PublicSiteBundle\Entity\Doctrine\User;
 use ICup\Bundle\PublicSiteBundle\Entity\MatchPlan;
+use ICup\Bundle\PublicSiteBundle\Entity\MatchPlanUpdateForm;
 use ICup\Bundle\PublicSiteBundle\Entity\QMatchPlan;
 use ICup\Bundle\PublicSiteBundle\Exceptions\ValidationException;
+use ICup\Bundle\PublicSiteBundle\Form\MatchPlanType;
 use ICup\Bundle\PublicSiteBundle\Services\Doctrine\MatchSupport;
 use ICup\Bundle\PublicSiteBundle\Services\Entity\PlanningOptions;
 use ICup\Bundle\PublicSiteBundle\Services\Entity\PlanningResults;
 use ICup\Bundle\PublicSiteBundle\Services\Entity\QRelation;
 use ICup\Bundle\PublicSiteBundle\Services\Util;
+use Symfony\Component\Form\Form;
+use Symfony\Component\Form\FormError;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
 use DateTime;
 use DateInterval;
+use RuntimeException;
 
 /**
  * Doctrine\Category controller.
@@ -302,12 +310,16 @@ class RestMatchPlanningController extends Controller
                 'matchno' => $match->getMatchno() ? $match->getMatchno() : '',
                 'elimination' => true,
                 'status' => $match->isAssigned() ? ($validmatch ? '' : 'A') : 'W',
-                'date' => array('text' => $match->getDate() ? date_format($match->getSchedule(), $this->get('translator')->trans('FORMAT.DATE')) : '', 'raw' => $match->getDate()),
+                'date' => array(
+                    'text' => $match->getDate() ? date_format($match->getSchedule(), $this->get('translator')->trans('FORMAT.DATE')) : '',
+                    'raw' => $match->getDate(),
+                    'js' => $match->getDate() ? date_format($match->getSchedule(), "m/d/Y") : ''),
                 'time' => array('text' => $match->getTime() ? date_format($match->getSchedule(), $this->get('translator')->trans('FORMAT.TIME')) : '', 'raw' => $match->getTime()),
                 'classification' => $match->getClassification(),
                 'category' => $match->getCategory()->jsonSerialize(),
                 'group' => array('id' => -1, 'name' => $this->getGroupNameFromLitra($match->getLitra(), $match->getClassification()), 'classification' => $match->getClassification()),
                 'venue' => $match->getPlayground()->jsonSerialize(),
+                'timeslot' => $match->getPlaygroundAttribute()->getTimeslot()->jsonSerialize(),
                 'home' => array(
                     'name' => $this->getGroupName($relA),
                     'group' => $relA->getGroup() ? $relA->getGroup()->getId() : -1,
@@ -331,12 +343,16 @@ class RestMatchPlanningController extends Controller
                 'matchno' => $match->getMatchno() ? $match->getMatchno() : '',
                 'elimination' => false,
                 'status' => $match->isAssigned() ? ($validmatch ? '' : 'A') : 'W',
-                'date' => array('text' => $match->getDate() ? date_format($match->getSchedule(), $this->get('translator')->trans('FORMAT.DATE')) : '', 'raw' => $match->getDate()),
+                'date' => array(
+                    'text' => $match->getDate() ? date_format($match->getSchedule(), $this->get('translator')->trans('FORMAT.DATE')) : '',
+                    'raw' => $match->getDate(),
+                    'js' => $match->getDate() ? date_format($match->getSchedule(), "m/d/Y") : ''),
                 'time' => array('text' => $match->getTime() ? date_format($match->getSchedule(), $this->get('translator')->trans('FORMAT.TIME')) : '', 'raw' => $match->getTime()),
                 'classification' => Group::$PRE,
                 'category' => $match->getCategory()->jsonSerialize(),
                 'group' => $match->getGroup()->jsonSerialize(),
                 'venue' => $match->getPlayground()->jsonSerialize(),
+                'timeslot' => $match->getPlaygroundAttribute()->getTimeslot()->jsonSerialize(),
                 'home' => $this->getTeamRecord($match->getTeamA()),
                 'away' => $this->getTeamRecord($match->getTeamB())
             );
@@ -383,7 +399,129 @@ class RestMatchPlanningController extends Controller
     }
 
     /**
-     * Return planned and unassigned matches for a specified venue and match date
+     * Update the planned match identified by match type and id
+     * @Route("/{matchtype}/{matchid}", name="_rest_match_planning_update_match", options={"expose"=true})
+     * @Method("POST")
+     * @param Request $request
+     * @param $matchtype
+     * @param $matchid
+     * @return JsonResponse
+     */
+    public function restUpdateMatch(Request $request, $matchtype, $matchid)
+    {
+        try {
+            if ($matchtype == 'Q') {
+                /* @var $sourcematch QMatchSchedule */
+                $sourcematch = $this->get('entity')->getQMatchScheduleById($matchid);
+            } else {
+                /* @var $sourcematch MatchSchedule */
+                $sourcematch = $this->get('entity')->getMatchScheduleById($matchid);
+            }
+        }
+        catch (ValidationException $e) {
+            return new JsonResponse(array('errors' => array($e->getMessage())), Response::HTTP_NOT_FOUND);
+        }
+        try {
+            /* @var $utilService Util */
+            $utilService = $this->get('util');
+            /* @var $user User */
+            $user = $utilService->getCurrentUser();
+            /* @var $tournament Tournament */
+            $tournament = $sourcematch->getTournament();
+            $host = $tournament->getHost();
+            $utilService->validateEditorAdminUser($user, $host);
+        }
+        catch (ValidationException $e) {
+            return new JsonResponse(array('errors' => array($e->getMessage())), Response::HTTP_FORBIDDEN);
+        }
+        catch (RuntimeException $e) {
+            return new JsonResponse(array('errors' => array($e->getMessage())), Response::HTTP_FORBIDDEN);
+        }
+
+        $form = $this->createForm(new MatchPlanType(), new MatchPlanUpdateForm());
+        $form->handleRequest($request);
+
+        try {
+            if ($this->checkForm($form, $sourcematch)) {
+                $em = $this->getDoctrine()->getManager();
+                $em->flush();
+                return new JsonResponse(array(), Response::HTTP_NO_CONTENT);
+            }
+        }
+        catch (ValidationException $e) {
+            return new JsonResponse(array('errors' => array($e->getMessage())), Response::HTTP_BAD_REQUEST);
+        }
+
+        $errors = array();
+        foreach ($form->getErrors(true) as $error) {
+            $errors[] = $error->getMessage();
+        }
+        return new JsonResponse(array('errors' => $errors), Response::HTTP_BAD_REQUEST);
+    }
+
+    private function checkForm(Form $form, $match) {
+        /* @var $match MatchSchedule|QMatchSchedule */
+        if ($form->isValid()) {
+            /* @var $matchData MatchPlanUpdateForm */
+            $matchData = $form->getData();
+            /* @var $timeslot Timeslot */
+            $timeslot = $this->get('entity')->getTimeslotById($matchData->getTimeslot());
+            /* @var $playground Playground */
+            $playground = $this->get('entity')->getPlaygroundById($matchData->getVenue());
+            $matchdate = '';
+            if ($matchData->getDate() == null || trim($matchData->getDate()) == '') {
+                $form->addError(new FormError($this->get('translator')->trans('FORM.PLAYGROUNDATTR.NODATE', array(), 'admin')));
+            }
+            else {
+                $matchdate = Date::getDateTime($matchData->getDate());
+                if ($matchdate === false) {
+                    $form->addError(new FormError($this->get('translator')->trans('FORM.PLAYGROUNDATTR.BADDATE', array(), 'admin')));
+                }
+            }
+            $matchtime = '';
+            if ($matchData->getMatchtime() == null || trim($matchData->getMatchtime()) == '') {
+                $form->addError(new FormError($this->get('translator')->trans('FORM.PLAYGROUNDATTR.NOSTART', array(), 'admin')));
+            }
+            else {
+                $timeformat = $this->get('translator')->trans('FORMAT.TIME');
+                $matchtime = date_create_from_format($timeformat, $matchData->getMatchtime());
+                if ($matchtime === false) {
+                    $form->addError(new FormError($this->get('translator')->trans('FORM.PLAYGROUNDATTR.BADSTART', array(), 'admin')));
+                }
+            }
+            if ($form->isValid()) {
+                $pattrLocated = false;
+                foreach ($timeslot->getPlaygroundattributes() as $pattr) {
+                    /* @var $pattr PlaygroundAttribute */
+                    if ($pattr->getDate() == $matchData->getDate() && $pattr->getPlayground()->getId() == $playground->getId()) {
+                        if ($match->getPlan()) {
+                            if ($match->getPlan()->getPlaygroundAttribute()->getId() != $pattr->getId()) {
+                                $this->ResetMatchSchedules($match, '9999');
+                                $match->getPlan()->setPlaygroundAttribute($pattr);
+                            }
+                        }
+                        else {
+                            $plan = new MatchSchedulePlan();
+                            $plan->setPlaygroundAttribute($pattr);
+                            $plan->setFixed(false);
+                            $match->setPlan($plan);
+                        }
+                        $this->ResetMatchSchedules($match, Date::getTime($matchtime));
+                        $pattrLocated = true;
+                        break;
+                    }
+                }
+                if (!$pattrLocated) {
+                    $form->addError(new FormError($this->get('translator')->trans('FORM.PLAYGROUNDATTR.NOTIMESLOT', array(), 'admin')));
+                }
+            }
+        }
+        return $form->isValid();
+    }
+
+
+    /**
+     * Move planned match to specified venue and schedule
      * @Route("/movem/{matchtype}/{matchid}/{paid}/{matchtime}", name="_rest_match_planning_move_match", options={"expose"=true})
      * @param $matchtype
      * @param $matchid
@@ -554,7 +692,7 @@ class RestMatchPlanningController extends Controller
         $dates = $this->get('match')->listMatchCalendar($tournament->getId());
         return new JsonResponse(array("start" => date_format($dates[0], "m/d/Y"), "end" => date_format($dates[count($dates)-1], "m/d/Y")));
     }
-    
+
     /**
      * Check tournament id and validate current user rights to change tournament
      * @param $tournamentid

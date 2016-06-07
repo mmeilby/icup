@@ -15,8 +15,8 @@ FORM:
     BADGROUP: Il gruppo non esiste
     BADTEAM: La squadra non è valida
     NOTOURNAMENT: Nessun torneo selezionato
-  SUBMIT: Save
-  CLOSE: Close
+  SUBMIT: Salva
+  CLOSE: Chiudi
   DASHBOARD:
     TITLE: Pannello di amministrazione
     SEARCHCAPTION: Seleziona l'host
@@ -131,6 +131,8 @@ FORM:
     GROUP: Girone
     PLAYGROUND: Campo
     DATE: Data di gara
+    TIME: Orario
+    TIMESLOT: Periodo
     NORESULTS: No matches fit the search criteria
   LISTHOSTS:
     TITLE: Amministrazione
@@ -421,6 +423,9 @@ FORM:
       FILE: Nome del file da importare:
       UPLOAD: Importa
       BROWSE: Seleziona il file
+    EDITMATCH:
+      TITLE: Change information for planned match
+      MATCH: Match to be moved
     OPTIONS: Opzioni
     GROUPS: Definisci i gruppi
     VIEW: Calendario gare

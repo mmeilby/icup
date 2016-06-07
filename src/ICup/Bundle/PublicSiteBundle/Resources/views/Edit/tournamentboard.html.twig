@@ -254,7 +254,7 @@
                                                              ng-repeat="team in group.teams track by team.id"
                                                         >
                                                             <div class="col-md-12">
-                                                                <img src="{{ asset('bundles/icuppublicsite/images/flags/') }}{{ '{{ team.flag }}' }}"
+                                                                <img src="{{ '{{ flagsDir+team.flag }}' }}"
                                                                      alt="{{ '{{ team.country }}' }}"
                                                                      title="{{ '{{ team.country }}' }}" ng-if="team.flag" class="flag">
                                                                 {{ '{{ team.name }}' }}
@@ -275,7 +275,7 @@
                                                              ng-repeat="team in unassigned.teams track by team.id"
                                                         >
                                                             <div class="col-md-12">
-                                                                <img src="{{ asset('bundles/icuppublicsite/images/flags/') }}{{ '{{ team.flag }}' }}"
+                                                                <img src="{{ '{{ flagsDir+team.flag }}' }}"
                                                                      alt="{{ '{{ team.country }}' }}"
                                                                      title="{{ '{{ team.country }}' }}" ng-if="team.flag" class="flag">
                                                                 {{ '{{ team.name }}' }}
@@ -347,7 +347,7 @@
                                                     <div class="col-md-6 col-lg-4" ng-repeat="country in countries">
                                                         <div class="panel panel-default">
                                                             <div class="panel-heading">
-                                                                <img src="{{ asset('bundles/icuppublicsite/images/flags/') }}{{ '{{ country.flag }}' }}"
+                                                                <img src="{{ '{{ flagsDir+country.flag }}' }}"
                                                                      alt="{{ '{{ country.name }}' }}"
                                                                      title="{{ '{{ country.name }}' }}" ng-if="country.flag" class="flag">
                                                                 <b>{{ '{{ country.name }}' }}</b>
@@ -390,7 +390,7 @@
                                                             <table class="table table-striped">
                                                                 <tr ng-repeat="team in category.teams | orderBy: ['index', 'country.name', 'name']">
                                                                     <td>
-                                                                        <img src="{{ asset('bundles/icuppublicsite/images/flags/') }}{{ '{{ team.country.flag }}' }}"
+                                                                        <img src="{{ '{{ flagsDir+team.country.flag }}' }}"
                                                                              alt="{{ '{{ team.country.name }}' }}"
                                                                              title="{{ '{{ team.country.name }}' }}" ng-if="team.country.flag" class="flag">
                                                                         {{ '{{ team.name }}' }}
@@ -434,7 +434,7 @@
                                         </div>
                                     </div>
 
-                                    <div class="row" ng-show="matches_planned">
+                                    <div class="row" ng-show="matches_planned" id="toastBounds">
                                         <div class="col-sm-4">
                                             <md-content layout-padding>
                                                 <md-card>
@@ -445,12 +445,6 @@
                                                         </md-card-title-text>
                                                     </md-card-title>
                                                     <form name="criteriaForm" ng-submit="search_matches(search_object)" class="md-padding" ng-cloak>
-    {#
-                                                        <md-input-container class="md-block">
-                                                            <label for="matchno">{% trans %}FORM.MATCHPLANNING.MATCHNO{% endtrans %}</label>
-                                                            <input type="text" id="matchno" ng-model="search_object.matchno" md-autofocus>
-                                                        </md-input-container>
-    #}
                                                         <md-input-container class="md-block">
                                                             <label>{% trans %}FORM.TOURNAMENTBOARD.TEAM{% endtrans %}</label>
                                                             <md-select name="venue" ng-model="search_object.team" ng-model-options="{trackBy: '$value.id'}">
@@ -553,9 +547,10 @@
                                                         {% trans from "tournament" %}LEGEND.AWAYTEAM{% endtrans %}
                                                     </div>
                                                 </div>
-                                                <div class="row"
-                                                     ng-class="{ 'bg-table-row': $odd, 'alert-warning': match.status == 'W', 'alert-danger': match.status == 'A' }"
+                                                <div class="row" ng-mouseenter="msover=true" ng-mouseleave="msover=false" ng-init="msover=false"
+                                                     ng-class="{ 'bg-facebook-blue white': msover, 'bg-table-row': $odd, 'alert-warning': match.status == 'W', 'alert-danger': match.status == 'A' }"
                                                      ng-repeat="match in matches | filter:matchFilter | limitTo:limit as results track by match.uid"
+                                                     ng-click="editMatch(match, $event)"
                                                 >
                                                     <div class="col-md-1 text-center">{{ '{{ match.matchno }}' }}</div>
                                                     <div class="col-md-2 text-right">
@@ -566,17 +561,16 @@
                                                         {{ '{{ match.category.name }}' }}<br />
                                                         {{ '{{ match.group.name }}' }}
                                                     </div>
-                                                    <div class="col-md-6">
-                                                        <img src="{{ asset('bundles/icuppublicsite/images/flags/') }}{{ '{{ match.home.flag }}' }}"
+                                                    <div class="col-md-7">
+                                                        <img src="{{ '{{ flagsDir+match.home.flag }}' }}"
                                                              alt="{{ '{{ match.home.country }}' }}"
                                                              title="{{ '{{ match.home.country }}' }}" ng-if="match.home.flag" class="flag">
                                                         {{ '{{ match.home.name }}' }}<br />
-                                                        <img src="{{ asset('bundles/icuppublicsite/images/flags/') }}{{ '{{ match.away.flag }}' }}"
+                                                        <img src="{{ '{{ flagsDir+match.away.flag }}' }}"
                                                              alt="{{ '{{ match.away.country }}' }}"
                                                              title="{{ '{{ match.away.country }}' }}" ng-if="match.away.flag" class="flag">
                                                         {{ '{{ match.away.name }}' }}
                                                     </div>
-                                                    <div class="col-md-1"></div>
                                                 </div>
                                                 <div class="md-padding" md-whiteframe="24" layout layout-align="center center" ng-if="results.length==0">
                                                     <h3>{% trans %}FORM.TOURNAMENTBOARD.NORESULTS{% endtrans %}</h3>
@@ -611,16 +605,25 @@
 
 {% block javascripts %}
     <script src="{{ url('bazinga_jstranslation_js', { 'domain': 'errors' }) }}"></script>
+    <script src="{{ url('bazinga_jstranslation_js', { 'domain': 'admin' }) }}"></script>
+    <script src="{{ url('bazinga_jstranslation_js', { 'domain': 'tournament' }) }}"></script>
     <script type="text/javascript">
-        angular.module('tournamentBoardModule', ['ngMaterial', 'ngMessages','ngDraggable'])
+        angular.module('tournamentBoardModule', ['ngMaterial', 'ngMessages', 'ngDraggable'])
+                .filter("translate", function() {
+                    return function(key, domain, vars){
+                        return Translator.trans(key, vars ? vars : {}, domain ? domain : 'admin');
+                    }
+                })
                 /*
                  ------------------------------------
                  TOURNAMENT BOARD
                  ------------------------------------
                  */
                 .controller('tournamentBoardController', function($scope, $http, $mdDialog) {
+                    $scope.flagsDir = "{{ asset('bundles/icuppublicsite/images/flags/') }}";
+                    $scope.tournament = { 'id': {{ tournament.id }} };
                     $scope.categories = [];
-                    $http.get(Routing.generate('_rest_list_categories', { 'tournamentid': {{ tournament.id }} })).then(
+                    $http.get(Routing.generate('_rest_list_categories', { 'tournamentid': $scope.tournament.id })).then(
                         function(data) {
                             $scope.categories = data.data;
                         },
@@ -628,12 +631,20 @@
                             ShowError($mdDialog, response.data.errors, '{% trans %}FORM.LISTCATEGORIES.CAPTION{% endtrans %}');
                         });
                     $scope.venues = [];
-                    $http.get(Routing.generate('_rest_list_playgrounds', { 'tournamentid': {{ tournament.id }} })).then(
+                    $http.get(Routing.generate('_rest_list_playgrounds', { 'tournamentid': $scope.tournament.id })).then(
                         function(data) {
                             $scope.venues = data.data;
                         },
                         function (response) {
                             ShowError($mdDialog, response.data.errors, '{% trans %}FORM.LISTSITES.CAPTION{% endtrans %}');
+                        });
+                    $scope.timeslots = [];
+                    $http.get(Routing.generate('_rest_list_timeslots', { 'tournamentid': $scope.tournament.id })).then(
+                        function(data) {
+                            $scope.timeslots = data.data;
+                        },
+                        function (response) {
+                            ShowError($mdDialog, response.data.errors, '{% trans %}FORM.LISTTIMESLOTS.CAPTION{% endtrans %}');
                         });
                 })
                 /*
@@ -653,94 +664,94 @@
                             controller: DialogController,
                             scope: dlgScope,
                             template:
-                                '<md-toolbar><div class="md-toolbar-tools">'+
-                                '  <h2 class="md-toolbar-tools">{% trans %}FORM.CLUB.TITLE.CHG{% endtrans %}</h2>'+
-                                '  <span flex></span>'+
-                                '  <md-button class="md-icon-button" ng-click="cancel()"><span class="fa fa-2x fa-times"></span></md-button>'+
-                                '</div></md-toolbar>'+
-                                '<md-content layout-padding>'+
-                                '  <div>'+
-                                '    <img src="{{ asset('bundles/icuppublicsite/images/flags/') }}{{ '{{ club.flag }}' }}"'+
-                                '         alt="{{ '{{ club.name }}' }}"'+
-                                '         title="{{ '{{ club.name }}' }}" ng-if="club.flag" class="flag">'+
-                                '    <b>{{ '{{ club.name }}' }}</b>'+
-                                '  </div>'+
-                                '  <form ng-submit="submit(club_object)" ng-cloak>'+
-                                '    <md-input-container>'+
-                                '      <label for="name">{% trans %}FORM.CLUB.NAME{% endtrans %}</label>'+
-                                '      <input type="text" id="name" ng-model="club_object.name" md-autofocus>'+
-                                '    </md-input-container>'+
-                                '  </form>'+
-                                '  <md-button ng-click="submit(club_object)" class="md-raised md-primary">{% trans %}FORM.SUBMIT{% endtrans %}</md-button>'+
-                                '  <md-button ng-click="cancel()">{% trans %}FORM.CLOSE{% endtrans %}</md-button>'+
-                                '</md-content>',
+                            '<md-toolbar><div class="md-toolbar-tools">'+
+                            '  <h2 class="md-toolbar-tools">{% trans %}FORM.CLUB.TITLE.CHG{% endtrans %}</h2>'+
+                            '  <span flex></span>'+
+                            '  <md-button class="md-icon-button" ng-click="cancel()"><span class="fa fa-2x fa-times"></span></md-button>'+
+                            '</div></md-toolbar>'+
+                            '<md-content layout-padding>'+
+                            '  <div>'+
+                            '    <img src="{{ '{{ flagsDir+club.flag }}' }}"'+
+                            '         alt="{{ '{{ club.name }}' }}"'+
+                            '         title="{{ '{{ club.name }}' }}" ng-if="club.flag" class="flag">'+
+                            '    <b>{{ '{{ club.name }}' }}</b>'+
+                            '  </div>'+
+                            '  <form ng-submit="submit(club_object)" ng-cloak>'+
+                            '    <md-input-container>'+
+                            '      <label for="name">{% trans %}FORM.CLUB.NAME{% endtrans %}</label>'+
+                            '      <input type="text" id="name" ng-model="club_object.name" md-autofocus>'+
+                            '    </md-input-container>'+
+                            '  </form>'+
+                            '  <md-button ng-click="submit(club_object)" class="md-raised md-primary">{% trans %}FORM.SUBMIT{% endtrans %}</md-button>'+
+                            '  <md-button ng-click="cancel()">{% trans %}FORM.CLOSE{% endtrans %}</md-button>'+
+                            '</md-content>',
                             parent: angular.element(document.body),
                             targetEvent: ev,
                             clickOutsideToClose:true,
                             fullscreen: $mdMedia('sm') || $mdMedia('xs')
                         }).then(
-                            function(club_object) {
-                                $http.post(Routing.generate('rest_club_update', {'clubid': $scope.club.id }), club_object).then(
-                                    function (data) {
-                                        $scope.club.name = club_object.name;
-                                        $mdToast.show(
-                                                $mdToast.simple()
-                                                        .textContent('{% trans %}FORM.CLUB.UPDATED{% endtrans %}')
-                                                        .position('top right')
-                                                        .hideDelay(3000)
-                                        );
-                                    },
-                                    function (response) {
-                                        ShowError($mdDialog, response.data.errors, '{% trans %}FORM.CLUB.TITLE.CHG{% endtrans %}');
-                                    });
-                            });
+                                function(club_object) {
+                                    $http.post(Routing.generate('rest_club_update', {'clubid': $scope.club.id }), club_object).then(
+                                            function (data) {
+                                                $scope.club.name = club_object.name;
+                                                $mdToast.show(
+                                                        $mdToast.simple()
+                                                                .textContent('{% trans %}FORM.CLUB.UPDATED{% endtrans %}')
+                                                                .position('top right')
+                                                                .hideDelay(3000)
+                                                );
+                                            },
+                                            function (response) {
+                                                ShowError($mdDialog, response.data.errors, '{% trans %}FORM.CLUB.TITLE.CHG{% endtrans %}');
+                                            });
+                                });
                     };
                     $scope.updateEnrollment = function (club, ev) {
                         $scope.club = club;
                         var dlgScope = $scope.$new();
-                        $http.get(Routing.generate('_rest_list_enrolled_teams', { 'tournamentid': {{ tournament.id }}, 'clubid': club.id })).then(
-                            function(data) {
-                                dlgScope.categories = data.data;
-                            });
+                        $http.get(Routing.generate('_rest_list_enrolled_teams', { 'tournamentid': $scope.tournament.id, 'clubid': club.id })).then(
+                                function(data) {
+                                    dlgScope.categories = data.data;
+                                });
                         $mdDialog.show({
                             controller: DialogController,
                             scope: dlgScope,
                             template:
-                                '<md-toolbar><div class="md-toolbar-tools">'+
-                                '  <h2 class="md-toolbar-tools">{% trans from "club" %}FORM.LISTENROLLED.TITLE{% endtrans %}</h2>'+
-                                '  <span flex></span>'+
-                                '  <md-button class="md-icon-button" ng-click="cancel()"><span class="fa fa-2x fa-times"></span></md-button>'+
-                                '</div></md-toolbar>'+
-                                '<md-content layout-padding ng-cloak>'+
-                                '  <div>'+
-                                '    <img src="{{ asset('bundles/icuppublicsite/images/flags/') }}{{ '{{ club.flag }}' }}"'+
-                                '         alt="{{ '{{ club.name }}' }}"'+
-                                '         title="{{ '{{ club.name }}' }}" ng-if="club.flag" class="flag">'+
-                                '    <b>{{ '{{ club.name }}' }}</b>'+
-                                '  </div>'+
-                                '  <hr />'+
-                                '  <div class="row">'+
-                                '    <div class="col-sm-6" ng-repeat="category in categories | orderBy: [\'classification\', \'-age\', \'gender\'] track by category.id">'+
-                                '      <div class="row">'+
-                                '        <div class="col-sm-7">'+
-                                '          <h5>{% trans from 'tournament' %}CATEGORY{% endtrans %} {{ '{{ category.name }}' }} - {{ '{{ category.classification_translated }}' }}</h5>'+
-                                '        </div>'+
-                                '        <div class="col-sm-2">'+
-                                '          <h4><span class="badge">{{ '{{ category.enrolled }}' }}</span></h4>'+
-                                '        </div>'+
-                                '        <div class="col-sm-1">'+
-                                '          <h4><i class="fa fa-plus-circle google-green" ng-click="addEnrollment(category, club)"></i></h4>'+
-                                '        </div>'+
-                                '        <div class="col-sm-1">'+
-                                '          <h4><i class="fa fa-minus-circle google-red" ng-click="removeEnrollment(category, club)" ng-show="category.enrolled"></i></h4>'+
-                                '        </div>'+
-                                '      </div>'+
-                                '    </div>'+
-                                '  </div>'+
-                                '  <div class="md-padding" layout layout-align="center center">'+
-                                '    <md-button ng-click="cancel()">{% trans %}FORM.CLOSE{% endtrans %}</md-button>'+
-                                '  </div>'+
-                                '</md-content>',
+                            '<md-toolbar><div class="md-toolbar-tools">'+
+                            '  <h2 class="md-toolbar-tools">{% trans from "club" %}FORM.LISTENROLLED.TITLE{% endtrans %}</h2>'+
+                            '  <span flex></span>'+
+                            '  <md-button class="md-icon-button" ng-click="cancel()"><span class="fa fa-2x fa-times"></span></md-button>'+
+                            '</div></md-toolbar>'+
+                            '<md-content layout-padding ng-cloak>'+
+                            '  <div>'+
+                            '    <img src="{{ '{{ flagsDir+club.flag }}' }}"'+
+                            '         alt="{{ '{{ club.name }}' }}"'+
+                            '         title="{{ '{{ club.name }}' }}" ng-if="club.flag" class="flag">'+
+                            '    <b>{{ '{{ club.name }}' }}</b>'+
+                            '  </div>'+
+                            '  <hr />'+
+                            '  <div class="row">'+
+                            '    <div class="col-sm-6" ng-repeat="category in categories | orderBy: [\'classification\', \'-age\', \'gender\'] track by category.id">'+
+                            '      <div class="row">'+
+                            '        <div class="col-sm-7">'+
+                            '          <h5>{% trans from 'tournament' %}CATEGORY{% endtrans %} {{ '{{ category.name }}' }} - {{ '{{ category.classification_translated }}' }}</h5>'+
+                            '        </div>'+
+                            '        <div class="col-sm-2">'+
+                            '          <h4><span class="badge">{{ '{{ category.enrolled }}' }}</span></h4>'+
+                            '        </div>'+
+                            '        <div class="col-sm-1">'+
+                            '          <h4><i class="fa fa-plus-circle google-green" ng-click="addEnrollment(category, club)"></i></h4>'+
+                            '        </div>'+
+                            '        <div class="col-sm-1">'+
+                            '          <h4><i class="fa fa-minus-circle google-red" ng-click="removeEnrollment(category, club)" ng-show="category.enrolled"></i></h4>'+
+                            '        </div>'+
+                            '      </div>'+
+                            '    </div>'+
+                            '  </div>'+
+                            '  <div class="md-padding" layout layout-align="center center">'+
+                            '    <md-button ng-click="cancel()">{% trans %}FORM.CLOSE{% endtrans %}</md-button>'+
+                            '  </div>'+
+                            '</md-content>',
                             parent: angular.element(document.body),
                             targetEvent: ev,
                             clickOutsideToClose:true,
@@ -750,28 +761,28 @@
                     $scope.addEnrollment = function (category, club) {
                         $scope.club = club;
                         $http.get(Routing.generate('_rest_club_enroll_add', { 'categoryid': category.id, 'clubid': club.id })).then(
-                            function() {
-                                category.enrolled++;
-                                club.enrolled++;
-                            },
-                            function (response) {
-                                ShowError($mdDialog, response.data.errors, '{% trans from 'club' %}FORM.LISTENROLLED.TITLE{% endtrans %}');
-                            });
+                                function() {
+                                    category.enrolled++;
+                                    club.enrolled++;
+                                },
+                                function (response) {
+                                    ShowError($mdDialog, response.data.errors, '{% trans from 'club' %}FORM.LISTENROLLED.TITLE{% endtrans %}');
+                                });
                     };
                     $scope.removeEnrollment = function (category, club) {
                         $scope.club = club;
                         $http.get(Routing.generate('_rest_club_enroll_del', { 'categoryid': category.id, 'clubid': club.id })).then(
-                            function() {
-                                category.enrolled--;
-                                club.enrolled--;
-                            },
-                            function (response) {
-                                ShowError($mdDialog, response.data.errors, '{% trans from 'club' %}FORM.LISTENROLLED.TITLE{% endtrans %}');
-                            });
+                                function() {
+                                    category.enrolled--;
+                                    club.enrolled--;
+                                },
+                                function (response) {
+                                    ShowError($mdDialog, response.data.errors, '{% trans from 'club' %}FORM.LISTENROLLED.TITLE{% endtrans %}');
+                                });
                     };
                     $scope.dataReady = false;
                     $scope.countries = [];
-                    $http.get(Routing.generate('_rest_list_clubs', { 'tournamentid': {{ tournament.id }} })).then(function(data) {
+                    $http.get(Routing.generate('_rest_list_clubs', { 'tournamentid': $scope.tournament.id })).then(function(data) {
                         angular.forEach(data.data, function (club) {
                             var country = $scope.countries.find(function (country) {
                                 return country.country_code == club.country_code;
@@ -791,10 +802,10 @@
                         $scope.dataReady = true;
                     });
                     $scope.team_categories = [];
-                    $http.get(Routing.generate('_rest_list_enrolled_categories', { 'tournamentid': {{ tournament.id }} })).then(
-                        function(data) {
-                            $scope.team_categories = data.data;
-                        });
+                    $http.get(Routing.generate('_rest_list_enrolled_categories', { 'tournamentid': $scope.tournament.id })).then(
+                            function(data) {
+                                $scope.team_categories = data.data;
+                            });
                 })
                 /*
                  ------------------------------------
@@ -924,7 +935,7 @@
                             fullscreen: $mdMedia('sm') || $mdMedia('xs')
                         }).then(
                             function(category_object) {
-                                $http.post(Routing.generate('rest_category_create', { 'tournamentid': {{ tournament.id }} }), category_object).then(
+                                $http.post(Routing.generate('rest_category_create', { 'tournamentid': $scope.tournament.id }), category_object).then(
                                         function () {
 
                                         },
@@ -1119,7 +1130,7 @@
                  MATCH PLANNING
                  ------------------------------------
                  */
-                .controller('matchPlanningController', function($scope, $http, $mdDialog, $mdMedia, $filter) {
+                .controller('matchPlanningController', function($scope, $http, $mdDialog, $mdMedia, $filter, $mdBottomSheet, $mdToast, $document) {
                     $scope.matches = [];
                     $scope.unassigned_categories = [];
                     $scope.matches_planned = false;
@@ -1132,7 +1143,7 @@
                     };
                     // limit number of matches shown
                     $scope.limit = 10;
-                    $http.get(Routing.generate('_rest_get_match_calendar', { 'tournamentid': {{ tournament.id }} })).then(function(data) {
+                    $http.get(Routing.generate('_rest_get_match_calendar', { 'tournamentid': $scope.tournament.id })).then(function(data) {
                         $scope.minDate = new Date(data.data.start);
                         $scope.maxDate = new Date(data.data.end);
                     });
@@ -1151,52 +1162,7 @@
                                         ShowError($mdDialog, response.data.errors, '{% trans %}FORM.QMATCHPLANNING.GROUPS{% endtrans %}');
                                     });
                             }
-                            if (id != previous_id) {
-                                $scope.search_matches($scope.search_object);
-                            }
                     });
-                    // watch the change of group and update the match list
-                    $scope.$watch(
-                        function () {
-                            return $scope.search_object.group.id;
-                        },
-                        function (id, previous_id) {
-                            if (id != previous_id) {
-                                $scope.search_matches($scope.search_object);
-                            }
-                    });
-                    // watch the change of venue and update the match list
-                    $scope.$watch(
-                        function () {
-                            return $scope.search_object.venue.id;
-                        },
-                        function (id, previous_id) {
-                            if (id != previous_id) {
-                                $scope.search_matches($scope.search_object);
-                            }
-                    });
-                    // watch the change of team and update the match list
-                    $scope.$watch(
-                        function () {
-                            return $scope.search_object.team.id;
-                        },
-                        function (id, previous_id) {
-                            if (id != previous_id) {
-                                $scope.search_matches($scope.search_object);
-                            }
-                    });
-                    // watch the change of date and update the match list
-                    $scope.$watch(
-                        function () {
-                            return $scope.search_object.date;
-                        },
-                        function (date, previous_date) {
-                            if (date != previous_date) {
-                                $scope.search_matches($scope.search_object);
-                            }
-                    });
-                    $scope.search_matches = function (search_object) {
-                    };
                     $scope.matchFilter = function (match) {
                         if ($scope.search_object.team.id) {
                             if (match.home.name != $scope.search_object.team.name && match.away.name != $scope.search_object.team.name) return false;
@@ -1214,7 +1180,7 @@
                             if (match.date.raw != $filter('date')($scope.search_object.date, 'yyyyMMdd')) return false;
                         }
                         return true;
-                    }
+                    };
                     GetMatchesPlanned();
                     $scope.planMatches = function (ev) {
                         var dlgScope = $scope.$new();
@@ -1261,7 +1227,7 @@
                         planTournament(0, dlgScope);
                     };
                     $scope.savePlan = function () {
-                        $http.get(Routing.generate('_rest_match_planning_save_plan', { 'tournamentid': {{ tournament.id }} })).then(
+                        $http.get(Routing.generate('_rest_match_planning_save_plan', { 'tournamentid': $scope.tournament.id })).then(
                             function(data) {
 
                             },
@@ -1270,7 +1236,7 @@
                             });
                     };
                     $scope.resetPlan = function () {
-                        $http.get(Routing.generate('_rest_match_planning_reset_plan', { 'tournamentid': {{ tournament.id }} })).then(
+                        $http.get(Routing.generate('_rest_match_planning_reset_plan', { 'tournamentid': $scope.tournament.id })).then(
                             function(data) {
                                 $scope.unassigned_categories = [];
                                 $scope.matches_planned = false;
@@ -1280,8 +1246,59 @@
                                 ShowError($mdDialog, response.data.errors, '{% trans %}FORM.MATCHPLANNING.RESET.TITLE{% endtrans %}');
                             });
                     };
+                    $scope.editMatch = function (match, ev) {
+                        this.msover = false;
+                        var dlgScope = $scope.$new();
+                        dlgScope.match = match;
+                        dlgScope.destination_object = { 'date': new Date(match.date.js), 'time': match.time.text, 'venue': match.venue, 'timeslot': match.timeslot };
+                        dlgScope.matchFilter = function (match) {
+                            if (dlgScope.destination_object.timeslot.id) {
+                                if (match.timeslot.id != dlgScope.destination_object.timeslot.id) return false;
+                            }
+                            if (dlgScope.destination_object.venue.id) {
+                                if (match.venue.id != dlgScope.destination_object.venue.id) return false;
+                            }
+                            if (dlgScope.destination_object.date) {
+                                if (match.date.raw != $filter('date')(dlgScope.destination_object.date, 'yyyyMMdd')) return false;
+                            }
+                            return true;
+                        };
+                        $mdDialog.show({
+                            controller: DialogController,
+                            scope: dlgScope,
+                            templateUrl: '{{ asset('bundles/icuppublicsite/templates/editplanmatchdlg.html') }}',
+                            parent: angular.element(document.body),
+                            targetEvent: ev,
+                            clickOutsideToClose: true,
+                            fullscreen: $mdMedia('sm') || $mdMedia('xs')
+                        })
+                        .then(function() {
+                            var matchData = {
+                                'timeslot': dlgScope.destination_object.timeslot.id,
+                                'venue': dlgScope.destination_object.venue.id,
+                                'date': $filter('date')(dlgScope.destination_object.date, 'yyyyMMdd'),
+                                'matchtime': dlgScope.destination_object.time
+                            };
+                            $http.post(Routing.generate('_rest_match_planning_update_match', {'matchtype': dlgScope.match.uid.substr(0,1), 'matchid': dlgScope.match.uid.substr(1) }), matchData).then(
+                                function (data) {
+                                    $mdToast.show(
+                                            $mdToast.simple()
+                                                    .textContent("Match updated")
+                                                    .position('top right')
+                                                    .hideDelay(3000)
+                                                    .parent($document[0].querySelector('#toastBounds'))
+
+                                    );
+                                    GetMatchesPlanned();
+                                    $mdToast.hide();
+                                },
+                                function (response) {
+                                    ShowError($mdDialog, response.data.errors, '{% trans %}FORM.CLUB.TITLE.CHG{% endtrans %}');
+                                });
+                        });
+                    };
                     function GetMatchesPlanned() {
-                        $http.get(Routing.generate('_rest_match_planning_get_plan', { 'tournamentid': {{ tournament.id }} })).then(
+                        $http.get(Routing.generate('_rest_match_planning_get_plan', { 'tournamentid': $scope.tournament.id })).then(
                             function(data) {
                                 $scope.unassigned_categories = data.data.unassigned_by_category;
                                 $scope.matches_planned = data.data.matches.length > 0;
@@ -1308,7 +1325,7 @@
                     }
                     function planTournament(level, dlgScope) {
                         dlgScope.planning_level = level;
-                        $http.get(Routing.generate('_rest_match_planning_plan', { 'tournamentid': {{ tournament.id }}, 'level': level })).then(
+                        $http.get(Routing.generate('_rest_match_planning_plan', { 'tournamentid': $scope.tournament.id, 'level': level })).then(
                             function(result) {
                                 if (result.data.done) {
                                     dlgScope.planning_level = result.data.level;

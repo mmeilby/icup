@@ -132,6 +132,8 @@ FORM:
     GROUP: Group
     PLAYGROUND: Venue
     DATE: Match date
+    TIME: Time
+    TIMESLOT: Timeslot
     NORESULTS: No matches fit the search criteria
   LISTHOSTS:
     TITLE: Hosts and tournaments administration
@@ -431,6 +433,9 @@ FORM:
       FILE: Name of the file to be imported:
       UPLOAD: Import
       BROWSE: Select file
+    EDITMATCH:
+      TITLE: Change information for planned match
+      MATCH: Match to be moved
     OPTIONS: Planning options
     GROUPS: Plan groups
     VIEW: Match schedule

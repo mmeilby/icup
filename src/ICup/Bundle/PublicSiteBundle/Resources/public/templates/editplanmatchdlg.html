@@ -82,9 +82,9 @@
             </div>
         </div>
         <div class="row" ng-mouseenter="msover=true" ng-mouseleave="msover=false" ng-init="msover=false"
-             ng-class="{ 'bg-facebook-blue white': msover, 'bg-table-row': $odd, 'alert-warning': match.status == 'W', 'alert-danger': match.status == 'A' }"
+             ng-class="{ 'bg-facebook-lightblue white': msover, 'bg-table-row': $odd, 'alert-warning': match.status == 'W', 'alert-danger': match.status == 'A' }"
              ng-repeat="match in matches | filter:matchFilter | limitTo:limit as results track by match.uid"
-             ng-click="editMatch(match, $event)"
+             ng-click="destination_object.time=match.time.text"
         >
             <div class="col-md-1 text-center">{{ match.matchno }}</div>
             <div class="col-md-1 text-right">
@@ -114,7 +114,7 @@
         </div>
     </md-dialog-content>
     <md-dialog-actions>
-        <md-button ng-click="submit()" class="md-raised" flex="50">{{ 'FORM.SUBMIT' | translate }}</md-button>
+        <md-button ng-click="submit()" class="md-primary md-raised" flex="50">{{ 'FORM.SUBMIT' | translate }}</md-button>
         <md-button ng-click="cancel()" class="md-raised" flex="50">{{ 'FORM.CLOSE' | translate }}</md-button>
     </md-dialog-actions>
 </md-dialog>

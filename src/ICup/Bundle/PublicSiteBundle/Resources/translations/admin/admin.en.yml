@@ -122,6 +122,7 @@ FORM:
         SUBTITLE: Select search criteria to find the matches you seek
     ADDCATEGORY: Add new category
     ANY: - SHOW ANY -
+    ANYDATE: Clear match date
     LIMIT: Limit rows
     LIMIT10: Show 10 matches
     LIMIT25: Show 25 matches

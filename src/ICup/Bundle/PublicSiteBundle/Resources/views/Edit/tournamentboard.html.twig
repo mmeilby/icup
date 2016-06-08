@@ -435,7 +435,7 @@
                                     </div>
 
                                     <div class="row" ng-show="matches_planned" id="toastBounds">
-                                        <div class="col-sm-4">
+                                        <div class="col-sm-5">
                                             <md-content layout-padding>
                                                 <md-card>
                                                     <md-card-title>
@@ -477,12 +477,18 @@
                                                                 <md-option ng-repeat="venue in venues" ng-value="{{ '{{ venue }}' }}">{{ '{{ venue.name }}' }}</md-option>
                                                             </md-select>
                                                         </md-input-container>
-                                                        <md-datepicker ng-model="search_object.date"
-                                                                       md-placeholder="{% trans %}FORM.TOURNAMENTBOARD.DATE{% endtrans %}"
-                                                                       md-min-date="minDate" md-max-date="maxDate">
-                                                        </md-datepicker>
+                                                        <div layout="row">
+                                                            <md-datepicker ng-model="search_object.date"
+                                                                           md-placeholder="{% trans %}FORM.TOURNAMENTBOARD.DATE{% endtrans %}"
+                                                                           md-min-date="minDate" md-max-date="maxDate">
+                                                            </md-datepicker>
+                                                            <span flex></span>
+                                                            <md-button class="md-raised" ng-click="search_object.date=null">
+                                                                {% trans %}FORM.TOURNAMENTBOARD.ANYDATE{% endtrans %}
+                                                            </md-button>
+                                                        </div>
                                                     </form>
-                                                    <md-card-actions layout="row" layout-align="end center">
+                                                    <md-card-actions layout="row" layout-align="start center">
                                                         <md-input-container>
                                                             <label>{% trans %}FORM.TOURNAMENTBOARD.LIMIT{% endtrans %}</label>
                                                             <md-select name="limit" ng-model="limit" ng-model-options="{trackBy: '$value'}" required>
@@ -496,7 +502,7 @@
                                                 </md-card>
                                             </md-content>
                                         </div>
-                                        <div class="col-sm-8">
+                                        <div class="col-sm-7">
                                             <div class="panel panel-warning" ng-show="unassigned_categories.length && matches.length==0">
                                                 <div class="panel-heading">
                                                     <div class="row">
@@ -548,10 +554,14 @@
                                                     </div>
                                                 </div>
                                                 <div class="row" ng-mouseenter="msover=true" ng-mouseleave="msover=false" ng-init="msover=false"
-                                                     ng-class="{ 'bg-facebook-blue white': msover, 'bg-table-row': $odd, 'alert-warning': match.status == 'W', 'alert-danger': match.status == 'A' }"
+                                                     ng-class-odd="'bg-table-row'"
+                                                     ng-class="{ 'bg-facebook-darkblue white': msover, 'alert-warning': match.status == 'W', 'alert-danger': match.status == 'A' }"
                                                      ng-repeat="match in matches | filter:matchFilter | limitTo:limit as results track by match.uid"
                                                      ng-click="editMatch(match, $event)"
                                                 >
+                                                    <div class="col-md-12 bg-facebook-lightblue facebook-blue" ng-show="$first || match.date.text != results[$index-1].date.text">
+                                                        <h4><b>{% trans %}FORM.TOURNAMENTBOARD.DATE{% endtrans %} - {{ '{{ match.date.text }}' }}</b></h4>
+                                                    </div>
                                                     <div class="col-md-1 text-center">{{ '{{ match.matchno }}' }}</div>
                                                     <div class="col-md-2 text-right">
                                                         {{ '{{ match.time.text }}' }}<br />
@@ -572,8 +582,8 @@
                                                         {{ '{{ match.away.name }}' }}
                                                     </div>
                                                 </div>
-                                                <div class="md-padding" md-whiteframe="24" layout layout-align="center center" ng-if="results.length==0">
-                                                    <h3>{% trans %}FORM.TOURNAMENTBOARD.NORESULTS{% endtrans %}</h3>
+                                                <div class="md-margin md-padding" md-whiteframe="10" layout layout-align="center center" ng-if="results.length==0">
+                                                    <h4 flex="80">{% trans %}FORM.TOURNAMENTBOARD.NORESULTS{% endtrans %}</h4>
                                                 </div>
                                             </div>
 

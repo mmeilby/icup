@@ -122,6 +122,7 @@ FORM:
         SUBTITLE: Vælg og se de kampe der passer
     ADDCATEGORY: Tilføj ny gruppe
     ANY: - VIS ALLE -
+    ANYDATE: Ryd kampdato
     LIMIT: Begræns antal rækker
     LIMIT10: Vis 10 kampe
     LIMIT25: Vis 25 kampe

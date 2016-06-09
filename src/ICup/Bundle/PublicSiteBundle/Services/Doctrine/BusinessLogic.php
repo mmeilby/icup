@@ -601,7 +601,7 @@ class BusinessLogic
         $tournaments = array();
         foreach ($this->entity->getTournamentRepo()->findAll(array(), array('host' => 'asc', 'name' => 'asc')) as $tournament) {
             $status = $this->container->get('tmnt')->getTournamentStatus($tournament->getId(), new DateTime());
-            if ($status === TournamentSupport::$TMNT_ENROLL || $status === TournamentSupport::$TMNT_GOING || $status === TournamentSupport::$TMNT_DONE) {
+            if ($status !== TournamentSupport::$TMNT_HIDE) {
                 $tournaments[] = $tournament;
             }
         }

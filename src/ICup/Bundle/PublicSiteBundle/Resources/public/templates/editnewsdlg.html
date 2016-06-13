@@ -1,0 +1,50 @@
+<md-dialog aria-label="{{ title | translate }}">
+    <md-toolbar>
+        <div class="md-toolbar-tools">
+            <h2 class="md-toolbar-tools">{{ title | translate }}</h2>
+            <span flex></span>
+            <md-button class="md-icon-button" ng-click="cancel()"><span class="fa fa-2x fa-times"></span></md-button>
+        </div>
+    </md-toolbar>
+    <md-dialog-content layout-padding>
+        <div class="row">
+            <div class="col-md-12">
+                <form name="newsForm" ng-submit="submit()" ng-cloak>
+                    <div layout="column">
+                        <md-input-container class="md-block">
+                            <label for="newsno">{{ 'FORM.NEWS.NO' | translate }}</label>
+                            <input type="text" id="newsno" ng-model="news_object.newsno" md-autofocus>
+                        </md-input-container>
+                        <md-input-container class="md-block">
+                            <label>{{ 'FORM.NEWS.LANGUAGE' | translate }}</label>
+                            <md-select name="language" ng-model="news_object.language">
+                                <md-option ng-repeat="locale in locales track by locale.id" ng-value="{{ locale }}">{{ locale.locale | translate:'common' }}</md-option>
+                            </md-select>
+                        </md-input-container>
+                        <md-input-container class="md-block">
+                            <label>{{ 'FORM.NEWS.TYPE' | translate }}</label>
+                            <md-select name="newstype" ng-model="news_object.newstype">
+                                <md-option ng-repeat="newstype in newstypes track by newstype.id" ng-value="{{ newstype }}">{{ newstype.lable | translate }}</md-option>
+                            </md-select>
+                        </md-input-container>
+                        <div layout="row">
+                            <md-datepicker ng-model="news_object.date" md-placeholder="{{ 'FORM.NEWS.DATE' | translate }}"></md-datepicker>
+                        </div>
+                        <md-input-container class="md-block">
+                            <label for="title">{{ 'FORM.NEWS.SUBJECT' | translate }}</label>
+                            <input type="text" id="title" ng-model="news_object.title">
+                        </md-input-container>
+                        <md-input-container class="md-block">
+                            <label for="context">{{ 'FORM.NEWS.CONTEXT' | translate }}</label>
+                            <input type="text" id="context" ng-model="news_object.context">
+                        </md-input-container>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </md-dialog-content>
+    <md-dialog-actions>
+        <md-button ng-click="submit()" class="md-primary md-raised" flex="50">{{ submit_caption | translate }}</md-button>
+        <md-button ng-click="cancel()" class="md-raised" flex="50">{{ cancel_caption | translate }}</md-button>
+    </md-dialog-actions>
+</md-dialog>

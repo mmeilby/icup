@@ -134,6 +134,9 @@ FORM:
             STATISTICS: 
                 TITLE: Estadísticas de Equipos
                 DESC: Mire para arriba algunas cifras interesantes del torneo. 
+            NOPLAN:
+                TITLE: No hay un plan listo todavía partido
+                DESC: Echar un vistazo a las otras categorías de información de la lista. Y volver más tarde para comprobar el plan de juego.
 
     EDITRESULTS: 
         TITLE: Editar resultados 

@@ -3,7 +3,7 @@
 namespace ICup\Bundle\PublicSiteBundle\Entity\Doctrine;
 
 use Doctrine\ORM\Mapping as ORM;
-use Symfony\Component\Intl\Exception\MethodNotImplementedException;
+use JsonSerializable;
 
 /**
  * ICup\Bundle\PublicSiteBundle\Entity\Doctrine\QMatchRelation
@@ -11,7 +11,7 @@ use Symfony\Component\Intl\Exception\MethodNotImplementedException;
  * @ORM\Table(name="qmatchrelations",uniqueConstraints={@ORM\UniqueConstraint(name="QTeamMatchConstraint", columns={"pid", "cid", "rank"})})
  * @ORM\Entity
  */
-class QMatchRelation
+class QMatchRelation implements JsonSerializable
 {
     /**
      * @var integer $id
@@ -140,5 +140,20 @@ class QMatchRelation
 
     public function __toString() {
         return $this->getGroup()->getClassification().":".$this->getGroup()->getName()."#".$this->getRank();
+    }
+
+    /**
+     * (PHP 5 &gt;= 5.4.0)<br/>
+     * Specify data which should be serialized to JSON
+     * @link http://php.net/manual/en/jsonserializable.jsonserialize.php
+     * @return mixed data which can be serialized by <b>json_encode</b>,
+     * which is a value of any type other than a resource.
+     */
+    function jsonSerialize() {
+        return array(
+            "id" => $this->id,
+            'relation' => $this->getAwayteam() ? "away" : "home",
+            "qualified" => array("group" => $this->group->jsonSerialize(), "rank" => $this->rank)
+        );
     }
 }

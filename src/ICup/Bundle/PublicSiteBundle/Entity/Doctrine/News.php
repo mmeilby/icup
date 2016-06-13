@@ -3,6 +3,7 @@
 namespace ICup\Bundle\PublicSiteBundle\Entity\Doctrine;
 
 use Doctrine\ORM\Mapping as ORM;
+use JsonSerializable;
 
 /**
  * ICup\Bundle\PublicSiteBundle\Entity\Doctrine\News
@@ -10,7 +11,7 @@ use Doctrine\ORM\Mapping as ORM;
  * @ORM\Table(name="news",uniqueConstraints={@ORM\UniqueConstraint(name="NewsNoConstraint", columns={"pid", "newsno", "language"})})
  * @ORM\Entity
  */
-class News
+class News implements JsonSerializable
 {
     /* Information is permanent - will not out date */
     public static $TYPE_PERMANENT = 1;
@@ -243,5 +244,29 @@ class News
 
     public function getSchedule() {
         return Date::getDateTime($this->date);
+    }
+
+    public function __toString() {
+        return $this->getNewsno().": ".$this->getTitle()." (".$this->getLanguage().", ".$this->getDate().")";
+    }
+
+    /**
+     * (PHP 5 &gt;= 5.4.0)<br/>
+     * Specify data which should be serialized to JSON
+     * @link http://php.net/manual/en/jsonserializable.jsonserialize.php
+     * @return mixed data which can be serialized by <b>json_encode</b>,
+     * which is a value of any type other than a resource.
+     */
+    function jsonSerialize() {
+        return array(
+            "id" => $this->id, "newsno" => $this->newsno, "language" => $this->language, "newstype" => $this->newstype,
+            'date' => array(
+                'raw' => $this->date,
+                'js' => $this->date ? date_format($this->getSchedule(), "m/d/Y") : '',
+                'ts' => $this->date ? date_format($this->getSchedule(), "Y-m-d") : ''),
+            "title" => $this->title, "context" => $this->context,
+            "match" => $this->match ? $this->match->jsonSerialize() : array("id" => 0),
+            "team" => $this->team ? $this->team->jsonSerialize() : array("id" => 0)
+        );
     }
 }

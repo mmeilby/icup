@@ -134,7 +134,10 @@ FORM:
         STATISTICS:
           TITLE: Statystyki
           DESC:  Quelques informations importantes concernant le tournoi.
-          
+        NOPLAN:
+          TITLE: Nie ma planu meczu jeszcze gotowa
+          DESC: Spójrz na innych kategoriach informacyjnych z listy. I wrócić później, by sprawdzić plan mecz.
+
     EDITRESULTS:
         TITLE: Edytuj rezultaty
         SUBMIT: Sauvegarder les résulats

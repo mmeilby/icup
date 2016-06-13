@@ -134,7 +134,10 @@ FORM:
         STATISTICS:
           TITLE: Statistiques
           DESC:  Quelques informations importantes concernant le tournoi.
-          
+        NOPLAN:
+          TITLE: Il n'y a pas de plan prêt match encore
+          DESC: Jetez un oeil à d'autres catégories d'informations à partir de la liste. Et revenir plus tard pour vérifier le plan de match.
+
     EDITRESULTS:
         TITLE: Modification des résultats
         SUBMIT: Sauvegarder les résulats

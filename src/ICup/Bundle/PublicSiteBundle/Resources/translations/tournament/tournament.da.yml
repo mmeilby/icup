@@ -134,7 +134,10 @@ FORM:
         STATISTICS:
           TITLE: Hold statistik
           DESC: Find mange spændende informationer om turneringen.
-          
+        NOPLAN:
+          TITLE: Der er ikke lagt en kampplan endnu
+          DESC: Klik på en af kategorierne i listen med information. Og vend tilbage senere når kampplanen er færdig.
+
     EDITRESULTS:
         TITLE: Rediger resultater
         SUBMIT: Gem resultater

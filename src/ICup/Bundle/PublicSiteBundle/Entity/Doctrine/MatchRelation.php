@@ -3,7 +3,7 @@
 namespace ICup\Bundle\PublicSiteBundle\Entity\Doctrine;
 
 use Doctrine\ORM\Mapping as ORM;
-use Symfony\Component\Intl\Exception\MethodNotImplementedException;
+use JsonSerializable;
 
 /**
  * ICup\Bundle\PublicSiteBundle\Entity\Doctrine\MatchRelation
@@ -11,7 +11,7 @@ use Symfony\Component\Intl\Exception\MethodNotImplementedException;
  * @ORM\Table(name="matchrelations",uniqueConstraints={@ORM\UniqueConstraint(name="TeamMatchConstraint", columns={"pid", "cid"})})
  * @ORM\Entity
  */
-class MatchRelation
+class MatchRelation implements JsonSerializable
 {
     /**
      * @var integer $id
@@ -199,5 +199,25 @@ class MatchRelation
     public function getPoints()
     {
         return $this->points;
+    }
+
+    public function __toString() {
+        return $this->team.($this->getScorevalid() ? " <".$this->score.">" : "");
+    }
+
+    /**
+     * (PHP 5 &gt;= 5.4.0)<br/>
+     * Specify data which should be serialized to JSON
+     * @link http://php.net/manual/en/jsonserializable.jsonserialize.php
+     * @return mixed data which can be serialized by <b>json_encode</b>,
+     * which is a value of any type other than a resource.
+     */
+    function jsonSerialize() {
+        return array(
+            "id" => $this->id,
+            'relation' => $this->getAwayteam() ? "away" : "home",
+            "team" => $this->team->jsonSerialize(),
+            'result' => $this->getScorevalid() ? array("score" => $this->score, "points" => $this->points, "valid" => true) : array("score" => '', "points" => '', "valid" => false)
+        );
     }
 }

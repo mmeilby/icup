@@ -1,0 +1,163 @@
+{% extends "ICupPublicSiteBundle:Masters:edit.html.twig" %}
+{% trans_default_domain "admin" %}
+
+{% block adminbody %}
+    <div ng-app="tournamentNewsModule">
+        <div ng-controller="tournamentNewsController" ng-cloak>
+            <section layout="column">
+                <md-content flex>
+                    <md-content flex>
+                        <md-toolbar class="md-menu-toolbar">
+                            <div layout="row">
+                                <md-toolbar-filler layout layout-align="center center" style="background-color: #8c8c8c; color: white">
+                                    <span class="fa fa-4x fa-cogs"></span>
+                                </md-toolbar-filler>
+                                <div class="md-padding">
+                                    <h2>{{ 'FORM.LISTNEWS.TITLE'|trans|upper }}</h2>
+                                    <p>{% trans %}FORM.LISTNEWS.CAPTION{% endtrans %}</p>
+                                </div>
+                            </div>
+                        </md-toolbar>
+                    </md-content>
+                    <md-content flex>
+                        <div class="row">
+                            <div class="col-md-12 md-padding">
+                                <md-button class="md-raised md-hue-1" ng-class="{'md-primary': news.length==0}" ng-click="addNews($event)">
+                                    <span class="fa fa-file"></span>&nbsp;{% trans %}FORM.LISTNEWS.NONEWS{% endtrans %}
+                                </md-button>
+                            </div>
+                        </div>
+                        <div class="row title">
+                            <div class="col-md-1 text-center">{% trans %}FORM.NEWS.NO{% endtrans %}</div>
+                            <div class="col-md-4">{% trans %}FORM.NEWS.SUBJECT{% endtrans %}</div>
+                            <div class="col-md-2">{% trans %}FORM.NEWS.LANGUAGE{% endtrans %}</div>
+                            <div class="col-md-2">{% trans %}FORM.NEWS.DATE{% endtrans %}</div>
+                            <div class="col-md-2">{% trans %}FORM.NEWS.TYPE{% endtrans %}</div>
+                        </div>
+                        <div class="row" ng-class-odd="'bg-table-row'"
+                             ng-repeat="newsrec in news | orderBy: ['-newsno', 'language'] as results track by newsrec.id"
+                             ng-click="editNews(newsrec, $event)"
+                        >
+                            <div class="col-md-1 text-center">{{ '{{ newsrec.newsno }}' }}</div>
+                            <div class="col-md-4">{{ '{{ newsrec.title }}' }}</div>
+                            <div class="col-md-2">{{ "{{ 'LANG_LOCAL.'+newsrec.language | uppercase | translate:'common' }}" }}</div>
+                            <div class="col-md-2">{{ "{{ newsrec.date.ts | date:'fullDate' | capitalize }}" }}</div>
+                            <div class="col-md-2">{{ "{{ 'FORM.NEWS.TYPES.'+newsrec.newstype | translate }}" }}</div>
+                            <div class="col-md-1 text-center"><span ng-click="trashNews(newsrec.id)" class="fa fa-times text-danger"></span></div>
+                        </div>
+                    </md-content>
+                </md-content>
+            </section>
+        </div>
+    </div>
+{% endblock %}
+
+{% block javascripts %}
+<script src="{{ url('bazinga_jstranslation_js', { 'domain': 'errors' }) }}"></script>
+<script src="{{ url('bazinga_jstranslation_js', { 'domain': 'admin' }) }}"></script>
+<script src="{{ url('bazinga_jstranslation_js', { 'domain': 'common' }) }}"></script>
+<script type="text/javascript">
+    angular.module('tournamentNewsModule', ['ngMaterial', 'ngMessages', 'ngDraggable'])
+        .filter("translate", function() {
+            return function(key, domain, vars){
+                return Translator.trans(key, vars ? vars : {}, domain ? domain : 'admin');
+            }
+        })
+        .filter("capitalize", function($filter) {
+            return function(text){
+                return $filter('uppercase')(text.substring(0,1))+text.substring(1);
+            }
+        })
+        /*
+         ------------------------------------
+         TOURNAMENT BOARD
+         ------------------------------------
+         */
+        .controller('tournamentNewsController', function($scope, $http, $mdDialog, $locale, $mdMedia) {
+            $scope.flagsDir = "{{ asset('bundles/icuppublicsite/images/flags/') }}";
+            $scope.tournament = { 'id': {{ tournament.id }} };
+            $scope.locales = [ {'id': 'en', 'locale': 'LANG_LOCAL.EN'}, {'id': 'it', 'locale': 'LANG_LOCAL.IT'}, {'id': 'fr', 'locale': 'LANG_LOCAL.FR'},
+                               {'id': 'de', 'locale': 'LANG_LOCAL.DE'}, {'id': 'es', 'locale': 'LANG_LOCAL.ES'}, {'id': 'da', 'locale': 'LANG_LOCAL.DA'},
+                               {'id': 'pl', 'locale': 'LANG_LOCAL.PL'} ];
+            $scope.newstypes = [ { 'id': 1, 'lable': 'FORM.NEWS.TYPES.1' }, { 'id': 2, 'lable': 'FORM.NEWS.TYPES.2' } ];
+            $scope.news = [];
+            $http.get(Routing.generate('_rest_list_news', { 'tournamentid': $scope.tournament.id })).then(
+                function(data) {
+                    $scope.news = data.data;
+                },
+                function (response) {
+                    ShowError($mdDialog, response.data.errors, '{% trans %}FORM.LISTNEWS.TITLE{% endtrans %}');
+                });
+            $scope.addNews = function (ev) {
+                var dlgScope = $scope.$new();
+                dlgScope.news_object = {
+                    'date': new Date(),
+                    'newsno': '',
+                    'language': $scope.locales.find(function (locale) { return locale.id == $locale.id.substr(0,2) }),
+                    'newstype': $scope.newstypes.find(function (newstype) { return newstype.id == 1 }),
+                    'title': '',
+                    'context': ''
+                };
+                dlgScope.title = 'FORM.NEWS.TITLE.ADD';
+                dlgScope.subtitle = 'FORM.NEWS.PROMPT.ADD';
+                dlgScope.submit_caption = 'FORM.NEWS.SUBMIT.ADD';
+                dlgScope.cancel_caption = 'FORM.NEWS.CANCEL.ADD';
+                $mdDialog.show({
+                    controller: DialogController,
+                    scope: dlgScope,
+                    templateUrl: '{{ asset('bundles/icuppublicsite/templates/editnewsdlg.html') }}',
+                    parent: angular.element(document.body),
+                    targetEvent: ev,
+                    clickOutsideToClose: true,
+                    fullscreen: $mdMedia('sm') || $mdMedia('xs')
+                })
+                .then(function() {
+                    alert(dlgScope.news_object.language.id);
+                });
+            };
+            $scope.editNews = function (newsrec, ev) {
+                var dlgScope = $scope.$new();
+                dlgScope.news_object = {
+                    'date': new Date(newsrec.date.js),
+                    'newsno': newsrec.newsno,
+                    'language': $scope.locales.find(function (locale) { return locale.id == newsrec.language }),
+                    'newstype': $scope.newstypes.find(function (newstype) { return newstype.id == newsrec.newstype }),
+                    'title': newsrec.title,
+                    'context': newsrec.context
+                };
+                dlgScope.title = 'FORM.NEWS.TITLE.CHG';
+                dlgScope.subtitle = 'FORM.NEWS.PROMPT.CHG';
+                dlgScope.submit_caption = 'FORM.NEWS.SUBMIT.CHG';
+                dlgScope.cancel_caption = 'FORM.NEWS.CANCEL.CHG';
+                $mdDialog.show({
+                    controller: DialogController,
+                    scope: dlgScope,
+                    templateUrl: '{{ asset('bundles/icuppublicsite/templates/editnewsdlg.html') }}',
+                    parent: angular.element(document.body),
+                    targetEvent: ev,
+                    clickOutsideToClose: true,
+                    fullscreen: $mdMedia('sm') || $mdMedia('xs')
+                })
+                .then(function() {
+
+                });
+            };
+            $scope.trashNews = function (newsrec, ev) {
+                alert("DEL");
+            };
+        });
+    function DialogController($scope, $mdDialog) {
+        $scope.submit = function(param) {
+            $mdDialog.hide(param);
+        };
+        $scope.cancel = function() {
+            $mdDialog.cancel();
+        };
+    };
+    function ShowError($mdDialog, errors, title) {
+        var error = Translator.trans('ERROR.'+errors.join('.')+'.TITLE', {}, 'errors');
+        var solution = Translator.trans('ERROR.'+errors.join('.')+'.SOLUTION', {}, 'errors');
+        $mdDialog.show($mdDialog.alert().clickOutsideToClose(true).title(error).textContent(solution).ok('{% trans %}FORM.CLOSE{% endtrans %}'));
+    };
+</script>
+{% endblock %}

@@ -134,6 +134,9 @@ FORM:
         STATISTICS:
           TITLE: Statistiche
           DESC:  Alcuni dati interessanti sul torneo.
+        NOPLAN:
+          TITLE: Non esiste un piano partita ancora pronto
+          DESC: Date un'occhiata alle altre categorie di informazioni dall'elenco. E tornare in seguito per verificare il piano partita.
 
     EDITRESULTS:
         TITLE: Aggiornamento dei risultati

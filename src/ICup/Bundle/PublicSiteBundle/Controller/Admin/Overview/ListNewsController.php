@@ -18,7 +18,7 @@ class ListNewsController extends Controller
      * List the events available for a tournament
      * @Route("/edit/news/list/{tournamentid}", name="_edit_news_list")
      * @Method("GET")
-     * @Template("ICupPublicSiteBundle:Host:listnews.html.twig")
+     * @Template("ICupPublicSiteBundle:Admin:tournamentnews.html.twig")
      */
     public function listAction($tournamentid) {
         /* @var $utilService Util */
@@ -30,6 +30,7 @@ class ListNewsController extends Controller
         $tournament = $this->get('entity')->getTournamentById($tournamentid);
         $host = $tournament->getHost();
         $utilService->validateEditorAdminUser($user, $host);
+/*
         $news = $this->get('tmnt')->listNewsByTournament($tournamentid);
         usort($news,
             function ($news1, $news2) {
@@ -44,9 +45,10 @@ class ListNewsController extends Controller
                 }
             }
         );
+*/
         return array('host' => $host,
                      'tournament' => $tournament,
-                     'newslist' => $news
+//                     'newslist' => $news
                 );
     }
 }

@@ -4,6 +4,7 @@ namespace ICup\Bundle\PublicSiteBundle\Entity\Doctrine;
 
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\ORM\Mapping as ORM;
+use JsonSerializable;
 use ICup\Bundle\PublicSiteBundle\Exceptions\ValidationException;
 
 /**
@@ -12,7 +13,7 @@ use ICup\Bundle\PublicSiteBundle\Exceptions\ValidationException;
  * @ORM\Table(name="teams")
  * @ORM\Entity
  */
-class Team
+class Team implements JsonSerializable
 {
     /**
      * @var integer $id
@@ -295,5 +296,20 @@ class Team
 
     public function __toString() {
         return $this->isVacant() ? $this->getTeamName() : $this->getTeamName()." (".$this->getClub()->getCountry().")";
+    }
+
+    /**
+     * (PHP 5 &gt;= 5.4.0)<br/>
+     * Specify data which should be serialized to JSON
+     * @link http://php.net/manual/en/jsonserializable.jsonserialize.php
+     * @return mixed data which can be serialized by <b>json_encode</b>,
+     * which is a value of any type other than a resource.
+     */
+    function jsonSerialize() {
+        return array(
+            "id" => $this->id, "name" => $this->name, "teamname" => $this->getTeamName(),
+            "color" => $this->color, "division" => $this->division, "vacant" => $this->isVacant(),
+            "country_code" => $this->getClub()->getCountry()
+        );
     }
 }

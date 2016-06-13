@@ -4,7 +4,7 @@ namespace ICup\Bundle\PublicSiteBundle\Entity\Doctrine;
 
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\ORM\Mapping as ORM;
-use Symfony\Component\Intl\Exception\MethodNotImplementedException;
+use JsonSerializable;
 
 /**
  * ICup\Bundle\PublicSiteBundle\Entity\Doctrine\Match
@@ -12,7 +12,7 @@ use Symfony\Component\Intl\Exception\MethodNotImplementedException;
  * @ORM\Table(name="matches",uniqueConstraints={@ORM\UniqueConstraint(name="IdxByGroup", columns={"pid", "id"})})
  * @ORM\Entity
  */
-class Match
+class Match implements JsonSerializable
 {
     /**
      * @var integer $id
@@ -244,5 +244,55 @@ class Match
             $txt .= "  ".$this->getMatchRelations()->first()." - ".$this->getMatchRelations()->last();
         }
         return $txt;
+    }
+
+    /**
+     * (PHP 5 &gt;= 5.4.0)<br/>
+     * Specify data which should be serialized to JSON
+     * @link http://php.net/manual/en/jsonserializable.jsonserialize.php
+     * @return mixed data which can be serialized by <b>json_encode</b>,
+     * which is a value of any type other than a resource.
+     */
+    function jsonSerialize() {
+        $matchtype = "M";
+        $qhome = array("id" => 0);
+        $qaway = array("id" => 0);
+        foreach ($this->getQMatchRelations() as $qmatchRelation) {
+            /* @var $qmatchRelation QMatchRelation */
+            if ($qmatchRelation->getAwayteam()) {
+                $qaway = $qmatchRelation->jsonSerialize();
+            }
+            else {
+                $qhome = $qmatchRelation->jsonSerialize();
+            }
+            $matchtype ="Q";
+        }
+        $home = array("id" => 0);
+        $away = array("id" => 0);
+        foreach ($this->getMatchRelations() as $matchRelation) {
+            /* @var $matchRelation MatchRelation */
+            if ($matchRelation->getAwayteam()) {
+                $away = $matchRelation->jsonSerialize();
+            }
+            else {
+                $home = $matchRelation->jsonSerialize();
+            }
+
+        }
+        return array(
+            "id" => $this->id,
+            'matchno' => $this->matchno,
+            "matchtype" => $matchtype,
+            'date' => array(
+                'raw' => $this->date,
+                'js' => $this->date ? date_format($this->getSchedule(), "m/d/Y") : ''),
+            'time' => array(
+                'raw' => $this->time,
+                'js' => $this->time ? date_format($this->getSchedule(), "H:i") : ''),
+            'group' => $this->group->jsonSerialize(),
+            'venue' => $this->playground->jsonSerialize(),
+            'home' => array("qrel" => $qhome, "rel" => $home),
+            'away' => array("qrel" => $qaway, "rel" => $away)
+        );
     }
 }

@@ -24,15 +24,19 @@
 {# *******************************************
    SMALL MOBILE DEVICES
    ******************************************* #}
+    {% if matchlist|length > 0 %}
     <div class="col-md-12 visible-xs-block">
         {{ tformatter.printmatchessx(matchlist, _context) }}
     </div>
+    {% endif %}
 {# *******************************************
    OTHER DEVICES
    ******************************************* #}
+    {% if matchlist|length > 0 %}
     <div class="col-md-8 hidden-xs">
         {{ tformatter.printmatches(matchlist, _context) }}
     </div>
+    {% endif %}
     <div class="col-md-4">
         <div class="list-group">
             <div class="list-group-item">
@@ -59,6 +63,19 @@
                         '%month%': ['MONTH.',news.newsdate|date('M')|upper]|join|trans([],'messages'),
                         '%year%': ''}, 'messages') }}
                 </p>
+            {% if news.id > 0 %}
+                <p class="list-group-item-text">
+                    <img src="{{ asset('bundles/icuppublicsite/images/flags/') }}{{ news.flag }}"
+                         alt="{{ news.country }}"
+                         title="{{ news.country }}" class="flag">
+                    {{ news.club }}
+                </p>
+            {% endif %}
+            {% if news.mid > 0 %}
+                <p class="list-group-item-text">
+                    {% trans from 'tournament' %}LEGEND.NO{% endtrans %} {{ news.matchno }}
+                </p>
+            {% endif %}
                 <p class="list-group-item-text">
                     {{ news.context }}
                 </p>
@@ -72,6 +89,17 @@
     {% endfor %}
         </div>
     </div>
+    {% if matchlist|length == 0 %}
+    <div class="col-md-8 hidden-xs">
+        <div class="list-group">
+            <div class="list-group-item">
+                <i class="fa fa-child fa-5x text-primary"></i>
+                <h2>{% trans %}FORM.TEASER.TOURNAMENT.NOPLAN.TITLE{% endtrans %}</h2>
+                {% trans %}FORM.TEASER.TOURNAMENT.NOPLAN.DESC{% endtrans %}
+            </div>
+        </div>
+    </div>
+    {% endif %}
 </div>
 {% endblock %}
 

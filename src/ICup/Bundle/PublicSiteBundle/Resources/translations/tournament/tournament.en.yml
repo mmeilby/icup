@@ -134,7 +134,10 @@ FORM:
         STATISTICS:
           TITLE: Team statistics
           DESC:  Look up some interesting figures from the tournament.
-          
+        NOPLAN:
+          TITLE: There is no match plan ready yet
+          DESC: Take a look at the other information categories from the list. And get back later to check out the match plan.
+
     EDITRESULTS:
         TITLE: Edit results
         SUBMIT: Save results

@@ -134,6 +134,9 @@ FORM:
             STATISTICS:
                 TITLE: Mannschaftsstatistik
                 DESC: Interessante Zahlen des Turniers
+            NOPLAN:
+                TITLE: Es ist kein Spiel Plan schon fertig
+                DESC: Werfen Sie einen Blick auf die anderen Informationskategorien aus der Liste. Und erhalten Sie später das Spiel Plan zu prüfen.
 
     EDITRESULTS:
         TITLE: Ergebnisse redigieren

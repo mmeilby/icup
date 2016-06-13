@@ -68,17 +68,18 @@ class OverviewController extends Controller
         foreach ($newsStream as $news) {
             $news['newsdate'] = Date::getDateTime($news['date']);
             if ($news['id'] > 0) {
+                $news['flag'] = $this->get('util')->getFlag($news['country']);
                 $newsRefTeam[$news['id']][$news['newsno']][$news['language']] = $news;
-                continue;
             }
-            if ($news['mid'] > 0) {
+            else if ($news['mid'] > 0) {
                 $newsRef[$news['mid']][$news['newsno']][$news['language']] = $news;
-                continue;
             }
-            /* @var $diff \DateInterval */
-            $diff = $today->diff($news['newsdate']);
-            if ($news['newstype'] == News::$TYPE_PERMANENT || $diff->days < 2) {
-                $newsGeneral[$news['newsno']][$news['language']] = $news;
+            else {
+                /* @var $diff \DateInterval */
+                $diff = $today->diff($news['newsdate']);
+                if ($news['newstype'] == News::$TYPE_PERMANENT || $diff->days < 2) {
+                    $newsGeneral[$news['newsno']][$news['language']] = $news;
+                }
             }
         }
 
@@ -87,13 +88,19 @@ class OverviewController extends Controller
         foreach ($matches as $match) {
             $matchNews = array();
             if (array_key_exists($match['id'], $newsRef)) {
-                $matchNews = array_merge($matchNews, $this->getNews($newsRef[$match['id']], $request));
+                $news = $newsRef[$match['id']];
+                $matchNews = array_merge($matchNews, $this->getNews($news, $request));
+                $newsGeneral = array_merge($newsGeneral, $news);
             }
             if (array_key_exists($match['home']['id'], $newsRefTeam)) {
-                $matchNews = array_merge($matchNews, $this->getNews($newsRefTeam[$match['home']['id']], $request));
+                $news = $newsRefTeam[$match['home']['id']];
+                $matchNews = array_merge($matchNews, $this->getNews($news, $request));
+                $newsGeneral = array_merge($newsGeneral, $news);
             }
             if (array_key_exists($match['away']['id'], $newsRefTeam)) {
-                $matchNews = array_merge($matchNews, $this->getNews($newsRefTeam[$match['away']['id']], $request));
+                $news = $newsRefTeam[$match['away']['id']];
+                $matchNews = array_merge($matchNews, $this->getNews($news, $request));
+                $newsGeneral = array_merge($newsGeneral, $news);
             }
             $match['news'] = $matchNews;
             $slotid = 0;

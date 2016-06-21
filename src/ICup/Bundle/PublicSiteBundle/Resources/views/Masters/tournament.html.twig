@@ -253,7 +253,7 @@
             <td class="narrow-col text-nowrap" style="vertical-align: middle">
                 {{ match.home.score }}-{{ match.away.score }}
             {% if match.news is defined and match.news|length > 0 %}
-                <br /><span class="orange" title="{{ match.news[0].name }}: {{ match.news[0].context }}"><i class="fa fa-warning"></i></span>
+                <br /><span class="orange" title="{{ match.news[0].title }}: {{ match.news[0].context }}"><i class="fa fa-warning"></i></span>
             {% endif %}
             </td>
         </tr>
@@ -342,7 +342,7 @@
             <td class="narrow-col text-nowrap">
                 {{ match.home.score }}-{{ match.away.score }}
             {% if match.news is defined and match.news|length > 0 %}
-                <br /><span class="orange" title="{{ match.news[0].name }}: {{ match.news[0].context }}"><i class="fa fa-warning"></i></span>
+                <br /><span class="orange" title="{{ match.news[0].title }}: {{ match.news[0].context }}"><i class="fa fa-warning"></i></span>
             {% endif %}
             </td>
         </tr>

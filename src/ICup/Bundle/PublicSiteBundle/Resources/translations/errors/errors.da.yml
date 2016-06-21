@@ -39,6 +39,9 @@ ERROR:
   INVALIDMATCHRELATION:
     TITLE: Der er et teknisk problem med den valgte kamp
     SOLUTION: Problemet er optaget til analyse. Benyt det følgende link for at komme videre.
+  NOMATCH:
+    TITLE: Den valgte kamp findes ikke
+    SOLUTION: Den valgte kamp findes ikke. Ret dit valg
   INVALIDSITE:
     TITLE: Der er problemer med den valgte lokation
     SOLUTION: Den valgte lokation findes ikke. Benyt det følgende link for at kunne vælge en lokation der findes.

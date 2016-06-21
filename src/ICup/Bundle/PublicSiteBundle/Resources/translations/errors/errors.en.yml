@@ -39,6 +39,9 @@ ERROR:
   INVALIDMATCHRELATION:
     TITLE: There is a technical problem with a match result
     SOLUTION: A non existing match result was referenced.
+  NOMATCH:
+    TITLE: The selected match does not exist
+    SOLUTION: The selected match does not exist. Please change your criteria.
   INVALIDSITE:
     TITLE: The site is not valid
     SOLUTION: The specified site does not exist.

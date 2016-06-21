@@ -105,12 +105,12 @@
     </table>
 </div>
 {% else %}
-<div class="panel panel-warning">
-    <div class="panel-heading">
-        <b>
-            {% trans %}TOURNAMENTNOTREADY{% endtrans %}
-        </b>
+    <div class="list-group">
+        <div class="list-group-item">
+            <i class="fa fa-child fa-5x text-primary"></i>
+            <h2>{% trans %}FORM.TEASER.TOURNAMENT.NOPLAN.TITLE{% endtrans %}</h2>
+            {% trans %}FORM.TEASER.TOURNAMENT.NOPLAN.DESC{% endtrans %}
+        </div>
     </div>
-</div>
 {% endif %}
 {% endblock %}

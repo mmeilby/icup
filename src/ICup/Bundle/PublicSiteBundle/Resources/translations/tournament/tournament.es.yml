@@ -80,6 +80,7 @@ FORM:
             1: Este torneo está abierto para inscripciones. Grupos y partidos pueden estar incompletos o faltantes. 
             2: Este torneo es en vivo - echa un vistazo a los últimos resultados. 
             3: Este es un torneo completado. Puede revisar los ganadores y salón de la fama. 
+            4: Se está planificando Este torneo. Grupos y partidos pueden estar incompletos o falta.
 
 # Statistics page translations
     STATISTICS: 

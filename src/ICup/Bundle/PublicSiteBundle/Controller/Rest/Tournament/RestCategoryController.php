@@ -350,11 +350,11 @@ class RestCategoryController extends Controller
                     'id' => $enrollment->getTeam()->getId(),
                     'name' => $enrollment->getTeam()->getTeamName($this->get('translator')->trans('VACANT_TEAM', array(), 'teamname')),
                     'country' => array(
-                        'name' => $this->get('translator')->trans($enrollment->getTeam()->getClub()->getCountry(), array(), 'lang'),
-                        'flag' => $utilService->getFlag($enrollment->getTeam()->getClub()->getCountry())
+                        'name' => $this->get('translator')->trans($enrollment->getTeam()->getClub()->getCountryCode(), array(), 'lang'),
+                        'flag' => $utilService->getFlag($enrollment->getTeam()->getClub()->getCountryCode())
                     ),
                     'index' => count(array_filter($enrollments, function (Enrollment $e) use ($enrollment) {
-                        return $e->getCategory()->getId() == $enrollment->getCategory()->getId() && $e->getTeam()->getClub()->getCountry() == $enrollment->getTeam()->getClub()->getCountry();
+                        return $e->getCategory()->getId() == $enrollment->getCategory()->getId() && $e->getTeam()->getClub()->getCountryCode() == $enrollment->getTeam()->getClub()->getCountryCode();
                     }))
                 );
             }

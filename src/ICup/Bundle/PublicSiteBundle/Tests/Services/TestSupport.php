@@ -4,6 +4,7 @@ namespace ICup\Bundle\PublicSiteBundle\Tests\Services;
 
 use ICup\Bundle\PublicSiteBundle\Entity\Doctrine\Category;
 use ICup\Bundle\PublicSiteBundle\Entity\Doctrine\Club;
+use ICup\Bundle\PublicSiteBundle\Entity\Doctrine\Country;
 use ICup\Bundle\PublicSiteBundle\Entity\Doctrine\Date;
 use ICup\Bundle\PublicSiteBundle\Entity\Doctrine\Enrollment;
 use ICup\Bundle\PublicSiteBundle\Entity\Doctrine\Group;
@@ -62,6 +63,7 @@ class TestSupport
             $this->getClassMetadata('Match'),
             $this->getClassMetadata('Team'),
             $this->getClassMetadata('Club'),
+            $this->getClassMetadata('Country'),
             $this->getClassMetadata('Site'),
             $this->getClassMetadata('Playground'),
             $this->getClassMetadata('PlaygroundAttribute'),
@@ -168,11 +170,24 @@ class TestSupport
             array("ESBF", "FRA"), array("FALK", "NOR"), array("C.C. ANSIAO", "PRT"),
             array("ETIEC MENDOZA", "ARG"), array("VIKINGUR", "ISL"),
         );
+        $countries = array();
         $clubs = array();
         foreach ($testclubs as $clubinfo) {
+            if (isset($countries[$clubinfo[1]])) {
+                $country = $countries[$clubinfo[1]];
+            }
+            else {
+                $country = new Country();
+                $country->setCountry($clubinfo[1]);
+                $country->setName($clubinfo[1]);
+                $country->setFlag($clubinfo[1].'.png');
+                $country->setActive(true);
+                $this->em->persist($country);
+                $countries[$clubinfo[1]] = $country;
+            }
             $club = new Club();
             $club->setName($clubinfo[0]);
-            $club->setCountry($clubinfo[1]);
+            $club->setCountry($country);
             $this->em->persist($club);
             $clubs[] = $club;
         }

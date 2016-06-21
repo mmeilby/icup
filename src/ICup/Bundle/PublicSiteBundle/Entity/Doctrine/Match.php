@@ -283,12 +283,9 @@ class Match implements JsonSerializable
             "id" => $this->id,
             'matchno' => $this->matchno,
             "matchtype" => $matchtype,
-            'date' => array(
-                'raw' => $this->date,
-                'js' => $this->date ? date_format($this->getSchedule(), "m/d/Y") : ''),
-            'time' => array(
-                'raw' => $this->time,
-                'js' => $this->time ? date_format($this->getSchedule(), "H:i") : ''),
+            'date' => Date::jsonDateSerialize($this->date),
+            'time' => Date::jsonTimeSerialize($this->time), 
+            'category' => $this->group->getCategory()->jsonSerialize(),
             'group' => $this->group->jsonSerialize(),
             'venue' => $this->playground->jsonSerialize(),
             'home' => array("qrel" => $qhome, "rel" => $home),

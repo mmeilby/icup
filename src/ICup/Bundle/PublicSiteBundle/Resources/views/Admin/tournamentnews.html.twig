@@ -30,20 +30,19 @@
                         <div class="row title">
                             <div class="col-md-1 text-center">{% trans %}FORM.NEWS.NO{% endtrans %}</div>
                             <div class="col-md-4">{% trans %}FORM.NEWS.SUBJECT{% endtrans %}</div>
-                            <div class="col-md-2">{% trans %}FORM.NEWS.LANGUAGE{% endtrans %}</div>
-                            <div class="col-md-2">{% trans %}FORM.NEWS.DATE{% endtrans %}</div>
-                            <div class="col-md-2">{% trans %}FORM.NEWS.TYPE{% endtrans %}</div>
+                            <div class="col-md-1">{% trans %}FORM.NEWS.LANGUAGE{% endtrans %}</div>
+                            <div class="col-md-3">{% trans %}FORM.NEWS.DATE{% endtrans %}</div>
+                            <div class="col-md-3">{% trans %}FORM.NEWS.TYPE{% endtrans %}</div>
                         </div>
                         <div class="row" ng-class-odd="'bg-table-row'"
-                             ng-repeat="newsrec in news | orderBy: ['-newsno', 'language'] as results track by newsrec.id"
-                             ng-click="editNews(newsrec, $event)"
+                             ng-repeat="newsrec in news | orderBy: ['-date', 'newsno', 'language'] as results track by newsrec.id"
                         >
-                            <div class="col-md-1 text-center">{{ '{{ newsrec.newsno }}' }}</div>
-                            <div class="col-md-4">{{ '{{ newsrec.title }}' }}</div>
-                            <div class="col-md-2">{{ "{{ 'LANG_LOCAL.'+newsrec.language | uppercase | translate:'common' }}" }}</div>
-                            <div class="col-md-2">{{ "{{ newsrec.date.ts | date:'fullDate' | capitalize }}" }}</div>
-                            <div class="col-md-2">{{ "{{ 'FORM.NEWS.TYPES.'+newsrec.newstype | translate }}" }}</div>
-                            <div class="col-md-1 text-center"><span ng-click="trashNews(newsrec.id)" class="fa fa-times text-danger"></span></div>
+                            <div class="col-md-1 text-center" ng-click="editNews(newsrec, $event)">{{ '{{ newsrec.newsno }}' }}</div>
+                            <div class="col-md-4" ng-click="editNews(newsrec, $event)">{{ '{{ newsrec.title }}' }}</div>
+                            <div class="col-md-1" ng-click="editNews(newsrec, $event)">{{ "{{ 'LANG_LOCAL.'+newsrec.language | uppercase | translate:'common' }}" }}</div>
+                            <div class="col-md-3" ng-click="editNews(newsrec, $event)">{{ "{{ newsrec.date.ts | date:'fullDate' | capitalize }}" }}</div>
+                            <div class="col-md-2" ng-click="editNews(newsrec, $event)">{{ "{{ 'FORM.NEWS.TYPES.'+newsrec.newstype | translate }}" }}</div>
+                            <div class="col-md-1 text-center" ng-click="trashNews(newsrec, $event)"><span class="fa fa-times text-danger"></span></div>
                         </div>
                     </md-content>
                 </md-content>
@@ -55,6 +54,7 @@
 {% block javascripts %}
 <script src="{{ url('bazinga_jstranslation_js', { 'domain': 'errors' }) }}"></script>
 <script src="{{ url('bazinga_jstranslation_js', { 'domain': 'admin' }) }}"></script>
+<script src="{{ url('bazinga_jstranslation_js', { 'domain': 'tournament' }) }}"></script>
 <script src="{{ url('bazinga_jstranslation_js', { 'domain': 'common' }) }}"></script>
 <script type="text/javascript">
     angular.module('tournamentNewsModule', ['ngMaterial', 'ngMessages', 'ngDraggable'])
@@ -73,35 +73,65 @@
          TOURNAMENT BOARD
          ------------------------------------
          */
-        .controller('tournamentNewsController', function($scope, $http, $mdDialog, $locale, $mdMedia) {
+        .controller('tournamentNewsController', function($scope, $http, $mdDialog, $locale, $mdMedia, $filter) {
             $scope.flagsDir = "{{ asset('bundles/icuppublicsite/images/flags/') }}";
             $scope.tournament = { 'id': {{ tournament.id }} };
-            $scope.locales = [ {'id': 'en', 'locale': 'LANG_LOCAL.EN'}, {'id': 'it', 'locale': 'LANG_LOCAL.IT'}, {'id': 'fr', 'locale': 'LANG_LOCAL.FR'},
-                               {'id': 'de', 'locale': 'LANG_LOCAL.DE'}, {'id': 'es', 'locale': 'LANG_LOCAL.ES'}, {'id': 'da', 'locale': 'LANG_LOCAL.DA'},
-                               {'id': 'pl', 'locale': 'LANG_LOCAL.PL'} ];
-            $scope.newstypes = [ { 'id': 1, 'lable': 'FORM.NEWS.TYPES.1' }, { 'id': 2, 'lable': 'FORM.NEWS.TYPES.2' } ];
-            $scope.news = [];
-            $http.get(Routing.generate('_rest_list_news', { 'tournamentid': $scope.tournament.id })).then(
+            $scope.locales = {{ languages | raw }};
+            $scope.newstypes = {{ newstypes | raw }};
+            GetNews();
+            $scope.categories = [];
+            $http.get(Routing.generate('_rest_list_categories', { 'tournamentid': $scope.tournament.id })).then(
                 function(data) {
-                    $scope.news = data.data;
+                    $scope.categories = data.data;
                 },
                 function (response) {
-                    ShowError($mdDialog, response.data.errors, '{% trans %}FORM.LISTNEWS.TITLE{% endtrans %}');
+                    ShowError($mdDialog, response.data.errors, '{% trans %}FORM.LISTCATEGORIES.CAPTION{% endtrans %}');
                 });
             $scope.addNews = function (ev) {
                 var dlgScope = $scope.$new();
+                var next_newsno = 1;
+                angular.forEach($scope.news, function (newsrec) {
+                    if (newsrec.newsno >= next_newsno) {
+                        next_newsno = newsrec.newsno+1;
+                    }
+                });
                 dlgScope.news_object = {
                     'date': new Date(),
-                    'newsno': '',
+                    'newsno': next_newsno,
                     'language': $scope.locales.find(function (locale) { return locale.id == $locale.id.substr(0,2) }),
                     'newstype': $scope.newstypes.find(function (newstype) { return newstype.id == 1 }),
                     'title': '',
-                    'context': ''
+                    'context': '',
+                    'matchno': '',
+                    'match': { 'id': 0 },
+                    'category': { 'id': 0 },
+                    'team': { 'id': 0 }
                 };
                 dlgScope.title = 'FORM.NEWS.TITLE.ADD';
                 dlgScope.subtitle = 'FORM.NEWS.PROMPT.ADD';
                 dlgScope.submit_caption = 'FORM.NEWS.SUBMIT.ADD';
                 dlgScope.cancel_caption = 'FORM.NEWS.CANCEL.ADD';
+                dlgScope.teams = [];
+                // watch the change of category and update the groups accordingly
+                dlgScope.$watch(
+                    function () {
+                        return dlgScope.news_object.category.id;
+                    },
+                    function (id, previous_id) {
+                        if (id) {
+                            GetTeams(id, dlgScope);
+                        }
+                    });
+                // watch the change of matchno and update the match accordingly
+                dlgScope.$watch(
+                    function () {
+                        return dlgScope.news_object.matchno;
+                    },
+                    function (no, previous_no) {
+                        if (no) {
+                            GetMatch(no, dlgScope);
+                        }
+                    });
                 $mdDialog.show({
                     controller: DialogController,
                     scope: dlgScope,
@@ -112,7 +142,25 @@
                     fullscreen: $mdMedia('sm') || $mdMedia('xs')
                 })
                 .then(function() {
-                    alert(dlgScope.news_object.language.id);
+                    var add_news = {
+                        'date': $filter('date')(dlgScope.news_object.date, 'yyyy-MM-dd'),
+                        'newsno': dlgScope.news_object.newsno,
+                        'language': dlgScope.news_object.language.id,
+                        'newstype': dlgScope.news_object.newstype.id,
+                        'title': dlgScope.news_object.title,
+                        'context': dlgScope.news_object.context
+                    };
+                    $http.post(Routing.generate('rest_news_create', {
+                        'tournamentid': $scope.tournament.id,
+                        'matchid': dlgScope.news_object.match.id,
+                        'teamid': dlgScope.news_object.team.id
+                    }), add_news).then(
+                        function(data) {
+                            GetNewsRecord(data.data.id);
+                        },
+                        function (response) {
+                            ShowError($mdDialog, response.data.errors, '{% trans %}FORM.NEWS.TITLE.ADD{% endtrans %}');
+                        });
                 });
             };
             $scope.editNews = function (newsrec, ev) {
@@ -123,12 +171,37 @@
                     'language': $scope.locales.find(function (locale) { return locale.id == newsrec.language }),
                     'newstype': $scope.newstypes.find(function (newstype) { return newstype.id == newsrec.newstype }),
                     'title': newsrec.title,
-                    'context': newsrec.context
+                    'context': newsrec.context,
+                    'matchno': newsrec.match.id > 0 ? newsrec.match.matchno : '',
+                    'match': newsrec.match,
+                    'category': newsrec.category,
+                    'team': newsrec.team
                 };
                 dlgScope.title = 'FORM.NEWS.TITLE.CHG';
                 dlgScope.subtitle = 'FORM.NEWS.PROMPT.CHG';
                 dlgScope.submit_caption = 'FORM.NEWS.SUBMIT.CHG';
                 dlgScope.cancel_caption = 'FORM.NEWS.CANCEL.CHG';
+                dlgScope.teams = [];
+                // watch the change of category and update the groups accordingly
+                dlgScope.$watch(
+                    function () {
+                        return dlgScope.news_object.category.id;
+                    },
+                    function (id, previous_id) {
+                        if (id) {
+                            GetTeams(id, dlgScope);
+                        }
+                    });
+                // watch the change of matchno and update the match accordingly
+                dlgScope.$watch(
+                    function () {
+                        return dlgScope.news_object.matchno;
+                    },
+                    function (no, previous_no) {
+                        if (no) {
+                            GetMatch(no, dlgScope);
+                        }
+                    });
                 $mdDialog.show({
                     controller: DialogController,
                     scope: dlgScope,
@@ -139,12 +212,88 @@
                     fullscreen: $mdMedia('sm') || $mdMedia('xs')
                 })
                 .then(function() {
-
+                    var update_news = {
+                        'date': $filter('date')(dlgScope.news_object.date, 'yyyy-MM-dd'),
+                        'newsno': dlgScope.news_object.newsno,
+                        'language': dlgScope.news_object.language.id,
+                        'newstype': dlgScope.news_object.newstype.id,
+                        'title': dlgScope.news_object.title,
+                        'context': dlgScope.news_object.context,
+                    };
+                    $http.post(Routing.generate('rest_news_update', {
+                        'newsid': newsrec.id,
+                        'matchid': dlgScope.news_object.match.id,
+                        'teamid': dlgScope.news_object.team.id
+                    }), update_news).then(
+                        function(data) {
+                            GetNewsRecord(newsrec.id);
+                        },
+                        function (response) {
+                            ShowError($mdDialog, response.data.errors, '{% trans %}FORM.NEWS.TITLE.CHG{% endtrans %}');
+                        });
                 });
             };
             $scope.trashNews = function (newsrec, ev) {
-                alert("DEL");
+                $mdDialog.show($mdDialog.alert().title('{% trans %}FORM.NEWS.TITLE.DEL{% endtrans %}').textContent('{% trans %}FORM.NEWS.PROMPT.DEL{% endtrans %}').clickOutsideToClose(true).ok('{% trans %}FORM.CLOSE{% endtrans %}'));
+                $http.delete(Routing.generate('rest_news_delete', { 'newsid': newsrec.id })).then(
+                    function(data) {
+                        var idx = $scope.news.findIndex(function (newsitem) { return newsitem.id == newsrec.id });
+                        $scope.news.splice(idx, 1);
+                    },
+                    function (response) {
+                        ShowError($mdDialog, response.data.errors, '{% trans %}FORM.LISTNEWS.TITLE{% endtrans %}');
+                    });
             };
+            function GetNews() {
+                $http.get(Routing.generate('_rest_list_news', { 'tournamentid': $scope.tournament.id })).then(
+                    function(data) {
+                        $scope.news = data.data;
+                    },
+                    function (response) {
+                        ShowError($mdDialog, response.data.errors, '{% trans %}FORM.LISTNEWS.TITLE{% endtrans %}');
+                    });
+            }
+            function GetNewsRecord(newsid) {
+                $http.get(Routing.generate('rest_get_news', { 'newsid': newsid })).then(
+                    function(data) {
+                        var idx = $scope.news.findIndex(function (newsitem) { return newsitem.id == newsid });
+                        if (idx >= 0) {
+                            $scope.news.splice(idx, 1, data.data.news);
+                        }
+                        else {
+                            $scope.news.push(data.data.news);
+                        }
+                    },
+                    function (response) {
+                        ShowError($mdDialog, response.data.errors, '{% trans %}FORM.LISTNEWS.TITLE{% endtrans %}');
+                    });
+            }
+            function GetTeams(id, dlgScope) {
+                $http.get(Routing.generate('_rest_list_groups_with_teams', { 'categoryid': id })).then(
+                    function(data) {
+                        dlgScope.teams = [];
+                        angular.forEach(data.data.groups, function (rec) {
+                            angular.forEach(rec.teams, function (team) {
+                                dlgScope.teams.push({ 'id': team.id, 'name': team.name, 'group': rec.group.name, 'country': team.country, 'flag': team.flag });
+                            });
+                        });
+                        angular.forEach(data.data.unassigned.teams, function (team) {
+                            dlgScope.teams.push(team);
+                        });
+                    },
+                    function (response) {
+                        ShowError($mdDialog, response.data.errors, '{% trans %}FORM.LISTCLUBS.CAPTION{% endtrans %}');
+                    });
+            };
+            function GetMatch(no, dlgScope) {
+                $http.get(Routing.generate('_rest_get_match', { 'tournamentid': $scope.tournament.id, 'matchno': no })).then(
+                    function(data) {
+                        dlgScope.news_object.match = data.data;
+                    },
+                    function (response) {
+                        ShowError($mdDialog, response.data.errors, '{% trans %}FORM.LISTMATCHES.TITLE{% endtrans %}');
+                    });
+            }
         });
     function DialogController($scope, $mdDialog) {
         $scope.submit = function(param) {

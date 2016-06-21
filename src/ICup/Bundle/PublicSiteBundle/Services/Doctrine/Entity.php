@@ -83,7 +83,15 @@ class Entity
     public function getClubRepo() {
         return $this->getRepository('Club');
     }
-    
+
+    /**
+     * Get the Country entity repository
+     * @return \Doctrine\ORM\EntityRepository
+     */
+    public function getCountryRepo() {
+        return $this->getRepository('Country');
+    }
+
     /**
      * Get the Enrollment entity repository
      * @return \Doctrine\ORM\EntityRepository

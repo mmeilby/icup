@@ -1,50 +1,144 @@
-<md-dialog aria-label="{{ title | translate }}">
-    <md-toolbar>
-        <div class="md-toolbar-tools">
-            <h2 class="md-toolbar-tools">{{ title | translate }}</h2>
-            <span flex></span>
-            <md-button class="md-icon-button" ng-click="cancel()"><span class="fa fa-2x fa-times"></span></md-button>
-        </div>
-    </md-toolbar>
-    <md-dialog-content layout-padding>
-        <div class="row">
-            <div class="col-md-12">
-                <form name="newsForm" ng-submit="submit()" ng-cloak>
-                    <div layout="column">
-                        <md-input-container class="md-block">
-                            <label for="newsno">{{ 'FORM.NEWS.NO' | translate }}</label>
-                            <input type="text" id="newsno" ng-model="news_object.newsno" md-autofocus>
-                        </md-input-container>
-                        <md-input-container class="md-block">
-                            <label>{{ 'FORM.NEWS.LANGUAGE' | translate }}</label>
-                            <md-select name="language" ng-model="news_object.language">
-                                <md-option ng-repeat="locale in locales track by locale.id" ng-value="{{ locale }}">{{ locale.locale | translate:'common' }}</md-option>
-                            </md-select>
-                        </md-input-container>
-                        <md-input-container class="md-block">
-                            <label>{{ 'FORM.NEWS.TYPE' | translate }}</label>
-                            <md-select name="newstype" ng-model="news_object.newstype">
-                                <md-option ng-repeat="newstype in newstypes track by newstype.id" ng-value="{{ newstype }}">{{ newstype.lable | translate }}</md-option>
-                            </md-select>
-                        </md-input-container>
-                        <div layout="row">
-                            <md-datepicker ng-model="news_object.date" md-placeholder="{{ 'FORM.NEWS.DATE' | translate }}"></md-datepicker>
-                        </div>
-                        <md-input-container class="md-block">
-                            <label for="title">{{ 'FORM.NEWS.SUBJECT' | translate }}</label>
-                            <input type="text" id="title" ng-model="news_object.title">
-                        </md-input-container>
-                        <md-input-container class="md-block">
-                            <label for="context">{{ 'FORM.NEWS.CONTEXT' | translate }}</label>
-                            <input type="text" id="context" ng-model="news_object.context">
-                        </md-input-container>
-                    </div>
-                </form>
+<md-dialog aria-label="{{ title | translate }}" style="min-width: 60%">
+    <form name="newsFormTab1" ng-submit="submit()" ng-cloak>
+        <md-toolbar>
+            <div class="md-toolbar-tools">
+                <h2 class="md-toolbar-tools">{{ title | translate }}</h2>
+                <span flex></span>
+                <md-button class="md-icon-button" ng-click="cancel()"><span class="fa fa-2x fa-times"></span></md-button>
             </div>
-        </div>
-    </md-dialog-content>
-    <md-dialog-actions>
-        <md-button ng-click="submit()" class="md-primary md-raised" flex="50">{{ submit_caption | translate }}</md-button>
-        <md-button ng-click="cancel()" class="md-raised" flex="50">{{ cancel_caption | translate }}</md-button>
-    </md-dialog-actions>
+        </md-toolbar>
+        <md-dialog-content layout-padding>
+            <md-tabs md-dynamic-height md-border-bottom>
+                <md-tab label="{{ 'FORM.NEWS.TABS.NEWSTAB' | translate }}">
+                    <md-content class="md-padding">
+                        <div layout="row">
+                            <div layout="column" flex>
+                                <md-input-container class="md-block">
+                                    <label for="title">{{ 'FORM.NEWS.SUBJECT' | translate }}</label>
+                                    <input type="text" id="title" ng-model="news_object.title" md-autofocus />
+                                </md-input-container>
+                                <md-input-container class="md-block">
+                                    <label for="context">{{ 'FORM.NEWS.CONTEXT' | translate }}</label>
+                                    <textarea id="context" rows="5" ng-model="news_object.context"></textarea>
+                                </md-input-container>
+                                <div ng-show="news_object.team.id > 0">
+                                    <span>{{ 'FORM.NEWS.TEAMRELATION' | translate }}:</span><br />
+                                    <img src="{{ flagsDir+news_object.team.flag }}"
+                                         alt="{{ news_object.team.country }}"
+                                         title="{{ news_object.team.country }}" ng-if="news_object.team.flag" class="flag">
+                                    {{ news_object.team.name }}
+                                </div>
+                                <div ng-show="news_object.match.id > 0">
+                                    <span>{{ 'FORM.NEWS.MATCHRELATION' | translate }}:</span><br />
+                                    <span>{{ 'LEGEND.NO' | translate:'tournament' }} {{ news_object.match.matchno }}</span><br />
+                                    <span>{{ news_object.match.date.ts | date:'longDate' }} - {{ news_object.match.time.ts | date:'shortTime' }}</span><br />
+                                    <span>{{ 'LEGEND.PLAYGROUND' | translate:'tournament' }}: {{ news_object.match.venue.name }}</span><br />
+                                    <span>{{ 'LEGEND.CATEGORY' | translate:'tournament' }} {{ news_object.match.category.name }}</span>
+                                    -
+                                    <span>{{ 'LEGEND.GROUP' | translate:'tournament' }} {{ news_object.match.group.name }}</span><br />
+                                    <span>
+                                        <img src="{{ flagsDir+news_object.match.home.rel.team.flag }}"
+                                             alt="{{ news_object.match.home.rel.team.country }}"
+                                             title="{{ news_object.match.home.rel.team.country }}" ng-if="news_object.match.home.rel.team.flag" class="flag">
+                                        {{ news_object.match.home.rel.team.name }}
+                                    </span>
+                                    -
+                                    <span>
+                                        <img src="{{ flagsDir+news_object.match.away.rel.team.flag }}"
+                                             alt="{{ news_object.match.away.rel.team.country }}"
+                                             title="{{ news_object.match.away.rel.team.country }}" ng-if="news_object.match.away.rel.team.flag" class="flag">
+                                        {{ news_object.match.away.rel.team.name }}
+                                    </span>
+                                </div>
+                            </div>
+                            <div layout="column" flex>
+                                <md-input-container class="md-block">
+                                    <label for="newsno">{{ 'FORM.NEWS.NO' | translate }}</label>
+                                    <input type="text" id="newsno" ng-model="news_object.newsno" />
+                                </md-input-container>
+                                <md-input-container class="md-block">
+                                    <label>{{ 'FORM.NEWS.LANGUAGE' | translate }}</label>
+                                    <md-select name="language" ng-model="news_object.language" ng-model-options="{trackBy: '$value.id'}">
+                                        <md-option ng-repeat="locale in locales" ng-value="{{ locale }}">{{ locale.locale | translate:'common' }}</md-option>
+                                    </md-select>
+                                </md-input-container>
+                                <md-input-container class="md-block">
+                                    <label>{{ 'FORM.NEWS.TYPE' | translate }}</label>
+                                    <md-select name="newstype" ng-model="news_object.newstype" ng-model-options="{trackBy: '$value.id'}">
+                                        <md-option ng-repeat="newstype in newstypes" ng-value="{{ newstype }}">{{ newstype.lable | translate }}</md-option>
+                                    </md-select>
+                                </md-input-container>
+                                <div layout="row">
+                                    <md-datepicker ng-model="news_object.date" md-placeholder="{{ 'FORM.NEWS.DATE' | translate }}"></md-datepicker>
+                                </div>
+                            </div>
+                        </div>
+                    </md-content>
+                </md-tab>
+                <md-tab label="{{ 'FORM.NEWS.TABS.MATCHTAB' | translate }}" ng-disabled="news_object.team.id > 0">
+                    <md-content class="md-padding">
+                        <md-content layout="row">
+                            <md-input-container class="md-block">
+                                <label for="match">{{ 'FORM.NEWS.MATCHNO' | translate }}</label>
+                                <input type="text" id="match" ng-model="news_object.matchno">
+                            </md-input-container>
+                            <md-content class="md-padding">
+                                <span>{{ news_object.match.date.ts | date:'longDate' }} - {{ news_object.match.time.ts | date:'shortTime' }}</span><br />
+                                <span>{{ 'LEGEND.PLAYGROUND' | translate:'tournament' }}: {{ news_object.match.venue.name }}</span><br />
+                                <span>{{ 'LEGEND.CATEGORY' | translate:'tournament' }} {{ news_object.match.category.name }}</span>
+                                -
+                                <span>{{ 'LEGEND.GROUP' | translate:'tournament' }} {{ news_object.match.group.name }}</span><br />
+                                <span>
+                                    <img src="{{ flagsDir+news_object.match.home.rel.team.flag }}"
+                                         alt="{{ news_object.match.home.rel.team.country }}"
+                                         title="{{ news_object.match.home.rel.team.country }}" ng-if="news_object.match.home.rel.team.flag" class="flag">
+                                    {{ news_object.match.home.rel.team.name }}
+                                </span>
+                                -
+                                <span>
+                                    <img src="{{ flagsDir+news_object.match.away.rel.team.flag }}"
+                                         alt="{{ news_object.match.away.rel.team.country }}"
+                                         title="{{ news_object.match.away.rel.team.country }}" ng-if="news_object.match.away.rel.team.flag" class="flag">
+                                    {{ news_object.match.away.rel.team.name }}
+                                </span>
+                            </md-content>
+                        </md-content>
+                    </md-content>
+                </md-tab>
+                <md-tab label="{{ 'FORM.NEWS.TABS.CLUBTAB' | translate }}" ng-disabled="news_object.match.id > 0">
+                    <md-content class="md-padding">
+                        <div layout="column">
+                            <md-input-container class="md-block">
+                                <label>{{ 'FORM.NEWS.CATEGORY' | translate }}</label>
+                                <md-select name="category" ng-model="news_object.category" ng-model-options="{trackBy: '$value.id'}">
+                                    <md-option ng-value="{ 'id': 0 }">{{ 'FORM.NEWS.SELECT' | translate }}</md-option>
+                                    <md-option ng-repeat="category in categories | orderBy: ['gender', 'classification', '-age']" ng-value="{{ category }}">
+                                        {{ 'CATEGORY' | translate:'tournament' }} {{ category.name }} - {{ category.classification_translated }}
+                                    </md-option>
+                                </md-select>
+                            </md-input-container>
+                            <md-input-container class="md-block">
+                                <label>{{ 'FORM.NEWS.TEAM' | translate }}</label>
+                                <md-select name="team" ng-model="news_object.team" ng-model-options="{trackBy: '$value.id'}">
+                                    <md-option ng-value="{ 'id': 0 }">{{ 'FORM.NEWS.NONE' | translate }}</md-option>
+                                    <md-option ng-repeat="team in teams | orderBy: ['country', 'name']" ng-value="{{ team }}">
+                                        <span>
+                                            <img src="{{ flagsDir+team.flag }}"
+                                                 alt="{{ team.country }}"
+                                                 title="{{ team.country }}" ng-if="team.flag" class="flag">
+                                            {{ team.name }}
+                                        </span>
+                                    </md-option>
+                                </md-select>
+                            </md-input-container>
+                        </div>
+                    </md-content>
+                </md-tab>
+            </md-tabs>
+        </md-dialog-content>
+        <md-dialog-actions>
+            <md-button ng-click="submit()" class="md-primary md-raised" flex="50">{{ submit_caption | translate }}</md-button>
+            <md-button ng-click="cancel()" class="md-raised" flex="50">{{ cancel_caption | translate }}</md-button>
+        </md-dialog-actions>
+    </form>
 </md-dialog>

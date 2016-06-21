@@ -50,7 +50,7 @@ class WinnersController extends Controller
         foreach ($teams as $categoryid => $categoryChamps) {
             /* @var $team Team */
             foreach ($categoryChamps as $champion => $team) {
-                $this->updateList($championList, $team->getClub()->getCountry(), $order[$champion-1], $team->getPreliminaryGroup(), $team);
+                $this->updateList($championList, $team->getClub()->getCountryCode(), $order[$champion-1], $team->getPreliminaryGroup(), $team);
             }
         }
         usort($championList,
@@ -112,7 +112,7 @@ class WinnersController extends Controller
     private function updateList(&$list, $key, $order, Group $group, Team $team) {
         if (!array_key_exists($key, $list)) {
             $list[$key] = array(
-                'country' => $team->getClub()->getCountry(),
+                'country' => $team->getClub()->getCountryCode(),
                 'group' => $group,
                 'club' => $team->getClub()->getName(),
                 'first' => array(),
@@ -121,6 +121,11 @@ class WinnersController extends Controller
                 'forth' => array()
             );
         }
-        $list[$key][$order][] = $team;
+        $list[$key][$order][] = array(
+            'id' => $team->getId(),
+            'name' => $team->getTeamName($this->container->get('translator')->trans('VACANT_TEAM', array(), 'teamname')),
+            'country' => $team->getClub()->getCountryCode(),
+            'matches' => 1
+        );
     }
 }

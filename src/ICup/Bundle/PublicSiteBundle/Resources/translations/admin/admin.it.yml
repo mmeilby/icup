@@ -881,6 +881,17 @@ FORM:
       2: Tempo limitato
     SUBJECT: Titolo
     CONTEXT: Contesto
+    MATCHNO: Gara
+    CATEGORY: Categoria
+    TEAM: Squadra
+    NONE: Niente selezionato
+    SELECT: Selezionare...
+    TABS:
+      NEWSTAB: Informazione generale
+      MATCHTAB: Relazione della gara
+      CLUBTAB: Relazione della squadra
+    MATCHRELATION: Relazione della gara
+    TEAMRELATION: Relazione della squadra
     SUBMIT:
       ADD: Aggiungi una news
       CHG: Modifica la news

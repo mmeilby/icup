@@ -103,6 +103,22 @@ class RestNewsController extends Controller
             return new JsonResponse(array('errors' => array($e->getMessage())), Response::HTTP_FORBIDDEN);
         }
 
+        $match = null;
+        $team = null;
+        try {
+            $matchid = $request->get('matchid', 0);
+            if ($matchid) {
+                $match = $this->get('entity')->getMatchById($matchid);
+            }
+            $teamid = $request->get('teamid', 0);
+            if ($teamid) {
+                $team = $this->get('entity')->getTeamById($teamid);
+            }
+        }
+        catch (ValidationException $e) {
+            return new JsonResponse(array('errors' => array($e->getMessage())), Response::HTTP_BAD_REQUEST);
+        }
+
         /* @var $news News */
         $news = new News();
         $news->setTournament($tournament);
@@ -120,6 +136,8 @@ class RestNewsController extends Controller
                 }
             }
             if ($form->isValid()) {
+                $news->setMatch($match);
+                $news->setTeam($team);
                 $tournament->getNews()->add($news);
                 $em->persist($news);
                 $em->flush();
@@ -167,6 +185,22 @@ class RestNewsController extends Controller
             return new JsonResponse(array('errors' => array($e->getMessage())), Response::HTTP_FORBIDDEN);
         }
 
+        $match = null;
+        $team = null;
+        try {
+            $matchid = $request->get('matchid', 0);
+            if ($matchid) {
+                $match = $this->get('entity')->getMatchById($matchid);
+            }
+            $teamid = $request->get('teamid', 0);
+            if ($teamid) {
+                $team = $this->get('entity')->getTeamById($teamid);
+            }
+        }
+        catch (ValidationException $e) {
+            return new JsonResponse(array('errors' => array($e->getMessage())), Response::HTTP_BAD_REQUEST);
+        }
+
         $form = $this->createForm(new NewsType(), $news);
         $form->handleRequest($request);
 
@@ -182,6 +216,8 @@ class RestNewsController extends Controller
                 }
             }
             if ($form->isValid()) {
+                $news->setMatch($match);
+                $news->setTeam($team);
                 $em->flush();
                 return new JsonResponse(array(), Response::HTTP_NO_CONTENT);
             }
@@ -255,7 +291,7 @@ class RestNewsController extends Controller
                 $form->addError(new FormError($this->get('translator')->trans('FORM.NEWS.NODATE', array(), 'admin')));
             }
             else {
-                $date = date_create_from_format("m/d/Y", $news->getDate());
+                $date = date_create_from_format("Y-m-d", $news->getDate());
                 if ($date === false) {
                     $form->addError(new FormError($this->get('translator')->trans('FORM.NEWS.BADDATE', array(), 'admin')));
                 }
@@ -270,19 +306,22 @@ class RestNewsController extends Controller
     /**
      * Attach an existing Doctrine\News entity to a team.
      *
-     * @Route("/updteam/{newsid}/{teamid}", name="rest_news_update_team", options={"expose"=true})
+     * @Route("/updteam/{newsid}", name="rest_news_update_team", options={"expose"=true})
      * @Method("POST")
      * @param Request $request
      * @param $newsid
-     * @param $teamid
      * @return JsonResponse
      */
-    public function updateTeamAction(Request $request, $newsid, $teamid)
+    public function updateTeamAction(Request $request, $newsid)
     {
+        $teamid = $request->get('teamid', 0);
+        $team = null;
         /* @var $news News */
         try {
             $news = $this->get('entity')->getNewsById($newsid);
-            $team = $this->get('entity')->getTeamById($teamid);
+            if ($teamid) {
+                $team = $this->get('entity')->getTeamById($teamid);
+            }
         }
         catch (ValidationException $e) {
             return new JsonResponse(array('errors' => array($e->getMessage())), Response::HTTP_NOT_FOUND);
@@ -302,29 +341,32 @@ class RestNewsController extends Controller
             return new JsonResponse(array('errors' => array($e->getMessage())), Response::HTTP_FORBIDDEN);
         }
 
-        $news->setTeam($team);
-        
-        $em = $this->getDoctrine()->getManager();
-        $em->flush();
+        if ($news->getTeam() != $team) {
+            $news->setTeam($team);
+            $this->getDoctrine()->getManager()->flush();
+        }
         return new JsonResponse(array(), Response::HTTP_NO_CONTENT);
     }
 
     /**
      * Attach an existing Doctrine\News entity to a match.
      *
-     * @Route("/updmatch/{newsid}/{matchid}", name="rest_news_update_match", options={"expose"=true})
+     * @Route("/updmatch/{newsid}", name="rest_news_update_match", options={"expose"=true})
      * @Method("POST")
      * @param Request $request
      * @param $newsid
-     * @param $matchid
      * @return JsonResponse
      */
-    public function updateMatchAction(Request $request, $newsid, $matchid)
+    public function updateMatchAction(Request $request, $newsid)
     {
+        $matchid = $request->get('matchid', 0);
+        $match = null;
         /* @var $news News */
         try {
             $news = $this->get('entity')->getNewsById($newsid);
-            $match = $this->get('entity')->getMatchById($matchid);
+            if ($matchid) {
+                $match = $this->get('entity')->getMatchById($matchid);
+            }
         }
         catch (ValidationException $e) {
             return new JsonResponse(array('errors' => array($e->getMessage())), Response::HTTP_NOT_FOUND);
@@ -344,10 +386,10 @@ class RestNewsController extends Controller
             return new JsonResponse(array('errors' => array($e->getMessage())), Response::HTTP_FORBIDDEN);
         }
 
-        $news->setMatch($match);
-
-        $em = $this->getDoctrine()->getManager();
-        $em->flush();
+        if ($news->getMatch() != $match) {
+            $news->setMatch($match);
+            $this->getDoctrine()->getManager()->flush();
+        }
         return new JsonResponse(array(), Response::HTTP_NO_CONTENT);
     }
 }

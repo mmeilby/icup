@@ -260,12 +260,10 @@ class News implements JsonSerializable
     function jsonSerialize() {
         return array(
             "id" => $this->id, "newsno" => $this->newsno, "language" => $this->language, "newstype" => $this->newstype,
-            'date' => array(
-                'raw' => $this->date,
-                'js' => $this->date ? date_format($this->getSchedule(), "m/d/Y") : '',
-                'ts' => $this->date ? date_format($this->getSchedule(), "Y-m-d") : ''),
+            'date' => Date::jsonDateSerialize($this->date),
             "title" => $this->title, "context" => $this->context,
             "match" => $this->match ? $this->match->jsonSerialize() : array("id" => 0),
+            "category" => $this->team ? $this->team->getCategory()->jsonSerialize() : array("id" => 0),
             "team" => $this->team ? $this->team->jsonSerialize() : array("id" => 0)
         );
     }

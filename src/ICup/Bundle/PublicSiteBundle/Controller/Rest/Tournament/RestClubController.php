@@ -96,8 +96,8 @@ class RestClubController extends Controller
             $club = $rec['club'];
             if (!$club->isVacant()) {
                 $translatedList[] = array_merge($club->jsonSerialize(), array(
-                    'country' => $this->get('translator')->trans($club->getCountry(), array(), 'lang'),
-                    'flag' => $utilService->getFlag($club->getCountry()),
+                    'country' => $this->get('translator')->trans($club->getCountryCode(), array(), 'lang'),
+                    'flag' => $utilService->getFlag($club->getCountryCode()),
                     'enrolled' => $rec['enrolled']
                 ));
             }
@@ -329,19 +329,19 @@ class RestClubController extends Controller
             else {
                 $em = $this->getDoctrine()->getManager();
                 /* @var $otherclub Club */
-                $otherclub = $em->getRepository($form->getConfig()->getOption("data_class"))->findOneBy(array('name' => $club->getName(), 'country' => $club->getCountry()));
+                $otherclub = $em->getRepository($form->getConfig()->getOption("data_class"))->findOneBy(array('name' => $club->getName(), 'country' => $club->getCountryCode()));
                 if ($otherclub != null && $otherclub->getId() != $club->getId()) {
                     $form->addError(new FormError($this->get('translator')->trans('FORM.CLUB.NAMEEXISTS', array(), 'admin')));
                 }
             }
-            if ($club->getCountry() == null || trim($club->getCountry()) == '') {
+            if ($club->getCountryCode() == null || trim($club->getCountryCode()) == '') {
                 $form->addError(new FormError($this->get('translator')->trans('FORM.CLUB.NOCOUNTRY', array(), 'admin')));
             }
             else {
                 /* @var $utilService Util */
                 $utilService = $this->get('util');
                 $countries = $utilService->getCountries();
-                if (array_search($club->getCountry(), $countries) === false) {
+                if (array_search($club->getCountryCode(), $countries) === false) {
                     $form->addError(new FormError($this->get('translator')->trans('FORM.CLUB.UNKNOWNCOUNTRY', array(), 'admin')));
                 }
             }
@@ -356,8 +356,8 @@ class RestClubController extends Controller
         /* @var $club Club */
         foreach ($list as $club) {
             $translatedList[] = array_merge($club->jsonSerialize(), array(
-                'country' => $this->get('translator')->trans($club->getCountry(), array(), 'lang'),
-                'flag' => $utilService->getFlag($club->getCountry())
+                'country' => $this->get('translator')->trans($club->getCountryCode(), array(), 'lang'),
+                'flag' => $utilService->getFlag($club->getCountryCode())
             ));
         }
         return $translatedList;

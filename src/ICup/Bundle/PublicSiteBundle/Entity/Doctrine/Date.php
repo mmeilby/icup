@@ -31,4 +31,21 @@ class Date {
         $datetime->add(new DateInterval('PT'.$ti.'M'));
         return $datetime;
     }
+
+    public static function jsonDateSerialize($dbdate) {
+        return array(
+            'raw' => $dbdate,
+            'js' => $dbdate ? date_format(self::getDateTime($dbdate), "m/d/Y") : '',
+            'ts' => $dbdate ? date_format(self::getDateTime($dbdate), "Y-m-d") : ''
+        );
+    }
+
+    public static function jsonTimeSerialize($dbtime) {
+        $dbdate = "20100101";
+        return array(
+            'raw' => $dbtime,
+            'js' => $dbtime ? date_format(self::getDateTime($dbdate, $dbtime), "H:i") : '',
+            'ts' => $dbtime ? date_format(self::getDateTime($dbdate, $dbtime), "H:i") : ''
+        );
+    }
 }

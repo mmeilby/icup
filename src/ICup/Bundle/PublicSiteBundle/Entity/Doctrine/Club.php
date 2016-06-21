@@ -33,9 +33,10 @@ class Club implements JsonSerializable
     protected $name;
 
     /**
-     * @var string $country
-     * Country code for club residence - DNK for Denmark, DEU for Germany, FRA for France and so on...
-     * @ORM\Column(name="country", type="string", length=3, nullable=false)
+     * @var Country $country
+     * Relation to Country - club residence - DNK for Denmark, DEU for Germany, FRA for France and so on...
+     * @ORM\ManyToOne(targetEntity="Country")
+     * @ORM\JoinColumn(name="country", referencedColumnName="country")
      */
     protected $country;
 
@@ -95,7 +96,7 @@ class Club implements JsonSerializable
     /**
      * Set country
      *
-     * @param string $country
+     * @param Country $country
      * @return Club
      */
     public function setCountry($country)
@@ -106,13 +107,23 @@ class Club implements JsonSerializable
     }
 
     /**
-     * Get country
+     * Get country record
      *
-     * @return string 
+     * @return Country
      */
     public function getCountry()
     {
         return $this->country;
+    }
+
+    /**
+     * Get country code
+     *
+     * @return string 
+     */
+    public function getCountryCode()
+    {
+        return $this->country->getCountry();
     }
 
     /**
@@ -127,11 +138,11 @@ class Club implements JsonSerializable
      * @return bool true if club is placeholder
      */
     public function isVacant() {
-        return $this->name == static::$VACANT_CLUB_NAME && $this->country == static::$VACANT_CLUB_COUNTRYCODE;
+        return $this->name == static::$VACANT_CLUB_NAME && $this->country->getCountry() == static::$VACANT_CLUB_COUNTRYCODE;
     }
     
     public function __toString() {
-        return $this->getName()." (".$this->getCountry().")";
+        return $this->getName()." (".$this->getCountryCode().")";
     }
 
     /**
@@ -142,6 +153,6 @@ class Club implements JsonSerializable
      * which is a value of any type other than a resource.
      */
     function jsonSerialize() {
-        return array("id" => $this->id, "name" => $this->name, "country_code" => $this->country);
+        return array("id" => $this->id, "name" => $this->name, "country_code" => $this->country->getCountry(), "flag" => $this->country->getFlag());
     }
 }

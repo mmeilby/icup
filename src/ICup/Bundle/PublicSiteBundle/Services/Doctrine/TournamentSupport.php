@@ -169,15 +169,13 @@ class TournamentSupport
     public function listNewsByTournament($tournamentid) {
         $qb = $this->em->createQuery(
             "select n.id as nid,n.date,n.newstype,n.newsno,n.language,n.title,n.context,".
-                   "t.id,t.name,t.division,c.name as club,c.country,".
+                   "t as team,".
                    "m.id as mid,m.matchno,m.date as matchdate,m.time as matchtime ".
             "from ".$this->entity->getRepositoryPath('News')." n ".
             "left outer join ".$this->entity->getRepositoryPath('Match')." m ".
             "with n.match=m.id ".
             "left outer join ".$this->entity->getRepositoryPath('Team')." t ".
             "with n.team=t.id ".
-            "left outer join ".$this->entity->getRepositoryPath('Club')." c ".
-            "with t.club=c.id ".
             "where n.tournament=:tournament ".
             "order by n.newsno asc");
         $qb->setParameter('tournament', $tournamentid);
@@ -185,6 +183,18 @@ class TournamentSupport
         foreach ($qb->getResult() as $news) {
             $newsdate = Date::getDateTime($news['date']);
             $news['schedule'] = $newsdate;
+            if (isset($news['team'])) {
+                /* @var $team Team */
+                $team = $news['team'];
+                $news['id'] = $team->getId();
+                $news['name'] = $team->getTeamName($this->container->get('translator')->trans('VACANT_TEAM', array(), 'teamname'));
+                $news['division'] = $team->getDivision();
+                $news['club'] = $team->getClub()->getName();
+                $news['country'] = $team->getClub()->getCountryCode();
+            }
+            else {
+                $news['id'] = 0;
+            }
             $newsList[] = $news;
         }
         return $newsList;
@@ -359,11 +369,11 @@ class TournamentSupport
         foreach ($teams as $categoryid => $categoryChamps) {
             /* @var $team Team */
             foreach ($categoryChamps as $champion => $team) {
-                if (!isset($championList[$team->getClub()->getCountry()])) {
-                    $championList[$team->getClub()->getCountry()] =
+                if (!isset($championList[$team->getClub()->getCountryCode()])) {
+                    $championList[$team->getClub()->getCountryCode()] =
                         array('first' => array(), 'second' => array(), 'third' => array(), 'forth' => array());
                 }
-                $championList[$team->getClub()->getCountry()][$order[$champion-1]][] = $team;
+                $championList[$team->getClub()->getCountryCode()][$order[$champion-1]][] = $team;
             }
         }
         uasort($championList,
@@ -429,14 +439,14 @@ class TournamentSupport
                     $club = $champions[0]->getClub();
                 }
             }
-            return array(array('club' => $club->getName(), 'country' => $club->getCountry(), 'trophys' => $totalTrophys));
+            return array(array('club' => $club->getName(), 'country' => $club->getCountryCode(), 'trophys' => $totalTrophys));
         }
         return array();
     }
         
     public function getMostGoals($tournamentid) {
         $qb = $this->em->createQuery(
-                "select t.id,c.name as club, c.country, cat.id as cid, max(r.score) as mostgoals ".
+                "select t.id,c.name as club, identity(c.country) as country, cat.id as cid, max(r.score) as mostgoals ".
                 "from ".$this->entity->getRepositoryPath('Category')." cat, ".
                         $this->entity->getRepositoryPath('Group')." g, ".
                         $this->entity->getRepositoryPath('MatchRelation')." r, ".
@@ -459,7 +469,7 @@ class TournamentSupport
         
     public function getMostGoalsTotal($tournamentid) {
         $qb = $this->em->createQuery(
-                "select t.id, c.name as club, c.country, cat.id as cid, sum(r.score) as mostgoals ".
+                "select t.id, c.name as club, identity(c.country) as country, cat.id as cid, sum(r.score) as mostgoals ".
                 "from ".$this->entity->getRepositoryPath('Category')." cat, ".
                         $this->entity->getRepositoryPath('Group')." g, ".
                         $this->entity->getRepositoryPath('MatchRelation')." r, ".

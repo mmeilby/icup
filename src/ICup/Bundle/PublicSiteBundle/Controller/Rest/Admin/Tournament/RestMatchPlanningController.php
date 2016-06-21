@@ -213,13 +213,13 @@ class RestMatchPlanningController extends Controller
                 'matchno' => $match->getMatchno(),
                 'home' => array(
                     'id' => $teamA->getId(),
-                    'name' => $teamA->getTeamName()." (".$teamA->getClub()->getCountry().")",
-                    'country' => $this->get('translator')->trans($teamA->getClub()->getCountry(), array(), 'lang')
+                    'name' => $teamA->getTeamName()." (".$teamA->getClub()->getCountryCode().")",
+                    'country' => $this->get('translator')->trans($teamA->getClub()->getCountryCode(), array(), 'lang')
                 ),
                 'away' => array(
                     'id' => $teamB->getId(),
-                    'name' => $teamB->getTeamName()." (".$teamB->getClub()->getCountry().")",
-                    'country' => $this->get('translator')->trans($teamB->getClub()->getCountry(), array(), 'lang')
+                    'name' => $teamB->getTeamName()." (".$teamB->getClub()->getCountryCode().")",
+                    'country' => $this->get('translator')->trans($teamB->getClub()->getCountryCode(), array(), 'lang')
                 )
             );
         }
@@ -366,8 +366,8 @@ class RestMatchPlanningController extends Controller
             return array(
                 'id' => $team->getId(),
                 'name' => $team->getTeamName(),
-                'country' => $this->get('translator')->trans($team->getClub()->getCountry(), array(), 'lang'),
-                'flag' => $this->get('util')->getFlag($team->getClub()->getCountry())
+                'country' => $this->get('translator')->trans($team->getClub()->getCountryCode(), array(), 'lang'),
+                'flag' => $this->get('util')->getFlag($team->getClub()->getCountryCode())
             );
         }
         else {

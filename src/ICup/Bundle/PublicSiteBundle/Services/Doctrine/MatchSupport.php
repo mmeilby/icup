@@ -4,11 +4,8 @@ namespace ICup\Bundle\PublicSiteBundle\Services\Doctrine;
 
 use ICup\Bundle\PublicSiteBundle\Entity\Doctrine\Date;
 use ICup\Bundle\PublicSiteBundle\Entity\Doctrine\MatchRelation;
-use ICup\Bundle\PublicSiteBundle\Entity\Doctrine\QMatchRelation;
 use ICup\Bundle\PublicSiteBundle\Entity\Doctrine\Tournament;
-use ICup\Bundle\PublicSiteBundle\Entity\MatchPlan;
 use ICup\Bundle\PublicSiteBundle\Entity\QMatch;
-use ICup\Bundle\PublicSiteBundle\Entity\TeamInfo;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 use Doctrine\ORM\EntityManager;
 use Monolog\Logger;
@@ -150,7 +147,7 @@ class MatchSupport
             "t.name as team,".
             "t.division,".
         // Club fields
-            "c.country,".
+            "identity(c.country) as country,".
             "c.id as clubid ";
     }
 

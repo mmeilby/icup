@@ -907,6 +907,17 @@ FORM:
       2: Limited time
     SUBJECT: Headline
     CONTEXT: Context
+    MATCHNO: Match no.
+    CATEGORY: Category
+    TEAM: Team
+    NONE: Nothing selected
+    SELECT: Select...
+    TABS:
+      NEWSTAB: General information
+      MATCHTAB: Match relation
+      CLUBTAB: Team relation
+    MATCHRELATION: Match relation
+    TEAMRELATION: Team relation
     SUBMIT:
       ADD: Add new news record
       CHG: Modify news record

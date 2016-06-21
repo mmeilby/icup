@@ -901,7 +901,7 @@ FORM:
       CHG: Ret informationer om nyheden.
       DEL: Følgende nyhed vil bliver slettet. Det er ikke muligt at fortryde når nyheden er fjernet.
     NEWS: Nyhed
-    NO: Nyhedesnr.
+    NO: Lbnr.
     LANGUAGE: Sprog
     DATE: Dato for nyhed
     TYPE: Gyldighed
@@ -910,6 +910,17 @@ FORM:
       2: Tidsbegrænset nyhed
     SUBJECT: Overskrift
     CONTEXT: Indhold
+    MATCHNO: Kampnr.
+    CATEGORY: Gruppe
+    TEAM: Hold
+    NONE: Intet valgt
+    SELECT: Vælg...
+    TABS:
+      NEWSTAB: Generelle oplysninger
+      MATCHTAB: Kamprelation
+      CLUBTAB: Holdrelation
+    MATCHRELATION: Kamprelation
+    TEAMRELATION: Holdrelation
     SUBMIT:
       ADD: Tilføj nyhed
       CHG: Gem oplysninger

@@ -26,14 +26,14 @@ class ClubController extends Controller
 
         $club = new Club();
         // If country is a part of the request parameters - use it
-        $club->setCountry($country);
+        $club->setCountry($this->get('entity')->getCountryRepo()->find($country));
         $form = $this->makeClubForm($club, 'add');
         $form->handleRequest($request);
         if ($form->get('cancel')->isClicked()) {
             return $this->redirect($returnUrl);
         }
         if ($this->checkForm($form, $club)) {
-            $otherclub = $this->get('logic')->getClubByName($club->getName(), $club->getCountry());
+            $otherclub = $this->get('logic')->getClubByName($club->getName(), $club->getCountryCode());
             if ($otherclub != null) {
                 $form->addError(new FormError($this->get('translator')->trans('FORM.CLUB.NAMEEXIST', array(), 'admin')));
             }
@@ -64,7 +64,7 @@ class ClubController extends Controller
             return $this->redirect($returnUrl);
         }
         if ($this->checkForm($form, $club)) {
-            $otherclub = $this->get('logic')->getClubByName($club->getName(), $club->getCountry());
+            $otherclub = $this->get('logic')->getClubByName($club->getName(), $club->getCountryCode());
             if ($otherclub != null && $otherclub->getId() != $club->getId()) {
                 $form->addError(new FormError($this->get('translator')->trans('FORM.CLUB.CANTCHANGENAME', array(), 'admin')));
             }

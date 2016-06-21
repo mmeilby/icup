@@ -55,6 +55,18 @@ IMG.flag {
     top: -1px;
     padding-right: 3px;
 }
+.md-text IMG.flag {
+    position: relative;
+    top: -2px;
+    padding-right: 3px;
+    height: auto;
+}
+.md-select-value .md-text IMG.flag {
+    position: relative;
+    top: -3px;
+    padding-right: 3px;
+    height: auto;
+}
 /*
     This class disables the hover underline for labels with a link
 */

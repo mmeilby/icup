@@ -80,6 +80,7 @@ FORM:
           1: Le iscrizioni sono aperte. Gruppi e gare possono essere mancanti.
           2: Il torneo è in corso - gurda gli ultimi risultati.
           3: Torneo completato. Puoi vedere i vincitori nell'albo d'oro.
+          4: Questo torneo è in programma. Gruppi e le partite possono essere incomplete o mancanti.
 
 # Statistics page translations
     STATISTICS:

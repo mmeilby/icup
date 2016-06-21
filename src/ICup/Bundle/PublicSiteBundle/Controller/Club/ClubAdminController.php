@@ -55,7 +55,7 @@ class ClubAdminController extends Controller
             else {
                 $club = new Club();
                 $club->setName($clubFormData->getName());
-                $club->setCountry($clubFormData->getCountry());
+                $club->setCountry($this->get('entity')->getCountryRepo()->find($clubFormData->getCountry()));
                 $em = $this->getDoctrine()->getManager();
                 $em->persist($club);
                 $em->flush();
@@ -108,7 +108,7 @@ class ClubAdminController extends Controller
             if ($club == null) {
                 $club = new Club();
                 $club->setName($clubFormData->getName());
-                $club->setCountry($clubFormData->getCountry());
+                $club->setCountry($this->get('entity')->getCountryRepo()->find($clubFormData->getCountry()));
                 $em = $this->getDoctrine()->getManager();
                 $em->persist($club);
                 $em->flush();

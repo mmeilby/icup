@@ -274,7 +274,7 @@ class BusinessLogic
         if ($club == null) {
             $club = new Club();
             $club->setName(Club::$VACANT_CLUB_NAME);
-            $club->setCountry(Club::$VACANT_CLUB_COUNTRYCODE);
+            $club->setCountry($this->entity->getCountryRepo()->find(Club::$VACANT_CLUB_COUNTRYCODE));
             $this->em->persist($club);
             $this->em->flush();
         }
@@ -672,9 +672,9 @@ class BusinessLogic
         foreach ($qb->getResult() as $team) {
             $teamInfo = new TeamInfo();
             $teamInfo->id = $team->getId();
-            $teamInfo->name = $team->getTeamName();
+            $teamInfo->name = $team->getTeamName($this->container->get('translator')->trans('VACANT_TEAM', array(), 'teamname'));
             $teamInfo->club = $team->getClub()->getName();
-            $teamInfo->country = $team->getClub()->getCountry();
+            $teamInfo->country = $team->getClub()->getCountryCode();
             $teamsList[] = $teamInfo;
         }
         return $teamsList;
@@ -712,9 +712,9 @@ class BusinessLogic
         foreach ($qb->getResult() as $team) {
             $teamInfo = new TeamInfo();
             $teamInfo->id = $team->getId();
-            $teamInfo->name = $team->getTeamName();
+            $teamInfo->name = $team->getTeamName($this->container->get('translator')->trans('VACANT_TEAM', array(), 'teamname'));
             $teamInfo->club = $team->getClub()->getName();
-            $teamInfo->country = $team->getClub()->getCountry();
+            $teamInfo->country = $team->getClub()->getCountryCode();
             $teamInfo->group = $groupid;
             $teamsList[] = $teamInfo;
         }
@@ -742,22 +742,21 @@ class BusinessLogic
 
     public function listTeamsByGroup($groupid) {
         $qb = $this->em->createQuery(
-                "select t.id,t.name,t.division,c.name as club,c.country ".
+                "select t ".
                 "from ".$this->entity->getRepositoryPath('GroupOrder')." o, ".
-                        $this->entity->getRepositoryPath('Team')." t, ".
-                        $this->entity->getRepositoryPath('Club')." c ".
+                        $this->entity->getRepositoryPath('Team')." t ".
                 "where o.group=:group and ".
-                      "o.team=t.id and ".
-                      "t.club=c.id ".
+                      "o.team=t.id ".
                 "order by o.id");
         $qb->setParameter('group', $groupid);
         $teamsList = array();
         foreach ($qb->getResult() as $team) {
+            /* @var $team Team */
             $teamInfo = new TeamInfo();
-            $teamInfo->id = $team['id'];
-            $teamInfo->name = $this->getTeamName($team['name'], $team['division']);
-            $teamInfo->club = $team['club'];
-            $teamInfo->country = $team['country'];
+            $teamInfo->id = $team->getId();
+            $teamInfo->name = $team->getTeamName($this->container->get('translator')->trans('VACANT_TEAM', array(), 'teamname'));
+            $teamInfo->club = $team->getClub()->getName();
+            $teamInfo->country = $team->getClub()->getCountryCode();
             $teamInfo->group = $groupid;
             $teamsList[] = $teamInfo;
         }
@@ -776,13 +775,13 @@ class BusinessLogic
             "order by t.id");
         $qb->setParameter('group', $groupid);
         $teamsList = array();
-        /* @var $team Team */
         foreach ($qb->getResult() as $team) {
+            /* @var $team Team */
             $teamInfo = new TeamInfo();
             $teamInfo->id = $team->getId();
-            $teamInfo->name = $team->getTeamName();
+            $teamInfo->name = $team->getTeamName($this->container->get('translator')->trans('VACANT_TEAM', array(), 'teamname'));
             $teamInfo->club = $team->getClub()->getName();
-            $teamInfo->country = $team->getClub()->getCountry();
+            $teamInfo->country = $team->getClub()->getCountryCode();
             $teamInfo->group = $groupid;
             $teamsList[] = $teamInfo;
         }
@@ -821,7 +820,7 @@ class BusinessLogic
 
     public function listTeamsEnrolledUnassigned($categoryid, $classification = 0) {
         $qb = $this->em->createQuery(
-                "select t.id,t.name,t.division,c.name as club,c.country ".
+                "select t ".
                 "from ".$this->entity->getRepositoryPath('Enrollment')." e, ".
                         $this->entity->getRepositoryPath('Team')." t, ".
                         $this->entity->getRepositoryPath('Club')." c ".
@@ -833,16 +832,17 @@ class BusinessLogic
                             "where g.category=:category and g.classification=:class and ".
                                   "o.group=g.id".
                             ") ".
-                "order by c.country, c.name, t.division");
+                "order by c.country, t.name, t.division");
         $qb->setParameter('category', $categoryid);
         $qb->setParameter('class', $classification);
         $teamsList = array();
         foreach ($qb->getResult() as $team) {
+            /* @var $team Team */
             $teamInfo = new TeamInfo();
-            $teamInfo->id = $team['id'];
-            $teamInfo->name = $this->getTeamName($team['name'], $team['division']);
-            $teamInfo->club = $team['club'];
-            $teamInfo->country = $team['country'];
+            $teamInfo->id = $team->getId();
+            $teamInfo->name = $team->getTeamName($this->container->get('translator')->trans('VACANT_TEAM', array(), 'teamname'));
+            $teamInfo->club = $team->getClub()->getName();
+            $teamInfo->country = $team->getClub()->getCountryCode();
             $teamsList[] = $teamInfo;
         }
         return $teamsList;

@@ -80,6 +80,7 @@ FORM:
           1: Denne turnering er åben for tilmelding. Puljer og kampe er ikke fastlagt endnu og kan ændres frem til turneringsstart.
           2: Denne turnering er i gang - følg holdene og se de seneste resultater.
           3: Dette er en afsluttet turnering. De kan se turneringens vindere og de største resultater.
+          4: Denne turnering planlægges. Puljer og kampe er ikke fastlagt endnu og kan ændres frem til turneringsstart.
 
 # Statistics page translations
     STATISTICS:

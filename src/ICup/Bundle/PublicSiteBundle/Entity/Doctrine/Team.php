@@ -295,7 +295,7 @@ class Team implements JsonSerializable
     }
 
     public function __toString() {
-        return $this->isVacant() ? $this->getTeamName() : $this->getTeamName()." (".$this->getClub()->getCountry().")";
+        return $this->isVacant() ? $this->getTeamName() : $this->getTeamName()." (".$this->getClub()->getCountryCode().")";
     }
 
     /**
@@ -309,7 +309,8 @@ class Team implements JsonSerializable
         return array(
             "id" => $this->id, "name" => $this->name, "teamname" => $this->getTeamName(),
             "color" => $this->color, "division" => $this->division, "vacant" => $this->isVacant(),
-            "country_code" => $this->getClub()->getCountry()
+            "country_code" => $this->getClub()->getCountryCode(),
+            "flag" => $this->getClub()->getCountry()->getFlag()
         );
     }
 }

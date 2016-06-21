@@ -6,6 +6,7 @@ use ICup\Bundle\PublicSiteBundle\Entity\Doctrine\Team;
 use ICup\Bundle\PublicSiteBundle\Exceptions\ValidationException;
 use ICup\Bundle\PublicSiteBundle\Services\Doctrine\MatchSupport;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
+use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
@@ -17,33 +18,24 @@ class RestMatchController extends Controller
     /**
      * Get the match identified by tournament and match #
      * @Route("/rest/match/get/{tournamentid}/{matchno}", name="_rest_get_match", options={"expose"=true})
+     * @param $tournamentid
+     * @param $matchno
+     * @return JsonResponse
      */
     public function restGetMatchAction($tournamentid, $matchno)
     {
         /* @var $match Match */
         $match = $this->get('match')->getMatchByNo($tournamentid, $matchno);
-        $hometeamid = $this->get('match')->getMatchHomeTeam($match->getId());
-        /* @var $hometeam Team */
-        $hometeam = $this->get('entity')->getTeamById($hometeamid);
-        $awayteamid = $this->get('match')->getMatchAwayTeam($match->getId());
-        /* @var $awayteam Team */
-        $awayteam = $this->get('entity')->getTeamById($awayteamid);
-        return new Response(json_encode(
-            array(
-                'home' => array(
-                    'id' => $hometeam->getId(),
-                    'name' => $hometeam->getName()
-                ),
-                'away' => array(
-                    'id' => $awayteam->getId(),
-                    'name' => $awayteam->getName()
-                )
-            )
-        ));
+        if ($match) {
+            return new JsonResponse($match);
+        }
+        else {
+            return new JsonResponse(array('errors' => array('NOMATCH')), Response::HTTP_NOT_FOUND);
+        }
     }
 
     /**
-     * Search matches identified by tournament, date, category or playground
+     * Search matches identified by tournament and matchno, date, category or playground
      * @Route("/rest/match/search/{tournamentid}", name="_rest_search_match", options={"expose"=true})
      */
     public function restSearchMatchAction($tournamentid, Request $request)
@@ -122,6 +114,6 @@ class RestMatchController extends Controller
             }
         }
 
-        return new Response(json_encode($matches));
+        return new JsonResponse($matches);
     }
 }

@@ -1,6 +1,7 @@
 <?php
 namespace ICup\Bundle\PublicSiteBundle\Controller\Admin\Overview;
 
+use ICup\Bundle\PublicSiteBundle\Entity\Doctrine\News;
 use ICup\Bundle\PublicSiteBundle\Entity\Doctrine\Tournament;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
@@ -30,25 +31,22 @@ class ListNewsController extends Controller
         $tournament = $this->get('entity')->getTournamentById($tournamentid);
         $host = $tournament->getHost();
         $utilService->validateEditorAdminUser($user, $host);
-/*
-        $news = $this->get('tmnt')->listNewsByTournament($tournamentid);
-        usort($news,
-            function ($news1, $news2) {
-                if ($news1['schedule'] == $news2['schedule']) {
-                    return 0;
-                }
-                elseif ($news1['schedule'] > $news2['schedule']) {
-                    return 1;
-                }
-                else {
-                    return -1;
-                }
-            }
-        );
-*/
-        return array('host' => $host,
-                     'tournament' => $tournament,
-//                     'newslist' => $news
-                );
+
+        $newstypes = array();
+        foreach (
+            array(
+                News::$TYPE_PERMANENT,
+                News::$TYPE_TIMELIMITED
+            )
+            as $id) {
+            $newstypes[] = array('id' => $id, 'lable' => 'FORM.NEWS.TYPES.'.$id);
+        }
+        $languages = array();
+        foreach ($this->get('util')->getSupportedLocales() as $locale) {
+            $languages[] = array('id' => $locale, 'locale' => "LANG_LOCAL.".strtoupper($locale));
+        }
+        sort($languages);
+
+        return array('host' => $host, 'tournament' => $tournament, 'newstypes' => json_encode($newstypes), 'languages' => json_encode($languages));
     }
 }

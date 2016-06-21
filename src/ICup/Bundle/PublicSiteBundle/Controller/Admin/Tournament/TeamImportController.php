@@ -182,7 +182,7 @@ class TeamImportController extends Controller
             if ($club == null) {
                 $club = new Club();
                 $club->setName($name);
-                $club->setCountry($country);
+                $club->setCountry($this->get('entity')->getCountryRepo()->find($country));
                 $em->persist($club);
                 $em->flush();
             }

@@ -25,7 +25,7 @@ class ListClubController extends Controller
         $countries = $this->get('util')->getCountries();
         /* @var $club Club */
         foreach ($clubs as $club) {
-            $country = $club->getCountry();
+            $country = $club->getCountryCode();
             if (array_search($country, $countries)) {
                 $teams = $club->getTeams();
                 $teamList[$country][$club->getId()] = array('club' => $club, 'teams' => $teams);

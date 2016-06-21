@@ -52,7 +52,7 @@
         </div>
         <div class="list-group">
     {% for news in newsgeneral %}
-            <a class="list-group-item list-group-item-warning" href="{{ news.nid }}">
+            <div class="list-group-item list-group-item-warning">
                 <h4 class="list-group-item-heading">
                     {{ news.title }}
                 </h4>
@@ -79,7 +79,7 @@
                 <p class="list-group-item-text">
                     {{ news.context }}
                 </p>
-            </a>
+            </div>
     {% endfor %}
     {% for teaser in teaserlist %}
             <a class="list-group-item" href="{{ teaser.path }}">

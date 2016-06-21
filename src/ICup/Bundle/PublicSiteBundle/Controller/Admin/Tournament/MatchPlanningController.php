@@ -638,7 +638,7 @@ class MatchPlanningController extends Controller
     private function getTeamRecord($team) {
         /* @var $team Team */
         if ($team) {
-            return str_replace('"', "|", $team->getTeamName())." (".$team->getClub()->getCountry().")";
+            return str_replace('"', "|", $team->getTeamName())." (".$team->getClub()->getCountryCode().")";
         }
         else {
             return $this->get('translator')->trans("VACANT_TEAM", array(), 'teamname');

@@ -15,12 +15,12 @@
 <div class="panel panel-default">
     <div class="panel-heading">
         <a href="{{ path('_tournament_clubs', { 'tournament': tournament.key }) }}">
-            <img src="{{ asset(['bundles/icuppublicsite/images/flags/',countries[club.country].flag]|join) }}"
-                 alt="{{ club.country|trans({},'lang') }}"
-                 title="{{ club.country|trans({},'lang') }}"
+            <img src="{{ asset(['bundles/icuppublicsite/images/flags/',countries[club.countrycode].flag]|join) }}"
+                 alt="{{ club.countrycode|trans({},'lang') }}"
+                 title="{{ club.countrycode|trans({},'lang') }}"
                  class="flag"
             >
-            {{ club.country|trans({},'lang') }} - {{ club.name }}
+            {{ club.countrycode|trans({},'lang') }} - {{ club.name }}
         </a>
     </div>
     <div class="panel-body">

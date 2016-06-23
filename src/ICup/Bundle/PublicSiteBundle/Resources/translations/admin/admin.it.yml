@@ -879,6 +879,8 @@ FORM:
     TYPES:
       1: Per sempre
       2: Tempo limitato
+      3: Visualizzato in home page - per sempre
+      4: Visualizzato in home page - tempo limitato
     SUBJECT: Titolo
     CONTEXT: Contesto
     MATCHNO: Gara

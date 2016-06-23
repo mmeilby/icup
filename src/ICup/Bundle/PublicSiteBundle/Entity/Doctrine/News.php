@@ -17,6 +17,10 @@ class News implements JsonSerializable
     public static $TYPE_PERMANENT = 1;
     /* Infomration is visible for a short time after the date stamp */
     public static $TYPE_TIMELIMITED = 2;
+    /* Information is permanent shown on the frontpage - will not out date */
+    public static $TYPE_FRONTPAGE_PERMANENT = 3;
+    /* Infomration is visible for a short time after the date stamp on the frontpage */
+    public static $TYPE_FRONTPAGE_TIMELIMITED = 4;
 
     /**
      * @var integer $id

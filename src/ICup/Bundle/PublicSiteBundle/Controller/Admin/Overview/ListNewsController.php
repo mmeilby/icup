@@ -36,7 +36,9 @@ class ListNewsController extends Controller
         foreach (
             array(
                 News::$TYPE_PERMANENT,
-                News::$TYPE_TIMELIMITED
+                News::$TYPE_TIMELIMITED,
+                News::$TYPE_FRONTPAGE_PERMANENT,
+                News::$TYPE_FRONTPAGE_TIMELIMITED
             )
             as $id) {
             $newstypes[] = array('id' => $id, 'lable' => 'FORM.NEWS.TYPES.'.$id);

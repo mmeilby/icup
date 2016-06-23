@@ -908,6 +908,8 @@ FORM:
     TYPES:
       1: Blivende nyhed
       2: Tidsbegrænset nyhed
+      3: Forside - blivende nyhed
+      4: Forside - tidsbegrænset nyhed
     SUBJECT: Overskrift
     CONTEXT: Indhold
     MATCHNO: Kampnr.

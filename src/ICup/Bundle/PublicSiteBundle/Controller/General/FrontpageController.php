@@ -2,6 +2,9 @@
 
 namespace ICup\Bundle\PublicSiteBundle\Controller\General;
 
+use ICup\Bundle\PublicSiteBundle\Entity\Doctrine\Date;
+use ICup\Bundle\PublicSiteBundle\Entity\Doctrine\News;
+use ICup\Bundle\PublicSiteBundle\Entity\Doctrine\Tournament;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
@@ -38,11 +41,34 @@ class FrontpageController extends Controller
         $today = new DateTime();
         $shortMatches = array();
         $teaserList = array();
+        $newsscroll = array();
         foreach ($tournaments as $tournament) {
+            /* @var $tournament Tournament */
             $stat = $this->get('tmnt')->getTournamentStatus($tournament->getId(), $today);
             if ($stat != TournamentSupport::$TMNT_HIDE) {
                 $tournamentList[$tournament->getId()] = array('tournament' => $tournament, 'status' => $stat);
                 $statusList[$keyList[$stat]][] = $tournament;
+
+                $newsStream = $this->get('tmnt')->listNewsByTournament($tournament->getId());
+                foreach ($newsStream as $news) {
+                    if ($news['newstype'] == News::$TYPE_FRONTPAGE_PERMANENT || $news['newstype'] == News::$TYPE_FRONTPAGE_TIMELIMITED) {
+                        $news['newsdate'] = Date::getDateTime($news['date']);
+                        if ($news['id'] > 0) {
+                            $news['flag'] = $this->get('util')->getFlag($news['country']);
+                            $newsscroll[$news['newsno']][$news['language']] = $news;
+                        }
+                        else if ($news['mid'] > 0) {
+                            $newsscroll[$news['newsno']][$news['language']] = $news;
+                        }
+                        else {
+                            /* @var $diff \DateInterval */
+                            $diff = $today->diff($news['newsdate']);
+                            if ($news['newstype'] == News::$TYPE_FRONTPAGE_PERMANENT || $diff->days < 2) {
+                                $newsscroll[$news['newsno']][$news['language']] = $news;
+                            }
+                        }
+                    }
+                }
             }
             if ($stat == TournamentSupport::$TMNT_GOING) {
                 $shortMatchList = $this->get('match')->listMatchesLimitedWithTournament($tournament->getId(), $today, 10, 3, array_keys($club_list));
@@ -110,18 +136,15 @@ class FrontpageController extends Controller
                 );
             }
         }
-/*
-        $dm = $this->get('doctrine_phpcr')->getManager('default');
-        $image = $dm->find(null, '/cms/media/images/Ter-amo8.png');
-*/
+
         return array(
             'form' => $form->createView(),
             'tournaments' => $tournamentList,
             'statuslist' => $statusList,
             'matchlist' => $shortMatches,
             'teaserlist' => $teaserList,
-//            'image' => $image,
-            'club_list' => $club_list
+            'club_list' => $club_list,
+            'newsscroll' => $this->getNews($newsscroll, $request)
         );
     }
     
@@ -159,5 +182,20 @@ class FrontpageController extends Controller
             ->setTo($recv)
             ->setBody($mailbody, 'text/html');
         $this->get('mailer')->send($message);
+    }
+
+    private function getNews($newsList, Request $request) {
+        $locale = $request->getLocale();
+        $defaultLocale = $request->getDefaultLocale();
+        $newsForLocale = array();
+        foreach ($newsList as $news) {
+            if (array_key_exists($locale, $news)) {
+                $newsForLocale[] = $news[$locale];
+            }
+            elseif (array_key_exists($defaultLocale, $news)) {
+                $newsForLocale[] = $news[$defaultLocale];
+            }
+        }
+        return $newsForLocale;
     }
 }

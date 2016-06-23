@@ -127,6 +127,41 @@
             </div>
         </div>
     {% endfor %}
+    {% if newsscroll|length > 0 %}
+    <div class="navy bg-facebook-lightblue">
+        <div class="container">
+            <div class="row">
+                {% for news in newsscroll %}
+                    <div class="col-md-6">
+                        <h3>{{ news.title }}</h3>
+                        <i class="fa fa-newspaper-o fa-3x fa-pull-left fa-border" aria-hidden="true"></i>
+                        <i>{{ 'FORMAT.LONGDATE'|transchoice(news.newsdate|date('j'), {
+                            '%week%': ['WEEK.',news.newsdate|date('D')|upper]|join|trans([],'messages')|capitalize,
+                            '%day%': news.newsdate|date('j'),
+                            '%month%': ['MONTH.',news.newsdate|date('M')|upper]|join|trans([],'messages'),
+                            '%year%': ''}, 'messages') }}</i>
+                        -
+                        {{ news.context }}
+                        {% if news.id > 0 %}
+                            <p>
+                                <img src="{{ asset('bundles/icuppublicsite/images/flags/') }}{{ news.flag }}"
+                                     alt="{{ news.country }}"
+                                     title="{{ news.country }}" class="flag">
+                                {{ news.club }}
+                            </p>
+                        {% endif %}
+                        {% if news.mid > 0 %}
+                            <p>
+                                {% trans from 'tournament' %}LEGEND.NO{% endtrans %} {{ news.matchno }}
+                            </p>
+                        {% endif %}
+                    </div>
+                {% endfor %}
+            </div>
+            <br />
+        </div>
+    </div>
+    {% endif %}
 {% endblock %}
 
 {% block footer %}

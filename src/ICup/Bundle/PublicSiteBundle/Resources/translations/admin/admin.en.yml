@@ -905,6 +905,8 @@ FORM:
     TYPES:
       1: For ever
       2: Limited time
+      3: Frontpage - shown for ever
+      4: Frontpage - shown limited time
     SUBJECT: Headline
     CONTEXT: Context
     MATCHNO: Match no.

@@ -66,19 +66,21 @@ class OverviewController extends Controller
         $newsGeneral = array();
         $today = new DateTime();
         foreach ($newsStream as $news) {
-            $news['newsdate'] = Date::getDateTime($news['date']);
-            if ($news['id'] > 0) {
-                $news['flag'] = $this->get('util')->getFlag($news['country']);
-                $newsRefTeam[$news['id']][$news['newsno']][$news['language']] = $news;
-            }
-            else if ($news['mid'] > 0) {
-                $newsRef[$news['mid']][$news['newsno']][$news['language']] = $news;
-            }
-            else {
-                /* @var $diff \DateInterval */
-                $diff = $today->diff($news['newsdate']);
-                if ($news['newstype'] == News::$TYPE_PERMANENT || $diff->days < 2) {
-                    $newsGeneral[$news['newsno']][$news['language']] = $news;
+            if ($news['newstype'] == News::$TYPE_PERMANENT || $news['newstype'] == News::$TYPE_TIMELIMITED) {
+                $news['newsdate'] = Date::getDateTime($news['date']);
+                if ($news['id'] > 0) {
+                    $news['flag'] = $this->get('util')->getFlag($news['country']);
+                    $newsRefTeam[$news['id']][$news['newsno']][$news['language']] = $news;
+                } else {
+                    if ($news['mid'] > 0) {
+                        $newsRef[$news['mid']][$news['newsno']][$news['language']] = $news;
+                    } else {
+                        /* @var $diff \DateInterval */
+                        $diff = $today->diff($news['newsdate']);
+                        if ($news['newstype'] == News::$TYPE_PERMANENT || $diff->days < 2) {
+                            $newsGeneral[$news['newsno']][$news['language']] = $news;
+                        }
+                    }
                 }
             }
         }

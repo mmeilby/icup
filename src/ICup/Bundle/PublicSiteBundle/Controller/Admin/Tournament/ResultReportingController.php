@@ -4,11 +4,13 @@ namespace ICup\Bundle\PublicSiteBundle\Controller\Admin\Tournament;
 use ICup\Bundle\PublicSiteBundle\Entity\Doctrine\Date;
 use ICup\Bundle\PublicSiteBundle\Entity\Doctrine\Match;
 use ICup\Bundle\PublicSiteBundle\Entity\Doctrine\MatchRelation;
+use ICup\Bundle\PublicSiteBundle\Entity\Doctrine\Tournament;
 use ICup\Bundle\PublicSiteBundle\Services\Doctrine\TournamentSupport;
 use ICup\Bundle\PublicSiteBundle\Services\Util;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
+use Symfony\Component\Form\Form;
 use Symfony\Component\Form\FormError;
 use ICup\Bundle\PublicSiteBundle\Entity\ResultForm;
 use Symfony\Component\HttpFoundation\Request;
@@ -23,6 +25,8 @@ class ResultReportingController extends Controller
      * Report result of an existing match
      * @Route("/report", name="_report_result")
      * @Template("ICupPublicSiteBundle:Host:reportresult.html.twig")
+     * @param Request $request
+     * @return array|\Symfony\Component\HttpFoundation\RedirectResponse
      */
     public function reportAction(Request $request) {
         $returnUrl = $this->get('router')->generate('_icup');
@@ -56,8 +60,11 @@ class ResultReportingController extends Controller
     private function chgMatch(ResultForm $resultForm) {
         $em = $this->getDoctrine()->getManager();
         $tournament = $this->get('entity')->getTournamentById($resultForm->getTournament());
+        /* @var $match Match */
         $match = $this->get('match')->getMatchByNo($resultForm->getTournament(), $resultForm->getMatchno());
+        /* @var $homeRel MatchRelation */
         $homeRel = $this->get('match')->getMatchRelationByMatch($match->getId(), false);
+        /* @var $awayRel MatchRelation */
         $awayRel = $this->get('match')->getMatchRelationByMatch($match->getId(), true);
         switch ($resultForm->getEvent()) {
             case ResultForm::$EVENT_MATCH_PLAYED:
@@ -87,6 +94,7 @@ class ResultReportingController extends Controller
     private function makeResultForm(ResultForm $resultForm) {
         $tournamentKey = $this->get('util')->getTournamentKey();
         if ($tournamentKey != '_') {
+            /* @var $tournament Tournament */
             $tournament = $this->get('logic')->getTournamentByKey($tournamentKey);;
             if ($tournament != null) {
                 $resultForm->setTournament($tournament->getId());
@@ -98,6 +106,7 @@ class ResultReportingController extends Controller
         $tournamentList = array();
         $today = new DateTime();
         foreach ($tournaments as $tmnt) {
+            /* @var $tmnt Tournament */
             $stat = $this->get('tmnt')->getTournamentStatus($tmnt->getId(), $today);
             if ($stat == TournamentSupport::$TMNT_GOING) {
                 $tournamentList[$tmnt->getId()] = $tmnt->getName();
@@ -155,7 +164,7 @@ class ResultReportingController extends Controller
         return $formDef->getForm();
     }
     
-    private function checkForm($form, ResultForm $resultForm) {
+    private function checkForm(Form $form, ResultForm $resultForm) {
         if (!$form->isValid()) {
             return false;
         }
@@ -192,7 +201,7 @@ class ResultReportingController extends Controller
         if ($match == null) {
             $form->addError(new FormError($this->get('translator')->trans('FORM.RESULTREPORT.INVALIDMATCHNO', array(), 'tournament')));
         }
-        else if (!$this->isMatchValid($match)) {
+        else if ($match->getMatchRelations()->count() != 2) {
             $form->addError(new FormError($this->get('translator')->trans('FORM.RESULTREPORT.MATCHNOTREADY', array(), 'tournament')));
         }
         else if ($this->get('match')->isMatchResultValid($match->getId())) {
@@ -206,11 +215,5 @@ class ResultReportingController extends Controller
             }
         }
         return $form->isValid();
-    }
-    
-    private function isMatchValid($match) {
-        $homeRel = $this->get('match')->getMatchRelationByMatch($match->getId(), false);
-        $awayRel = $this->get('match')->getMatchRelationByMatch($match->getId(), true);
-        return $homeRel != null && $awayRel != null;
     }
 }

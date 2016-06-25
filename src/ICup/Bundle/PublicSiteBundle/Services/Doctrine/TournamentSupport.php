@@ -96,7 +96,7 @@ class TournamentSupport
         $qb->setParameter('stop', $stop);
         $status = $default;
         foreach ($qb->getResult() as $event) {
-            $eventdate = Date::getDateTime($event['date']);
+            $eventdate = Date::getDateTime($event['date'], "0000");
             if ($event['event'] == $start) {
                 if ($date < $eventdate) {
                     $status = false;
@@ -129,7 +129,7 @@ class TournamentSupport
         $qb->setParameter('etype', $eventType);
         $event = $qb->getOneOrNullResult();
         if ($event != null) {
-            $eventdate = Date::getDateTime($event['date']);
+            $eventdate = Date::getDateTime($event['date'], "0000");
             $status = $date >= $eventdate;
         }
         else {

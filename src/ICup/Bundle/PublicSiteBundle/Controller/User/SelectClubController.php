@@ -1,18 +1,16 @@
 <?php
 namespace ICup\Bundle\PublicSiteBundle\Controller\User;
 
-use ICup\Bundle\PublicSiteBundle\Entity\Doctrine\Tournament;
 use ICup\Bundle\PublicSiteBundle\Entity\Doctrine\Club;
-use ICup\Bundle\PublicSiteBundle\Entity\Doctrine\User;
 use ICup\Bundle\PublicSiteBundle\Entity\NewClub;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
-use Symfony\Component\Form\FormError;
 use ICup\Bundle\PublicSiteBundle\Services\Util;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpFoundation\Cookie;
+use Symfony\Component\HttpFoundation\Session\Session;
 
 /**
  * Select club to follow for anonymous users
@@ -20,12 +18,14 @@ use Symfony\Component\HttpFoundation\Cookie;
 class SelectClubController extends Controller
 {
     public static $ENV_CLUB_LIST = '_club_list';
-    
+
     /**
      * Display list of clubs the anonymous user has selected from the environment store
      * Current user can be a registered user
      * @Route("/env/club/list", name="_club_select")
      * @Template("ICupPublicSiteBundle:User:select_club.html.twig")
+     * @param Request $request
+     * @return array|\Symfony\Component\HttpFoundation\RedirectResponse
      */
     public function listClubAction(Request $request)
     {
@@ -79,11 +79,12 @@ class SelectClubController extends Controller
     {
         /* @var $session Session */
         $session = $request->getSession();
+        /* @var $club Club */
         $club = $this->get('entity')->getClubById($clubid);
         $clubs = $session->get(SelectClubController::$ENV_CLUB_LIST, array());
         $clubs[$club->getId()] = array('club' => $club, 'selected' => true);
         $session->set(SelectClubController::$ENV_CLUB_LIST, $clubs);
-        return $this->redirect($this->generateUrl('_club_select'));;
+        return $this->redirect($this->generateUrl('_club_select'));
     }
 
     /**
@@ -101,15 +102,16 @@ class SelectClubController extends Controller
             $clubs[$clubid]['selected'] = !$clubs[$clubid]['selected'];
             $session->set(SelectClubController::$ENV_CLUB_LIST, $clubs);
         }
-        return $this->redirect($this->generateUrl('_club_select'));;
+        return $this->redirect($this->generateUrl('_club_select'));
     }
 
     private function setClubList(Response $response, $clubs) {
         $club_list = array();
         foreach ($clubs as $club_rec) {
             if ($club_rec['selected']) {
+                /* @var $club Club */
                 $club = $club_rec['club'];
-                $club_list[] = $club->getName().'|'.$club->getCountry();
+                $club_list[] = $club->getName().'|'.$club->getCountryCode();
             }
         }
         $response->headers->setCookie(
@@ -132,6 +134,7 @@ class SelectClubController extends Controller
             else {
                 $countryCode = 'EUR';
             }
+            /* @var $club Club */
             $club = $this->get('logic')->getClubByName($name, $countryCode);
             if ($club) {
                 $clubs[$club->getId()] = array('club' => $club, 'selected' => true);

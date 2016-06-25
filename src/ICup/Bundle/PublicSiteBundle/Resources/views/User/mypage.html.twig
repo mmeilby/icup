@@ -109,7 +109,7 @@
             <h2>{% trans from "admin" %}FORM.DASHBOARD.TOURNAMENTS.CAPTION{% endtrans %}</h2>
             <div class="list-group">
                 {% for tournament in tournaments %}
-                    <a class="list-group-item" href="{{ path('_edit_tournamentboard', { 'tournamentid': tournament.tournament.id }) }}">
+                    <a class="list-group-item" href="{{ path('_tournament_overview', { 'tournament': tournament.tournament.key }) }}">
                         <h3 class="list-group-item-heading">{{ tournament.tournament.name }}</h3>
                         <p class="list-group-item-text">
                             {{ ['FORM.DASHBOARD.TOURNAMENTS.STATUS.', tournament.status]|join|trans([],'admin') }}

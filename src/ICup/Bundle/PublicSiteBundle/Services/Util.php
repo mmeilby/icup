@@ -5,6 +5,7 @@ namespace ICup\Bundle\PublicSiteBundle\Services;
 use ICup\Bundle\PublicSiteBundle\Entity\Doctrine\Club;
 use ICup\Bundle\PublicSiteBundle\Entity\Doctrine\Host;
 use ICup\Bundle\PublicSiteBundle\Entity\Doctrine\SocialRelation;
+use ICup\Bundle\PublicSiteBundle\Entity\Doctrine\Team;
 use ICup\Bundle\PublicSiteBundle\Entity\Doctrine\Tournament;
 use ICup\Bundle\PublicSiteBundle\Entity\Doctrine\User;
 use ICup\Bundle\PublicSiteBundle\Services\Doctrine\Entity;
@@ -89,21 +90,37 @@ class Util
 
     public function getClubList() {
         $clubs = array();
-        /* @var $request Request */
-        $request = $this->container->get('request_stack')->getCurrentRequest();
-        $club_list = $request->cookies->get(SelectClubController::$ENV_CLUB_LIST, '');
-        foreach (explode(':', $club_list) as $club_ident) {
-            $club_ident_array = explode('|', $club_ident);
-            $name = $club_ident_array[0];
-            if (count($club_ident_array) > 1) {
-                $countryCode = $club_ident_array[1];
+        try {
+            /* @var $user User */
+            $user = $this->getCurrentUser();
+            /* @var $rel SocialRelation */
+            foreach ($user->getSocialRelations() as $rel) {
+                if ($rel->getRole() == SocialRelation::$FOLLOWER || $rel->getStatus() == SocialRelation::$MEM) {
+                    foreach ($rel->getGroup()->getTeams() as $team) {
+                        /* @var $team Team */
+                        $clubs[$team->getClub()->getId()] = $team->getClub();
+                    }
+                }
             }
-            else {
-                $countryCode = 'EUR';
-            }
-            $club = $this->logic->getClubByName($name, $countryCode);
-            if ($club) {
-                $clubs[$club->getId()] = $club;
+        }
+        catch (RuntimeException $e) {}
+        if (count($clubs) == 0) {
+            /* @var $request Request */
+            $request = $this->container->get('request_stack')->getCurrentRequest();
+            $club_list = $request->cookies->get(SelectClubController::$ENV_CLUB_LIST, '');
+            foreach (explode(':', $club_list) as $club_ident) {
+                $club_ident_array = explode('|', $club_ident);
+                $name = $club_ident_array[0];
+                if (count($club_ident_array) > 1) {
+                    $countryCode = $club_ident_array[1];
+                }
+                else {
+                    $countryCode = 'EUR';
+                }
+                $club = $this->logic->getClubByName($name, $countryCode);
+                if ($club) {
+                    $clubs[$club->getId()] = $club;
+                }
             }
         }
         return $clubs;

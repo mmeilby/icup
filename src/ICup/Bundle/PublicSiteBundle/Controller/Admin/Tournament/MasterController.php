@@ -1,6 +1,8 @@
 <?php
 namespace ICup\Bundle\PublicSiteBundle\Controller\Admin\Tournament;
 
+use ICup\Bundle\PublicSiteBundle\Entity\Doctrine\Tournament;
+use ICup\Bundle\PublicSiteBundle\Services\Util;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use ICup\Bundle\PublicSiteBundle\Services\Doctrine\TournamentSupport;
@@ -17,10 +19,12 @@ class MasterController extends Controller
         $utilService = $this->get('util');
         $returnUrl = $utilService->getReferer();
         // Validate tournament id
-        $this->get('entity')->getTournamentById($tournamentid);
+        /* @var $tournament Tournament */
+        $tournament = $this->get('entity')->getTournamentById($tournamentid);
         // Only if tournament has not been started we are allowed to wipe the teams
-        if ($this->get('tmnt')->getTournamentStatus($tournamentid, new DateTime()) == TournamentSupport::$TMNT_ENROLL) {
-            $this->get('tmnt')->wipeTeams($tournamentid);
+        $status = $this->get('tmnt')->getTournamentStatus($tournamentid, new DateTime());
+        if ($status == TournamentSupport::$TMNT_ENROLL || $status == TournamentSupport::$TMNT_ANNOUNCE) {
+            $this->get('tmnt')->wipeTeams($tournament->getId());
         }
         
         return $this->redirect($returnUrl);
@@ -35,10 +39,12 @@ class MasterController extends Controller
         $utilService = $this->get('util');
         $returnUrl = $utilService->getReferer();
         // Validate tournament id
-        $this->get('entity')->getTournamentById($tournamentid);
+        /* @var $tournament Tournament */
+        $tournament = $this->get('entity')->getTournamentById($tournamentid);
         // Only if tournament has not been started we are allowed to wipe the teams
-        if ($this->get('tmnt')->getTournamentStatus($tournamentid, new DateTime()) == TournamentSupport::$TMNT_ENROLL) {
-            $this->get('tmnt')->wipeMatches($tournamentid);
+        $status = $this->get('tmnt')->getTournamentStatus($tournamentid, new DateTime());
+        if ($status == TournamentSupport::$TMNT_ENROLL || $status == TournamentSupport::$TMNT_ANNOUNCE) {
+            $this->get('tmnt')->wipeMatches($tournament->getId());
         }
         
         return $this->redirect($returnUrl);
@@ -53,10 +59,12 @@ class MasterController extends Controller
         $utilService = $this->get('util');
         $returnUrl = $utilService->getReferer();
         // Validate tournament id
-        $this->get('entity')->getTournamentById($tournamentid);
+        /* @var $tournament Tournament */
+        $tournament = $this->get('entity')->getTournamentById($tournamentid);
         // Only if tournament has not been started we are allowed to wipe the teams
-        if ($this->get('tmnt')->getTournamentStatus($tournamentid, new DateTime()) == TournamentSupport::$TMNT_ENROLL) {
-            $this->get('tmnt')->wipeQMatches($tournamentid);
+        $status = $this->get('tmnt')->getTournamentStatus($tournamentid, new DateTime());
+        if ($status == TournamentSupport::$TMNT_ENROLL || $status == TournamentSupport::$TMNT_ANNOUNCE) {
+            $this->get('tmnt')->wipeQMatches($tournament->getId());
         }
         
         return $this->redirect($returnUrl);

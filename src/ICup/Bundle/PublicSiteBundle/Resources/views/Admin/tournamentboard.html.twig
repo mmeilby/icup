@@ -141,6 +141,19 @@
                                                         #}
                                                     </md-button>
                                                 </md-menu-item>
+                                {% if is_granted('ROLE_EDITOR_ADMIN') %}
+                                                <md-menu-divider></md-menu-divider>
+                                                <md-menu-item>
+                                                    <md-button ng-href="{{ path('_admin_wipe_matches', { 'tournamentid': tournament.id }) }}">
+                                                        {% trans %}FORM.LISTCATEGORIES.BUTTON.WIPE{% endtrans %}
+                                                    </md-button>
+                                                </md-menu-item>
+                                                <md-menu-item>
+                                                    <md-button ng-href="{{ path('_admin_wipe_qmatches', { 'tournamentid': tournament.id }) }}">
+                                                        {% trans %}FORM.LISTCATEGORIES.BUTTON.QWIPE{% endtrans %}
+                                                    </md-button>
+                                                </md-menu-item>
+                                {% endif %}
                                             </md-menu-content>
                                         </md-menu>
                                     </md-menu-bar>
@@ -282,6 +295,13 @@
                                                         <h4 ng-hide="unassigned.teams.length">
                                                             <span class="badge">{% trans %}FORM.MATCHPLANNING.NOTEAMS{% endtrans %}</span>
                                                         </h4>
+                                                    </div>
+                                                    {# Basket card #}
+                                                    <div class="col-md-6" ng-drop="true" ng-drop-success="onDropBasket()">
+                                                        <span class="fa-stack fa-2x">
+                                                          <i class="fa fa-trash fa-stack-1x"></i>
+                                                          <i class="fa fa-ban fa-stack-2x text-danger" ng-show="group"></i>
+                                                        </span>
                                                     </div>
                                                 </div>
                                                 <hr />
@@ -888,6 +908,23 @@
                                         ShowError($mdDialog, response.data.errors, '{% trans %}FORM.QMATCHPLANNING.GROUPS{% endtrans %}');
                                     });
                             }
+                        }
+                    };
+                    $scope.onDropBasket=function(){
+                        if ($scope.group == null) {
+                            $http.get(Routing.generate('_rest_enroll_del', {'teamid': $scope.team.id})).then(
+                                    function (data) {
+                                        getGroups();
+                                    },
+                                    function (response) {
+                                        ShowError($mdDialog, response.data.errors, '{% trans %}FORM.QMATCHPLANNING.GROUPS{% endtrans %}');
+                                    });
+                        }
+                        else {
+                            var group = $scope.groups.find(function (group) {
+                                return group.group.id == $scope.group.id;
+                            });
+                            group.teams.push($scope.team);
                         }
                     };
                     $scope.addCategory = function(ev) {

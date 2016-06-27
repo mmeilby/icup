@@ -249,9 +249,10 @@ class MatchPlanning
 
         usort($matches, function (MatchPlan $match1, MatchPlan $match2) {
             $p1 = $match1->getDate() - $match2->getDate();
-            $p2 = $match1->getPlayground()->getNo() - $match2->getPlayground()->getNo();
-            $p3 = $match1->getTime() - $match2->getTime();
-            $test = min(1, max(-1, $p1))*4 + min(1, max(-1, $p2))*2 + min(1, max(-1, $p3));
+            $p2 = $match1->getPlaygroundAttribute()->getStart() - $match2->getPlaygroundAttribute()->getStart();
+            $p3 = $match1->getPlayground()->getNo() - $match2->getPlayground()->getNo();
+            $p4 = $match1->getTime() - $match2->getTime();
+            $test = min(1, max(-1, $p1))*8 + min(1, max(-1, $p2))*4 + min(1, max(-1, $p3))*2 + min(1, max(-1, $p4));
             return min(1, max(-1, $test));
         });
         $mno = 1;

@@ -136,6 +136,7 @@ class QMatchPlanner
         $dE += $pa->getPlayground()->getNo()*QMatchPlanner::VENUE_PENALTY;
         $dE += $pa->isCategoryAllowed($match->getCategory()) ? 0 : QMatchPlanner::CATEGORY_PENALTY;
         $dE += $pa->isClassificationAllowed($match->getClassification()) ? 0 : QMatchPlanner::CLASSIFICATION_PENALTY;
+        $dE += $pa->isClassificationDesired($match->getClassification()) ? -QMatchPlanner::CLASSIFICATION_PENALTY : 0;
 
         /* @var $qm QMatchPlan */
         $qm = $result->getQMatchPlan($match->getClassification(), $match->getLitra());

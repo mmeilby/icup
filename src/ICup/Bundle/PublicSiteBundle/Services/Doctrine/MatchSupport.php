@@ -404,7 +404,8 @@ class MatchSupport
                 "from ".$this->entity->getRepositoryPath('PlaygroundAttribute')." a, ".
                         $this->entity->getRepositoryPath('Playground')." p, ".
                         $this->entity->getRepositoryPath('Site')." s ".
-                "where s.tournament=:tournament and p.site=s.id and a.playground=p.id");
+                "where s.tournament=:tournament and p.site=s.id and a.playground=p.id ".
+                "order by a.date asc");
         $qb->setParameter('tournament', $tournamentid);
         $matchList = array();
         foreach ($qb->getResult() as $date) {

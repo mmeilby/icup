@@ -180,8 +180,17 @@ class PlaygroundAttribute
         return count($this->categories) == 0 || isset($this->categories[$category->getId()]);
     }
 
+    public function isCategoryDesired(Category $category) {
+        return isset($this->categories[$category->getId()]);
+    }
+
     public function isClassificationAllowed($classification) {
         $cls = $this->getPA()->getClassification();
         return $cls == 0 || $cls == $classification;
+    }
+
+    public function isClassificationDesired($classification) {
+        $cls = $this->getPA()->getClassification();
+        return $cls == $classification;
     }
 }

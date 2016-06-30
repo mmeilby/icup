@@ -317,6 +317,7 @@ class MatchPlanning
                 $category->getChampions()->clear();
                 return true;
             });
+            $this->em->flush();
 
             usort($matches, function (MatchPlan $match1, MatchPlan $match2) {
                 if ($match1 instanceof QMatchPlan && $match2 instanceof QMatchPlan) {

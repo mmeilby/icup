@@ -352,10 +352,10 @@ class TournamentSupport
                         "count(distinct m.date) as days ".
                 "from ".$this->entity->getRepositoryPath('Category')." cat, ".
                         $this->entity->getRepositoryPath('Group')." g, ".
-                        $this->entity->getRepositoryPath('MatchRelation')." r, ".
                         $this->entity->getRepositoryPath('Match')." m ".
+                "left outer join ".$this->entity->getRepositoryPath('MatchRelation')." r ".
+                "with r.match=m.id ".
                 "where cat.tournament=:tournament and ".
-                        "r.match=m.id and ".
                         "m.group=g.id and ".
                         "g.category=cat.id");
         $qb->setParameter('tournament', $tournamentid);

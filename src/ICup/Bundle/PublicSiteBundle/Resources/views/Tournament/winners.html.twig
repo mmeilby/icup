@@ -84,11 +84,10 @@
     </nav>
 </div>
 {% else %}
-<div class="panel panel-warning">
-    <div class="panel-heading">
-        <b>
-            {% trans %}NOWINNERS{% endtrans %}
-        </b>
+<div class="list-group">
+    <div class="list-group-item">
+        <i class="fa fa-child fa-5x text-primary"></i>
+        <h2>{% trans %}NOWINNERS{% endtrans %}</h2>
     </div>
 </div>
 {% endif %}

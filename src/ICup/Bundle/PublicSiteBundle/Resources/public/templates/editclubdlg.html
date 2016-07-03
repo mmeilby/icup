@@ -1,0 +1,25 @@
+<md-dialog aria-label="{{ 'FORM.CLUB.TITLE.CHG' | translate }}" style="width: 80%">
+    <md-toolbar>
+        <div class="md-toolbar-tools">
+            <h2 class="md-toolbar-tools">{{ 'FORM.CLUB.TITLE.CHG' | translate }}</h2>
+            <span flex></span>
+            <md-button class="md-icon-button" ng-click="cancel()"><span class="fa fa-2x fa-times"></span></md-button>
+        </div>
+    </md-toolbar>
+    <md-dialog-content layout-padding>
+        <div>
+            <img src="{{ flagsDir+club.flag }}" alt="{{ club.name }}" title="{{ club.name }}" ng-if="club.flag" class="flag">
+            <b>{{ club.name }}</b>
+        </div>
+        <form name="criteriaForm" ng-submit="submit(club_object)" ng-cloak>
+            <md-input-container>
+                <label for="name">{{ 'FORM.CLUB.NAME' | translate }}</label>
+                <input type="text" id="name" ng-model="club_object.name" md-autofocus>
+            </md-input-container>
+        </form>
+    </md-dialog-content>
+    <md-dialog-actions>
+        <md-button ng-click="submit(club_object)" class="md-primary md-raised" flex="50">{{ 'FORM.SUBMIT' | translate }}</md-button>
+        <md-button ng-click="cancel()" class="md-raised" flex="50">{{ 'FORM.CLOSE' | translate }}</md-button>
+    </md-dialog-actions>
+</md-dialog>

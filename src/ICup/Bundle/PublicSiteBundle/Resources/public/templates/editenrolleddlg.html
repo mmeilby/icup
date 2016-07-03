@@ -1,0 +1,37 @@
+<md-dialog aria-label="{{ 'FORM.LISTENROLLED.TITLE' | translate }}" style="width: 80%">
+    <md-toolbar>
+        <div class="md-toolbar-tools">
+            <h2 class="md-toolbar-tools">{{ 'FORM.LISTENROLLED.TITLE' | translate }}</h2>
+            <span flex></span>
+            <md-button class="md-icon-button" ng-click="cancel()"><span class="fa fa-2x fa-times"></span></md-button>
+        </div>
+    </md-toolbar>
+    <md-content layout-padding>
+        <div>
+            <img src="{{ flagsDir+club.flag }}" alt="{{ club.name }}" title="{{ club.name }}" ng-if="club.flag" class="flag">
+            <b>{{ club.name }}</b>
+        </div>
+        <hr />
+        <div class="row">
+            <div class="col-sm-6" ng-repeat="category in categories | orderBy: ['classification', '-age', 'gender'] track by category.id">
+                <div class="row">
+                    <div class="col-sm-7">
+                        <h5>{{ 'CATEGORY' | translate:'tournament' }} {{ category.name }} - {{ category.classification_translated }}</h5>
+                    </div>
+                    <div class="col-sm-2">
+                        <h4><span class="badge">{{ category.enrolled }}</span></h4>
+                    </div>
+                    <div class="col-sm-1">
+                        <h4><i class="fa fa-plus-circle google-green" ng-click="addEnrollment(category, club)"></i></h4>
+                    </div>
+                    <div class="col-sm-1">
+                        <h4><i class="fa fa-minus-circle google-red" ng-click="removeEnrollment(category, club)" ng-show="category.enrolled"></i></h4>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="md-padding" layout layout-align="center center">
+            <md-button ng-click="cancel()">{{ 'FORM.CLOSE' | translate }}</md-button>
+        </div>
+    </md-content>
+</md-dialog>

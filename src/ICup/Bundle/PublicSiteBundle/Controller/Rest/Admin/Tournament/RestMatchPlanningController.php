@@ -5,7 +5,6 @@ use Doctrine\ORM\EntityManager;
 use ICup\Bundle\PublicSiteBundle\Entity\Doctrine\Category;
 use ICup\Bundle\PublicSiteBundle\Entity\Doctrine\Date;
 use ICup\Bundle\PublicSiteBundle\Entity\Doctrine\Group;
-use ICup\Bundle\PublicSiteBundle\Entity\Doctrine\GroupOrder;
 use ICup\Bundle\PublicSiteBundle\Entity\Doctrine\Match;
 use ICup\Bundle\PublicSiteBundle\Entity\Doctrine\MatchRelation;
 use ICup\Bundle\PublicSiteBundle\Entity\Doctrine\MatchSchedule;
@@ -23,7 +22,6 @@ use ICup\Bundle\PublicSiteBundle\Entity\QMatchPlan;
 use ICup\Bundle\PublicSiteBundle\Exceptions\ValidationException;
 use ICup\Bundle\PublicSiteBundle\Form\MatchPlanType;
 use ICup\Bundle\PublicSiteBundle\Services\Doctrine\MatchSupport;
-use ICup\Bundle\PublicSiteBundle\Services\Entity\PlanningOptions;
 use ICup\Bundle\PublicSiteBundle\Services\Entity\PlanningResults;
 use ICup\Bundle\PublicSiteBundle\Services\Entity\QRelation;
 use ICup\Bundle\PublicSiteBundle\Services\Util;
@@ -37,7 +35,6 @@ use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
 use DateTime;
-use DateInterval;
 use RuntimeException;
 
 /**
@@ -683,7 +680,7 @@ class RestMatchPlanningController extends Controller
      * Get the match calendar for the tournament identified by tournament id
      * @Route("/get/calendar/{tournamentid}", name="_rest_get_match_calendar", options={"expose"=true})
      * @param $tournamentid
-     * @return Response
+     * @return JsonResponse
      */
     public function restMatchCalendarAction($tournamentid)
     {

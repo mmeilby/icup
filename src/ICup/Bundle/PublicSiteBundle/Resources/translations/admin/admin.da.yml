@@ -430,12 +430,16 @@ FORM:
     SAVE:
       TITLE: Godkend kampplan
       DESCRIPTION: Accepter det aktuelle kampoplæg og gem kampplanen som turneringens officielle kampprogam.
+      DONE: Kampplanen er godkendt
     MATCHIMPORT:
       TITLE: Indlæs kampplan
       DESCRIPTION: Indlæs kampoplæg fra fil. Kampoplægget kan efterfølgende accepteres som turneringens officielle kampprogam.
-      FILE: Angiv navn på tekstfil der ønskes indlæst:
+      FILE: Følgende tekstfil er valgt til indlæsning:
       UPLOAD: Indlæs
+      LABEL: Vælg fil med kampoplæg
       BROWSE: Find fil
+      INVALIDFILE: Den valgte fil kan ikke indlæses - filen skal være en tekstfil med et kampoplæg.
+      DONE: Kampplanen er indlæst. Der blev læst %matches% kampe fra filen '%file%'.
     EDITMATCH:
       TITLE: Ændring af planlagt kamp
       MATCH: Kamp der flyttes

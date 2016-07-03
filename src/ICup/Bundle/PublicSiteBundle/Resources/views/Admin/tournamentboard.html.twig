@@ -432,9 +432,9 @@
                                 ---------------------
                             #}
                             <md-tab label="{% trans %}FORM.TOURNAMENTBOARD.PLANNING.CAPTION{% endtrans %}">
-                                <md-content class="md-padding" ng-controller="matchPlanningController" ng-cloak>
+                                <md-content class="md-padding" ng-controller="matchPlanningController" ng-cloak id="toastAnchor">
                                     <div class="row">
-                                        <div class="col-sm-11 md-padding">
+                                        <div class="col-sm-9 md-padding">
                                             <md-button class="md-raised md-hue-1" ng-class="{'md-primary': !matches_planned}" ng-click="planMatches($event)">
                                                 {% trans %}FORM.MATCHPLANNING.PLAN.TITLE{% endtrans %}
                                             </md-button>
@@ -445,14 +445,17 @@
                                                 {% trans %}FORM.MATCHPLANNING.RESET.TITLE{% endtrans %}
                                             </md-button>
                                         </div>
-                                        <div class="col-sm-1 md-padding text-right">
+                                        <div class="col-sm-3 md-padding text-right">
+                                            <md-button class="md-fab md-hue-1" ng-click="uploadPlan($event)">
+                                                <span title="{% trans %}FORM.MATCHPLANNING.MATCHIMPORT.TITLE{% endtrans %}" class="fa fa-upload" style="font-size: 2.4em"></span>
+                                            </md-button>
                                             <md-button class="md-fab md-primary" ng-href="{{ path('_edit_match_planning_download', { 'tournamentid': tournament.id }) }}" ng-hide="!matches_planned">
                                                 <span title="{% trans %}FORM.MATCHPLANNING.DOWNLOAD.TITLE{% endtrans %}" class="fa fa-download" style="font-size: 2.4em"></span>
                                             </md-button>
                                         </div>
                                     </div>
 
-                                    <div class="row" ng-show="matches_planned" id="toastBounds">
+                                    <div class="row" ng-show="matches_planned">
                                         <div class="col-sm-5">
                                             <md-content layout-padding>
                                                 <md-card>
@@ -635,8 +638,12 @@
     <script src="{{ url('bazinga_jstranslation_js', { 'domain': 'errors' }) }}"></script>
     <script src="{{ url('bazinga_jstranslation_js', { 'domain': 'admin' }) }}"></script>
     <script src="{{ url('bazinga_jstranslation_js', { 'domain': 'tournament' }) }}"></script>
+    <script src="{{ asset('bundles/icuppublicsite/angular-bootstrap-file-field.min.js') }}"></script>
+    <script>
+        $("#form_file").fileinput({'showUpload':true, 'showPreview':false, 'showRemove':false, 'browseLabel':'{% trans %}FORM.MATCHPLANNING.MATCHIMPORT.BROWSE{% endtrans %}', 'uploadLabel':'{% trans %}FORM.MATCHPLANNING.MATCHIMPORT.UPLOAD{% endtrans %}'});
+    </script>
     <script type="text/javascript">
-        angular.module('tournamentBoardModule', ['ngMaterial', 'ngMessages', 'ngDraggable'])
+        angular.module('tournamentBoardModule', ['ngMaterial', 'ngMessages', 'ngDraggable', 'bootstrap.fileField'])
                 .filter("translate", function() {
                     return function(key, domain, vars){
                         return Translator.trans(key, vars ? vars : {}, domain ? domain : 'admin');
@@ -691,28 +698,7 @@
                         $mdDialog.show({
                             controller: DialogController,
                             scope: dlgScope,
-                            template:
-                            '<md-toolbar><div class="md-toolbar-tools">'+
-                            '  <h2 class="md-toolbar-tools">{% trans %}FORM.CLUB.TITLE.CHG{% endtrans %}</h2>'+
-                            '  <span flex></span>'+
-                            '  <md-button class="md-icon-button" ng-click="cancel()"><span class="fa fa-2x fa-times"></span></md-button>'+
-                            '</div></md-toolbar>'+
-                            '<md-content layout-padding>'+
-                            '  <div>'+
-                            '    <img src="{{ '{{ flagsDir+club.flag }}' }}"'+
-                            '         alt="{{ '{{ club.name }}' }}"'+
-                            '         title="{{ '{{ club.name }}' }}" ng-if="club.flag" class="flag">'+
-                            '    <b>{{ '{{ club.name }}' }}</b>'+
-                            '  </div>'+
-                            '  <form ng-submit="submit(club_object)" ng-cloak>'+
-                            '    <md-input-container>'+
-                            '      <label for="name">{% trans %}FORM.CLUB.NAME{% endtrans %}</label>'+
-                            '      <input type="text" id="name" ng-model="club_object.name" md-autofocus>'+
-                            '    </md-input-container>'+
-                            '  </form>'+
-                            '  <md-button ng-click="submit(club_object)" class="md-raised md-primary">{% trans %}FORM.SUBMIT{% endtrans %}</md-button>'+
-                            '  <md-button ng-click="cancel()">{% trans %}FORM.CLOSE{% endtrans %}</md-button>'+
-                            '</md-content>',
+                            templateUrl: '{{ asset('bundles/icuppublicsite/templates/editclubdlg.html') }}',
                             parent: angular.element(document.body),
                             targetEvent: ev,
                             clickOutsideToClose:true,
@@ -744,42 +730,7 @@
                         $mdDialog.show({
                             controller: DialogController,
                             scope: dlgScope,
-                            template:
-                            '<md-toolbar><div class="md-toolbar-tools">'+
-                            '  <h2 class="md-toolbar-tools">{% trans from "club" %}FORM.LISTENROLLED.TITLE{% endtrans %}</h2>'+
-                            '  <span flex></span>'+
-                            '  <md-button class="md-icon-button" ng-click="cancel()"><span class="fa fa-2x fa-times"></span></md-button>'+
-                            '</div></md-toolbar>'+
-                            '<md-content layout-padding ng-cloak>'+
-                            '  <div>'+
-                            '    <img src="{{ '{{ flagsDir+club.flag }}' }}"'+
-                            '         alt="{{ '{{ club.name }}' }}"'+
-                            '         title="{{ '{{ club.name }}' }}" ng-if="club.flag" class="flag">'+
-                            '    <b>{{ '{{ club.name }}' }}</b>'+
-                            '  </div>'+
-                            '  <hr />'+
-                            '  <div class="row">'+
-                            '    <div class="col-sm-6" ng-repeat="category in categories | orderBy: [\'classification\', \'-age\', \'gender\'] track by category.id">'+
-                            '      <div class="row">'+
-                            '        <div class="col-sm-7">'+
-                            '          <h5>{% trans from 'tournament' %}CATEGORY{% endtrans %} {{ '{{ category.name }}' }} - {{ '{{ category.classification_translated }}' }}</h5>'+
-                            '        </div>'+
-                            '        <div class="col-sm-2">'+
-                            '          <h4><span class="badge">{{ '{{ category.enrolled }}' }}</span></h4>'+
-                            '        </div>'+
-                            '        <div class="col-sm-1">'+
-                            '          <h4><i class="fa fa-plus-circle google-green" ng-click="addEnrollment(category, club)"></i></h4>'+
-                            '        </div>'+
-                            '        <div class="col-sm-1">'+
-                            '          <h4><i class="fa fa-minus-circle google-red" ng-click="removeEnrollment(category, club)" ng-show="category.enrolled"></i></h4>'+
-                            '        </div>'+
-                            '      </div>'+
-                            '    </div>'+
-                            '  </div>'+
-                            '  <div class="md-padding" layout layout-align="center center">'+
-                            '    <md-button ng-click="cancel()">{% trans %}FORM.CLOSE{% endtrans %}</md-button>'+
-                            '  </div>'+
-                            '</md-content>',
+                            templateUrl: '{{ asset('bundles/icuppublicsite/templates/editenrolleddlg.html') }}',
                             parent: angular.element(document.body),
                             targetEvent: ev,
                             clickOutsideToClose:true,
@@ -942,38 +893,7 @@
                         $mdDialog.show({
                             controller: DialogController,
                             scope: dlgScope,
-                            template:
-                                '<md-toolbar><div class="md-toolbar-tools">'+
-                                '  <h2 class="md-toolbar-tools">{% trans %}FORM.CATEGORY.TITLE.ADD{% endtrans %}</h2>'+
-                                '  <span flex></span>'+
-                                '  <md-button class="md-icon-button" ng-click="cancel()"><span class="fa fa-2x fa-times"></span></md-button>'+
-                                '</div></md-toolbar>'+
-                                '<md-content layout-padding>'+
-                                '  <form ng-submit="submit(category_object)" ng-cloak>'+
-                                '    <md-input-container>'+
-                                '      <label for="name">{% trans %}FORM.CATEGORY.NAME{% endtrans %}</label>'+
-                                '      <input type="text" id="name" ng-model="category_object.name" md-autofocus>'+
-                                '    </md-input-container>'+
-                                '    <md-input-container>'+
-                                '      <label for="gender">{% trans %}FORM.CATEGORY.GENDER{% endtrans %}</label>'+
-                                '      <input type="text" id="gender" ng-model="category_object.gender" md-autofocus>'+
-                                '    </md-input-container>'+
-                                '    <md-input-container>'+
-                                '      <label for="classification">{% trans %}FORM.CATEGORY.CLASSIFICATION{% endtrans %}</label>'+
-                                '      <input type="text" id="classification" ng-model="category_object.classification" md-autofocus>'+
-                                '    </md-input-container>'+
-                                '    <md-input-container>'+
-                                '      <label for="age">'+"{% trans %}FORM.CATEGORY.AGE{% endtrans %}</label>"+
-                                '      <input type="text" id="age" ng-model="category_object.age" md-autofocus>'+
-                                '    </md-input-container>'+
-                                '    <md-input-container>'+
-                                '      <label for="matchtime">{% trans %}FORM.CATEGORY.MATCHTIME{% endtrans %}</label>'+
-                                '      <input type="text" id="matchtime" ng-model="category_object.matchtime" md-autofocus>'+
-                                '    </md-input-container>'+
-                                '  </form>'+
-                                '  <md-button ng-click="submit(category_object)" class="md-raised md-primary">{% trans %}FORM.QMATCHPLANNING.ADDGROUP{% endtrans %}</md-button>'+
-                                '  <md-button ng-click="cancel()" class="md-raised">{% trans %}FORM.QMATCHPLANNING.CLOSE{% endtrans %}</md-button>'+
-                                '</md-content>',
+                            templateUrl: '{{ asset('bundles/icuppublicsite/templates/editcategorydlg.html') }}',
                             parent: angular.element(document.body),
                             targetEvent: ev,
                             clickOutsideToClose:true,
@@ -1004,66 +924,7 @@
                         $mdDialog.show({
                             controller: DialogController,
                             scope: dlgScope,
-                            template:
-                                '<md-toolbar><div class="md-toolbar-tools">'+
-                                '  <h2 class="md-toolbar-tools">{% trans %}FORM.QMATCHPLANNING.OPTIONS{% endtrans %}</h2>'+
-                                '  <span flex></span>'+
-                                '  <md-button class="md-icon-button" ng-click="cancel()"><span class="fa fa-2x fa-times"></span></md-button>'+
-                                '</div></md-toolbar>'+
-                                '<md-content layout-padding>'+
-                                '  <h4>{% trans from "tournament" %}CATEGORY{% endtrans %} '+ $scope.category.name +' - '+ $scope.category.classification_translated +'</h4>'+
-                                '  <form ng-submit="submit(category_object)" ng-cloak>'+
-                                '    <div ng-show="category.preliminary_groups==0">'+
-                                '      <h4>{% trans %}FORM.QMATCHPLANNING.GROUP.ZERO{% endtrans %}</h4>'+
-                                '      <p>{% trans %}FORM.QMATCHPLANNING.RADIO.GROUP0.OPTION0{% endtrans %}</p>'+
-                                '    </div>'+
-                                '    <div ng-show="category.preliminary_groups==1">'+
-                                '      <h4>{% trans %}FORM.QMATCHPLANNING.GROUP.ONE{% endtrans %}</h4>'+
-                                '      <md-radio-group ng-model="category_object.strategy">'+
-                                '        <md-radio-button value="0" class="md-primary">{% trans %}FORM.QMATCHPLANNING.RADIO.GROUP1.OPTION0{% endtrans %}</md-radio-button>'+
-                                '        <md-radio-button value="1" class="md-primary">{% trans %}FORM.QMATCHPLANNING.RADIO.GROUP1.OPTION1{% endtrans %}</md-radio-button>'+
-                                '        <md-radio-button value="2" class="md-primary">{% trans %}FORM.QMATCHPLANNING.RADIO.GROUP1.OPTION2{% endtrans %}</md-radio-button>'+
-                                '      </md-radio-group>'+
-                                '    </div>'+
-                                '    <div ng-show="category.preliminary_groups==2">'+
-                                '      <h4>{% trans %}FORM.QMATCHPLANNING.GROUP.TWO{% endtrans %}</h4>'+
-                                '      <md-radio-group ng-model="category_object.strategy">'+
-                                '        <md-radio-button value="0" class="md-primary">{% trans %}FORM.QMATCHPLANNING.RADIO.GROUP2.OPTION0{% endtrans %}</md-radio-button>'+
-                                '        <md-radio-button value="1" class="md-primary">{% trans %}FORM.QMATCHPLANNING.RADIO.GROUP2.OPTION1{% endtrans %}</md-radio-button>'+
-                                '        <md-radio-button value="2" class="md-primary">{% trans %}FORM.QMATCHPLANNING.RADIO.GROUP2.OPTION2{% endtrans %}</md-radio-button>'+
-                                '        <md-radio-button value="3" class="md-primary">{% trans %}FORM.QMATCHPLANNING.RADIO.GROUP2.OPTION3{% endtrans %}</md-radio-button>'+
-                                '      </md-radio-group>'+
-                                '    </div>'+
-                                '    <div ng-show="category.preliminary_groups==3">'+
-                                '      <h4>{% trans %}FORM.QMATCHPLANNING.GROUP.THREE{% endtrans %}</h4>'+
-                                '      <md-radio-group ng-model="category_object.strategy">'+
-                                '        <md-radio-button value="0" class="md-primary">{% trans %}FORM.QMATCHPLANNING.RADIO.GROUP3.OPTION0{% endtrans %}</md-radio-button>'+
-                                '        <md-radio-button value="1" class="md-primary">{% trans %}FORM.QMATCHPLANNING.RADIO.GROUP3.OPTION1{% endtrans %}</md-radio-button>'+
-                                '        <md-radio-button value="2" class="md-primary">{% trans %}FORM.QMATCHPLANNING.RADIO.GROUP3.OPTION2{% endtrans %}</md-radio-button>'+
-                                '      </md-radio-group>'+
-                                '    </div>'+
-                                '    <div ng-show="category.preliminary_groups>=4">'+
-                                '      <h4>{% trans %}FORM.QMATCHPLANNING.GROUP.FOUR{% endtrans %}</h4>'+
-                                '      <md-radio-group ng-model="category_object.strategy">'+
-                                '        <md-radio-button value="0" class="md-primary">{% trans %}FORM.QMATCHPLANNING.RADIO.GROUP4.OPTION0{% endtrans %}</md-radio-button>'+
-                                '        <md-radio-button value="1" class="md-primary">{% trans %}FORM.QMATCHPLANNING.RADIO.GROUP4.OPTION1{% endtrans %}</md-radio-button>'+
-                                '        <md-radio-button value="2" class="md-primary">{% trans %}FORM.QMATCHPLANNING.RADIO.GROUP4.OPTION2{% endtrans %}</md-radio-button>'+
-                                '      </md-radio-group>'+
-                                '    </div>'+
-                                '    <div style="padding-top: 50px;">'+
-                                '      <md-input-container>'+
-                                '        <label for="trophys">{% trans %}FORM.QMATCHPLANNING.PROMPT.TROPHYS{% endtrans %}</label>'+
-                                '        <input type="text" id="trophys" ng-model="category_object.trophys" md-autofocus>'+
-                                '      </md-input-container>'+
-                                '      <md-input-container ng-show="category_object.strategy==0">'+
-                                '        <label for="premier_branch_teams">{% trans %}FORM.QMATCHPLANNING.PROMPT.TOPTEAMS{% endtrans %}</label>'+
-                                '        <input type="text" id="premier_branch_teams" ng-model="category_object.topteams">'+
-                                '      </md-input-container>'+
-                                '    </div>'+
-                                '  </form>'+
-                                '  <md-button ng-click="submit(category_object)" class="md-raised md-primary">{% trans %}FORM.QMATCHPLANNING.UPDATE{% endtrans %}</md-button>'+
-                                '  <md-button ng-click="cancel()" class="md-raised">{% trans %}FORM.QMATCHPLANNING.CLOSE{% endtrans %}</md-button>'+
-                                '</md-content>',
+                            templateUrl: '{{ asset('bundles/icuppublicsite/templates/editcatoptionsdlg.html') }}',
                             parent: angular.element(document.body),
                             targetEvent: ev,
                             clickOutsideToClose:true,
@@ -1093,23 +954,7 @@
                         $mdDialog.show({
                             controller: DialogController,
                             scope: dlgScope,
-                            template:
-                                '<md-toolbar><div class="md-toolbar-tools">'+
-                                '  <h2 class="md-toolbar-tools">{% trans %}FORM.GROUP.TITLE.ADD{% endtrans %}</h2>'+
-                                '  <span flex></span>'+
-                                '  <md-button class="md-icon-button" ng-click="cancel()"><span class="fa fa-2x fa-times"></span></md-button>'+
-                                '</div></md-toolbar>'+
-                                '<md-content layout-padding>'+
-                                '  <h4>{% trans from "tournament" %}CATEGORY{% endtrans %} '+ $scope.category.name +' - '+ $scope.category.classification_translated +'</h4>'+
-                                '  <form ng-submit="submit(group_object)" ng-cloak>'+
-                                '    <md-input-container>'+
-                                '      <label for="name">{% trans %}FORM.QMATCHPLANNING.PROMPT.GROUPNAME{% endtrans %}</label>'+
-                                '      <input type="text" id="name" ng-model="group_object.name" md-autofocus>'+
-                                '    </md-input-container>'+
-                                '  </form>'+
-                                '  <md-button ng-click="submit(group_object)" class="md-raised md-primary">{% trans %}FORM.QMATCHPLANNING.ADDGROUP{% endtrans %}</md-button>'+
-                                '  <md-button ng-click="cancel()" class="md-raised">{% trans %}FORM.QMATCHPLANNING.CLOSE{% endtrans %}</md-button>'+
-                                '</md-content>',
+                            templateUrl: '{{ asset('bundles/icuppublicsite/templates/editgroupdlg.html') }}',
                             parent: angular.element(document.body),
                             targetEvent: ev,
                             clickOutsideToClose:true,
@@ -1232,49 +1077,26 @@
                         $mdDialog.show({
                             controller: DialogController,
                             scope: dlgScope,
-                            template:
-                            '<md-toolbar><div class="md-toolbar-tools">'+
-                            '  <h2 class="md-toolbar-tools">{% trans %}FORM.MATCHPLANNING.PLAN.TITLE{% endtrans %}</h2>'+
-                            '  <span flex></span>'+
-                            '  <md-button class="md-icon-button" ng-click="cancel()"><span class="fa fa-2x fa-times"></span></md-button>'+
-                            '</div></md-toolbar>'+
-                            '<md-content layout-padding>'+
-                            '  <div class="panel panel-primary">' +
-                            '     <div class="panel-heading">' +
-                            '        <div class="row">' +
-                            '           <div class="col-sm-9">' +
-                            '              <h4>{% trans %}FORM.MATCHPLANNING.PLANNING.TITLE{% endtrans %}</h4>' +
-                            '              <p>{% trans %}FORM.MATCHPLANNING.PLANNING.DESCRIPTION{% endtrans %}</p>' +
-                            '              <p>{{ '{{ planning_status }}' }}</p>' +
-                            '           </div>' +
-                            '           <div class="col-sm-3 text-center">' +
-                            '              <h4 class="fa fa-hourglass fa-5x"></h4>' +
-                            '           </div>' +
-                            '        </div>' +
-                            '     </div>' +
-                            '     <div class="panel-body">' +
-                            '        <div class="progress">' +
-                            '           <div class="progress-bar" role="progressbar" aria-valuenow="{{ '{{ planning_level }}' }}" aria-valuemin="0" aria-valuemax="100" style="min-width: 0em; width: {{ '{{ planning_level }}' }}%;">' +
-                            '              <span>{{ '{{ planning_level }}' }}%</span>' +
-                            '           </div>' +
-                            '        </div>' +
-                            '     </div>' +
-                            '  </div>' +
-                            '  <md-button ng-click="submit()" class="md-raised">{% trans %}FORM.QMATCHPLANNING.CLOSE{% endtrans %}</md-button>'+
-                            '</md-content>',
+                            templateUrl: '{{ asset('bundles/icuppublicsite/templates/planmatchdlg.html') }}',
                             parent: angular.element(document.body),
                             targetEvent: ev,
                             clickOutsideToClose:true,
                             fullscreen: $mdMedia('sm') || $mdMedia('xs')
                         })
-                        .then(function() {
-                        });
+                        .then(function() {});
                         planTournament(0, dlgScope);
                     };
                     $scope.savePlan = function () {
                         $http.get(Routing.generate('_rest_match_planning_save_plan', { 'tournamentid': $scope.tournament.id })).then(
                             function(data) {
+                                $mdToast.show(
+                                        $mdToast.simple()
+                                                .textContent("{% trans %}FORM.MATCHPLANNING.SAVE.DONE{% endtrans %}")
+                                                .position('top right')
+                                                .hideDelay(5000)
+                                                .parent($document[0].querySelector('#toastAnchor'))
 
+                                );
                             },
                             function (response) {
                                 ShowError($mdDialog, response.data.errors, '{% trans %}FORM.MATCHPLANNING.SAVE.TITLE{% endtrans %}');
@@ -1290,6 +1112,50 @@
                             function (response) {
                                 ShowError($mdDialog, response.data.errors, '{% trans %}FORM.MATCHPLANNING.RESET.TITLE{% endtrans %}');
                             });
+                    };
+                    $scope.uploadPlan = function(ev) {
+                        var dlgScope = $scope.$new();
+                        $mdDialog.show({
+                            controller: DialogController,
+                            scope: dlgScope,
+                            templateUrl: '{{ asset('bundles/icuppublicsite/templates/matchimportdlg.html') }}',
+                            parent: angular.element(document.body),
+                            targetEvent: ev,
+                            clickOutsideToClose: true,
+                            fullscreen: $mdMedia('sm') || $mdMedia('xs')
+                        })
+                        .then(function () {
+                            //create form data object
+                            var r = new FileReader();
+                            r.onload = function(e){
+                                var fd = new FormData();
+                                fd.append('file', e.target.result);
+                                $http.post(Routing.generate('_rest_import_match_schedule', {'tournamentid': $scope.tournament.id}), fd, {
+                                    transformRequest: angular.identity,
+                                    headers: {'Content-Type': undefined}
+                                }).then(
+                                    function (response) {
+                                        $mdToast.show(
+                                            $mdToast.simple()
+                                                    .textContent(Translator.trans('FORM.MATCHPLANNING.MATCHIMPORT.DONE', { 'matches': response.data.status.count, 'file': dlgScope.uploadFile.name }, 'admin'))
+                                                    .position('top right')
+                                                    .hideDelay(10000)
+                                                    .parent($document[0].querySelector('#toastAnchor'))
+
+                                        );
+                                        GetMatchesPlanned();
+                                    },
+                                    function (response) {
+                                        ShowError($mdDialog, response.data.errors, '{% trans %}FORM.MATCHPLANNING.MATCHIMPORT.TITLE{% endtrans %}');
+                                    });
+                            };
+                            if (dlgScope.uploadFile.type == 'text/plain') {
+                                r.readAsText(dlgScope.uploadFile);
+                            }
+                            else {
+                                ShowError($mdDialog, ['{% trans %}FORM.MATCHPLANNING.MATCHIMPORT.INVALIDFILE{% endtrans %}'], '{% trans %}FORM.MATCHPLANNING.MATCHIMPORT.TITLE{% endtrans %}');
+                            }
+                        });
                     };
                     $scope.editMatch = function (match, ev) {
                         this.msover = false;
@@ -1331,7 +1197,7 @@
                                                     .textContent("Match updated")
                                                     .position('top right')
                                                     .hideDelay(3000)
-                                                    .parent($document[0].querySelector('#toastBounds'))
+                                                    .parent($document[0].querySelector('#toastAnchor'))
 
                                     );
                                     GetMatchesPlanned();
@@ -1396,11 +1262,11 @@
             $scope.cancel = function() {
                 $mdDialog.cancel();
             };
-        };
+        }
         function ShowError($mdDialog, errors, title) {
             var error = Translator.trans('ERROR.'+errors.join('.')+'.TITLE', {}, 'errors');
             var solution = Translator.trans('ERROR.'+errors.join('.')+'.SOLUTION', {}, 'errors');
             $mdDialog.show($mdDialog.alert().clickOutsideToClose(true).title(error).textContent(solution).ok('{% trans %}FORM.CLOSE{% endtrans %}'));
-        };
+        }
     </script>
 {% endblock %}

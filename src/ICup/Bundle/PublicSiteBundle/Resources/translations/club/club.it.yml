@@ -240,6 +240,9 @@ FORM:
       USERNAME: Enter your username - might be your e-mail address
       PASSWORD: Enter your password (shown with dots)
     LOGIN: Log in
+    FACEBOOK: Log in using facebook
+    GOOGLE: Log ind using Google
+    OR: Or log in using your username and password
     LOSTPWD: Reset password
     SECTION1:
       HEADER: Have you lost your password?
@@ -247,6 +250,11 @@ FORM:
             <p>If you lost your password you can easely reset your password.
                Is this the first time you log in, you need to reset your password as well.</p>
             <p><em>Click the button to get instructions explaining how to reset your password.</em></p>
+    SECTION2:
+      HEADER: Create a new profile
+      TEXT: >
+            <p>It is easy to get a profile. Click the button and complete the form.</p>
+    REGISTER: Create an account
   LOSTPASS:
     TITLE: Reset password
     PROMPT: Reset your password and allow you to log in after failed attempts

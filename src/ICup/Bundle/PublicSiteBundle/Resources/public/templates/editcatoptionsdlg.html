@@ -1,0 +1,65 @@
+<md-dialog aria-label="{{ 'FORM.QMATCHPLANNING.OPTIONS' | translate }}" style="width: 80%">
+    <md-toolbar>
+        <div class="md-toolbar-tools">
+            <h2 class="md-toolbar-tools">{{ 'FORM.QMATCHPLANNING.OPTIONS' | translate }}</h2>
+            <span flex></span>
+            <md-button class="md-icon-button" ng-click="cancel()"><span class="fa fa-2x fa-times"></span></md-button>
+        </div>
+    </md-toolbar>
+    <md-dialog-content layout-padding>
+        <h4>{{ 'CATEGORY' | translate:'tournament' }} {{ category.name }} - {{ category.classification_translated }}</h4>
+        <form ng-submit="submit(category_object)" ng-cloak>
+            <div ng-show="category.preliminary_groups==0">
+                <h4>{{ 'FORM.QMATCHPLANNING.GROUP.ZERO' | translate }}</h4>
+                <p>{{ 'FORM.QMATCHPLANNING.RADIO.GROUP0.OPTION0' | translate }}</p>
+            </div>
+            <div ng-show="category.preliminary_groups==1">
+                <h4>{{ 'FORM.QMATCHPLANNING.GROUP.ONE' | translate }}</h4>
+                <md-radio-group ng-model="category_object.strategy">
+                    <md-radio-button value="0" class="md-primary">{{ 'FORM.QMATCHPLANNING.RADIO.GROUP1.OPTION0' | translate }}</md-radio-button>
+                    <md-radio-button value="1" class="md-primary">{{ 'FORM.QMATCHPLANNING.RADIO.GROUP1.OPTION1' | translate }}</md-radio-button>
+                    <md-radio-button value="2" class="md-primary">{{ 'FORM.QMATCHPLANNING.RADIO.GROUP1.OPTION2' | translate }}</md-radio-button>
+                </md-radio-group>
+            </div>
+            <div ng-show="category.preliminary_groups==2">
+                <h4>{{ 'FORM.QMATCHPLANNING.GROUP.TWO' | translate }}</h4>
+                <md-radio-group ng-model="category_object.strategy">
+                    <md-radio-button value="0" class="md-primary">{{ 'FORM.QMATCHPLANNING.RADIO.GROUP2.OPTION0' | translate }}</md-radio-button>
+                    <md-radio-button value="1" class="md-primary">{{ 'FORM.QMATCHPLANNING.RADIO.GROUP2.OPTION1' | translate }}</md-radio-button>
+                    <md-radio-button value="2" class="md-primary">{{ 'FORM.QMATCHPLANNING.RADIO.GROUP2.OPTION2' | translate }}</md-radio-button>
+                    <md-radio-button value="3" class="md-primary">{{ 'FORM.QMATCHPLANNING.RADIO.GROUP2.OPTION3' | translate }}</md-radio-button>
+                </md-radio-group>
+            </div>
+            <div ng-show="category.preliminary_groups==3">
+                <h4>{{ 'FORM.QMATCHPLANNING.GROUP.THREE' | translate }}</h4>
+                <md-radio-group ng-model="category_object.strategy">
+                    <md-radio-button value="0" class="md-primary">{{ 'FORM.QMATCHPLANNING.RADIO.GROUP3.OPTION0' | translate }}</md-radio-button>
+                    <md-radio-button value="1" class="md-primary">{{ 'FORM.QMATCHPLANNING.RADIO.GROUP3.OPTION1' | translate }}</md-radio-button>
+                    <md-radio-button value="2" class="md-primary">{{ 'FORM.QMATCHPLANNING.RADIO.GROUP3.OPTION2' | translate }}</md-radio-button>
+                </md-radio-group>
+            </div>
+            <div ng-show="category.preliminary_groups>=4">
+                <h4>{{ 'FORM.QMATCHPLANNING.GROUP.FOUR' | translate }}</h4>
+                <md-radio-group ng-model="category_object.strategy">
+                    <md-radio-button value="0" class="md-primary">{{ 'FORM.QMATCHPLANNING.RADIO.GROUP4.OPTION0' | translate }}</md-radio-button>
+                    <md-radio-button value="1" class="md-primary">{{ 'FORM.QMATCHPLANNING.RADIO.GROUP4.OPTION1' | translate }}</md-radio-button>
+                    <md-radio-button value="2" class="md-primary">{{ 'FORM.QMATCHPLANNING.RADIO.GROUP4.OPTION2' | translate }}</md-radio-button>
+                </md-radio-group>
+            </div>
+            <div style="padding-top: 50px;">
+                <md-input-container>
+                    <label for="trophys">{{ 'FORM.QMATCHPLANNING.PROMPT.TROPHYS' | translate }}</label>
+                    <input type="text" id="trophys" ng-model="category_object.trophys" md-autofocus>
+                </md-input-container>
+                <md-input-container ng-show="category_object.strategy==0">
+                    <label for="premier_branch_teams">{{ 'FORM.QMATCHPLANNING.PROMPT.TOPTEAMS' | translate }}</label>
+                    <input type="text" id="premier_branch_teams" ng-model="category_object.topteams">
+                </md-input-container>
+            </div>
+        </form>
+    </md-dialog-content>
+    <md-dialog-actions>
+        <md-button ng-click="submit(category_object)" class="md-primary md-raised" flex="50">{{ 'FORM.SUBMIT' | translate }}</md-button>
+        <md-button ng-click="cancel()" class="md-raised" flex="50">{{ 'FORM.CLOSE' | translate }}</md-button>
+    </md-dialog-actions>
+</md-dialog>

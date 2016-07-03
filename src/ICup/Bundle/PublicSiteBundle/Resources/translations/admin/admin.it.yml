@@ -418,12 +418,16 @@ FORM:
     SAVE:
       TITLE: Salva il calendario gare
       DESCRIPTION: Accetta e salva il calendario gare.
+      DONE: The match schedule has been accepted and saved
     MATCHIMPORT:
       TITLE: Upload delle gare
       DESCRIPTION: Importa il calendario da un file. The match schedule can be inspected and eventually saved as the match program.
-      FILE: Nome del file da importare:
+      FILE: Il seguente file di testo è stato selezionato per l'importazione:
       UPLOAD: Importa
+      LABEL: Selezionare il file per l'importazione
       BROWSE: Seleziona il file
+      INVALIDFILE: Il file selezionato non può essere importato - deve essere un file di testo.
+      DONE: Il calendario delle partite è stato importato. In totale le %matches% partite sono state lette dal file '%file%'.
     EDITMATCH:
       TITLE: Change information for planned match
       MATCH: Match to be moved

@@ -428,12 +428,16 @@ FORM:
     SAVE:
       TITLE: Save match schedule
       DESCRIPTION: Accept and save match schedule as the official match program.
+      DONE: The match schedule has been accepted and saved
     MATCHIMPORT:
       TITLE: Upload match schedule
       DESCRIPTION: Import match schedule from text file. The match schedule can be inspected and eventually saved as the match program.
-      FILE: Name of the file to be imported:
+      FILE: The following text file has been selected for import:
       UPLOAD: Import
+      LABEL: Select file for import
       BROWSE: Select file
+      INVALIDFILE: The selected file can not be imported - it must be a text file.
+      DONE: The match schedule has been imported. In total %matches% matches were read from the file '%file%'.
     EDITMATCH:
       TITLE: Change information for planned match
       MATCH: Match to be moved

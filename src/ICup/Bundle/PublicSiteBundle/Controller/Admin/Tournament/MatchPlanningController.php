@@ -256,7 +256,7 @@ class MatchPlanningController extends Controller
                 }
             }
             if (!$pattr) {
-                throw new ValidationException("BADDATE", "No playground attribute for date=".$matchRaw['date']);
+                throw new ValidationException("BADDATE", "No playground attribute for date=".$matchRaw['date'].' '.$matchRaw['time']." (#".$matchRaw['matchno'].")");
             }
             if ($isFinal) {
                 $teamA = $this->getQRel($category, $matchRaw['teamA'], MatchSupport::$HOME);

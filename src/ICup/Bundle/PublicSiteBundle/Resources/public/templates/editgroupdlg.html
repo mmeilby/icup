@@ -1,0 +1,22 @@
+<md-dialog aria-label="{{ 'FORM.GROUP.TITLE.ADD' | translate }}" style="width: 80%">
+    <md-toolbar>
+        <div class="md-toolbar-tools">
+            <h2 class="md-toolbar-tools">{{ 'FORM.GROUP.TITLE.ADD' | translate }}</h2>
+            <span flex></span>
+            <md-button class="md-icon-button" ng-click="cancel()"><span class="fa fa-2x fa-times"></span></md-button>
+        </div>
+    </md-toolbar>
+    <md-dialog-content layout-padding>
+        <h4>{{ 'CATEGORY' | translate:'tournament' }} {{ category.name }} - {{ category.classification_translated }}</h4>
+        <form ng-submit="submit(group_object)" ng-cloak>
+            <md-input-container>
+                <label for="name">{{ 'FORM.QMATCHPLANNING.PROMPT.GROUPNAME' | translate }}</label>
+                <input type="text" id="name" ng-model="group_object.name" md-autofocus>
+            </md-input-container>
+        </form>
+    </md-dialog-content>
+    <md-dialog-actions>
+        <md-button ng-click="submit(group_object)" class="md-primary md-raised" flex="50">{{ 'FORM.SUBMIT' | translate }}</md-button>
+        <md-button ng-click="cancel()" class="md-raised" flex="50">{{ 'FORM.CLOSE' | translate }}</md-button>
+    </md-dialog-actions>
+</md-dialog>

@@ -1,0 +1,33 @@
+<md-dialog aria-label="{{ 'FORM.MATCHPLANNING.PLAN.TITLE' | translate }}" style="width: 80%">
+    <md-toolbar>
+        <div class="md-toolbar-tools">
+            <h2 class="md-toolbar-tools">{{ 'FORM.MATCHPLANNING.PLAN.TITLE' | translate }}</h2>
+            <span flex></span>
+            <md-button class="md-icon-button" ng-click="cancel()"><span class="fa fa-2x fa-times"></span></md-button>
+        </div>
+    </md-toolbar>
+    <md-content layout-padding>
+        <div class="panel panel-primary">
+            <div class="panel-heading">
+                <div class="row">
+                    <div class="col-sm-9">
+                        <h4>{{ 'FORM.MATCHPLANNING.PLANNING.TITLE' | translate }}</h4>
+                        <p>{{ 'FORM.MATCHPLANNING.PLANNING.DESCRIPTION' | translate }}</p>
+                        <p>{{ planning_status }}</p>
+                    </div>
+                    <div class="col-sm-3 text-center">
+                        <h4 class="fa fa-hourglass fa-5x"></h4>
+                    </div>
+                </div>
+            </div>
+            <div class="panel-body">
+                <div class="progress">
+                    <div class="progress-bar" role="progressbar" aria-valuenow="{{ planning_level }}" aria-valuemin="0" aria-valuemax="100" style="min-width: 0em; width: {{ planning_level }}%;">
+                        <span>{{  planning_level }}%</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <md-button ng-click="submit()" class="md-raised">{{ 'FORM.CLOSE' | translate }}</md-button>
+    </md-content>
+</md-dialog>

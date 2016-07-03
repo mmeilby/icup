@@ -1,0 +1,37 @@
+<md-dialog aria-label="{{ 'FORM.CATEGORY.TITLE.ADD' | translate }}" style="width: 80%">
+    <md-toolbar>
+        <div class="md-toolbar-tools">
+            <h2 class="md-toolbar-tools">{{ 'FORM.CATEGORY.TITLE.ADD' | translate }}</h2>
+            <span flex></span>
+            <md-button class="md-icon-button" ng-click="cancel()"><span class="fa fa-2x fa-times"></span></md-button>
+        </div>
+    </md-toolbar>
+    <md-dialog-content layout-padding>
+        <form ng-submit="submit(category_object)" ng-cloak>
+            <md-input-container>
+                <label for="name">{{ 'FORM.CATEGORY.NAME' | translate }}</label>
+                <input type="text" id="name" ng-model="category_object.name" md-autofocus>
+            </md-input-container>
+            <md-input-container>
+                <label for="gender">{{ 'FORM.CATEGORY.GENDER' | translate }}</label>
+                <input type="text" id="gender" ng-model="category_object.gender">
+            </md-input-container>
+            <md-input-container>
+                <label for="classification">{{ 'FORM.CATEGORY.CLASSIFICATION' | translate }}</label>
+                <input type="text" id="classification" ng-model="category_object.classification">
+            </md-input-container>
+            <md-input-container>
+                <label for="age">{{ 'FORM.CATEGORY.AGE' | translate }}</label>
+                <input type="text" id="age" ng-model="category_object.age">
+            </md-input-container>
+            <md-input-container>
+                <label for="matchtime">{{ 'FORM.CATEGORY.MATCHTIME' | translate }}</label>
+                <input type="text" id="matchtime" ng-model="category_object.matchtime">
+            </md-input-container>
+        </form>
+    </md-dialog-content>
+    <md-dialog-actions>
+        <md-button ng-click="submit(category_object)" class="md-primary md-raised" flex="50">{{ 'FORM.SUBMIT' | translate }}</md-button>
+        <md-button ng-click="cancel()" class="md-raised" flex="50">{{ 'FORM.CLOSE' | translate }}</md-button>
+    </md-dialog-actions>
+</md-dialog>

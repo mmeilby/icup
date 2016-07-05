@@ -330,7 +330,7 @@ class MatchSupport
     public function getMatchRelationDetails($matchid, $away) {
         $qb = $this->em->createQuery(
             "select r.id as rid,r.awayteam,r.scorevalid,r.score,r.points,".
-            "t.id,t.name as team,t.division,c.country ".
+            "t.id,t.name as team,t.division,identity(c.country) as country ".
             "from ".$this->entity->getRepositoryPath('MatchRelation')." r, ".
                     $this->entity->getRepositoryPath('Team')." t, ".
                     $this->entity->getRepositoryPath('Club')." c ".

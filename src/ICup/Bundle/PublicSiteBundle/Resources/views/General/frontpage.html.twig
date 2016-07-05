@@ -68,6 +68,24 @@
                 </div>
             </div>
         </div>
+        {# *******************************************
+           SMALL MOBILE DEVICES
+           ******************************************* #}
+        {% if matchlist|length > 0 %}
+        <div class="container" style="padding-top: 30px; padding-bottom: 10px;">
+            <div class="row">
+                <div class="col-md-12 visible-xs-block">
+                    {{ tformatter.listmatchesxs(matchlist, _context) }}
+                </div>
+        {# *******************************************
+           OTHER DEVICES
+           ******************************************* #}
+                <div class="col-md-12 hidden-xs">
+                    {{ tformatter.listmatches(matchlist, _context) }}
+                </div>
+            </div>
+        </div>
+        {% endif %}
     {% else %}
         <div class="FlexCard">
             <div class="FlexCard-background">

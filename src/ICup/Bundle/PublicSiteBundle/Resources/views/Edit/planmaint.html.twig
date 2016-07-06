@@ -17,31 +17,6 @@
         </a>
     </p>
     <ul class="nav nav-tabs" role="tablist">
-        <li>
-            <a href="{{ path('_edit_match_planning_options', { 'tournamentid': tournament.id }) }}">
-                <span class="fa fa-toggle-on"></span>&nbsp;{% trans %}FORM.MATCHPLANNING.OPTIONS{% endtrans %}
-            </a>
-        </li>
-        <li>
-            <a href="{{ path('_edit_match_planning_groups', { 'tournamentid': tournament.id }) }}">
-                <span class="fa fa-cubes"></span>&nbsp;{% trans %}FORM.MATCHPLANNING.GROUPS{% endtrans %}
-            </a>
-        </li>
-        <li>
-            <a href="{{ path('_edit_match_planning_result', { 'tournamentid': tournament.id }) }}">
-                <span class="fa fa-puzzle-piece"></span>&nbsp;{% trans %}FORM.MATCHPLANNING.RESULT{% endtrans %}
-            </a>
-        </li>
-        <li>
-            <a href="{{ path('_edit_match_planning_view', { 'tournamentid': tournament.id }) }}">
-                <span class="fa fa-calendar-check-o"></span>&nbsp;{% trans %}FORM.MATCHPLANNING.VIEW{% endtrans %}
-            </a>
-        </li>
-        <li>
-            <a href="{{ path('_edit_match_planning_advice', { 'tournamentid': tournament.id }) }}">
-                <span class="fa fa-lightbulb-o"></span>&nbsp;{% trans %}FORM.MATCHPLANNING.ADVICE{% endtrans %}
-            </a>
-        </li>
         <li class="active">
             <a href="{{ path('_edit_match_maint', { 'tournamentid': tournament.id }) }}">
                 <span class="fa fa-wrench"></span>&nbsp;{% trans %}FORM.MATCHPLANNING.MAINT{% endtrans %}

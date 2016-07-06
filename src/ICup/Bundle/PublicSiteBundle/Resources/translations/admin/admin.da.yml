@@ -74,6 +74,7 @@ FORM:
         CAPTION: Tilpas turnering
         DESCRIPTION: Vedligehold oplysninger for denne tournering.
     TOURNAMENTOPTIONS:
+        LABEL: Indstillinger
         CAPTION: Turneringsindstillinger
         DESCRIPTION: Vedligehold indstillinger for points, mål og turneringsplanlægning.
     LISTSITES:
@@ -83,12 +84,14 @@ FORM:
         CAPTION: Grupper og puljer
         DESCRIPTION: Planlæg puljer og tilpas grupper
     LISTTIMESLOTS:
+        LABEL: Perioder
         CAPTION: Perioder
         DESCRIPTION: Kategoriser spilletid på banerne i perioder
     LISTCLUBS:
         CAPTION: Tilmeldte klubber
         DESCRIPTION: Vis tilmeldte klubber og håndter tilmeldinger
     STATUS:
+        LABEL: Kalender
         CAPTION: Turneringskalender
         DESCRIPTION:
           0: Denne turnering er arkiveret og kan ikke vises for almindelige brugere.
@@ -97,6 +100,7 @@ FORM:
           3: Denne turnering er afsluttet. Kampe og placeringer vises hvis brugerne søger turneringen.
           4: Turneringen er under oprettelse. Der mangler nødvendige oplysninger om puljer og grupper.
     NEWS:
+        LABEL: Nyheder
         CAPTION: Administrer nyheder
         DESCRIPTION: Udgiv nyheder om hold og kampe i turneringen
     PLANNING:
@@ -109,14 +113,21 @@ FORM:
         CAPTION: Indlæs kampplan til slutrunde
         DESCRIPTION: Indtast kampplan for en dag
     MATCHIMPORTUNRES:
+        LABEL: Slutrunder
         CAPTION: Påsæt hold til slutrunde
         DESCRIPTION: Specificer hold der har kvalificeret sig til slutrunden
     REPORT:
+        LABEL: Indberet
         CAPTION: Indberet resultater
         DESCRIPTION: Angiv kampresultatet for en eller flere kampe på en bane
     MATCHPRINT:
+        LABEL: Kampliste
         CAPTION: Udskriv kampliste
         DESCRIPTION: Vis kampliste for en dag til udskrift
+    MATCHMAINT:
+        LABEL: Planændring
+        CAPTION: Rediger kampplan
+        DESCRIPTION: Rediger oplysniger for valgte kampe i den officielle kampplan
     SEARCH:
         TITLE: Find kampe
         SUBTITLE: Vælg og se de kampe der passer

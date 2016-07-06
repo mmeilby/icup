@@ -74,6 +74,7 @@ FORM:
         CAPTION: Modify tournament
         DESCRIPTION: Maintain information for this tournament
     TOURNAMENTOPTIONS:
+        LABEL: Options
         CAPTION: Tournament options
         DESCRIPTION: Modify rules and game planning for this tournament
     LISTSITES:
@@ -83,12 +84,14 @@ FORM:
         CAPTION: Categories and groups
         DESCRIPTION: Plan groups and maintain categories
     LISTTIMESLOTS:
+        LABEL: Timeslots
         CAPTION: Timeslots
         DESCRIPTION: Define logical timeslots for all venues
     LISTCLUBS:
         CAPTION: Enrolled clubs
         DESCRIPTION: Show enrolled clubs and handle new requests
     STATUS:
+        LABEL: Calendar
         CAPTION: Tournament calendar
         DESCRIPTION:
           0: This tournament is archived and will not be visible for normal users
@@ -97,6 +100,7 @@ FORM:
           3: This tournament is completed. Group results and winners are availble along with statistics
           4: Tournament is under construction. Required plans are not yet ready.
     NEWS:
+        LABEL: News
         CAPTION: Handle news
         DESCRIPTION: Post news from the tournament
     PLANNING:
@@ -109,14 +113,21 @@ FORM:
         CAPTION: Import match plan for elimination round
         DESCRIPTION: Import match schedule for a specific day
     MATCHIMPORTUNRES:
+        LABEL: Assign
         CAPTION: Assign teams for elimination round
         DESCRIPTION: Specify teams elegible for elimination round
     REPORT:
+        LABEL: Report
         CAPTION: Report results
         DESCRIPTION: Report match results for matches played at a specific venue
     MATCHPRINT:
+        LABEL: Match list
         CAPTION: Print match report
         DESCRIPTION: Show match report for a specific day for output
+    MATCHMAINT:
+        LABEL: Modify
+        CAPTION: Modify match schedule
+        DESCRIPTION: Modify match information for selected matches from the official match schedule
     SEARCH:
         TITLE: Search matches
         SUBTITLE: Select search criteria to find the matches you seek

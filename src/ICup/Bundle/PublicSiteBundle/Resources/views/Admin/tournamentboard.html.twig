@@ -8,105 +8,19 @@
             <section layout="column">
                 <md-content flex>
                     <md-content flex>
-                        <md-toolbar class="md-menu-toolbar" ng-cloak>
+                        <md-toolbar class="md-menu-toolbar">
                             <div layout="row">
                                 <md-toolbar-filler layout layout-align="center center" style="background-color: #8c8c8c; color: white">
                                     <span class="fa fa-4x fa-cogs"></span>
                                 </md-toolbar-filler>
-                                <div>
+                                <div ng-cloak>
                                     <h2 class="md-toolbar-tools">{{ 'FORM.TOURNAMENTBOARD.TITLE'|trans|upper }}</h2>
-{% if is_granted('ROLE_EDITOR_ADMIN') %}
                                     <md-menu-bar>
-                                        <md-menu>
-                                            <button ng-click="$mdOpenMenu()">
-                                                {% trans %}FORM.TOURNAMENTBOARD.TOURNAMENT.CAPTION{% endtrans %}
-                                            </button>
-                                            <md-menu-content>
-                                                <md-menu-item class="md-indent">
-                                                    <md-icon><span class="fa fa-calendar" style="font-size: 1.6em"></span></md-icon>
-                                                    <md-button ng-href="{{ path('_edit_event_list', { 'tournamentid': tournament.id }) }}">
-                                                        {% trans %}FORM.TOURNAMENTBOARD.STATUS.CAPTION{% endtrans %}
-{#
-                                                        <a class="list-group-item" href="{{ path('_edit_event_list', { 'tournamentid': tournament.id }) }}">
-                                                            <h3 class="list-group-item-heading">{% trans %}FORM.TOURNAMENTBOARD.STATUS.CAPTION{% endtrans %}</h3>
-                                                            <p class="list-group-item-text">{{ ['FORM.TOURNAMENTBOARD.STATUS.DESCRIPTION.',tstat]|join|trans }}</p>
-                                                        </a>
-#}
-                                                    </md-button>
-                                                </md-menu-item>
-                                                <md-menu-divider></md-menu-divider>
-                                                <md-menu-item>
-                                                    <md-button ng-href="{{ path('_edit_import_match_unres', { 'tournamentid': tournament.id }) }}">
-                                                        {% trans %}FORM.TOURNAMENTBOARD.MATCHIMPORTUNRES.CAPTION{% endtrans %}
-{#
-                                                        <a class="list-group-item" href="{{ path('_edit_import_match_unres', { 'tournamentid': tournament.id }) }}">
-                                                            <h3 class="list-group-item-heading">{% trans %}FORM.TOURNAMENTBOARD.MATCHIMPORTUNRES.CAPTION{% endtrans %}</h3>
-                                                            <p class="list-group-item-text">{% trans %}FORM.TOURNAMENTBOARD.MATCHIMPORTUNRES.DESCRIPTION{% endtrans %}</p>
-                                                        </a>
-#}
-                                                    </md-button>
-                                                </md-menu-item>
-                                                <md-menu-item>
-                                                    <md-button ng-href="{{ path('_edit_list_matches', { 'tournamentid': tournament.id }) }}">
-                                                        {% trans %}FORM.TOURNAMENTBOARD.REPORT.CAPTION{% endtrans %}
-{#
-                                                        <a class="list-group-item" href="{{ path('_edit_list_matches', { 'tournamentid': tournament.id }) }}">
-                                                            <h3 class="list-group-item-heading">{% trans %}FORM.TOURNAMENTBOARD.REPORT.CAPTION{% endtrans %}</h3>
-                                                            <p class="list-group-item-text">{% trans %}FORM.TOURNAMENTBOARD.REPORT.DESCRIPTION{% endtrans %}</p>
-                                                        </a>
-#}
-                                                    </md-button>
-                                                </md-menu-item>
-                                                <md-menu-divider></md-menu-divider>
-                                                <md-menu-item>
-                                                    <md-button ng-href="{{ path('_edit_matchlist_print', { 'tournamentid': tournament.id, 'date': date()|date('d-m-Y') }) }}">
-                                                        {% trans %}FORM.TOURNAMENTBOARD.MATCHPRINT.CAPTION{% endtrans %}
-{#
-                                                        <a class="list-group-item" href="{{ path('_edit_matchlist_print', { 'tournamentid': tournament.id, 'date': date()|date('d-m-Y') }) }}">
-                                                            <h3 class="list-group-item-heading">{% trans %}FORM.TOURNAMENTBOARD.MATCHPRINT.CAPTION{% endtrans %}</h3>
-                                                            <p class="list-group-item-text">{% trans %}FORM.TOURNAMENTBOARD.MATCHPRINT.DESCRIPTION{% endtrans %}</p>
-                                                        </a>
-#}
-                                                    </md-button>
-                                                </md-menu-item>
-                                            </md-menu-content>
-                                        </md-menu>
-                                        <md-menu>
-                                            <button ng-click="$mdOpenMenu()">
-                                                {% trans %}FORM.TOURNAMENTBOARD.NEWS.CAPTION{% endtrans %}
-                                            </button>
-                                            <md-menu-content>
-                                                <md-menu-item>
-                                                    <md-button ng-href="{{ path('_edit_news_list', { 'tournamentid': tournament.id }) }}">
-                                                        {% trans %}FORM.TOURNAMENTBOARD.NEWS.CAPTION{% endtrans %}
-{#
-                                                        <a class="list-group-item" href="{{ path('_edit_news_list', { 'tournamentid': tournament.id }) }}">
-                                                            <h3 class="list-group-item-heading">{% trans %}FORM.TOURNAMENTBOARD.NEWS.CAPTION{% endtrans %}</h3>
-                                                            <p class="list-group-item-text">{% trans %}FORM.TOURNAMENTBOARD.NEWS.DESCRIPTION{% endtrans %}</p>
-                                                        </a>
-#}
-                                                    </md-button>
-                                                </md-menu-item>
-                                            </md-menu-content>
-                                        </md-menu>
                                         <md-menu>
                                             <button ng-click="$mdOpenMenu()">
                                                 {% trans %}FORM.TOURNAMENTBOARD.PLANNING.CAPTION{% endtrans %}
                                             </button>
                                             <md-menu-content>
-                                                <md-menu-item class="md-indent">
-                                                    <md-icon><span class="fa fa-calendar" style="font-size: 1.6em"></span></md-icon>
-                                                    <md-button ng-href="{{ path('_edit_tournament_options', { 'tournamentid': tournament.id }) }}">
-                                                        {% trans %}FORM.TOURNAMENTBOARD.TOURNAMENTOPTIONS.CAPTION{% endtrans %}
-                                                        {#
-                                                        <a class="list-group-item" href="{{ path('_edit_tournament_options', { 'tournamentid': tournament.id }) }}">
-                                                            <h3 class="list-group-item-heading">{% trans %}FORM.TOURNAMENTBOARD.TOURNAMENTOPTIONS.CAPTION{% endtrans %}</h3>
-                                                            <p class="list-group-item-text">{% trans %}FORM.TOURNAMENTBOARD.TOURNAMENTOPTIONS.DESCRIPTION{% endtrans %}</p>
-                                                        </a>
-                                                        #}
-                                                    </md-button>
-                                                </md-menu-item>
-                                                <md-menu-divider></md-menu-divider>
                                                 <md-menu-item>
                                                     <md-button ng-href="{{ path('_edit_category_list', { 'tournamentid': tournament.id }) }}">
                                                         {% trans %}FORM.TOURNAMENTBOARD.LISTCATEGORIES.CAPTION{% endtrans %}
@@ -125,18 +39,6 @@
                                                         <a class="list-group-item" href="{{ path('_edit_site_list', { 'tournamentid': tournament.id }) }}">
                                                             <h3 class="list-group-item-heading">{% trans %}FORM.TOURNAMENTBOARD.LISTSITES.CAPTION{% endtrans %}</h3>
                                                             <p class="list-group-item-text">{% trans %}FORM.TOURNAMENTBOARD.LISTSITES.DESCRIPTION{% endtrans %}</p>
-                                                        </a>
-                                                        #}
-                                                    </md-button>
-                                                </md-menu-item>
-                                                <md-menu-divider></md-menu-divider>
-                                                <md-menu-item>
-                                                    <md-button ng-href="{{ path('_edit_timeslot_list', { 'tournamentid': tournament.id }) }}">
-                                                        {% trans %}FORM.TOURNAMENTBOARD.LISTTIMESLOTS.CAPTION{% endtrans %}
-                                                        {#
-                                                        <a class="list-group-item" href="{{ path('_edit_timeslot_list', { 'tournamentid': tournament.id }) }}">
-                                                            <h3 class="list-group-item-heading">{% trans %}FORM.TOURNAMENTBOARD.LISTTIMESLOTS.CAPTION{% endtrans %}</h3>
-                                                            <p class="list-group-item-text">{% trans %}FORM.TOURNAMENTBOARD.LISTTIMESLOTS.DESCRIPTION{% endtrans %}</p>
                                                         </a>
                                                         #}
                                                     </md-button>
@@ -171,51 +73,120 @@
                                                         </md-menu-content>
                                                     </md-menu>
 #}
-{% endif %}
                                 </div>
                             </div>
                         </md-toolbar>
-                        <div class="page-container">
-                            <div class="page">
-                                <h2>{{ tournament.name }}</h2>
-                                <table class="table table-striped">
-                                    <thead>
-                                    <tr>
-                                        <td>{% trans %}FORM.DASHBOARD.TOURNAMENTS.LEGEND.KEY{% endtrans %}</td>
-                                        <td>{% trans %}FORM.DASHBOARD.TOURNAMENTS.LEGEND.EDITION{% endtrans %}</td>
-                                        <td>{% trans %}FORM.DASHBOARD.TOURNAMENTS.LEGEND.DESCRIPTION{% endtrans %}</td>
-                                        <td>{% trans %}FORM.DASHBOARD.TOURNAMENTS.LEGEND.STATUS{% endtrans %}</td>
-                                        <td class="narrow-col"></td>
-                                    </tr>
-                                    </thead>
-                                    <tbody>
-                                    <tr>
-                                        <td>
-                                            <a href="{{ path('_edit_tournament_chg', { 'tournamentid': tournament.id }) }}">
-                                                <b>{{ tournament.key }}</b>
-                                            </a>
-                                        </td>
-                                        <td>
-                                            {{ tournament.edition }}
-                                        </td>
-                                        <td>
-                                            {{ tournament.description }}
-                                        </td>
-                                        <td>
-                                            {{ ['FORM.DASHBOARD.TOURNAMENTS.STATUS.',tstat]|join|trans }}
-                                        </td>
-                                        <td>
-                                            <span class="fa fa-pencil"></span>
-                                        </td>
-                                    </tr>
-                                    </tbody>
-                                </table>
-                            </div>
-                        </div>
                     </md-content>
 
                     <md-content flex>
                         <md-tabs md-dynamic-height md-border-bottom>
+                            {#
+                                ---------------------
+                                TOURNAMENT
+                                ---------------------
+                            #}
+                            <md-tab label="{% trans %}FORM.TOURNAMENTBOARD.TOURNAMENT.CAPTION{% endtrans %}">
+                                <md-content class="md-padding">
+                                    <div class="page">
+                                        <h2>{{ tournament.name }}</h2>
+                                        <table class="table table-striped">
+                                            <thead>
+                                            <tr>
+                                                <td>{% trans %}FORM.DASHBOARD.TOURNAMENTS.LEGEND.KEY{% endtrans %}</td>
+                                                <td>{% trans %}FORM.DASHBOARD.TOURNAMENTS.LEGEND.EDITION{% endtrans %}</td>
+                                                <td>{% trans %}FORM.DASHBOARD.TOURNAMENTS.LEGEND.DESCRIPTION{% endtrans %}</td>
+                                                <td>{% trans %}FORM.DASHBOARD.TOURNAMENTS.LEGEND.STATUS{% endtrans %}</td>
+                                                <td class="narrow-col"></td>
+                                            </tr>
+                                            </thead>
+                                            <tbody>
+                                            <tr>
+                                                <td>
+                                                    <b>{{ tournament.key }}</b>
+                                                </td>
+                                                <td>
+                                                    {{ tournament.edition }}
+                                                </td>
+                                                <td>
+                                                    {{ tournament.description }}
+                                                </td>
+                                                <td>
+                                                    {{ ['FORM.DASHBOARD.TOURNAMENTS.STATUS.',tstat]|join|trans }}
+                                                </td>
+                                                <td>
+                                                    <a href="{{ path('_edit_tournament_chg', { 'tournamentid': tournament.id }) }}">
+                                                        <span class="fa fa-pencil"></span>
+                                                    </a>
+                                                </td>
+                                            </tr>
+                                            </tbody>
+                                        </table>
+                                    </div>
+                                    <md-list layout="row">
+                                        <md-list-item>
+                                            <md-button ng-href="{{ path('_edit_tournament_options', { 'tournamentid': tournament.id }) }}" aria-label="{% trans %}FORM.TOURNAMENTBOARD.TOURNAMENTOPTIONS.CAPTION{% endtrans %}">
+                                                <span class="md-padding fa fa-2x fa-cog"></span><br />
+                                                {% trans %}FORM.TOURNAMENTBOARD.TOURNAMENTOPTIONS.LABEL{% endtrans %}
+                                            </md-button>
+                                        </md-list-item>
+                                        <md-list-item>
+                                            <md-button ng-href="{{ path('_edit_timeslot_list', { 'tournamentid': tournament.id }) }}" aria-label="{% trans %}FORM.TOURNAMENTBOARD.LISTTIMESLOTS.CAPTION{% endtrans %}">
+                                                <span class="md-padding fa fa-2x fa-clock-o"></span><br />
+                                                {% trans %}FORM.TOURNAMENTBOARD.LISTTIMESLOTS.LABEL{% endtrans %}
+                                            </md-button>
+                                        </md-list-item>
+                                        <md-list-item>
+                                            <md-button ng-href="{{ path('_edit_news_list', { 'tournamentid': tournament.id }) }}" aria-label="{% trans %}FORM.TOURNAMENTBOARD.NEWS.CAPTION{% endtrans %}">
+                                                <span class="md-padding fa fa-2x fa-newspaper-o"></span><br />
+                                                {% trans %}FORM.TOURNAMENTBOARD.NEWS.LABEL{% endtrans %}
+                                            </md-button>
+                                        </md-list-item>
+                                        <md-list-item>
+                                            <md-button ng-href="{{ path('_edit_event_list', { 'tournamentid': tournament.id }) }}" aria-label="{% trans %}FORM.TOURNAMENTBOARD.STATUS.CAPTION{% endtrans %}">
+                                                <span class="md-padding fa fa-2x fa-calendar"></span><br />
+                                                {% trans %}FORM.TOURNAMENTBOARD.STATUS.LABEL{% endtrans %}
+                                            </md-button>
+                                        </md-list-item>
+                                        <md-list-item>
+                                            <md-button ng-href="{{ path('_edit_import_match_unres', { 'tournamentid': tournament.id }) }}" aria-label="{% trans %}FORM.TOURNAMENTBOARD.MATCHIMPORTUNRES.CAPTION{% endtrans %}">
+                                                <span class="md-padding fa fa-2x fa-trophy"></span><br />
+                                                {% trans %}FORM.TOURNAMENTBOARD.MATCHIMPORTUNRES.LABEL{% endtrans %}
+                                            </md-button>
+                                        </md-list-item>
+                                        <md-list-item>
+                                            <md-button ng-href="{{ path('_edit_list_matches', { 'tournamentid': tournament.id }) }}" aria-label="{% trans %}FORM.TOURNAMENTBOARD.REPORT.CAPTION{% endtrans %}">
+                                                <span class="md-padding fa fa-2x fa-book"></span><br />
+                                                {% trans %}FORM.TOURNAMENTBOARD.REPORT.LABEL{% endtrans %}
+                                            </md-button>
+                                        </md-list-item>
+                                        <md-list-item>
+                                            <md-button ng-href="{{ path('_edit_matchlist_print', { 'tournamentid': tournament.id, 'date': date()|date('d-m-Y') }) }}" aria-label="{% trans %}FORM.TOURNAMENTBOARD.MATCHPRINT.CAPTION{% endtrans %}">
+                                                <span class="md-padding fa fa-2x fa-print"></span><br />
+                                                {% trans %}FORM.TOURNAMENTBOARD.MATCHPRINT.LABEL{% endtrans %}
+                                            </md-button>
+                                        </md-list-item>
+                                        <md-list-item>
+                                            <md-button ng-href="{{ path('_edit_match_maint', { 'tournamentid': tournament.id }) }}" aria-label="{% trans %}FORM.TOURNAMENTBOARD.MATCHMAINT.CAPTION{% endtrans %}">
+                                                <span class="md-padding fa fa-2x fa-pencil-square-o"></span><br />
+                                                {% trans %}FORM.TOURNAMENTBOARD.MATCHMAINT.LABEL{% endtrans %}
+                                            </md-button>
+                                        </md-list-item>
+<!--
+                                        <md-list-item>
+                                            <md-button href="http://google.com"
+                                                       title="Launch Google.com in new window"
+                                                       target="_blank"
+                                                       ng-disabled="true"
+                                                       aria-label="Google.com"
+                                                       class="md-accent" >
+                                                <span class="md-padding fa fa-2x fa-bars"></span><br />
+                                                Launch
+                                            </md-button>
+                                        </md-list-item>
+-->
+                                    </md-list>
+                                </md-content>
+                            </md-tab>
                             {#
                                 ---------------------
                                 CATEGORIES
@@ -223,11 +194,13 @@
                             #}
                             <md-tab label="{% trans %}FORM.TOURNAMENTBOARD.LISTCATEGORIES.CAPTION{% endtrans %}">
                                 <md-content class="md-padding" ng-controller="assignGroupsController" ng-cloak>
-                                    <div class="row">
-                                        <div class="col-md-offset-4 col-sm-offset-6 col-md-8 col-sm-6">
+                                    <div class="row md-padding">
+                                        <div class="col-md-4 col-sm-6">
                                             <md-button class="md-raised md-hue-1" ng-class="{'md-primary': categories.length==0}" ng-click="addCategory($event)" ng-hide="!dataReady">
                                                 {% trans %}FORM.TOURNAMENTBOARD.ADDCATEGORY{% endtrans %}
                                             </md-button>
+                                        </div>
+                                        <div class="col-md-8 col-sm-6">
                                             <md-button class="md-raised md-hue-1" ng-class="{'md-primary': groups.length==0}" ng-click="addGroup($event)" ng-hide="!selectedCategory || !dataReady">
                                                 {% trans %}FORM.QMATCHPLANNING.ADDGROUP{% endtrans %}
                                             </md-button>

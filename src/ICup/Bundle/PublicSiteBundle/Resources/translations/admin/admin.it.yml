@@ -73,6 +73,7 @@ FORM:
         CAPTION: Modifica il torneo
         DESCRIPTION: Gestisci le informazioni sul torneo
     TOURNAMENTOPTIONS:
+        LABEL: Opzioni
         CAPTION: Opzioni del torneo
         DESCRIPTION: Modifica le regole e le impostazioni del torneo
     LISTSITES:
@@ -82,12 +83,14 @@ FORM:
         CAPTION: Gategorie e gruppi
         DESCRIPTION: Gestisci i gruppi e le categorie
     LISTTIMESLOTS:
+        LABEL: Periodi
         CAPTION: Periodi
         DESCRIPTION: Definisce i tempi di gioco per tutti i campi
     LISTCLUBS:
         CAPTION: Clubs iscritti
         DESCRIPTION: Visualizza i club iscritti e gestisci le loro richieste
     STATUS:
+        LABEL: Calendario
         CAPTION: Calendario gare
         DESCRIPTION:
           0: Il torneo è archiviato e non sarà visibile per l'utente normale
@@ -96,6 +99,7 @@ FORM:
           3: Il torneo è terminato. I risultati sono disponibili nella sezione statistiche
           4: Il torneo è in fase di realizzazione. Il programma richiesto non è ancora pronto.
     NEWS:
+        LABEL: News
         CAPTION: Gestisci le news
         DESCRIPTION: Inserici una news
     PLANNING:
@@ -108,14 +112,21 @@ FORM:
         CAPTION: Importa il programma delle gare per la fase eliminatoria
         DESCRIPTION: Importa il programma delle gare per un giorno specifico
     MATCHIMPORTUNRES:
+        LABEL: Assegna
         CAPTION: Assegna le suadre per la fase eliminatoria
         DESCRIPTION: Specifica le squadre elegible for elimination round
     REPORT:
+        LABEL: Risultati
         CAPTION: Report dei risultati
         DESCRIPTION: Report dei risultati per le gare giocate
     MATCHPRINT:
+        LABEL: Stampa
         CAPTION: Stampa il report dei risultati
         DESCRIPTION: Visulizza il report delle gare per giorno
+    MATCHMAINT:
+        LABEL: Modify
+        CAPTION: Modify match schedule
+        DESCRIPTION: Modify match information for selected matches from the official match schedule
     SEARCH:
         TITLE: Ricerca gare
         SUBTITLE: Seleziona criteri di ricerca per trovare le partite che cercate

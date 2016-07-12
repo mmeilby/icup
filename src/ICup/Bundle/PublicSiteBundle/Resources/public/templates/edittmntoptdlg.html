@@ -1,0 +1,60 @@
+<md-dialog aria-label="{{ 'FORM.TOURNAMENTOPTIONS.TITLE.CHG' | translate }}" style="width: 50%">
+    <md-toolbar>
+        <div class="md-toolbar-tools">
+            <h2 class="md-toolbar-tools">{{ 'FORM.TOURNAMENTOPTIONS.TITLE.CHG' | translate }}</h2>
+            <span flex></span>
+            <md-button class="md-icon-button" ng-click="cancel()"><span class="fa fa-2x fa-times"></span></md-button>
+        </div>
+    </md-toolbar>
+    <md-dialog-content layout-padding>
+        <form ng-submit="submit(options_object)" ng-cloak>
+            <div style="padding-bottom: 50px;">
+                <md-switch ng-model="options_object.drr" aria-label="{{ 'FORM.TOURNAMENTOPTIONS.DRR.PROMPT' | translate }}">
+                    {{ 'FORM.TOURNAMENTOPTIONS.DRR.PROMPT' | translate }}
+                </md-switch>
+                <md-switch ng-model="options_object.svd" aria-label="{{ 'FORM.TOURNAMENTOPTIONS.SVD.PROMPT' | translate }}">
+                    {{ 'FORM.TOURNAMENTOPTIONS.SVD.PROMPT' | translate }}
+                </md-switch>
+                <md-switch ng-model="options_object.er" aria-label="{{ 'FORM.TOURNAMENTOPTIONS.ER.PROMPT' | translate }}">
+                    {{ 'FORM.TOURNAMENTOPTIONS.ER.PROMPT' | translate }}
+                </md-switch>
+            </div>
+            <md-input-container>
+                <label for="wp">{{ 'FORM.TOURNAMENTOPTIONS.WP' | translate }}</label>
+                <input type="text" id="wp" ng-model="options_object.wpoints" md-autofocus>
+            </md-input-container>
+            <md-input-container>
+                <label for="tp">{{ 'FORM.TOURNAMENTOPTIONS.TP' | translate }}</label>
+                <input type="text" id="tp" ng-model="options_object.tpoints">
+            </md-input-container>
+            <md-input-container>
+                <label for="lp">{{ 'FORM.TOURNAMENTOPTIONS.LP' | translate }}</label>
+                <input type="text" id="lp" ng-model="options_object.lpoints">
+            </md-input-container>
+            <md-input-container>
+                <label for="ds">{{ 'FORM.TOURNAMENTOPTIONS.DS' | translate }}</label>
+                <input type="text" id="ds" ng-model="options_object.dscore">
+            </md-input-container>
+            <md-input-container>
+                <label for="strategy">{{ 'FORM.TOURNAMENTOPTIONS.STRATEGY.PROMPT' | translate }}</label>
+                <input type="text" id="strategy" ng-model="options_object.strategy">
+            </md-input-container>
+            <fieldset class="standard">
+                <legend>{{'FORM.TOURNAMENTOPTIONS.ORDER.PROMPT' | translate }}</legend>
+                <md-list>
+                    <md-list-item ng-repeat="item in options_object.order">
+                        <p>{{ 'FORM.TOURNAMENTOPTIONS.ORDER.'+item | translate }}</p>
+                        <div class="noright">
+                            <md-icon ng-click="doMoveUp($index, $event)"><span class="fa fa-angle-up fa-2x"></span></md-icon>
+                            <md-icon ng-click="doMoveDown($index, $event)"><span class="fa fa-angle-down fa-2x"></span></md-icon>
+                        </div>
+                    </md-list-item>
+                </md-list>
+            </fieldset>
+        </form>
+    </md-dialog-content>
+    <md-dialog-actions>
+        <md-button ng-click="submit(options_object)" class="md-primary md-raised" flex="50">{{ 'FORM.SUBMIT' | translate }}</md-button>
+        <md-button ng-click="cancel()" class="md-raised" flex="50">{{ 'FORM.CLOSE' | translate }}</md-button>
+    </md-dialog-actions>
+</md-dialog>

@@ -3,6 +3,7 @@
 namespace ICup\Bundle\PublicSiteBundle\Entity\Doctrine;
 
 use Doctrine\ORM\Mapping as ORM;
+use JsonSerializable;
 
 /**
  * ICup\Bundle\PublicSiteBundle\Entity\Doctrine\TournamentOption
@@ -10,8 +11,10 @@ use Doctrine\ORM\Mapping as ORM;
  * @ORM\Table(name="tournamentoptions")
  * @ORM\Entity
  */
-class TournamentOption
+class TournamentOption implements JsonSerializable
 {
+    const MATCH_POINTS = "MATCH_POINTS", TIE_SCORE_DIFF = "TIE_SCORE_DIFF", MATCH_SCORE_DIFF = "MATCH_SCORE_DIFF", MATCH_SCORE = "MATCH_SCORE", MAX_GOALS = "MAX_GOALS";
+
     /**
      * @var integer $id
      *
@@ -79,6 +82,20 @@ class TournamentOption
      */
     protected $dscore = 10;
 
+    /**
+     * @var string $order
+     * Number of goals assigned to the winning team if opponent is disqualified
+     * @ORM\Column(name="tieorder", type="string", length=250, nullable=false)
+     */
+    protected $order = "";
+
+    /**
+     * Tournament option constructor.
+     */
+    public function __construct() {
+        $this->order = json_encode(array(static::MATCH_POINTS, static::TIE_SCORE_DIFF, static::MATCH_SCORE_DIFF, static::MATCH_SCORE, static::MAX_GOALS));
+    }
+    
     /**
      * @return int
      */
@@ -212,5 +229,46 @@ class TournamentOption
     public function setDscore($dscore) {
         $this->dscore = $dscore;
         return $this;
+    }
+
+    /**
+     * @return array
+     */
+    public function getOrder() {
+        return $this->order == '' ? array(static::MATCH_POINTS, static::TIE_SCORE_DIFF, static::MATCH_SCORE_DIFF, static::MATCH_SCORE, static::MAX_GOALS) : json_decode($this->order);
+    }
+
+    /**
+     * @param array $order
+     * @return TournamentOption
+     */
+    public function setOrder($order) {
+        $this->order = json_encode($order);
+        return $this;
+    }
+
+    public function __toString() {
+        return "TmntOptions".json_encode($this->jsonSerialize());
+    }
+
+    /**
+     * (PHP 5 &gt;= 5.4.0)<br/>
+     * Specify data which should be serialized to JSON
+     * @link http://php.net/manual/en/jsonserializable.jsonserialize.php
+     * @return mixed data which can be serialized by <b>json_encode</b>,
+     * which is a value of any type other than a resource.
+     */
+    function jsonSerialize() {
+        return array(
+            'drr' => $this->drr,
+            'svd' => $this->svd,
+            'er' => $this->er,
+            'strategy' => $this->strategy,
+            'wpoints' => $this->wpoints,
+            'tpoints' => $this->tpoints,
+            'lpoints' => $this->lpoints,
+            'dscore' => $this->dscore,
+            'order' => $this->order == '' ? array(static::MATCH_POINTS, static::TIE_SCORE_DIFF, static::MATCH_SCORE_DIFF, static::MATCH_SCORE, static::MAX_GOALS) : json_decode($this->order)
+        );
     }
 }

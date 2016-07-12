@@ -2,9 +2,12 @@
 namespace ICup\Bundle\PublicSiteBundle\Services;
 
 use ICup\Bundle\PublicSiteBundle\Entity\Doctrine\MatchRelation;
+use ICup\Bundle\PublicSiteBundle\Entity\Doctrine\Tournament;
+use ICup\Bundle\PublicSiteBundle\Entity\Doctrine\TournamentOption;
 use ICup\Bundle\PublicSiteBundle\Entity\TeamInfo;
 use ICup\Bundle\PublicSiteBundle\Entity\TeamStat;
 use ICup\Bundle\PublicSiteBundle\Services\Doctrine\BusinessLogic;
+use ICup\Bundle\PublicSiteBundle\Services\Doctrine\Entity;
 use ICup\Bundle\PublicSiteBundle\Services\Doctrine\MatchSupport;
 use Monolog\Logger;
 use Symfony\Component\DependencyInjection\ContainerInterface;
@@ -19,37 +22,16 @@ class OrderTeams
     protected $match;
     /* @var $logger Logger */
     protected $logger;
-
-    private $order_by_points;
-    private $order_by_goals;
+    /* @var $entity Entity */
+    protected $entity;
 
     public function __construct(ContainerInterface $container, Logger $logger)
     {
         $this->container = $container;
         $this->logic = $container->get('logic');
         $this->match = $container->get('match');
+        $this->entity = $container->get('entity');
         $this->logger = $logger;
-        $this->order_by_points =
-            function (TeamStat $team1, TeamStat $team2) {
-                $p = $team1->getPoints() - $team2->getPoints();
-                $t = $team1->getTiepoints() - $team2->getTiepoints();
-                $d = $team1->getDiff() - $team2->getDiff();
-                $s = $team1->getScore() - $team2->getScore();
-                if ($p == 0 && $t == 0 && $d == 0 && $s == 0) {
-                    return 0;
-                } elseif ($p < 0 || ($p == 0 && $t < 0) || ($p == 0 && $t == 0 && $d < 0) || ($p == 0 && $t == 0 && $d == 0 && $s < 0)) {
-                    return 1;
-                } else {
-                    return -1;
-                }
-            };
-        $this->order_by_goals =
-            function (TeamStat $team1, TeamStat $team2) {
-                if ($team1->getMaxscore() == $team2->getMaxscore()) {
-                    return 0;
-                }
-                return $team1->getMaxscore() < $team2->getMaxscore() ? 1 : -1;
-            };
     }
 
     /**
@@ -58,11 +40,12 @@ class OrderTeams
      * @return array A list of TeamStat objects ordered by match results and ordering
      */
     public function sortGroup($groupid) {
+        $tournament = $this->entity->getGroupById($groupid)->getCategory()->getTournament();
         $teams = $this->logic->listTeamsByGroup($groupid);
         $teamResults = $this->logic->getTeamResultsByGroup($groupid);
         $teamMap = $this->buildTeamMap($teams);
         $this->traverseMatches($teamMap, $teamResults);
-        return $this->sortList($teamMap, $teamResults);
+        return $this->sortList($teamMap, $teamResults, $tournament);
     }
 
     /**
@@ -72,6 +55,7 @@ class OrderTeams
      * @return array A list of TeamStat objects ordered by match results and ordering
      */
     public function sortGroupFinals($groupid) {
+        $tournament = $this->entity->getGroupById($groupid)->getCategory()->getTournament();
         $results = $this->match->listMatchesByGroup($groupid);
         $teamMap = array();
         foreach ($results as $match) {
@@ -80,7 +64,7 @@ class OrderTeams
         }
         $teamResults = $this->logic->getTeamResultsByGroup($groupid);
         $this->traverseMatches($teamMap, $teamResults);
-        return $this->sortList($teamMap, $teamResults);
+        return $this->sortList($teamMap, $teamResults, $tournament);
     }
 
     /**
@@ -89,11 +73,12 @@ class OrderTeams
      * @return array A list of TeamStat objects ordered by match results and ordering or null if group is not completed
      */
     public function sortCompletedGroup($groupid) {
+        $tournament = $this->entity->getGroupById($groupid)->getCategory()->getTournament();
         $teams = $this->logic->listTeamsByGroup($groupid);
         $teamResults = $this->logic->getTeamResultsByGroup($groupid);
         $teamMap = $this->buildTeamMap($teams);
         $groupCompleted = $this->traverseMatches($teamMap, $teamResults);
-        return $groupCompleted ? $this->sortList($teamMap, $teamResults) : null;
+        return $groupCompleted ? $this->sortList($teamMap, $teamResults, $tournament) : null;
     }
 
     private function buildTeamMap($teams) {
@@ -183,7 +168,7 @@ class OrderTeams
         return $relA->getScorevalid() && $relB->getScorevalid();
     }
     
-    private function sortList($teamsList, $teamResults) {
+    private function sortList($teamsList, $teamResults, Tournament $tournament) {
         // Build a tie list of teams with equal score
         $tieList = array();
         /* @var $stat TeamStat */
@@ -203,8 +188,48 @@ class OrderTeams
             }
         }
         // sort the teams based on points and tie score - secondary net score and finally score
-        usort($teamsList, $this->order_by_points);
+        usort($teamsList, $this->sortingFunction($tournament));
         return $teamsList;
+    }
+
+    private function sortingFunction(Tournament $tournament) {
+        $stack = array();
+        foreach ($tournament->getOption()->getOrder() as $key) {
+            if ($key == TournamentOption::MATCH_POINTS) {
+                $stack[] = function (TeamStat $team1, TeamStat $team2) {
+                    return $team2->getPoints() - $team1->getPoints();
+                };
+            }
+            else if ($key == TournamentOption::TIE_SCORE_DIFF) {
+                $stack[] = function (TeamStat $team1, TeamStat $team2) {
+                    return $team2->getTiepoints() - $team1->getTiepoints();
+                };
+            }
+            else if ($key == TournamentOption::MATCH_SCORE_DIFF) {
+                $stack[] = function (TeamStat $team1, TeamStat $team2) {
+                    return $team2->getDiff() - $team1->getDiff();
+                };
+            }
+            else if ($key == TournamentOption::MATCH_SCORE) {
+                $stack[] = function (TeamStat $team1, TeamStat $team2) {
+                    return $team2->getScore() - $team1->getScore();
+                };
+            }
+            else if ($key == TournamentOption::MAX_GOALS) {
+                $stack[] = function (TeamStat $team1, TeamStat $team2) {
+                    return $team2->getMaxscore() - $team1->getMaxscore();
+                };
+            }
+        }
+        return function (TeamStat $team1, TeamStat $team2) use ($stack) {
+            foreach ($stack as $criteria) {
+                $norm = min(1, max(-1, $criteria($team1, $team2)));
+                if ($norm != 0) {
+                    return $norm;
+                }
+            }
+            return 0;
+        };
     }
 
     private function copyStat($tieTeamList) {
@@ -221,33 +246,13 @@ class OrderTeams
     }
     
     private function updateTieScore($teamsList, $teamMap) {
-/*        
-        // Sort local tie group using normal sort order
-        usort($teamMap, $this->order_by_points);
-        // Now - first team is winner and should get the highest tie score
-        $tiescore = count($teamMap);
-        // Build a sub tie list of teams with equal score
-        $tieList = array();
-        foreach ($teamMap as $stat) {
-            $tieList[$stat->points][$stat->id] = $stat;
-        }
-        // Iterate the tie list and update the tie score
-        foreach ($tieList as $tieTeamList) {
-            // update teams with equal score with same tie score
-            foreach ($tieTeamList as $stat) {
-                $oStat = $teamsList[$stat->id];
-                $oStat->tiepoints = $tiescore;
-            }
-            $tiescore--;
-        }
- * 
- */
         /* @var $stat TeamStat */
         foreach ($teamMap as $stat) {
             /* @var $oStat TeamStat */
             $oStat = $teamsList[$stat->getId()];
-            // Might be so that some teams score equal in the tie group - however this is ignored
-            $oStat->setTiepoints($stat->getPoints());
+            // Might be so that some teams score equal in the tie group - so we must consider goal difference as well
+            // We do that by scaling the points insaniously
+            $oStat->setTiepoints($stat->getPoints()*1000+$stat->getDiff());
         }
     }
 }

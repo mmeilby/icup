@@ -124,7 +124,10 @@
                                     </div>
                                     <md-list layout="row">
                                         <md-list-item>
+                                            <md-button ng-click="chgOptions($event)" aria-label="{% trans %}FORM.TOURNAMENTBOARD.TOURNAMENTOPTIONS.CAPTION{% endtrans %}">
+<!--
                                             <md-button ng-href="{{ path('_edit_tournament_options', { 'tournamentid': tournament.id }) }}" aria-label="{% trans %}FORM.TOURNAMENTBOARD.TOURNAMENTOPTIONS.CAPTION{% endtrans %}">
+-->
                                                 <span class="md-padding fa fa-2x fa-cog"></span><br />
                                                 {% trans %}FORM.TOURNAMENTBOARD.TOURNAMENTOPTIONS.LABEL{% endtrans %}
                                             </md-button>
@@ -627,7 +630,7 @@
                  TOURNAMENT BOARD
                  ------------------------------------
                  */
-                .controller('tournamentBoardController', function($scope, $http, $mdDialog) {
+                .controller('tournamentBoardController', function($scope, $http, $mdDialog, $mdMedia, $mdToast) {
                     $scope.flagsDir = "{{ asset('bundles/icuppublicsite/images/flags/') }}";
                     $scope.tournament = { 'id': {{ tournament.id }} };
                     $scope.categories = [];
@@ -654,6 +657,50 @@
                         function (response) {
                             ShowError($mdDialog, response.data.errors, '{% trans %}FORM.LISTTIMESLOTS.CAPTION{% endtrans %}');
                         });
+                    $scope.chgOptions = function (ev) {
+                        $http.get(Routing.generate('_rest_get_tournament', { 'tournamentid': $scope.tournament.id })).then(
+                            function(data) {
+                                var dlgScope = $scope.$new();
+                                dlgScope.tournament = data.data.tournament;
+                                dlgScope.options_object = dlgScope.tournament.option;
+                                dlgScope.doMoveUp = function (idx, ev) {
+                                    if (idx > 0) {
+                                        var obj = dlgScope.options_object.order.splice(idx, 1);
+                                        dlgScope.options_object.order.splice(idx-1, 0, obj[0]);
+                                    }
+                                };
+                                dlgScope.doMoveDown = function (idx, ev) {
+                                    var obj = dlgScope.options_object.order.splice(idx, 1);
+                                    dlgScope.options_object.order.splice(idx+1, 0, obj[0]);
+                                };
+                                $mdDialog.show({
+                                    controller: DialogController,
+                                    scope: dlgScope,
+                                    templateUrl: '{{ asset('bundles/icuppublicsite/templates/edittmntoptdlg.html') }}',
+                                    parent: angular.element(document.body),
+                                    targetEvent: ev,
+                                    clickOutsideToClose:true,
+                                    fullscreen: $mdMedia('sm') || $mdMedia('xs')
+                                }).then(
+                                    function(options_object) {
+                                        $http.post(Routing.generate('_rest_tournament_options_update', {'tournamentid': dlgScope.tournament.id }), options_object).then(
+                                            function (data) {
+                                                $mdToast.show(
+                                                        $mdToast.simple()
+                                                                .textContent('{% trans %}FORM.TOURNAMENTOPTIONS.TITLE.UPDATED{% endtrans %}')
+                                                                .position('top right')
+                                                                .hideDelay(3000)
+                                                );
+                                            },
+                                            function (response) {
+                                                ShowError($mdDialog, response.data.errors, '{% trans %}FORM.TOURNAMENTOPTIONS.TITLE.CHG{% endtrans %}');
+                                            });
+                                    });
+                            },
+                            function (response) {
+                                ShowError($mdDialog, response.data.errors, '{% trans %}FORM.TOURNAMENTOPTIONS.TITLE.CHG{% endtrans %}');
+                            });
+                    };
                 })
                 /*
                  ------------------------------------

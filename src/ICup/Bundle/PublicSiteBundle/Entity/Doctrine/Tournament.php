@@ -4,6 +4,7 @@ namespace ICup\Bundle\PublicSiteBundle\Entity\Doctrine;
 
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\ORM\Mapping as ORM;
+use JsonSerializable;
 
 /**
  * ICup\Bundle\PublicSiteBundle\Entity\Doctrine\Tournament
@@ -11,7 +12,7 @@ use Doctrine\ORM\Mapping as ORM;
  * @ORM\Table(name="tournaments", uniqueConstraints={@ORM\UniqueConstraint(name="KeyConstraint", columns={"keyname"})})
  * @ORM\Entity
  */
-class Tournament
+class Tournament implements JsonSerializable
 {
     /**
      * @var integer $id
@@ -287,7 +288,7 @@ class Tournament
     }
 
     /**
-     * return all venues used for this tournament
+     * return all venues used for this tournament ordered by no
      * @return mixed
      */
     public function getPlaygrounds() {
@@ -316,5 +317,23 @@ class Tournament
             return true;
         });
         return $matches;
+    }
+
+    public function __toString() {
+        return $this->getName()." (".$this->getKey().")";
+    }
+
+    /**
+     * (PHP 5 &gt;= 5.4.0)<br/>
+     * Specify data which should be serialized to JSON
+     * @link http://php.net/manual/en/jsonserializable.jsonserialize.php
+     * @return mixed data which can be serialized by <b>json_encode</b>,
+     * which is a value of any type other than a resource.
+     */
+    function jsonSerialize() {
+        return array(
+            "id" => $this->id, "name" => $this->name, "key" => $this->key, "edition" => $this->edition, "description" => $this->description,
+            "option" => $this->getOption()
+        );
     }
 }

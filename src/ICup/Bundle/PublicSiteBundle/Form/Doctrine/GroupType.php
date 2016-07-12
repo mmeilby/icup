@@ -2,9 +2,10 @@
 
 namespace ICup\Bundle\PublicSiteBundle\Form\Doctrine;
 
+use ICup\Bundle\PublicSiteBundle\Entity\Doctrine\Group;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
-use Symfony\Component\OptionsResolver\OptionsResolverInterface;
+use Symfony\Component\OptionsResolver\OptionsResolver;
 
 class GroupType extends AbstractType
 {
@@ -19,14 +20,16 @@ class GroupType extends AbstractType
             ->add('classification')
         ;
     }
-    
+
     /**
-     * @param OptionsResolverInterface $resolver
+     * Configures the options for this type.
+     *
+     * @param OptionsResolver $resolver The resolver for the options.
      */
-    public function setDefaultOptions(OptionsResolverInterface $resolver)
+    public function configureOptions(OptionsResolver $resolver)
     {
         $resolver->setDefaults(array(
-            'data_class' => 'ICup\Bundle\PublicSiteBundle\Entity\Doctrine\Group',
+            'data_class' => Group::class,
             'csrf_protection' => false,
         ));
     }

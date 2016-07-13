@@ -189,6 +189,7 @@ FORM:
     SITESEXIST: Der findes baner knyttet til turneringen. Turneringen kan ikke fjernes.
     TIMESLOTSEXIST: Der findes perioder til denne turnering. Turneringen kan ikke fjernes.
     EVENTSEXIST: Der er en tidsplan for denne turnering. Turneringen kan ikke fjernes.
+    NEWSEXIST: Der er nyheder knyttet til denne turnering. Turneringen kan ikke fjernes.
     TITLE:
       ADD: Tilføj ny turnering
       CHG: Rediger turnering
@@ -213,18 +214,37 @@ FORM:
     NOWP: Points for en vundet kamp skal angives
     NOTP: Points for en uafgjort kamp skal angives
     NOLP: Points for en tabt kamp skal angives
+    NOSTRATEGY: Planlægningsstategi skal angives
     NODS: Mål opnået ved taberdømt kamp skal angives
+    NOORDER: Reglen for placering i grundspillet skal angives
     TITLE:
       CHG: Tilpas turneringsindstillinger
+      UPDATED: Turneringsindstillingerne er ændret
     PROMPT:
       CHG: Ret indstillinger for points, mål og turneringsplanlægning.
     DRR:
       PROMPT: Turnering spilles med returkampe (double round robin)
       HELP: Hvis der spilles med returkampe kommer hvert hold til at spille to gange mod samme modstander (udebane og hjemmebane)
+    SVD:
+      PROMPT: Turnering spilles med faste baner for holdene
+      HELP: Hvis der spilles med faste baner kommer hvert hold til at spille på så få forskellige baner som muligt
+    ER:
+      PROMPT: Turnering spilles med slutrunder
+      HELP: Hvis der ikke spilles med slutrunder findes holdenes placering ud fra gruppespillet
     WP: Antal points opnået for en vundet kamp
     TP: Antal points opnået for en uafgjort kamp
     LP: Antal points opnået for en tabt kamp
     DS: Antal mål tildelt det vindende hold ved en taberdømt kamp
+    STRATEGY:
+      PROMPT: Planlægningsstrategi
+      HELP: Planlægningsstrategi (fordel turneringen på banerne/saml flest mulige kampe på færrest mulige baner)
+    ORDER:
+      PROMPT: Regelsæt for placering i grundspillet
+      MATCH_POINTS: Kamppoints
+      TIE_SCORE_DIFF: Indbyrdes måldifference
+      MATCH_SCORE_DIFF: Samlet måldifference
+      MATCH_SCORE: Samlet målscore
+      MAX_GOALS: Største antal scorede mål
     SWITCH:
       ON: JA
       OFF: NEJ

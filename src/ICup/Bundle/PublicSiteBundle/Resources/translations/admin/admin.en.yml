@@ -189,6 +189,7 @@ FORM:
     SITESEXIST: Sites are defined for this tournament. The tournament can not be removed.
     TIMESLOTSEXIST: Timeslots are defined for this tournament. The tournament can not be removed.
     EVENTSEXIST: Events are defined for this tournament. The tournament can not be removed.
+    NEWSEXIST: News are available for this tournament. The tournament can not be removed.
     TITLE:
       ADD: Add new tournament
       CHG: Modify tournament
@@ -213,18 +214,37 @@ FORM:
     NOWP: Points awarded for winning a match is mandatory
     NOTP: Points awarded for a tie match is mandatory
     NOLP: Points awarded for loosing a match is mandatory
+    NOSTRATEGY: Choice of planning strategy is mandatory
     NODS: Goals awarded by winning by default is mandatory
+    NOORDER: The rule for team ranking in the preliminary rounds is mandatory
     TITLE:
       CHG: Update tournament options
+      UPDATED: The tournament options have been changed
     PROMPT:
       CHG: Update game options for this tournament
     DRR:
       PROMPT: This tournament uses Double Round Robin setup
       HELP: If you plan for Double Round Robin every team will play twice against same opponent (home and away match)
+    SVD:
+      PROMPT: This tournament uses fixed venues for the teams
+      HELP: If venues are fixed, each team will play on as few different venues as possible
+    ER:
+      PROMPT: This tournament includes elimination rounds
+      HELP: If elimination rounds are not a part of the tournament, the winning teams are elected after the preliminary rounds are complete
     WP: Number of points awarded for winning a match
     TP: Number of points awarded for a tie match
     LP: Number of points awarded for loosing a match
     DS: Number of goals awarded for winning by default
+    STRATEGY:
+      PROMPT: Planning strategy
+      HELP: Planning strategy (balance use of all venues/concentrate use of venues to as few as possible)
+    ORDER:
+      PROMPT: Rule for team ranking in the preliminary rounds
+      MATCH_POINTS: Match points
+      TIE_SCORE_DIFF: Net score for matches with the tie teams
+      MATCH_SCORE_DIFF: Overall net score
+      MATCH_SCORE: Overall score
+      MAX_GOALS: Most goals scored
     SWITCH:
       ON: YES
       OFF: NO

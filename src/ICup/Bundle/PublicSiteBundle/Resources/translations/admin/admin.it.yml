@@ -188,6 +188,7 @@ FORM:
     SITESEXIST: I luoghi sono giàstati definiti per il torneo. Il torneo non può essere rimosso.
     TIMESLOTSEXIST: I periodi sono stati definiti per il torneo. Il torneo non può essere eliminato.
     EVENTSEXIST: Gli eventi sono definiti per il torneo. Il torneo non può essere eliminato.
+    NEWSEXIST: News sono stati definiti per il torneo. Il torneo non può essere eliminato.
     TITLE:
       ADD: Aggiungi un nuovo torneo
       CHG: Modifica il torneo
@@ -212,18 +213,37 @@ FORM:
     NOWP: Il punteggio assegnato alla squadra vincente è obbligatorio
     NOTP: I punti assegnati in caso di parità sono obbligatori
     NOLP: Il punteggio assegnato alla squadra perdente è obbligatorio
+    NOSTRATEGY: Choice of planning strategy is mandatory
     NODS: Il numero di goal assegnati alla squadra vincente è obbligatorio
+    NOORDER: The rule for team ranking in the preliminary rounds is mandatory
     TITLE:
       CHG: Aggiorna le opzioni del torneo
+      UPDATED: The tournament options have been changed
     PROMPT:
       CHG: Aggiorna le opzioni per le gare
     DRR:
       PROMPT: This tournament uses Double Round Robin setup
       HELP: Se scegli la modalità Double Round Robin ogni squadra giocherà gare di andata e ritorno con ogni squadra del gruppo.
+    SVD:
+      PROMPT: This tournament uses fixed venues for the teams
+      HELP: If venues are fixed, each team will play on as few different venues as possible
+    ER:
+      PROMPT: This tournament includes elimination rounds
+      HELP: If elimination rounds are not a part of the tournament, the winning teams are elected after the preliminary rounds are complete
     WP: Numero di punti assegnati alla squadra vincente.
     TP: Numero di punti assegnati in caso di parità.
     LP: Numero di punti assegnati alla squadra perdente.
     DS: Numero di goal assegnati alla squadra vincente per default.
+    STRATEGY:
+      PROMPT: Planning strategy
+      HELP: Planning strategy (balance use of all venues/concentrate use of venues to as few as possible)
+    ORDER:
+      PROMPT: Rule for team ranking in the preliminary rounds
+      MATCH_POINTS: Match points
+      TIE_SCORE_DIFF: Net score for matches with the tie teams
+      MATCH_SCORE_DIFF: Overall net score
+      MATCH_SCORE: Overall score
+      MAX_GOALS: Most goals scored
     SWITCH:
       ON: SI
       OFF: NO

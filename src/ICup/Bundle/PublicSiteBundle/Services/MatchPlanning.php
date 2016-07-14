@@ -289,6 +289,14 @@ class MatchPlanning
         $result = $this->getSchedule($tournament);
         $matches = $result['matches'];
 
+        $groupnaming = array(
+            Group::$FINAL => array(1 => "Fin"),
+            Group::$BRONZE => array(1 => "3/4"),
+            Group::$SEMIFINAL => array(1 => "S1", 2 => "S2"),
+            Group::$QUARTERFINAL => array(1 => "(A)", 2 => "(B)", 3 => "(C)", 4 => "(D)"),
+            Group::$PLAYOFF => array(1 => "P"),
+        );
+
         $champions = array(
             Group::$FINAL => array(1 => 1, 2 => 2),
             Group::$BRONZE => array(1 => 3, 2 => 4),
@@ -345,7 +353,12 @@ class MatchPlanning
                     }
                     else {
                         $group = new Group();
-                        $group->setName($match->getLitra());
+                        if (isset($groupnaming[$match->getClassification()][$match->getLitra()])) {
+                            $group->setName($groupnaming[$match->getClassification()][$match->getLitra()]);
+                        }
+                        else {
+                            $group->setName("(".$match->getLitra().")");
+                        }
                         $group->setCategory($match->getCategory());
                         $group->setClassification($match->getClassification());
                         $qgroups[$match->getCategory()->getId()."-".$match->getClassification()."-".$match->getLitra()] = $group;

@@ -116,7 +116,7 @@ class MatchPlanner
     const TIMESLOT_EXCESS_PENALTY = 10.0;       // multiplied with the number of minutes the timeslot upper limit is excessed
     const SITE_PENALTY = 5.0;                   // penalty given for playing at different sites
     const REST_PENALTY = 5.0;                   // multiplied with the number of minutes between two matches - less than required rest period
-    const VENUE_PENALTY = 0.1;                  // multiplied with the no of a venue
+    const VENUE_PENALTY = 0.1;                  // multiplied with the wieght of a venue
     const TIME_LEFT_PENALTY = 0.01;             // multiplied with minutes left in a timeslot
     
     private function dE(PlanningResults $result, PA $pa, MatchPlan $match, DateTime $slotschedule) {
@@ -134,7 +134,7 @@ class MatchPlanner
             $rest = $result->getTeamCheck()->getMinRestTime($match, $slotschedule) - $match->getCategory()->getMatchtime();
             if ($rest >= 0) {
                 $dE += ($pa->getTimeslot()->getRestperiod() - min($pa->getTimeslot()->getRestperiod(), $rest))*MatchPlanner::REST_PENALTY;
-                $dE += $pa->getPlayground()->getNo()*MatchPlanner::VENUE_PENALTY;
+                $dE += $pa->getPlayground()->getWeight()*MatchPlanner::VENUE_PENALTY;
                 $dE += $pa->isCategoryAllowed($match->getCategory()) ? 0 : MatchPlanner::CATEGORY_PENALTY;
                 if ($pa->getTimeslot()->getPenalty()) {
                     $dE += $result->getTeamCheck()->travelPenalty($match, $pa->getPlayground()->getSite())*MatchPlanner::SITE_PENALTY;

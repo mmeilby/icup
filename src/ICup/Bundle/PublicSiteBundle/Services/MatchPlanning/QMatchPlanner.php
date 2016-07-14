@@ -44,12 +44,12 @@ class QMatchPlanner
         $unplaceable = array();
         // Sort playground attributes - order:
         //   1. level of restriction on Category - descending
-        //   2. playground no. - ascending
+        //   2. playground planning weight - ascending
         //   3. Schedule - ascending
         //   2. Planning time left - descending
         $result->mark(function (PA $ats1, PA $ats2) {
             $p1 = (count($ats2->getPA()->getCategories()) ? 1 : 0) - (count($ats1->getPA()->getCategories()) ? 1 : 0);
-            $p2 = $ats1->getPA()->getPlayground()->getId() - $ats2->getPA()->getPlayground()->getId();
+            $p2 = $ats1->getPA()->getPlayground()->getWeight() - $ats2->getPA()->getPlayground()->getWeight();
             $p3 = $ats1->getPA()->getStartSchedule()->getTimestamp() - $ats2->getPA()->getStartSchedule()->getTimestamp();
             $p4 = $ats2->getTimeleft() - $ats1->getTimeleft();
             $test = min(1, max(-1, $p1))*8 + min(1, max(-1, $p2))*4 + min(1, max(-1, $p3))*2 + min(1, max(-1, $p4));
@@ -133,7 +133,7 @@ class QMatchPlanner
             $dE += ($pa->getTimeleft()-$match->getCategory()->getMatchtime())*QMatchPlanner::TIME_LEFT_PENALTY;
         }
         $dE += max(-$excess, 0)*QMatchPlanner::TIMESLOT_EXCESS_PENALTY;
-        $dE += $pa->getPlayground()->getNo()*QMatchPlanner::VENUE_PENALTY;
+        $dE += $pa->getPlayground()->getWeight()*QMatchPlanner::VENUE_PENALTY;
         $dE += $pa->isCategoryAllowed($match->getCategory()) ? 0 : QMatchPlanner::CATEGORY_PENALTY;
         $dE += $pa->isClassificationAllowed($match->getClassification()) ? 0 : QMatchPlanner::CLASSIFICATION_PENALTY;
         $dE += $pa->isClassificationDesired($match->getClassification()) ? -QMatchPlanner::CLASSIFICATION_PENALTY : 0;

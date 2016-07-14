@@ -53,6 +53,13 @@ class Playground implements JsonSerializable
     protected $location;
 
     /**
+     * @var integer $weight
+     * Playground weight used for planning - lower weights are preferred when planning
+     * @ORM\Column(name="weight", type="integer", nullable=false)
+     */
+    protected $weight;
+
+    /**
      * @var ArrayCollection $matches
      * Collection of playground relations to matches
      * @ORM\OneToMany(targetEntity="Match", mappedBy="playground", cascade={"persist", "remove"})
@@ -156,7 +163,6 @@ class Playground implements JsonSerializable
     public function setLocation($location)
     {
         $this->location = $location;
-
         return $this;
     }
 
@@ -168,6 +174,22 @@ class Playground implements JsonSerializable
     public function getLocation()
     {
         return $this->location;
+    }
+
+    /**
+     * @return int
+     */
+    public function getWeight() {
+        return $this->weight;
+    }
+
+    /**
+     * @param int $weight
+     * @return Playground
+     */
+    public function setWeight($weight) {
+        $this->weight = $weight;
+        return $this;
     }
 
     /**

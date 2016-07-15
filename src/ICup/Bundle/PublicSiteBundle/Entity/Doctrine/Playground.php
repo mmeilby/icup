@@ -230,6 +230,13 @@ class Playground implements JsonSerializable
      * which is a value of any type other than a resource.
      */
     function jsonSerialize() {
-        return array("id" => $this->getId(), "name" => $this->getName(), "no" => $this->getNo(), "location" => $this->getLocation(), "site" => $this->getSite()->getName());
+        return array(
+            "id" => $this->getId(),
+            "name" => $this->getName(),
+            "no" => $this->getNo(),
+            "location" => $this->getLocation(),
+            "weight" => $this->getWeight(),
+            "site" => $this->getSite()->getName()
+        );
     }
 }

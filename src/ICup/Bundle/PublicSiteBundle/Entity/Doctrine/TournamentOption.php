@@ -33,7 +33,9 @@ class TournamentOption implements JsonSerializable
 
     /**
      * @var boolean $svd
-     * Same venue desired?
+     * Chosen strategy for team match planning (Same Venue Desired):
+     *   false: distribute matches for a team between venues (no restriction)
+     *   true: gather matches for a team on the same vuenue
      * @ORM\Column(name="svd", type="boolean", nullable=false, options={"default":false})
      */
     protected $svd = false;
@@ -47,9 +49,7 @@ class TournamentOption implements JsonSerializable
 
     /**
      * @var integer $strategy
-     * Chosen strategy for match planning:
-     *   0: plan matches - distribute over playgrounds
-     *   1: plan matches - gather matches on same playground
+     * Not used
      * @ORM\Column(name="strategy", type="integer", nullable=false, options={"default":0})
      */
     protected $strategy = 0;
@@ -89,13 +89,6 @@ class TournamentOption implements JsonSerializable
      */
     protected $order = "";
 
-    /**
-     * Tournament option constructor.
-     */
-    public function __construct() {
-        $this->order = json_encode(array(static::MATCH_POINTS, static::TIE_SCORE_DIFF, static::MATCH_SCORE_DIFF, static::MATCH_SCORE, static::MAX_GOALS));
-    }
-    
     /**
      * @return int
      */

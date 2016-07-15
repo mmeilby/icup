@@ -292,9 +292,9 @@ class MatchPlanning
         $groupnaming = array(
             Group::$FINAL => array(1 => "Fin"),
             Group::$BRONZE => array(1 => "3/4"),
-            Group::$SEMIFINAL => array(1 => "S1", 2 => "S2"),
+            Group::$SEMIFINAL => array(1 => "(S)", 2 => "(T)"),
             Group::$QUARTERFINAL => array(1 => "(A)", 2 => "(B)", 3 => "(C)", 4 => "(D)"),
-            Group::$PLAYOFF => array(1 => "P"),
+            Group::$PLAYOFF => array(1 => "(P)"),
         );
 
         $champions = array(

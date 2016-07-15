@@ -169,6 +169,24 @@ class TeamCheck
         return $this->travelTeamPenalty($match->getTeamA(), $site) + $this->travelTeamPenalty($match->getTeamB(), $site);
     }
 
+    private function venueTeamPenalty(Team $team, Playground $playground) {
+        if (isset($this->teams[$team->getId()])) {
+            foreach ($this->teams[$team->getId()] as $calendar) {
+                /* @var $match MatchPlan */
+                foreach ($calendar as $match) {
+                    if ($match->getPlayground()->getId() != $playground->getId()) {
+                        return 1;
+                    }
+                }
+            }
+        }
+        return 0;
+    }
+
+    public function venuePenalty(MatchPlan $match, Playground $playground) {
+        return $this->venueTeamPenalty($match->getTeamA(), $playground) + $this->venueTeamPenalty($match->getTeamB(), $playground);
+    }
+
     private function timeslotTeamPenalty(Team $team, DateTime $slotschedule, Timeslot $timeslot) {
         $key = $this->makeKey($team, Date::getDate($slotschedule), $timeslot);
         if (isset($this->teams[$team->getId()][$key])) {

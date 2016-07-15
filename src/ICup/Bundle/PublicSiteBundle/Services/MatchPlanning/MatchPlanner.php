@@ -121,6 +121,7 @@ class MatchPlanner
     
     private function dE(PlanningResults $result, PA $pa, MatchPlan $match, DateTime $slotschedule) {
         $dE = 100.0;
+        $tournamentoptions = $pa->getTimeslot()->getTournament()->getOption();
         $excess = $pa->getTimeleft();
         // test for excess of the timeslot - if time limit is broken there is no need to test further - return a big dE
         if ($excess > 0) {
@@ -135,6 +136,10 @@ class MatchPlanner
             if ($rest >= 0) {
                 $dE += ($pa->getTimeslot()->getRestperiod() - min($pa->getTimeslot()->getRestperiod(), $rest))*MatchPlanner::REST_PENALTY;
                 $dE += $pa->getPlayground()->getWeight()*MatchPlanner::VENUE_PENALTY;
+                if ($tournamentoptions->isSvd()) {
+                    // same venue is desired - add penalty for different venue
+                    $dE += $result->getTeamCheck()->venuePenalty($match, $pa->getPlayground())*MatchPlanner::VENUE_PENALTY;
+                }
                 $dE += $pa->isCategoryAllowed($match->getCategory()) ? 0 : MatchPlanner::CATEGORY_PENALTY;
                 if ($pa->getTimeslot()->getPenalty()) {
                     $dE += $result->getTeamCheck()->travelPenalty($match, $pa->getPlayground()->getSite())*MatchPlanner::SITE_PENALTY;

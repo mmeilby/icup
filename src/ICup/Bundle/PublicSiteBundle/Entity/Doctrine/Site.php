@@ -2,6 +2,7 @@
 
 namespace ICup\Bundle\PublicSiteBundle\Entity\Doctrine;
 
+use JsonSerializable;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\ORM\Mapping as ORM;
 
@@ -11,7 +12,7 @@ use Doctrine\ORM\Mapping as ORM;
  * @ORM\Table(name="sites")
  * @ORM\Entity
  */
-class Site
+class Site implements JsonSerializable
 {
     /**
      * @var integer $id
@@ -103,5 +104,23 @@ class Site
      */
     public function getPlaygrounds() {
         return $this->playgrounds;
+    }
+
+    public function __toString() {
+        return $this->getName();
+    }
+
+    /**
+     * (PHP 5 &gt;= 5.4.0)<br/>
+     * Specify data which should be serialized to JSON
+     * @link http://php.net/manual/en/jsonserializable.jsonserialize.php
+     * @return mixed data which can be serialized by <b>json_encode</b>,
+     * which is a value of any type other than a resource.
+     */
+    function jsonSerialize() {
+        return array(
+            "id" => $this->getId(),
+            "name" => $this->getName()
+        );
     }
 }

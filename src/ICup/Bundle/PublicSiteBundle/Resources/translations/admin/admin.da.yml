@@ -132,6 +132,8 @@ FORM:
         TITLE: Find kampe
         SUBTITLE: Vælg og se de kampe der passer
     ADDCATEGORY: Tilføj ny gruppe
+    UPDCATEGORY: Opdater gruppe
+    DELCATEGORY: Fjern gruppe
     ANY: - VIS ALLE -
     ANYDATE: Ryd kampdato
     LIMIT: Begræns antal rækker
@@ -259,6 +261,7 @@ FORM:
     NOPLAYGROUND: Tilføj ny bane
   SITE:
     NONAME: Et navn på lokaliteten skal angives.
+    NAMEEXISTS: En anden lokalitet er oprettet med samme navn.
     PLAYGROUNDSEXIST: Der er knyttet baner til denne lokalitet. Lokaliteten kan ikke fjernes.
     TITLE:
       ADD: Tilføj ny lokalitet
@@ -281,6 +284,9 @@ FORM:
     NONAME: Et navn på banen skal angives.
     NONO: Et banenr. skal angives.
     MATCHESEXIST: Der er planlagt kampe til denne bane. Banen kan ikke fjernes.
+    VENUES: Baner
+    BASICS: Grundoplysninger
+    CALENDAR: Tidsplan
     TITLE:
       ADD: Tilføj ny bane
       CHG: Rediger bane
@@ -289,9 +295,12 @@ FORM:
       ADD: Indtast oplysninger om banen.
       CHG: Ret oplysninger om banen.
       DEL: Følgende bane vil bliver slettet. Alle kampresultater samt oplysninger knyttet til banen vil også blive fjernet. Det er ikke muligt at fortryde når banen er fjernet.
+    SITE: Banens lokalitet
+    SELECTSITE: Vælg lokalitet
     NAME: Navn
     NO: Banenr.
     LOCATION: Kort koordinater for banens placering
+    WEIGHT: Præferencefaktor
     SUBMIT:
       ADD: Tilføj ny bane
       CHG: Gem bane
@@ -321,6 +330,8 @@ FORM:
     BADEND: Tidspunkt for periodeophør er ikke gyldigt.
     NOTIMESLOT: Der skal vælges en periode for denne banepræference.
     BADTIME: Periodestart og ophør skal passe sammen. Bemærk at perioden skal specificeres indenfor samme dag.
+    BASICS: Grundoplysninger
+    CONSTRAINTS: Gruppetilknytning
     TITLE:
       ADD: Tilføj ny banepræference
       CHG: Rediger banepræference
@@ -332,6 +343,7 @@ FORM:
     TIMESLOT:
       PROMPT: Periode
       HELP: Den periode som banepræferencen er knyttet til
+      DEFAULT: Ingen periode tilknyttet
     DATE:
       PROMPT: Dato
       HELP: Kampdato hvor præferencen gælder
@@ -348,6 +360,8 @@ FORM:
       PROMPT: Reserveret til slutrundetype
       HELP: Slutrundetype denne banepræference reserveres til
       DEFAULT: Ingen begrænsning
+    CATEGORIES:
+      PROMPT: Følgende grupper har særlig fortrinsret til denne banetid. Hvis ingen grupper er valgt, kan banetiden anvendes af alle.
     SUBMIT:
       ADD: Tilføj ny banepræference
       CHG: Gem banepræference
@@ -356,6 +370,7 @@ FORM:
       ADD: Fortryd oprettelse
       CHG: Fortryd ændringer
       DEL: Fortryd slet
+    UPDATED: Banepræferencen er ændret
   LISTTIMESLOTS:
     TITLE: Vedligehold turnering
     CAPTION: Perioder

@@ -12,13 +12,21 @@
                 <label for="name">{{ 'FORM.CATEGORY.NAME' | translate }}</label>
                 <input type="text" id="name" ng-model="category_object.name" md-autofocus>
             </md-input-container>
-            <md-input-container>
-                <label for="gender">{{ 'FORM.CATEGORY.GENDER' | translate }}</label>
-                <input type="text" id="gender" ng-model="category_object.gender">
+            <md-input-container class="md-block">
+                <label>{{ 'FORM.CATEGORY.GENDER' | translate }}</label>
+                <md-select name="gender" ng-model="category_object.gender" ng-model-options="{trackBy: '$value.id'}">
+                    <md-option ng-repeat="gender in genders" ng-value="{{ gender }}">
+                        {{ gender.name }}
+                    </md-option>
+                </md-select>
             </md-input-container>
-            <md-input-container>
-                <label for="classification">{{ 'FORM.CATEGORY.CLASSIFICATION' | translate }}</label>
-                <input type="text" id="classification" ng-model="category_object.classification">
+            <md-input-container class="md-block">
+                <label>{{ 'FORM.CATEGORY.CLASSIFICATION' | translate }}</label>
+                <md-select name="classification" ng-model="category_object.classification" ng-model-options="{trackBy: '$value.id'}">
+                    <md-option ng-repeat="classification in classifications" ng-value="{{ classification }}">
+                        {{ classification.name }}
+                    </md-option>
+                </md-select>
             </md-input-container>
             <md-input-container>
                 <label for="age">{{ 'FORM.CATEGORY.AGE' | translate }}</label>

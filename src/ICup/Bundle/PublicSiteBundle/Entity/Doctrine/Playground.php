@@ -207,7 +207,7 @@ class Playground implements JsonSerializable
     }
 
     /**
-     * @return ArrayCollection
+     * @return array
      */
     public function getTimeslots() {
         $timeslots = array();
@@ -236,7 +236,7 @@ class Playground implements JsonSerializable
             "no" => $this->getNo(),
             "location" => $this->getLocation(),
             "weight" => $this->getWeight(),
-            "site" => $this->getSite()->getName()
+            "site" => $this->getSite()
         );
     }
 }

@@ -16,20 +16,19 @@ use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
-use ICup\Bundle\PublicSiteBundle\Entity\Doctrine\Playground;
-use ICup\Bundle\PublicSiteBundle\Form\Doctrine\PlaygroundType;
+use ICup\Bundle\PublicSiteBundle\Form\Doctrine\SiteType;
 use RuntimeException;
 
 /**
- * Doctrine\Playground controller.
+ * Doctrine\Site controller.
  *
- * @Route("/rest/venue")
+ * @Route("/rest/site")
  */
-class RestPlaygroundController extends Controller
+class RestSiteController extends Controller
 {
     /**
      * List the venues identified by tournament id
-     * @Route("/list/{tournamentid}", name="_rest_list_playgrounds", options={"expose"=true})
+     * @Route("/list/{tournamentid}", name="_rest_list_sites", options={"expose"=true})
      * @Method("GET")
      * @param $tournamentid
      * @return JsonResponse
@@ -43,42 +42,95 @@ class RestPlaygroundController extends Controller
         catch (ValidationException $e) {
             return new JsonResponse(array('errors' => array($e->getMessage())), Response::HTTP_NOT_FOUND);
         }
-        return new JsonResponse($tournament->getPlaygrounds());
+        return new JsonResponse($tournament->getSites()->toArray());
     }
 
     /**
-     * Finds and displays a Doctrine\Playground entity.
+     * Finds and displays a Doctrine\Site entity.
      *
-     * @Route("/{playgroundid}", name="rest_get_playground", options={"expose"=true})
+     * @Route("/{siteid}", name="rest_get_site", options={"expose"=true})
      * @Method("GET")
-     * @param $playgroundid
+     * @param $siteid
      * @return JsonResponse
      */
-    public function showAction($playgroundid)
+    public function showAction($siteid)
     {
-        /* @var $playground Playground */
+        /* @var $site Site */
         try {
-            $playground = $this->get('entity')->getPlaygroundById($playgroundid);
+            $site = $this->get('entity')->getSiteById($siteid);
         }
         catch (ValidationException $e) {
             return new JsonResponse(array('errors' => array($e->getMessage())), Response::HTTP_NOT_FOUND);
         }
-        return new JsonResponse(array("playground" => $playground));
+        return new JsonResponse(array("site" => $site));
     }
 
     /**
-     * Creates a new Doctrine\Playground entity.
+     * Creates a new Doctrine\Site entity.
      * Site id must be added to the request parameters
-     * @Route("/", name="rest_playground_create", options={"expose"=true})
+     * @Route("/", name="rest_site_create", options={"expose"=true})
      * @Method("POST")
      * @param Request $request
      * @return JsonResponse
      */
     public function newAction(Request $request)
     {
+        /* @var $tournament Tournament */
+        try {
+            $tournament = $this->get('entity')->getTournamentById($request->get('tournamentid', 0));
+        }
+        catch (ValidationException $e) {
+            return new JsonResponse(array('errors' => array($e->getMessage())), Response::HTTP_NOT_FOUND);
+        }
+        try {
+            /* @var $utilService Util */
+            $utilService = $this->get('util');
+            /* @var $user User */
+            $user = $utilService->getCurrentUser();
+            $host = $tournament->getHost();
+            $utilService->validateEditorAdminUser($user, $host);
+        }
+        catch (ValidationException $e) {
+            return new JsonResponse(array('errors' => array($e->getMessage())), Response::HTTP_FORBIDDEN);
+        }
+        catch (RuntimeException $e) {
+            return new JsonResponse(array('errors' => array($e->getMessage())), Response::HTTP_FORBIDDEN);
+        }
+
+        /* @var $site Site */
+        $site = new Site();
+        $site->setTournament($tournament);
+        $form = $this->createForm(new SiteType(), $site);
+        $form->handleRequest($request);
+        if ($this->checkForm($form, $site)) {
+            $tournament->getSites()->add($site);
+            $em = $this->getDoctrine()->getManager();
+            $em->persist($site);
+            $em->flush();
+            return new JsonResponse(array("id" => $site->getId()), Response::HTTP_CREATED);
+        }
+
+        $errors = array();
+        foreach ($form->getErrors(true) as $error) {
+            $errors[] = $error->getMessage();
+        }
+        return new JsonResponse(array('errors' => $errors), Response::HTTP_BAD_REQUEST);
+    }
+
+    /**
+     * Edits an existing Doctrine\Site entity.
+     *
+     * @Route("/{siteid}", name="rest_site_update", options={"expose"=true})
+     * @Method("POST")
+     * @param Request $request
+     * @param $siteid
+     * @return JsonResponse
+     */
+    public function updateAction(Request $request, $siteid)
+    {
         /* @var $site Site */
         try {
-            $site = $this->get('entity')->getSiteById($request->get('siteid', 0));
+            $site = $this->get('entity')->getSiteById($siteid);
         }
         catch (ValidationException $e) {
             return new JsonResponse(array('errors' => array($e->getMessage())), Response::HTTP_NOT_FOUND);
@@ -98,63 +150,10 @@ class RestPlaygroundController extends Controller
             return new JsonResponse(array('errors' => array($e->getMessage())), Response::HTTP_FORBIDDEN);
         }
 
-        /* @var $playground Playground */
-        $playground = new Playground();
-        $playground->setSite($site);
-        $form = $this->createForm(new PlaygroundType(), $playground);
-        $form->handleRequest($request);
-        if ($this->checkForm($form, $playground)) {
-            $site->getPlaygrounds()->add($playground);
-            $em = $this->getDoctrine()->getManager();
-            $em->persist($playground);
-            $em->flush();
-            return new JsonResponse(array("id" => $playground->getId()), Response::HTTP_CREATED);
-        }
-
-        $errors = array();
-        foreach ($form->getErrors(true) as $error) {
-            $errors[] = $error->getMessage();
-        }
-        return new JsonResponse(array('errors' => $errors), Response::HTTP_BAD_REQUEST);
-    }
-
-    /**
-     * Edits an existing Doctrine\Playground entity.
-     *
-     * @Route("/{playgroundid}", name="rest_playground_update", options={"expose"=true})
-     * @Method("POST")
-     * @param Request $request
-     * @param $playgroundid
-     * @return JsonResponse
-     */
-    public function updateAction(Request $request, $playgroundid)
-    {
-        /* @var $playground Playground */
-        try {
-            $playground = $this->get('entity')->getPlaygroundById($playgroundid);
-        }
-        catch (ValidationException $e) {
-            return new JsonResponse(array('errors' => array($e->getMessage())), Response::HTTP_NOT_FOUND);
-        }
-        try {
-            /* @var $utilService Util */
-            $utilService = $this->get('util');
-            /* @var $user User */
-            $user = $utilService->getCurrentUser();
-            $host = $playground->getSite()->getTournament()->getHost();
-            $utilService->validateEditorAdminUser($user, $host);
-        }
-        catch (ValidationException $e) {
-            return new JsonResponse(array('errors' => array($e->getMessage())), Response::HTTP_FORBIDDEN);
-        }
-        catch (RuntimeException $e) {
-            return new JsonResponse(array('errors' => array($e->getMessage())), Response::HTTP_FORBIDDEN);
-        }
-
-        $form = $this->createForm(new PlaygroundType(), $playground);
+        $form = $this->createForm(new SiteType(), $site);
         $form->handleRequest($request);
 
-        if ($this->checkForm($form, $playground)) {
+        if ($this->checkForm($form, $site)) {
             $em = $this->getDoctrine()->getManager();
             $em->flush();
             return new JsonResponse(array(), Response::HTTP_NO_CONTENT);
@@ -168,18 +167,18 @@ class RestPlaygroundController extends Controller
     }
 
     /**
-     * Deletes a Doctrine\Playground entity.
+     * Deletes a Doctrine\Site entity.
      *
-     * @Route("/{playgroundid}", name="rest_playground_delete", options={"expose"=true})
+     * @Route("/{siteid}", name="rest_site_delete", options={"expose"=true})
      * @Method("DELETE")
-     * @param $playgroundid
+     * @param $siteid
      * @return JsonResponse
      */
-    public function deleteAction($playgroundid)
+    public function deleteAction($siteid)
     {
-        /* @var $playground Playground */
+        /* @var $site Site */
         try {
-            $playground = $this->get('entity')->getPlaygroundById($playgroundid);
+            $site = $this->get('entity')->getSiteById($siteid);
         }
         catch (ValidationException $e) {
             return new JsonResponse(array('errors' => array($e->getMessage())), Response::HTTP_NOT_FOUND);
@@ -189,7 +188,7 @@ class RestPlaygroundController extends Controller
             $utilService = $this->get('util');
             /* @var $user User */
             $user = $utilService->getCurrentUser();
-            $host = $playground->getSite()->getTournament()->getHost();
+            $host = $site->getTournament()->getHost();
             $utilService->validateEditorAdminUser($user, $host);
         }
         catch (ValidationException $e) {
@@ -200,47 +199,30 @@ class RestPlaygroundController extends Controller
         }
 
         $errors = array();
-        if ($playground->getMatches()->count() > 0) {
-            $errors[] = $this->get('translator')->trans('FORM.PLAYGROUND.MATCHESEXIST', array(), 'admin');
-        }
-        if ($playground->getPlaygroundAttributes()->count() > 0) {
-            $errors[] = $this->get('translator')->trans('FORM.PLAYGROUND.PARELATIONSEXIST', array(), 'admin');
+        if ($site->getPlaygrounds()->count() > 0) {
+            $errors[] = $this->get('translator')->trans('FORM.SITE.PLAYGROUNDSEXIST', array(), 'admin');
         }
         if (count($errors) == 0) {
             $em = $this->getDoctrine()->getManager();
-            $em->remove($playground);
+            $em->remove($site);
             $em->flush();
             return new JsonResponse(array(), Response::HTTP_NO_CONTENT);
         }
         return new JsonResponse(array('errors' => $errors), Response::HTTP_BAD_REQUEST);
     }
 
-    private function checkForm(Form $form, Playground $playground) {
+    private function checkForm(Form $form, Site $site) {
         if ($form->isValid()) {
-            if ($playground->getNo() == null || trim($playground->getNo()) == '') {
-                $form->addError(new FormError($this->get('translator')->trans('FORM.PLAYGROUND.NONO', array(), 'admin')));
+            if ($site->getName() == null || trim($site->getName()) == '') {
+                $form->addError(new FormError($this->get('translator')->trans('FORM.SITE.NONAME', array(), 'admin')));
             }
             else {
                 $em = $this->getDoctrine()->getManager();
-                /* @var $otherplayground Playground */
-                $otherplayground = $em->getRepository($form->getConfig()->getOption("data_class"))->findOneBy(array('site' => $playground->getSite()->getId(), 'no' => $playground->getNo()));
-                if ($otherplayground != null && $otherplayground->getId() != $playground->getId()) {
-                    $form->addError(new FormError($this->get('translator')->trans('FORM.PLAYGROUND.NOEXISTS', array(), 'admin')));
+                /* @var $othersite Site */
+                $othersite = $em->getRepository($form->getConfig()->getOption("data_class"))->findOneBy(array('tournament' => $site->getTournament()->getId(), 'name' => $site->getName()));
+                if ($othersite != null && $othersite->getId() != $site->getId()) {
+                    $form->addError(new FormError($this->get('translator')->trans('FORM.SITE.NAMEEXISTS', array(), 'admin')));
                 }
-            }
-            if ($playground->getName() == null || trim($playground->getName()) == '') {
-                $form->addError(new FormError($this->get('translator')->trans('FORM.PLAYGROUND.NONAME', array(), 'admin')));
-            }
-            else {
-                $em = $this->getDoctrine()->getManager();
-                /* @var $otherplayground Playground */
-                $otherplayground = $em->getRepository($form->getConfig()->getOption("data_class"))->findOneBy(array('site' => $playground->getSite()->getId(), 'name' => $playground->getName()));
-                if ($otherplayground != null && $otherplayground->getId() != $playground->getId()) {
-                    $form->addError(new FormError($this->get('translator')->trans('FORM.PLAYGROUND.NAMEEXISTS', array(), 'admin')));
-                }
-            }
-            if ($playground->getLocation() == null) {
-                $playground->setLocation('');
             }
         }
         return $form->isValid();

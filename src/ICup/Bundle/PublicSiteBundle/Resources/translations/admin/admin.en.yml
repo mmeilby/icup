@@ -132,6 +132,8 @@ FORM:
         TITLE: Search matches
         SUBTITLE: Select search criteria to find the matches you seek
     ADDCATEGORY: Add new category
+    UPDCATEGORY: Update category
+    DELCATEGORY: Remove category
     ANY: - SHOW ANY -
     ANYDATE: Clear match date
     LIMIT: Limit rows
@@ -259,6 +261,7 @@ FORM:
     NOPLAYGROUND: Add new venue
   SITE:
     NONAME: The site must be given a name.
+    NAMEEXISTS: Another site exists with the same name. Please change it.
     PLAYGROUNDSEXIST: Venues are defined for this site. The site can not be removed.
     TITLE:
       ADD: Add new site
@@ -281,6 +284,9 @@ FORM:
     NONAME: The venue must be given a name.
     NONO: Venue no. is mandatory.
     MATCHESEXIST: Matches are defined for this venue. The venue can not be removed.
+    VENUES: Venues
+    BASICS: Basic information
+    CALENDAR: Schedule
     TITLE:
       ADD: Add new venue
       CHG: Modify venue
@@ -289,8 +295,12 @@ FORM:
       ADD: Please enter information about the new venue.
       CHG: Change information for this venue.
       DEL: The following venue will be removed. You can not undo this action.
+    SITE: Location of the venue
+    SELECTSITE: Select location
     NAME: Venue name
     NO: Field no.
+    LOCATION: Map coordinates for the venue
+    WEIGHT: Planning preference
     SUBMIT:
       ADD: Add venue
       CHG: Save information
@@ -320,6 +330,8 @@ FORM:
     BADEND: The preference end of day is not valid.
     NOTIMESLOT: A timeslot for this preference must be chosen.
     BADTIME: Start and end of day must define a continuous period of time for the specified day. This is not the case.
+    BASICS: Basic information
+    CONSTRAINTS: Category constraints
     TITLE:
       ADD: Add new preference
       CHG: Modify preference
@@ -331,6 +343,7 @@ FORM:
     TIMESLOT:
       PROMPT: Timeslot
       HELP: The timeslot this preference is related to
+      DEFAULT: No timeslot related
     DATE:
       PROMPT: Date
       HELP: Match date this preference relates to
@@ -347,6 +360,8 @@ FORM:
       PROMPT: Reserved for group classification
       HELP: Specify which classification this preference is reserved for
       DEFAULT: No restrictions
+    CATEGORIES:
+      PROMPT: The following selected groups are preferred for this venue. If no groups are selected, the venue will be used evenly.
     SUBMIT:
       ADD: Add new preference
       CHG: Save information
@@ -355,6 +370,7 @@ FORM:
       ADD: Cancel
       CHG: Cancel changes
       DEL: Cancel
+    UPDATED: The preference has been changed
   LISTTIMESLOTS:
     TITLE: Tournament administration
     CAPTION: Timeslots

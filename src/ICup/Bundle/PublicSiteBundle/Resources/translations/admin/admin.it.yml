@@ -131,6 +131,8 @@ FORM:
         TITLE: Ricerca gare
         SUBTITLE: Seleziona criteri di ricerca per trovare le partite che cercate
     ADDCATEGORY: Aggiungi una nuova categoria
+    UPDCATEGORY: Update category
+    DELCATEGORY: Remove category
     ANY: - MOSTRA TUTTO -
     ANYDATE: Tutti giorni
     LIMIT: Risultati limitato
@@ -258,6 +260,7 @@ FORM:
     NOPLAYGROUND: Aggiungi un nuovo campo di gioco
   SITE:
     NONAME: Il campo deve avere un nome.
+    NAMEEXISTS: Another site exists with the same name. Please change it.
     PLAYGROUNDSEXIST: I campi di gioco sono stati definiti per il luogo. Il luogo non può essere rimosso.
     TITLE:
       ADD: Aggiungi un nuovo luogo
@@ -280,6 +283,9 @@ FORM:
     NONAME: Il campo deve avere un nome.
     NONO: Il numero del campo è obbligatorio.
     MATCHESEXIST: Le partite sono state definite su questo campo di gioco. Il campo di gioco non può essere rimosso.
+    VENUES: Venues
+    BASICS: Basic information
+    CALENDAR: Schedule
     TITLE:
       ADD: Aggiungi un nuovo campo
       CHG: Modifica il campo
@@ -288,8 +294,12 @@ FORM:
       ADD: Inserisci le informazioni sul nuovo campo di gioco.
       CHG: Modifica le informazioni del campo di gioco.
       DEL: Il campo verrà eliinato. L'azione non potrà essere annullata.
+    SITE: Location of the venue
+    SELECTSITE: Select location
     NAME: Nome del campo di gioco
     NO: Campo n.
+    LOCATION: Map coordinates for the venue
+    WEIGHT: Planning preference
     SUBMIT:
       ADD: Aggiungi campo di gioco
       CHG: Salva
@@ -319,6 +329,8 @@ FORM:
     BADEND: La preferenza di fine del giorno non è valida.
     NOTIMESLOT: Un periodo deve essere scelto.
     BADTIME: Inizio e fine del giorno devono definire un periodo continuo di tempo per un giorno specifico.
+    BASICS: Basic information
+    CONSTRAINTS: Category constraints
     TITLE:
       ADD: Aggiungi una nuova preferenza.
       CHG: Modifica la preferenza
@@ -330,6 +342,7 @@ FORM:
     TIMESLOT:
       PROMPT: Periodo
       HELP: Il periodo della preferenza è riferito a 
+      DEFAULT: No timeslot related
     DATE:
       PROMPT: Data
       HELP: Il data della gara è riferita a 
@@ -339,6 +352,15 @@ FORM:
     END:
       PROMPT: Fine gara
       HELP: Latest time of match end for this preference
+    FINALS:
+      PROMPT: Reserved for final rounds
+      HELP: Selecting this option the preference is only available for planning of final rounds
+    CLASSIFICATION:
+      PROMPT: Reserved for group classification
+      HELP: Specify which classification this preference is reserved for
+      DEFAULT: No restrictions
+    CATEGORIES:
+      PROMPT: The following selected groups are preferred for this venue. If no groups are selected, the venue will be used evenly.
     SUBMIT:
       ADD: Aggiungi una nuova preferenza
       CHG: Salva
@@ -347,6 +369,7 @@ FORM:
       ADD: Elimina
       CHG: Cancella le modifiche
       DEL: Elimina
+    UPDATED: The preference has been changed
   LISTTIMESLOTS:
     TITLE: Amministrazione
     CAPTION: Periodi

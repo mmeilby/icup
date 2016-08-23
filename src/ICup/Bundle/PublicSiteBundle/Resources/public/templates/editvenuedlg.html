@@ -1,0 +1,47 @@
+<md-dialog aria-label="{{ venue_object.op=='add' ? 'FORM.PLAYGROUND.TITLE.ADD' : 'FORM.PLAYGROUND.TITLE.CHG' | translate }}" style="width: 50%">
+    <md-toolbar>
+        <div class="md-toolbar-tools">
+            <h2 class="md-toolbar-tools">{{ venue_object.op=='add' ? 'FORM.PLAYGROUND.TITLE.ADD' : 'FORM.PLAYGROUND.TITLE.CHG' | translate }}</h2>
+            <span flex></span>
+            <md-button class="md-icon-button" ng-click="cancel()"><span class="fa fa-2x fa-times"></span></md-button>
+        </div>
+    </md-toolbar>
+    <md-dialog-content layout-padding>
+        <div ng-show="venue_object.op=='chg'">
+            {{ 'FORM.PLAYGROUND.SITE' | translate }}: <strong>{{ venue_object.site.name }}</strong>
+        </div>
+        <form ng-submit="submit(venue_object)" ng-cloak>
+            <md-input-container>
+                <label for="name">{{ 'FORM.PLAYGROUND.NAME' | translate }}</label>
+                <input type="text" id="name" size="50" ng-model="venue_object.name" md-autofocus>
+            </md-input-container>
+            <md-input-container ng-show="venue_object.op=='add'" class="md-block" ng-show="venue_object.site">
+                <label>{{ 'FORM.PLAYGROUND.SITE' | translate }}</label>
+                <md-select name="site" ng-model="venue_object.site" ng-model-options="{trackBy: '$value.id'}">
+                    <md-option ng-value="{ 'id': 0 }">{{ 'FORM.PLAYGROUND.SELECTSITE' | translate }}</md-option>
+                    <md-option ng-repeat="site in sites" ng-value="site">
+                        {{ site.name }}
+                    </md-option>
+                </md-select>
+            </md-input-container>
+            <md-input-container>
+                <label for="no">{{ 'FORM.PLAYGROUND.NO' | translate }}</label>
+                <input type="text" id="no" ng-model="venue_object.no">
+            </md-input-container>
+            <md-input-container>
+                <label for="weight">{{ 'FORM.PLAYGROUND.WEIGHT' | translate }}</label>
+                <input type="text" id="weight" ng-model="venue_object.weight">
+            </md-input-container>
+        </form>
+        <ui-gmap-google-map ng-show="venue_object.location" center='map.center' zoom='map.zoom' options='map.options'>
+            <ui-gmap-marker idKey='1' coords='marker.point' options='marker.options' events='marker.events'></ui-gmap-marker>
+        </ui-gmap-google-map>
+        <md-checkbox ng-model="venue_object.location" aria-label="{{ 'FORM.PLAYGROUND.LOCATION' | translate }}">
+            {{ 'FORM.PLAYGROUND.LOCATION' | translate }}
+        </md-checkbox>
+    </md-dialog-content>
+    <md-dialog-actions>
+        <md-button ng-click="submit(venue_object)" class="md-primary md-raised" flex="50">{{ 'FORM.SUBMIT' | translate }}</md-button>
+        <md-button ng-click="cancel()" class="md-raised" flex="50">{{ 'FORM.CLOSE' | translate }}</md-button>
+    </md-dialog-actions>
+</md-dialog>

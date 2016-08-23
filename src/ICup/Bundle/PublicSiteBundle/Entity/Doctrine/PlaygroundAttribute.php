@@ -2,6 +2,7 @@
 
 namespace ICup\Bundle\PublicSiteBundle\Entity\Doctrine;
 
+use JsonSerializable;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\ORM\Mapping as ORM;
 use DateTime;
@@ -12,7 +13,7 @@ use DateTime;
  * @ORM\Table(name="playgroundattributes")
  * @ORM\Entity
  */
-class PlaygroundAttribute
+class PlaygroundAttribute implements JsonSerializable
 {
     /**
      * @var integer $id
@@ -267,5 +268,29 @@ class PlaygroundAttribute
     public function setClassification($classification) {
         $this->classification = $classification;
         return $this;
+    }
+
+    public function __toString() {
+        return $this->getPlayground()->getNo().". ".$this->getPlayground()->getName()." [".$this->getDate().": ".$this->getStart()."-".$this->getEnd()."]";
+    }
+
+    /**
+     * (PHP 5 &gt;= 5.4.0)<br/>
+     * Specify data which should be serialized to JSON
+     * @link http://php.net/manual/en/jsonserializable.jsonserialize.php
+     * @return mixed data which can be serialized by <b>json_encode</b>,
+     * which is a value of any type other than a resource.
+     */
+    function jsonSerialize() {
+        return array(
+            "id" => $this->getId(),
+            "timeslot" => $this->getTimeslot(),
+            "classification" => $this->getClassification(),
+            "finals" => $this->getFinals(),
+            "categories" => $this->getCategories()->toArray(),
+            'date' => Date::jsonDateSerialize($this->getDate()),
+            'start' => Date::jsonTimeSerialize($this->getStart()),
+            'end' => Date::jsonTimeSerialize($this->getEnd())
+        );
     }
 }

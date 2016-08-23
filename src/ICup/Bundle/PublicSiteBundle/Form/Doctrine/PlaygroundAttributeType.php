@@ -2,12 +2,12 @@
 
 namespace ICup\Bundle\PublicSiteBundle\Form\Doctrine;
 
-use ICup\Bundle\PublicSiteBundle\Entity\Doctrine\Playground;
+use ICup\Bundle\PublicSiteBundle\Entity\Doctrine\PlaygroundAttribute;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
-class PlaygroundType extends AbstractType
+class PlaygroundAttributeType extends AbstractType
 {
     /**
      * @param FormBuilderInterface $builder
@@ -16,13 +16,14 @@ class PlaygroundType extends AbstractType
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
         $builder
-            ->add('no')
-            ->add('name')
-            ->add('location')
-            ->add('weight')
+            ->add('date')
+            ->add('start')
+            ->add('end')
+            ->add('finals')
+            ->add('classification')
         ;
     }
-
+    
     /**
      * Configures the options for this type.
      *
@@ -31,7 +32,7 @@ class PlaygroundType extends AbstractType
     public function configureOptions(OptionsResolver $resolver)
     {
         $resolver->setDefaults(array(
-            'data_class' => Playground::class,
+            'data_class' => PlaygroundAttribute::class,
             'csrf_protection' => false,
         ));
     }

@@ -43,11 +43,13 @@
         <script src="{{ asset('bundles/fosjsrouting/js/router.js') }}"></script>
         <script src="{{ path('fos_js_routing_js', {"callback": "fos.Router.setData"}) }}"></script>
         <!-- Angular Material requires Angular.js Libraries -->
+        <script src="{{ asset('bundles/icuppublicsite/lodash.min.js') }}"></script>
         <script src="{{ asset('bundles/icuppublicsite/angular/1.5.3/angular.min.js') }}"></script>
         <script src="{{ asset('bundles/icuppublicsite/angular/1.5.3/angular-animate.min.js') }}"></script>
         <script src="{{ asset('bundles/icuppublicsite/angular/1.5.3/angular-aria.min.js') }}"></script>
         <script src="{{ asset('bundles/icuppublicsite/angular/1.5.3/angular-messages.min.js') }}"></script>
         <script src="{{ asset(['bundles/icuppublicsite/angular/1.5.3/i18n/angular-locale_',app.request.locale|split('_')[0],'.js']|join) }}"></script>
+        <script src="{{ asset('bundles/icuppublicsite/angular-simple-logger.min.js') }}"></script>
         <script src="{{ asset('bundles/bazingajstranslation/js/translator.min.js') }}"></script>
         <!-- Angular Material Library -->
         <script src="{{ asset('bundles/icuppublicsite/angular_material/1.0.4/angular-material.min.js') }}"></script>

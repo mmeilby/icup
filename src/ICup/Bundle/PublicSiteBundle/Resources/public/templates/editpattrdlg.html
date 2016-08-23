@@ -1,0 +1,59 @@
+<md-dialog aria-label="{{ pattr_object.op=='add' ? 'FORM.PLAYGROUNDATTR.TITLE.ADD' : 'FORM.PLAYGROUNDATTR.TITLE.CHG' | translate }}" style="width: 50%; height: 80%">
+    <md-toolbar>
+        <div class="md-toolbar-tools">
+            <h2 class="md-toolbar-tools">{{ pattr_object.op=='add' ? 'FORM.PLAYGROUNDATTR.TITLE.ADD' : 'FORM.PLAYGROUNDATTR.TITLE.CHG' | translate }}</h2>
+            <span flex></span>
+            <md-button class="md-icon-button" ng-click="cancel()"><span class="fa fa-2x fa-times"></span></md-button>
+        </div>
+    </md-toolbar>
+    <md-dialog-content layout-padding>
+        <form ng-submit="submit(pattr_object)" ng-cloak>
+            <md-tabs md-dynamic-height md-border-bottom>
+                <md-tab label="{{ 'FORM.PLAYGROUNDATTR.BASICS' | translate }}">
+                    <div style="margin-bottom: 30px; margin-top: 10px">
+                        <h3>{{ venue.name }}</h3>
+                        <h4>{{ venue.site.name }}</h4>
+                        {{ 'FORM.PLAYGROUNDATTR.DATE.PROMPT' | translate }}: <strong>{{ pattr_object.start.toString('dd-MM-yyyy') }}</strong><br />
+                        {{ 'FORM.PLAYGROUNDATTR.START.PROMPT' | translate }}: <strong>{{ pattr_object.start.toString('HH.mm') }}</strong> -
+                        {{ 'FORM.PLAYGROUNDATTR.END.PROMPT' | translate }}: <strong>{{ pattr_object.end.toString('HH.mm') }}</strong>
+                    </div>
+                    <md-input-container class="md-block">
+                        <label>{{ 'FORM.PLAYGROUNDATTR.TIMESLOT.PROMPT' | translate }}</label>
+                        <md-select name="site" ng-model="pattr_object.timeslot" ng-model-options="{trackBy: '$value.id'}">
+                            <md-option ng-value="{ 'id': 0 }">{{ 'FORM.PLAYGROUNDATTR.TIMESLOT.DEFAULT' | translate }}</md-option>
+                            <md-option ng-repeat="timeslot in timeslots" ng-value="timeslot">
+                                {{ timeslot.name }}
+                            </md-option>
+                        </md-select>
+                    </md-input-container>
+                    <md-divider style="margin-bottom: 10px"></md-divider>
+                    <md-checkbox ng-model="pattr_object.finals" aria-label="{{ 'FORM.PLAYGROUNDATTR.FINALS.HELP' | translate }}">
+                        {{ 'FORM.PLAYGROUNDATTR.FINALS.PROMPT' | translate }}
+                    </md-checkbox>
+                    <md-input-container class="md-block">
+                        <label>{{ 'FORM.PLAYGROUNDATTR.CLASSIFICATION.PROMPT' | translate }}</label>
+                        <md-select name="classification" ng-model="pattr_object.classification" ng-model-options="{trackBy: '$value'}">
+                            <md-option ng-value="0">{{ 'FORM.PLAYGROUNDATTR.CLASSIFICATION.DEFAULT' | translate }}</md-option>
+                            <md-option ng-repeat="classification in [1,6,7,8,9,10]" ng-value="classification">
+                                {{ 'FORM.GROUP.CLASS.'+classification | translate }}
+                            </md-option>
+                        </md-select>
+                    </md-input-container>
+                </md-tab>
+                <md-tab label="{{ 'FORM.PLAYGROUNDATTR.CONSTRAINTS' | translate }}">
+                    <md-list ng-controller="CategoryCtrl" ng-cloak>
+                        <md-subheader class="md-no-sticky">{{ 'FORM.PLAYGROUNDATTR.CATEGORIES.PROMPT' | translate }}</md-subheader>
+                        <md-list-item ng-repeat="category in categoryList">
+                            <p>{{ 'CATEGORY' | translate:'tournament' }} {{ category.name }} - {{ category.classification_translated }}</p>
+                            <md-checkbox class="md-secondary" ng-model="category.selected"></md-checkbox>
+                        </md-list-item>
+                    </md-list>
+                </md-tab>
+            </md-tabs>
+        </form>
+    </md-dialog-content>
+    <md-dialog-actions>
+        <md-button ng-click="submit(pattr_object)" class="md-primary md-raised" flex="50">{{ 'FORM.SUBMIT' | translate }}</md-button>
+        <md-button ng-click="cancel()" class="md-raised" flex="50">{{ 'FORM.CLOSE' | translate }}</md-button>
+    </md-dialog-actions>
+</md-dialog>

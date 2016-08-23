@@ -116,7 +116,7 @@ class MatchPlanner
     const TIMESLOT_EXCESS_PENALTY = 10.0;       // multiplied with the number of minutes the timeslot upper limit is excessed
     const SITE_PENALTY = 5.0;                   // penalty given for playing at different sites
     const REST_PENALTY = 5.0;                   // multiplied with the number of minutes between two matches - less than required rest period
-    const VENUE_PENALTY = 0.1;                  // multiplied with the wieght of a venue
+    const VENUE_PENALTY = 1.0;                  // multiplied with the wieght of a venue
     const TIME_LEFT_PENALTY = 0.01;             // multiplied with minutes left in a timeslot
     
     private function dE(PlanningResults $result, PA $pa, MatchPlan $match, DateTime $slotschedule) {
@@ -135,10 +135,13 @@ class MatchPlanner
             $rest = $result->getTeamCheck()->getMinRestTime($match, $slotschedule) - $match->getCategory()->getMatchtime();
             if ($rest >= 0) {
                 $dE += ($pa->getTimeslot()->getRestperiod() - min($pa->getTimeslot()->getRestperiod(), $rest))*MatchPlanner::REST_PENALTY;
-                $dE += $pa->getPlayground()->getWeight()*MatchPlanner::VENUE_PENALTY;
                 if ($tournamentoptions->isSvd()) {
-                    // same venue is desired - add penalty for different venue
-                    $dE += $result->getTeamCheck()->venuePenalty($match, $pa->getPlayground())*MatchPlanner::VENUE_PENALTY;
+                    // same venue is desired - add penalty for different venue (equals weight = 10)
+                    $dE += $result->getTeamCheck()->venuePenalty($match, $pa->getPlayground())*MatchPlanner::VENUE_PENALTY*10;
+                }
+                else {
+                    // if no requirements for same venue use the weight factor
+                    $dE += $pa->getPlayground()->getWeight()*MatchPlanner::VENUE_PENALTY;
                 }
                 $dE += $pa->isCategoryAllowed($match->getCategory()) ? 0 : MatchPlanner::CATEGORY_PENALTY;
                 if ($pa->getTimeslot()->getPenalty()) {

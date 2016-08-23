@@ -118,7 +118,7 @@ class QMatchPlanner
     const TIMESLOT_EXCESS_PENALTY = 2.0;
     const PLAYOFF_VENUE_PENALTY = 5.0;
     const REST_PENALTY = 2.0;
-    const VENUE_PENALTY = 0.1;
+    const VENUE_PENALTY = 1.0;
     const TIME_LEFT_PENALTY = 0.01;
 
     private function dE(PlanningResults $result, PA $pa, QMatchPlan $match, DateTime $mschedule) {

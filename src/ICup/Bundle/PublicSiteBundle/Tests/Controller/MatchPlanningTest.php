@@ -47,12 +47,13 @@ class MatchPlanningTest extends WebTestCase
         $ts->makeGroups($tournament);
         $ts->makeTeams($tournament);
         $ts->makePlaygrounds($tournament);
+//        $tournament->getOption()->setSvd(true);
         $this->tournament = $tournament;
     }
 
     public function testDB() {
         $playgrounds = $this->tournament->getPlaygrounds();
-        $this->assertEquals(4, count($playgrounds));
+        $this->assertEquals(6, count($playgrounds));
     }
 
     public function testMatchPlanning() {
@@ -68,15 +69,9 @@ class MatchPlanningTest extends WebTestCase
             $teams[$match->getTeamA()->getId()][] = $match;
             $teams[$match->getTeamB()->getId()][] = $match;
         }
-        foreach ($teams as $team_matches) {
+        foreach ($teams as &$team_matches) {
             usort($team_matches, function (MatchPlan $m1, MatchPlan $m2) {
-                /* @var $diff DateInterval */
-                $diff = $m1->getSchedule()->diff($m2->getSchedule());
-                if ($diff->d == 0 && $diff->h == 0 && $diff->i == 0) {
-                    return 0;
-                } else {
-                    return $diff->invert === 1 ? -1 : 1;
-                }
+                return min(1, max(-1, $m1->getSchedule()->getTimestamp() - $m2->getSchedule()->getTimestamp()));
             });
         }
         foreach ($teams as $team_matches) {
@@ -84,11 +79,8 @@ class MatchPlanningTest extends WebTestCase
             $schedule = null;
             /* @var $match MatchPlan */
             foreach ($team_matches as $match) {
-                echo $match->getDate();
-                echo "  ";
-                echo $match->getTime();
-                echo "  ";
-                echo $match->getCategory()->getName() . "|" . $match->getGroup()->getName() . ":" . $match->getPlayground()->getName();
+                echo str_pad(date_format($match->getSchedule(), "d-m-Y G:i"), 18, ' ');
+                echo $match->getCategory()->getName() . "|" . $match->getGroup()->getName() . ":" . $match->getPlayground()->getName() . " [".$match->getPlayground()->getWeight()."]";
                 echo "  ";
                 echo $match->getTeamA();
                 echo " - ";
@@ -98,11 +90,11 @@ class MatchPlanningTest extends WebTestCase
                 if ($schedule) {
                     /* @var $diff DateInterval */
                     $diff = $schedule->diff($match->getSchedule());
-                    $rest = $match->getCategory()->getMatchtime()+$match->getPlaygroundAttribute()->getTimeslot()->getRestperiod();
+                    $rest = $match->getCategory()->getMatchtime();
                     $this->assertTrue(
                         $diff->d*24*60 + $diff->h*60 + $diff->i >= $rest,
                         "Time between matches is less than ".$rest." min - actual time is ".($diff->d*24*60 + $diff->h*60 + $diff->i)." min.\n".
-                        "Match does not respect rest time: ".$match->getDate()."  ".$match->getTime()."  ".$match->getTeamA()." - ".$match->getTeamB()
+                        "Match does not respect match time: ".$match->getDate()."  ".$match->getTime()."  ".$match->getTeamA()." - ".$match->getTeamB()
                     );
                 }
                 $schedule = $match->getSchedule();
@@ -111,15 +103,42 @@ class MatchPlanningTest extends WebTestCase
         }
 
         $this->assertCount(0, $match_schedule["unassigned"], "Not all preliminary matches have been planned.");
-        /*
-                foreach ($match_schedule["unassigned"] as $match) {
-                    $teams[$match->getTeamA()->getId()][] = $match;
-                    $teams[$match->getTeamB()->getId()][] = $match;
-                }
-        */
-
         foreach ($teams as $team_matches) {
             $this->assertCount(5, $team_matches, "Not all matches have been set up for each team.");
+        }
+
+        usort($match_schedule["matches"], function (MatchPlan $m1, MatchPlan $m2) {
+            return min(1, max(-1, $m1->getSchedule()->getTimestamp() - $m2->getSchedule()->getTimestamp()));
+        });
+
+        $venues = array();
+        /* @var $match MatchPlan */
+        foreach ($match_schedule["matches"] as $match) {
+            $venues[$match->getPlayground()->getId()][] = $match;
+        }
+        foreach ($venues as &$venue_matches) {
+            usort($venue_matches, function (MatchPlan $m1, MatchPlan $m2) {
+                return min(1, max(-1, $m1->getSchedule()->getTimestamp() - $m2->getSchedule()->getTimestamp()));
+            });
+        }
+        foreach ($venues as $venue_matches) {
+            /* @var $schedule DateTime */
+            $schedule = null;
+            /* @var $match MatchPlan */
+            foreach ($venue_matches as $match) {
+                /* @var $match MatchPlan */
+                if ($schedule) {
+                    /* @var $diff DateInterval */
+                    $diff = $schedule->diff($match->getSchedule());
+                    $this->assertTrue(
+                        $diff->d * 24 * 60 + $diff->h * 60 + $diff->i >= 0,
+                        "Time between matches is too small - actual time is " . ($diff->d * 24 * 60 + $diff->h * 60 + $diff->i) . " min.\n" .
+                        "Match does not respect match time: " . $match->getDate() . "  " . $match->getTime() . "  " . $match->getTeamA() . " - " . $match->getTeamB()
+                    );
+                }
+                $schedule = $match->getSchedule();
+                Date::addTime($schedule, $match->getCategory()->getMatchtime());
+            }
         }
     }
 
@@ -205,12 +224,10 @@ class MatchPlanningTest extends WebTestCase
     }
 
     private function printMatch(QMatchPlan $match, $level = 0) {
-        echo $match->getDate();
-        echo "  ";
-        echo $match->getTime();
+        echo str_pad(date_format($match->getSchedule(), "d-m-Y G:i"), 17, ' ');
         echo str_repeat(" ", $level*4+1);
-        echo $match->getCategory()->getName() . "|" . $match->getClassification().":".$match->getLitra() . "|" . $match->getPlayground()->getName();
-        echo "  ";
+        echo str_pad($match->getCategory()->getName() . "|" . $match->getClassification().":".$match->getLitra() . "|" . $match->getPlayground()->getName(), 30, ' ');
+        echo str_repeat(" ", 16-$level*4);
         echo $match->getRelA();
         echo " - ";
         echo $match->getRelB();

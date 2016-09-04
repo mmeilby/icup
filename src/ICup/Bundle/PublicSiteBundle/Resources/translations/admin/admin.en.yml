@@ -284,6 +284,7 @@ FORM:
     NONAME: The venue must be given a name.
     NONO: Venue no. is mandatory.
     MATCHESEXIST: Matches are defined for this venue. The venue can not be removed.
+    PARELATIONSEXIST: Preferences are defined for this venue. The venue can not be removed.
     VENUES: Venues
     BASICS: Basic information
     CALENDAR: Schedule

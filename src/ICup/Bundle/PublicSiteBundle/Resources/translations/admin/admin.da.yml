@@ -284,6 +284,7 @@ FORM:
     NONAME: Et navn på banen skal angives.
     NONO: Et banenr. skal angives.
     MATCHESEXIST: Der er planlagt kampe til denne bane. Banen kan ikke fjernes.
+    PARELATIONSEXIST: Der knyttet præferencer til denne bane. Banen kan ikke fjernes.
     VENUES: Baner
     BASICS: Grundoplysninger
     CALENDAR: Tidsplan

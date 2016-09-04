@@ -283,6 +283,7 @@ FORM:
     NONAME: Il campo deve avere un nome.
     NONO: Il numero del campo è obbligatorio.
     MATCHESEXIST: Le partite sono state definite su questo campo di gioco. Il campo di gioco non può essere rimosso.
+    PARELATIONSEXIST: Preferences are defined for this venue. The venue can not be removed.
     VENUES: Venues
     BASICS: Basic information
     CALENDAR: Schedule

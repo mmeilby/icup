@@ -123,12 +123,14 @@ class TournamentImportController extends Controller
             $new_site->setName($site->getName());
             $em->persist($new_site);
             $em->flush();
+            /* @var $playground Playground */
             foreach ($site->getPlaygrounds() as $playground) {
                 $new_playground = new Playground();
                 $new_playground->setSite($new_site);
                 $new_playground->setName($playground->getName());
                 $new_playground->setNo($playground->getNo());
                 $new_playground->setLocation($playground->getLocation());
+                $new_playground->setWeight($playground->getWeight());
                 $em->persist($new_playground);
                 $em->flush();
                 $this->importPAttrs($playground, $new_playground, $tsconversion, $cconversion);

@@ -25,9 +25,9 @@
                     <div class="col-md-6">
                         {% trans %}FORM.ENROLLMENT.STEP6.TEXT1{% endtrans %} {{ teams }}<br />
                         {% trans %}FORM.ENROLLMENT.STEP6.TEXT2{% endtrans %}
-{% if "now"|date("Ymd") < '20151201' %}
+{% if "now"|date("Ymd") < '20161201' %}
                         €{{ teams*500 }}
-{% elseif "now"|date("Ymd") < '20160211' %}
+{% elseif "now"|date("Ymd") < '20170211' %}
                         €{{ teams*600 }}
 {% else %}
                         €{{ teams*700 }}

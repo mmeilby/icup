@@ -107,9 +107,9 @@
                        '</div>';
             };
             $.when(
-                $.getJSON(Routing.generate('_rest_get_club', { 'clubid': merge_source.substring(6) }))
-                    .done(function( club ) {
-                        source_club = club;
+                $.getJSON(Routing.generate('rest_get_club', { 'clubid': merge_source.substring(6) }))
+                    .done(function( data ) {
+                        source_club = data.club;
                     })
                     .fail(function( jqxhr, textStatus, error ) {
                         $( ev.target ).parent().parent().parent().parent().after(
@@ -118,9 +118,9 @@
                     })
                     .always(function() {
                     }),
-                $.getJSON(Routing.generate('_rest_get_club', { 'clubid': merge_target.substring(6) }))
-                    .done(function( club ) {
-                        target_club = club;
+                $.getJSON(Routing.generate('rest_get_club', { 'clubid': merge_target.substring(6) }))
+                    .done(function( data ) {
+                        target_club = data.club;
                     })
                     .fail(function( jqxhr, textStatus, error ) {
                         $( ev.target ).parent().parent().parent().parent().after(
@@ -137,7 +137,7 @@
                                          source_club.name+' ('+source_club.country+') -> '+
                                          target_club.name+' ('+target_club.country+')'));
                     }
-                    if (source_club.id === target_club.id) {
+                    else if (source_club.id === target_club.id) {
                         // do nothing
                     }
                     else {

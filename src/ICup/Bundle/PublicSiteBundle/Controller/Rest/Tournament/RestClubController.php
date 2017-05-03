@@ -180,7 +180,8 @@ class RestClubController extends Controller
         catch (ValidationException $e) {
             return new JsonResponse(array('errors' => array($e->getMessage())), Response::HTTP_NOT_FOUND);
         }
-        return new JsonResponse(array('club' => $this->translate(array($club))));
+        list($clubtranslated) = $this->translate(array($club));
+        return new JsonResponse(array('club' => $clubtranslated));
     }
 
     /**

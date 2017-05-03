@@ -33,6 +33,20 @@ class Club implements JsonSerializable
     protected $name;
 
     /**
+     * @var string $address
+     * Club address
+     * @ORM\Column(name="address", type="string", length=50, nullable=true)
+     */
+    protected $address;
+
+    /**
+     * @var string $city
+     * Club address
+     * @ORM\Column(name="city", type="string", length=50, nullable=true)
+     */
+    protected $city;
+
+    /**
      * @var Country $country
      * Relation to Country - club residence - DNK for Denmark, DEU for Germany, FRA for France and so on...
      * @ORM\ManyToOne(targetEntity="Country")
@@ -48,6 +62,20 @@ class Club implements JsonSerializable
     protected $teams;
 
     /**
+     * @var ArrayCollection $officials
+     * Collection of users related to this club - managers, officials or simply members of the club
+     * @ORM\OneToMany(targetEntity="ClubRelation", mappedBy="club", cascade={"persist", "remove"})
+     **/
+    protected $officials;
+
+    /**
+     * @var ArrayCollection $vouchers
+     * Collection of vouchers associated with this club
+     * @ORM\OneToMany(targetEntity="Voucher", mappedBy="club", cascade={"persist", "remove"})
+     */
+    protected $vouchers;
+
+    /**
      * Fixed name and country code for placeholder club for vacant teams
      */
     public static $VACANT_CLUB_NAME = "VACANT";
@@ -58,6 +86,8 @@ class Club implements JsonSerializable
      */
     public function __construct() {
         $this->teams = new ArrayCollection();
+        $this->officials = new ArrayCollection();
+        $this->vouchers = new ArrayCollection();
     }
 
     /**
@@ -91,6 +121,38 @@ class Club implements JsonSerializable
     public function getName()
     {
         return $this->name;
+    }
+
+    /**
+     * @return string
+     */
+    public function getAddress() {
+        return $this->address;
+    }
+
+    /**
+     * @param string $address
+     * @return Club
+     */
+    public function setAddress($address) {
+        $this->address = $address;
+        return $this;
+    }
+
+    /**
+     * @return string
+     */
+    public function getCity() {
+        return $this->city;
+    }
+
+    /**
+     * @param string $city
+     * @return Club
+     */
+    public function setCity($city) {
+        $this->city = $city;
+        return $this;
     }
 
     /**
@@ -134,6 +196,20 @@ class Club implements JsonSerializable
     }
 
     /**
+     * @return ArrayCollection
+     */
+    public function getVouchers() {
+        return $this->vouchers;
+    }
+
+    /**
+     * @return ArrayCollection
+     */
+    public function getOfficials() {
+        return $this->officials;
+    }
+
+    /**
      * Test if this club is placeholder for vacant teams
      * @return bool true if club is placeholder
      */
@@ -153,6 +229,10 @@ class Club implements JsonSerializable
      * which is a value of any type other than a resource.
      */
     function jsonSerialize() {
-        return array("id" => $this->id, "name" => $this->name, "country_code" => $this->country->getCountry(), "flag" => $this->country->getFlag());
+        return array(
+            "id" => $this->id,
+            "name" => $this->name, "address" => $this->address, "city" => $this->city,
+            "country_code" => $this->country->getCountry(), "flag" => $this->country->getFlag()
+        );
     }
 }

@@ -60,7 +60,7 @@ class SocialGroup
 
     /**
      * @var ArrayCollection $teams
-     * Social group relation a specific teams
+     * Social group relation to specific teams
      * @ORM\ManyToMany(targetEntity="Team", mappedBy="social_groups")
      */
     protected $teams;

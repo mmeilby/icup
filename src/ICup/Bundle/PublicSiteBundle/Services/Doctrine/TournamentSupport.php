@@ -6,6 +6,7 @@ use ICup\Bundle\PublicSiteBundle\Entity\Doctrine\Category;
 use ICup\Bundle\PublicSiteBundle\Entity\Doctrine\Champion;
 use ICup\Bundle\PublicSiteBundle\Entity\Doctrine\Date;
 use ICup\Bundle\PublicSiteBundle\Entity\Doctrine\Group;
+use ICup\Bundle\PublicSiteBundle\Entity\Doctrine\GroupOrder;
 use ICup\Bundle\PublicSiteBundle\Entity\Doctrine\Match;
 use ICup\Bundle\PublicSiteBundle\Entity\Doctrine\MatchRelation;
 use ICup\Bundle\PublicSiteBundle\Entity\Doctrine\QMatchRelation;
@@ -494,15 +495,6 @@ class TournamentSupport
     public function wipeTeams($tournamentid) {
         $this->em->beginTransaction();
         try {
-            // wipe group orders
-            $qbo = $this->em->createQuery(
-                "delete from ".$this->entity->getRepositoryPath('GroupOrder')." o ".
-                "where o.group in (select g.id ".
-                "from ".$this->entity->getRepositoryPath('Category')." c, ".
-                        $this->entity->getRepositoryPath('Group')." g ".
-                "where c.tournament=:tournament and g.category=c.id)");
-            $qbo->setParameter('tournament', $tournamentid);
-            $qbo->getResult();
             // wipe enrollments
             $qbe = $this->em->createQuery(
                 "delete from ".$this->entity->getRepositoryPath('Enrollment')." e ".
@@ -511,37 +503,69 @@ class TournamentSupport
                 "where c.tournament=:tournament)");
             $qbe->setParameter('tournament', $tournamentid);
             $qbe->getResult();
-            // wipe teams
-            $qbt = $this->em->createQuery(
-                    "delete from ".$this->entity->getRepositoryPath('Team')." t ".
-                    "where t.id in (select identity(o.team) ".
-                                    "from ".$this->entity->getRepositoryPath('Category')." c, ".
-                                            $this->entity->getRepositoryPath('Group')." g, ".
-                                            $this->entity->getRepositoryPath('GroupOrder')." o ".
-                                    "where c.tournament=:tournament and g.category=c.id and o.group=g.id)");
-            $qbt->setParameter('tournament', $tournamentid);
-            $qbt->getResult();
-            // wipe clubs
-            $qbc = $this->em->createQuery(
-                "delete from ".$this->entity->getRepositoryPath('Club')." clb ".
-                "where clb.id in (select identity(t.club) ".
+            // wipe group orders
+            $qbo = $this->em->createQuery(
+                "select o from ".$this->entity->getRepositoryPath('GroupOrder')." o ".
+                "where o.group in (select g.id ".
                 "from ".$this->entity->getRepositoryPath('Category')." c, ".
-                        $this->entity->getRepositoryPath('Group')." g, ".
-                        $this->entity->getRepositoryPath('GroupOrder')." o, ".
-                        $this->entity->getRepositoryPath('Team')." t ".
-                "where c.tournament=:tournament and g.category=c.id and o.group=g.id and o.team=t.id) ".
-                "and clb.id not in (select identity(tt.club) ".
-                "from ".$this->entity->getRepositoryPath('Category')." cc, ".
-                        $this->entity->getRepositoryPath('Group')." gg, ".
-                        $this->entity->getRepositoryPath('GroupOrder')." oo, ".
-                        $this->entity->getRepositoryPath('Team')." tt ".
-                "where cc.tournament<>:tournament and gg.category=cc.id and oo.group=gg.id and oo.team=tt.id)");
-            $qbc->setParameter('tournament', $tournamentid);
-            $qbc->getResult();
+                        $this->entity->getRepositoryPath('Group')." g ".
+                "where c.tournament=:tournament and g.category=c.id)");
+            $qbo->setParameter('tournament', $tournamentid);
+            $orders = $qbo->getResult();
+            /* @var $order GroupOrder */
+            foreach ($orders as $order) {
+                $team = $order->getTeam();
+                $club = $team->getClub();
+                $club->getTeams()->removeElement($team);
+                if ($club->getTeams()->isEmpty()) {
+                    $this->em->remove($club);
+                }
+                $this->em->remove($team);
+                $this->em->remove($order);
+            }
+
+            /*
+
+                        // get clubs to wipe
+                        $qbc = $this->em->createQuery(
+                            "select clb from ".$this->entity->getRepositoryPath('Club')." clb ".
+                            "where clb.id in (select identity(t.club) ".
+                            "from ".$this->entity->getRepositoryPath('Category')." c, ".
+                                    $this->entity->getRepositoryPath('Group')." g, ".
+                                    $this->entity->getRepositoryPath('GroupOrder')." o, ".
+                                    $this->entity->getRepositoryPath('Team')." t ".
+                            "where c.tournament=:tournament and g.category=c.id and o.group=g.id and o.team=t.id) ".
+                            "and clb.id not in (select identity(tt.club) ".
+                            "from ".$this->entity->getRepositoryPath('Category')." cc, ".
+                                    $this->entity->getRepositoryPath('Group')." gg, ".
+                                    $this->entity->getRepositoryPath('GroupOrder')." oo, ".
+                                    $this->entity->getRepositoryPath('Team')." tt ".
+                            "where cc.tournament<>:tournament and gg.category=cc.id and oo.group=gg.id and oo.team=tt.id)");
+                        $qbc->setParameter('tournament', $tournamentid);
+                        $clubs = $qbc->getResult();
+                        // wipe the clubs and all related stuff
+                        foreach ($clubs as $club) {
+                            $this->em->remove($club);
+                        }
+
+
+
+                        // wipe teams
+                        $qbt = $this->em->createQuery(
+                                "delete from ".$this->entity->getRepositoryPath('Team')." t ".
+                                "where t.id in (select identity(o.team) ".
+                                                "from ".$this->entity->getRepositoryPath('Category')." c, ".
+                                                        $this->entity->getRepositoryPath('Group')." g, ".
+                                                        $this->entity->getRepositoryPath('GroupOrder')." o ".
+                                                "where c.tournament=:tournament and g.category=c.id and o.group=g.id)");
+                        $qbt->setParameter('tournament', $tournamentid);
+                        $qbt->getResult();
+            */
             $this->em->commit();
         }
         catch (Exception $e) {
             $this->em->rollback();
+            throw $e;
         }
     }
     

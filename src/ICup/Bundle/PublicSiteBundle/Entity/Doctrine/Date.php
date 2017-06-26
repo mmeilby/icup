@@ -12,8 +12,8 @@ use DateInterval;
 use DateTime;
 
 class Date {
-    private static $db_date_format = "Ymd";
-    private static $db_time_format = "Hi";
+    public static $db_date_format = "Ymd";
+    public static $db_time_format = "Hi";
 
     public static function getDateTime($dbdate, $dbtime = "1200") {
         return DateTime::createFromFormat(Date::$db_date_format.'-'.Date::$db_time_format, $dbdate.'-'.$dbtime);

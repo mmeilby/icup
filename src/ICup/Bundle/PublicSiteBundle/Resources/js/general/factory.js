@@ -3,7 +3,7 @@
  TOURNAMENT DATA MODEL FACTORY
  ------------------------------------
  */
-angular.module('tournamentBoardModule.factory', [])
+angular.module('dataSourceModule.factory', [])
     .factory('Tournament', function ($http, $mdDialog, tournamentid) {
         var tournament = { 'id': tournamentid };
         var categories = [], sites = [], venues = [], timeslots = [], events = [];
@@ -33,7 +33,7 @@ angular.module('tournamentBoardModule.factory', [])
                 venues = data.data;
             },
             function (response) {
-                ShowError($mdDialog, response.data.errors, Translator.trans('FORM.LISTSITES.CAPTION'));
+                ShowError($mdDialog, response.data.errors, Translator.trans('FORM.LISTPLAYGROUNDS.CAPTION'));
             });
         $http.get(Routing.generate('_rest_list_timeslots', { 'tournamentid': tournamentid })).then(
             function(data) {

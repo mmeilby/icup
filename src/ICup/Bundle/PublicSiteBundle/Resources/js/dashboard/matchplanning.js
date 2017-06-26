@@ -82,7 +82,7 @@ angular.module('tournamentBoardModule.planning', [])
                 function(data) {
                     $mdToast.show(
                         $mdToast.simple()
-                            .textContent("{% trans %}FORM.MATCHPLANNING.SAVE.DONE{% endtrans %}")
+                            .textContent(Translator.trans('FORM.MATCHPLANNING.SAVE.DONE'))
                             .position('top right')
                             .hideDelay(5000)
                             .parent($document[0].querySelector('#toastAnchor'))

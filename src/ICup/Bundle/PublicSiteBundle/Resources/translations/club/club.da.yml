@@ -22,6 +22,63 @@ FORM:
   ENROLLMENT:
     DOCUMENTS: Dokumenter
     DOWNLOAD: Hent
+    ENROLLHERE: Tilmeld dig her - udfyld og send
+    ENROLL: Tilmeld
+    PRODUCTLIST:
+      HEADLINE1: Online tilmelding
+      TITLE1: Tilmelding til
+      SUBTITLE1: >
+            Online tilmelding er et nyt initiativ som tilbydes de klubber, der foretrækker digitale tjenester.
+            Her kan du tilmelde hold på samme måde som hvis du udfylder den trykte formular. Det er bare lettere og hurtigere.
+            Online tilmelding er først gennemført når du ser kvitteringssiden med bekræftelse på at din tilmelding er sendt.
+      TEXT1: Angiv antal hold der tilmeldes i hver gruppe. Klik på kurven når du er klar til at gå til kassen og gennemføre tilmelding.
+      ITEMS: hold
+      PRICE: Pris per hold
+      TEAMDEP: Heraf er depositum
+      BORN: For spillere født i
+      BORNLATER: eller senere
+      TOTAL: Samlet pris for tilmeldte hold i denne gruppe
+      ADD: Tilføj hold
+      REMOVE: Fjern hold
+      HEADLINE2: Bekræft tilmelding
+      TITLE2: Tilmelding til
+      SUBTITLE2: >
+                Udfyld klubinformationer og bekræft din tilmelding
+      TEXT2: >
+          Du betaler tilmeldingsgebyr for dine tilmeldte hold. Gebyret består af et holdgebyr og depositum.
+          Depositum vil blive fratrukket deltagergebyret når du tilmelder spillere og ledere.
+      DEPOSIT: Depositum for denne tilmelding er i alt
+      CATEGORY: Tilmeldt gruppe
+      QUANTITY: Antal hold
+      CPRICE: Samlet pris
+      GTOTAL: Samlet tilmeldingsgebyr inklusive depositum
+      EMPTYCART: Der er ingen tilmeldte hold.
+      BACK: Tilbage til tilmelding
+      CLEARCART: Fjern alle tilmeldinger
+      REMOVECART: Fjern alle tilmeldinger fra denne gruppe
+      CONFIRM: Bekræft tilmelding
+      HEADLINE3: Betaling
+      TITLE3: Tilmelding til
+      SUBTITLE3: >
+                Betal tilmeldingsgebyr inklusive depositum.
+      CHECKOUT: Betal tilmeldingsgebyr
+      ORDERSUMMARY: Betalingsoversigt
+      TEAMSUMMARY: Holdgebyr
+      DEPOSITSUMMARY: Depositum
+      TOTALSUMMARY: Samlet tilmeldingsgebyr
+      HEADLINE4: Bekræftelse
+      TITLE4: Tilmelding til
+      SUBTITLE4: >
+                Betaling gennemføres - vent venligst.
+      HEADLINE5: Bekræftelse
+      TITLE5: Tilmelding til
+      SUBTITLE5: Tilmeldingen er gennemført. Her er kvitteringen på din betaling.
+      SUBTITLE6: Du vil modtage en e-mail som bekræftelse på denne tilmelding samt hvordan du giver yderligere oplysninger der er nødvendige for opholdet.
+      CARDNO: Kortnr.
+      EXPIRATION: Udløb
+      CVC: CVC
+      PAYPAL: Betal med PayPal
+      GOOGLE: Betal med Google Wallet
     CLUB: Klubbens navn
     ADDRESS: Klubbens adresse
     CITY: Postnummer og by
@@ -83,8 +140,11 @@ FORM:
     STEP1:
       TITLE: Oplysninger om klubben
       HEADER1: Følgende data skal oplyses om klubben
+      TITLE1: Stamdata
       HEADER2: Følgende oplysninger bør gives hvis det er muligt
+      TITLE2: Kontakt
       HEADER3: Følgende oplysninger anvendes til statistiske formål
+      TITLE3: Historik
     STEP2:
       TITLE: Information om den ansvarlige turleder
       HEADER1: Følgende data skal oplyses om den ansvarlige turleder
@@ -139,6 +199,12 @@ FORM:
     NODEPARTURETIME: Afgangstidspunkt mangler
 
     MAILTITLE: Klubtilmelding
+    MAIL:
+      TITLE: Klubtilmelding
+      ADMIN:
+        TITLE: Klubtilmelding
+      CARDTX:
+        TITLE: Betaling for tilmelding
   CLUB: 
     WELLCOME: Velkommen til iCup
     TITLE:

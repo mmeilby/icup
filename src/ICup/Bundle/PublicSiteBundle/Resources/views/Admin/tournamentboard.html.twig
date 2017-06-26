@@ -377,10 +377,13 @@
                                                                     </md-button>
                                                                 </div>
 #}
-                                                                <div layout="row" style="padding-top: 0px">
-                                                                    <daypilot-navigator id="navi" daypilot-config="navigatorConfig"></daypilot-navigator>
-                                                                    <div>&nbsp;</div>
-                                                                    <daypilot-calendar id="dp" config="calendarConfig" events="events"></daypilot-calendar>
+                                                                <div style="padding-top: 0px">
+                                                                    <div style="float:left; width:200px">
+                                                                        <daypilot-navigator id="navi" daypilot-config="navigatorConfig"></daypilot-navigator>
+                                                                    </div>
+                                                                    <div style="margin-left: 200px">
+                                                                        <daypilot-calendar id="dp" config="calendarConfig" events="events"></daypilot-calendar>
+                                                                    </div>
                                                                 </div>
                                                             </div>
                                                     </md-tab>
@@ -815,7 +818,7 @@
                     'uiGmapgoogle-maps',
                     'bootstrap.fileField',
                     'daypilot',
-                    'tournamentBoardModule.filter', 'tournamentBoardModule.factory', 'tournamentBoardModule.tournament',
+                    'translationModule.filter', 'dataSourceModule.factory', 'tournamentBoardModule.tournament',
                     'tournamentBoardModule.venues', 'tournamentBoardModule.clubs', 'tournamentBoardModule.planning', 'tournamentBoardModule.categories'
                 ],
             function(uiGmapGoogleMapApiProvider) {
@@ -827,8 +830,12 @@
         )
         .constant('tournamentid', '{{ tournament.id }}')
         .constant('flagsDirectory', '{{ asset('bundles/icuppublicsite/images/flags/') }}')
+        .constant('translate_domain', 'admin')
         .constant('templateDirectory', '{{ asset('bundles/icuppublicsite/templates/') }}');
     </script>
+    {% javascripts '@ICupPublicSiteBundle/Resources/js/general/*' output="bundles/icuppublicsite/js/general.js" %}
+    <script src="{{ asset_url }}" type="text/javascript"></script>
+    {% endjavascripts  %}
     {% javascripts '@ICupPublicSiteBundle/Resources/js/dashboard/*' output="bundles/icuppublicsite/js/dashboard.js" %}
     <script src="{{ asset_url }}" type="text/javascript"></script>
     {% endjavascripts  %}

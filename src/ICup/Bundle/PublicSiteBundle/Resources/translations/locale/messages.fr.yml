@@ -25,3 +25,5 @@ FORMAT:
   DATE: j/n/Y
   TIME: G:i
   LONGDATE: "[1,Inf[ %week% %day% %month% %year%"
+  DECIMALPOINT: ","
+  THOUSANDSEPERATOR: "."

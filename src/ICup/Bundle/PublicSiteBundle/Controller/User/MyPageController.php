@@ -3,13 +3,13 @@ namespace ICup\Bundle\PublicSiteBundle\Controller\User;
 
 use ICup\Bundle\PublicSiteBundle\Controller\User\MyPage\MyPageAdmin;
 use ICup\Bundle\PublicSiteBundle\Controller\User\MyPage\MyPageEditor;
+use ICup\Bundle\PublicSiteBundle\Controller\User\MyPage\MyPageInterface;
 use ICup\Bundle\PublicSiteBundle\Controller\User\MyPage\MyPageUser;
 use ICup\Bundle\PublicSiteBundle\Entity\Doctrine\Club;
 use ICup\Bundle\PublicSiteBundle\Entity\Doctrine\User;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
-use User\MyPage\MyPageInterface;
 
 /**
  * myPage - myICup - user's home page with context dependent content
@@ -35,11 +35,12 @@ class MyPageController extends Controller
      */
     public function myPageUsersAction()
     {
+        /* @var $user User */
         $user = $this->get('util')->getCurrentUser();
         /* @var $club Club */
-        $club = $user->getClub();
+        $club = $this->get('util')->getClub($user); // TODO: Fix choice of club from all the relations
         $this->get('util')->validateClubAdminUser($user, $club);
-        $users = $club->getUsers();
+        $users = $club->getOfficials()->toArray();
         usort($users, function (User $user1, User $user2) {
             // sort users
             return 1;

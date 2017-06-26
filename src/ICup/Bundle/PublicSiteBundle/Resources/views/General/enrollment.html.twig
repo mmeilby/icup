@@ -2,55 +2,45 @@
 
 {% trans_default_domain "club" %}
 
-{% block body %}
-<div class="row">
-    <div class="col-md-8">
-        {{ sonata_block_render({'name': '/cms/content/blocks/enrollment/terms'}) }}
-        {{ sonata_block_render({'name': '/cms/content/blocks/enrollment/accomodation'}) }}
+{% block widebody %}
+    <div class="bg-facebook-lightgrey">
+        <div class="container tall bg-facebook-lightgrey">
+            {{ sonata_block_render({'name': '/cms/content/blocks/enrollment/step1'}) }}
+            <h3>{% trans %}FORM.ENROLLMENT.ENROLLHERE{% endtrans %}</h3>
+            <a href="{{ path('_enrollment_online') }}" role="button">
+                <h3><span class="label label-default"><i class="fa fa-ticket"></i>&nbsp;{% trans %}FORM.ENROLLMENT.ENROLL{% endtrans %}</span></h3>
+            </a>
+        </div>
     </div>
-    <div class="col-md-4">
-        {% if files is not empty %}
-            <h2><i class="fa fa-download">&nbsp;</i>{% trans %}FORM.ENROLLMENT.DOCUMENTS{% endtrans %}</h2>
-            <div class="list-group">
-            {% for file in files %}
-                <a class="list-group-item"
-                   href="{{ cmf_media_download_url(file) }}"
-                   title="{% trans %}FORM.ENROLLMENT.DOWNLOAD{% endtrans %} {{ file.name }}">
-                    <p class="list-group-item-text">
-                    {% if file.extension == 'pdf' %}
-                        <i class="fa fa-file-pdf-o">&nbsp;</i>
-                    {% else %}
-                        <i class="fa fa-file-image-o">&nbsp;</i>
-                    {% endif %}
-                        {{ file.description }}
-                    </p>
-                </a>
-            {% endfor %}
+    <div class="container tall">
+        <div class="row">
+            <div class="col-md-8">
+                {{ sonata_block_render({'name': '/cms/content/blocks/enrollment/terms'}) }}
+                {{ sonata_block_render({'name': '/cms/content/blocks/enrollment/accomodation'}) }}
             </div>
-        {% endif %}
-        {{ sonata_block_render({'name': '/cms/content/blocks/enrollment/paymentterms'}) }}
-<!--    
-        <i class="fa fa-ticket fa-5x"></i>
-        <h2>Tilmeld dig her - udfyld og send</h2>
-        <p>
-        </p>
-
-        <i class="fa fa-ticket fa-5x"></i>
-        <h2>{% trans from "frontpage" %}FORM.FRONTPAGE.BLOCK2.TITLE{% endtrans %}</h2>
-        <p>{% trans from "frontpage" %}FORM.FRONTPAGE.BLOCK2.DESCRIPTION{% endtrans %}</p>
-        <p>
-{% if app.user == null %}
-            <a href="{{ path('_ausr_new_user') }}" role="button">
-                <h3><span class="label label-default"><i class="fa fa-ticket"></i>&nbsp;Opret profil</span></h3>
-            </a>
-{% else %}
-            <a href="{{ path('_user_my_page') }}" role="button">
-                <h3><span class="label label-default"><i class="fa fa-ticket"></i>&nbsp;Tilmeld</span></h3>
-            </a>
-{% endif %}
-        </p>
--->
-        {{ sonata_block_render({'name': '/cms/content/blocks/enrollment/address'}) }}
+            <div class="col-md-4">
+                {% if files is not empty %}
+                    <h2><i class="fa fa-download">&nbsp;</i>{% trans %}FORM.ENROLLMENT.DOCUMENTS{% endtrans %}</h2>
+                    <div class="list-group">
+                    {% for file in files %}
+                        <a class="list-group-item"
+                           href="{{ cmf_media_download_url(file) }}"
+                           title="{% trans %}FORM.ENROLLMENT.DOWNLOAD{% endtrans %} {{ file.name }}">
+                            <p class="list-group-item-text">
+                            {% if file.extension == 'pdf' %}
+                                <i class="fa fa-file-pdf-o">&nbsp;</i>
+                            {% else %}
+                                <i class="fa fa-file-image-o">&nbsp;</i>
+                            {% endif %}
+                                {{ file.description }}
+                            </p>
+                        </a>
+                    {% endfor %}
+                    </div>
+                {% endif %}
+                {{ sonata_block_render({'name': '/cms/content/blocks/enrollment/paymentterms'}) }}
+                {{ sonata_block_render({'name': '/cms/content/blocks/enrollment/address'}) }}
+            </div>
+        </div>
     </div>
-</div>
 {% endblock %}

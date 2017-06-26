@@ -3,9 +3,8 @@
 namespace ICup\Bundle\PublicSiteBundle\Services;
 
 use ICup\Bundle\PublicSiteBundle\Entity\Doctrine\Club;
+use ICup\Bundle\PublicSiteBundle\Entity\Doctrine\ClubRelation;
 use ICup\Bundle\PublicSiteBundle\Entity\Doctrine\Host;
-use ICup\Bundle\PublicSiteBundle\Entity\Doctrine\SocialRelation;
-use ICup\Bundle\PublicSiteBundle\Entity\Doctrine\Team;
 use ICup\Bundle\PublicSiteBundle\Entity\Doctrine\Tournament;
 use ICup\Bundle\PublicSiteBundle\Entity\Doctrine\User;
 use ICup\Bundle\PublicSiteBundle\Services\Doctrine\Entity;
@@ -93,13 +92,10 @@ class Util
         try {
             /* @var $user User */
             $user = $this->getCurrentUser();
-            /* @var $rel SocialRelation */
-            foreach ($user->getSocialRelations() as $rel) {
-                if ($rel->getRole() == SocialRelation::$FOLLOWER || $rel->getStatus() == SocialRelation::$MEM) {
-                    foreach ($rel->getGroup()->getTeams() as $team) {
-                        /* @var $team Team */
-                        $clubs[$team->getClub()->getId()] = $team->getClub();
-                    }
+            /* @var $rel ClubRelation */
+            foreach ($user->getClubRelations() as $rel) {
+                if ($rel->getStatus() == ClubRelation::$APP || $rel->getStatus() == ClubRelation::$MEM) {
+                    $clubs[$rel->getClub()->getId()] = $rel->getClub();
                 }
             }
         }
@@ -179,20 +175,48 @@ class Util
     }
     
     public function generateSecret() {
-        return uniqid();
+        $length = 10;
+        $words = 'Dog,Cat,Sheep,Sun,Sky,Red,Ball,Happy,Ice,';
+        $words .= 'Green,Blue,Music,Movies,Radio,Green,Turbo,';
+        $words .= 'Mouse,Computer,Paper,Water,Fire,Storm,Chicken,';
+        $words .= 'Boot,Freedom,White,Nice,Player,Small,Eyes,';
+        $words .= 'Path,Kid,Box,Black,Flower,Ping,Pong,Smile,';
+        $words .= 'Coffee,Colors,Rainbow,Pplus,King,TV,Ring';
+
+        // Split by ",":
+        $words = explode(',', $words);
+
+        // Add words while password is smaller than the given length
+        $pwd = '';
+        while (strlen($pwd) < $length){
+            $r = mt_rand(0, count($words)-1);
+            $pwd .= $words[$r];
+        }
+
+        // append a number at the end if length > 2 and
+        // reduce the password size to $length
+        $num = mt_rand(1, 99);
+        if ($length > 2){
+            $pwd = substr($pwd,0,$length-strlen($num)).$num;
+        } else {
+            $pwd = substr($pwd, 0, $length);
+        }
+
+        return $pwd;
+    }
+
+    public function generateUsername(User $user) {
+        $user->setUsername(uniqid());
     }
 
     /**
      * @return Club
      */
     public function getClub(User $user) {
-        /* @var $rel SocialRelation */
-        foreach ($user->getSocialRelations()->toArray() as $rel) {
-            if ($rel->getStatus() == SocialRelation::$MEM) {
-                $teams = $rel->getGroup()->getTeams();
-                if ($teams->count() > 0) {
-                    return $teams->first()->getClub();
-                }
+        /* @var $rel ClubRelation */
+        foreach ($user->getClubRelations()->toArray() as $rel) {
+            if ($rel->getStatus() == ClubRelation::$MEM) {
+                return $rel->getClub();         // TODO: fix return of many club relations
             }
         }
         return null;
@@ -261,7 +285,11 @@ class Util
                 // Controller is called by club user user
                 throw new ValidationException("NOTCLUBADMIN", "user=".$user->__toString());
             }
-            if (!$user->isRelatedTo($club->getId())) {
+            if (!$user->getClubRelations()->exists(
+                function ($idx, ClubRelation $rel) use ($club) {
+                    return $rel->getClub()->getId() == $club->getId() && $rel->getRole() == ClubRelation::$MANAGER && $rel->getStatus() == ClubRelation::$MEM;
+                }
+                )) {
                 // Even though this is a club admin - the admin does not administer this club
                 throw new ValidationException("NOTCLUBADMIN", "user=".$user->__toString().", clubid=".$club->getId());
             }
@@ -289,7 +317,11 @@ class Util
      */
     public function validateClubUser(User $user) {
         // Validate the user - must be a club user
-        if ($this->entity->isLocalAdmin($user) || !$user->isClubUser() || !$user->isRelated()) {
+        if ($this->entity->isLocalAdmin($user) || !$user->isClubUser() || !$user->getClubRelations()->exists(
+            function ($idx, ClubRelation $rel) {
+                    return $rel->getStatus() == ClubRelation::$MEM;
+            }
+            )) {
             // Controller is called by editor or admin user - switch to my page
             throw new ValidationException("NEEDTOBERELATED", $this->entity->isLocalAdmin($user) ?
                     "Local admin" : "user=".$user->__toString());

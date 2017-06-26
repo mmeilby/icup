@@ -52,7 +52,6 @@ angular.module('tournamentBoardModule.venues', [])
             locale: 'da-dk',    // de-de en-gb es-es fr-fr it-it pl-pl
             headerDateFormat: "ddd d. MMM",
             onTimeRangeSelected: function (args) {
-                $scope.dp.clearSelection();
                 var dlgScope = $scope.$new();
                 dlgScope.pattr_object = {
                     start: new DayPilot.Date(args.start.value),
@@ -81,17 +80,16 @@ angular.module('tournamentBoardModule.venues', [])
                                 angular.forEach(dlgScope.pattr_object.categories, function(category) {
                                     this.push(category.name);
                                 }, catlist);
-                                var e = new DayPilot.Event({
-                                    start: args.start,
-                                    end: args.end,
+                                var e = {
+                                    start: dlgScope.pattr_object.start,
+                                    end: dlgScope.pattr_object.end,
                                     id: data.data.id,
-                                    resource: args.resource,
                                     text: (dlgScope.pattr_object.finals ? '<span class="fa fa-trophy text-warning"></span><br />' : '<span class="fa fa-gavel text-info"></span><br />')+
                                     dlgScope.pattr_object.timeslot.name+
                                     (catlist.length > 0 ? '<br />'+catlist.join(',') : '')+
                                     (dlgScope.pattr_object.classification > 0 ? '<br />'+Translator.trans('GROUPCLASS.'+dlgScope.pattr_object.classification, {}, 'tournament') : '')
-                                });
-                                $scope.dp.events.add(e);
+                                };
+                                $scope.events.push(e);
                                 $mdToast.show(
                                     $mdToast.simple()
                                         .textContent(Translator.trans('FORM.PLAYGROUNDATTR.UPDATED'))
@@ -104,6 +102,7 @@ angular.module('tournamentBoardModule.venues', [])
                                 ShowError($mdDialog, response.data.errors, Translator.trans('FORM.PLAYGROUNDATTR.TITLE.ADD'));
                             });
                 });
+                $scope.dp.clearSelection();
             },
             onEventClicked: function (args) {
                 var pattrid = args.e.id();
@@ -122,41 +121,67 @@ angular.module('tournamentBoardModule.venues', [])
                     op: 'chg'
                 };
                 pattrDialog(dlgScope, function() {
-                    $http.post(Routing.generate('rest_pattr_update', {
-                        pattrid: dlgScope.pattr_object.pattr.id,
-                        timeslotid: dlgScope.pattr_object.timeslot.id,
-                        categories: dlgScope.pattr_object.categories
-                    }), {
-                        date: dlgScope.pattr_object.start.toString('yyyy-MM-dd'),
-                        start: dlgScope.pattr_object.start.toString('HH:mm'),
-                        end: dlgScope.pattr_object.end.toString('HH:mm'),
-                        finals: dlgScope.pattr_object.finals,
-                        classification: dlgScope.pattr_object.classification
-                    })
-                        .then(
+                    if (dlgScope.pattr_object.remove) {
+                        $http.delete(Routing.generate('rest_pattr_delete', {'pattrid': dlgScope.pattr_object.pattr.id })).then(
                             function () {
-                                var catlist = [];
-                                angular.forEach(dlgScope.pattr_object.categories, function(category) {
-                                    this.push(category.name);
-                                }, catlist);
-                                var e = args.e;
-                                e.text(
-                                    (dlgScope.pattr_object.finals ? '<span class="fa fa-trophy text-warning"></span><br />' : '<span class="fa fa-gavel text-info"></span><br />')+
-                                    dlgScope.pattr_object.timeslot.name+
-                                    (catlist.length > 0 ? '<br />'+catlist.join(',') : '')+
-                                    (dlgScope.pattr_object.classification > 0 ? '<br />'+Translator.trans('GROUPCLASS.'+dlgScope.pattr_object.classification, {}, 'tournament') : '')
-                                );
+                                var newevents = [];
+                                var pattrid = dlgScope.pattr_object.pattr.id;
+                                angular.forEach($scope.events, function(event) {
+                                    if (event.id != pattrid) {
+                                        this.push(event);
+                                    }
+                                }, newevents);
+                                $scope.events = newevents;
                                 $mdToast.show(
                                     $mdToast.simple()
-                                        .textContent(Translator.trans('FORM.PLAYGROUNDATTR.UPDATED'))
+                                        .textContent(Translator.trans('FORM.PLAYGROUNDATTR.DELETED'))
                                         .position('top right')
                                         .hideDelay(3000)
                                         .parent($document[0].querySelector('#dp'))
                                 );
                             },
                             function (response) {
-                                ShowError($mdDialog, response.data.errors, Translator.trans('FORM.PLAYGROUNDATTR.TITLE.CHG'));
+                                ShowError($mdDialog, response.data.errors, Translator.trans('FORM.PLAYGROUNDATTR.TITLE.DEL'));
                             });
+                    }
+                    else {
+                        $http.post(Routing.generate('rest_pattr_update', {
+                            pattrid: dlgScope.pattr_object.pattr.id,
+                            timeslotid: dlgScope.pattr_object.timeslot.id,
+                            categories: dlgScope.pattr_object.categories
+                        }), {
+                            date: dlgScope.pattr_object.start.toString('yyyy-MM-dd'),
+                            start: dlgScope.pattr_object.start.toString('HH:mm'),
+                            end: dlgScope.pattr_object.end.toString('HH:mm'),
+                            finals: dlgScope.pattr_object.finals,
+                            classification: dlgScope.pattr_object.classification
+                        })
+                            .then(
+                                function () {
+                                    var catlist = [];
+                                    angular.forEach(dlgScope.pattr_object.categories, function(category) {
+                                        this.push(category.name);
+                                    }, catlist);
+                                    var e = args.e;
+                                    e.text(
+                                        (dlgScope.pattr_object.finals ? '<span class="fa fa-trophy text-warning"></span><br />' : '<span class="fa fa-gavel text-info"></span><br />')+
+                                        dlgScope.pattr_object.timeslot.name+
+                                        (catlist.length > 0 ? '<br />'+catlist.join(',') : '')+
+                                        (dlgScope.pattr_object.classification > 0 ? '<br />'+Translator.trans('GROUPCLASS.'+dlgScope.pattr_object.classification, {}, 'tournament') : '')
+                                    );
+                                    $mdToast.show(
+                                        $mdToast.simple()
+                                            .textContent(Translator.trans('FORM.PLAYGROUNDATTR.UPDATED'))
+                                            .position('top right')
+                                            .hideDelay(3000)
+                                            .parent($document[0].querySelector('#dp'))
+                                    );
+                                },
+                                function (response) {
+                                    ShowError($mdDialog, response.data.errors, Translator.trans('FORM.PLAYGROUNDATTR.TITLE.CHG'));
+                                });
+
+                    }
                 });
             },
             onEventResized: function (args) {
@@ -173,7 +198,7 @@ angular.module('tournamentBoardModule.venues', [])
                 });
                 changePattr(pattr, new DayPilot.Date(args.newStart.value), new DayPilot.Date(args.newEnd.value));
             }
-        };
+            };
         function changePattr(pattr, newStart, newEnd) {
             $http.post(Routing.generate('rest_pattr_update', {
                 pattrid: pattr.id,
@@ -204,7 +229,7 @@ angular.module('tournamentBoardModule.venues', [])
 
         $scope.tournament = Tournament.getTournament();
         $http.get(Routing.generate('_rest_get_match_calendar', { 'tournamentid': $scope.tournament.id })).then(function(data) {
-            $scope.calendarConfig.startDate = new DayPilot.Date($filter('date')(new Date(data.data.start), 'yyyy-MM-dd'));
+            $scope.calendarConfig.startDate = $filter('date')(new Date(data.data.start), 'yyyy-MM-dd');
             $scope.navi.select($filter('date')(new Date(data.data.start), 'yyyy-MM-dd'));
         });
         $scope.$watch(function () { return Tournament.getVenues(); }, function (newValue, oldValue) {
@@ -459,6 +484,11 @@ angular.module('tournamentBoardModule.venues', [])
                                 this.push(category);
                             }
                         }, pattr_object.categories);
+                        pattr_object.remove = false;
+                        $mdDialog.hide(pattr_object);
+                    };
+                    $scope.remove = function(pattr_object) {
+                        pattr_object.remove = true;
                         $mdDialog.hide(pattr_object);
                     };
                     $scope.cancel = function() {

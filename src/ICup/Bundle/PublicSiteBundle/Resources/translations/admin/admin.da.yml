@@ -17,6 +17,7 @@ FORM:
     BADTEAM: Holdet er ikke gyldigt
     NOTOURNAMENT: Turnering er ikke valgt
   SUBMIT: Gem
+  DELETE: SLET
   CLOSE: Luk
   DASHBOARD:
     TITLE: Kontrolpanel
@@ -372,6 +373,7 @@ FORM:
       CHG: Fortryd ændringer
       DEL: Fortryd slet
     UPDATED: Banepræferencen er ændret
+    DELETED: Banepræferencen er fjernet
   LISTTIMESLOTS:
     TITLE: Vedligehold turnering
     CAPTION: Perioder

@@ -28,7 +28,7 @@ use Symfony\Bundle\FrameworkBundle\Test\WebTestCase;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 use DateInterval;
 
-class MatchPlanningTest extends WebTestCase
+class TournamentSupportTest extends WebTestCase
 {
     /* @var $tournament Tournament */
     private $tournament = null;
@@ -61,7 +61,7 @@ class MatchPlanningTest extends WebTestCase
 
     public function testDB() {
         $matches = $this->tournament->getMatches();
-        $this->assertEquals(113, count($matches));
+        $this->assertEquals(117, count($matches));
     }
 
     public function testListQualifiedTeamsByTournament() {

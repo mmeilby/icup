@@ -2,7 +2,9 @@
 
 namespace ICup\Bundle\PublicSiteBundle\Controller\Rest\Tournament;
 
+use ICup\Bundle\PublicSiteBundle\Entity\Doctrine\Date;
 use ICup\Bundle\PublicSiteBundle\Entity\Doctrine\Enrollment;
+use ICup\Bundle\PublicSiteBundle\Entity\Doctrine\Event;
 use ICup\Bundle\PublicSiteBundle\Entity\Doctrine\Group;
 use ICup\Bundle\PublicSiteBundle\Entity\Doctrine\Team;
 use ICup\Bundle\PublicSiteBundle\Entity\Doctrine\Tournament;
@@ -21,6 +23,8 @@ use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
 use ICup\Bundle\PublicSiteBundle\Entity\Doctrine\Category;
 use ICup\Bundle\PublicSiteBundle\Form\Doctrine\CategoryType;
+use DateTime;
+use DateInterval;
 use RuntimeException;
 
 /**
@@ -360,6 +364,37 @@ class RestCategoryController extends Controller
             }
         }
         return new JsonResponse(array_values($categories));
+    }
+
+    /**
+     * Get the category metrics identified by category id and date
+     * @Route("/metrics/{categoryid}/{date}", name="_rest_get_category_metrics", options={"expose"=true})
+     * @Method("GET")
+     * @param $categoryid
+     * @param $date
+     * @return JsonResponse
+     */
+    public function restGetCategoryMetrics($categoryid, $date)
+    {
+        /* @var $category Category */
+        try {
+            $category = $this->get('entity')->getCategoryById($categoryid);
+        }
+        catch (ValidationException $e) {
+            return new JsonResponse(array('errors' => array($e->getMessage())), Response::HTTP_NOT_FOUND);
+        }
+        $eventstart = $category->getTournament()->getEvents()->filter(function (Event $event) { return $event->getEvent() == Event::$MATCH_START; });
+        if (!$eventstart->isEmpty()) {
+            /* @var $event Event */
+            $event = $eventstart->first();
+            $tmtstart = Date::getDateTime($event->getDate());
+            $birth = $tmtstart->sub(new DateInterval('P'.$category->getAge().'Y'));
+        }
+        else {
+            $birth = new DateTime();
+        }
+        $enrollmentPrice = $this->get('logic')->getEnrollmentPrice($category, DateTime::createFromFormat("Y-m-d", $date));
+        return new JsonResponse(array("category" => $category, "pricemetrics" => $enrollmentPrice, "yearofbirth" => $birth->format('Y')));
     }
 }
 

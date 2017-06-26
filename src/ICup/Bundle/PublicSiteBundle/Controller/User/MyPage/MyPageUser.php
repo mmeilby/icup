@@ -2,6 +2,7 @@
 namespace ICup\Bundle\PublicSiteBundle\Controller\User\MyPage;
 
 use ICup\Bundle\PublicSiteBundle\Entity\Doctrine\Club;
+use ICup\Bundle\PublicSiteBundle\Entity\Doctrine\ClubRelation;
 use ICup\Bundle\PublicSiteBundle\Entity\Doctrine\Host;
 use ICup\Bundle\PublicSiteBundle\Entity\Doctrine\Team;
 use ICup\Bundle\PublicSiteBundle\Entity\Doctrine\Tournament;
@@ -27,32 +28,12 @@ class MyPageUser implements MyPageInterface
      * Show myICup page for authenticated users
      */
     public function getTwig() {
-        return 'ICupPublicSiteBundle:User:mypage.html.twig';
+        return 'ICupPublicSiteBundle:User:mypage_clubuser.html.twig';
     }
 
     // getMyPageParameters
     public function getParms() {
-        $parms = array();
-        /*
-                if ($user->isClub() && $user->isRelated()) {
-                    $club = $user->getClub();
-                    $users = $club->getUsers();
-                    $prospectors = array();
-                    foreach ($users as $usr) {
-                        if (($usr->getRole() === User::$CLUB || $usr->getRole() === User::$CLUB_ADMIN) && $usr->getStatus() === User::$PRO) {
-                            $prospectors[] = $usr;
-                        }
-                    }
-                    $parms = array_merge(
-                                array(
-                                    'club' => $club,
-                                    'prospectors' => $prospectors,
-                                    'tournamentlist' => $this->getEnrollments($user)
-                                ),
-                                $this->listTeams($club)
-                             );
-                }
-        */
+        $parms = array('clubrelations' => $this->user->getClubRelations()->toArray());
         if ($this->user->isEditor()) {
             $host = $this->user->getHost();
             $users = $host->getEditors();
@@ -63,8 +44,9 @@ class MyPageUser implements MyPageInterface
             );
         }
 
+        $tournaments = $this->container->get('logic')->listAvailableTournaments();
         return array_merge($parms,
-            array('currentuser' => $this->user),
+            array('currentuser' => $this->user, 'tournament' => $tournaments[0]),
             $this->getTournaments());
     }
 

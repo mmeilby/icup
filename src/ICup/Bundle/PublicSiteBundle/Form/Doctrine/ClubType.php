@@ -2,7 +2,7 @@
 
 namespace ICup\Bundle\PublicSiteBundle\Form\Doctrine;
 
-use ICup\Bundle\PublicSiteBundle\Entity\Doctrine\Club;
+use ICup\Bundle\PublicSiteBundle\Entity\ClubForm;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
@@ -17,7 +17,9 @@ class ClubType extends AbstractType
     {
         $builder
             ->add('name')
-            ->add('country')
+            ->add('address')
+            ->add('city')
+            ->add('countrycode')
         ;
     }
 
@@ -29,7 +31,7 @@ class ClubType extends AbstractType
     public function configureOptions(OptionsResolver $resolver)
     {
         $resolver->setDefaults(array(
-            'data_class' => Club::class,
+            'data_class' => ClubForm::class,
             'csrf_protection' => false,
         ));
     }

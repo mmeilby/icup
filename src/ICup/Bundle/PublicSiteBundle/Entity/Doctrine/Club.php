@@ -76,6 +76,13 @@ class Club implements JsonSerializable
     protected $vouchers;
 
     /**
+     * @var ArrayCollection $details
+     * Collection of custom details associated with this club
+     * @ORM\OneToMany(targetEntity="ClubDetail", mappedBy="club", cascade={"persist", "remove"})
+     */
+    protected $details;
+
+    /**
      * Fixed name and country code for placeholder club for vacant teams
      */
     public static $VACANT_CLUB_NAME = "VACANT";
@@ -88,6 +95,7 @@ class Club implements JsonSerializable
         $this->teams = new ArrayCollection();
         $this->officials = new ArrayCollection();
         $this->vouchers = new ArrayCollection();
+        $this->details = new ArrayCollection();
     }
 
     /**
@@ -207,6 +215,39 @@ class Club implements JsonSerializable
      */
     public function getOfficials() {
         return $this->officials;
+    }
+
+    /**
+     * @return ArrayCollection
+     */
+    public function getDetails() {
+        return $this->details;
+    }
+
+    public function getClubdetails() {
+        return $this->details->toArray();
+    }
+
+    public function setClubdetails($details) {
+        if (is_array($details)) {
+            foreach ($details as $key => $detail) {
+                $clubdetails = $this->details->filter(function (ClubDetail $clubdetail) use ($key) {
+                    return $clubdetail->getKey() == $key;
+                });
+                if ($clubdetails->isEmpty()) {
+                    $clubdetail = new ClubDetail();
+                    $clubdetail->setKey($key);
+                    $clubdetail->setValue($detail);
+                    $clubdetail->setClub($this);
+                    $this->details->add($clubdetail);
+                }
+                else {
+                    $clubdetail = $clubdetails->first();
+                    $clubdetail->setValue($detail);
+                }
+            }
+        }
+        return $this;
     }
 
     /**

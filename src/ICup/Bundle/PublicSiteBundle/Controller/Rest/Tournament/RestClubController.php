@@ -1,13 +1,18 @@
 <?php
 namespace ICup\Bundle\PublicSiteBundle\Controller\Rest\Tournament;
 
+use ICup\Bundle\PublicSiteBundle\Entity\ClubForm;
 use ICup\Bundle\PublicSiteBundle\Entity\Doctrine\Category;
 use ICup\Bundle\PublicSiteBundle\Entity\Doctrine\Club;
+use ICup\Bundle\PublicSiteBundle\Entity\Doctrine\ClubDetail;
+use ICup\Bundle\PublicSiteBundle\Entity\Doctrine\Country;
 use ICup\Bundle\PublicSiteBundle\Entity\Doctrine\Enrollment;
 use ICup\Bundle\PublicSiteBundle\Entity\Doctrine\Team;
 use ICup\Bundle\PublicSiteBundle\Entity\Doctrine\Tournament;
 use ICup\Bundle\PublicSiteBundle\Entity\Doctrine\User;
 use ICup\Bundle\PublicSiteBundle\Exceptions\ValidationException;
+use ICup\Bundle\PublicSiteBundle\Form\Doctrine\ClubDetailsType;
+use ICup\Bundle\PublicSiteBundle\Services\Doctrine\BusinessLogic;
 use ICup\Bundle\PublicSiteBundle\Services\Util;
 use Symfony\Component\Form\Form;
 use Symfony\Component\Form\FormError;
@@ -185,6 +190,31 @@ class RestClubController extends Controller
     }
 
     /**
+     * Finds and displays club details.
+     *
+     * @Route("/details/{clubid}", name="rest_get_club_details", options={"expose"=true})
+     * @Method("GET")
+     * @param $clubid
+     * @return JsonResponse
+     */
+    public function listDetails($clubid)
+    {
+        /* @var $club Club */
+        try {
+            $club = $this->get('entity')->getClubById($clubid);
+        }
+        catch (ValidationException $e) {
+            return new JsonResponse(array('errors' => array($e->getMessage())), Response::HTTP_NOT_FOUND);
+        }
+        $details = array();
+        /* @var $detail ClubDetail */
+        foreach ($club->getDetails() as $detail) {
+            $details[$detail->getKey()] = $detail->getValue();
+        }
+        return new JsonResponse($details);
+    }
+
+    /**
      * Creates a new Doctrine\Club entity.
      *
      * @Route("/", name="rest_club_create", options={"expose"=true})
@@ -209,9 +239,12 @@ class RestClubController extends Controller
 
         /* @var $club Club */
         $club = new Club();
-        $form = $this->createForm(new ClubType(), $club);
+        $clubform = new ClubForm($club);
+        $form = $this->createForm(new ClubType(), $clubform);
         $form->handleRequest($request);
-        if ($this->checkForm($form, $club)) {
+        if ($this->checkForm($form, $clubform)) {
+            $country = $this->get('entity')->getCountryRepo()->find($club->getCountryCode());
+            $club->setCountry($country);
             $em = $this->getDoctrine()->getManager();
             $em->persist($club);
             $em->flush();
@@ -245,8 +278,72 @@ class RestClubController extends Controller
         catch (RuntimeException $e) {
             return new JsonResponse(array('errors' => array($e->getMessage())), Response::HTTP_FORBIDDEN);
         }
-        if (!$user->isEditor() && !$user->isAdmin()) {
+
+        /* @var $club Club */
+        try {
+            $club = $this->get('entity')->getClubById($clubid);
+        }
+        catch (ValidationException $e) {
+            return new JsonResponse(array('errors' => array($e->getMessage())), Response::HTTP_NOT_FOUND);
+        }
+
+        if (!$user->isEditor() && !$user->isAdmin() && !$user->isOfficialOf($club)) {
             return new JsonResponse(array('errors' => array("NEEDTOBEEDITOR")), Response::HTTP_FORBIDDEN);
+        }
+
+        $clubform = new ClubForm($club);
+        $form = $this->createForm(new ClubType(), $clubform);
+        $form->handleRequest($request);
+
+        if ($this->checkForm($form, $clubform)) {
+            $club->setName($clubform->getName());
+            $club->setAddress($clubform->getAddress());
+            $club->setCity($clubform->getCity());
+            /* @var $team Team */
+            foreach ($club->getTeams() as $team) {
+                // in case that the club name has changed - change team name as well
+                $team->setName($club->getName());
+            }
+            $em = $this->getDoctrine()->getManager();
+            /* @var $country Country */
+            $country = $this->get('entity')->getCountryRepo()->find($clubform->getCountryCode());
+            $club->setCountry($country);
+            $em->flush();
+            return new JsonResponse(array(), Response::HTTP_NO_CONTENT);
+        }
+
+        $errors = array();
+        foreach ($form->getErrors(true) as $error) {
+            $errors[] = $error->getMessage();
+        }
+        return new JsonResponse(array('errors' => $errors), Response::HTTP_BAD_REQUEST);
+    }
+
+    /**
+     * Updates the club details.
+     * Only details supplied will be updated.
+     * New details will be added.
+     * Details not supplied will be deleted.
+     *
+     * @Route("/details/{clubid}", name="rest_club_update_details", options={"expose"=true})
+     * @Method("POST")
+     * @param Request $request
+     * @param $clubid
+     * @return JsonResponse
+     */
+    public function updateDetails(Request $request, $clubid)
+    {
+        try {
+            /* @var $utilService Util */
+            $utilService = $this->get('util');
+            /* @var $user User */
+            $user = $utilService->getCurrentUser();
+        }
+        catch (RuntimeException $e) {
+            return new JsonResponse(array('errors' => array($e->getMessage())), Response::HTTP_FORBIDDEN);
+        }
+        if (!$user->isEditor() && !$user->isAdmin()) {
+//            return new JsonResponse(array('errors' => array("NEEDTOBEEDITOR")), Response::HTTP_FORBIDDEN);
         }
 
         /* @var $club Club */
@@ -257,15 +354,10 @@ class RestClubController extends Controller
             return new JsonResponse(array('errors' => array($e->getMessage())), Response::HTTP_NOT_FOUND);
         }
 
-        $form = $this->createForm(new ClubType(), $club);
+        $form = $this->createForm(new ClubDetailsType(), $club);
         $form->handleRequest($request);
 
-        if ($this->checkForm($form, $club)) {
-            /* @var $team Team */
-            foreach ($club->getTeams() as $team) {
-                // in case that the club name has changed - change team name as well
-                $team->setName($club->getName());
-            }
+        if ($form->isValid()) {
             $em = $this->getDoctrine()->getManager();
             $em->flush();
             return new JsonResponse(array(), Response::HTTP_NO_CONTENT);
@@ -322,15 +414,17 @@ class RestClubController extends Controller
         return new JsonResponse(array('errors' => $errors), Response::HTTP_BAD_REQUEST);
     }
 
-    private function checkForm(Form $form, Club $club) {
+    private function checkForm(Form $form, ClubForm $club) {
         if ($form->isValid()) {
             if ($club->getName() == null || trim($club->getName()) == '') {
                 $form->addError(new FormError($this->get('translator')->trans('FORM.CLUB.NONAME', array(), 'admin')));
             }
             else {
                 $em = $this->getDoctrine()->getManager();
+                /* @var $logic BusinessLogic */
+                $logic = $this->get('logic');
                 /* @var $otherclub Club */
-                $otherclub = $em->getRepository($form->getConfig()->getOption("data_class"))->findOneBy(array('name' => $club->getName(), 'country' => $club->getCountryCode()));
+                $otherclub = $logic->getClubByName($club->getName(), $club->getCountryCode());
                 if ($otherclub != null && $otherclub->getId() != $club->getId()) {
                     $form->addError(new FormError($this->get('translator')->trans('FORM.CLUB.NAMEEXISTS', array(), 'admin')));
                 }

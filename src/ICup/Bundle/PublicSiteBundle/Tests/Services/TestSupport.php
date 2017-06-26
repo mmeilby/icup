@@ -4,6 +4,7 @@ namespace ICup\Bundle\PublicSiteBundle\Tests\Services;
 
 use ICup\Bundle\PublicSiteBundle\Entity\Doctrine\Category;
 use ICup\Bundle\PublicSiteBundle\Entity\Doctrine\Club;
+use ICup\Bundle\PublicSiteBundle\Entity\Doctrine\ClubRelation;
 use ICup\Bundle\PublicSiteBundle\Entity\Doctrine\Country;
 use ICup\Bundle\PublicSiteBundle\Entity\Doctrine\Date;
 use ICup\Bundle\PublicSiteBundle\Entity\Doctrine\Enrollment;
@@ -53,6 +54,15 @@ class TestSupport
         return $this->em->getClassMetadata($this->doctrinePath.$repository);
     }
 
+    /**
+     * Get the entity repository path from the key
+     * @param $repository
+     * @return String
+     */
+    public function getRepositoryPath($repository) {
+        return $this->doctrinePath.$repository;
+    }
+
     public function createDatabase() {
         $tool = new \Doctrine\ORM\Tools\SchemaTool($this->em);
         $classes = array(
@@ -64,12 +74,15 @@ class TestSupport
             $this->getClassMetadata('Team'),
             $this->getClassMetadata('Club'),
             $this->getClassMetadata('Country'),
+            $this->getClassMetadata('ClubRelation'),
+            $this->getClassMetadata('Voucher'),
             $this->getClassMetadata('Site'),
             $this->getClassMetadata('Playground'),
             $this->getClassMetadata('PlaygroundAttribute'),
             $this->getClassMetadata('Timeslot'),
             $this->getClassMetadata('GroupOrder'),
             $this->getClassMetadata('Enrollment'),
+            $this->getClassMetadata('EnrollmentDetail'),
             $this->getClassMetadata('MatchRelation'),
             $this->getClassMetadata('QMatchRelation'),
             $this->getClassMetadata('Event'),
@@ -92,6 +105,14 @@ class TestSupport
     }
 
     public function makeTournament() {
+        $admin = new User();
+        $admin->setUsername("admin");
+        $admin->setName("Admin user");
+        $admin->setPassword("");
+        $admin->setEmail("admin@test.com");
+        $admin->addRole(User::ROLE_ADMIN);
+        $admin->setEnabled(true);
+        $this->em->persist($admin);
         $host = new Host();
         $host->setName("Test host");
 //        $host->setHostplan(new HostPlan());
@@ -103,15 +124,23 @@ class TestSupport
         $tournament->setHost($host);
         $host->getTournaments()->add($tournament);
         $editor = new User();
-        $editor->setUsername("test");
-        $editor->setName("Test user");
+        $editor->setUsername("editor");
+        $editor->setName("Editor user");
         $editor->setPassword("");
-        $editor->setEmail("test@test.com");
+        $editor->setEmail("editor@test.com");
         $editor->addRole(User::ROLE_EDITOR_ADMIN);
         $editor->setEnabled(true);
         $editor->setHost($host);
         $host->getUsers()->add($editor);
         $this->em->persist($host);
+        $manager = new User();
+        $manager->setUsername("manager");
+        $manager->setName("Manager user");
+        $manager->setPassword("");
+        $manager->setEmail("manager@test.com");
+        $manager->addRole(User::ROLE_CLUB_ADMIN);
+        $manager->setEnabled(true);
+        $this->em->persist($manager);
         $this->em->flush();
         return $tournament;
     }
@@ -168,7 +197,10 @@ class TestSupport
             array("BRASIL REAL", "BRA"), array("HC MELITA", "MLT"), array("POGON ZABRIZE", "POL"),
             array("HC DUNAV BELENE", "BGR"), array("DTJ POLANKA", "CZE"), array("XINZHUANG JHS", "CHN"),
             array("ESBF", "FRA"), array("FALK", "NOR"), array("C.C. ANSIAO", "PRT"),
-            array("ETIEC MENDOZA", "ARG"), array("VIKINGUR", "ISL"),
+            array("ETIEC MENDOZA", "ARG"), array("VIKINGUR", "ISL"), array("MOSIR BOCHNIA", "POL"),
+            array("HC PANAGURISTE", "BGR"), array("H 28 WROCLAW", "POL"), array("HC BEKI GABROVO", "BGR"),
+            array("FIF FREDERIKSBERG", "DNK"), array("AG HANDBOLD", "DNK"), array("UKMS CHRZANOW", "POL"),
+//            array("LKPR OLAWA", "POL"), array("ZSS KRAPKOWICE", "POL")
         );
         $countries = array();
         $clubs = array();
@@ -192,7 +224,21 @@ class TestSupport
             $clubs[] = $club;
         }
         /* @var $user User */
-        $user = $tournament->getHost()->getEditors()->first();
+        $user = $this->em->getRepository($this->getRepositoryPath('User'))->findOneBy(array('username' => 'manager'));
+        foreach ($clubs as $club) {
+            $relation = new ClubRelation();
+            $relation->setClub($club);
+            $relation->setUser($user);
+            $relation->setStatus(ClubRelation::$MEM);
+            $relation->setRole(ClubRelation::$MANAGER);
+            $relation->setApplicationDate(Date::getDate(new DateTime()));
+            $relation->setMemberSince(Date::getDate(new DateTime()));
+            $relation->setLastChange(Date::getDate(new DateTime()));
+            $this->em->persist($relation);
+            $this->em->flush();
+            $user->getClubRelations()->add($relation);
+            $club->getOfficials()->add($relation);
+        }
         /* @var $category Category */
         foreach ($tournament->getCategories() as $category) {
             $clubDiv = array_shift($clubs);
@@ -209,6 +255,7 @@ class TestSupport
             array_push($clubs, $clubDiv);
         }
         $this->em->flush();
+        return $clubs;
     }
 
     private function addTeam(Category $category, Group $group, Club $club, $division, User $user) {

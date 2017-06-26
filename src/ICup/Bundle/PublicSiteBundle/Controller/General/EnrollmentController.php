@@ -2,6 +2,8 @@
 
 namespace ICup\Bundle\PublicSiteBundle\Controller\General;
 
+use ICup\Bundle\PublicSiteBundle\Entity\Doctrine\Tournament;
+use ICup\Bundle\PublicSiteBundle\Services\Doctrine\TournamentSupport;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
@@ -10,9 +12,38 @@ use Symfony\Component\HttpFoundation\Request;
 use Swift_Mime_SimpleMessage;
 use Swift_Message;
 use Swift_Attachment;
+use DateTime;
 
 class EnrollmentController extends Controller
 {
+    /**
+     * @Route("/enrollment/online", name="_enrollment_online")
+     * @Template("ICupPublicSiteBundle:Club:enrollment.html.twig")
+     */
+    public function showEnrollmentOnline(Request $request)
+    {
+        $tournament = null;
+        $tournaments = $this->get('logic')->listAvailableTournaments();
+        $today = new DateTime();
+        foreach ($tournaments as $tmnt) {
+            /* @var $tournament Tournament */
+            $stat = $this->get('tmnt')->getTournamentStatus($tmnt->getId(), $today);
+            if ($stat != TournamentSupport::$TMNT_ENROLL) {
+                $tournament = $tmnt;
+                break;
+            }
+        }
+        $country = $this->get('util')->getCountryByLocale($request->getLocale());
+        $enrollform = $request->getSession()->get('enrollform', new Enrollment());
+        $form = $this->makeEnrollmentFormStep1($enrollform);
+        $form->handleRequest($request);
+        return array(
+            "form" => $form->createView(),
+            "tournament" => $tournament,
+            "country" => $country,
+            "StripeKey" => $this->container->getParameter("StripeSecret"));
+    }
+
     /**
      * @Route("/enrollment/step1", name="_enrollment_step1")
      * @Template("ICupPublicSiteBundle:General:enrollment/enrollment_step1.html.twig")

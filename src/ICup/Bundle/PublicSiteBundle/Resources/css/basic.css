@@ -105,22 +105,43 @@ A.btn I.fa {
 /*
     Solid line below titles in bootstrap tables
 */
-DIV.row.title {
+DIV.row.title, DIV.layout-row.title {
     border-bottom: 1px solid darkgray;
 }
 
 /*
     Title font for bootstrap tables
 */
-DIV.row.title DIV {
+DIV.row.title DIV, DIV.layout-row.title DIV {
     font-size: 125%;
     padding-bottom: 5px;
+}
+
+/*
+    Item font for bootstrap tables
+*/
+DIV.row.item DIV, DIV.layout-row.item DIV {
+    font-size: 110%;
+    padding-top: 5px;
+    padding-bottom: 5px;
+}
+
+/*
+    Footer font for bootstrap tables
+*/
+DIV.row.footer DIV, DIV.layout-row.footer DIV {
+    font-size: 125%;
+    padding-top: 5px;
+    border-top: 1px solid darkgray;
 }
 
 .bold {
     font-weight: bold;
 }
 
+/*
+    Facebook connect button
+ */
 .btn-facebook {
     font-weight: 800;
     border-color: #3b5998;
@@ -164,6 +185,9 @@ button.list-group-item-facebook.active:hover {
     border-color: #337ab7;
 }
 
+/*
+    Google connect button
+ */
 .btn-google {
     font-weight: 800;
     border-color: #DE4D3A;
@@ -207,6 +231,9 @@ button.list-group-item-google.active:hover {
     border-color: #DE4D3A;
 }
 
+/*
+    Most wanted response button color
+ */
 .btn-mostwantedresponse {
     font-weight: 800;
     border-color: #3cba54;
@@ -220,6 +247,52 @@ button.list-group-item-google.active:hover {
     color: white;
 }
 
+/*
+    Shopping Cart
+ */
+
+.cart {
+    padding-bottom: 10px;
+}
+.cart .info {
+    font-size: 125%;
+}
+.cart .reference {
+    font-size: 200%;
+    background-color: #5eb5e0;
+    border: 2px #28a4c9 solid;
+}
+.cart .reference .text {
+    color: #d3eef3;
+    vertical-align: middle;
+    padding: 15px;
+}
+.cart .reference .image {
+    color: #d3eef3;
+    background-color: #28a4c9;
+    padding: 15px;
+}
+.cart .units {
+    transition:all linear 0.5s;
+    background: transparent;
+}
+.cart .units.ng-invalid {
+    color:white;
+    background: red;
+}
+.personalinfo {
+    background-color: #DDDDDD;
+    padding: 10px;
+    border-radius: 10px;
+}
+.charge-response {
+    background-color: #DDDDDD;
+    padding: 25px;
+    border-radius: 10px;
+}
+.form-group .form-control {
+    margin-bottom: 8px;
+}
 /**
  * FlexCard
  */

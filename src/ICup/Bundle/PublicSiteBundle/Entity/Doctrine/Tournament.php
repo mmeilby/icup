@@ -107,6 +107,14 @@ class Tournament implements JsonSerializable
     protected $news;
 
     /**
+     * @var ArrayCollection $enrollments
+     * Collection of tournament relations to enrollments
+     * @ORM\OneToMany(targetEntity="EnrollmentDetail", mappedBy="tournament", cascade={"persist", "remove"})
+     * @ORM\OrderBy({"club" = "asc"})
+     */
+    protected $enrollments;
+
+    /**
      * Tournament constructor.
      */
     public function __construct() {
@@ -116,6 +124,7 @@ class Tournament implements JsonSerializable
         $this->timeslots = new ArrayCollection();
         $this->events = new ArrayCollection();
         $this->news = new ArrayCollection();
+        $this->enrollments = new ArrayCollection();
     }
 
     /**
@@ -285,6 +294,13 @@ class Tournament implements JsonSerializable
      */
     public function getNews() {
         return $this->news;
+    }
+
+    /**
+     * @return ArrayCollection
+     */
+    public function getEnrollmentDetails() {
+        return $this->enrollments;
     }
 
     /**

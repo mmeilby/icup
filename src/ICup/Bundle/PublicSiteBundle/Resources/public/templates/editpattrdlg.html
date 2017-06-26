@@ -53,7 +53,8 @@
         </form>
     </md-dialog-content>
     <md-dialog-actions>
-        <md-button ng-click="submit(pattr_object)" class="md-primary md-raised" flex="50">{{ 'FORM.SUBMIT' | translate }}</md-button>
-        <md-button ng-click="cancel()" class="md-raised" flex="50">{{ 'FORM.CLOSE' | translate }}</md-button>
+        <md-button ng-click="submit(pattr_object)" class="md-primary md-raised" flex="33">{{ 'FORM.SUBMIT' | translate }}</md-button>
+        <md-button ng-click="remove(pattr_object)" class="md-raised" flex="33" ng-hide="pattr_object.op=='add'">{{ 'FORM.DELETE' | translate }}</md-button>
+        <md-button ng-click="cancel()" class="md-raised" flex="33">{{ 'FORM.CLOSE' | translate }}</md-button>
     </md-dialog-actions>
 </md-dialog>

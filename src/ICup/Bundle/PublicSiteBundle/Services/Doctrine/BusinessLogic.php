@@ -40,7 +40,16 @@ class BusinessLogic
         $this->em = $container->get('doctrine')->getManager();
         $this->logger = $logger;
     }
-    
+
+    public function getEnrollmentPrice(Category $category, DateTime $date) {
+        $month = $date->format('m');
+        return array(
+            'fee' => $month == '01' || $month == '12' ? 200 : ($month > '07' ? 100 : 300),
+            'deposit' => 400,
+            'currency' => 'EUR'
+        );
+    }
+
     public function addEnrolled(Category $category, Club $club, User $user, $vacant = false) {
         $qb = $this->em->createQuery(
                 "select e ".
@@ -913,7 +922,11 @@ class BusinessLogic
     public function getUserByName($username) {
         return $this->entity->getUserRepo()->findOneBy(array('username' => $username));
     }
-    
+
+    public function getUserByEmail($email) {
+        return $this->entity->getUserRepo()->findOneBy(array('email' => $email));
+    }
+
     public function listAdminUsers() {
         $admins = array();
         $users = $this->entity->getUserRepo()->findAll();

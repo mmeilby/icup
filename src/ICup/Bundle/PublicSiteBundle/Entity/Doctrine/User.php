@@ -81,6 +81,13 @@ class User extends BaseUser implements JsonSerializable
     protected $enrollments;
 
     /**
+     * @var ArrayCollection $club_relations
+     * User relation to club
+     * @ORM\OneToMany(targetEntity="ClubRelation", mappedBy="user", cascade={"persist", "remove"})
+     **/
+    protected $club_relations;
+
+    /**
      * @var ArrayCollection $social_relations
      * User relation to social groups
      * @ORM\OneToMany(targetEntity="SocialRelation", mappedBy="user", cascade={"persist", "remove"})
@@ -95,6 +102,7 @@ class User extends BaseUser implements JsonSerializable
         $this->name = '';
         $this->attempts = 0;
         $this->enrollments = new ArrayCollection();
+        $this->club_relations = new ArrayCollection();
         $this->social_relations = new ArrayCollection();
     }
 
@@ -178,7 +186,14 @@ class User extends BaseUser implements JsonSerializable
     public function setGoogleID($googleID) {
         $this->googleID = $googleID;
     }
-    
+
+    /**
+     * @return ArrayCollection
+     */
+    public function getClubRelations() {
+        return $this->club_relations;
+    }
+
     /**
      * @return ArrayCollection
      */
@@ -191,6 +206,22 @@ class User extends BaseUser implements JsonSerializable
      */
     public function getEnrollments() {
         return $this->enrollments;
+    }
+
+    /**
+     * Test that user is official for the club passed
+     * @param Club $club - the club to test membership of
+     * @return bool - true if the user is official or manager for the club
+     */
+    public function isOfficialOf(Club $club) {
+        $relations = $this->club_relations->filter(
+            function (ClubRelation $rel) use ($club) {
+                return $rel->getClub()->getId() == $club->getId() &&
+                       $rel->getStatus() == ClubRelation::$MEM &&
+                       array_search($rel->getRole(), array(ClubRelation::$MANAGER, ClubRelation::$OFFICIAL)) !== false;
+            }
+        );
+        return !$relations->isEmpty();
     }
 
     /**

@@ -1,0 +1,41 @@
+{% extends "ICupPublicSiteBundle:Masters:standard.html.twig" %}
+
+{% trans_default_domain "club" %}
+
+{% block widebody %}
+    <md-content ng-app="enrollmentModule">
+        <md-content class="md-padding" ng-controller="enrollmentController" ng-cloak>
+            <md-content class="container">
+                <div ng-view></div>
+            </md-content>
+        </md-content>
+   </md-content>
+{% endblock %}
+
+{% block javascripts %}
+    <script src="{{ url('bazinga_jstranslation_js', { 'domain': 'errors' }) }}"></script>
+    <script src="{{ url('bazinga_jstranslation_js', { 'domain': 'tournament' }) }}"></script>
+    <script src="{{ url('bazinga_jstranslation_js', { 'domain': 'club' }) }}"></script>
+    <script src="https://checkout.stripe.com/checkout.js"></script>
+    <script type="text/javascript">
+        angular.module('enrollmentModule',
+            [
+                'ngMaterial', 'ngMessages', 'ngRoute', 'ui.select', 'ngSanitize', //'angularPayments',
+                'translationModule.filter', 'dataSourceModule.factory', 'shopModule', 'enrollmentModule.categories'
+            ]
+        )
+        .constant('tournamentid', '{{ tournament.id }}')
+        .constant('countryByLocale', '{{ country }}')
+        .constant('imgDirectory', '{{ asset('bundles/icuppublicsite/images/') }}')
+        .constant('flagsDirectory', '{{ asset('bundles/icuppublicsite/images/flags/') }}')
+        .constant('templateDirectory', '{{ asset('bundles/icuppublicsite/templates/') }}')
+        .constant('translate_domain', 'club');
+        Stripe.setPublishableKey('{{ StripeKey }}');
+    </script>
+    {% javascripts '@ICupPublicSiteBundle/Resources/js/general/*' output="bundles/icuppublicsite/js/general.js" %}
+    <script src="{{ asset_url }}" type="text/javascript"></script>
+    {% endjavascripts  %}
+    {% javascripts '@ICupPublicSiteBundle/Resources/js/enrollment/*' output="bundles/icuppublicsite/js/enrollment.js" %}
+    <script src="{{ asset_url }}" type="text/javascript"></script>
+    {% endjavascripts  %}
+{% endblock %}

@@ -1,0 +1,26 @@
+<div class="page">
+    <div class="lead">
+        <h1>{{ 'FORM.ENROLLMENT.PRODUCTLIST.HEADLINE4' | translate }}</h1>
+        <p>{{ 'FORM.ENROLLMENT.PRODUCTLIST.TITLE4' | translate }} {{ tournament.name }}</p>
+    </div>
+</div>
+<div layout="row">
+    <div class="lead" flex="50" style="margin-right: 30px;">
+        <div class="charge-response" id="response">
+            <div layout="row" layout-align="start center" style="margin-bottom: 30px;">
+                <div flex="80">
+                    <div>
+                        {{ 'FORM.ENROLLMENT.PRODUCTLIST.SUBTITLE4' | translate }}
+                    </div>
+                    <div>
+                        Der trækkes {{cart.getTotalPrice() | currency:cart.currency:0}} på {{ stripetoken.card.brand }} kort med endecifre ****{{ stripetoken.card.last4 }}
+                    </div>
+                </div>
+                <div flex="20" class="text-right"><i class="fa fa-spinner fa-pulse fa-2x fa-fw"></i></div>
+            </div>
+            <img src="{{ imgDir+'credit-card.jpg' }}" width="100%" />
+        </div>
+    </div>
+    <div class="cart" flex="50">
+    </div>
+</div>

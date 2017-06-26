@@ -1,0 +1,64 @@
+<div class="page">
+    <div class="lead">
+        <h1>{{ 'FORM.ENROLLMENT.PRODUCTLIST.HEADLINE5' | translate }}</h1>
+        <p>{{ 'FORM.ENROLLMENT.PRODUCTLIST.TITLE5' | translate }} {{ tournament.name }}</p>
+    </div>
+</div>
+<div layout="row">
+    <div class="lead" flex="50" style="margin-right: 30px;">
+        <div class="charge-response" id="response">
+            <p>
+                {{ 'FORM.ENROLLMENT.PRODUCTLIST.SUBTITLE5' | translate }}
+            </p>
+            <p>
+                {{ 'FORM.ENROLLMENT.PRODUCTLIST.SUBTITLE6' | translate }}
+            </p>
+        </div>
+    </div>
+    <div class="cart" flex="50">
+        <div>
+            <img src="{{ imgDir+'paid.png' }}" width="100%" style="opacity: 0.4"/>
+        </div>
+        <div style="position: relative; top: -434px;">
+            <div class="item" layout="row">
+                <div flex="60">
+                    <strong>{{ club }}</strong><br />
+                    {{ country.value.name }}
+                </div>
+                <div flex="40"  class="text-right">
+                    {{ manager }}<br />
+                    {{ m_mobile }}<br />
+                    {{ m_email }}
+                </div>
+            </div>
+            <div class="item" layout="row" layout-align="start center">
+                <div flex="100"><b>{{ tournament.description }} {{ tournament.edition }}</b></div>
+            </div>
+            <div class="title" layout="row" layout-align="start center">
+                <div flex="100">{{ 'FORM.ENROLLMENT.PRODUCTLIST.ORDERSUMMARY' | translate }}</div>
+            </div>
+            <div class="item" layout="row" layout-align="start center">
+                <div flex="70">{{ 'FORM.ENROLLMENT.PRODUCTLIST.TEAMSUMMARY' | translate }}</div>
+                <div flex="30" class="text-right">{{cart.getTotalPrice()-cart.getTotalDeposit() | currency:cart.currency:0}}</div>
+            </div>
+            <div class="item" layout="row" layout-align="start center">
+                <div flex="70">{{ 'FORM.ENROLLMENT.PRODUCTLIST.DEPOSITSUMMARY' | translate }}</div>
+                <div flex="30" class="text-right">{{cart.getTotalDeposit() | currency:cart.currency:0}}</div>
+            </div>
+            <div class="footer" layout="row" layout-align="start center">
+                <div flex="70">{{ 'FORM.ENROLLMENT.PRODUCTLIST.TOTALSUMMARY' | translate }}</div>
+                <div flex="30" class="text-right">{{cart.getTotalPrice() | currency:cart.currency:0}}</div>
+            </div>
+            <hr />
+            <div class="title" layout="row" layout-align="start center">
+                <div flex="70">{{ 'FORM.ENROLLMENT.PRODUCTLIST.CATEGORY' | translate }}</div>
+                <div flex="30" class="text-right">{{ 'FORM.ENROLLMENT.PRODUCTLIST.QUANTITY' | translate }}</div>
+            </div>
+            <!-- cart items -->
+            <div class="item" layout="row" layout-align="start center" ng-repeat="item in cart.items | orderBy:'name'">
+                <div flex="70">{{ item.name }}</div>
+                <div flex="30" class="text-right">{{ item.quantity }}</div>
+            </div>
+        </div>
+    </div>
+</div>

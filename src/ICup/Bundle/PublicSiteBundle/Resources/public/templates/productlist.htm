@@ -1,0 +1,71 @@
+﻿<div class="page">
+    <div class="lead">
+        <h1>{{ 'FORM.ENROLLMENT.PRODUCTLIST.HEADLINE1' | translate }}</h1>
+        <p>{{ 'FORM.ENROLLMENT.PRODUCTLIST.TITLE1' | translate }} {{tournament.name}}</p>
+    </div>
+</div>
+
+<div class="cart">
+    <div class="info">
+        {{ 'FORM.ENROLLMENT.PRODUCTLIST.SUBTITLE1' | translate }}
+    </div>
+    <div layout="row" layout-align="space-between center">
+        <div class="info" flex="50">
+            <p>{{ 'FORM.ENROLLMENT.PRODUCTLIST.TEXT1' | translate }}</p>
+        </div>
+        <div class="reference" flex="40" ng-hide="cart.getTotalCount() < 1">
+            <a href="#/cart" title="go to shopping cart">
+                <div layout="row" layout-align="end center">
+                    <div class="text">
+                        {{cart.getTotalCount()}} {{ 'FORM.ENROLLMENT.PRODUCTLIST.ITEMS' | translate }},
+                        {{cart.getTotalPrice() | currency:cart.currency:0}}
+                    </div>
+                    <div class="image">
+                        <i class="fa fa-shopping-cart" />
+                    </div>
+                </div>
+            </a>
+        </div>
+        <div class="info" flex="40" ng-hide="cart.getTotalCount() > 0">
+            <h3>Klik på "tilføj hold" for at tilmelde et hold til turneringen.</h3>
+        </div>
+    </div>
+    </div>
+    <div>
+        <div class="bg-facebook-lightgrey" layout-xs="column" layout="row">
+            <div flex-xs flex-gt-xs="50" layout="column" ng-repeat="gender in ['F', 'M']">
+                <md-card md-theme="{{ !cart.getTotalCount(product.name) ? 'default' : 'green' }}" md-theme-watch ng-repeat="product in store.products | orderBy: ['classification', '-age'] | filter: {'gender': gender} track by product.sku">
+                    <md-card-title>
+                        <md-card-title-text>
+                            <span class="md-headline">{{ product.description }}</span>
+                            <span ng-show="product.year" class="md-subhead">
+                                {{ 'FORM.ENROLLMENT.PRODUCTLIST.BORN' | translate }} {{ product.year }} {{ 'FORM.ENROLLMENT.PRODUCTLIST.BORNLATER' | translate }}
+                            </span>
+                            <span flex="80" class="md-subhead" ng-show="cart.getTotalCount(product.name)<1">
+                                {{ 'FORM.ENROLLMENT.PRODUCTLIST.PRICE' | translate }}: {{ product.price | currency:cart.currency:0 }}.<br />
+                                {{ 'FORM.ENROLLMENT.PRODUCTLIST.TEAMDEP' | translate }}: {{ product.deposit | currency:cart.currency:0 }}
+                            </span>
+                            <span flex="80" ng-show="cart.getTotalCount(product.name)">
+                                {{ 'FORM.ENROLLMENT.PRODUCTLIST.TOTAL' | translate }}: {{ cart.getTotalPrice(product.name) | currency:cart.currency:0 }}
+                            </span>
+                        </md-card-title-text>
+                        <md-card-title-media>
+                            <div class="md-media-md card-media">
+                                <span class="fa facebook-lightgrey" ng-class="gender=='M' ? 'fa-male' : 'fa-female'" style="font-size: 800%"></span>
+                            </div>
+                        </md-card-title-media>
+                        <span class="label label-success" ng-show="cart.getTotalCount(product.name)" style="font-size: 300%">{{ cart.getTotalCount(product.name) }}</span>
+                    </md-card-title>
+                    <md-card-actions layout="row" layout-align="end center">
+                        <md-button class="md-raised md-primary" ng-click="cart.addItem(product.name, product.description, product.price, product.deposit, 1)">
+                            {{ 'FORM.ENROLLMENT.PRODUCTLIST.ADD' | translate }}
+                        </md-button>
+                        <md-button ng-disabled="!cart.getTotalCount(product.name)" ng-click="cart.addItem(product.name, product.description, product.price, product.deposit, -1)">
+                            {{ 'FORM.ENROLLMENT.PRODUCTLIST.REMOVE' | translate }}
+                        </md-button>
+                    </md-card-actions>
+                </md-card>
+            </div>
+        </div>
+    </div>
+</div>

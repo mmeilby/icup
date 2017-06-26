@@ -1,0 +1,82 @@
+<md-dialog aria-label="{{ 'FORM.ENROLLMENT.STEP1.TITLE' | translate }}" flex="80">
+    <md-toolbar>
+        <div class="md-toolbar-tools">
+            <h2 class="md-toolbar-tools">{{ 'FORM.ENROLLMENT.STEP1.TITLE' | translate }}</h2>
+            <span flex></span>
+            <md-button class="md-icon-button" ng-click="cancel()"><span class="fa fa-2x fa-times"></span></md-button>
+        </div>
+    </md-toolbar>
+    <md-dialog-content layout-padding>
+        <form ng-submit="submit(enrollment_object)" ng-cloak>
+            <md-tabs md-dynamic-height md-border-bottom>
+                <md-tab label="{{ 'FORM.ENROLLMENT.STEP1.TITLE1' | translate }}">
+                    <div class="lead" style="padding-top: 20px">{{ 'FORM.ENROLLMENT.STEP1.HEADER1' | translate }}</div>
+                    <md-input-container>
+                        <label for="club">{{ 'FORM.ENROLLMENT.CLUB' | translate }}</label>
+                        <input type="text" id="club" size="50" ng-model="enrollment_object.club">
+                    </md-input-container>
+                    <md-input-container>
+                        <label for="address">{{ 'FORM.ENROLLMENT.ADDRESS' | translate }}</label>
+                        <input type="text" id="address" size="50" ng-model="enrollment_object.address">
+                    </md-input-container>
+                    <md-input-container>
+                        <label for="city">{{ 'FORM.ENROLLMENT.CITY' | translate }}</label>
+                        <input type="text" id="city" size="50" ng-model="enrollment_object.city">
+                    </md-input-container>
+                    <md-input-container>
+                        <label for="country">{{ 'FORM.ENROLLMENT.COUNTRY' | translate }}</label>
+                        <input type="text" id="country" size="20" ng-model="enrollment_object.country">
+                    </md-input-container>
+                    <md-input-container>
+                        <label for="email">{{ 'FORM.ENROLLMENT.EMAIL' | translate }}</label>
+                        <input type="text" id="email" size="100" ng-model="enrollment_object.email">
+                    </md-input-container>
+                </md-tab>
+                <md-tab label="{{ 'FORM.ENROLLMENT.STEP1.TITLE2' | translate }}">
+                    <div class="lead" style="padding-top: 20px">{{ 'FORM.ENROLLMENT.STEP1.HEADER2' | translate }}</div>
+                    <md-input-container>
+                        <label for="phone">{{ 'FORM.ENROLLMENT.PHONE' | translate }}</label>
+                        <input type="text" id="phone" size="50" ng-model="enrollment_object.phone">
+                    </md-input-container>
+                    <md-input-container>
+                        <label for="fax">{{ 'FORM.ENROLLMENT.FAX' | translate }}</label>
+                        <input type="text" id="fax" size="50" ng-model="enrollment_object.fax">
+                    </md-input-container>
+                    <md-input-container>
+                        <label for="skype">{{ 'FORM.ENROLLMENT.SKYPE' | translate }}</label>
+                        <input type="text" id="skype" size="50" ng-model="enrollment_object.skype">
+                    </md-input-container>
+                    <md-input-container>
+                        <label for="website">{{ 'FORM.ENROLLMENT.WEB' | translate }}</label>
+                        <input type="text" id="website" size="100" ng-model="enrollment_object.website">
+                    </md-input-container>
+                </md-tab>
+                <md-tab label="{{ 'FORM.ENROLLMENT.STEP1.TITLE3' | translate }}">
+                    <div class="lead" style="padding-top: 20px">{{ 'FORM.ENROLLMENT.STEP1.HEADER3' | translate }}</div>
+                    <md-input-container>
+                        <label for="membership">{{ 'FORM.ENROLLMENT.MEMBERSHIP' | translate }}</label>
+                        <input type="text" id="membership" size="100" ng-model="enrollment_object.membership">
+                    </md-input-container>
+                    <md-input-container>
+                        <label for="affiliation">{{ 'FORM.ENROLLMENT.AFFILIATION' | translate }}</label>
+                        <input type="text" id="affiliation" size="100" ng-model="enrollment_object.affiliation">
+                    </md-input-container>
+                    <md-input-container>
+                        <label for="championship">{{ 'FORM.ENROLLMENT.CHAMPIONSHIP' | translate }}</label>
+                        <input type="text" id="championship" size="100" ng-model="enrollment_object.championship">
+                    </md-input-container>
+                    <md-input-container>
+                        <label for="bestresult">{{ 'FORM.ENROLLMENT.BESTRESULT' | translate }}</label>
+                        <input type="text" id="bestresult" size="100" ng-model="enrollment_object.bestresult">
+                    </md-input-container>
+                </md-tab>
+            </md-tabs>
+        </form>
+    </md-dialog-content>
+    <md-dialog-actions layout-padding>
+        <md-button ng-click="cancel()" class="md-raised" flex="25">{{ 'FORM.CLOSE' | translate:'admin' }}</md-button>
+        <div flex="10"></div>
+        <md-button ng-click="submit(enrollment_object)" class="md-primary md-raised" flex="25">{{ 'FORM.SUBMIT' | translate:'admin' }}</md-button>
+        <div flex="5"></div>
+    </md-dialog-actions>
+</md-dialog>

@@ -1,0 +1,373 @@
+{% extends "ICupPublicSiteBundle:Masters:standard.html.twig" %}
+
+{% trans_default_domain "club" %}
+
+{% block widebody %}
+    <md-content ng-app="enrollmentModule">
+        <!--
+            <md-tab label="{% trans %}FORM.ENROLLMENT.MAILTITLE{% endtrans %}">
+        -->
+        <md-content class="md-padding" ng-controller="enrollmentControllerStep1">
+        </md-content>
+        {#
+        ---------------------
+        STEP 3 - CATEGORY ENROLLMENT
+        ---------------------
+        #}
+        <md-content class="md-padding bg-facebook-lightgrey" ng-controller="enrollmentControllerStep3" ng-cloak>
+            <md-content class="container tall bg-facebook-lightgrey">
+
+                <div class="page">
+                    <div class="lead">
+                        {{ sonata_block_render({'name': '/cms/content/blocks/enrollment/step1'}) }}
+                    </div>
+                </div>
+
+                <div ng-view></div>
+
+            </md-content>
+        </md-content>
+
+        <section layout="column">
+            <md-content flex>
+                <md-content flex>
+                    <div class="container tall">
+                        <md-content>
+                                {#
+                                ---------------------
+                                STEP 1 - CLUB INFORMATION
+                                ---------------------
+                                #}
+                            <!--    <md-tab label="{% trans %}FORM.ENROLLMENT.STEP1.TITLE{% endtrans %}">  -->
+                                    <md-content class="md-padding bg-facebook-lightblue" ng-controller="enrollmentControllerStep1">
+                                        <div class="page">
+                                            <h3>{% trans %}FORM.ENROLLMENT.STEP1.TITLE{% endtrans %}</h3>
+                                            <div layout="column" layout-align="none">
+                                                <p class="lead">{% trans %}FORM.ENROLLMENT.STEP1.HEADER1{% endtrans %}</p>
+                                                <md-input-container>
+                                                    <label for="club">{{ "{{ 'FORM.ENROLLMENT.CLUB' | translate }}" }}</label>
+                                                    <input type="text" id="club" ng-model="enrollment_object.club">
+                                                </md-input-container>
+                                                <md-input-container>
+                                                    <label for="address">{{ "{{ 'FORM.ENROLLMENT.ADDRESS' | translate }}" }}</label>
+                                                    <input type="text" id="address" ng-model="enrollment_object.address">
+                                                </md-input-container>
+                                                <md-input-container>
+                                                    <label for="city">{{ "{{ 'FORM.ENROLLMENT.CITY' | translate }}" }}</label>
+                                                    <input type="text" id="city" ng-model="enrollment_object.city">
+                                                </md-input-container>
+                                                <md-input-container>
+                                                    <label for="country">{{ "{{ 'FORM.ENROLLMENT.COUNTRY' | translate }}" }}</label>
+                                                    <input type="text" id="country" ng-model="enrollment_object.country">
+                                                </md-input-container>
+                                                <md-input-container>
+                                                    <label for="email">{{ "{{ 'FORM.ENROLLMENT.EMAIL' | translate }}" }}</label>
+                                                    <input type="text" id="email" ng-model="enrollment_object.email">
+                                                </md-input-container>
+                                            </div>
+                                            <div layout="column" layout-align="none">
+                                                <p class="lead">{% trans %}FORM.ENROLLMENT.STEP1.HEADER2{% endtrans %}</p>
+                                                <md-input-container>
+                                                    <label for="phone">{{ "{{ 'FORM.ENROLLMENT.PHONE' | translate }}" }}</label>
+                                                    <input type="text" id="phone" ng-model="enrollment_object.phone">
+                                                </md-input-container>
+                                                <md-input-container>
+                                                    <label for="fax">{{ "{{ 'FORM.ENROLLMENT.FAX' | translate }}" }}</label>
+                                                    <input type="text" id="fax" ng-model="enrollment_object.fax">
+                                                </md-input-container>
+                                                <md-input-container>
+                                                    <label for="skype">{{ "{{ 'FORM.ENROLLMENT.SKYPE' | translate }}" }}</label>
+                                                    <input type="text" id="skype" ng-model="enrollment_object.skype">
+                                                </md-input-container>
+                                                <md-input-container>
+                                                    <label for="website">{{ "{{ 'FORM.ENROLLMENT.WEB' | translate }}" }}</label>
+                                                    <input type="text" id="website" ng-model="enrollment_object.website">
+                                                </md-input-container>
+                                                <p class="lead">{% trans %}FORM.ENROLLMENT.STEP1.HEADER3{% endtrans %}</p>
+                                                <md-input-container>
+                                                    <label for="membership">{{ "{{ 'FORM.ENROLLMENT.MEMBERSHIP' | translate }}" }}</label>
+                                                    <input type="text" id="membership" ng-model="enrollment_object.membership">
+                                                </md-input-container>
+                                                <md-input-container>
+                                                    <label for="affiliation">{{ "{{ 'FORM.ENROLLMENT.AFFILIATION' | translate }}" }}</label>
+                                                    <input type="text" id="affiliation" ng-model="enrollment_object.affiliation">
+                                                </md-input-container>
+                                                <md-input-container>
+                                                    <label for="championship">{{ "{{ 'FORM.ENROLLMENT.CHAMPIONSHIP' | translate }}" }}</label>
+                                                    <input type="text" id="championship" ng-model="enrollment_object.championship">
+                                                </md-input-container>
+                                                <md-input-container>
+                                                    <label for="bestresult">{{ "{{ 'FORM.ENROLLMENT.BESTRESULT' | translate }}" }}</label>
+                                                    <input type="text" id="bestresult" ng-model="enrollment_object.bestresult">
+                                                </md-input-container>
+                                            </div>
+<!--
+                                            <hr class="border--silver" />
+                                            <div class="row">
+                                                <div class="col-xs-12 text-right">F</div>
+                                            </div>
+-->
+                                        </div>
+                                    </md-content>
+                            <!--     </md-tab>  -->
+                                {#
+                                ---------------------
+                                STEP 2 - MANAGER INFORMATION
+                                ---------------------
+                                #}
+                            <!--     <md-tab label="{% trans %}FORM.ENROLLMENT.STEP2.TITLE{% endtrans %}">  -->
+                                    <md-content class="md-padding" ng-controller="enrollmentControllerStep2" ng-cloak>
+                                        <div class="page">
+                                            <h3>{% trans %}FORM.ENROLLMENT.STEP2.TITLE{% endtrans %}</h3>
+                                            <div layout="column" layout-align="none">
+                                                <p class="lead">{% trans %}FORM.ENROLLMENT.STEP2.HEADER1{% endtrans %}</p>
+                                                <md-input-container>
+                                                    <label for="manager">{{ "{{ 'FORM.ENROLLMENT.MANAGER' | translate }}" }}</label>
+                                                    <input type="text" id="manager" ng-model="enrollment_object.manager">
+                                                </md-input-container>
+                                                <md-input-container>
+                                                    <label for="m_mobile">{{ "{{ 'FORM.ENROLLMENT.M_MOBILE' | translate }}" }}</label>
+                                                    <input type="text" id="m_mobile" ng-model="enrollment_object.m_mobile">
+                                                </md-input-container>
+                                                <md-input-container>
+                                                    <label for="m_email">{{ "{{ 'FORM.ENROLLMENT.M_EMAIL' | translate }}" }}</label>
+                                                    <input type="text" id="m_email" ng-model="enrollment_object.m_email">
+                                                </md-input-container>
+                                            </div>
+                                            <div layout="column" layout-align="none">
+                                                <p class="lead">{% trans %}FORM.ENROLLMENT.STEP2.HEADER2{% endtrans %}</p>
+                                                <md-input-container>
+                                                    <label for="m_address">{{ "{{ 'FORM.ENROLLMENT.M_ADDRESS' | translate }}" }}</label>
+                                                    <input type="text" id="m_address" ng-model="enrollment_object.m_address">
+                                                </md-input-container>
+                                                <md-input-container>
+                                                    <label for="m_city">{{ "{{ 'FORM.ENROLLMENT.M_CITY' | translate }}" }}</label>
+                                                    <input type="text" id="m_city" ng-model="enrollment_object.m_city">
+                                                </md-input-container>
+                                                <md-input-container>
+                                                    <label for="m_country">{{ "{{ 'FORM.ENROLLMENT.M_COUNTRY' | translate }}" }}</label>
+                                                    <input type="text" id="m_country" ng-model="enrollment_object.m_country">
+                                                </md-input-container>
+                                                <md-input-container>
+                                                    <label for="m_phone">{{ "{{ 'FORM.ENROLLMENT.M_PHONE' | translate }}" }}</label>
+                                                    <input type="text" id="m_phone" ng-model="enrollment_object.m_phone">
+                                                </md-input-container>
+                                                <md-input-container>
+                                                    <label for="m_fax">{{ "{{ 'FORM.ENROLLMENT.M_FAX' | translate }}" }}</label>
+                                                    <input type="text" id="m_fax" ng-model="enrollment_object.m_fax">
+                                                </md-input-container>
+                                                <md-input-container>
+                                                    <label for="m_skype">{{ "{{ 'FORM.ENROLLMENT.M_SKYPE' | translate }}" }}</label>
+                                                    <input type="text" id="m_skype" ng-model="enrollment_object.m_skype">
+                                                </md-input-container>
+                                            </div>
+<!--
+                                            <hr class="border--navy" />
+                                            <div class="row">
+                                                <div class="col-xs-6 col-xs-push-6 text-right">F</div>
+                                                <div class="col-xs-6 col-xs-pull-6">B</div>
+                                            </div>
+-->
+                                        </div>
+                                    </md-content>
+                            <!--      </md-tab>  -->
+                                {#
+                                ---------------------
+                                STEP 4 - ACCOMMONDATION
+                                ---------------------
+                                #}
+                            <!--     <md-tab label="{% trans %}FORM.ENROLLMENT.STEP4.TITLE{% endtrans %}">   -->
+                                    <md-content class="md-padding" ng-controller="enrollmentControllerStep4" ng-cloak>
+                                        <div class="page">
+                                            <div layout="column" layout-align="none">
+                                                <h3>{% trans %}FORM.ENROLLMENT.STEP4.TITLE{% endtrans %}</h3>
+                                                <p class="lead">{% trans %}FORM.ENROLLMENT.STEP4.HEADER1{% endtrans %}</p>
+                                                <p>{% trans %}FORM.ENROLLMENT.STEP4.TEXT1{% endtrans %}</p>
+                                                <md-input-container>
+                                                    <label for="a_teramo_wob">{{ "{{ 'FORM.ENROLLMENT.A_TERAMO_WOB' | translate }}" }}</label>
+                                                    <input type="text" id="a_teramo_wob" ng-model="enrollment_object.a_teramo_wob">
+                                                </md-input-container>
+                                                <md-input-container>
+                                                    <label for="a_teramo_wb">{{ "{{ 'FORM.ENROLLMENT.A_TERAMO_WB' | translate }}" }}</label>
+                                                    <input type="text" id="a_teramo_wb" ng-model="enrollment_object.a_teramo_wb">
+                                                </md-input-container>
+                                                <md-input-container>
+                                                    <label for="a_teramo_tent">{{ "{{ 'FORM.ENROLLMENT.A_TERAMO_TENT' | translate }}" }}</label>
+                                                    <input type="text" id="a_teramo_tent" ng-model="enrollment_object.a_teramo_tent">
+                                                </md-input-container>
+                                                <md-input-container>
+                                                    <label for="a_teramo_hotel">{{ "{{ 'FORM.ENROLLMENT.A_TERAMO_HOTEL' | translate }}" }}</label>
+                                                    <input type="text" id="a_teramo_hotel" ng-model="enrollment_object.a_teramo_hotel">
+                                                </md-input-container>
+                                            </div>
+                                            <div layout="column" layout-align="none">
+                                                <p class="lead">{% trans %}FORM.ENROLLMENT.STEP4.HEADER2{% endtrans %}</p>
+                                                <p>{% trans %}FORM.ENROLLMENT.STEP4.TEXT2{% endtrans %}</p>
+                                                <md-input-container>
+                                                    <label for="a_guilianova_tent">{{ "{{ 'FORM.ENROLLMENT.A_GUILIANOVA_TENT' | translate }}" }}</label>
+                                                    <input type="text" id="a_guilianova_tent" ng-model="enrollment_object.a_guilianova_tent">
+                                                </md-input-container>
+                                                <md-input-container>
+                                                    <label for="a_guilianova_hotel">{{ "{{ 'FORM.ENROLLMENT.A_GUILIANOVA_HOTEL' | translate }}" }}</label>
+                                                    <input type="text" id="a_guilianova_hotel" ng-model="enrollment_object.a_guilianova_hotel">
+                                                </md-input-container>
+                                                <p class="lead">{% trans %}FORM.ENROLLMENT.STEP4.HEADER3{% endtrans %}</p>
+                                                <p>{% trans %}FORM.ENROLLMENT.STEP4.TEXT3{% endtrans %}</p>
+                                                <md-input-container>
+                                                    <label for="a_restaurant">{{ "{{ 'FORM.ENROLLMENT.A_RESTAURANT' | translate }}" }}</label>
+                                                    <input type="text" id="a_restaurant" ng-model="enrollment_object.a_restaurant">
+                                                </md-input-container>
+                                                <p class="lead">{% trans %}FORM.ENROLLMENT.STEP4.HEADER4{% endtrans %}</p>
+                                                <p>{% trans %}FORM.ENROLLMENT.STEP4.TEXT4{% endtrans %}</p>
+                                                <md-input-container>
+                                                    <label for="a_other">{{ "{{ 'FORM.ENROLLMENT.A_OTHER' | translate }}" }}</label>
+                                                    <input type="text" id="a_other" ng-model="enrollment_object.a_other">
+                                                </md-input-container>
+                                                <p>{% trans %}FORM.ENROLLMENT.STEP4.TEXT5{% endtrans %}</p>
+                                                <md-input-container>
+                                                    <label for="a_none">{{ "{{ 'FORM.ENROLLMENT.A_NONE' | translate }}" }}</label>
+                                                    <input type="text" id="a_none" ng-model="enrollment_object.a_none">
+                                                </md-input-container>
+                                            </div>
+<!--
+                                            <hr class="border--navy" />
+                                            <div class="row">
+                                                <div class="col-xs-6 col-xs-push-6 text-right">F</div>
+                                                <div class="col-xs-6 col-xs-pull-6">B</div>
+                                            </div>
+-->
+                                        </div>
+                                    </md-content>
+                            <!--         </md-tab>   -->
+                                {#
+                                ---------------------
+                                STEP 5 - TRANSPORTATION
+                                ---------------------
+                                #}
+                            <!--           <md-tab label="{% trans %}FORM.ENROLLMENT.STEP5.TITLE{% endtrans %}">   -->
+                                    <md-content class="md-padding bg-dustblue" ng-controller="enrollmentControllerStep5" ng-cloak>
+                                        <div class="page">
+                                            <div layout="column" layout-align="none">
+                                                <h3>{% trans %}FORM.ENROLLMENT.STEP5.TITLE{% endtrans %}</h3>
+                                                <p class="lead">{% trans %}FORM.ENROLLMENT.STEP5.HEADER1{% endtrans %}</p>
+                                                <p><strong>{% trans %}FORM.ENROLLMENT.STEP5.TEXT1{% endtrans %}</strong></p>
+                                                <div class="row">
+                                                    <div class="col-md-6">
+                                                        <md-input-container>
+                                                            <label for="arrival_date">{{ "{{ 'FORM.ENROLLMENT.ARRIVAL_DATE' | translate }}" }}</label>
+                                                            <input type="text" id="arrival_date" ng-model="enrollment_object.arrival_date">
+                                                        </md-input-container>
+                                                    </div>
+                                                    <div class="col-md-6">
+                                                        <md-input-container>
+                                                            <label for="arrival_time">{{ "{{ 'FORM.ENROLLMENT.ARRIVAL_TIME' | translate }}" }}</label>
+                                                            <input type="text" id="arrival_time" ng-model="enrollment_object.arrival_time">
+                                                        </md-input-container>
+                                                    </div>
+                                                </div>
+                                                <p><strong>{% trans %}FORM.ENROLLMENT.STEP5.HEADER2{% endtrans %}</strong></p>
+                                                <div class="row">
+                                                    <div class="col-md-6">
+                                                    <md-input-container>
+                                                        <label for="departure_date">{{ "{{ 'FORM.ENROLLMENT.DEPARTURE_DATE' | translate }}" }}</label>
+                                                        <input type="text" id="departure_date" ng-model="enrollment_object.departure_date">
+                                                    </md-input-container>
+                                                    </div>
+                                                    <div class="col-md-6">
+                                                    <md-input-container>
+                                                        <label for="departure_time">{{ "{{ 'FORM.ENROLLMENT.DEPARTURE_TIME' | translate }}" }}</label>
+                                                        <input type="text" id="departure_time" ng-model="enrollment_object.departure_time">
+                                                    </md-input-container>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div layout="column" layout-align="none">
+                                                <p class="lead">{% trans %}FORM.ENROLLMENT.STEP5.HEADER3{% endtrans %}</p>
+                                                <p><strong>{% trans %}FORM.ENROLLMENT.STEP5.TEXT3{% endtrans %}</strong></p>
+                                                <div class="row">
+                                                    <div class="col-lg-4">
+                                                        <md-input-container>
+                                                            <label for="b_arrival_airport">{{ "{{ 'FORM.ENROLLMENT.B_ARRIVAL_AIRPORT' | translate }}" }}</label>
+                                                            <input type="text" id="b_arrival_airport" ng-model="enrollment_object.b_arrival_airport">
+                                                        </md-input-container>
+                                                    </div>
+                                                    <div class="col-md-4">
+                                                        <md-input-container>
+                                                            <label for="b_arrival_date">{{ "{{ 'FORM.ENROLLMENT.B_ARRIVAL_DATE' | translate }}" }}</label>
+                                                            <input type="text" id="b_arrival_date" ng-model="enrollment_object.b_arrival_date">
+                                                        </md-input-container>
+                                                    </div>
+                                                    <div class="col-md-4">
+                                                        <md-input-container>
+                                                            <label for="b_arrival_time">{{ "{{ 'FORM.ENROLLMENT.B_ARRIVAL_TIME' | translate }}" }}</label>
+                                                            <input type="text" id="b_arrival_time" ng-model="enrollment_object.b_arrival_time">
+                                                        </md-input-container>
+                                                    </div>
+                                                </div>
+                                                <p><strong>{% trans %}FORM.ENROLLMENT.STEP5.TEXT4{% endtrans %}</strong></p>
+                                                <div class="row">
+                                                    <div class="col-lg-4">
+                                                        <md-input-container>
+                                                            <label for="b_departure_airport">{{ "{{ 'FORM.ENROLLMENT.B_DEPARTURE_AIRPORT' | translate }}" }}</label>
+                                                            <input type="text" id="b_departure_airport" ng-model="enrollment_object.b_departure_airport">
+                                                        </md-input-container>
+                                                    </div>
+                                                    <div class="col-md-4">
+                                                        <md-input-container>
+                                                            <label for="b_departure_date">{{ "{{ 'FORM.ENROLLMENT.B_DEPARTURE_DATE' | translate }}" }}</label>
+                                                            <input type="text" id="b_departure_date" ng-model="enrollment_object.b_departure_date">
+                                                        </md-input-container>
+                                                    </div>
+                                                    <div class="col-md-4">
+                                                        <md-input-container>
+                                                            <label for="b_departure_time">{{ "{{ 'FORM.ENROLLMENT.B_DEPARTURE_TIME' | translate }}" }}</label>
+                                                            <input type="text" id="b_departure_time" ng-model="enrollment_object.b_departure_time">
+                                                        </md-input-container>
+                                                    </div>
+                                                </div>
+                                            </div>
+<!--
+                                            <hr class="border--navy" />
+                                            <div class="row">
+                                                <div class="col-xs-6 col-xs-push-6 text-right">F</div>
+                                                <div class="col-xs-6 col-xs-pull-6">B</div>
+                                            </div>
+-->
+                                        </div>
+                                    </md-content>
+                            <!--
+                                </md-tab>
+                            </md-tabs>
+                            -->
+                        </div>
+                    </div>
+                </md-content>
+            </md-content>
+        </section>
+    </md-content>
+{% endblock %}
+
+{% block javascripts %}
+    <script src="{{ url('bazinga_jstranslation_js', { 'domain': 'errors' }) }}"></script>
+    <script src="{{ url('bazinga_jstranslation_js', { 'domain': 'tournament' }) }}"></script>
+    <script src="{{ url('bazinga_jstranslation_js', { 'domain': 'club' }) }}"></script>
+    <script type="text/javascript">
+        angular.module('enrollmentModule',
+                [
+                    'ngMaterial', 'ngMessages', 'ngRoute',
+                    'translationModule.filter', 'dataSourceModule.factory', 'enrollmentModule.club',
+                    'enrollmentModule.manager', 'enrollmentModule.categories', 'enrollmentModule.accommodation', 'enrollmentModule.transportation'
+                ]
+        )
+        .constant('tournamentid', '{{ tournament.id }}')
+        .constant('flagsDirectory', '{{ asset('bundles/icuppublicsite/images/flags/') }}')
+        .constant('templateDirectory', '{{ asset('bundles/icuppublicsite/templates/') }}')
+        .constant('translate_domain', 'club');
+    </script>
+    {% javascripts '@ICupPublicSiteBundle/Resources/js/general/*' output="bundles/icuppublicsite/js/general.js" %}
+    <script src="{{ asset_url }}" type="text/javascript"></script>
+    {% endjavascripts  %}
+    {% javascripts '@ICupPublicSiteBundle/Resources/js/enrollment/*' output="bundles/icuppublicsite/js/enrollment.js" %}
+    <script src="{{ asset_url }}" type="text/javascript"></script>
+    {% endjavascripts  %}
+{% endblock %}

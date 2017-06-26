@@ -1,0 +1,125 @@
+﻿<div class="page">
+    <div class="lead">
+        <h1>{{ 'FORM.ENROLLMENT.PRODUCTLIST.HEADLINE2' | translate }}</h1>
+    </div>
+</div>
+<div class="row">
+    <div class="col-lg-8">
+        <div class="lead">
+            <p>{{ 'FORM.ENROLLMENT.PRODUCTLIST.TITLE2' | translate }} {{tournament.name}}</p>
+            <p>{{ 'FORM.ENROLLMENT.PRODUCTLIST.SUBTITLE2' | translate }}</p>
+        </div>
+        <div class="cart">
+            <div class="title" layout="row" layout-align="start center">
+                <div flex="60">{{ 'FORM.ENROLLMENT.PRODUCTLIST.CATEGORY' | translate }}</div>
+                <div flex="20">{{ 'FORM.ENROLLMENT.PRODUCTLIST.QUANTITY' | translate }}</div>
+                <div flex="15" class="text-right">{{ 'FORM.ENROLLMENT.PRODUCTLIST.CPRICE' | translate }}</div>
+            </div>
+            <!-- empty cart message -->
+            <div class="item" layout="row" ng-hide="cart.items.length > 0">
+                <div>
+                    {{ 'FORM.ENROLLMENT.PRODUCTLIST.EMPTYCART' | translate }}
+                </div>
+            </div>
+            <!-- cart items -->
+            <div class="item" layout="row" layout-align="center center" ng-repeat="item in cart.items | orderBy:'name'">
+                <div flex="60">{{ item.name }}</div>
+                <div flex="20">
+                    <div class="input-group">
+                        <input class="form-control" type="text" size="2"
+                               ng-model="item.quantity" ng-pattern="/^\d{0,2}$/"
+                               ng-change="cart.saveItems()" />
+                        <span class="input-group-btn">
+                            <button class="btn btn-success" type="button"
+                                    ng-disabled="item.quantity >= 99"
+                                    ng-click="cart.addItem(item.sku, item.name, item.price, item.deposit, +1)">
+                                <i class="fa fa-plus-circle" />
+                            </button>
+                            <button class="btn btn-inverse" type="button"
+                                    ng-disabled="item.quantity <= 1"
+                                    ng-click="cart.addItem(item.sku, item.name, item.price, item.deposit, -1)">
+                                <i class="fa fa-minus-circle" />
+                            </button>
+                        </span>
+                    </div>
+                </div>
+                <div flex="15" class="text-right">{{item.price * item.quantity | currency:cart.currency:0}}</div>
+                <div flex="5" class="text-right" title="{{ 'FORM.ENROLLMENT.PRODUCTLIST.REMOVECART' | translate }}">
+                    <a href="" ng-click="cart.addItem(item.sku, item.name, item.price, item.deposit, -item.quantity)" >
+                        <i class="fa fa-remove" />
+                    </a>
+                </div>
+            </div>
+            <!-- footer -->
+            <div class="footer" layout="row" layout-align="start center">
+                <div flex="60">{{ 'FORM.ENROLLMENT.PRODUCTLIST.GTOTAL' | translate }}</div>
+                <div flex="20">{{cart.getTotalCount()}}</div>
+                <div flex="15" class="text-right">{{cart.getTotalPrice() | currency:cart.currency:0}}</div>
+                <div flex="5">&nbsp;</div>
+            </div>
+            <hr />
+            <div ng-show="cart.items.length > 0">
+                <div layout="row" layout-align="start center">
+                    <div flex="60">
+                        {{ 'FORM.ENROLLMENT.PRODUCTLIST.DEPOSIT' | translate }}&nbsp;&nbsp;<i class="fa fa-question-circle" />
+                        <md-tooltip md-direction="top">{{ 'FORM.ENROLLMENT.PRODUCTLIST.TEXT2' | translate }}</md-tooltip>
+                    </div>
+                    <div flex="20"> </div>
+                    <div flex="15" class="text-right">{{cart.getTotalDeposit() | currency:cart.currency:0}}</div>
+                    <div flex="5">&nbsp;</div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="col-lg-4">
+        <div class="personalinfo">
+            <p class="lead">{{ 'FORM.ENROLLMENT.STEP1.TITLE' | translate }}</p>
+            <form>
+                <div class="form-group">
+                    <input class="form-control" ng-model="club" ng-required placeholder="{{ 'FORM.ENROLLMENT.CLUB' | translate }}" md-autofocus />
+                    <input class="form-control" ng-model="manager" ng-required placeholder="{{ 'FORM.ENROLLMENT.MANAGER' | translate }}" />
+                    <input class="form-control" ng-model="m_mobile" placeholder="{{ 'FORM.ENROLLMENT.M_MOBILE' | translate }}" />
+                    <input class="form-control" ng-model="m_email" ng-required placeholder="{{ 'FORM.ENROLLMENT.M_EMAIL' | translate }}" />
+
+                    <ui-select ng-model="country.value" append-to-body="false">
+                        <ui-select-match>
+                            <span ng-bind="$select.selected.name"></span>
+                        </ui-select-match>
+                        <ui-select-choices repeat="item in (countries | filter: $select.search) track by item.id">
+                            <span>{{item.name}}</span>
+                        </ui-select-choices>
+                    </ui-select>
+<!--
+                    <ui-select ng-model="country" theme="bootstrap">
+                        <ui-select-match placeholder="{{ 'FORM.ENROLLMENT.COUNTRY' | translate }}">{{$select.country.name}}</ui-select-match>
+                        <ui-select-choices repeat="item in countries | filter: $select.search">
+                            <div ng-bind-html="item.name | highlight: $select.search"></div>
+                        </ui-select-choices>
+                    </ui-select>
+-->
+                </div>
+<!--
+                <select class="selectpicker" id="country_selector" ng-model="country" ng-options="name as cntry.name for cntry in countries" title="{{ 'FORM.ENROLLMENT.COUNTRY' | translate }}">
+                </select>
+-->
+
+            </form>
+        </div>
+    </div>
+</div>
+<!-- buttons -->
+<div layout="row" layout-align="space-between center">
+    <div layout="row" layout-align="start center">
+        <md-button ng-href="#/">
+            <i class="fa fa-chevron-left" /> {{ 'FORM.ENROLLMENT.PRODUCTLIST.BACK' | translate }}
+        </md-button>
+        <md-button class="md-warn" ng-disabled="cart.getTotalCount() < 1" ng-click="cart.clearItems()">
+            <i class="fa fa-trash" /> {{ 'FORM.ENROLLMENT.PRODUCTLIST.CLEARCART' | translate }}
+        </md-button>
+    </div>
+    <div layout="row" layout-align="end center">
+        <md-button ng-href="#/checkout" class="md-raised" type="button" ng-disabled="cart.getTotalCount() < 1">
+            <i class="fa fa-credit-card" /> {{ 'FORM.ENROLLMENT.PRODUCTLIST.CONFIRM' | translate }}
+        </md-button>
+    </div>
+</div>

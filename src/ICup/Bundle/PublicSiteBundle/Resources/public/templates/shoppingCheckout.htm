@@ -1,0 +1,73 @@
+<div class="page">
+    <div class="lead">
+        <h1>{{ 'FORM.ENROLLMENT.PRODUCTLIST.HEADLINE3' | translate }}</h1>
+        <p>{{ 'FORM.ENROLLMENT.PRODUCTLIST.TITLE3' | translate }} {{tournament.name}}</p>
+        <div layout="row">
+            <div flex="30">
+                <strong>{{ club }}</strong><br />
+                {{ country.value.name }}
+            </div>
+            <div flex="30">
+                {{ manager }}<br />
+                {{ m_mobile }}<br />
+                {{ m_email }}
+            </div>
+        </div>
+    </div>
+</div>
+<div layout="row">
+    <div class="cart" flex="50" style="margin-right: 30px;">
+        <div class="title" layout="row" layout-align="start center">
+            <div flex="100">{{ 'FORM.ENROLLMENT.PRODUCTLIST.ORDERSUMMARY' | translate }}</div>
+        </div>
+        <div class="item" layout="row" layout-align="start center">
+            <div flex="70">{{ 'FORM.ENROLLMENT.PRODUCTLIST.TEAMSUMMARY' | translate }}</div>
+            <div flex="30" class="text-right">{{cart.getTotalPrice()-cart.getTotalDeposit() | currency:cart.currency:0}}</div>
+        </div>
+        <div class="item" layout="row" layout-align="start center">
+            <div flex="70">{{ 'FORM.ENROLLMENT.PRODUCTLIST.DEPOSITSUMMARY' | translate }}</div>
+            <div flex="30" class="text-right">{{cart.getTotalDeposit() | currency:cart.currency:0}}</div>
+        </div>
+        <div class="footer" layout="row" layout-align="start center">
+            <div flex="70">{{ 'FORM.ENROLLMENT.PRODUCTLIST.TOTALSUMMARY' | translate }}</div>
+            <div flex="30" class="text-right">{{cart.getTotalPrice() | currency:cart.currency:0}}</div>
+        </div>
+        <hr />
+        <div ng-show="cart.items.length > 0">
+            {{ 'FORM.ENROLLMENT.PRODUCTLIST.TEXT2' | translate }}
+        </div>
+    </div>
+    <div class="cart" flex="50">
+        <div class="title" layout="row" layout-align="start center">
+            <div flex="70">{{ 'FORM.ENROLLMENT.PRODUCTLIST.CATEGORY' | translate }}</div>
+            <div flex="30" class="text-right">{{ 'FORM.ENROLLMENT.PRODUCTLIST.QUANTITY' | translate }}</div>
+        </div>
+        <!-- cart items -->
+        <div class="item" layout="row" layout-align="start center" ng-repeat="item in cart.items | orderBy:'name'">
+            <div flex="70">{{ item.name }}</div>
+            <div flex="30" class="text-right">{{ item.quantity }}</div>
+        </div>
+        <hr />
+        <div layout="row" layout-align="end center">
+            <img src="{{ imgDir+'powered_by_stripe.png' }}" />
+        </div>
+    </div>
+</div>
+<!-- buttons -->
+<div layout="row" layout-align="space-between center">
+    <div layout="row" layout-align="start center">
+        <md-button ng-href="#/cart">
+            <i class="fa fa-chevron-left" /> {{ 'FORM.ENROLLMENT.PRODUCTLIST.BACK' | translate }}
+        </md-button>
+    </div>
+    <div layout="row" layout-align="end center">
+        <md-button ng-href="#/bank" class="md-raised" type="button" ng-disabled="cart.getTotalCount() < 1">
+            <i class="fa fa-bank" /> {{ 'FORM.ENROLLMENT.PRODUCTLIST.CONFIRM' | translate }}
+        </md-button>
+    </div>
+    <div layout="row" layout-align="end center">
+        <md-button ng-click="stripe()" class="md-primary md-raised" ng-disabled="cart.getTotalCount() < 1">
+            <i class="fa fa-credit-card" /> {{ 'FORM.ENROLLMENT.PRODUCTLIST.CHECKOUT' | translate }}
+        </md-button>
+    </div>
+</div>

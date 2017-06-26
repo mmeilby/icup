@@ -1,0 +1,369 @@
+{% extends "ICupPublicSiteBundle:Masters:standard.html.twig" %}
+
+{% trans_default_domain "club" %}
+
+{% block css %}
+    {# Adele Kristin Helgheim Skeie #}
+    <link href="https://material.angularjs.org/1.1.3/docs.css" media="all" rel="stylesheet" type="text/css" />
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:300,400,500,700,400italic">
+    <style type="text/css">
+        body {
+            padding: 0;
+        }
+        table {
+            width: 100% !important;
+            table-layout: fixed;
+            -webkit-font-smoothing: antialiased;
+            -webkit-text-size-adjust: 100%;
+            -moz-text-size-adjust: 100%;
+            -ms-text-size-adjust: 100%;
+            border: 0px solid black;
+            border-collapse: separate !important;
+            margin-bottom: 10px;
+        }
+    </style>
+{% endblock %}
+
+{% block header %}{% endblock %}
+{% block banner %}{% endblock %}
+
+{% block widebody %}
+    <div ng-controller="DemoBasicCtrl as ctrl" ng-cloak="" class="menuBardemoBasicUsage" ng-app="MyApp">
+
+            <section layout="row" flex>
+                <md-sidenav class="md-sidenav-left" md-component-id="left" md-whiteframe="4">
+
+                    <md-toolbar class="md-theme-indigo">
+                        <h1 class="md-toolbar-tools">
+                            {% if app.user != null %}
+                                {{ app.user.name }}
+                            {% else %}
+                                {% trans from "menu" %}MENU.LOGIN{% endtrans %}
+                            {% endif %}
+                        </h1>
+                    </md-toolbar>
+
+                    <md-content layout-margin>
+
+                        <md-list flex>
+                            <md-subheader class="md-no-sticky">3 line item (with hover)</md-subheader>
+                            <md-list-item ng-repeat="item in todos" ng-click="null">
+                                <div class="md-list-item-text" layout="column">
+                                    {% if is_granted('ROLE_PREVIOUS_ADMIN') %}
+                                        <a href="{{ path('_user_my_page', {'_switch_user': '_exit'}) }}">
+                                            <i class="fa fa-eye"></i>&nbsp;{{ app.user.name }} {% trans from "menu" %}MENU.LOGOUT{% endtrans %}
+                                        </a>
+                                    {% else %}
+                                        {% if app.user != null %}
+                                            <a href="{{ path('_admin_logout') }}">{{ app.user.name }} {% trans from "menu" %}MENU.LOGOUT{% endtrans %}</a>
+                                        {% else %}
+                                            <a href="{{ path('_user_my_page') }}">{% trans from "menu" %}MENU.LOGIN{% endtrans %}</a>
+                                        {% endif %}
+                                    {% endif %}
+                                </div>
+                            </md-list-item>
+                            <md-divider ></md-divider>
+                        </md-list>
+                    </md-content>
+
+                        <md-button ng-click="toggleLeft()" class="md-accent">
+                            Close this Sidenav
+                        </md-button>
+                    </md-content>
+
+                </md-sidenav>
+
+            </section>
+
+
+
+
+        <md-toolbar class="md-menu-toolbar">
+            <div layout="row">
+                <md-toolbar-filler layout="" layout-align="center center">
+                    <div>
+                        <i class="fa fa-bars" aria-hidden="true" ng-click="toggleLeft()"></i>
+                    </div>
+                </md-toolbar-filler>
+
+                <div layout="" layout-align="start center">
+                    <h2 class="md-toolbar-tools" style="padding-bottom: 28px;">{% trans from "menu" %}MENU.ROOT{% endtrans %}</h2>
+                </div>
+            </div>
+        </md-toolbar>
+
+        <md-content class="page-container" layout-gt-sm="row" layout="column">
+            <div flex-xs flex-sm flex-gt-sm="50">
+                <md-card class="page" style="background-image: url('{{ asset('bundles/icuppublicsite/images/IWC/bg.jpg') }}'); background-size: cover; background-repeat: no-repeat;">
+                    <md-card-title>
+                        <md-card-title-text>
+                            <span class="md-headline">Tilmelding til Interamnia World CUP 2017</span>
+                        </md-card-title-text>
+                    </md-card-title>
+                    <md-card-content>
+                        <table>
+                            <tr>
+                                <td>Category F - Female under 18</td><td style="text-align: end">2</td>
+                            </tr>
+                            <tr>
+                                <td>Category M - Male under 18</td><td style="text-align: end">1</td>
+                            </tr>
+                        </table>
+                        <h3>Balance</h3>
+                        <table>
+                            <tr>
+                                <td>Holdgebyr</td><td style="text-align: end">400 EUR</td>
+                            </tr>
+                            <tr>
+                                <td>Depositum</td><td style="text-align: end">1.200 EUR</td>
+                            </tr>
+                            <tr>
+                                <td>Indbetalt</td><td style="text-align: end">-1.600 EUR</td>
+                            </tr>
+                            <tfoot>
+                                <td>Balance</td><td style="text-align: end">0 EUR</td>
+                            </tfoot>
+                        </table>
+                        <h3>Næste skridt</h3>
+                        <p>Udfyld deltager oplysninger og vælg hvordan deltagerne vil bo under stævnet.</p>
+                    </md-card-content>
+                    <md-card-actions layout="row" layout-align="end center">
+                        <md-button ng-click="updateClub(event)">Klub</md-button>
+                        <md-button>Hold</md-button>
+                        <md-button class="md-primary md-raised">Ophold</md-button>
+                        <md-button>Transport</md-button>
+                    </md-card-actions>
+                </md-card>
+            </div>
+            <div flex-xs flex-sm flex-gt-sm="50">
+                <md-card class="page" style="background-image: url('{{ asset('bundles/icuppublicsite/images/IWC/bg.jpg') }}'); background-size: cover; background-repeat: no-repeat;">
+                    <md-card-title>
+                        <md-card-title-text>
+                            <span class="md-headline">Tilmelding til Interamnia World CUP 2017</span>
+                        </md-card-title-text>
+                    </md-card-title>
+                    <md-card-content>
+                        <table>
+                            <tr>
+                                <td>Category F - Female under 18</td><td style="text-align: end">2</td>
+                            </tr>
+                            <tr>
+                                <td>Category M - Male under 18</td><td style="text-align: end">1</td>
+                            </tr>
+                        </table>
+                    </md-card-content>
+                    <md-card-actions layout="row" layout-align="end center">
+                        <md-button>Hold</md-button>
+                        <md-button>Ophold</md-button>
+                        <md-button>Transport</md-button>
+                    </md-card-actions>
+                </md-card>
+            </div>
+        </md-content>
+    </div>
+{% endblock %}
+
+{% block javascripts %}
+    <script src="{{ url('bazinga_jstranslation_js', { 'domain': 'errors' }) }}"></script>
+    <script src="{{ url('bazinga_jstranslation_js', { 'domain': 'admin' }) }}"></script>
+    <script src="{{ url('bazinga_jstranslation_js', { 'domain': 'tournament' }) }}"></script>
+    <script src="{{ url('bazinga_jstranslation_js', { 'domain': 'club' }) }}"></script>
+    <script type="text/javascript">
+    angular
+        .module('MyApp',['ngMaterial', 'ngMessages', 'translationModule.filter'])
+        .filter('keyboardShortcut', function($window) {
+            return function(str) {
+                if (!str) return;
+                var keys = str.split('-');
+                var isOSX = /Mac OS X/.test($window.navigator.userAgent);
+
+                var seperator = (!isOSX || keys.length > 2) ? '+' : '';
+
+                var abbreviations = {
+                    M: isOSX ? '' : 'Ctrl',
+                    A: isOSX ? 'Option' : 'Alt',
+                    S: 'Shift'
+                };
+
+                return keys.map(function(key, index) {
+                    var last = index == keys.length - 1;
+                    return last ? key : abbreviations[key];
+                }).join(seperator);
+            };
+        })
+        .constant('templateDirectory', '{{ asset('bundles/icuppublicsite/templates/') }}')
+        .constant('translate_domain', 'club')
+        .controller('DemoBasicCtrl', function DemoCtrl($scope, $mdDialog, $http, $mdSidenav, $mdMedia, templateDirectory) {
+            this.settings = {
+                printLayout: true,
+                showRuler: true,
+                showSpellingSuggestions: true,
+                presentationMode: 'edit'
+            };
+
+            this.sampleAction = function(name, ev) {
+                $mdDialog.show($mdDialog.alert()
+                    .title(name)
+                    .textContent('You triggered the "' + name + '" action')
+                    .ok('Great')
+                    .targetEvent(ev)
+                );
+            };
+
+            var imagePath = 'img/list/60.jpeg';
+            $scope.todos = [
+                {
+                    face : imagePath,
+                    what: 'Brunch this weekend?',
+                    who: 'Min Li Chan',
+                    when: '3:08PM',
+                    notes: " I'll be in your neighborhood doing errands"
+                },
+                {
+                    face : imagePath,
+                    what: 'Brunch this weekend?',
+                    who: 'Min Li Chan',
+                    when: '3:08PM',
+                    notes: " I'll be in your neighborhood doing errands"
+                },
+                {
+                    face : imagePath,
+                    what: 'Brunch this weekend?',
+                    who: 'Min Li Chan',
+                    when: '3:08PM',
+                    notes: " I'll be in your neighborhood doing errands"
+                },
+                {
+                    face : imagePath,
+                    what: 'Brunch this weekend?',
+                    who: 'Min Li Chan',
+                    when: '3:08PM',
+                    notes: " I'll be in your neighborhood doing errands"
+                },
+                {
+                    face : imagePath,
+                    what: 'Brunch this weekend?',
+                    who: 'Min Li Chan',
+                    when: '3:08PM',
+                    notes: " I'll be in your neighborhood doing errands"
+                }
+            ];
+            $scope.toggleLeft = buildToggler('left');
+            $scope.toggleRight = buildToggler('right');
+
+            function buildToggler(componentId) {
+                return function() {
+                    $mdSidenav(componentId).toggle();
+                };
+            }
+
+            $scope.club = {'id': {{ clubrelations[0].club.id }}};
+            $scope.details = {};
+            $http.get(Routing.generate('rest_get_club', {'clubid': $scope.club.id})).then(
+                function (data) {
+                    $scope.club = data.data.club;
+                },
+                function (response) {
+                    ShowError($mdDialog, response.data.errors, Translator.trans('FORM.LISTCATEGORIES.CAPTION'));
+                });
+            $http.get(Routing.generate('rest_get_club_details', {'clubid': $scope.club.id})).then(
+                function (data) {
+                    $scope.details = data.data;
+                },
+                function (response) {
+                    ShowError($mdDialog, response.data.errors, Translator.trans('FORM.LISTCATEGORIES.CAPTION'));
+                });
+            $scope.updateClub = function(ev) {
+                var dlgScope = $scope.$new();
+                dlgScope.enrollment_object = {
+                    'club': $scope.club.name,
+                    'address': $scope.club.address,
+                    'city': $scope.club.city,
+                    'country': $scope.club.country,
+                    'countrycode': $scope.club.country_code,
+                    'email': $scope.details.email,
+                    'phone': $scope.details.phone,
+                    'fax': $scope.details.fax,
+                    'skype': $scope.details.skype,
+                    'website': $scope.details.website,
+                    'membership': $scope.details.membership,
+                    'affiliation': $scope.details.affiliation,
+                    'championship': $scope.details.championship,
+                    'bestresult': $scope.details.bestresult
+                };
+                $mdDialog.show({
+                    controller: DialogController,
+                    scope: dlgScope,
+                    templateUrl: templateDirectory + 'editenrollmentclubdlg.html',
+                    parent: angular.element(document.body),
+                    targetEvent: ev,
+                    clickOutsideToClose: true,
+                    fullscreen: $mdMedia('sm') || $mdMedia('xs')
+                }).then(
+                    function (enrollment_object) {
+                        $http.post(Routing.generate('rest_club_update', {'clubid': $scope.club.id}), {
+                            'name': enrollment_object.club,
+                            'address': enrollment_object.address,
+                            'city': enrollment_object.city,
+                            'countrycode': enrollment_object.countrycode
+                        })
+                        .then(
+                            function (data) {
+                                $http.get(Routing.generate('rest_get_club', {'clubid': $scope.club.id})).then(
+                                    function (data) {
+                                        $scope.club = data.data.club;
+                                    },
+                                    function (response) {
+                                        ShowError($mdDialog, response.data.errors, Translator.trans('FORM.LISTCATEGORIES.CAPTION'));
+                                    });
+                            },
+                            function (response) {
+                                ShowError($mdDialog, response.data.errors, Translator.trans('FORM.CATEGORY.TITLE.ADD'));
+                            });
+                        $http.post(Routing.generate('rest_club_update_details', {'clubid': $scope.club.id}), {
+                            'clubdetails': {
+                                'email': enrollment_object.email,
+                                'phone': enrollment_object.phone,
+                                'fax': enrollment_object.fax,
+                                'skype': enrollment_object.skype,
+                                'website': enrollment_object.website,
+                                'membership': enrollment_object.membership,
+                                'affiliation': enrollment_object.affiliation,
+                                'championship': enrollment_object.championship,
+                                'bestresult': enrollment_object.bestresult
+                            }
+                        })
+                        .then(
+                            function (data) {
+                                $scope.details = {
+                                    'email': enrollment_object.email,
+                                    'phone': enrollment_object.phone,
+                                    'fax': enrollment_object.fax,
+                                    'skype': enrollment_object.skype,
+                                    'website': enrollment_object.website,
+                                    'membership': enrollment_object.membership,
+                                    'affiliation': enrollment_object.affiliation,
+                                    'championship': enrollment_object.championship,
+                                    'bestresult': enrollment_object.bestresult
+                                }
+                            },
+                            function (response) {
+                                ShowError($mdDialog, response.data.errors, Translator.trans('FORM.CATEGORY.TITLE.ADD'));
+                            });
+                    });
+            };
+
+            function DialogController($scope, $mdDialog) {
+                $scope.submit = function(param) {
+                    $mdDialog.hide(param);
+                };
+                $scope.cancel = function() {
+                    $mdDialog.cancel();
+                };
+            }
+        });
+    </script>
+    {% javascripts '@ICupPublicSiteBundle/Resources/js/general/*' output="bundles/icuppublicsite/js/general.js" %}
+    <script src="{{ asset_url }}" type="text/javascript"></script>
+    {% endjavascripts  %}
+{% endblock %}

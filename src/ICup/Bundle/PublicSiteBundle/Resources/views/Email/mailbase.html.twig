@@ -1,0 +1,190 @@
+{% trans_default_domain "admin" %}
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+        "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+
+<head>
+    <title></title>
+
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1, minimum-scale=1, maximum-scale=1"/>
+    <!--[if !mso]><!-->
+    <meta http-equiv="X-UA-Compatible" content="IE=Edge"/>
+    <!--<![endif]-->
+    <!--[if (gte mso 9)|(IE)]>
+    <style type="text/css">
+
+        table {
+            border-collapse: collapse;
+        }
+
+        table, td {
+            mso-table-lspace: 0pt;
+            mso-table-rspace: 0pt;
+        }
+
+        img {
+            -ms-interpolation-mode: bicubic;
+        }
+
+    </style>
+    <![endif]-->
+
+    <style type="text/css">
+        body {
+            font-family: arial, sans-serif;
+            font-size: 14px;
+            min-width: 100%;
+            margin: 0;
+            padding: 0;
+            color: #141C26;
+            background-color: #f9f9f9;
+        }
+
+        p, div {
+            font-family: arial, sans-serif;
+        }
+
+        body a {
+            color: #1188e6;
+            text-decoration: none;
+        }
+
+        h3 {
+            margin-top: 30px;
+        }
+
+        .leftmargin {
+            min-width: 25%;
+            float: left;
+        }
+
+        .content {
+            max-width: 50%;
+            padding-top: 20px;
+            padding-bottom: 20px;
+            float: left;
+        }
+
+        table {
+            width: 100% !important;
+            table-layout: fixed;
+            -webkit-font-smoothing: antialiased;
+            -webkit-text-size-adjust: 100%;
+            -moz-text-size-adjust: 100%;
+            -ms-text-size-adjust: 100%;
+            border: 0px solid black;
+            border-collapse: separate !important;
+            margin-bottom: 10px;
+        }
+
+        div[class="page"] {
+            background-color: white;
+            line-height: 130%;
+            padding-top: 70px;
+            padding-right: 50px;
+            padding-bottom: 60px;
+            padding-left: 50px;
+            text-align: left;
+        }
+
+        table[class="bankinfo"] {
+            width: 100%;
+            border: 2px solid #141C26;
+        }
+
+        table[class="bankinfo"] td {
+            border: 2px solid #141C26;
+        }
+
+        table[class="bankinfo"] span[class="title"] {
+            font-size: 8px;
+            font-weight: bolder;
+        }
+
+        table[class="bankinfo"] span[class="data"] {
+            font-family: monospace;
+        }
+
+        thead th {
+            border-bottom: 1px solid #141C26;
+        }
+
+        tfoot th {
+            border-top: 1px solid #141C26;
+        }
+
+        img[class="max-width"] {
+            max-width: 100% !important;
+        }
+
+        @media screen and (max-width: 1400px) {
+            .leftmargin {
+                min-width: 20%;
+            }
+
+            .content {
+                max-width: 60%;
+            }
+        }
+
+        @media screen and (max-width: 1125px) {
+            .leftmargin {
+                min-width: 10%;
+            }
+
+            .content {
+                max-width: 80%;
+            }
+
+            div[class="page"] {
+                padding-right: 20px;
+                padding-left: 20px;
+            }
+        }
+
+        @media screen and (max-width: 640px) {
+            .leftmargin {
+                display: none;
+            }
+
+            .content {
+                max-width: 100%;
+                padding-top: 0px;
+                padding-bottom: 0px;
+            }
+            }
+        }
+
+        @media screen and (max-width: 480px) {
+            .leftmargin {
+                display: none;
+            }
+
+            .content {
+                max-width: 100%;
+                padding-top: 0px;
+                padding-bottom: 0px;
+            }
+
+            img[class="max-width"] {
+                height: auto !important;
+            }
+
+            div[class="page"] {
+                padding-right: 20px;
+                padding-left: 20px;
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <div class="leftmargin">&nbsp;</div>
+    <div class="content">
+        {% block mailbody %}{% endblock %}
+    </div>
+</body>
+
+</html>

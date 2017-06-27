@@ -32,6 +32,13 @@ class Host
     protected $name;
 
     /**
+     * @var string $domain
+     * Domain name used for URL detection
+     * @ORM\Column(name="domain", type="string", length=128, nullable=false)
+     */
+    protected $domain;
+
+    /**
      * @var HostPlan $hostplan
      * Relation to HostPlan - the level of service this host has signed up for
      * @ORM\ManyToOne(targetEntity="HostPlan", inversedBy="hosts")
@@ -93,6 +100,22 @@ class Host
     public function getName()
     {
         return $this->name;
+    }
+
+    /**
+     * @return string
+     */
+    public function getDomain() {
+        return $this->domain;
+    }
+
+    /**
+     * @param string $domain
+     * @return Host
+     */
+    public function setDomain($domain) {
+        $this->domain = $domain;
+        return $this;
     }
 
     /**

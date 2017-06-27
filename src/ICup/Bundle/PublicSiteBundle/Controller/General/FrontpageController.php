@@ -23,6 +23,7 @@ class FrontpageController extends Controller
      */
     public function rootAction(Request $request)
     {
+        $domain = $request->getHost();
         $tournaments = $this->get('logic')->listAvailableTournaments();
         $tournamentList = array();
         $keyList = array(
@@ -44,75 +45,78 @@ class FrontpageController extends Controller
         $newsscroll = array();
         foreach ($tournaments as $tournament) {
             /* @var $tournament Tournament */
-            $stat = $this->get('tmnt')->getTournamentStatus($tournament->getId(), $today);
-            if ($stat != TournamentSupport::$TMNT_HIDE) {
-                $tournamentList[$tournament->getId()] = array('tournament' => $tournament, 'status' => $stat);
-                $statusList[$keyList[$stat]][] = $tournament;
+            if ($tournament->getHost()->getDomain() == "" || strcmp($tournament->getHost()->getDomain(), $domain) == 0) {
+                // only select tournaments for the host that matches current url
+                $stat = $this->get('tmnt')->getTournamentStatus($tournament->getId(), $today);
+                if ($stat != TournamentSupport::$TMNT_HIDE) {
+                    $tournamentList[$tournament->getId()] = array('tournament' => $tournament, 'status' => $stat);
+                    $statusList[$keyList[$stat]][] = $tournament;
 
-                $newsStream = $this->get('tmnt')->listNewsByTournament($tournament->getId());
-                foreach ($newsStream as $news) {
-                    if ($news['newstype'] == News::$TYPE_FRONTPAGE_PERMANENT || $news['newstype'] == News::$TYPE_FRONTPAGE_TIMELIMITED) {
-                        $news['newsdate'] = Date::getDateTime($news['date']);
-                        if ($news['id'] > 0) {
-                            $news['flag'] = $this->get('util')->getFlag($news['country']);
-                            $newsscroll[$news['newsno']][$news['language']] = $news;
-                        }
-                        else if ($news['mid'] > 0) {
-                            $newsscroll[$news['newsno']][$news['language']] = $news;
-                        }
-                        else {
-                            /* @var $diff \DateInterval */
-                            $diff = $today->diff($news['newsdate']);
-                            if ($news['newstype'] == News::$TYPE_FRONTPAGE_PERMANENT || $diff->days < 2) {
+                    $newsStream = $this->get('tmnt')->listNewsByTournament($tournament->getId());
+                    foreach ($newsStream as $news) {
+                        if ($news['newstype'] == News::$TYPE_FRONTPAGE_PERMANENT || $news['newstype'] == News::$TYPE_FRONTPAGE_TIMELIMITED) {
+                            $news['newsdate'] = Date::getDateTime($news['date']);
+                            if ($news['id'] > 0) {
+                                $news['flag'] = $this->get('util')->getFlag($news['country']);
                                 $newsscroll[$news['newsno']][$news['language']] = $news;
+                            }
+                            else if ($news['mid'] > 0) {
+                                $newsscroll[$news['newsno']][$news['language']] = $news;
+                            }
+                            else {
+                                /* @var $diff \DateInterval */
+                                $diff = $today->diff($news['newsdate']);
+                                if ($news['newstype'] == News::$TYPE_FRONTPAGE_PERMANENT || $diff->days < 2) {
+                                    $newsscroll[$news['newsno']][$news['language']] = $news;
+                                }
                             }
                         }
                     }
                 }
-            }
-            if ($stat == TournamentSupport::$TMNT_GOING) {
-                $shortMatchList = $this->get('match')->listMatchesLimitedWithTournament($tournament->getId(), $today, 10, 3, array_keys($club_list));
-                $shortMatches = array();
-                foreach ($shortMatchList as $match) {
-                    $shortMatches[date_format($match['schedule'], "Y/m/d")][] = $match;
-                }
-                $teaserList = array(
-                    array(
-                        'titletext' => 'FORM.TEASER.TOURNAMENT.GROUPS.TITLE',
-                        'text' => 'FORM.TEASER.TOURNAMENT.GROUPS.DESC',
-                        'path' => $this->generateUrl('_tournament_categories', array('tournament' => $tournament->getKey()))
-                    ),
-                    array(
-                        'titletext' => 'FORM.TEASER.TOURNAMENT.PLAYGROUNDS.TITLE',
-                        'text' => 'FORM.TEASER.TOURNAMENT.PLAYGROUNDS.DESC',
-                        'path' => $this->generateUrl('_tournament_playgrounds', array('tournament' => $tournament->getKey()))
-                    ),
-                    array(
-                        'titletext' => 'FORM.TEASER.TOURNAMENT.TEAMS.TITLE',
-                        'text' => 'FORM.TEASER.TOURNAMENT.TEAMS.DESC',
-                        'path' => $this->generateUrl('_tournament_clubs', array('tournament' => $tournament->getKey()))
-                    ),
-        /*
-                    array(
-                        'titletext' => 'FORM.TEASER.TOURNAMENT.WINNERS.TITLE',
-                        'text' => 'FORM.TEASER.TOURNAMENT.WINNERS.DESC',
-                        'path' => $this->generateUrl('_tournament_winners', array('tournament' => $tournament->getKey()))
-                    ),
-                    array(
-                        'titletext' => 'FORM.TEASER.TOURNAMENT.STATISTICS.TITLE',
-                        'text' => 'FORM.TEASER.TOURNAMENT.STATISTICS.DESC',
-                        'path' => $this->generateUrl('_tournament_statistics', array('tournament' => $tournament->getKey()))
-                    )
-         */
-                );
-                if (count($club_list) > 0) {
-                    array_unshift($teaserList,
+                if ($stat == TournamentSupport::$TMNT_GOING) {
+                    $shortMatchList = $this->get('match')->listMatchesLimitedWithTournament($tournament->getId(), $today, 10, 3, array_keys($club_list));
+                    $shortMatches = array();
+                    foreach ($shortMatchList as $match) {
+                        $shortMatches[date_format($match['schedule'], "Y/m/d")][] = $match;
+                    }
+                    $teaserList = array(
                         array(
-                            'titletext' => 'FORM.TEASER.TOURNAMENT.MYMATCHES.TITLE',
-                            'text' => 'FORM.TEASER.TOURNAMENT.MYMATCHES.DESC',
-                            'path' => $this->generateUrl('_show_matches', array('tournament' => $tournament->getKey()))
-                        )
+                            'titletext' => 'FORM.TEASER.TOURNAMENT.GROUPS.TITLE',
+                            'text' => 'FORM.TEASER.TOURNAMENT.GROUPS.DESC',
+                            'path' => $this->generateUrl('_tournament_categories', array('tournament' => $tournament->getKey()))
+                        ),
+                        array(
+                            'titletext' => 'FORM.TEASER.TOURNAMENT.PLAYGROUNDS.TITLE',
+                            'text' => 'FORM.TEASER.TOURNAMENT.PLAYGROUNDS.DESC',
+                            'path' => $this->generateUrl('_tournament_playgrounds', array('tournament' => $tournament->getKey()))
+                        ),
+                        array(
+                            'titletext' => 'FORM.TEASER.TOURNAMENT.TEAMS.TITLE',
+                            'text' => 'FORM.TEASER.TOURNAMENT.TEAMS.DESC',
+                            'path' => $this->generateUrl('_tournament_clubs', array('tournament' => $tournament->getKey()))
+                        ),
+                        /*
+                                    array(
+                                        'titletext' => 'FORM.TEASER.TOURNAMENT.WINNERS.TITLE',
+                                        'text' => 'FORM.TEASER.TOURNAMENT.WINNERS.DESC',
+                                        'path' => $this->generateUrl('_tournament_winners', array('tournament' => $tournament->getKey()))
+                                    ),
+                                    array(
+                                        'titletext' => 'FORM.TEASER.TOURNAMENT.STATISTICS.TITLE',
+                                        'text' => 'FORM.TEASER.TOURNAMENT.STATISTICS.DESC',
+                                        'path' => $this->generateUrl('_tournament_statistics', array('tournament' => $tournament->getKey()))
+                                    )
+                         */
                     );
+                    if (count($club_list) > 0) {
+                        array_unshift($teaserList,
+                            array(
+                                'titletext' => 'FORM.TEASER.TOURNAMENT.MYMATCHES.TITLE',
+                                'text' => 'FORM.TEASER.TOURNAMENT.MYMATCHES.DESC',
+                                'path' => $this->generateUrl('_show_matches', array('tournament' => $tournament->getKey()))
+                            )
+                        );
+                    }
                 }
             }
         }

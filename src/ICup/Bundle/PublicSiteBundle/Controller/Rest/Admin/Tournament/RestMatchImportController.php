@@ -103,7 +103,9 @@ class RestMatchImportController extends Controller
         $keys = array("matchno","date","time","category","group","playground","teamA","teamB");
         $matches = array_map(function ($str) { return str_getcsv($str, ";"); }, explode("\n", $uploadedFile));
         array_walk($matches, function(&$a) use ($keys) {
-            $a = array_combine($keys, $a);
+            if (count($keys) == count($a)) {
+                $a = array_combine($keys, $a);
+            }
         });
         return $matches;
     }
@@ -111,6 +113,9 @@ class RestMatchImportController extends Controller
     private function validateData(Tournament $tournament, $matchListRaw) {
         $matchList = array();
         foreach ($matchListRaw as $matchRaw) {
+            // check for validity of the row
+            if (!isset($matchRaw["matchno"])) continue;
+
             $isFinal = false;
             /* @var $category Category */
             $category = $this->get('logic')->getCategoryByName($tournament->getId(), $matchRaw['category']);
@@ -149,7 +154,7 @@ class RestMatchImportController extends Controller
                 }
             }
             if (!$pattr) {
-                throw new ValidationException("BADDATE", "No playground attribute for date=".$matchRaw['date']);
+                throw new ValidationException("BADDATE", "No playground attribute for date=".$matchRaw['date']." time=".$matchRaw['time']." no=".$matchRaw['playground']);
             }
             if ($isFinal) {
                 $teamA = $this->getQRel($category, $this->parseImportTeam($matchRaw['teamA']), MatchSupport::$HOME);

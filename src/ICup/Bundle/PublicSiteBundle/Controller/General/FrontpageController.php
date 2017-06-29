@@ -45,7 +45,8 @@ class FrontpageController extends Controller
         $newsscroll = array();
         foreach ($tournaments as $tournament) {
             /* @var $tournament Tournament */
-            if ($tournament->getHost()->getDomain() == "" || strcmp($tournament->getHost()->getDomain(), $domain) == 0) {
+            if (strcmp($tournament->getHost()->getDomain(), $domain) == 0 ||
+                strcmp("www.".$tournament->getHost()->getDomain(), $domain) == 0) {
                 // only select tournaments for the host that matches current url
                 $stat = $this->get('tmnt')->getTournamentStatus($tournament->getId(), $today);
                 if ($stat != TournamentSupport::$TMNT_HIDE) {

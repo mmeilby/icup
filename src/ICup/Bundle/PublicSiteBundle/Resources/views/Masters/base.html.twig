@@ -68,13 +68,21 @@
     <body role="document">
         {% block header %}{% endblock %}
         {% block banner %}
-        <div class="hidden-print" style="background-image: url('{{ asset('bundles/icuppublicsite/images/IWC/bg.jpg') }}');
-                    background-size: cover;
-                    background-repeat: no-repeat;">
-            <div class="container" style="padding-top: 10px; padding-bottom: 10px;">
-                <img src="{{ asset('bundles/icuppublicsite/images/IWC/logo.png') }}" alt="logo" class="img-responsive" />
-            </div>
-        </div>
+            {% if app.request.host == 'fdp.icup.dk' %}
+                <div class="hidden-print">
+                    <div class="container" style="padding-top: 10px; padding-bottom: 10px;">
+                        <img src="{{ asset('bundles/icuppublicsite/images/FDP/bg.png') }}" alt="logo" class="img-responsive" style="height: 100px;"/>
+                    </div>
+                </div>
+            {% else %}
+                <div class="hidden-print" style="background-image: url('{{ asset('bundles/icuppublicsite/images/IWC/bg.jpg') }}');
+                        background-size: cover;
+                        background-repeat: no-repeat;">
+                    <div class="container" style="padding-top: 10px; padding-bottom: 10px;">
+                        <img src="{{ asset('bundles/icuppublicsite/images/IWC/logo.png') }}" alt="logo" class="img-responsive" />
+                    </div>
+                </div>
+            {% endif %}
         {% endblock %}
         {% block widebody %}{% endblock %}
         <div class="container" role="main">
@@ -86,5 +94,6 @@
             $("[data-toggle='tooltip']").tooltip();
         </script>
         {% render(controller("cmf_create.jsloader.controller:includeJSFilesAction")) %}
+        {{ app.request.host }}
     </body>
 </html>

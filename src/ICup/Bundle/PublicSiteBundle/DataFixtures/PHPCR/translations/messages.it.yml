@@ -26,6 +26,16 @@ frontpage:
                 Here you can tune in on the results from your club.
                 Just follow this link and select the club you want to follow.
             </p>
+    fdp:
+      section_1:
+          title: Play handball in Italy
+          body: >
+            <p>
+              A poco più di due settimane dallo start, cresce l’attesa per il 14° Festival della Pallamano,
+              in programma dall’11 al 16 luglio a Misano Adriatico.
+              La manifestazione vede impegnate 54 formazioni – tra maschile e femminile – e assegnerà lo
+              Scudetto nelle categorie U14 e U12.
+            </p>
 mypage:
     wellcome:
         title: Welcome to my iCup

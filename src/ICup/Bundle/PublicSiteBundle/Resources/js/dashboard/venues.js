@@ -39,7 +39,8 @@ angular.module('tournamentBoardModule.venues', [])
             locale: 'da-dk',    // de-de en-gb es-es fr-fr it-it pl-pl
             weekStarts: 1,
             onTimeRangeSelected: function(args) {
-                $scope.calendarConfig.startDate = args.day;
+                $scope.dp.startDate = args.day;
+                $scope.dp.update();
             }
         };
 

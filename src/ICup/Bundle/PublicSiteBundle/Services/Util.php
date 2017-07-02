@@ -65,22 +65,29 @@ class Util
 
     public function parseHostDomain(Request $request) {
         $domain = "";
+        $scoretable = array();
         $url = explode(".", $request->getHost());
-        if (count($url) > 1) {
-            $country = ".".array_pop($url);
-        }
-        else {
-            $country = "";
-        }
-        $name = array_pop($url).$country;
         foreach ($this->logic->listHosts() as $host) {
             /* @var $host Host */
-            if (strcmp($name, $host->getDomain()) == 0) {
-                $domain = $host->getAlias();
-                break;
+            $domain_url = explode(".", $host->getDomain());
+            $i = count($url)-1;
+            $j = count($domain_url)-1;
+            $score = 0;
+            while ($i >= 0 && $j >= 0) {
+                if (strcmp($url[$i], $domain_url[$j]) == 0) {
+                    $score++;
+                }
+                else {
+                    break;
+                }
+                $i--; $j--;
             }
+            $scoretable[] = array("score" => $score, "alias" => $host->getAlias());
         }
-        return $domain;
+        usort($scoretable, function ($item1, $item2) {
+           return $item1["score"] > $item2["score"] ? -1 : 1;
+        });
+        return count($scoretable) > 0 ? $scoretable[0]["alias"] : "";
     }
 
     public function getReferer() {

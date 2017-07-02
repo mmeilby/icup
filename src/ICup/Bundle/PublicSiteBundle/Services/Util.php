@@ -63,6 +63,26 @@ class Util
         return array_keys($globals['supported_locales']);
     }
 
+    public function parseHostDomain(Request $request) {
+        $domain = "";
+        $url = explode(".", $request->getHost());
+        if (count($url) > 1) {
+            $country = ".".array_pop($url);
+        }
+        else {
+            $country = "";
+        }
+        $name = array_pop($url).$country;
+        foreach ($this->logic->listHosts() as $host) {
+            /* @var $host Host */
+            if (strcmp($name, $host->getDomain()) == 0) {
+                $domain = $host->getAlias();
+                break;
+            }
+        }
+        return $domain;
+    }
+
     public function getReferer() {
         /* @var $request Request */
         $request = $this->container->get('request_stack')->getCurrentRequest();

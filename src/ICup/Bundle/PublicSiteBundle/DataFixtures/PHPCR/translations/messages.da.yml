@@ -17,6 +17,15 @@ frontpage:
                 Har du brug for yderligere information finder du kontaktoplysninger i menuen.
             </p>
             <p>Vediamo a Teramo</p>
+    fdp:
+        title: Play handball in Italy
+        body: >
+          <p>
+            A poco più di due settimane dallo start, cresce l’attesa per il 14° Festival della Pallamano,
+            in programma dall’11 al 16 luglio a Misano Adriatico.
+            La manifestazione vede impegnate 54 formazioni – tra maschile e femminile – e assegnerà lo
+            Scudetto nelle categorie U14 e U12.
+          </p>
     follow_club:
         title: Følg din klub
         body: >
@@ -87,6 +96,15 @@ contact:
                 <strong>FACEBOOK</strong><br />
                 Interamnia World Cup officielle Facebook side:<br />
                 <a href="http://www.facebook.com/InteramniaWorldCup">www.facebook.com/InteramniaWorldCup</a>
+            </p>
+    fdp_address:
+        title: Kontakt
+        body: >
+            <p>Hvis du har brug for mere information er du velkommen til at kontakte stævnets danske kontakt:</p>
+            <p>
+                <strong>Morten Meilby<br />
+                e-mail: mm@iserve.dk<br />
+                Tlf.: 40203500</strong>
             </p>
 enrollment:
     preface:
@@ -729,3 +747,119 @@ information:
             CAMPO 15 - Rocca Santa Maria<br />
             CAMPO 16 - S. Egidio
             </p>
+    fdp_intro:
+        title: Håndboldstævnet Festival della Pallamano afholdes for 14. gang
+        body: >
+            <p>Interamnia – der betyder mellem floder – hentyder til byen Teramos placering mellem floderne Tordino og Vezzola.
+            I denne skønne klassiske by for foden af Italiens højeste bjerg Gran Sasso afvikles til sommer for 43. gang det der med tiden er blevet
+            håndboldens mesterskaber for unge fra hele verden.</p>
+
+            <p>Stævnet der første gang blev afholdt i sommeren 1973 er for både piger og drenge i alderen 12-18 år.
+            De seneste år er der også blevet plads til senior hold i turneringen.</p>
+
+            <p>Stævnet danner den perfekte ramme for styrkelse af sociale relationer på de nye årgange og byder på mange gode oplevelser med danske
+            og udenlandske venner i det italienske byliv. Stævnet har udviklet sig gennem de sidste 42 år og er i dag både et fantastisk håndboldstævne
+            og et multikulturelt forum for unge.</p>
+
+            <p>Der overnattes på skoler og spilles på pladser og gårde og alt sammen er med til at give spillerne en anden forståelse af
+            andre unge uanset om de kommer fra Italien, Polen, Canada eller Taiwan.</p>
+    fdp_price:
+        title: Det koster det at deltage
+        body: >
+            <p>Prisen for at deltage i stævnet afhænger af flere ting.</p>
+
+            <p>Tager din klub med bus eller fly?<br />
+            Overnatter holdet i telt, på skole eller på hotel?<br />
+            Som udgangspunkt kan du regne med en pris på 3.800 kr. for transport og deltagerafgift.
+            Det inkluderer også opholdet på skole eller på campingplads ved stranden.</p>
+
+            <p>Mad og drikke i Teramo er billigere end danske forhold og du kan regne med at klare dig for omkring 1.300 kr. i otte dage.
+            Typisk vil du kunne klare dig for 20 euro om dagen plus et lille bidrag til fælles morgenmad.</p>
+
+            <p>Hvis du skal med til Italien til sommer skal du altså afsætte ca. 5.000 kr. til turen.
+            Denne pris inkluderer transport, deltagergebyr og ophold inklusive måltider – altså alt nødvendigt på turen.
+            Afhængig af klubtilskud kan turen gøres endnu billigere - tal med din klub eller træner herom.</p>
+    fdp_firsttime:
+        title: Første gang i Rimini?
+        body: >
+            <p>Hvis det er første gang du deltager i Festival della Pallamano er der sikkert mange spørgsmål der melder sig.
+            Som træner eller holdleder kan du besøge stævnekontoret når i ankommer til Rimini.
+            Her får du hjælp til at finde stedet i skal overnatte på samt får udleveret en stævnepakke med mange relevante oplysninger.</p>
+
+            <p>Stævnekontoret finder man bag den centrale kirkeplads Piazza Martiri della Libertà.
+            Adressen er starten af Via Nico Palma ved Corso Cerulli.</p>
+    fdp_advices:
+        title: Gode råd om stævnet
+        body: >
+            <p>Festival della Pallamano afvikles som udgangspunkt i Rimini som er en afgrænset by med et lille hyggeligt centrum der er nemt at
+            overskue og finde rundt i.</p>
+
+            <p>Spillere kan selv gå ud og spise og siden mødes ved Campo 1 på det store torv midt i byen.</p>
+
+            <p>Men det er en god ide at aftale nogle simple regler.</p>
+
+            <p>Nogen hold følger samme regler som klubben traditionelt håndhæver ved andre stævner - andre tager en mere let holdning til eksempelvis alkohol.</p>
+
+            <p>Når spillerne færdes i grupper af tre eller flere spillere opstår der erfaringsmæssigt aldrig problemer.</p>
+    fdp_matches:
+        title: Hvormange kampe spiller man?
+        body: >
+            <p>Normalt er puljerne besat med seks hold. Så som udgangspunkt får alle hold fem indledende kampe.
+            Bliver holdet nummer et eller to i sin pulje er der mulighed for mellem- og slutrunde kampe frem til finalen.</p>
+
+            <p>Hvis ikke holdet har mulighed for at kvalificere sig til slutspillet er der mulighed for at aftale træningskampe.
+            Tal med sekretariatet på dagen hvor holdet ønsker en kamp og aftal spillested og modstander.</p>
+
+            <p>Det vil typisk være muligt at få lov til at låne en tid i en af hallerne - campo 2, 10, 11 eller 12.
+            Ellers kan man måske nøjes med campo 3 som er en bane med gummiunderlag.</p>
+
+            <p>Ofte er hviledagen eller en af de sidste dage i stævnet det bedste tidspunkt at afvikle en træningskamp på.</p>
+
+            <p>Stævnekontoret vil også kunne skaffe dommere til træningskampe.</p>
+    fdp_packing:
+        title: Det kan du pakke
+        body: >
+            <p>Hvis du allerede nu er klar til at deltage i Festival della Pallamano følger her et simpelt forslag til hvad du kan tage med dig på turen.</p>
+
+            <p>Brug din sunde fornuft men lad dig gerne inspirere af følgende:</p>
+            <ul>
+            <li>Pas (skal vises før kamp)</li>
+            <li>Sygesikringskort</li>
+            <li>Penge (euro) og pung</li>
+            <li>Toilet ting</li>
+            <li>To håndklæder (et til bad og et til strand/friluftsbad)</li>
+            <li>Badetøj</li>
+            <li>Rygsæk/taske til kampe</li>
+            <li>Håndbold sko – skal kunne bruges udendørs</li>
+            <li>Strømper til kamp</li>
+            <li>T-shirts til fritid og pænt tøj til aftenbrug</li>
+            <li>Sko eller sandaler til fritid</li>
+            <li>Solcreme</li>
+            <li>Mad pakke til turen</li>
+            </ul>
+    fdp_accomodation:
+        title: Adresser
+        body:
+    fdp_dining:
+        title: Gode spisesteder
+        body:
+    fdp_matchtime:
+        title: Spilletid
+        body: >
+            <table>
+            <thead>
+                <td>Kategori</td><td>Spilletid</td>
+            </thead>
+            <tr>
+                <td>U30 og U21 nationale teams</td><td>2 x 30 min</td>
+            </tr>
+            <tr>
+                <td>U21</td><td>2 x 20 min</td>
+            </tr>
+            <tr>
+                <td>U12-U18</td><td>2 x 15 min</td>
+            </tr>
+            </table>
+    fdp_playgrounds:
+        title: Spillesteder
+        body:

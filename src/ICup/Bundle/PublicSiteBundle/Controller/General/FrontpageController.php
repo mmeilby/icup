@@ -3,6 +3,7 @@
 namespace ICup\Bundle\PublicSiteBundle\Controller\General;
 
 use ICup\Bundle\PublicSiteBundle\Entity\Doctrine\Date;
+use ICup\Bundle\PublicSiteBundle\Entity\Doctrine\Host;
 use ICup\Bundle\PublicSiteBundle\Entity\Doctrine\News;
 use ICup\Bundle\PublicSiteBundle\Entity\Doctrine\Tournament;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
@@ -19,11 +20,9 @@ class FrontpageController extends Controller
 {
     /**
      * @Route("/", name="_icup")
-     * @Template("ICupPublicSiteBundle:General:frontpage.html.twig")
      */
     public function rootAction(Request $request)
     {
-        $domain = $request->getHost();
         $tournaments = $this->get('logic')->listAvailableTournaments();
         $tournamentList = array();
         $keyList = array(
@@ -45,8 +44,7 @@ class FrontpageController extends Controller
         $newsscroll = array();
         foreach ($tournaments as $tournament) {
             /* @var $tournament Tournament */
-            if (strcmp($tournament->getHost()->getDomain(), $domain) == 0 ||
-                strcmp("www.".$tournament->getHost()->getDomain(), $domain) == 0) {
+            if ($this->matchDomain($tournament->getHost(), $request)) {
                 // only select tournaments for the host that matches current url
                 $stat = $this->get('tmnt')->getTournamentStatus($tournament->getId(), $today);
                 if ($stat != TournamentSupport::$TMNT_HIDE) {
@@ -142,7 +140,15 @@ class FrontpageController extends Controller
             }
         }
 
-        return array(
+        $domain = $this->get('util')->parseHostDomain($request);
+        if (trim($domain) != "") {
+            $template = "ICupPublicSiteBundle:General:frontpage.".$domain.".html.twig";
+        }
+        else {
+            $template = "ICupPublicSiteBundle:General:frontpage.html.twig";
+        }
+
+        return $this->render($template, array(
             'form' => $form->createView(),
             'tournaments' => $tournamentList,
             'statuslist' => $statusList,
@@ -150,7 +156,7 @@ class FrontpageController extends Controller
             'teaserlist' => $teaserList,
             'club_list' => $club_list,
             'newsscroll' => $this->getNews($newsscroll, $request)
-        );
+        ));
     }
     
     private function makeContactForm(Contact $contact) {
@@ -202,5 +208,11 @@ class FrontpageController extends Controller
             }
         }
         return $newsForLocale;
+    }
+
+    private function matchDomain(Host $host, Request $request) {
+        $domain = $request->getHost();
+        return  strcmp($host->getDomain(), $domain) == 0 ||
+                strcmp("www.".$host->getDomain(), $domain) == 0;
     }
 }

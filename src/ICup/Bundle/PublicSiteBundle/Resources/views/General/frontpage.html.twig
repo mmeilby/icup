@@ -116,11 +116,7 @@
         <div class="container navy" style="padding-top: 30px; padding-bottom: 10px;">
             <div class="row">
                 <div class="col-md-8 lead">
-                    {% if app.request.host == 'icup.dk' or app.request.host == 'www.icup.dk' %}
-                        {{ sonata_block_render({'name': '/cms/content/blocks/frontpage/section_1'}) }}
-                    {% else %}
-                        {{ sonata_block_render({'name': '/cms/content/blocks/frontpage/fdp/section_1'}) }}
-                    {% endif %}
+                    {{ sonata_block_render({'name': '/cms/content/blocks/frontpage/section_1'}) }}
                 </div>
                 <div class="col-md-push-1 col-md-3" style="padding-top: 30px;">
                     <div class="text-center" style="padding-bottom: 40px;">

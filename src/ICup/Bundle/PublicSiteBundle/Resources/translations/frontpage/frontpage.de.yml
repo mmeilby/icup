@@ -46,3 +46,50 @@ FORM:
     EMAIL: Email-Kontaktadresse
     MSG: Platz für Nachrichten, Fragen oder vielleicht eine Idee...
     SUBMIT: Nachricht abschicken
+  FDPFRONTPAGE:
+    TITLE: Das internationale Handballturnier mit Mannschaften aus aller Welt in Italien
+    MSGSENT: Die Anfrage nach weiteren Informationen ist bei uns eingegangen. Sie erhalten in Kürze eine Antwort.
+    MSGINVALID: Die Anfrage ist nicht bei uns eingegangen. Die Nachricht darf keine Links enthalten.
+    BLOCK1:
+        TITLE: Deinem Verein folgen
+        DESCRIPTION: >
+                     Für alle Eltern und Spieler. Hier sind die Ergebnisse Deines Vereins.
+                     Diesem Link folgen und den Verein auswählen, dem Du folgen willst.
+        LEARNMORE: Einem Verein folgen
+        TABLETITLE: Ausgewählte Vereine
+    BLOCK2:
+        TITLE: Anmeldung
+        DESCRIPTION: >
+                     Jetzt die Anmeldung durchführen.
+                     Bedingungen und Kosten für die Anmeldung zum nächsten Turnier hier überprüfen.
+        LEARNMORE: Mannschaft anmelden
+        ONLINE: Online-Anmeldung
+    BLOCK3:
+        TITLE: Aktuelle Spiele
+        DESCRIPTION: >
+                     Weitere Ergebnisse Deiner Mannschaften findest Du hier.
+        LEARNMORE: Weitere Spiele anzeigen
+    BLOCK4:
+        TITLE: Die Sieger
+        DESCRIPTION: >
+                     Welche Mannschaften haben das Turnier bisher gewonnen. Hier sind die Länder, die Pokale gewonnen haben.
+                     Die Statistik zeigt die besten Leistungen im Turnierverlauf.
+        LEARNMORE: Weitere Informationen über die Sieger
+    BLOCK5:
+        TITLE: Informationen
+        DESCRIPTION: >
+                     Hier sind alle interesanten Informationen, die man kennen sollte.
+                     Nützlich für allen Gelegenheiten bei einer Reise nach Rimini.
+    BLOCK6:
+        TITLE: Das nächste Turnier
+        DESCRIPTION: >
+                     Das nächste Turnier ist geplant. Verschaffen Sie sich einen Überblick über dem
+                     Mannschaften eingeschrieben, und wenn die Gruppen geplant sind, können Sie diese hier
+                     überprüfen.
+    SENDMAIL: Für weitere Informationen das Formblatt ausfüllen und abschicken
+    NAME: Name
+    CLUB: Name des Vereins, den Du vertrittst oder für den Du spielst
+    PHONE: Für telefonischen Kontakt bitte hier Deine Telefonnummer eintragen
+    EMAIL: Email-Kontaktadresse
+    MSG: Platz für Nachrichten, Fragen oder vielleicht eine Idee...
+    SUBMIT: Nachricht abschicken

@@ -39,6 +39,13 @@ class Host
     protected $domain;
 
     /**
+     * @var string $alias
+     * Domain alias used for page redirection
+     * @ORM\Column(name="alias", type="string", length=10, nullable=false)
+     */
+    protected $alias;
+
+    /**
      * @var HostPlan $hostplan
      * Relation to HostPlan - the level of service this host has signed up for
      * @ORM\ManyToOne(targetEntity="HostPlan", inversedBy="hosts")
@@ -115,6 +122,22 @@ class Host
      */
     public function setDomain($domain) {
         $this->domain = $domain;
+        return $this;
+    }
+
+    /**
+     * @return string
+     */
+    public function getAlias() {
+        return $this->alias;
+    }
+
+    /**
+     * @param string $alias
+     * @return Host
+     */
+    public function setAlias($alias) {
+        $this->alias = $alias;
         return $this;
     }
 

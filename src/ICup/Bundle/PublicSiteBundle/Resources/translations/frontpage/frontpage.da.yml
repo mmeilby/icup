@@ -46,3 +46,50 @@ FORM:
     EMAIL: En e-mail adresse du vil modtage svar på
     MSG: Skriv en besked, et spørgsmål eller en god ide her...
     SUBMIT: Send besked
+  FDPFRONTPAGE:
+    TITLE: Spil håndbold i Italien
+    MSGSENT: Din forespørgsel er blevet sendt. Du kan forvente at få svar på den adresse eller nummer du har angivet.
+    MSGINVALID: Din forespørgsel er ikke blevet sendt. Beskeden må ikke indeholde links.
+    BLOCK1:
+        TITLE: Følg din klub
+        DESCRIPTION: >
+                     Er du forældre eller spiller kan du følge holdene fra din klub.
+                     Du skal blot vælge holdene her.
+                     Så ser du automatisk resultater og stillinger for klubbens hold.
+        LEARNMORE: Følg holdene
+        TABLETITLE: Hold du følger
+    BLOCK2:
+        TITLE: Holdtilmelding
+        DESCRIPTION: >
+                     Tilmelding af hold er mulig nu.
+                     Se hvilke betingelser der gælder og hvad prisen for at deltage er.
+        LEARNMORE: Tilmeld hold
+        ONLINE: Prøv online tilmelding
+    BLOCK3:
+        TITLE: Aktuelle kampe
+        DESCRIPTION: >
+                     Hvilke kampe spilles lige nu. Se eller følg dagens resultater her.
+        LEARNMORE: Vis flere kampe
+    BLOCK4:
+        TITLE: Finalisterne
+        DESCRIPTION: >
+                     Hvem blev turneringens vindere? Se hvilke lande der fik pokaler med hjem.
+                     Under statistik finder du de største bedrifter i turneringen.
+        LEARNMORE: Læs mere om vinderne
+    BLOCK5:
+        TITLE: Information
+        DESCRIPTION: >
+                     Læs om det der er værd at vide om stævnet. Hvad koster det? Hvormange
+                     kampe spiller man? Hvad kan du pakke? Hvor bor og spiser man i Rimini?
+    BLOCK6:
+        TITLE: Næste stævne
+        DESCRIPTION: >
+                     Det næste stævne er allerede planlagt. Følg her hvilke hold der har tilmeldt
+                     sig. Når puljerne er lagt kan du også se dem her.
+    SENDMAIL: Få mere information - udfyld og send
+    NAME: Dit navn
+    CLUB: Angiv hvilken klub du henvender dig på vegne af
+    PHONE: Et telefon nummer du kan kontaktes på
+    EMAIL: En e-mail adresse du vil modtage svar på
+    MSG: Skriv en besked, et spørgsmål eller en god ide her...
+    SUBMIT: Send besked

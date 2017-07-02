@@ -18,6 +18,15 @@ frontpage:
                 If you should need more information you will find contact information from the menu.
             </p>
             <p>Vediamo a Teramo</p>
+    fdp:
+        title: Play handball in Italy
+        body: >
+            <p>
+              A poco più di due settimane dallo start, cresce l’attesa per il 14° Festival della Pallamano,
+              in programma dall’11 al 16 luglio a Misano Adriatico.
+              La manifestazione vede impegnate 54 formazioni – tra maschile e femminile – e assegnerà lo
+              Scudetto nelle categorie U14 e U12.
+            </p>
     follow_club:
         title: Follow your club
         body: >
@@ -641,3 +650,67 @@ information:
                 CAMPO 15 - Rocca Santa Maria<br />
                 CAMPO 16 - S. Egidio
             </p>
+    fdp_intro:
+        title: Festival della Pallamano
+        body:
+    fdp_price:
+        title: How much does it cost to participate?
+        body:
+    fdp_firsttime:
+        title: First time in Rimini?
+        body:
+    fdp_advices:
+        title: A simple advice
+        body:
+    fdp_matches:
+        title: How many matches will I play?
+        body:
+    fdp_packing:
+        title: Packing list
+        body: >
+            <p>
+                If you at this point feel ready to leave for Rimini and join the Fastival della Pallamano,
+                you will find here a simple suggestion of things you can bring with you.
+            </p>
+            <p>Allow yourself to be inspired by the following list:</p>
+            <ul>
+                <li>Passport (also needed for documentation before each match)</li>
+                <li>Health ensurance</li>
+                <li>Money (euro) and a purse</li>
+                <li>Toothbrush, paste and other stuff</li>
+                <li>Two towels (one for bath and one for the beach/pool)</li>
+                <li>Swimsuit</li>
+                <li>Backpack/bag</li>
+                <li>Shoes for the game - outdoor use</li>
+                <li>Socks for the game</li>
+                <li>T-shirts for leasure time and dress for evening use</li>
+                <li>Shoes or sandals for leasure time</li>
+                <li>Sunblocker</li>
+                <li>Food for the trip (if you travel by airplane)</li>
+            </ul>
+    fdp_accomodation:
+        title: Addresses
+        body:
+    fdp_dining:
+        title: Eating out
+        body:
+    fdp_matchtime:
+        title: Match time
+        body: >
+              <table>
+              <thead>
+                  <td>Category</td><td>Match time</td>
+              </thead>
+              <tr>
+                  <td>U30 and U21 national teams</td><td>2 x 30 min</td>
+              </tr>
+              <tr>
+                  <td>U21</td><td>2 x 20 min</td>
+              </tr>
+              <tr>
+                  <td>U12-U18</td><td>2 x 15 min</td>
+              </tr>
+              </table>
+    fdp_playgrounds:
+        title: Venues
+        body:

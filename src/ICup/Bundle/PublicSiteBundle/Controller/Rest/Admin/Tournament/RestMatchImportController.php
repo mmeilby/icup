@@ -114,7 +114,7 @@ class RestMatchImportController extends Controller
         $matchList = array();
         foreach ($matchListRaw as $matchRaw) {
             // check for validity of the row
-            if (!isset($matchRaw["matchno"])) continue;
+            if (!isset($matchRaw["matchno"]) || !is_numeric($matchRaw["matchno"])) continue;
 
             $isFinal = false;
             /* @var $category Category */

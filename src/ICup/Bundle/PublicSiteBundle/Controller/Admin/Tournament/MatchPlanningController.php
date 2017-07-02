@@ -574,7 +574,7 @@ class MatchPlanningController extends Controller
                     '";"'.$match->getPlayground()->getNo().
                     '";"'.$match->getRelA().
                     '";"'.$match->getRelB().
-                    '";';
+                    '"';
                 $outputar[] = $outputstr;
             }
             else {
@@ -588,12 +588,11 @@ class MatchPlanningController extends Controller
                     '";"'.$match->getPlayground()->getNo().
                     '";"'.$this->getTeamRecord($match->getTeamA()).
                     '";"'.$this->getTeamRecord($match->getTeamB()).
-                    '";';
+                    '"';
                 $outputar[] = $outputstr;
             }
         }
         if (count($result['unassigned']) > 0) {
-            $outputar[] = ";;;;;;;";
             foreach ($result['unassigned'] as $match) {
                 if ($match instanceof QMatchPlan) {
                     /* @var $match QMatchPlan */
@@ -602,7 +601,7 @@ class MatchPlanningController extends Controller
                         '";"'.$match->getClassification()."-".$match->getLitra().
                         '";;"'.$match->getRelA().
                         '";"'.$match->getRelB().
-                        '";';
+                        '"';
                     $outputar[] = $outputstr;
                 }
                 else {
@@ -612,26 +611,11 @@ class MatchPlanningController extends Controller
                         '";"'.$match->getGroup()->getName().
                         '";;"'.$this->getTeamRecord($match->getTeamA()).
                         '";"'.$this->getTeamRecord($match->getTeamB()).
-                        '";';
+                        '"';
                     $outputar[] = $outputstr;
                 }
             }
         }
-        $outputar[] = ";;;;;;;";
-        $tid = array();
-        foreach ($result['matches'] as $match) {
-            if (!$match instanceof QMatchPlan) {
-                if ($match->getTeamA() && !isset($tid[$match->getTeamA()->getId()])) {
-                    $outputstr =
-                        '"' . $match->getCategory()->getName() .
-                        '";"' . $match->getGroup()->getName() .
-                        '";"' . $this->getTeamRecord($match->getTeamA()) . '"';
-                    $tid[$match->getTeamA()->getId()] = $match->getTeamA()->getTeamName();
-                    $outputar[] = $outputstr;
-                }
-            }
-        }
-        
         return $outputar;
     }
 

@@ -78,6 +78,7 @@ class Util
                     $score++;
                 }
                 else {
+                    $score = 0;
                     break;
                 }
                 $i--; $j--;

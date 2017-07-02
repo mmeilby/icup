@@ -75,6 +75,10 @@ class Util
             $score = 0;
             while ($i >= 0 && $j >= 0) {
                 if (strcmp($url[$i], $domain_url[$j]) == 0) {
+                    if ($i==0 && $j==0) {
+                        // if all components match it is a true match
+                        return $host->getAlias();
+                    }
                     $score++;
                 }
                 else {

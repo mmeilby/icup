@@ -36,6 +36,7 @@ class TimeslotController extends Controller
 
         $timeslot = new Timeslot();
         $timeslot->setTournament($tournament);
+        $timeslot->setPenalty(false);
         $form = $this->makeTimeslotForm($timeslot, 'add');
         $form->handleRequest($request);
         if ($form->get('cancel')->isClicked()) {

@@ -3,6 +3,7 @@
 namespace ICup\Bundle\PublicSiteBundle\Services\Doctrine;
 
 use ICup\Bundle\PublicSiteBundle\Entity\Doctrine\Date;
+use ICup\Bundle\PublicSiteBundle\Entity\Doctrine\Event;
 use ICup\Bundle\PublicSiteBundle\Entity\Doctrine\MatchRelation;
 use ICup\Bundle\PublicSiteBundle\Entity\Doctrine\Tournament;
 use ICup\Bundle\PublicSiteBundle\Entity\QMatch;
@@ -12,6 +13,7 @@ use Monolog\Logger;
 use ICup\Bundle\PublicSiteBundle\Services\Doctrine\Entity;
 use ICup\Bundle\PublicSiteBundle\Services\Doctrine\BusinessLogic;
 use DateTime;
+use DateInterval;
 
 class MatchSupport
 {
@@ -411,6 +413,21 @@ class MatchSupport
         foreach ($qb->getResult() as $date) {
             $matchdate = Date::getDateTime($date['date']);
             $matchList[] = $matchdate;
+        }
+        if (empty($matchList)) {
+            /* @var $event Event */
+            $event = $this->container->get('tmnt')->getEventByEvent($tournamentid, Event::$MATCH_START);
+            if ($event != null) {
+                $matchList[] = $event->getSchedule();
+            }
+            else {
+                $matchList[] = new DateTime();
+            }
+            $event = $this->container->get('tmnt')->getEventByEvent($tournamentid, Event::$MATCH_STOP);
+            if ($event != null) {
+                $enddate = $event->getSchedule();
+                $matchList[] = date_sub($enddate, new DateInterval("P1D"));
+            }
         }
         return $matchList;
     }

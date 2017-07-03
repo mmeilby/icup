@@ -79,6 +79,8 @@ FORM:
     LISTSITES:
         CAPTION: Campi di gioco
         DESCRIPTION: Gestisci le informazioni sui campi di gioco
+    LISTENROLLED:
+        TITLE: Enrolled teams for this club
     LISTCATEGORIES:
         CAPTION: Gategorie e gruppi
         DESCRIPTION: Gestisci i gruppi e le categorie

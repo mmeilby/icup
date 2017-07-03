@@ -80,6 +80,8 @@ FORM:
     LISTSITES:
         CAPTION: Sites and venues
         DESCRIPTION: Maintain information of sites and venues
+    LISTENROLLED:
+        TITLE: Enrolled teams for this club
     LISTCATEGORIES:
         CAPTION: Categories and groups
         DESCRIPTION: Plan groups and maintain categories

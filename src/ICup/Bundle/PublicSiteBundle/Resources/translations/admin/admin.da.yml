@@ -594,6 +594,8 @@ FORM:
     COPY: kopi
     SUBMIT: Indlæs oplysninger
     CANCEL: Fortryd
+  LISTENROLLED:
+    TITLE: Klubbens tilmeldte hold
   LISTCATEGORIES:
     TITLE: Vedligehold turnering
     CAPTION: Grupper og puljer

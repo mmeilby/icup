@@ -3,6 +3,9 @@ namespace ICup\Bundle\PublicSiteBundle\Controller\Admin\Tournament;
 
 use ICup\Bundle\PublicSiteBundle\Entity\Doctrine\Category;
 use ICup\Bundle\PublicSiteBundle\Entity\Doctrine\Club;
+use ICup\Bundle\PublicSiteBundle\Entity\Doctrine\ClubRelation;
+use ICup\Bundle\PublicSiteBundle\Entity\Doctrine\Team;
+use ICup\Bundle\PublicSiteBundle\Entity\Doctrine\Voucher;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
@@ -56,8 +59,9 @@ class ClubMergeController extends Controller
         $teams = $source_club->getTeams();
         /* @var $category Category */
         foreach ($teams as $team) {
+            /* @var $team Team */
             try {
-                $category = $this->get('logic')->getEnrolledCategory($team->getId());
+                $category = $team->getCategory();
             }
             catch (ValidationException $ex) {
                 $category = $this->get('logic')->getAssignedCategory($team->getId());
@@ -84,6 +88,19 @@ class ClubMergeController extends Controller
             $team->setDivision($division);
             $em->flush();
         }
+        foreach ($source_club->getOfficials() as $official) {
+            /* @var $official ClubRelation */
+            $target_club->getOfficials()->add($official);
+            $official->setClub($target_club);
+        }
+        foreach ($source_club->getVouchers() as $voucher) {
+            /* @var $voucher Voucher */
+            $target_club->getVouchers()->add($voucher);
+            $voucher->setClub($target_club);
+        }
+        $source_club->getTeams()->clear();
+        $source_club->getOfficials()->clear();
+        $source_club->getVouchers()->clear();
         $em->remove($source_club);
         $em->flush();
     }

@@ -9,8 +9,10 @@ angular.module('tournamentBoardModule.clubs', [])
             $scope.club = club;
             var dlgScope = $scope.$new();
             dlgScope.club_object = {
-                'name': $scope.club.name,
-                'country': $scope.club.country_code
+                "name": $scope.club.name,
+                "address": $scope.club.address,
+                "city": $scope.club.city,
+                "countrycode": $scope.club.country_code
             };
             $mdDialog.show({
                 controller: DialogController,

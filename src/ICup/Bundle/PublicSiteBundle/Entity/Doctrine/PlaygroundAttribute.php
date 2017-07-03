@@ -33,6 +33,13 @@ class PlaygroundAttribute implements JsonSerializable
     protected $playground;
 
     /**
+     * @var ArrayCollection $matchscheduleplans
+     * Collection of relations to match schedule plans
+     * @ORM\OneToMany(targetEntity="MatchSchedulePlan", mappedBy="playgroundAttribute", cascade={"persist"})
+     */
+    protected $matchscheduleplans;
+
+    /**
      * @var ArrayCollection $categories
      * @ORM\ManyToMany(targetEntity="Category", inversedBy="playgroundattributes")
      * @ORM\JoinTable(name="parelations",
@@ -90,6 +97,7 @@ class PlaygroundAttribute implements JsonSerializable
      */
     public function __construct() {
         $this->categories = new ArrayCollection();
+        $this->matchscheduleplans = new ArrayCollection();
     }
 
     /**
@@ -116,6 +124,13 @@ class PlaygroundAttribute implements JsonSerializable
     public function setPlayground($playground) {
         $this->playground = $playground;
         return $this;
+    }
+
+    /**
+     * @return ArrayCollection
+     */
+    public function getMatchscheduleplans() {
+        return $this->matchscheduleplans;
     }
 
     /**

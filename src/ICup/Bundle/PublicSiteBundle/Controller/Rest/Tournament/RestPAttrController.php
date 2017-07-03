@@ -281,9 +281,14 @@ class RestPAttrController extends Controller
             return new JsonResponse(array('errors' => array($e->getMessage())), Response::HTTP_FORBIDDEN);
         }
 
-        $em = $this->getDoctrine()->getManager();
-        $em->remove($pattr);
-        $em->flush();
+        if ($pattr->getMatchscheduleplans()->isEmpty()) {
+            $em = $this->getDoctrine()->getManager();
+            $em->remove($pattr);
+            $em->flush();
+        }
+        else {
+            return new JsonResponse(array('errors' => array($this->get('translator')->trans('FORM.PLAYGROUNDATTR.MATCHEXISTS', array(), 'admin'))), Response::HTTP_INTERNAL_SERVER_ERROR);
+        }
         return new JsonResponse(array(), Response::HTTP_NO_CONTENT);
     }
 

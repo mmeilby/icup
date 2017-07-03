@@ -332,6 +332,7 @@ FORM:
     BADEND: Tidspunkt for periodeophør er ikke gyldigt.
     NOTIMESLOT: Der skal vælges en periode for denne banepræference.
     BADTIME: Periodestart og ophør skal passe sammen. Bemærk at perioden skal specificeres indenfor samme dag.
+    MATCHEXISTS: Der findes kampplaner knyttet til denne banepræference. Disse planer skal fjernes først.
     BASICS: Grundoplysninger
     CONSTRAINTS: Gruppetilknytning
     TITLE:

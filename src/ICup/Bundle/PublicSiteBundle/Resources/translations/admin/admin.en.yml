@@ -333,6 +333,7 @@ FORM:
     BADEND: The preference end of day is not valid.
     NOTIMESLOT: A timeslot for this preference must be chosen.
     BADTIME: Start and end of day must define a continuous period of time for the specified day. This is not the case.
+    MATCHEXISTS: This preference has planned matches attached. Please remove these plans to complete the task.
     BASICS: Basic information
     CONSTRAINTS: Category constraints
     TITLE:

@@ -332,6 +332,7 @@ FORM:
     BADEND: La preferenza di fine del giorno non è valida.
     NOTIMESLOT: Un periodo deve essere scelto.
     BADTIME: Inizio e fine del giorno devono definire un periodo continuo di tempo per un giorno specifico.
+    MATCHEXISTS: This preference has planned matches attached. Please remove these plans to complete the task.
     BASICS: Basic information
     CONSTRAINTS: Category constraints
     TITLE:

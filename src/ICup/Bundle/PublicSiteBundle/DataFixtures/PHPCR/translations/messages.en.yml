@@ -443,6 +443,21 @@ enrollment:
         title: SEND TILMELDING
         body: >
             TBD
+    fdp_step1:
+        title: Enrollment
+        body:
+    fdp_terms:
+        title: Enrollment terms
+        body:
+    fdp_accomodation:
+        title: Accomodation
+        body:
+    paymentterms:
+        title: Payment terms
+        body:
+    fdp_address:
+        title: Address
+        body:
 information:
     intro:
         title: The Interamnia World Cup for the 43rd time

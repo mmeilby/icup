@@ -545,6 +545,21 @@ enrollment:
                 10. februar 2016 er holdgebyret €200.<br />
                 15. april 2016 er holdgebyret €300.
             </p>
+    fdp_step1:
+        title: Enrollment
+        body:
+    fdp_terms:
+        title: Enrollment terms
+        body:
+    fdp_accomodation:
+        title: Accomodation
+        body:
+    paymentterms:
+        title: Payment terms
+        body:
+    fdp_address:
+        title: Address
+        body:
 information:
     intro:
         title: Håndboldstævnet Interamnia World Cup afholdes for 43. gang

@@ -63,8 +63,18 @@ class Util
         return array_keys($globals['supported_locales']);
     }
 
+    /**
+     * Return the host alias for requested url
+     * If a host fits the url for the page request the host alias is returned
+     *
+     * Examples:
+     *   HOST1 = icup.dk        Matches icup.dk, www.icup.dk, results.icup.dk
+     *   HOST2 = fdc.icup.dk    Matches fdc.icup.dk
+     *
+     * @param Request $request
+     * @return string the host alias
+     */
     public function parseHostDomain(Request $request) {
-        $domain = "";
         $scoretable = array();
         $url = explode(".", $request->getHost());
         foreach ($this->logic->listHosts() as $host) {
@@ -82,6 +92,7 @@ class Util
                     $score++;
                 }
                 else {
+                    // if requested url does not fit with this host ignore it
                     $score = 0;
                     break;
                 }

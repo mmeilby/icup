@@ -26,7 +26,6 @@ class ContentPageController extends Controller
     
     /**
      * @Route("/enrollment", name="_enrollment")
-     * @Template("ICupPublicSiteBundle:General:enrollment.html.twig")
      */
     public function showEnrollment(Request $request)
     {
@@ -39,7 +38,12 @@ class ContentPageController extends Controller
         }
         /* @var $manager \Doctrine\ODM\PHPCR\DocumentManager */
         $manager = $this->get('doctrine_phpcr')->getManager('default');
-        $parent = $manager->find(null, '/cms/media/enrollment');
+        if (trim($domain) != "") {
+            $parent = $manager->find(null, "/cms/media/".$domain."/enrollment");
+        }
+        else {
+            $parent = $manager->find(null, '/cms/media/enrollment');
+        }
         if ($parent) {
             $files = $manager->getChildren($parent);
             return $this->render($template, array('files' => $files));

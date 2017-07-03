@@ -133,7 +133,7 @@ class TournamentImportController extends Controller
                 $new_playground->setWeight($playground->getWeight());
                 $em->persist($new_playground);
                 $em->flush();
-                $this->importPAttrs($playground, $new_playground, $tsconversion, $cconversion);
+//                $this->importPAttrs($playground, $new_playground, $tsconversion, $cconversion);
             }
         }
     }

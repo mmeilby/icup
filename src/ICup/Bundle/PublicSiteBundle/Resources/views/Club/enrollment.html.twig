@@ -16,7 +16,9 @@
     <script src="{{ url('bazinga_jstranslation_js', { 'domain': 'errors' }) }}"></script>
     <script src="{{ url('bazinga_jstranslation_js', { 'domain': 'tournament' }) }}"></script>
     <script src="{{ url('bazinga_jstranslation_js', { 'domain': 'club' }) }}"></script>
-    <script src="https://checkout.stripe.com/checkout.js"></script>
+    <!-- Stripe -->
+    <script type="text/javascript" src="https://js.stripe.com/v2/"></script>
+    <script type="text/javascript" src="https://checkout.stripe.com/checkout.js"></script>
     <script type="text/javascript">
         angular.module('enrollmentModule',
             [

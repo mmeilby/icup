@@ -19,7 +19,6 @@ class OverviewController extends Controller
 {
     /**
      * @Route("/tmnt/vw/{tournament}", name="_tournament_overview")
-     * @Template("ICupPublicSiteBundle:Tournament:overview.html.twig")
      */
     public function overviewAction($tournament, Request $request) {
         return $this->getOverviewResponse($tournament, new DateTime(), $request);
@@ -27,7 +26,6 @@ class OverviewController extends Controller
 
     /**
      * @Route("/tmnt/vw/{tournament}/{date}", name="_tournament_overview_date")
-     * @Template("ICupPublicSiteBundle:Tournament:overview.html.twig")
      */
     public function overviewDateAction($tournament, $date, Request $request) {
         $matchDate = DateTime::createFromFormat('d-m-Y', $date);
@@ -179,7 +177,15 @@ class OverviewController extends Controller
             }
         }
         $host = $tournament->getHost();
-        return array(
+        $domain = $this->get('util')->parseHostDomain($request);
+        if (trim($domain) != "") {
+            $template = "ICupPublicSiteBundle:Tournament:overview.".$domain.".html.twig";
+        }
+        else {
+            $template = "ICupPublicSiteBundle:Tournament:overview.html.twig";
+        }
+
+        return $this->render($template, array(
             'host' => $host,
             'tournament' => $tournament,
             'matchdate' => $matchDate,
@@ -187,7 +193,7 @@ class OverviewController extends Controller
             'newsgeneral' => $this->getNews($newsGeneral, $request),
             'matchlist' => $matchList,
             'teaserlist' => $teaserList
-        );
+        ));
     }
 
     private function getNews($newsList, Request $request) {

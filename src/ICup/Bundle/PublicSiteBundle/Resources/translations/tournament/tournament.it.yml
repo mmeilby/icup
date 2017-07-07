@@ -119,15 +119,15 @@ FORM:
           DESC: Prendi il quadro completo di tutte le partite con i club che segui
         MOREMATCHES:
           TITLE: Partite in programma
-          DESC: Visualizza le partite per il seguente gorno di gara.
+          DESC: Visualizza le partite per il seguente giorno di gara.
         GROUPS:
-          TITLE: Risultati
+          TITLE: Categorie
           DESC: Guarda la composizione delle categorie o ricerca i risultati per squadra e categoria.
         PLAYGROUNDS:
           TITLE: Campi di gioco
           DESC: Segui gli incontri sui campi.
         TEAMS:
-          TITLE: Squadre iscritte
+          TITLE: Squadre inscritte
           DESC: Trova le squadre partecipanti e visualizza i risultati.
         WINNERS:
           TITLE: I campioni

@@ -1,5 +1,9 @@
 To Do List
 ----------
+Opret kamp fejler
+Admin - ret klub navn
+Ret / slet periode - check for kampplan relation
+Opret bane - definer adresse (søg på google) eller indtast koordinater
 Færdiggørelse af planlæg indledende kampe
 Vis gruppenavn på slutrundekampe - Semifinale 1
 Ret ændring af kodeord
@@ -14,6 +18,9 @@ Brush up - tilføj klub fra vedligehold klubber
 
 IDEER
 -----
+BYG iCUP API
+Mulighed for at ændre kampnr. rækkefølge ved planlægning
+Eksport / import turnering
 Hjælp til alle crud sider - opret viser udvidet hjælp i højre side af skærm - rediger viser mindre hjælp - fjern viser konsekvens beskrivelse
 Fix - forside ændres så højrebar forbliver på inaktiv side (men i et andet format)
 Søgning efter turnering skal tage udgangspunkt i valg af turneringsvært
@@ -30,6 +37,10 @@ Opret turnering
 
 Done List
 ---------
+Opret periode - undgå rejsetid = null
+Tidsplan - ingen planer = 1970
+Kopier turnering - opdater events og timeslots til nyt år
+Sammenlæg klubber fejler
 Kig på Indlæs kampplan til slutrunde/Påsæt hold til slutrunde - lav generel import funktion under planlæg turnering
 Definer champions ved gem af kampplan
 Playground fejlhåndtering i tilpas kamp rettet

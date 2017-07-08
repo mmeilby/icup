@@ -32,7 +32,7 @@ class ResultReportingController extends Controller
         $returnUrl = $this->get('router')->generate('_icup');
 
         $resultForm = new ResultForm();
-        $form = $this->makeResultForm($resultForm);
+        $form = $this->makeResultForm($request, $resultForm);
         $form->handleRequest($request);
         if ($form->get('cancel')->isClicked()) {
             return $this->redirect($returnUrl);
@@ -91,24 +91,25 @@ class ResultReportingController extends Controller
         return $match;
     }
 
-    private function makeResultForm(ResultForm $resultForm) {
+    private function makeResultForm(Request $request, ResultForm $resultForm) {
         $tournamentKey = $this->get('util')->getTournamentKey();
         if ($tournamentKey != '_') {
             /* @var $tournament Tournament */
-            $tournament = $this->get('logic')->getTournamentByKey($tournamentKey);;
+            $tournament = $this->get('logic')->getTournamentByKey($tournamentKey);
             if ($tournament != null) {
                 $resultForm->setTournament($tournament->getId());
             }
         }
         $resultForm->setEvent(ResultForm::$EVENT_MATCH_PLAYED);
 
+        $domain = $this->get('util')->parseHostDomain($request);
         $tournaments = $this->get('logic')->listAvailableTournaments();
         $tournamentList = array();
         $today = new DateTime();
         foreach ($tournaments as $tmnt) {
             /* @var $tmnt Tournament */
             $stat = $this->get('tmnt')->getTournamentStatus($tmnt->getId(), $today);
-            if ($stat == TournamentSupport::$TMNT_GOING) {
+            if ($stat == TournamentSupport::$TMNT_GOING && $tmnt->getHost()->getAlias() == $domain) {
                 $tournamentList[$tmnt->getId()] = $tmnt->getName();
             }
         }

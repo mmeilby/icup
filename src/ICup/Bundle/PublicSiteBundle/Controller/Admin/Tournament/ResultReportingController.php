@@ -52,7 +52,7 @@ class ResultReportingController extends Controller
                 'away' => $matchawaydetails
             );
             $request->getSession()->getFlashBag()->add('matchupdated', $flashdata);
-            $form = $this->makeResultForm(new ResultForm());
+            $form = $this->makeResultForm($request, new ResultForm());
         }
         return array('form' => $form->createView());
     }

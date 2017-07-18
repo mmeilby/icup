@@ -1,5 +1,5 @@
 assetic:
-    bundles:        [ ICupPublicSiteBundle, CmfCreateBundle ]
+    bundles:        [ ICupPublicSiteBundle, APIBundle ]
 
 # Doctrine PHPCR-ODM configuration
 doctrine_phpcr:
@@ -63,20 +63,10 @@ cmf_routing:
             Symfony\Cmf\Bundle\SimpleCmsBundle\Doctrine\Phpcr\Page: ICupPublicSiteBundle:Page:index.html.twig
         locales: [ en, it, fr, de, es, po, da ]
 
-cmf_create:
-    security:
-        role: ROLE_EDITOR_NEWS
-
 sonata_core: ~
 
 sonata_block:
     default_contexts: [cms/content/blocks]
-
-# Cmf Create Configuration
-fos_rest:
-    view:
-        formats:
-            json: true
 
 liip_imagine:
     resolvers:

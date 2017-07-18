@@ -37,7 +37,7 @@ class AppKernel extends Kernel
             new Symfony\Cmf\Bundle\CoreBundle\CmfCoreBundle(),
             new Symfony\Cmf\Bundle\ContentBundle\CmfContentBundle(),
             new Symfony\Cmf\Bundle\RoutingBundle\CmfRoutingBundle(),
-            new Symfony\Cmf\Bundle\SimpleCmsBundle\CmfSimpleCmsBundle(),
+//            new Symfony\Cmf\Bundle\SimpleCmsBundle\CmfSimpleCmsBundle(),
             new Symfony\Cmf\Bundle\MediaBundle\CmfMediaBundle(),
             new Symfony\Cmf\Bundle\BlockBundle\CmfBlockBundle(),
             new Liip\ImagineBundle\LiipImagineBundle(),
@@ -48,12 +48,13 @@ class AppKernel extends Kernel
 
             new Symfony\Cmf\Bundle\MenuBundle\CmfMenuBundle(),
 
-            new Symfony\Cmf\Bundle\CreateBundle\CmfCreateBundle(),
-            new FOS\RestBundle\FOSRestBundle(),
+//            new Symfony\Cmf\Bundle\CreateBundle\CmfCreateBundle(),
+//            new FOS\RestBundle\FOSRestBundle(),
             new JMS\SerializerBundle\JMSSerializerBundle(),
             new Bazinga\Bundle\JsTranslationBundle\BazingaJsTranslationBundle(),
             
             new ICup\Bundle\PublicSiteBundle\ICupPublicSiteBundle(),
+            new APIBundle\APIBundle(),
        );
 
         if (in_array($this->getEnvironment(), array('dev', 'test'))) {

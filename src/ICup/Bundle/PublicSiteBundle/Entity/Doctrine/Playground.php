@@ -231,6 +231,7 @@ class Playground implements JsonSerializable
      */
     function jsonSerialize() {
         return array(
+            "objectType" => "Playground",
             "id" => $this->getId(),
             "name" => $this->getName(),
             "no" => $this->getNo(),

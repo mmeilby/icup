@@ -307,6 +307,7 @@ class Team implements JsonSerializable
      */
     function jsonSerialize() {
         return array(
+            "objectType" => "Team",
             "id" => $this->id, "name" => $this->name, "teamname" => $this->getTeamName(),
             "color" => $this->color, "division" => $this->division, "vacant" => $this->isVacant(),
             "country_code" => $this->getClub()->getCountryCode(),

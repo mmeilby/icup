@@ -415,6 +415,7 @@ class Category implements JsonSerializable
      */
     function jsonSerialize() {
         return array(
+            "objectType" => "Category",
             "id" => $this->id, "name" => $this->name, "gender" => $this->getGender(), "classification" => $this->classification, "age" => $this->age,
             "trophys" => $this->trophys, "topteams" => $this->topteams,
             "preliminary_groups" => $this->getGroupsClassified(Group::$PRE)->count(), "strategy" => $this->strategy, "matchtime" => $this->matchtime

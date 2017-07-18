@@ -348,6 +348,7 @@ class Tournament implements JsonSerializable
      */
     function jsonSerialize() {
         return array(
+            "objectType" => "Tournament",
             "id" => $this->id, "name" => $this->name, "key" => $this->key, "edition" => $this->edition, "description" => $this->description,
             "option" => $this->getOption()
         );

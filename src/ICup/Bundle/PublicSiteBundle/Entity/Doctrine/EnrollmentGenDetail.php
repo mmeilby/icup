@@ -118,6 +118,7 @@ class EnrollmentGenDetail implements JsonSerializable
      */
     function jsonSerialize() {
         return array(
+            "objectType" => "EnrollmentGenDetail",
             "id" => $this->id,
             "enrollment" => $this->enrollment->jsonSerialize(),
             "key" => $this->key, "value" => $this->value

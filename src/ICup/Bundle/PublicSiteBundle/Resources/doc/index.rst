@@ -1,6 +1,8 @@
 To Do List
 ----------
-Opret kamp fejler
+Tilføj enkelt hold på slutrundekampe
+Opdater hold på slutrundekampe
+Opret kamp fejler fra søg kamp i admin
 Admin - ret klub navn
 Ret / slet periode - check for kampplan relation
 Opret bane - definer adresse (søg på google) eller indtast koordinater

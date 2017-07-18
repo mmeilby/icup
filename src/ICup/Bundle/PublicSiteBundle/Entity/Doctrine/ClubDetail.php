@@ -118,6 +118,7 @@ class ClubDetail implements JsonSerializable
      */
     function jsonSerialize() {
         return array(
+            "objectType" => "ClubDetail",
             "id" => $this->id,
             "club" => $this->club->jsonSerialize(),
             "key" => $this->key, "value" => $this->value

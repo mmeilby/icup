@@ -271,6 +271,7 @@ class Club implements JsonSerializable
      */
     function jsonSerialize() {
         return array(
+            "objectType" => "Club",
             "id" => $this->id,
             "name" => $this->name, "address" => $this->address, "city" => $this->city,
             "country_code" => $this->country->getCountry(), "flag" => $this->country->getFlag()

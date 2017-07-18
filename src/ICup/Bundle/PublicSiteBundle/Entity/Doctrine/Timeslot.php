@@ -214,6 +214,10 @@ class Timeslot implements JsonSerializable
      * which is a value of any type other than a resource.
      */
     function jsonSerialize() {
-        return array("id" => $this->getId(), "name" => $this->getName(), "capacity" => $this->getCapacity(), "restperiod" => $this->getRestperiod(), "penalty" => $this->getPenalty());
+        return array(
+            "objectType" => "Timeslot",
+            "id" => $this->getId(), "name" => $this->getName(), "capacity" => $this->getCapacity(),
+            "restperiod" => $this->getRestperiod(), "penalty" => $this->getPenalty()
+        );
     }
 }

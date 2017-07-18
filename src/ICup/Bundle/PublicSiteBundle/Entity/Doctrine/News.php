@@ -263,6 +263,7 @@ class News implements JsonSerializable
      */
     function jsonSerialize() {
         return array(
+            "objectType" => "News",
             "id" => $this->id, "newsno" => $this->newsno, "language" => $this->language, "newstype" => $this->newstype,
             'date' => Date::jsonDateSerialize($this->date),
             "title" => $this->title, "context" => $this->context,

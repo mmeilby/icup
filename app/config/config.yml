@@ -47,7 +47,7 @@ twig:
 assetic:
     debug:          %kernel.debug%
     use_controller: false
-    bundles:        [ ICupPublicSiteBundle ]
+    bundles:        [ ICupPublicSiteBundle, APIBundle ]
     #java: /usr/bin/java
     filters:
         cssrewrite: ~

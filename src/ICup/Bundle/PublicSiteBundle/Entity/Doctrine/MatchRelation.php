@@ -214,6 +214,7 @@ class MatchRelation implements JsonSerializable
      */
     function jsonSerialize() {
         return array(
+            "objectType" => "MatchRelation",
             "id" => $this->id,
             'relation' => $this->getAwayteam() ? "away" : "home",
             "team" => $this->team->jsonSerialize(),

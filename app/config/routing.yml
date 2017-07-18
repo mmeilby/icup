@@ -31,12 +31,6 @@ fos_js_routing:
 _bazinga_jstranslation:
     resource: "@BazingaJsTranslationBundle/Resources/config/routing/routing.yml"
 
-cmf_create:
-    resource: "@CmfCreateBundle/Resources/config/routing/rest.xml"
-
-cmf_create_image:
-    resource: "@CmfCreateBundle/Resources/config/routing/image.xml"
-    
 cmf_media_file:
     resource: "@CmfMediaBundle/Resources/config/routing/file.xml"
 
@@ -50,3 +44,10 @@ i_cup_public_site:
     resource: "@ICupPublicSiteBundle/Controller/"
     type:     annotation
     prefix:   /
+
+api:
+    resource: "@APIBundle/Controller/"
+    type:     annotation
+    schemes:  https
+    prefix:   /service/api
+

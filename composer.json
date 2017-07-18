@@ -4,7 +4,14 @@
     "type": "project",
     "description": "Match tracking system for sport events",
     "autoload": {
-        "psr-0": { "": "src/" }
+        "psr-4": {
+            "ICup\\Bundle\\PublicSiteBundle\\": "src/ICup/Bundle/PublicSiteBundle",
+            "APIBundle\\": "src/ICup/Bundle/APIBundle"
+        },
+        "classmap": [
+            "app/AppKernel.php",
+            "app/AppCache.php"
+        ]
     },
     "authors": [
         {
@@ -27,9 +34,6 @@
         "symfony/translation": "~2.3",
         "symfony-cmf/symfony-cmf": "1.2.*",
         "symfony-cmf/block-bundle": "1.2.*",
-        "symfony-cmf/simple-cms-bundle": "1.2.*",
-        "symfony-cmf/media-bundle": "1.2.*",
-        "symfony-cmf/create-bundle": "1.2.*",
         "sensio/distribution-bundle": "~4.0",
         "sensio/framework-extra-bundle": "~3.0",
         "incenteev/composer-parameter-handler": "~2.0",
@@ -61,33 +65,32 @@
             "Sensio\\Bundle\\DistributionBundle\\Composer\\ScriptHandler::buildBootstrap",
             "Sensio\\Bundle\\DistributionBundle\\Composer\\ScriptHandler::clearCache",
             "Sensio\\Bundle\\DistributionBundle\\Composer\\ScriptHandler::installAssets",
-            "Sensio\\Bundle\\DistributionBundle\\Composer\\ScriptHandler::installRequirementsFile",
-            "Symfony\\Cmf\\Bundle\\CreateBundle\\Composer\\ScriptHandler::downloadCreateAndCkeditor"
+            "Sensio\\Bundle\\DistributionBundle\\Composer\\ScriptHandler::installRequirementsFile"
         ],
         "post-update-cmd": [
             "Incenteev\\ParameterHandler\\ScriptHandler::buildParameters",
             "Sensio\\Bundle\\DistributionBundle\\Composer\\ScriptHandler::buildBootstrap",
             "Sensio\\Bundle\\DistributionBundle\\Composer\\ScriptHandler::clearCache",
             "Sensio\\Bundle\\DistributionBundle\\Composer\\ScriptHandler::installAssets",
-            "Sensio\\Bundle\\DistributionBundle\\Composer\\ScriptHandler::installRequirementsFile",
-            "Symfony\\Cmf\\Bundle\\CreateBundle\\Composer\\ScriptHandler::downloadCreateAndCkeditor"
+            "Sensio\\Bundle\\DistributionBundle\\Composer\\ScriptHandler::installRequirementsFile"
         ]
     },
     "config": {
-        "bin-dir": "bin"
+        "sort-packages": true
     },
-    "minimum-stability": "dev",
     "extra": {
         "symfony-app-dir": "app",
+        "symfony-bin-dir": "bin",
+        "symfony-var-dir": "var",
         "symfony-web-dir": "web",
+        "symfony-tests-dir": "tests",
+        "symfony-assets-install": "relative",
         "incenteev-parameters": {
             "file": "app/config/local/parameters.yml",
             "dist-file": "app/config/parameters.yml.dist",
             "env-map": {
             }
         },
-        "branch-alias": {
-            "dev-master": "2.3-dev"
-        }
+        "branch-alias": null
     }
 }

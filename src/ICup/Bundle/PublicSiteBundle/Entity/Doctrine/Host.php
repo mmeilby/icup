@@ -4,6 +4,7 @@ namespace ICup\Bundle\PublicSiteBundle\Entity\Doctrine;
 
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\ORM\Mapping as ORM;
+use JsonSerializable;
 
 /**
  * Host entity
@@ -13,7 +14,7 @@ use Doctrine\ORM\Mapping as ORM;
  * @ORM\Table(name="hosts", uniqueConstraints={@ORM\UniqueConstraint(name="HostNameConstraint", columns={"name"})})
  * @ORM\Entity
  */
-class Host
+class Host implements JsonSerializable
 {
     /**
      * @var integer $id
@@ -69,11 +70,20 @@ class Host
     protected $users;
 
     /**
+     * @var ArrayCollection $keys
+     * Collection of keys available to this host
+     * @ORM\OneToMany(targetEntity="HostKey", mappedBy="host", cascade={"persist"})
+     * @ORM\OrderBy({"apikey" = "asc"})
+     */
+    protected $keys;
+
+    /**
      * Host constructor.
      */
     public function __construct() {
         $this->tournaments = new ArrayCollection();
         $this->users = new ArrayCollection();
+        $this->keys = new ArrayCollection();
     }
 
     /**
@@ -179,5 +189,30 @@ class Host
             return $user->isEditor();
         });
         return $editors;
+    }
+
+    /**
+     * @return ArrayCollection
+     */
+    public function getKeys() {
+        return $this->keys;
+    }
+
+    public function __toString() {
+        return $this->getName()." (".$this->getAlias().")";
+    }
+
+    /**
+     * (PHP 5 &gt;= 5.4.0)<br/>
+     * Specify data which should be serialized to JSON
+     * @link http://php.net/manual/en/jsonserializable.jsonserialize.php
+     * @return mixed data which can be serialized by <b>json_encode</b>,
+     * which is a value of any type other than a resource.
+     */
+    function jsonSerialize() {
+        return array(
+            "objectType" => "Host",
+            "id" => $this->id, "name" => $this->name, "alias" => $this->alias, "domain" => $this->domain
+        );
     }
 }

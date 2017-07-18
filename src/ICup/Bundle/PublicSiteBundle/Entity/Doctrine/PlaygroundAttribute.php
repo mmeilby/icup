@@ -298,6 +298,7 @@ class PlaygroundAttribute implements JsonSerializable
      */
     function jsonSerialize() {
         return array(
+            "objectType" => "PlaygroundAttribute",
             "id" => $this->getId(),
             "timeslot" => $this->getTimeslot(),
             "classification" => $this->getClassification(),

@@ -190,6 +190,10 @@ class Group implements JsonSerializable
      */
     function jsonSerialize() {
         $classes = array('ELIMINATION','PLAYOFF', '1/128', '1/64', '1/32', '1/16', '1/8', '1/4', 'SEMIFINAL', '3/4', 'FINAL');
-        return array("id" => $this->id, "name" => $this->name, "classification" => $classes[$this->classification], "classification_type" => $this->classification);
+        return array(
+            "objectType" => "Group",
+            "id" => $this->id, "name" => $this->name, "classification" => $classes[$this->classification],
+            "classification_type" => $this->classification
+        );
     }
 }

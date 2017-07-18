@@ -199,6 +199,7 @@ class EnrollmentDetail implements JsonSerializable
      */
     function jsonSerialize() {
         return array(
+            "objectType" => "EnrollmentDetail",
             "id" => $this->id,
             "tournament" => $this->tournament->jsonSerialize(),
             "club" => $this->club->jsonSerialize(),

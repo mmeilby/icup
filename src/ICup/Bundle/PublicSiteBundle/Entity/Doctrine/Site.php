@@ -119,6 +119,7 @@ class Site implements JsonSerializable
      */
     function jsonSerialize() {
         return array(
+            "objectType" => "Site",
             "id" => $this->getId(),
             "name" => $this->getName()
         );

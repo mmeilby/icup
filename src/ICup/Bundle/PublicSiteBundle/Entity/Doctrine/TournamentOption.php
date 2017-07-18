@@ -253,6 +253,7 @@ class TournamentOption implements JsonSerializable
      */
     function jsonSerialize() {
         return array(
+            "objectType" => "TournamentOption",
             'drr' => $this->drr,
             'svd' => $this->svd,
             'er' => $this->er,

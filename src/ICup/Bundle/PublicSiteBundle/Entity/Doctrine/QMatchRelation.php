@@ -151,6 +151,7 @@ class QMatchRelation implements JsonSerializable
      */
     function jsonSerialize() {
         return array(
+            "objectType" => "QMatchRelation",
             "id" => $this->id,
             'relation' => $this->getAwayteam() ? "away" : "home",
             "qualified" => array("group" => $this->group->jsonSerialize(), "rank" => $this->rank)

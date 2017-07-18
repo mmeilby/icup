@@ -10,6 +10,7 @@ use ICup\Bundle\PublicSiteBundle\Entity\Doctrine\Date;
 use ICup\Bundle\PublicSiteBundle\Entity\Doctrine\Enrollment;
 use ICup\Bundle\PublicSiteBundle\Entity\Doctrine\Group;
 use ICup\Bundle\PublicSiteBundle\Entity\Doctrine\GroupOrder;
+use ICup\Bundle\PublicSiteBundle\Entity\Doctrine\HostKey;
 use ICup\Bundle\PublicSiteBundle\Entity\Doctrine\MatchSchedule;
 use ICup\Bundle\PublicSiteBundle\Entity\Doctrine\MatchScheduleRelation;
 use ICup\Bundle\PublicSiteBundle\Entity\Doctrine\PlaygroundAttribute;
@@ -605,7 +606,18 @@ class BusinessLogic
                     ->findAll(array(),
                               array('name' => 'asc'));
     }
-    
+
+    public function getHostByAPIKey($apikey) {
+        $qb = $this->em->createQuery(
+            "select h ".
+            "from ".$this->entity->getRepositoryPath('HostKey')." h ".
+            "where h.apikey=:apikey and h.status=:status");
+        $qb->setParameter('apikey', $apikey);
+        $qb->setParameter('status', HostKey::KEYSTATUS_TYPE_VALID);
+        $hostkey = $qb->getOneOrNullResult();
+        return $hostkey != null ? $hostkey->getHost() : null;
+    }
+
     public function listAvailableTournaments() {
         $tournaments = array();
         foreach ($this->entity->getTournamentRepo()->findAll(array(), array('host' => 'asc', 'name' => 'asc')) as $tournament) {

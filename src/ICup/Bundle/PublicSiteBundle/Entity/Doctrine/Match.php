@@ -280,6 +280,7 @@ class Match implements JsonSerializable
 
         }
         return array(
+            "objectType" => "Match",
             "id" => $this->id,
             'matchno' => $this->matchno,
             "matchtype" => $matchtype,

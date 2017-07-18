@@ -25,3 +25,5 @@ parameters:
 
     linkedin_client_id: XX
     linkedin_client_secret: XX
+
+    stripesecret: ~

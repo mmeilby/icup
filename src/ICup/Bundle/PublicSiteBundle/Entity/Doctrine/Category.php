@@ -3,6 +3,7 @@
 namespace ICup\Bundle\PublicSiteBundle\Entity\Doctrine;
 
 use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\ORM\Id\UuidGenerator;
 use Doctrine\ORM\Mapping as ORM;
 use JsonSerializable;
 
@@ -22,6 +23,13 @@ class Category implements JsonSerializable
      * @ORM\GeneratedValue(strategy="IDENTITY")
      */
     protected $id;
+
+    /**
+     * @var string $key
+     *
+     * @ORM\Column(name="externalkey", type="string", length=32, nullable=true)
+     */
+    protected $key;
 
     /**
      * @var Tournament $tournament
@@ -155,6 +163,22 @@ class Category implements JsonSerializable
     public function getId()
     {
         return $this->id;
+    }
+
+    /**
+     * @return string
+     */
+    public function getKey() {
+        return $this->key;
+    }
+
+    /**
+     * @param string $key
+     * @return Category
+     */
+    public function setKey($key) {
+        $this->key = $key;
+        return $this;
     }
 
     /**
@@ -402,6 +426,16 @@ class Category implements JsonSerializable
         return $this->champions;
     }
 
+    /**
+     * @return string
+     */
+    public function generateKey() {
+        return strtoupper(bin2hex($this->getTournament()->getKey())."09".bin2hex($this->getName()));
+    }
+
+    /**
+     * @return string
+     */
     public function __toString() {
         return $this->getName()." (".$this->getGender().$this->getClassification().$this->getAge().")";
     }

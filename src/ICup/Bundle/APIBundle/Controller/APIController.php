@@ -66,7 +66,9 @@ class APIController extends Controller
         }
         try {
             if (is_callable($api_function)) {
-                return $api_function($user, $host);
+                $json_response = $api_function($user, $host);
+                $this->getDoctrine()->getManager()->flush();
+                return $json_response;
             }
             else {
                 return $this->makeErrorObject("INTERNALERROR", "API method is not implemented or deprecated for this version.");

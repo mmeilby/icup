@@ -335,6 +335,16 @@ class Tournament implements JsonSerializable
         return $matches;
     }
 
+    /**
+     * @return string
+     */
+    public function generateKey() {
+        return strtoupper(bin2hex($this->getKey()));
+    }
+
+    /**
+     * @return string
+     */
     public function __toString() {
         return $this->getName()." (".$this->getKey().")";
     }

@@ -31,6 +31,13 @@ class Group implements JsonSerializable
     protected $id;
 
     /**
+     * @var string $key
+     *
+     * @ORM\Column(name="externalkey", type="string", length=32, nullable=true)
+     */
+    protected $key;
+
+    /**
      * @var Category $category
      * Relation to Category
      * @ORM\ManyToOne(targetEntity="Category", inversedBy="groups")
@@ -88,6 +95,22 @@ class Group implements JsonSerializable
     public function getId()
     {
         return $this->id;
+    }
+
+    /**
+     * @return string
+     */
+    public function getKey() {
+        return $this->key;
+    }
+
+    /**
+     * @param string $key
+     * @return Group
+     */
+    public function setKey($key) {
+        $this->key = $key;
+        return $this;
     }
 
     /**
@@ -176,6 +199,9 @@ class Group implements JsonSerializable
         return $teams;
     }
 
+    /**
+     * @return string
+     */
     public function __toString() {
         $tags = $this->jsonSerialize();
         return $this->getCategory()->getName()."/".$this->getName()." ".$tags['classification'];

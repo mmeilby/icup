@@ -7,16 +7,13 @@ use APIBundle\Entity\Form\GetCombinedKeyType;
 use APIBundle\Entity\GetCombinedKeyForm;
 use APIBundle\Entity\Wrapper\Doctrine\GroupWrapper;
 use ICup\Bundle\PublicSiteBundle\Entity\Doctrine\Group;
-use ICup\Bundle\PublicSiteBundle\Entity\Doctrine\Host;
 use ICup\Bundle\PublicSiteBundle\Entity\Doctrine\Tournament;
 use ICup\Bundle\PublicSiteBundle\Entity\Doctrine\Category;
-use ICup\Bundle\PublicSiteBundle\Entity\Doctrine\User;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
-use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
 
 /**
  * Doctrine\Group controller.
@@ -37,13 +34,13 @@ class APIGroupController extends APIController
         $form = $this->createForm(new GetCombinedKeyType(), $keyForm);
         $form->handleRequest($request);
         if ($keyForm->checkForm($form)) {
-            return $this->executeAPImethod($request, function (User $user, Host $host) use ($keyForm) {
-                $entity = $this->get('entity')->getEntityByExternalKey($keyForm->getEntity(), $keyForm->getKey());
+            return $this->executeAPImethod($request, function (APIController $api) use ($keyForm) {
+                $entity = $api->get('entity')->getEntityByExternalKey($keyForm->getEntity(), $keyForm->getKey());
                 if ($entity instanceof Tournament) {
                     /* @var $tournament Tournament */
                     $tournament = $entity;
-                    if ($tournament->getHost()->getId() != $host->getId()) {
-                        return $this->makeErrorObject("TMNTINV", "Tournament is not found for this host.", Response::HTTP_NOT_FOUND);
+                    if ($tournament->getHost()->getId() != $api->host->getId()) {
+                        return $api->makeErrorObject("TMNTINV", "Tournament is not found for this host.", Response::HTTP_NOT_FOUND);
                     }
                     $response = array_map(function (Category $category) {
                         return new GroupWrapper($category->getGroups()->getValues());
@@ -53,21 +50,21 @@ class APIGroupController extends APIController
                 else if ($entity instanceof Category) {
                     /* @var $category Category */
                     $category = $entity;
-                    if ($category->getTournament()->getHost()->getId() != $host->getId()) {
-                        return $this->makeErrorObject("CATINV", "Category is not found for this host.", Response::HTTP_NOT_FOUND);
+                    if ($category->getTournament()->getHost()->getId() != $api->host->getId()) {
+                        return $api->makeErrorObject("CATINV", "Category is not found for this host.", Response::HTTP_NOT_FOUND);
                     }
                     return new JsonResponse(new GroupWrapper($category->getGroups()->getValues()));
                 }
                 else if ($entity instanceof Group) {
                     /* @var $group Group */
                     $group = $entity;
-                    if ($group->getCategory()->getTournament()->getHost()->getId() != $host->getId()) {
-                        return $this->makeErrorObject("GROUPINV", "Group is not found for this host.", Response::HTTP_NOT_FOUND);
+                    if ($group->getCategory()->getTournament()->getHost()->getId() != $api->host->getId()) {
+                        return $api->makeErrorObject("GROUPINV", "Group is not found for this host.", Response::HTTP_NOT_FOUND);
                     }
                     return new JsonResponse(new GroupWrapper($group));
                 }
                 else {
-                    return $this->makeErrorObject("KEYINV", "Key is not found for this host and entity.", Response::HTTP_NOT_FOUND);
+                    return $api->makeErrorObject("KEYINV", "Key is not found for this host and entity.", Response::HTTP_NOT_FOUND);
                 }
             });
         }

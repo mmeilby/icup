@@ -71,9 +71,9 @@ class Error implements JsonSerializable
      */
     function jsonSerialize() {
         return array(
-            "objectType" => "Error",
-            "errorID" => $this->getErrorID(),
-            "errorMessage" => $this->getErrorMessage()
+            "entity" => "Error",
+            "key" => $this->getErrorID(),
+            "message" => $this->getErrorMessage()
         );
     }
 }

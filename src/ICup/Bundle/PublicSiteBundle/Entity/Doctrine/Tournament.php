@@ -9,7 +9,7 @@ use JsonSerializable;
 /**
  * ICup\Bundle\PublicSiteBundle\Entity\Doctrine\Tournament
  *
- * @ORM\Table(name="tournaments", uniqueConstraints={@ORM\UniqueConstraint(name="KeyConstraint", columns={"keyname"})})
+ * @ORM\Table(name="tournaments")
  * @ORM\Entity
  */
 class Tournament implements JsonSerializable
@@ -333,13 +333,6 @@ class Tournament implements JsonSerializable
             return true;
         });
         return $matches;
-    }
-
-    /**
-     * @return string
-     */
-    public function generateKey() {
-        return strtoupper(bin2hex($this->getKey()));
     }
 
     /**

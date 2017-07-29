@@ -11,6 +11,7 @@ use ICup\Bundle\PublicSiteBundle\Entity\Doctrine\Enrollment;
 use ICup\Bundle\PublicSiteBundle\Entity\Doctrine\Group;
 use ICup\Bundle\PublicSiteBundle\Entity\Doctrine\GroupOrder;
 use ICup\Bundle\PublicSiteBundle\Entity\Doctrine\Host;
+use ICup\Bundle\PublicSiteBundle\Entity\Doctrine\HostKey;
 use ICup\Bundle\PublicSiteBundle\Entity\Doctrine\HostPlan;
 use ICup\Bundle\PublicSiteBundle\Entity\Doctrine\Match;
 use ICup\Bundle\PublicSiteBundle\Entity\Doctrine\MatchAlternative;
@@ -31,6 +32,8 @@ use DateTime;
 
 class TestSupport
 {
+    public $adminEmail;
+    public $apikey;
     /* @var $em EntityManager */
     protected $em;
     /* @var $logger Logger */
@@ -43,6 +46,8 @@ class TestSupport
         $this->em = $em;
         $this->doctrinePath = $path;
         $this->logger = $logger;
+        $this->apikey = strtoupper(uniqid());
+        $this->adminEmail = "editor@test.com";
     }
 
     /**
@@ -90,6 +95,7 @@ class TestSupport
             $this->getClassMetadata('User'),
             $this->getClassMetadata('Champion'),
             $this->getClassMetadata('HostPlan'),
+            $this->getClassMetadata('HostKey'),
             $this->getClassMetadata('MatchAlternative'),
             $this->getClassMetadata('MatchSchedule'),
             $this->getClassMetadata('QMatchSchedule'),
@@ -115,6 +121,8 @@ class TestSupport
         $this->em->persist($admin);
         $host = new Host();
         $host->setName("Test host");
+        $host->setAlias("TEST");
+        $host->setDomain("test");
 //        $host->setHostplan(new HostPlan());
         $tournament = new Tournament();
         $tournament->setName("Test tournament");
@@ -127,7 +135,7 @@ class TestSupport
         $editor->setUsername("editor");
         $editor->setName("Editor user");
         $editor->setPassword("");
-        $editor->setEmail("editor@test.com");
+        $editor->setEmail($this->adminEmail);
         $editor->addRole(User::ROLE_EDITOR_ADMIN);
         $editor->setEnabled(true);
         $editor->setHost($host);
@@ -141,6 +149,13 @@ class TestSupport
         $manager->addRole(User::ROLE_CLUB_ADMIN);
         $manager->setEnabled(true);
         $this->em->persist($manager);
+        $this->em->flush();
+        $hostkey = new HostKey();
+        $hostkey->setApikey($this->apikey);
+        $hostkey->setHost($host);
+        $hostkey->setStatus(HostKey::KEYSTATUS_TYPE_VALID);
+        $hostkey->setDate(Date::getDate(new DateTime()));
+        $this->em->persist($hostkey);
         $this->em->flush();
         return $tournament;
     }

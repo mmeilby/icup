@@ -21,20 +21,24 @@ use Exception;
  */
 class APIController extends Controller
 {
+    /* @var $host Host */
+    public $host;
+    /* @var $user User */
+    public $user;
+
     public function executeAPImethod(Request $request, $api_function) {
         try {
-            /* @var $user User */
-            $user = $this->get('logic')->getUserByEmail($request->getUser());
-            if ($user == null) {
+            $this->user = $this->get('logic')->getUserByEmail($request->getUser());
+            if ($this->user == null) {
                 throw new ValidationException("EMAILNVLD", "No user found with this e-mail address.");
             }
-            if (!$user->isAccountNonExpired()) {
+            if (!$this->user->isAccountNonExpired()) {
                 throw new ValidationException("USREXP", "User account has expired.");
             }
-            if (!$user->isAccountNonLocked() || $user->getAttempts() > 2) {
+            if (!$this->user->isAccountNonLocked() || $this->user->getAttempts() > 2) {
                 throw new ValidationException("USRLCK", "User account is locked.");
             }
-            if (!$user->isEnabled()) {
+            if (!$this->user->isEnabled()) {
                 throw new ValidationException("USRDIS", "User account has not been enabled.");
             }
         }
@@ -45,17 +49,16 @@ class APIController extends Controller
             return $this->makeErrorObject("INTERNALERROR", $e->getMessage());
         }
         try {
-            /* @var $host Host */
-            $host = $this->get('logic')->getHostByAPIKey($request->getPassword());
-            if ($host == null) {
+            $this->host = $this->get('logic')->getHostByAPIKey($request->getPassword());
+            if ($this->host == null) {
                 // each attempt to login using a bad apikey counts as an failed attempt
-                $user->setAttempts($user->getAttempts()+1);
+                $this->user->setAttempts($this->user->getAttempts()+1);
                 $this->getDoctrine()->getManager()->flush();
                 throw new ValidationException("APIKNVLD", "APIkey is not valid for any host.");
             }
             // reset login attempts after successful login
-            $user->setAttempts(0);
-            $user->setLastLogin(new DateTime());
+            $this->user->setAttempts(0);
+            $this->user->setLastLogin(new DateTime());
             $this->getDoctrine()->getManager()->flush();
         }
         catch (ValidationException $e) {
@@ -66,7 +69,7 @@ class APIController extends Controller
         }
         try {
             if (is_callable($api_function)) {
-                $json_response = $api_function($user, $host);
+                $json_response = $api_function($this);
                 $this->getDoctrine()->getManager()->flush();
                 return $json_response;
             }

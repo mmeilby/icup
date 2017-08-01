@@ -5,29 +5,38 @@ namespace APIBundle\Controller\Tournament;
 use APIBundle\Controller\APIController;
 use APIBundle\Entity\Form\GetCombinedKeyType;
 use APIBundle\Entity\GetCombinedKeyForm;
-use APIBundle\Entity\Wrapper\Doctrine\CategoryWrapper;
+use APIBundle\Entity\Wrapper\Doctrine\NewsWrapper;
+use ICup\Bundle\PublicSiteBundle\Entity\Doctrine\Date;
 use ICup\Bundle\PublicSiteBundle\Entity\Doctrine\Tournament;
-use ICup\Bundle\PublicSiteBundle\Entity\Doctrine\Category;
+use ICup\Bundle\PublicSiteBundle\Entity\Doctrine\User;
+use ICup\Bundle\PublicSiteBundle\Exceptions\ValidationException;
+use ICup\Bundle\PublicSiteBundle\Services\Util;
+use Symfony\Component\Form\Form;
+use Symfony\Component\Form\FormError;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
+use ICup\Bundle\PublicSiteBundle\Entity\Doctrine\News;
+use ICup\Bundle\PublicSiteBundle\Form\Doctrine\NewsType;
+use RuntimeException;
 
 /**
- * Doctrine\Category controller.
+ * Doctrine\News controller.
  *
  */
-class APICategoryController extends APIController
+class APINewsController extends APIController
 {
     /**
-     * List all the tournaments connected to the host identified by APIkey
-     * @Route("/v1/category", name="_api_category")
+     * List the news for the tournament and host identified by APIkey
+     * @Route("/v1/news", name="_api_news")
      * @Method("POST")
      * @return JsonResponse
      */
-    public function indexAction(Request $request)
-    {
+    public function indexAction(Request $request) {
         $keyForm = new GetCombinedKeyForm();
         $form = $this->createForm(new GetCombinedKeyType(), $keyForm);
         $form->handleRequest($request);
@@ -40,24 +49,13 @@ class APICategoryController extends APIController
                     if ($tournament->getHost()->getId() != $api->host->getId()) {
                         return $api->makeErrorObject("TMNTINV", "Tournament is not found for this host.", Response::HTTP_NOT_FOUND);
                     }
-                    return new JsonResponse(new CategoryWrapper($tournament->getCategories()->getValues()));
-                }
-                else if ($entity instanceof Category) {
-                    /* @var $category Category */
-                    $category = $entity;
-                    if ($category->getTournament()->getHost()->getId() != $api->host->getId()) {
-                        return $api->makeErrorObject("CATINV", "Category is not found for this host.", Response::HTTP_NOT_FOUND);
-                    }
-                    return new JsonResponse(new CategoryWrapper($category));
-                }
-                else {
+                    return new JsonResponse(new NewsWrapper($tournament->getNews()->getValues()));
+                } else {
                     return $api->makeErrorObject("KEYINV", "Key is not found for this host and entity.", Response::HTTP_NOT_FOUND);
                 }
             });
-        }
-        else {
+        } else {
             return $this->makeErrorObject("KEYMISS", "Key and entity must be defined for this request.", Response::HTTP_NOT_FOUND);
         }
     }
 }
-

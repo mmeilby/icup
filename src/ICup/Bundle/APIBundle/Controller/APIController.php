@@ -92,14 +92,14 @@ class APIController extends Controller
         return new JsonResponse($error, $response);
     }
 
-    public function validateEditor(User $user, Host $host) {
-        if (!($user->isAdmin() || $user->isEditor() && $user->getHost()->getId() == $host->getId())) {
+    public function validateEditor() {
+        if (!($this->user->isAdmin() || $this->user->isEditor() && $this->user->getHost()->getId() == $this->host->getId())) {
             throw new ValidationException("ROLEEDI", "User is not approved for this API key level - editor role is required.");
         }
     }
 
-    public function validateAdmin(User $user) {
-        if (!$user->isAdmin()) {
+    public function validateAdmin() {
+        if (!$this->user->isAdmin()) {
             throw new ValidationException("ROLEADM", "User is not approved for this API key level - admin role is required.");
         }
     }

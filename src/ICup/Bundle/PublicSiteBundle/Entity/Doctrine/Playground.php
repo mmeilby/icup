@@ -24,6 +24,13 @@ class Playground implements JsonSerializable
     protected $id;
 
     /**
+     * @var string $key
+     *
+     * @ORM\Column(name="externalkey", type="string", length=32, nullable=true)
+     */
+    protected $key;
+
+    /**
      * @var Site $site
      * Relation to Site
      * @ORM\ManyToOne(targetEntity="Site", inversedBy="playgrounds")
@@ -90,6 +97,22 @@ class Playground implements JsonSerializable
     public function getId()
     {
         return $this->id;
+    }
+
+    /**
+     * @return string
+     */
+    public function getKey() {
+        return $this->key;
+    }
+
+    /**
+     * @param string $key
+     * @return Playground
+     */
+    public function setKey($key) {
+        $this->key = $key;
+        return $this;
     }
 
     /**

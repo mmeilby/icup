@@ -9,24 +9,23 @@
 namespace APIBundle\Entity\Wrapper\Doctrine;
 
 use APIBundle\Entity\Wrapper\ObjectWrapper;
-use ICup\Bundle\PublicSiteBundle\Entity\Doctrine\Category;
+use ICup\Bundle\PublicSiteBundle\Entity\Doctrine\Playground;
 
-class CategoryWrapper extends ObjectWrapper
+class PlaygroundWrapper extends ObjectWrapper
 {
     public function getData($site) {
-        if ($site instanceof Category) {
-            /* @var $site Category */
+        if ($site instanceof Playground) {
+            /* @var $site Playground */
             if ($site->getKey() == null) {
                 $site->setKey(strtoupper(uniqid()));
             }
             return array(
-                "entity" => "Category",
-                "tournament" => new TournamentWrapper($site->getTournament()),
+                "entity" => "Venue",
                 "key" => $site->getKey(),
+                "no" => $site->getNo(),
                 "name" => $site->getName(),
-                "gender" => $site->getGender(),
-                "classification" => $site->getClassification(),
-                "age" => $site->getAge(),
+                "location" => $site->getLocation(),
+                "site" => $site->getSite()->getName()
             );
         }
         return null;

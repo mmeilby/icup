@@ -16,13 +16,12 @@ use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 /**
  * Doctrine\Tournament controller.
  *
- * @Route("/tournament")
  */
 class APITournamentController extends APIController
 {
     /**
      * List all the tournaments connected to the host identified by APIkey
-     * @Route("/", name="_api_tournament")
+     * @Route("/v1/tournament", name="_api_tournament")
      * @Method("POST")
      * @return JsonResponse
      */

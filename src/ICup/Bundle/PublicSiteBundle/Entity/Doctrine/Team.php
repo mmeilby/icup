@@ -25,6 +25,13 @@ class Team implements JsonSerializable
     protected $id;
 
     /**
+     * @var string $key
+     *
+     * @ORM\Column(name="externalkey", type="string", length=32, nullable=true)
+     */
+    protected $key;
+
+    /**
      * @var Club $club
      * Relation to Club
      * @ORM\ManyToOne(targetEntity="Club", inversedBy="teams")
@@ -109,6 +116,22 @@ class Team implements JsonSerializable
     public function getId()
     {
         return $this->id;
+    }
+
+    /**
+     * @return string
+     */
+    public function getKey() {
+        return $this->key;
+    }
+
+    /**
+     * @param string $key
+     * @return Team
+     */
+    public function setKey($key) {
+        $this->key = $key;
+        return $this;
     }
 
     /**

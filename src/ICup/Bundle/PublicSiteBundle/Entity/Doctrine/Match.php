@@ -24,6 +24,13 @@ class Match implements JsonSerializable
     protected $id;
 
     /**
+     * @var string $key
+     *
+     * @ORM\Column(name="externalkey", type="string", length=32, nullable=true)
+     */
+    protected $key;
+
+    /**
      * @var Group $group
      * Relation to Group
      * @ORM\ManyToOne(targetEntity="Group", inversedBy="matches", cascade={"persist"})
@@ -92,6 +99,22 @@ class Match implements JsonSerializable
     public function getId()
     {
         return $this->id;
+    }
+
+    /**
+     * @return string
+     */
+    public function getKey() {
+        return $this->key;
+    }
+
+    /**
+     * @param string $key
+     * @return Match
+     */
+    public function setKey($key) {
+        $this->key = $key;
+        return $this;
     }
 
     /**

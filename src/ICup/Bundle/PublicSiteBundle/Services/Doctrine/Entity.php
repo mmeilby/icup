@@ -554,14 +554,17 @@ class Entity
      * @return null|object
      */
     public function getEntityByExternalKey($entity, $key) {
-        if ($entity == "Tournament") {
-            return $this->getTournamentRepo()->findOneBy(array("key" => $key));
-        }
-        if ($entity == "Category") {
-            return $this->getCategoryRepo()->findOneBy(array("key" => $key));
-        }
-        if ($entity == "Group") {
-            return $this->getGroupRepo()->findOneBy(array("key" => $key));
+        $valid_entities = array(
+            "TOURNAMENT" => "Tournament",
+            "CATEGORY" => "Category",
+            "GROUP" => "Group",
+            "VENUE" => "Playground",
+            "CLUB" => "Club",
+            "TEAM" => "Team",
+            "MATCH" => "Match"
+        );
+        if (isset($valid_entities[strtoupper($entity)])) {
+            return $this->getRepository($valid_entities[strtoupper($entity)])->findOneBy(array("key" => $key));
         }
         return null;
     }

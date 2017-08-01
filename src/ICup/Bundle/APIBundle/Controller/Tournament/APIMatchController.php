@@ -1,29 +1,29 @@
 <?php
-
 namespace APIBundle\Controller\Tournament;
 
 use APIBundle\Controller\APIController;
 use APIBundle\Entity\Form\GetCombinedKeyType;
 use APIBundle\Entity\GetCombinedKeyForm;
-use APIBundle\Entity\Wrapper\Doctrine\GroupWrapper;
+use APIBundle\Entity\Wrapper\Doctrine\MatchWrapper;
 use ICup\Bundle\PublicSiteBundle\Entity\Doctrine\Group;
+use ICup\Bundle\PublicSiteBundle\Entity\Doctrine\Playground;
 use ICup\Bundle\PublicSiteBundle\Entity\Doctrine\Tournament;
-use ICup\Bundle\PublicSiteBundle\Entity\Doctrine\Category;
-use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
-use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
+use Symfony\Component\HttpFoundation\Response;
+use ICup\Bundle\PublicSiteBundle\Entity\Doctrine\Match;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
 
 /**
- * Doctrine\Group controller.
+ * Doctrine\Match controller.
  *
  */
-class APIGroupController extends APIController
+class APIMatchController extends APIController
 {
     /**
-     * List all the tournaments connected to the host identified by APIkey
-     * @Route("/v1/group", name="_api_group")
+     * List the matches for the host identified by APIkey
+     * @Route("/v1/match", name="_api_match")
      * @Method("POST")
      * @return JsonResponse
      */
@@ -41,26 +41,31 @@ class APIGroupController extends APIController
                     if ($tournament->getHost()->getId() != $api->host->getId()) {
                         return $api->makeErrorObject("TMNTINV", "Tournament is not found for this host.", Response::HTTP_NOT_FOUND);
                     }
-                    $response = array_map(function (Category $category) {
-                        return new GroupWrapper($category->getGroups()->getValues());
-                    }, $tournament->getCategories()->getValues());
-                    return new JsonResponse($response);
-                }
-                else if ($entity instanceof Category) {
-                    /* @var $category Category */
-                    $category = $entity;
-                    if ($category->getTournament()->getHost()->getId() != $api->host->getId()) {
-                        return $api->makeErrorObject("CATINV", "Category is not found for this host.", Response::HTTP_NOT_FOUND);
-                    }
-                    return new JsonResponse(new GroupWrapper($category->getGroups()->getValues()));
+                    return new JsonResponse(new MatchWrapper($tournament->getMatches()));
                 }
                 else if ($entity instanceof Group) {
                     /* @var $group Group */
                     $group = $entity;
                     if ($group->getCategory()->getTournament()->getHost()->getId() != $api->host->getId()) {
-                        return $api->makeErrorObject("GROUPINV", "Group is not found for this host.", Response::HTTP_NOT_FOUND);
+                        return $api->makeErrorObject("GRPINV", "Group is not found for this host.", Response::HTTP_NOT_FOUND);
                     }
-                    return new JsonResponse(new GroupWrapper($group));
+                    return new JsonResponse(new MatchWrapper($group->getMatches()->getValues()));
+                }
+                else if ($entity instanceof Playground) {
+                    /* @var $playground Playground */
+                    $playground = $entity;
+                    if ($playground->getSite()->getTournament()->getHost()->getId() != $api->host->getId()) {
+                        return $api->makeErrorObject("VENINV", "Venue is not found for this host.", Response::HTTP_NOT_FOUND);
+                    }
+                    return new JsonResponse(new MatchWrapper($playground->getMatches()->getValues()));
+                }
+                else if ($entity instanceof Match) {
+                    /* @var $match Match */
+                    $match = $entity;
+                    if ($match->getGroup()->getCategory()->getTournament()->getHost()->getId() != $api->host->getId()) {
+                        return $api->makeErrorObject("MCHINV", "Match is not found for this host.", Response::HTTP_NOT_FOUND);
+                    }
+                    return new JsonResponse(new MatchWrapper($match));
                 }
                 else {
                     return $api->makeErrorObject("KEYINV", "Key is not found for this host and entity.", Response::HTTP_NOT_FOUND);

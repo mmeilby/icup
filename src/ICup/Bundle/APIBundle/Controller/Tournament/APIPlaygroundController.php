@@ -5,9 +5,9 @@ namespace APIBundle\Controller\Tournament;
 use APIBundle\Controller\APIController;
 use APIBundle\Entity\Form\GetCombinedKeyType;
 use APIBundle\Entity\GetCombinedKeyForm;
-use APIBundle\Entity\Wrapper\Doctrine\CategoryWrapper;
+use APIBundle\Entity\Wrapper\Doctrine\PlaygroundWrapper;
 use ICup\Bundle\PublicSiteBundle\Entity\Doctrine\Tournament;
-use ICup\Bundle\PublicSiteBundle\Entity\Doctrine\Category;
+use ICup\Bundle\PublicSiteBundle\Entity\Doctrine\Playground;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
@@ -15,14 +15,14 @@ use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 
 /**
- * Doctrine\Category controller.
+ * Doctrine\Playground controller.
  *
  */
-class APICategoryController extends APIController
+class APIPlaygroundController extends APIController
 {
     /**
-     * List all the tournaments connected to the host identified by APIkey
-     * @Route("/v1/category", name="_api_category")
+     * List the venues connected to the host identified by APIkey
+     * @Route("/v1/venue", name="_api_playground")
      * @Method("POST")
      * @return JsonResponse
      */
@@ -40,15 +40,15 @@ class APICategoryController extends APIController
                     if ($tournament->getHost()->getId() != $api->host->getId()) {
                         return $api->makeErrorObject("TMNTINV", "Tournament is not found for this host.", Response::HTTP_NOT_FOUND);
                     }
-                    return new JsonResponse(new CategoryWrapper($tournament->getCategories()->getValues()));
+                    return new JsonResponse(new PlaygroundWrapper($tournament->getPlaygrounds()));
                 }
-                else if ($entity instanceof Category) {
-                    /* @var $category Category */
-                    $category = $entity;
-                    if ($category->getTournament()->getHost()->getId() != $api->host->getId()) {
-                        return $api->makeErrorObject("CATINV", "Category is not found for this host.", Response::HTTP_NOT_FOUND);
+                else if ($entity instanceof Playground) {
+                    /* @var $playground Playground */
+                    $playground = $entity;
+                    if ($playground->getSite()->getTournament()->getHost()->getId() != $api->host->getId()) {
+                        return $api->makeErrorObject("VENINV", "Venue is not found for this host.", Response::HTTP_NOT_FOUND);
                     }
-                    return new JsonResponse(new CategoryWrapper($category));
+                    return new JsonResponse(new PlaygroundWrapper($playground));
                 }
                 else {
                     return $api->makeErrorObject("KEYINV", "Key is not found for this host and entity.", Response::HTTP_NOT_FOUND);
@@ -60,4 +60,3 @@ class APICategoryController extends APIController
         }
     }
 }
-

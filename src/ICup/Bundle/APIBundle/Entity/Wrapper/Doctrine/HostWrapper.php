@@ -18,9 +18,7 @@ class HostWrapper extends ObjectWrapper
             /* @var $host Host */
             return array(
                 "entity" => "Host",
-                "name" => $host->getName(),
-                "alias" => $host->getAlias(),
-                "domain" => $host->getDomain(),
+                "name" => $host->getName()
             );
         }
         return null;

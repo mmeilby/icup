@@ -66,8 +66,6 @@ class DataValidationV1 extends WebTestCase
         $this->assertObjectHasAttribute("host", $tournament);
         $this->assertAttributeEquals("Host", "entity", $tournament->host);
         $this->assertAttributeEquals($this->tournament->getHost()->getName(), "name", $tournament->host);
-        $this->assertAttributeEquals($this->tournament->getHost()->getAlias(), "alias", $tournament->host);
-        $this->assertAttributeEquals($this->tournament->getHost()->getDomain(), "domain", $tournament->host);
     }
 
     public function testCategoryGet()

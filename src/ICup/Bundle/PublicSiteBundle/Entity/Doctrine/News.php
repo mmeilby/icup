@@ -125,7 +125,7 @@ class News implements JsonSerializable
      * Set date
      *
      * @param string $date
-     * @return Match
+     * @return News
      */
     public function setDate($date)
     {
@@ -189,9 +189,11 @@ class News implements JsonSerializable
 
     /**
      * @param int $newsno
+     * @return News
      */
     public function setNewsno($newsno) {
         $this->newsno = $newsno;
+        return $this;
     }
 
     /**
@@ -203,9 +205,11 @@ class News implements JsonSerializable
 
     /**
      * @param string $language
+     * @return News
      */
     public function setLanguage($language) {
         $this->language = $language;
+        return $this;
     }
 
     /**
@@ -217,9 +221,11 @@ class News implements JsonSerializable
 
     /**
      * @param string $title
+     * @return News
      */
     public function setTitle($title) {
         $this->title = $title;
+        return $this;
     }
 
     /**
@@ -231,9 +237,11 @@ class News implements JsonSerializable
 
     /**
      * @param string $context
+     * @return News
      */
     public function setContext($context) {
         $this->context = $context;
+        return $this;
     }
 
     /**

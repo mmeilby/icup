@@ -13,19 +13,19 @@ use ICup\Bundle\PublicSiteBundle\Entity\Doctrine\Playground;
 
 class PlaygroundWrapper extends ObjectWrapper
 {
-    public function getData($site) {
-        if ($site instanceof Playground) {
+    public function getData($venue) {
+        if ($venue instanceof Playground) {
             /* @var $site Playground */
-            if ($site->getKey() == null) {
-                $site->setKey(strtoupper(uniqid()));
+            if ($venue->getKey() == null) {
+                $venue->setKey(strtoupper(uniqid()));
             }
             return array(
                 "entity" => "Venue",
-                "key" => $site->getKey(),
-                "no" => $site->getNo(),
-                "name" => $site->getName(),
-                "location" => $site->getLocation(),
-                "site" => $site->getSite()->getName()
+                "key" => $venue->getKey(),
+                "no" => $venue->getNo(),
+                "name" => $venue->getName(),
+                "location" => $venue->getLocation(),
+                "site" => $venue->getSite()->getName()
             );
         }
         return null;

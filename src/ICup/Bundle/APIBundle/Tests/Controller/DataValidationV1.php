@@ -4,7 +4,6 @@ namespace APIBundle\Tests\Controller;
 
 use ICup\Bundle\PublicSiteBundle\Entity\Doctrine\Category;
 use ICup\Bundle\PublicSiteBundle\Entity\Doctrine\Club;
-use ICup\Bundle\PublicSiteBundle\Entity\Doctrine\Date;
 use ICup\Bundle\PublicSiteBundle\Entity\Doctrine\Group;
 use ICup\Bundle\PublicSiteBundle\Entity\Doctrine\Match;
 use ICup\Bundle\PublicSiteBundle\Entity\Doctrine\News;
@@ -24,8 +23,6 @@ class DataValidationV1 extends WebTestCase
     private $tournament;
 
     private $auth;
-    private $auth_invalid_user;
-    private $auth_invalid_key;
 
     protected function setUp() {
         $this->client = static::createClient();
@@ -33,8 +30,6 @@ class DataValidationV1 extends WebTestCase
         $ts = $container->get("test");
 
         $this->auth = "Basic ".base64_encode($ts->adminEmail . ':' . $ts->apikey);
-        $this->auth_invalid_user = "Basic ".base64_encode("bademail@test.com" . ':' . $ts->apikey);
-        $this->auth_invalid_key = "Basic ".base64_encode($ts->adminEmail . ':' . "badkey888");
 
         $ts->createDatabase();
         $tournament = $ts->makeTournament();
@@ -139,7 +134,13 @@ class DataValidationV1 extends WebTestCase
         $this->getCrawler("/service/api/v1/club", "Club", $club->getKey());
         $this->assertTrue($this->client->getResponse()->isSuccessful());
         $club_json = json_decode($this->client->getResponse()->getContent());
+        $this->assertAttributeEquals("Club", "entity", $club_json);
         $this->assertAttributeEquals($club->getKey(), "key", $club_json);
+        $this->assertObjectHasAttribute("name", $club_json);
+        $this->assertObjectHasAttribute("address", $club_json);
+        $this->assertObjectHasAttribute("city", $club_json);
+        $this->assertObjectHasAttribute("country_code", $club_json);
+        $this->assertObjectHasAttribute("flag", $club_json);
     }
 
     public function testNewsList()

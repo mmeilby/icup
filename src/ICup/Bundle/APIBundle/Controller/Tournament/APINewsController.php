@@ -4,25 +4,13 @@ namespace APIBundle\Controller\Tournament;
 
 use APIBundle\Controller\APIController;
 use APIBundle\Entity\Form\GetCombinedKeyType;
-use APIBundle\Entity\GetCombinedKeyForm;
 use APIBundle\Entity\Wrapper\Doctrine\NewsWrapper;
-use ICup\Bundle\PublicSiteBundle\Entity\Doctrine\Date;
 use ICup\Bundle\PublicSiteBundle\Entity\Doctrine\Tournament;
-use ICup\Bundle\PublicSiteBundle\Entity\Doctrine\User;
-use ICup\Bundle\PublicSiteBundle\Exceptions\ValidationException;
-use ICup\Bundle\PublicSiteBundle\Services\Util;
-use Symfony\Component\Form\Form;
-use Symfony\Component\Form\FormError;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
-use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
-use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
-use ICup\Bundle\PublicSiteBundle\Entity\Doctrine\News;
-use ICup\Bundle\PublicSiteBundle\Form\Doctrine\NewsType;
-use RuntimeException;
 
 /**
  * Doctrine\News controller.
@@ -37,7 +25,7 @@ class APINewsController extends APIController
      * @return JsonResponse
      */
     public function indexAction(Request $request) {
-        $keyForm = new GetCombinedKeyForm();
+        $keyForm = $this->getKeyForm($request);
         $form = $this->createForm(new GetCombinedKeyType(), $keyForm);
         $form->handleRequest($request);
         if ($keyForm->checkForm($form)) {

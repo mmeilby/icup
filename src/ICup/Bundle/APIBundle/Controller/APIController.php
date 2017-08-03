@@ -3,6 +3,7 @@
 namespace APIBundle\Controller;
 
 use APIBundle\Entity\Error;
+use APIBundle\Entity\GetCombinedKeyForm;
 use ICup\Bundle\PublicSiteBundle\Entity\Doctrine\Host;
 use ICup\Bundle\PublicSiteBundle\Entity\Doctrine\User;
 use ICup\Bundle\PublicSiteBundle\Exceptions\ValidationException;
@@ -25,6 +26,25 @@ class APIController extends Controller
     public $host;
     /* @var $user User */
     public $user;
+
+    /**
+     * @param Request $request
+     * @return GetCombinedKeyForm
+     */
+    public function getKeyForm(Request $request) {
+        $keyForm = new GetCombinedKeyForm();
+        if ("json" == $request->getContentType()) {
+            $content = $request->getContent();
+            $params = json_decode($content, true);
+            if (isset($params["entity"])) {
+                $keyForm->setEntity($params["entity"]);
+            }
+            if (isset($params["key"])) {
+                $keyForm->setKey($params["key"]);
+            }
+        }
+        return $keyForm;
+    }
 
     public function executeAPImethod(Request $request, $api_function) {
         try {

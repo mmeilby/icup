@@ -4,7 +4,6 @@ namespace APIBundle\Controller\Tournament;
 
 use APIBundle\Controller\APIController;
 use APIBundle\Entity\Form\GetCombinedKeyType;
-use APIBundle\Entity\GetCombinedKeyForm;
 use APIBundle\Entity\Wrapper\Doctrine\CategoryWrapper;
 use APIBundle\Entity\Wrapper\Doctrine\EnrollmentWrapper;
 use APIBundle\Entity\Wrapper\Doctrine\GroupWrapper;
@@ -31,7 +30,7 @@ class APIEnrollController extends APIController
      * @return JsonResponse
      */
     public function indexAction(Request $request) {
-        $keyForm = new GetCombinedKeyForm();
+        $keyForm = $this->getKeyForm($request);
         $form = $this->createForm(new GetCombinedKeyType(), $keyForm);
         $form->handleRequest($request);
         if ($keyForm->checkForm($form)) {

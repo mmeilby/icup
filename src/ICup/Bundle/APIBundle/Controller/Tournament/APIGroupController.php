@@ -4,7 +4,6 @@ namespace APIBundle\Controller\Tournament;
 
 use APIBundle\Controller\APIController;
 use APIBundle\Entity\Form\GetCombinedKeyType;
-use APIBundle\Entity\GetCombinedKeyForm;
 use APIBundle\Entity\Wrapper\Doctrine\GroupWrapper;
 use ICup\Bundle\PublicSiteBundle\Entity\Doctrine\Group;
 use ICup\Bundle\PublicSiteBundle\Entity\Doctrine\Tournament;
@@ -29,7 +28,7 @@ class APIGroupController extends APIController
      */
     public function indexAction(Request $request)
     {
-        $keyForm = new GetCombinedKeyForm();
+        $keyForm = $this->getKeyForm($request);
         $form = $this->createForm(new GetCombinedKeyType(), $keyForm);
         $form->handleRequest($request);
         if ($keyForm->checkForm($form)) {

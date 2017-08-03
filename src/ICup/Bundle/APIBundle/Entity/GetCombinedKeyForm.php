@@ -1,6 +1,7 @@
 <?php
 
 namespace APIBundle\Entity;
+
 use Symfony\Component\Form\Form;
 use Symfony\Component\Form\FormError;
 
@@ -39,7 +40,7 @@ class GetCombinedKeyForm
     }
 
     /**
-     * @param mixed $ident
+     * @param $entity
      * @return GetCombinedKeyForm
      */
     public function setEntity($entity) {
@@ -52,15 +53,12 @@ class GetCombinedKeyForm
      * @return bool
      */
     public function checkForm(Form $form) {
-        if ($form->isValid()) {
-            if ($this->getKey() == null || trim($this->getKey()) == '') {
-                $form->addError(new FormError("Key is not valid"));
-            }
-            if ($this->getEntity() == null || trim($this->getEntity()) == '') {
-                $form->addError(new FormError("Entity is not valid"));
-            }
+        if ($this->getKey() == null || trim($this->getKey()) == '') {
+            $form->addError(new FormError("Key is not valid"));
         }
-        return $form->isValid();
+        if ($this->getEntity() == null || trim($this->getEntity()) == '') {
+            $form->addError(new FormError("Entity is not valid"));
+        }
+        return 0 === $form->getErrors()->count();
     }
-
 }

@@ -3,6 +3,7 @@ namespace APIBundle\Controller\Tournament;
 
 use APIBundle\Controller\APIController;
 use APIBundle\Entity\Form\GetCombinedKeyType;
+use APIBundle\Entity\Wrapper\Doctrine\CategoryWrapper;
 use APIBundle\Entity\Wrapper\Doctrine\ClubWrapper;
 use ICup\Bundle\PublicSiteBundle\Entity\Doctrine\Category;
 use ICup\Bundle\PublicSiteBundle\Entity\Doctrine\Club;
@@ -42,14 +43,32 @@ class APIClubController extends APIController
                         return $api->makeErrorObject("TMNTINV", "Tournament is not found for this host.", Response::HTTP_NOT_FOUND);
                     }
                     $clubs = array();
+                    $enrollments = array();
                     foreach ($tournament->getCategories() as $category) {
                         /* @var $category Category */
                         foreach ($category->getEnrollments() as $enrollment) {
                             /* @var $enrollment Enrollment */
                             $clubs[$enrollment->getTeam()->getClub()->getId()] = $enrollment->getTeam()->getClub();
+                            $enrollments[$enrollment->getTeam()->getClub()->getId()][$category->getId()] = $category;
                         }
                     }
-                    return new JsonResponse(new ClubWrapper($clubs));
+                    usort($clubs, function (Club $club1, Club $club2) {
+                        return $club1->getCountryCode() == $club2->getCountryCode() ?
+                            ($club1->getName() > $club2->getName() ? 1 : -1) :
+                            ($club1->getCountryCode() > $club2->getCountryCode() ? 1 : -1);
+                    });
+                    $response = array();
+                    foreach ($clubs as $club) {
+                        /* @var $club Club */
+                        $wrapped_club = new ClubWrapper($club);
+                        $response[] = array_merge($wrapped_club->jsonSerialize(), array(
+                            "categories" =>
+                                isset($enrollments[$club->getId()]) ?
+                                new CategoryWrapper($enrollments[$club->getId()]) :
+                                array()
+                        ));
+                    }
+                    return new JsonResponse($response);
                 }
                 else if ($entity instanceof Club) {
                     /* @var $club Club */

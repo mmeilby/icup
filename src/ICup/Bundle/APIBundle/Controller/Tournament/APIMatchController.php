@@ -41,7 +41,9 @@ class APIMatchController extends APIController
                     if ($tournament->getHost()->getId() != $api->host->getId()) {
                         return $api->makeErrorObject("TMNTINV", "Tournament is not found for this host.", Response::HTTP_NOT_FOUND);
                     }
-                    return new JsonResponse(new MatchWrapper($tournament->getMatches()));
+                    $matches = $tournament->getMatches();
+                    usort($matches, APIMatchController::sortingFunction());
+                    return new JsonResponse(new MatchWrapper($matches));
                 }
                 else if ($entity instanceof Group) {
                     /* @var $group Group */
@@ -49,7 +51,9 @@ class APIMatchController extends APIController
                     if ($group->getCategory()->getTournament()->getHost()->getId() != $api->host->getId()) {
                         return $api->makeErrorObject("GRPINV", "Group is not found for this host.", Response::HTTP_NOT_FOUND);
                     }
-                    return new JsonResponse(new MatchWrapper($group->getMatches()->getValues()));
+                    $matches = $group->getMatches()->getValues();
+                    usort($matches, APIMatchController::sortingFunction());
+                    return new JsonResponse(new MatchWrapper($matches));
                 }
                 else if ($entity instanceof Playground) {
                     /* @var $playground Playground */
@@ -57,7 +61,9 @@ class APIMatchController extends APIController
                     if ($playground->getSite()->getTournament()->getHost()->getId() != $api->host->getId()) {
                         return $api->makeErrorObject("VENINV", "Venue is not found for this host.", Response::HTTP_NOT_FOUND);
                     }
-                    return new JsonResponse(new MatchWrapper($playground->getMatches()->getValues()));
+                    $matches = $playground->getMatches()->getValues();
+                    usort($matches, APIMatchController::sortingFunction());
+                    return new JsonResponse(new MatchWrapper($matches));
                 }
                 else if ($entity instanceof Match) {
                     /* @var $match Match */
@@ -75,5 +81,22 @@ class APIMatchController extends APIController
         else {
             return $this->makeErrorObject("KEYMISS", "Key and entity must be defined for this request.", Response::HTTP_NOT_FOUND);
         }
+    }
+
+    static function sortingFunction() {
+        return function (Match $match1, Match $match2) {
+            $stack[] = array($match1->getPlayground()->getId(), $match2->getPlayground()->getId());
+            $stack[] = array($match1->getDate(), $match2->getDate());
+            $stack[] = array($match1->getTime(), $match2->getTime());
+            $stack[] = array($match1->getMatchno(), $match2->getMatchno());
+            foreach ($stack as $criteria) {
+                list($crit1, $crit2) = $criteria;
+                $norm = min(1, max(-1, $crit1 - $crit2));
+                if ($norm != 0) {
+                    return $norm;
+                }
+            }
+            return 0;
+        };
     }
 }

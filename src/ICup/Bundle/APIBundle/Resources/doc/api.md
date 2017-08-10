@@ -215,6 +215,7 @@ Club
 ----
 /service/api/v1/club
 entity = Tournament, Club
+return: Club including list of Categories enrolled
 
 News
 ----

@@ -39,7 +39,13 @@ class APICategoryController extends APIController
                     if ($tournament->getHost()->getId() != $api->host->getId()) {
                         return $api->makeErrorObject("TMNTINV", "Tournament is not found for this host.", Response::HTTP_NOT_FOUND);
                     }
-                    return new JsonResponse(new CategoryWrapper($tournament->getCategories()->getValues()));
+                    $categories = $tournament->getCategories()->getValues();
+                    usort($categories, function (Category $category1, Category $category2) {
+                        $classification1 = $category1->getGender() . $category1->getClassification() . $category1->getAge();
+                        $classification2 = $category2->getGender() . $category2->getClassification() . $category2->getAge();
+                        return $classification1 > $classification2 ? 1 : -1;
+                    });
+                    return new JsonResponse(new CategoryWrapper($categories));
                 }
                 else if ($entity instanceof Category) {
                     /* @var $category Category */

@@ -234,6 +234,21 @@ class WrapperTest extends WebTestCase
         $this->assertAttributeNotEmpty("key", reset($matches));
     }
 
+    public function testMatchListAA()
+    {
+        $options = new PlanningOptions();
+        $options->setDoublematch(false);
+        $options->setPreferpg(false);
+        $this->client->getContainer()->get("planning")->planTournament($this->tournament, $options);
+        $this->client->getContainer()->get("planning")->publishSchedule($this->tournament);
+
+        $this->getCrawler("/service/api/v1/match", "Date", "20150706");
+        $this->assertTrue($this->client->getResponse()->isSuccessful());
+        $matches = json_decode($this->client->getResponse()->getContent());
+        $this->assertTrue(count($matches) > 0);
+        $this->assertAttributeNotEmpty("key", reset($matches));
+    }
+
     public function testMatchListB()
     {
         $options = new PlanningOptions();

@@ -34,6 +34,20 @@ class APIMatchController extends APIController
         $form->handleRequest($request);
         if ($keyForm->checkForm($form)) {
             return $this->executeAPImethod($request, function (APIController $api) use ($keyForm) {
+                if (strtoupper($keyForm->getEntity()) == "DATE") {
+                    $matches = array();
+                    foreach ($api->host->getTournaments() as $tournament) {
+                        /* @var $tournament Tournament */
+                        foreach ($tournament->getMatches() as $match) {
+                            /* @var $match Match */
+                            if ($match->getDate() == $keyForm->getKey()) {
+                                $matches[] = $match;
+                            }
+                        }
+                    }
+                    usort($matches, APIMatchController::sortingFunction());
+                    return new JsonResponse(new MatchWrapper($matches));
+                }
                 $entity = $api->get('entity')->getEntityByExternalKey($keyForm->getEntity(), $keyForm->getKey());
                 if ($entity instanceof Tournament) {
                     /* @var $tournament Tournament */

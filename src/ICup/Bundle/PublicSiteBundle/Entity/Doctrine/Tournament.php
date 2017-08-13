@@ -5,6 +5,7 @@ namespace ICup\Bundle\PublicSiteBundle\Entity\Doctrine;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\ORM\Mapping as ORM;
 use JsonSerializable;
+use DateTime;
 
 /**
  * ICup\Bundle\PublicSiteBundle\Entity\Doctrine\Tournament
@@ -321,13 +322,23 @@ class Tournament implements JsonSerializable
 
     /**
      * Return all matches for this tournament
+     * @param DateTime|null $date
      * @return mixed
      */
-    public function getMatches() {
+    public function getMatches(DateTime $date = null) {
+        $cdate = $date ? Date::getDate($date) : null;
         $matches = array();
-        $this->categories->forAll(function ($n, Category $category) use (&$matches) {
-            $category->getGroups()->forAll(function ($n, Group $group) use (&$matches) {
-                $matches = array_merge($matches, $group->getMatches()->toArray());
+        $this->categories->forAll(function ($n, Category $category) use (&$matches, $cdate) {
+            $category->getGroups()->forAll(function ($n, Group $group) use (&$matches, $cdate) {
+                if ($cdate) {
+                    $newmatches = $group->getMatches()->filter(function (Match $match) use ($cdate) {
+                        return $match->getDate() == $cdate;
+                    });
+                }
+                else {
+                    $newmatches = $group->getMatches();
+                }
+                $matches = array_merge($matches, $newmatches->toArray());
                 return true;
             });
             return true;

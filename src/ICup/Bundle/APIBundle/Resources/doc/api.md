@@ -83,6 +83,7 @@ key
 name
 edition
 description
+matchcalendar
 
 Category
 --------
@@ -122,14 +123,27 @@ Match
 entity = Match
 key
 matchno
-matchtype
+matchtype = Match|QualifyingMatch
 date
 time
 category
 group
 venue
-home
-away
+home = [qualifiedrelation, matchrelation]
+away = [qualifiedrelation, matchrelation]
+
+MatchRelation
+-------------
+entity = MatchRelation
+relation = home|away
+team
+result = [score, points, valid]
+
+QMatchRelation
+--------------
+entity = QMatchRelation
+relation = home|away
+qualified = [group, rank]
 
 Club
 ----
@@ -210,6 +224,12 @@ Match
 -----
 /service/api/v1/match
 entity = Tournament, Group, Venue, Match
+/service/api/v1/match/today
+entity = Tournament
+/service/api/v1/match/nextday
+entity = Match
+/service/api/v1/match/prevday
+entity = Match
 
 Club
 ----

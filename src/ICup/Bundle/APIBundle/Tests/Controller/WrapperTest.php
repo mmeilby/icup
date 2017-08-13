@@ -242,7 +242,43 @@ class WrapperTest extends WebTestCase
         $this->client->getContainer()->get("planning")->planTournament($this->tournament, $options);
         $this->client->getContainer()->get("planning")->publishSchedule($this->tournament);
 
-        $this->getCrawler("/service/api/v1/match", "Date", "20150706");
+        $this->getCrawler("/service/api/v1/match/today", "Tournament", $this->tournament->getKey());
+        $this->assertTrue($this->client->getResponse()->isSuccessful());
+        $matches = json_decode($this->client->getResponse()->getContent());
+        $this->assertTrue(count($matches) > 0);
+        $this->assertAttributeNotEmpty("key", reset($matches));
+    }
+
+    public function testMatchListAB()
+    {
+        $options = new PlanningOptions();
+        $options->setDoublematch(false);
+        $options->setPreferpg(false);
+        $this->client->getContainer()->get("planning")->planTournament($this->tournament, $options);
+        $this->client->getContainer()->get("planning")->publishSchedule($this->tournament);
+
+        reset($this->tournament->getMatches())->setKey(strtoupper(uniqid()));
+        $container = static::$kernel->getContainer();
+        $container->get('doctrine')->getManager()->flush();
+        $this->getCrawler("/service/api/v1/match/nextday", "Match", reset($this->tournament->getMatches())->getKey());
+        $this->assertTrue($this->client->getResponse()->isSuccessful());
+        $matches = json_decode($this->client->getResponse()->getContent());
+        $this->assertTrue(count($matches) > 0);
+        $this->assertAttributeNotEmpty("key", reset($matches));
+    }
+
+    public function testMatchListAC()
+    {
+        $options = new PlanningOptions();
+        $options->setDoublematch(false);
+        $options->setPreferpg(false);
+        $this->client->getContainer()->get("planning")->planTournament($this->tournament, $options);
+        $this->client->getContainer()->get("planning")->publishSchedule($this->tournament);
+
+        reset($this->tournament->getMatches())->setKey(strtoupper(uniqid()));
+        $container = static::$kernel->getContainer();
+        $container->get('doctrine')->getManager()->flush();
+        $this->getCrawler("/service/api/v1/match/prevday", "Match", reset($this->tournament->getMatches())->getKey());
         $this->assertTrue($this->client->getResponse()->isSuccessful());
         $matches = json_decode($this->client->getResponse()->getContent());
         $this->assertTrue(count($matches) > 0);

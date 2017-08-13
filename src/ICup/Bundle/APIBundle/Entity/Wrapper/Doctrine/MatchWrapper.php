@@ -23,8 +23,8 @@ class MatchWrapper extends ObjectWrapper
                 $site->setKey(strtoupper(uniqid()));
             }
             $matchtype = "Match";
-            $qhome = array("id" => 0);
-            $qaway = array("id" => 0);
+            $qhome = array("entity" => "Void");
+            $qaway = array("entity" => "Void");
             foreach ($site->getQMatchRelations() as $qmatchRelation) {
                 /* @var $qmatchRelation QMatchRelation */
                 if ($qmatchRelation->getAwayteam()) {
@@ -35,8 +35,8 @@ class MatchWrapper extends ObjectWrapper
                 }
                 $matchtype ="QualifyingMatch";
             }
-            $home = array("id" => 0);
-            $away = array("id" => 0);
+            $home = array("entity" => "Void");
+            $away = array("entity" => "Void");
             foreach ($site->getMatchRelations() as $matchRelation) {
                 /* @var $matchRelation MatchRelation */
                 if ($matchRelation->getAwayteam()) {

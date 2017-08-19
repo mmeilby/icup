@@ -16,16 +16,16 @@ use ICup\Bundle\PublicSiteBundle\Entity\Doctrine\QMatchRelation;
 
 class MatchWrapper extends ObjectWrapper
 {
-    public function getData($site) {
-        if ($site instanceof Match) {
-            /* @var $site Match */
-            if ($site->getKey() == null) {
-                $site->setKey(strtoupper(uniqid()));
+    public function getData($match) {
+        if ($match instanceof Match) {
+            /* @var $match Match */
+            if ($match->getKey() == null) {
+                $match->setKey(strtoupper(uniqid()));
             }
             $matchtype = "Match";
             $qhome = array("entity" => "Void");
             $qaway = array("entity" => "Void");
-            foreach ($site->getQMatchRelations() as $qmatchRelation) {
+            foreach ($match->getQMatchRelations() as $qmatchRelation) {
                 /* @var $qmatchRelation QMatchRelation */
                 if ($qmatchRelation->getAwayteam()) {
                     $qaway = new MatchRelationWrapper($qmatchRelation);
@@ -37,7 +37,7 @@ class MatchWrapper extends ObjectWrapper
             }
             $home = array("entity" => "Void");
             $away = array("entity" => "Void");
-            foreach ($site->getMatchRelations() as $matchRelation) {
+            foreach ($match->getMatchRelations() as $matchRelation) {
                 /* @var $matchRelation MatchRelation */
                 if ($matchRelation->getAwayteam()) {
                     $away = new MatchRelationWrapper($matchRelation);
@@ -49,14 +49,14 @@ class MatchWrapper extends ObjectWrapper
             }
             return array(
                 "entity" => "Match",
-                "key" => $site->getKey(),
-                'matchno' => $site->getMatchno(),
+                "key" => $match->getKey(),
+                'matchno' => $match->getMatchno(),
                 "matchtype" => $matchtype,
-                'date' => Date::jsonDateSerialize($site->getDate()),
-                'time' => Date::jsonTimeSerialize($site->getTime()),
-                'category' => new CategoryWrapper($site->getGroup()->getCategory()),
-                'group' => new GroupWrapper($site->getGroup()),
-                'venue' => new PlaygroundWrapper($site->getPlayground()),
+                'date' => Date::jsonDateSerialize($match->getDate()),
+                'time' => Date::jsonTimeSerialize($match->getTime()),
+                'category' => new CategoryWrapper($match->getGroup()->getCategory()),
+                'group' => new GroupWrapper($match->getGroup()),
+                'venue' => new PlaygroundWrapper($match->getPlayground()),
                 'home' => array("qualifiedrelation" => $qhome, "matchrelation" => $home),
                 'away' => array("qualifiedrelation" => $qaway, "matchrelation" => $away)
             );

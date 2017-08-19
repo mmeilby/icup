@@ -19,12 +19,21 @@ class PlaygroundWrapper extends ObjectWrapper
             if ($venue->getKey() == null) {
                 $venue->setKey(strtoupper(uniqid()));
             }
+            $location = explode(",", $venue->getLocation());
+            if (count($location) > 1) {
+                $latitude = $location[0];
+                $longitude = $location[1];
+            }
+            else {
+                $latitude = "";
+                $longitude = "";
+            }
             return array(
                 "entity" => "Venue",
                 "key" => $venue->getKey(),
                 "no" => $venue->getNo(),
                 "name" => $venue->getName(),
-                "location" => $venue->getLocation(),
+                "location" => array("latitude" => $latitude, "longitude" => $longitude),
                 "site" => $venue->getSite()->getName()
             );
         }

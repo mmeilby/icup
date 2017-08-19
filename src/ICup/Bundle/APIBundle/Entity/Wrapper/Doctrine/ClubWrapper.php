@@ -13,20 +13,20 @@ use ICup\Bundle\PublicSiteBundle\Entity\Doctrine\Club;
 
 class ClubWrapper extends ObjectWrapper
 {
-    public function getData($site) {
-        if ($site instanceof Club) {
-            /* @var $site Club */
-            if ($site->getKey() == null) {
-                $site->setKey(strtoupper(uniqid()));
+    public function getData($club) {
+        if ($club instanceof Club) {
+            /* @var $club Club */
+            if ($club->getKey() == null) {
+                $club->setKey(strtoupper(uniqid()));
             }
             return array(
                 "entity" => "Club",
-                "key" => $site->getKey(),
-                "name" => $site->getName(),
-                "address" => $site->getAddress(),
-                "city" => $site->getCity(),
-                "country_code" => $site->getCountryCode(),
-                "flag" => $site->getCountry()->getFlag()
+                "key" => $club->getKey(),
+                "name" => $club->getName(),
+                "address" => $club->getAddress(),
+                "city" => $club->getCity(),
+                "country_code" => $club->getCountryCode(),
+                "flag" => $club->getCountry()->getFlag()
             );
         }
         return null;

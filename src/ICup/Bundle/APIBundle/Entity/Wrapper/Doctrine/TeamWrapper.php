@@ -13,23 +13,23 @@ use ICup\Bundle\PublicSiteBundle\Entity\Doctrine\Team;
 
 class TeamWrapper extends ObjectWrapper
 {
-    public function getData($site) {
-        if ($site instanceof Team) {
-            /* @var $site Team */
-            if ($site->getKey() == null) {
-                $site->setKey(strtoupper(uniqid()));
+    public function getData($team) {
+        if ($team instanceof Team) {
+            /* @var $team Team */
+            if ($team->getKey() == null) {
+                $team->setKey(strtoupper(uniqid()));
             }
             return array(
                 "entity" => "Team",
-                "key" => $site->getKey(),
-                "name" => $site->getName(),
-                "teamname" => $site->getTeamName(),
-                "club" => new ClubWrapper($site->getClub()),
-                "color" => $site->getColor(),
-                "division" => $site->getDivision(),
-                "vacant" => $site->isVacant(),
-                "country_code" => $site->getClub()->getCountryCode(),
-                "flag" => $site->getClub()->getCountry()->getFlag()
+                "key" => $team->getKey(),
+                "name" => $team->getName(),
+                "teamname" => $team->getTeamName(),
+                "club" => new ClubWrapper($team->getClub()),
+                "color" => $team->getColor(),
+                "division" => $team->getDivision(),
+                "vacant" => $team->isVacant(),
+                "country_code" => $team->getClub()->getCountryCode(),
+                "flag" => $team->getClub()->getCountry()->getFlag()
             );
         }
         return null;

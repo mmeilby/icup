@@ -14,24 +14,24 @@ use ICup\Bundle\PublicSiteBundle\Entity\Doctrine\QMatchRelation;
 
 class MatchRelationWrapper extends ObjectWrapper
 {
-    public function getData($siteRelation) {
-        if ($siteRelation instanceof MatchRelation) {
-            /* @var $siteRelation MatchRelation */
+    public function getData($matchRelation) {
+        if ($matchRelation instanceof MatchRelation) {
+            /* @var $matchRelation MatchRelation */
             return array(
                 "entity" => "MatchRelation",
-                "relation" => $siteRelation->getAwayteam() ? "away" : "home",
-                "team" => new TeamWrapper($siteRelation->getTeam()),
-                "result" => $siteRelation->getScorevalid() ? array("score" => $siteRelation->getScore(), "points" => $siteRelation->getPoints(), "valid" => true) : array("score" => '', "points" => '', "valid" => false)
+                "relation" => $matchRelation->getAwayteam() ? "away" : "home",
+                "team" => new TeamWrapper($matchRelation->getTeam()),
+                "result" => $matchRelation->getScorevalid() ? array("score" => $matchRelation->getScore(), "points" => $matchRelation->getPoints(), "valid" => true) : array("score" => '', "points" => '', "valid" => false)
             );
         }
-        else if ($siteRelation instanceof QMatchRelation) {
-            /* @var $siteRelation QMatchRelation */
+        else if ($matchRelation instanceof QMatchRelation) {
+            /* @var $matchRelation QMatchRelation */
             return array(
                 "entity" => "QMatchRelation",
-                "relation" => $siteRelation->getAwayteam() ? "away" : "home",
+                "relation" => $matchRelation->getAwayteam() ? "away" : "home",
                 "qualified" => array(
-                    "group" => new GroupWrapper($siteRelation->getGroup()),
-                    "rank" => $siteRelation->getRank())
+                    "group" => new GroupWrapper($matchRelation->getGroup()),
+                    "rank" => $matchRelation->getRank())
             );
         }
         return null;

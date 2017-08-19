@@ -13,20 +13,20 @@ use ICup\Bundle\PublicSiteBundle\Entity\Doctrine\Category;
 
 class CategoryWrapper extends ObjectWrapper
 {
-    public function getData($site) {
-        if ($site instanceof Category) {
-            /* @var $site Category */
-            if ($site->getKey() == null) {
-                $site->setKey(strtoupper(uniqid()));
+    public function getData($category) {
+        if ($category instanceof Category) {
+            /* @var $category Category */
+            if ($category->getKey() == null) {
+                $category->setKey(strtoupper(uniqid()));
             }
             return array(
                 "entity" => "Category",
-                "tournament" => new TournamentWrapper($site->getTournament()),
-                "key" => $site->getKey(),
-                "name" => $site->getName(),
-                "gender" => $site->getGender(),
-                "classification" => $site->getClassification(),
-                "age" => $site->getAge(),
+                "tournament" => new TournamentWrapper($category->getTournament()),
+                "key" => $category->getKey(),
+                "name" => $category->getName(),
+                "gender" => $category->getGender(),
+                "classification" => $category->getClassification(),
+                "age" => $category->getAge(),
             );
         }
         return null;

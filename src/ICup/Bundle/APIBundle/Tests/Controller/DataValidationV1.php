@@ -119,7 +119,10 @@ class DataValidationV1 extends WebTestCase
         $this->assertAttributeEquals($venue->getKey(), "key", $venue_json);
         $this->assertAttributeEquals($venue->getNo(), "no", $venue_json);
         $this->assertAttributeEquals($venue->getName(), "name", $venue_json);
-        $this->assertAttributeEquals($venue->getLocation(), "location", $venue_json);
+        $this->assertObjectHasAttribute("location", $venue_json);
+        $location = $venue_json->location;
+        $this->assertObjectHasAttribute("latitude", $location);
+        $this->assertObjectHasAttribute("longitude", $location);
         $this->assertObjectHasAttribute("site", $venue_json);
     }
 

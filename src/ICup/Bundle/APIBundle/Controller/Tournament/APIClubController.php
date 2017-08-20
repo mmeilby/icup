@@ -44,14 +44,10 @@ class APIClubController extends APIController
                     }
                     $clubs = array();
                     $enrollments = array();
-                    foreach ($tournament->getCategories() as $category) {
-                        /* @var $category Category */
-                        $categorywrapper = new CategoryWrapper($category);
-                        foreach ($category->getEnrollments() as $enrollment) {
-                            /* @var $enrollment Enrollment */
-                            $clubs[$enrollment->getTeam()->getClub()->getId()] = $enrollment->getTeam()->getClub();
-                            $enrollments[$enrollment->getTeam()->getClub()->getId()][$category->getId()] = $categorywrapper;
-                        }
+                    foreach ($api->get('logic')->listEnrolledByCategory($tournament->getId()) as $enrollment) {
+                        /* @var $enrollment Enrollment */
+                        $clubs[$enrollment->getTeam()->getClub()->getId()] = $enrollment->getTeam()->getClub();
+                        $enrollments[$enrollment->getTeam()->getClub()->getId()][$enrollment->getCategory()->getId()] = $enrollment->getCategory();
                     }
                     usort($clubs, function (Club $club1, Club $club2) {
                         return $club1->getCountryCode() == $club2->getCountryCode() ?
@@ -65,7 +61,7 @@ class APIClubController extends APIController
                         $response[] = array_merge($wrapped_club->jsonSerialize(), array(
                             "categories" =>
                                 isset($enrollments[$club->getId()]) ?
-                                $enrollments[$club->getId()] :
+                                new CategoryWrapper($enrollments[$club->getId()]) :
                                 array()
                         ));
                     }

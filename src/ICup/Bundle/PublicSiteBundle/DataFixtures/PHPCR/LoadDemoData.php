@@ -60,6 +60,16 @@ class LoadDemoData implements FixtureInterface
                 $manager->bindTranslation($block, $locale);
             }
         }
+        else {
+            $block->setTitle($this->translator->trans($parentname.'.'.$name.'.title', array(), 'messages', 'da'));
+            $block->setBody($this->translator->trans($parentname.'.'.$name.'.body', array(), 'messages', 'da'));
+            $manager->bindTranslation($block, 'da');
+            foreach (array('en', 'de', 'fr', 'es', 'it', 'po') as $locale) {
+                $block->setTitle($this->translator->trans($parentname . '.' . $name . '.title', array(), 'messages', $locale));
+                $block->setBody($this->translator->trans($parentname . '.' . $name . '.body', array(), 'messages', $locale));
+                $manager->bindTranslation($block, $locale);
+            }
+        }
     }
     
     private function setupTranslator() {

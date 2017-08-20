@@ -112,7 +112,7 @@ enrollment:
         body: >
             <h4>INVITATION</h4>
             <p>
-            Interamnia World Cup nærmer sig den 44. udgave af turneringen - nu stærkere og mere stolt af sit omdømme,
+            Interamnia World Cup nærmer sig den 46. udgave af turneringen - nu stærkere og mere stolt af sit omdømme,
             takket være den opmærksomhed turneringen har opnået internationalt for sin originalitet og
             rigdom på sport og kulturelle indhold.
             </p>
@@ -149,27 +149,27 @@ enrollment:
 
             <h4>PROGRAM</h4>
             <p>
-            Sports-Cultural Club "Interamnia World Cup" planlægger og organiserer "44. Interamnia World Cup" - Memorial "Giorgio Binchi" - internationale håndboldturnering,
+            Sports-Cultural Club "Interamnia World Cup" planlægger og organiserer "46. Interamnia World Cup" - Memorial "Giorgio Binchi" - internationale håndboldturnering,
             i samarbejde med det italienske håndboldforbund og i regi af den nationale olympiske komité,
             Det Internationale Håndbold Forbund og Det Europæiske Håndbold Forbund.
             </p>
 
             <h4>FORLØB</h4>
             <p>
-            Turneringen vil finde sted fra den 5. til den 11. juli 2016 i Teramo og i nogle nærliggende kommuner.
+            Turneringen vil finde sted fra den 5. til den 11. juli 2018 i Teramo og i nogle nærliggende kommuner.
             </p>
     terms:
-        title: Tilmelding 2016
+        title: Tilmelding 2018
         body: >
             <p>
-                Tilmelding sker ved indbetaling af holdgebyr samt depositum.
-                Deltagergebyr der dækker logi/forplejning betales efterfølgende.
-                Kvittering for indbetaling vedlægges tilmeldingsblanket.
+              Tilmelding sker ved indbetaling af holdgebyr samt depositum.
+              Deltagergebyr der dækker logi/forplejning betales efterfølgende.
+              Kvittering for indbetaling vedlægges tilmeldingsblanket.
             </p>
 
             <h4>HOLDGEBYR OG DEPOSITUM</h4>
             <p>
-                Tilmelding af hold kan ske frem til den 15. april 2015.
+                Tilmelding af hold kan ske frem til den 15. april 2018.
                 Men af hensyn til planlægning med de mange hold, der forventes at deltage til stævnet, 
                 ydes der en reduktion i holdgebyret jo tidligere tilmelding sker.
                 Da det også er væsentligt for stævnet at have en repræsentativ deltagelse fra alle fem kontinenter vil hold
@@ -178,25 +178,31 @@ enrollment:
 
             <p>Tilmelding anses for at være bindende når tilmeldingsblanket er indsendt og holdgebyr samt depositum er overført til stævnets bankkonto.</p>
 
-            <p>Depositum er €400 per hold uanset tidpunkt for tilmelding.</p>
+            <p>Depositum er €200 per hold uanset tidpunkt for tilmelding.</p>
 
-            <p>Hold der ønsker at bo på hotel skal betale 25% af de samlede hold- og deltagergebyr i depositum.</p>
+            <p>
+              Hold der ønsker at bo på hotel skal betale €100 for hver deltager i depositum.
+              Dette depositum skal være betalt senest 15 dage efter at stævnet har foretaget reservation af hotelværelser.
+              Dette depositum vil ikke blive refunderet ved et senere afbud fra holdene.
+            </p>
 
             <p>Ved tilmelding inden:</p>
             <p>
-                30. november 2014 er holdgebyret €100.<br />
-                10. februar 2015 er holdgebyret €200.<br />
-                15. april 2015 er holdgebyret €300.
+              15. oktober 2017 er holdgebyret €300.<br />
+              15. januar 2018 er holdgebyret €400.<br />
+              15. april 2018 er holdgebyret €500.
             </p>
 
+            <p>Hold der selv finder og bestiller opholdssted skal betale €500 i holdgebyr uanset tilmeldingstidspunkt.</p>
+
             <h4>DELTAGERGEBYR</h4>
-            <p>Deltagergebyr (fratrukket depositum) skal være overført senest den 15. maj 2015.</p>
+            <p>Deltagergebyr (fratrukket depositum) skal være overført senest den 15. maj 2018.</p>
 
             <p>Deltagergebyr betales af mindst 15 personer for hvert hold – altså både spillere, trænere og officials.</p>
 
             <p>
                 Deltagergebyret afhænger af valg af opholdssted og forplejning.
-                Hold der ikke gør brug af stævnets tilbud om ophold eller forplejning kan nøjes med at betale €20 per deltager i deltagergebyr.
+                Hold der ikke gør brug af stævnets tilbud om ophold eller forplejning betaler ikke deltagergebyr (kun det forhøjede holdgebyr).
             </p>
 
             <h4>TRANSPORT</h4>
@@ -212,17 +218,20 @@ enrollment:
 
             <p>Prisen for offentlig transport er €38 per person tur/retur.</p>
 
-            <p>Bemærk at det er muligt at flyve til Pescara og Ancona fra flere europæiske lufthavne (men ikke danske).
+            <p>Bemærk at det er muligt at flyve til Pescara og Ancona fra flere europæiske lufthavne.
             Stævnets sekretariat hjælper også gerne med transport fra disse lufthavne.</p>
 
             <p>
                 <strong>Stævnebus</strong><br />
-                Prisen for en gruppe på op til 50 personer tur/retur med stævnebus er €1800. Turen skal bestilles ved tilmelding og inkluderer en guide/tolk.
+                Prisen for en gruppe på op til 50 personer med stævnebus er €800 hver vej.
+                Turen skal bestilles ved tilmelding og inkluderer en guide/tolk.
             </p>
 
-            <p>Hvis to klubber kan køre med samme bus halveres prisen.</p>
+            <p>Hvis to klubber kan køre med samme bus eller hvis holdet kan benytte en minibus til 30 personer er prisen €500 hver vej.</p>
 
-            <p>Præcise oplysninger om ankomst og afgangstider samt fly numre skal oplyses til stævnet mindst tre dage før ankomst.</p>
+            <p>Klubber der ønsker en bus for sig selv SKAL oplyse dette ved bestilling.</p>
+
+            <p>Præcise oplysninger om ankomst og afgangstider samt fly numre skal oplyses til stævnet mindst syv dage før ankomst.</p>
     accomodation:
         title: Muligheder for ophold
         body: >
@@ -244,19 +253,15 @@ enrollment:
                         </thead>
                         <tbody>
                             <tr>
-                                <td>A</td><td>Skole i Teramo uden senge</td><td>€50</td><td>€5</td><td>4/7</td><td>12/7</td>
+                                <td>A</td><td>Skole i Teramo uden senge</td><td>€40</td><td>€5</td><td>4/7</td><td>12/7</td>
                                 <td>Hvert hold vil have et rum til deres rådighed.</td>
                             </tr>
                             <tr>
-                                <td>B</td><td>Skole i Teramo med senge</td><td>€80</td><td>€10</td><td>4/7</td><td>12/7</td>
+                                <td>B</td><td>Skole i Teramo med senge</td><td>€75</td><td>€10</td><td>4/7</td><td>12/7</td>
                                 <td>Hvert hold vil have et rum til deres rådighed med senge med madras og lagen.</td>
                             </tr>
                             <tr>
-                                <td>C</td><td>Eget telt i Teramo</td><td>€30</td><td>€5</td><td>4/7</td><td>12/7</td>
-                                <td></td>
-                            </tr>
-                            <tr>
-                                <td>E</td><td>Hotel ved Teramo</td><td>€400</td><td>€50</td><td>4/7</td><td>12/7</td>
+                                <td></td><td>Hotel ved Teramo</td><td>€470</td><td>€60</td><td>4/7</td><td>12/7</td>
                                 <td>Opholdet er inkluderet morgenmad samt frokost og aftensmad (aftensmad ved ankomst og morgenmad ved afrejse).
                                 Der er tillæg på €100 for enkeltværelser.</td>
                             </tr>
@@ -276,11 +281,11 @@ enrollment:
                         </thead>
                         <tbody>
                             <tr>
-                                <td>D</td><td>Eget telt på teltplads ved kysten</td><td>€55</td><td>€8</td><td>4/7</td><td>12/7</td>
+                                <td>C</td><td>Eget telt på teltplads ved kysten</td><td>€55</td><td>€8</td><td>4/7</td><td>12/7</td>
                                 <td>Der vil være mulighed for at benytte teltpladsens facilliteter samt den nærliggende strand.</td>
                             </tr>
                             <tr>
-                                <td>F</td><td>Hotel ved kysten</td><td>€400</td><td>€50</td><td>4/7</td><td>12/7</td>
+                                <td></td><td>Hotel ved kysten</td><td>€380</td><td>€50</td><td>4/7</td><td>12/7</td>
                                 <td>Opholdet er inkluderet morgenmad samt frokost og aftensmad (aftensmad ved ankomst og morgenmad ved afrejse).
                                 Der er tillæg på €100 for enkeltværelser.</td>
                             </tr>
@@ -294,22 +299,17 @@ enrollment:
             <p>Adressen til stævnets sekretariat hvortil tilmeldingsblanket og kvittering skal sendes er følgende:</p>
 
             <p>
-            <strong>INTERAMNIA WORLD CUP<br />
-            ORGANIZING COMMITTEE</strong><br />
-            Via V. Irelli 55<br />
-            64100 Teramo<br />
-            Italien<br />
-            <br />
-            Tlf.: +39 0861 266366<br />
-            Fax: +39 0861 412279<br />
-            <br />
-            Skype: interamniacup<br />
-            e-mail: info@interamniaworldcup.com<br />
-            <a href="www.interamniaworldcup.com">www.interamniaworldcup.com</a><br />
-            <br />
-            <strong>FACEBOOK</strong><br />
-            Interamnia World Cup officielle Facebook side:<br />
-            <a href="http://www.facebook.com/InteramniaWorldCup">www.facebook.com/InteramniaWorldCup</a>
+              <strong>INTERAMNIA WORLD CUP<br />
+              SEGRETERIA ORGANIZZATIVA</strong><br />
+              Via V. Irelli, 55<br />
+              64100 Teramo (Italy)<br />
+              Tel. +39 0861 266366<br />
+              e-mail: info@interamniaworldcup.com<br />
+              <a href="www.interamniaworldcup.com">www.interamniaworldcup.com</a><br />
+              <br />
+              <strong>FACEBOOK</strong><br />
+              Interamnia World Cup officielle Facebook side:<br />
+              <a href="http://www.facebook.com/InteramniaWorldCup">www.facebook.com/InteramniaWorldCup</a>
             </p>
     paymentterms:
         title: BETALINGSBETINGELSER
@@ -317,10 +317,10 @@ enrollment:
             <p>Alle indbetalinger skal foretages som udenlandsk bankoverførsel i euro til følgende bankkonto inden de anviste frister:</p>
             <p>
                Banca Tercas<br />
-               Teramo afdeling (Branch in Teramo)<br />
+               Teramo afdeling (Office of Teramo)<br />
                Konto:	CC0900053052<br />
-               IBAN:	IT05 B 06060 15300 CC0900053052<br />
-               SWIFT:	TERCIT 3TXXX
+               IBAN:	IT22 X054 2415 3000 0000 0053 052<br />
+               SWIFT:	BPBAIT3BXXX
             </p>
             <p>
                Adviseringstekst:<br />
@@ -330,18 +330,22 @@ enrollment:
             <p>Tilmeldingsblanket skal udfyldes komplet og underskrives af en tegningsberetiget for klubben.</p>        
 
             <h4>BEKRÆFTELSE</h4>
-            <p>Når stævnets sekretariat har modtaget og godkendt tilmelding fremsendes en bekræftelse sidst i april 2015
+            <p>Når stævnets sekretariat har modtaget og godkendt tilmelding fremsendes en bekræftelse sidst i april 2018
             sammen med detaljeret information om stævnet.</p>
 
             <h4>REGLER FOR AFBUD</h4>
             <p>Et hold der ikke kan deltage i stævnet vil ikke kunne få de indbetalte beløb refunderet.</p>
-            <p>Dog vil hold der med en rimelig begrundelse melder afbud skriftligt til stævnets sekretariat inden den 10. juni 2015
-            kunne få depositum (gælder ikke depositum for hotelophold) og eventuelle deltagergebyr refunderet.</p>
+
+            <p>
+              Dog vil hold der med en rimelig begrundelse melder afbud skriftligt til stævnets sekretariat inden den 10. juni 2018
+              kunne få depositum (gælder ikke depositum for hotelophold) og eventuelle deltagergebyr refunderet.
+            </p>
+
             <p>Holdgebyr vil i alle tilfælde være tabt for hold der ikke deltager.</p>
     step1:
         title: ONLINE TILMELDING
         body: >
-            <h4>TILMELDING TIL INTERAMNIA WORLD CUP 2016</h4>
+            <h4>TILMELDING TIL INTERAMNIA WORLD CUP 2018</h4>
             <p>
                 Online tilmelding er et nyt initiativ som tilbydes de klubber, der foretrækker digitale tjenester.
                 Her kan du tilmelde hold på samme måde som hvis du udfylder den trykte formular. Det er bare lettere og hurtigere.
@@ -391,16 +395,16 @@ enrollment:
                                 <td>B - Herrer</td><td>H - Damer</td>
                             </tr>
                             <tr>
-                                <td>C - Drenge under 18 (født 1998 og senere)</td><td>I - Piger under 18 (født 1998 og senere)</td>
+                                <td>C - Drenge under 18 (født 2000 og senere)</td><td>I - Piger under 18 (født 2000 og senere)</td>
                             </tr>
                             <tr>
-                                <td>D - Drenge under 16 (født 2000 og senere)</td><td>L - Piger under 16 (født 2000 og senere)</td>
+                                <td>D - Drenge under 16 (født 2002 og senere)</td><td>L - Piger under 16 (født 2002 og senere)</td>
                             </tr>
                             <tr>
-                                <td>E - Drenge under 14 (født 2002 og senere)</td><td>M - Piger under 14 (født 2002 og senere)</td>
+                                <td>E - Drenge under 14 (født 2004 og senere)</td><td>M - Piger under 14 (født 2004 og senere)</td>
                             </tr>
                             <tr>
-                                <td>F - Drenge under 12 (født 2004 og senere)</td><td>N - Piger under 12 (født 2004 og senere)</td>
+                                <td>F - Drenge under 12 (født 2006 og senere)</td><td>N - Piger under 12 (født 2006 og senere)</td>
                             </tr>
                         </tbody>
                     </table>
@@ -446,19 +450,15 @@ enrollment:
                         </thead>
                         <tbody>
                             <tr>
-                                <td>A</td><td>Skole i Teramo uden senge</td><td>€50</td><td>€5</td><td>4/7</td><td>12/7</td>
+                                <td>A</td><td>Skole i Teramo uden senge</td><td>€40</td><td>€5</td><td>4/7</td><td>12/7</td>
                                 <td>Hvert hold vil have et rum til deres rådighed.</td>
                             </tr>
                             <tr>
-                                <td>B</td><td>Skole i Teramo med senge</td><td>€80</td><td>€10</td><td>4/7</td><td>12/7</td>
+                                <td>B</td><td>Skole i Teramo med senge</td><td>€75</td><td>€10</td><td>4/7</td><td>12/7</td>
                                 <td>Hvert hold vil have et rum til deres rådighed med senge med madras og lagen.</td>
                             </tr>
                             <tr>
-                                <td>C</td><td>Eget telt i Teramo</td><td>€30</td><td>€5</td><td>4/7</td><td>12/7</td>
-                                <td></td>
-                            </tr>
-                            <tr>
-                                <td>E</td><td>Hotel ved Teramo</td><td>€400</td><td>€50</td><td>4/7</td><td>12/7</td>
+                                <td></td><td>Hotel ved Teramo</td><td>€470</td><td>€60</td><td>4/7</td><td>12/7</td>
                                 <td>Opholdet er inkluderet morgenmad samt frokost og aftensmad (aftensmad ved ankomst og morgenmad ved afrejse).
                                 Der er tillæg på €100 for enkeltværelser.</td>
                             </tr>
@@ -478,11 +478,11 @@ enrollment:
                         </thead>
                         <tbody>
                             <tr>
-                                <td>D</td><td>Eget telt på teltplads ved kysten</td><td>€55</td><td>€8</td><td>4/7</td><td>12/7</td>
+                                <td>C</td><td>Eget telt på teltplads ved kysten</td><td>€55</td><td>€8</td><td>4/7</td><td>12/7</td>
                                 <td>Der vil være mulighed for at benytte teltpladsens facilliteter samt den nærliggende strand.</td>
                             </tr>
                             <tr>
-                                <td>F</td><td>Hotel ved kysten</td><td>€400</td><td>€50</td><td>4/7</td><td>12/7</td>
+                                <td></td><td>Hotel ved kysten</td><td>€380</td><td>€50</td><td>4/7</td><td>12/7</td>
                                 <td>Opholdet er inkluderet morgenmad samt frokost og aftensmad (aftensmad ved ankomst og morgenmad ved afrejse).
                                 Der er tillæg på €100 for enkeltværelser.</td>
                             </tr>
@@ -522,7 +522,7 @@ enrollment:
         body: >
             <p>
                 Tilmelding er gennemført. Nu mangler blot betaling af holdgebyr og depositum.
-                Det samlede beløb for holdgebyr og depositum er vist her. I løbet af april 2016 vil en samlet opgørelse blive
+                Det samlede beløb for holdgebyr og depositum er vist her. I løbet af april 2018 vil en samlet opgørelse blive
                 fremsendt hvorefter sidste rate (deltagergebyr fratrukket depositum) skal være betalt.
             </p>
 
@@ -534,17 +534,25 @@ enrollment:
             <p>
                 Tilmelding anses for at være gyldig og bindende når holdgebyr samt depositum er overført til stævnets bankkonto:<br />
                 c/o the bank Banca Tercas – Sede di Teramo – Bank Account CC0900053052 headed to INTERAMNIA WORLD CUP<br />
-                IBAN: IT05 B 06060 15300 CC0900053052 – SWIFT: TERCIT 3TXXX
+                IBAN: IT22 X054 2415 3000 0000 0053 052 – SWIFT: BPBAIT3BXXX
             </p>
 
-            <p>Depositum er €400 per hold uanset tidpunkt for tilmelding.</p>
+            <p>Depositum er €200 per hold uanset tidpunkt for tilmelding.</p>
+
+            <p>
+              Hold der ønsker at bo på hotel skal betale €100 for hver deltager i depositum.
+              Dette depositum skal være betalt senest 15 dage efter at stævnet har foretaget reservation af hotelværelser.
+              Dette depositum vil ikke blive refunderet ved et senere afbud fra holdene.
+            </p>
 
             <p>Ved tilmelding inden:</p>
             <p>
-                30. november 2015 er holdgebyret €100.<br />
-                10. februar 2016 er holdgebyret €200.<br />
-                15. april 2016 er holdgebyret €300.
+              15. oktober 2017 er holdgebyret €300.<br />
+              15. januar 2018 er holdgebyret €400.<br />
+              15. april 2018 er holdgebyret €500.
             </p>
+
+            <p>Hold der selv finder og bestiller opholdssted skal betale €500 i holdgebyr uanset tilmeldingstidspunkt.</p>
     fdp_step1:
         title: Enrollment
         body:
@@ -562,17 +570,17 @@ enrollment:
         body:
 information:
     intro:
-        title: Håndboldstævnet Interamnia World Cup afholdes for 43. gang
+        title: Håndboldstævnet Interamnia World Cup afholdes for 46. gang
         body: >
             <p>Interamnia – der betyder mellem floder – hentyder til byen Teramos placering mellem floderne Tordino og Vezzola.
-            I denne skønne klassiske by for foden af Italiens højeste bjerg Gran Sasso afvikles til sommer for 43. gang det der med tiden er blevet
+            I denne skønne klassiske by for foden af Italiens højeste bjerg Gran Sasso afvikles til sommer for 46. gang det der med tiden er blevet
             håndboldens mesterskaber for unge fra hele verden.</p>
 
             <p>Stævnet der første gang blev afholdt i sommeren 1973 er for både piger og drenge i alderen 12-18 år.
             De seneste år er der også blevet plads til senior hold i turneringen.</p>
 
             <p>Stævnet danner den perfekte ramme for styrkelse af sociale relationer på de nye årgange og byder på mange gode oplevelser med danske
-            og udenlandske venner i det italienske byliv. Stævnet har udviklet sig gennem de sidste 42 år og er i dag både et fantastisk håndboldstævne
+            og udenlandske venner i det italienske byliv. Stævnet har udviklet sig gennem de sidste 45 år og er i dag både et fantastisk håndboldstævne
             og et multikulturelt forum for unge.</p>
 
             <p>Der overnattes på skoler og spilles på pladser og gårde og alt sammen er med til at give spillerne en anden forståelse af
@@ -754,13 +762,6 @@ information:
             CAMPO 7 - Pista Pattinaggio Acquaviva<br />
             CAMPO 8 - Via L. Tripoti<br />
             CAMPO 9 - Scuola Media Molinari<br />
-            CAMPO 10 - Pala Giorgio Binchi<br />
-            CAMPO 11 - Palestra I.P.C.<br />
-            CAMPO 12 - Palasport, San Nicoló<br />
-            CAMPO 13 - Giulianova<br />
-            CAMPO 14 - Pineto<br />
-            CAMPO 15 - Rocca Santa Maria<br />
-            CAMPO 16 - S. Egidio
             </p>
     fdp_intro:
         title: Håndboldstævnet Festival della Pallamano afholdes for 14. gang

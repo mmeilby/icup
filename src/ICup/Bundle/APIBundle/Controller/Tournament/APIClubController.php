@@ -46,10 +46,11 @@ class APIClubController extends APIController
                     $enrollments = array();
                     foreach ($tournament->getCategories() as $category) {
                         /* @var $category Category */
+                        $categorywrapper = new CategoryWrapper($category);
                         foreach ($category->getEnrollments() as $enrollment) {
                             /* @var $enrollment Enrollment */
                             $clubs[$enrollment->getTeam()->getClub()->getId()] = $enrollment->getTeam()->getClub();
-                            $enrollments[$enrollment->getTeam()->getClub()->getId()][$category->getId()] = $category;
+                            $enrollments[$enrollment->getTeam()->getClub()->getId()][$category->getId()] = $categorywrapper;
                         }
                     }
                     usort($clubs, function (Club $club1, Club $club2) {
@@ -64,7 +65,7 @@ class APIClubController extends APIController
                         $response[] = array_merge($wrapped_club->jsonSerialize(), array(
                             "categories" =>
                                 isset($enrollments[$club->getId()]) ?
-                                new CategoryWrapper($enrollments[$club->getId()]) :
+                                $enrollments[$club->getId()] :
                                 array()
                         ));
                     }

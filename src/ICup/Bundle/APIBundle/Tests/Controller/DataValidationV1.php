@@ -237,4 +237,9 @@ class DataValidationV1 extends WebTestCase
         $this->assertObjectHasAttribute("qualifiedrelation", $match_json->away);
         $this->assertObjectHasAttribute("matchrelation", $match_json->away);
     }
+
+    public function testResults() {
+        $this->getCrawler("/service/api/v1/result", "Tournament", $this->tournament->getKey());
+        $this->assertTrue($this->client->getResponse()->isSuccessful());
+    }
 }

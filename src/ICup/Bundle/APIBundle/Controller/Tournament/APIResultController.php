@@ -4,9 +4,12 @@ namespace APIBundle\Controller\Tournament;
 
 use APIBundle\Controller\APIController;
 use APIBundle\Entity\Form\GetCombinedKeyType;
+use APIBundle\Entity\Wrapper\Doctrine\CategoryWrapper;
+use APIBundle\Entity\Wrapper\Doctrine\ClubWrapper;
 use APIBundle\Entity\Wrapper\Doctrine\GroupWrapper;
 use APIBundle\Entity\Wrapper\Doctrine\ResultWrapper;
 use APIBundle\Entity\Wrapper\Doctrine\TournamentWrapper;
+use ICup\Bundle\PublicSiteBundle\Entity\Doctrine\Category;
 use ICup\Bundle\PublicSiteBundle\Entity\Doctrine\Group;
 use ICup\Bundle\PublicSiteBundle\Entity\Doctrine\Team;
 use ICup\Bundle\PublicSiteBundle\Entity\Doctrine\Tournament;
@@ -57,7 +60,7 @@ class APIResultController extends APIController
                         }
                     }
                     $wrapped_tournament = new TournamentWrapper($tournament);
-                    $champions = array_merge($wrapped_tournament->jsonSerialize(), array("champions" => $championList));
+                    $champions = array_merge($wrapped_tournament->jsonSerialize(), array("champions" => APIResultController::filterChampions($tournament, $championList, $order)));
                     usort($championByCountryList,
                         function (array $country1, array $country2) use ($order) {
                             foreach ($order as $i) {
@@ -72,7 +75,7 @@ class APIResultController extends APIController
                             return 0;
                         }
                     );
-                    $champions = array_merge($champions, array("championsByCountry" => $championByCountryList));
+                    $champions = array_merge($champions, array("championsByCountry" => APIResultController::filterCountryChampions($championByCountryList, $order)));
                     usort($championByClubList,
                         function (array $club1, array $club2) use ($order) {
                             foreach ($order as $i) {
@@ -87,7 +90,7 @@ class APIResultController extends APIController
                             return 0;
                         }
                     );
-                    $response[] = array_merge($champions, array("championsByClub" => $championByClubList));
+                    $response[] = array_merge($champions, array("championsByClub" => APIResultController::filterClubChampions($championByClubList, $order)));
                     return new JsonResponse($response);
                 }
                 else if ($entity instanceof Group) {
@@ -131,20 +134,47 @@ class APIResultController extends APIController
         );
     }
 
-    static function sortingFunction() {
-        return function (Match $match1, Match $match2) {
-            $stack[] = array($match1->getPlayground()->getId(), $match2->getPlayground()->getId());
-            $stack[] = array($match1->getDate(), $match2->getDate());
-            $stack[] = array($match1->getTime(), $match2->getTime());
-            $stack[] = array($match1->getMatchno(), $match2->getMatchno());
-            foreach ($stack as $criteria) {
-                list($crit1, $crit2) = $criteria;
-                $norm = min(1, max(-1, $crit1 - $crit2));
-                if ($norm != 0) {
-                    return $norm;
+    static function filterChampions(Tournament $tournament, $list, $order) {
+        $resultList = array();
+        foreach ($list as $categoryid => $item) {
+            $result = array();
+            $result["category"] = new CategoryWrapper($tournament->getCategories()->filter(function (Category $category) use ($categoryid) { return $category->getId() == $categoryid; })->first());
+            foreach ($order as $i) {
+                if (count($item[$i]) > 0) {
+                    $result[$i] = array("name" => $item[$i][0]["name"], "countryCode" => $item[$i][0]["country"]);
+                }
+                else {
+                    $result[$i] = array();
                 }
             }
-            return 0;
-        };
+            $resultList[] = $result;
+        }
+        return $resultList;
+    }
+
+    static function filterCountryChampions($list, $order) {
+        $resultList = array();
+        foreach ($list as $item) {
+            $result = array();
+            $result["countryCode"] = $item["country"];
+            foreach ($order as $i) {
+                $result[$i] = count($item[$i]);
+            }
+            $resultList[] = $result;
+        }
+        return $resultList;
+    }
+
+    static function filterClubChampions($list, $order) {
+        $resultList = array();
+        foreach ($list as $item) {
+            $result = array();
+            $result["club"] = array("name" => $item["club"], "countryCode" => $item["country"]);
+            foreach ($order as $i) {
+                $result[$i] = count($item[$i]);
+            }
+            $resultList[] = $result;
+        }
+        return $resultList;
     }
 }

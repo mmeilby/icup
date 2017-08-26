@@ -8,11 +8,13 @@ use APIBundle\Entity\Wrapper\Doctrine\CategoryWrapper;
 use APIBundle\Entity\Wrapper\Doctrine\ClubWrapper;
 use APIBundle\Entity\Wrapper\Doctrine\GroupWrapper;
 use APIBundle\Entity\Wrapper\Doctrine\ResultWrapper;
+use APIBundle\Entity\Wrapper\Doctrine\TeamWrapper;
 use APIBundle\Entity\Wrapper\Doctrine\TournamentWrapper;
 use ICup\Bundle\PublicSiteBundle\Entity\Doctrine\Category;
 use ICup\Bundle\PublicSiteBundle\Entity\Doctrine\Group;
 use ICup\Bundle\PublicSiteBundle\Entity\Doctrine\Team;
 use ICup\Bundle\PublicSiteBundle\Entity\Doctrine\Tournament;
+use ICup\Bundle\PublicSiteBundle\Entity\TeamStat;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -60,7 +62,11 @@ class APIResultController extends APIController
                         }
                     }
                     $wrapped_tournament = new TournamentWrapper($tournament);
-                    $champions = array_merge($wrapped_tournament->jsonSerialize(), array("champions" => APIResultController::filterChampions($tournament, $championList, $order)));
+                    $categories = array();
+                    foreach ($tournament->getCategories() as $category) {
+                        $categories[$category->getId()] = new CategoryWrapper($category);
+                    }
+                    $champions = array_merge($wrapped_tournament->jsonSerialize(), array("champions" => APIResultController::filterChampions($categories, $championList, $order)));
                     usort($championByCountryList,
                         function (array $country1, array $country2) use ($order) {
                             foreach ($order as $i) {
@@ -101,7 +107,20 @@ class APIResultController extends APIController
                     }
                     $teamsList = $api->get('orderTeams')->sortGroupFinals($group->getId());
                     $wrapped_group = new GroupWrapper($group);
-                    $response[] = array_merge($wrapped_group->jsonSerialize(), array("results" => $teamsList));
+                    $results = array();
+                    foreach ($teamsList as $teamStat) {
+                        /* @var $teamStat TeamStat */
+                        $team = $api->get('entity')->getTeamByID($teamStat->getId());
+                        $results[] = array(
+                            "team" => new TeamWrapper($team),
+                            "matches" => $teamStat->getMatches(),
+                            "goalsTaken" => $teamStat->getScore(),
+                            "goalsLost" => $teamStat->getGoals(),
+                            "goalsDifference" => $teamStat->getDiff(),
+                            "points" => $teamStat->getPoints()
+                        );
+                    }
+                    $response[] = array_merge($wrapped_group->jsonSerialize(), array("results" => $results));
                     return new JsonResponse($response);
                 }
                 else {
@@ -117,34 +136,26 @@ class APIResultController extends APIController
     static function updateList(&$list, $key, $order, Group $group, Team $team) {
         if (!array_key_exists($key, $list)) {
             $list[$key] = array(
-                'country' => $team->getClub()->getCountryCode(),
-                'group' => $group,
-                'club' => $team->getClub()->getName(),
+                'club' => new ClubWrapper($team->getClub()),
                 'first' => array(),
                 'second' => array(),
                 'third' => array(),
                 'forth' => array()
             );
         }
-        $list[$key][$order][] = array(
-            'id' => $team->getId(),
-            'name' => $team->getTeamName("<VACANT_TEAM>"),
-            'country' => $team->getClub()->getCountryCode(),
-            'matches' => 1
-        );
+        $list[$key][$order][] = new TeamWrapper($team);
     }
 
-    static function filterChampions(Tournament $tournament, $list, $order) {
+    static function filterChampions($categories, $list, $order) {
         $resultList = array();
         foreach ($list as $categoryid => $item) {
             $result = array();
-            $result["category"] = new CategoryWrapper($tournament->getCategories()->filter(function (Category $category) use ($categoryid) { return $category->getId() == $categoryid; })->first());
+            $result["category"] = $categories[$categoryid];
             foreach ($order as $i) {
                 if (count($item[$i]) > 0) {
-                    $result[$i] = array("name" => $item[$i][0]["name"], "countryCode" => $item[$i][0]["country"]);
-                }
-                else {
-                    $result[$i] = array();
+                    $result[$i] = $item[$i][0];
+                } else {
+                    $result[$i] = array("entity" => "Void");
                 }
             }
             $resultList[] = $result;
@@ -156,7 +167,14 @@ class APIResultController extends APIController
         $resultList = array();
         foreach ($list as $item) {
             $result = array();
-            $result["countryCode"] = $item["country"];
+            /* @var $wrapped_club ClubWrapper */
+            $wrapped_club = $item["club"];
+            $json_club = $wrapped_club->jsonSerialize();
+            $result["country"] = array(
+                "entity" => "Country",
+                "country_code" => $json_club["country_code"],
+                "flag" => $json_club["flag"]
+            );
             foreach ($order as $i) {
                 $result[$i] = count($item[$i]);
             }
@@ -169,7 +187,7 @@ class APIResultController extends APIController
         $resultList = array();
         foreach ($list as $item) {
             $result = array();
-            $result["club"] = array("name" => $item["club"], "countryCode" => $item["country"]);
+            $result["club"] = $item["club"];
             foreach ($order as $i) {
                 $result[$i] = count($item[$i]);
             }

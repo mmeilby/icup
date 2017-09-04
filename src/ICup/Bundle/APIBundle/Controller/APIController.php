@@ -42,6 +42,9 @@ class APIController extends Controller
             if (isset($params["key"])) {
                 $keyForm->setKey($params["key"]);
             }
+            if (isset($params["param"])) {
+                $keyForm->setParam($params["param"]);
+            }
         }
         return $keyForm;
     }

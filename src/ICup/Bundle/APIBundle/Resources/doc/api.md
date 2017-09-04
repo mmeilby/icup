@@ -168,6 +168,12 @@ vacant
 country_code
 flag
 
+Country
+-------
+entity = Country
+country_code
+flag
+
 News
 ----
 entity = News
@@ -192,13 +198,18 @@ date
 category
 team
 
+Results
+-------
+
+
+
 METHODS
 =======
 
 Tournament
 ----------
 /service/api/v1/tournament
-entity = [empty], Tournament
+entity = Host, Tournament
 
 Category
 --------
@@ -251,3 +262,9 @@ Enrollment
 ----------
 /service/api/v1/enrollment
 entity = Tournament
+
+Results
+-------
+/service/api/v1/result
+entity = Tournament, Group
+return: list of champions or group results

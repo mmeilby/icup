@@ -31,6 +31,9 @@ class APITournamentController extends APIController
         $form->handleRequest($request);
         if ($keyForm->checkForm($form)) {
             return $this->executeAPImethod($request, function (APIController $api) use ($keyForm) {
+                if ($keyForm->getEntity() === "Host") {
+                    return new JsonResponse(new TournamentWrapper($api->host->getTournaments()->getValues()));
+                }
                 $entity = $api->get('entity')->getEntityByExternalKey($keyForm->getEntity(), $keyForm->getKey());
                 if ($entity instanceof Tournament) {
                     /* @var $tournament Tournament */
@@ -46,9 +49,7 @@ class APITournamentController extends APIController
             });
         }
         else {
-            return $this->executeAPImethod($request, function (APIController $api) {
-                return new JsonResponse(new TournamentWrapper($api->host->getTournaments()->getValues()));
-            });
+            return $this->makeErrorObject("KEYMISS", "Key and entity must be defined for this request.", Response::HTTP_NOT_FOUND);
         }
     }
 }

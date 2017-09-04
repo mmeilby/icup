@@ -40,7 +40,7 @@ class JSONRequestTest extends WebTestCase
         $this->tournament = $tournament;
     }
 
-    protected function getCrawler($uri, $entity = "", $key = "") {
+    protected function getCrawler($uri, $entity = "", $key = "", $param = "") {
         return $this->client->request('POST', $uri,
             array(), array(),
             array(
@@ -49,8 +49,9 @@ class JSONRequestTest extends WebTestCase
                 "CONTENT_TYPE" => "application/json"
             ),
             json_encode(array(
+                "entity" => $entity,
                 "key" => $key,
-                "entity" => $entity
+                "param" => $param
             ))
         );
     }
@@ -68,5 +69,15 @@ class JSONRequestTest extends WebTestCase
         $this->assertObjectHasAttribute("host", $tournament);
         $this->assertAttributeEquals("Host", "entity", $tournament->host);
         $this->assertAttributeEquals($this->tournament->getHost()->getName(), "name", $tournament->host);
+    }
+
+    public function testSearch() {
+        $this->getCrawler("/service/api/v1/search", "Tournament", $this->tournament->getKey(), "SALA");
+        $this->assertTrue($this->client->getResponse()->isSuccessful());
+        $club_json = json_decode($this->client->getResponse()->getContent());
+        foreach ($club_json as $club) {
+            $this->assertAttributeEquals("Club", "entity", $club);
+            $this->assertAttributeEquals("SALASPILS SS", "name", $club);
+        }
     }
 }

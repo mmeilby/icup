@@ -44,8 +44,8 @@ class WrapperTest extends WebTestCase
     protected function getCrawler($uri, $entity = "", $key = "") {
         return $this->client->request('POST', $uri,
             array(
-                "key" => $key,
-                "entity" => $entity
+                "entity" => $entity,
+                "key" => $key
             ), array(),
             array(
                 "HTTP_AUTHORIZATION" => $this->auth,
@@ -55,7 +55,7 @@ class WrapperTest extends WebTestCase
     }
 
     public function testFalseEmail() {
-        $crawler = $this->client->request('POST', "/service/api/v1/tournament", array(), array(),
+        $crawler = $this->client->request('POST', "/service/api/v1/tournament", array("entity" => "Host", "key" => "*"), array(),
             array(
                 "HTTP_AUTHORIZATION" => $this->auth_invalid_user,
                 "HTTPS" => true
@@ -67,7 +67,7 @@ class WrapperTest extends WebTestCase
     }
 
     public function testFalseKey() {
-        $crawler = $this->client->request('POST', "/service/api/v1/tournament", array(), array(),
+        $crawler = $this->client->request('POST', "/service/api/v1/tournament", array("entity" => "Host", "key" => "*"), array(),
             array(
                 "HTTP_AUTHORIZATION" => $this->auth_invalid_key,
                 "HTTPS" => true
@@ -80,7 +80,7 @@ class WrapperTest extends WebTestCase
 
     public function testTournamentList()
     {
-        $this->getCrawler("/service/api/v1/tournament");
+        $this->getCrawler("/service/api/v1/tournament", "Host", "*");
         $this->assertTrue($this->client->getResponse()->isSuccessful());
         $tournaments = json_decode($this->client->getResponse()->getContent());
         $this->assertCount(1, $tournaments);

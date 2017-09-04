@@ -15,6 +15,7 @@ class GetCombinedKeyForm
 {
     protected $key;
     protected $entity;
+    protected $param;
 
     /**
      * @return mixed
@@ -49,15 +50,34 @@ class GetCombinedKeyForm
     }
 
     /**
+     * @return mixed
+     */
+    public function getParam() {
+        return $this->param;
+    }
+
+    /**
+     * @param mixed $param
+     * @return GetCombinedKeyForm
+     */
+    public function setParam($param) {
+        $this->param = $param;
+        return $this;
+    }
+
+    /**
      * @param Form $form
      * @return bool
      */
     public function checkForm(Form $form) {
-        if ($this->getKey() == null || trim($this->getKey()) == '') {
-            $form->addError(new FormError("Key is not valid"));
-        }
-        if ($this->getEntity() == null || trim($this->getEntity()) == '') {
+        if ($this->getEntity() === null || trim($this->getEntity()) == "") {
             $form->addError(new FormError("Entity is not valid"));
+        }
+        if ($this->getKey() === null || trim($this->getKey()) == "") {
+            $this->setKey("");
+        }
+        if ($this->getParam() === null || trim($this->getParam()) == "") {
+            $this->setParam("");
         }
         return 0 === $form->getErrors()->count();
     }

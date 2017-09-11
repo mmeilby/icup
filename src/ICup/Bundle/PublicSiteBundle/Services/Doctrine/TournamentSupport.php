@@ -441,7 +441,7 @@ class TournamentSupport
                     $club = $champions[0]->getClub();
                 }
             }
-            return array(array('club' => $club->getName(), 'country' => $club->getCountryCode(), 'trophys' => $totalTrophys), 'club_entity' => $club);
+            return array(array('club' => $club->getName(), 'country' => $club->getCountryCode(), 'trophys' => $totalTrophys, 'club_entity' => $club));
         }
         return array();
     }

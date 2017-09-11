@@ -242,4 +242,10 @@ class DataValidationV1 extends WebTestCase
         $this->getCrawler("/service/api/v1/result", "Tournament", $this->tournament->getKey());
         $this->assertTrue($this->client->getResponse()->isSuccessful());
     }
+
+    public function testStatistics() {
+        $this->getCrawler("/service/api/v1/statistics", "Tournament", $this->tournament->getKey());
+        $this->assertTrue($this->client->getResponse()->isSuccessful());
+        echo $this->client->getResponse()->getContent();
+    }
 }

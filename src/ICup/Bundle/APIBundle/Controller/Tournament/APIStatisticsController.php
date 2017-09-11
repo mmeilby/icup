@@ -64,96 +64,75 @@ class APIStatisticsController extends APIController
 
                     $trophies = $tmnt_api->getTrophysByClub($tournament);
                     if (count($trophies) > 0) {
-                        $trophys = $trophies[0]['trophys'];
-                        $club = $trophies[0]['club'];
-                        $country = $trophies[0]['country'];
+                        $trophy = $trophies[0];
+                        $statmap['mosttrophysbyclub'] = $trophy['trophys'];
+                        $famemap['mosttrophysbyclub']['club'] = new ClubWrapper($trophy['club_entity']);
                     }
                     else {
-                        $trophys = '';
-                        $club = '';
-                        $country = '';
-                    }
-                    $mostTrophysClub = array('trophys' => $trophys, 'country' => $country, 'club' => $club);
-                    $statmap['mosttrophysbyclub'] = $mostTrophysClub['trophys'];
-                    if ($mostTrophysClub['country'] != '') {
-                        $famemap['mosttrophysbyclub']['country'] = $mostTrophysClub['country'];
-                        $famemap['mosttrophysbyclub']['desc'] = $mostTrophysClub['club'];
-                        $famemap['mosttrophysbyclub']['id'] = '';
-                    }
-                    $trophies = $tmnt_api->getTrophysByCountry($tournament);
-                    if (count($trophies) > 0) {
-                        $trophys = $trophies[0]['trophys'];
-                        $country = $trophies[0]['country'];
-                    }
-                    else {
-                        $trophys = '';
-                        $country = '';
-                    }
-                    $mostTrophys = array('trophys' => $trophys, 'country' => $country);
-                    $statmap['mosttrophys'] = $mostTrophys['trophys'];
-                    if ($mostTrophys['country'] != '') {
-                        $famemap['mosttrophys']['country'] = $mostTrophys['country'];
-                        $famemap['mosttrophys']['desc'] = '';
-                        $famemap['mosttrophys']['id'] = '';
-                    }
-                    $trophies = $tmnt_api->getMostGoals($tournament->getId());
-                    if (count($trophies) > 0) {
-                        $goals = $trophies[0]['mostgoals'];
-                        $club = $trophies[0]['club'];
-                        $country = $trophies[0]['country'];
-                        $cid = $trophies[0]['cid'];
-                        $id = $trophies[0]['id'];
-                    }
-                    else {
-                        $goals = '';
-                        $club = '';
-                        $country = '';
-                        $cid = 0;
-                        $id = 0;
-                    }
-                    $mostGoals = array('goals' => $goals, 'country' => $country, 'club' => $club, 'id' => $id, 'cid' => $cid);
-                    $statmap['mostgoals'] = $mostGoals['goals'];
-                    if ($mostGoals['country'] != '') {
-                        $category = $api->get('entity')->getCategoryById($mostGoals['cid']);
-                        $famemap['mostgoals']['country'] = $mostGoals['country'];
-                        $famemap['mostgoals']['desc'] = new CategoryWrapper($category);
-                        $famemap['mostgoals']['club'] = $mostGoals['club'];
-                        $famemap['mostgoals']['id'] = $mostGoals['id'];
-                    }
-                    $trophies = $tmnt_api->getMostGoalsTotal($tournament->getId());
-                    if (count($trophies) > 0) {
-                        $goals = $trophies[0]['mostgoals'];
-                        $club = $trophies[0]['club'];
-                        $country = $trophies[0]['country'];
-                        $cid = $trophies[0]['cid'];
-                        $id = $trophies[0]['id'];
-                    }
-                    else {
-                        $goals = '';
-                        $club = '';
-                        $country = '';
-                        $cid = 0;
-                        $id = 0;
-                    }
-                    $mostGoalsTotal = array('goals' => $goals, 'country' => $country, 'club' => $club, 'id' => $id, 'cid' => $cid);
-                    $statmap['mostgoalstotal'] = $mostGoalsTotal['goals'];
-                    if ($mostGoalsTotal['country'] != '') {
-                        $category = $api->get('entity')->getCategoryById($mostGoalsTotal['cid']);
-                        $famemap['mostgoalstotal']['country'] = $mostGoalsTotal['country'];
-                        $famemap['mostgoalstotal']['desc'] = new CategoryWrapper($category);
-                        $famemap['mostgoalstotal']['club'] = $mostGoalsTotal['club'];
-                        $famemap['mostgoalstotal']['id'] = $mostGoalsTotal['id'];
+                        $statmap['mosttrophysbyclub'] = "";
                     }
 
-                    $response[] = array_merge($wrapped_tournament->jsonSerialize(), array(
-                        "statistics" => $statmap,
-                        "halloffame" => $famemap,
-                        "order" => array(
-                            'teams' => array('countries','clubs','teams','femaleteams','maleteams','adultteams','childteams'),
-                            'tournament' => array('categories','groups','sites','playgrounds','matches','goals','days'),
-                            'top' => array('mostgoals','mostgoalstotal','mosttrophys','mosttrophysbyclub')
-                        )
-                    ));
+                    $trophies = $tmnt_api->getTrophysByCountry($tournament);
+                    if (count($trophies) > 0) {
+                        $trophy = $trophies[0];
+                        $statmap['mosttrophys'] = $trophy['trophys'];
+                        $famemap['mosttrophys']['country'] = array(
+                            "entity" => "Country",
+                            "country_code" => $trophy['country'],
+                            "flag" => $api->get('util')->getFlag($trophy['country'])
+                        );
+                    }
+                    else {
+                        $statmap['mosttrophys'] = "";
+                    }
+
+                    $trophies = $tmnt_api->getMostGoals($tournament->getId());
+                    if (count($trophies) > 0) {
+                        $trophy = $trophies[0];
+                        $statmap['mostgoals'] = $trophy['mostgoals'];
+                        $category = $api->get('entity')->getCategoryById($trophy['cid']);
+                        $famemap['mostgoals']['category'] = new CategoryWrapper($category);
+                        $team = $api->get('entity')->getTeamById($trophy['id']);
+                        $famemap['mostgoals']['team'] = new TeamWrapper($team);
+                    }
+                    else {
+                        $statmap['mostgoals'] = "";
+                    }
+
+                    $trophies = $tmnt_api->getMostGoalsTotal($tournament->getId());
+                    if (count($trophies) > 0) {
+                        $trophy = $trophies[0];
+                        $statmap['mostgoalstotal'] = $trophy['mostgoals'];
+                        $category = $api->get('entity')->getCategoryById($trophy['cid']);
+                        $famemap['mostgoalstotal']['category'] = new CategoryWrapper($category);
+                        $team = $api->get('entity')->getTeamById($trophy['id']);
+                        $famemap['mostgoalstotal']['team'] = new TeamWrapper($team);
+                    }
+                    else {
+                        $statmap['mostgoalstotal'] = "";
+                    }
+
+                    $order = array(
+                        'teams' => array('countries','clubs','teams','femaleteams','maleteams','adultteams','childteams'),
+                        'tournament' => array('categories','groups','sites','playgrounds','matches','goals','days'),
+                        'top' => array('mostgoals','mostgoalstotal','mosttrophys','mosttrophysbyclub')
+                    );
+
+                    $response = $wrapped_tournament->jsonSerialize();
+                    foreach ($order as $itemKey => $itemList) {
+                        $valueList = array();
+                        foreach ($itemList as $item) {
+                            if (isset($statmap[$item])) {
+                                if (isset($famemap[$item])) {
+                                    $valueList[$item] = array("value" => $statmap[$item], "champion" => $famemap[$item]);
+                                }
+                                else {
+                                    $valueList[$item] = array("value" => $statmap[$item]);
+                                }
+                            }
+                        }
+                        $response["statistics"][$itemKey] = $valueList;
+                    }
                     return new JsonResponse($response);
                 }
                 else {

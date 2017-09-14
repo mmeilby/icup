@@ -60,7 +60,7 @@ class APIMatchController extends APIController
                         $matches = array_merge($matches, $group->getMatches()->toArray());
                         return true;
                     });
-                    usort($matches, APIMatchController::sortingFunction());
+                    usort($matches, APIMatchController::sortingDateFunction());
                     return new JsonResponse(new MatchWrapper($matches));
                 }
                 else if ($entity instanceof Group) {
@@ -214,8 +214,25 @@ class APIMatchController extends APIController
 
     static function sortingFunction() {
         return function (Match $match1, Match $match2) {
-            $stack[] = array($match1->getPlayground()->getId(), $match2->getPlayground()->getId());
+            $stack[] = array($match1->getPlayground()->getNo(), $match2->getPlayground()->getNo());
             $stack[] = array($match1->getDate(), $match2->getDate());
+            $stack[] = array($match1->getTime(), $match2->getTime());
+            $stack[] = array($match1->getMatchno(), $match2->getMatchno());
+            foreach ($stack as $criteria) {
+                list($crit1, $crit2) = $criteria;
+                $norm = min(1, max(-1, $crit1 - $crit2));
+                if ($norm != 0) {
+                    return $norm;
+                }
+            }
+            return 0;
+        };
+    }
+
+    static function sortingDateFunction() {
+        return function (Match $match1, Match $match2) {
+            $stack[] = array($match1->getDate(), $match2->getDate());
+            $stack[] = array($match1->getPlayground()->getNo(), $match2->getPlayground()->getNo());
             $stack[] = array($match1->getTime(), $match2->getTime());
             $stack[] = array($match1->getMatchno(), $match2->getMatchno());
             foreach ($stack as $criteria) {

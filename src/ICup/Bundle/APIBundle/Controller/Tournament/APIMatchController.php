@@ -5,6 +5,7 @@ namespace APIBundle\Controller\Tournament;
 use APIBundle\Controller\APIController;
 use APIBundle\Entity\Form\GetCombinedKeyType;
 use APIBundle\Entity\Wrapper\Doctrine\MatchWrapper;
+use ICup\Bundle\PublicSiteBundle\Entity\Doctrine\Category;
 use ICup\Bundle\PublicSiteBundle\Entity\Doctrine\Date;
 use ICup\Bundle\PublicSiteBundle\Entity\Doctrine\Group;
 use ICup\Bundle\PublicSiteBundle\Entity\Doctrine\Playground;
@@ -45,6 +46,20 @@ class APIMatchController extends APIController
                         return $api->makeErrorObject("TMNTINV", "Tournament is not found for this host.", Response::HTTP_NOT_FOUND);
                     }
                     $matches = $tournament->getMatches();
+                    usort($matches, APIMatchController::sortingFunction());
+                    return new JsonResponse(new MatchWrapper($matches));
+                }
+                else if ($entity instanceof Category) {
+                    /* @var $category Category */
+                    $category = $entity;
+                    if ($category->getTournament()->getHost()->getId() != $api->host->getId()) {
+                        return $api->makeErrorObject("CATINV", "Category is not found for this host.", Response::HTTP_NOT_FOUND);
+                    }
+                    $matches = array();
+                    $category->getGroups()->forAll(function ($n, Group $group) use (&$matches) {
+                        $matches = array_merge($matches, $group->getMatches()->toArray());
+                        return true;
+                    });
                     usort($matches, APIMatchController::sortingFunction());
                     return new JsonResponse(new MatchWrapper($matches));
                 }

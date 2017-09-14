@@ -2,6 +2,7 @@
 
 namespace APIBundle\Tests\Controller;
 
+use ICup\Bundle\PublicSiteBundle\Entity\Doctrine\Group;
 use ICup\Bundle\PublicSiteBundle\Entity\Doctrine\Tournament;
 use ICup\Bundle\PublicSiteBundle\Services\Entity\PlanningOptions;
 use ICup\Bundle\PublicSiteBundle\Tests\Services\TestSupport;
@@ -319,6 +320,29 @@ class WrapperTest extends WebTestCase
         $this->assertTrue($this->client->getResponse()->isSuccessful());
         $matches = json_decode($this->client->getResponse()->getContent());
         $this->assertCount(count($playground->getMatches()), $matches);
+        $this->assertAttributeNotEmpty("key", reset($matches));
+    }
+
+    public function testMatchListD()
+    {
+        $options = new PlanningOptions();
+        $options->setDoublematch(false);
+        $options->setPreferpg(false);
+        $this->client->getContainer()->get("planning")->planTournament($this->tournament, $options);
+        $this->client->getContainer()->get("planning")->publishSchedule($this->tournament);
+
+        $this->tournament->getCategories()->first()->setKey(strtoupper(uniqid()));
+        $container = static::$kernel->getContainer();
+        $container->get('doctrine')->getManager()->flush();
+        $this->getCrawler("/service/api/v1/match", "Category", $this->tournament->getCategories()->first()->getKey());
+        $this->assertTrue($this->client->getResponse()->isSuccessful());
+        $matches = json_decode($this->client->getResponse()->getContent());
+        $matchesRef = array();
+        $this->tournament->getCategories()->first()->getGroups()->forAll(function ($n, Group $group) use (&$matchesRef) {
+            $matchesRef = array_merge($matchesRef, $group->getMatches()->toArray());
+            return true;
+        });
+        $this->assertCount(count($matchesRef), $matches);
         $this->assertAttributeNotEmpty("key", reset($matches));
     }
 

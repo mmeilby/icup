@@ -232,8 +232,8 @@ class APIMatchController extends APIController
     static function sortingDateFunction() {
         return function (Match $match1, Match $match2) {
             $stack[] = array($match1->getDate(), $match2->getDate());
-            $stack[] = array($match1->getPlayground()->getNo(), $match2->getPlayground()->getNo());
             $stack[] = array($match1->getTime(), $match2->getTime());
+            $stack[] = array($match1->getPlayground()->getNo(), $match2->getPlayground()->getNo());
             $stack[] = array($match1->getMatchno(), $match2->getMatchno());
             foreach ($stack as $criteria) {
                 list($crit1, $crit2) = $criteria;

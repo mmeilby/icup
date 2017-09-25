@@ -33,19 +33,7 @@ class APIController extends Controller
      */
     public function getKeyForm(Request $request) {
         $keyForm = new GetCombinedKeyForm();
-        if ("json" == $request->getContentType()) {
-            $content = $request->getContent();
-            $params = json_decode($content, true);
-            if (isset($params["entity"])) {
-                $keyForm->setEntity($params["entity"]);
-            }
-            if (isset($params["key"])) {
-                $keyForm->setKey($params["key"]);
-            }
-            if (isset($params["param"])) {
-                $keyForm->setParam($params["param"]);
-            }
-        }
+        $keyForm->getJsonParams($request);
         return $keyForm;
     }
 

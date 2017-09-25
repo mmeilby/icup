@@ -4,6 +4,7 @@ namespace APIBundle\Entity;
 
 use Symfony\Component\Form\Form;
 use Symfony\Component\Form\FormError;
+use Symfony\Component\HttpFoundation\Request;
 
 /**
  * Created by PhpStorm.
@@ -63,6 +64,25 @@ class GetCombinedKeyForm
     public function setParam($param) {
         $this->param = $param;
         return $this;
+    }
+
+    /**
+     * GetCombinedKeyForm constructor.
+     */
+    public function getJsonParams(Request $request) {
+        if ("json" == $request->getContentType()) {
+            $content = $request->getContent();
+            $params = json_decode($content, true);
+            if (isset($params["entity"])) {
+                $this->setEntity($params["entity"]);
+            }
+            if (isset($params["key"])) {
+                $this->setKey($params["key"]);
+            }
+            if (isset($params["param"])) {
+                $this->setParam($params["param"]);
+            }
+        }
     }
 
     /**

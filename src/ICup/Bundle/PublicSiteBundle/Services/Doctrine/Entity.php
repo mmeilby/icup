@@ -561,10 +561,22 @@ class Entity
             "VENUE" => "Playground",
             "CLUB" => "Club",
             "TEAM" => "Team",
-            "MATCH" => "Match"
+            "MATCH" => "Match",
+            "USER" => "User"
         );
-        if (isset($valid_entities[strtoupper($entity)])) {
-            return $this->getRepository($valid_entities[strtoupper($entity)])->findOneBy(array("key" => $key));
+        $key_field = array(
+            "TOURNAMENT" => "key",
+            "CATEGORY" => "key",
+            "GROUP" => "key",
+            "VENUE" => "key",
+            "CLUB" => "key",
+            "TEAM" => "key",
+            "MATCH" => "key",
+            "USER" => "email"
+        );
+        $table = strtoupper($entity);
+        if (isset($valid_entities[$table])) {
+            return $this->getRepository($valid_entities[$table])->findOneBy(array($key_field[$table] => $key));
         }
         return null;
     }

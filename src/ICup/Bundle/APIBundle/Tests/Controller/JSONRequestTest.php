@@ -2,13 +2,8 @@
 
 namespace APIBundle\Tests\Controller;
 
-use ICup\Bundle\PublicSiteBundle\Entity\Doctrine\Category;
-use ICup\Bundle\PublicSiteBundle\Entity\Doctrine\Club;
-use ICup\Bundle\PublicSiteBundle\Entity\Doctrine\Group;
-use ICup\Bundle\PublicSiteBundle\Entity\Doctrine\Match;
-use ICup\Bundle\PublicSiteBundle\Entity\Doctrine\News;
-use ICup\Bundle\PublicSiteBundle\Entity\Doctrine\Playground;
 use ICup\Bundle\PublicSiteBundle\Entity\Doctrine\Tournament;
+use ICup\Bundle\PublicSiteBundle\Services\Entity\PlanningOptions;
 use Symfony\Bundle\FrameworkBundle\Client;
 use Symfony\Bundle\FrameworkBundle\Test\WebTestCase;
 
@@ -79,5 +74,16 @@ class JSONRequestTest extends WebTestCase
             $this->assertAttributeEquals("Club", "entity", $club);
             $this->assertAttributeEquals("SALASPILS SS", "name", $club);
         }
+    }
+
+    public function testMatchSearch() {
+        $options = new PlanningOptions();
+        $options->setDoublematch(false);
+        $options->setPreferpg(false);
+        $this->client->getContainer()->get("planning")->planTournament($this->tournament, $options);
+        $this->client->getContainer()->get("planning")->publishSchedule($this->tournament);
+        $this->getCrawler("/service/api/v1/match/no", "Tournament", $this->tournament->getKey(), "10");
+        $this->assertTrue($this->client->getResponse()->isSuccessful());
+        echo $this->client->getResponse()->getContent();
     }
 }

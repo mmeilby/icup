@@ -212,6 +212,41 @@ class APIMatchController extends APIController
         }
     }
 
+    /**
+     * Get the match with matchno for the host identified by APIkey
+     * @Route("/v1/match/no", name="_api_match_no")
+     * @Method("POST")
+     * @return JsonResponse
+     */
+    public function searchAction(Request $request)
+    {
+        $keyForm = $this->getKeyForm($request);
+        $form = $this->createForm(new GetCombinedKeyType(), $keyForm);
+        $form->handleRequest($request);
+        if ($keyForm->checkForm($form)) {
+            return $this->executeAPImethod($request, function (APIController $api) use ($keyForm) {
+                $entity = $api->get('entity')->getEntityByExternalKey($keyForm->getEntity(), $keyForm->getKey());
+                if ($entity instanceof Tournament) {
+                    /* @var $tournament Tournament */
+                    $tournament = $entity;
+                    if ($tournament->getHost()->getId() != $api->host->getId()) {
+                        return $api->makeErrorObject("TMNTINV", "Tournament is not found for this host.", Response::HTTP_NOT_FOUND);
+                    }
+                    $match = $api->get('match')->getMatchByNo($tournament, $keyForm->getParam());
+                    if ($match == null) {
+                        return $api->makeErrorObject("PARAMINV", "Match no. is not found for this host and entity.", Response::HTTP_NOT_FOUND);
+                    }
+                    return new JsonResponse(new MatchWrapper($match));
+                } else {
+                    return $api->makeErrorObject("KEYINV", "Key is not found for this host and entity.", Response::HTTP_NOT_FOUND);
+                }
+            });
+        }
+        else {
+            return $this->makeErrorObject("KEYMISS", "Key and entity must be defined for this request.", Response::HTTP_NOT_FOUND);
+        }
+    }
+
     static function sortingFunction() {
         return function (Match $match1, Match $match2) {
             $stack[] = array($match1->getPlayground()->getNo(), $match2->getPlayground()->getNo());

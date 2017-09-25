@@ -5,10 +5,8 @@ namespace APIBundle\Tests\Controller;
 use ICup\Bundle\PublicSiteBundle\Entity\Doctrine\Group;
 use ICup\Bundle\PublicSiteBundle\Entity\Doctrine\Tournament;
 use ICup\Bundle\PublicSiteBundle\Services\Entity\PlanningOptions;
-use ICup\Bundle\PublicSiteBundle\Tests\Services\TestSupport;
 use Symfony\Bundle\FrameworkBundle\Client;
 use Symfony\Bundle\FrameworkBundle\Test\WebTestCase;
-use Symfony\Component\DependencyInjection\ContainerInterface;
 
 class WrapperTest extends WebTestCase
 {

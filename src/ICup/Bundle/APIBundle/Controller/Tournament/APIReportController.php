@@ -88,7 +88,7 @@ class APIReportController extends APIController
             });
         }
         else {
-            return $this->makeErrorObject("KEYMISS", "Key and entity must be defined for this request.", Response::HTTP_NOT_FOUND);
+            return $this->makeErrorObject($form->getErrors()->current()->getMessage(), "Form failed", Response::HTTP_BAD_REQUEST);
         }
     }
 }

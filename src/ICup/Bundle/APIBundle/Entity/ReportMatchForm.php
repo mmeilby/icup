@@ -143,18 +143,18 @@ class ReportMatchForm
      */
     public function checkForm(Form $form) {
         if ($this->getEntity() === null || trim($this->getEntity()) == "") {
-            $form->addError(new FormError("Entity is not valid"));
+            $form->addError(new FormError("KEYMISS"));  // Entity is not valid
         }
         if ($this->getKey() === null || trim($this->getKey()) == "") {
-            $form->addError(new FormError("Entity key is not valid"));
+            $form->addError(new FormError("KEYINV"));   // Entity key is not valid
         }
         switch (strtoupper($this->getEvent())) {
             case ReportMatchForm::$EVENT_MATCH_PLAYED:
                 if ($this->getHomeScore() === null || trim($this->getHomeScore()) == "") {
-                    $form->addError(new FormError("The home score is required"));
+                    $form->addError(new FormError("NO_HOME_SCORE"));    // The home score is required
                 }
                 if ($this->getAwayScore() === null || trim($this->getAwayScore()) == "") {
-                    $form->addError(new FormError("The away score is required"));
+                    $form->addError(new FormError("NO_AWAY_SCORE"));    // The away score is required
                 }
                 $this->setEvent(ReportMatchForm::$EVENT_MATCH_PLAYED);
                 break;
@@ -174,7 +174,7 @@ class ReportMatchForm
                 $this->setEvent(ReportMatchForm::$EVENT_NOT_PLAYED);
                 break;
             default:
-                $form->addError(new FormError("The event code is not valid"));
+                $form->addError(new FormError("INVALID_EVENT"));    // The event code is not valid
         }
         if (0 < $form->getErrors()->count()) {
             return false;
@@ -184,10 +184,10 @@ class ReportMatchForm
          */
         if ($this->getEvent() == ReportMatchForm::$EVENT_MATCH_PLAYED) {
             if ($this->getHomeScore() > 100 || $this->getHomeScore() < 0) {
-                $form->addError(new FormError("The home score is not valid"));
+                $form->addError(new FormError("INVALID_HOME_SCORE"));   // The home score is not valid
             }
             if ($this->getAwayScore() > 100 || $this->getAwayScore() < 0) {
-                $form->addError(new FormError("The away score is not valid"));
+                $form->addError(new FormError("INVALID_AWAY_SCORE"));   // The away score is not valid
             }
         }
 

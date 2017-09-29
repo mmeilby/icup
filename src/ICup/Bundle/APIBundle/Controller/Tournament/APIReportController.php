@@ -79,7 +79,6 @@ class APIReportController extends APIController
                     }
                     $homeRel->setScorevalid(true);
                     $awayRel->setScorevalid(true);
-                    $api->getDoctrine()->getManager()->flush();
 
                     return new JsonResponse("", Response::HTTP_NO_CONTENT);
                 } else {

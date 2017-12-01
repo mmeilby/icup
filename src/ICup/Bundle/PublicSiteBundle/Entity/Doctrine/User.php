@@ -74,6 +74,27 @@ class User extends BaseUser implements JsonSerializable
     protected $googleID;
 
     /**
+     * @var string
+     * Login realm for this user
+     * @ORM\Column(name="realm", type="string", nullable=true)
+     */
+    protected $realm;
+
+    /**
+     * @var boolean
+     * Flag for verified email address
+     * @ORM\Column(name="emailVerified", type="boolean", nullable=true)
+     */
+    protected $emailVerified;
+
+    /**
+     * @var string
+     * Token?
+     * @ORM\Column(name="verificationToken", type="string", length=250, nullable=true)
+     */
+    protected $verificationToken;
+
+    /**
      * @var ArrayCollection $enrollments
      * Collection of team enrollments authorized by this user
      * @ORM\OneToMany(targetEntity="Enrollment", mappedBy="user", cascade={"persist"})

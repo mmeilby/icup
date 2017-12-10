@@ -28,7 +28,7 @@ class Club implements JsonSerializable
     /**
      * @var string $key
      *
-     * @ORM\Column(name="externalkey", type="string", length=32, nullable=true)
+     * @ORM\Column(name="externalkey", type="string", length=36, nullable=true)
      */
     protected $key;
 

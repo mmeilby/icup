@@ -20,7 +20,7 @@
         }
     ],
     "require": {
-        "php": ">=5.3.7",
+        "php": "5.4.*",
         "symfony/symfony": "~2.5",
         "jackalope/jackalope-doctrine-dbal": "1.2.*",
         "doctrine/orm": "~2.2",

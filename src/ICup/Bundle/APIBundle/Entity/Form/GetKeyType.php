@@ -28,7 +28,7 @@ class GetKeyType extends AbstractType
     public function configureOptions(OptionsResolver $resolver)
     {
         $resolver->setDefaults(array(
-            'data_class' => GetKeyForm::class,
+            'data_class' => get_class(new GetKeyForm()),
             'csrf_protection' => false,
         ));
     }

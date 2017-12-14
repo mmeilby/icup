@@ -83,7 +83,7 @@ class User extends BaseUser implements JsonSerializable
     /**
      * @var string $enabled
      * Set to Y if account is enabled
-     * @ORM\Column(name="enabled", type="tinyint", nullable=false)
+     * @ORM\Column(name="enabled", type="integer", length=1, nullable=false)
      */
     protected $enabled;
 

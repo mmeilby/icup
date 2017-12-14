@@ -18,7 +18,7 @@ use JsonSerializable;
  * However the user entity also relates to enrollments and hosts/clubs as a part of the data model
  * to bind the user to actions and relationships.
  *
- * @ORM\Table(name="users",uniqueConstraints={@ORM\UniqueConstraint(name="UserConstraint", columns={"username"})})
+ * @ORM\Table(name="users")
  * @ORM\Entity
  */
 class User extends BaseUser implements JsonSerializable

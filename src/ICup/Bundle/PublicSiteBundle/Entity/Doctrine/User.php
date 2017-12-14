@@ -48,7 +48,7 @@ class User extends BaseUser implements JsonSerializable
     /**
      * @var string $name
      * Formal name used by the system
-     * @ORM\Column(name="name", type="string", length=50, nullable=true)
+     * @ORM\Column(name="username", type="string", length=50, nullable=true)
      */
     protected $name;
 

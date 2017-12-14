@@ -172,35 +172,50 @@ class MatchUnresImportController extends Controller
     private function commitImport($parseObj) {
         /* @var $match Match */
         $match = $parseObj['match'];
-
-        $goA = new GroupOrder();
-        $goA->setTeam($parseObj['teamA']);
-        $goA->setGroup($match->getGroup());
-        
-        $resultreqA = new MatchRelation();
-        $resultreqA->setTeam($parseObj['teamA']);
-        $resultreqA->setAwayteam(false);
-        $resultreqA->setScorevalid(false);
-        $resultreqA->setScore(0);
-        $resultreqA->setPoints(0);
-        $match->addMatchRelation($resultreqA);
-
-        $goB = new GroupOrder();
-        $goB->setTeam($parseObj['teamB']);
-        $goB->setGroup($match->getGroup());
-
-        $resultreqB = new MatchRelation();
-        $resultreqB->setTeam($parseObj['teamB']);
-        $resultreqB->setAwayteam(true);
-        $resultreqB->setScorevalid(false);
-        $resultreqB->setScore(0);
-        $resultreqB->setPoints(0);
-        $match->addMatchRelation($resultreqB);
+        $hd = false; $ad = false;
+        foreach ($match->getMatchRelations() as $matchRelation) {
+            /* @var $matchRelation MatchRelation */
+            if ($matchRelation->getAwayteam()) {
+                $ad = true;
+            }
+            else {
+                $hd = true;
+            }
+        }
 
         $em = $this->getDoctrine()->getManager();
-        $em->persist($goA);
-        $em->persist($goB);
-        $em->persist($resultreqA);
-        $em->persist($resultreqB);
+        if (!$hd) {
+            $goA = new GroupOrder();
+            $goA->setTeam($parseObj['teamA']);
+            $goA->setGroup($match->getGroup());
+
+            $resultreqA = new MatchRelation();
+            $resultreqA->setTeam($parseObj['teamA']);
+            $resultreqA->setAwayteam(false);
+            $resultreqA->setScorevalid(false);
+            $resultreqA->setScore(0);
+            $resultreqA->setPoints(0);
+            $match->addMatchRelation($resultreqA);
+
+            $em->persist($goA);
+            $em->persist($resultreqA);
+        }
+
+        if (!$ad) {
+            $goB = new GroupOrder();
+            $goB->setTeam($parseObj['teamB']);
+            $goB->setGroup($match->getGroup());
+
+            $resultreqB = new MatchRelation();
+            $resultreqB->setTeam($parseObj['teamB']);
+            $resultreqB->setAwayteam(true);
+            $resultreqB->setScorevalid(false);
+            $resultreqB->setScore(0);
+            $resultreqB->setPoints(0);
+            $match->addMatchRelation($resultreqB);
+
+            $em->persist($goB);
+            $em->persist($resultreqB);
+        }
     }
 }

@@ -64,14 +64,14 @@ class User extends BaseUser implements JsonSerializable
      *
      * @ORM\Column(name="username", type="string", length=180, nullable=false)
      */
-    private $username;
+    protected $username;
 
     /**
      * @var string $password
      *
      * @ORM\Column(name="password", type="string", length=255, nullable=false)
      */
-    private $password;
+    protected $password;
 
     /**
      * @var integer $attempts

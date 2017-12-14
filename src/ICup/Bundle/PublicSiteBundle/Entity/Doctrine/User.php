@@ -2,7 +2,7 @@
 
 namespace ICup\Bundle\PublicSiteBundle\Entity\Doctrine;
 
-use FOS\UserBundle\Model\User as BaseUser;
+use FOS\UserBundle\Entity\User as BaseUser;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\ORM\Mapping as ORM;
 use JsonSerializable;
@@ -53,88 +53,11 @@ class User extends BaseUser implements JsonSerializable
     protected $name;
 
     /**
-     * @var string $email
-     * E-mail address used for system messages like reset password
-     * @ORM\Column(name="email", type="string", length=180, nullable=false)
-     */
-    protected $email;
-
-    /**
-     * @var string $username
-     *
-     * @ORM\Column(name="username", type="string", length=180, nullable=false)
-     */
-    protected $username;
-
-    /**
-     * @var string $password
-     *
-     * @ORM\Column(name="password", type="string", length=255, nullable=false)
-     */
-    protected $password;
-
-    /**
      * @var integer $attempts
      * Number of failed login attempts since last successfull login
      * @ORM\Column(name="attempts", type="integer", nullable=false)
      */
     protected $attempts;
-
-    /**
-     * @var string $enabled
-     * Set to Y if account is enabled
-     * @ORM\Column(name="enabled", type="integer", length=1, nullable=false)
-     */
-    protected $enabled;
-
-    /**
-     * @var string $lastLogin
-     * Timestamp of last successfull login
-     * @ORM\Column(name="last_login", type="datetime", nullable=true)
-     */
-    protected $lastLogin;
-
-    /**
-     * @var integer $usernameCanonical
-     * Number of failed login attempts since last successfull login
-     * @ORM\Column(name="username_canonical", type="string", length=180, nullable=true)
-     */
-    protected $usernameCanonical;
-
-    /**
-     * @var integer $emailCanonical
-     * Number of failed login attempts since last successfull login
-     * @ORM\Column(name="email_canonical", type="string", length=180, nullable=true)
-     */
-    protected $emailCanonical;
-
-    /**
-     * @var integer $salt
-     * Number of failed login attempts since last successfull login
-     * @ORM\Column(name="salt", type="string", length=255, nullable=true)
-     */
-    protected $salt;
-
-    /**
-     * @var integer $confirmationToken
-     * Number of failed login attempts since last successfull login
-     * @ORM\Column(name="confirmation_token", type="string", length=180, nullable=true)
-     */
-    protected $confirmationToken;
-
-    /**
-     * @var integer $passwordRequestedAt
-     * Number of failed login attempts since last successfull login
-     * @ORM\Column(name="password_requested_at", type="datetime", nullable=true)
-     */
-    protected $passwordRequestedAt;
-
-    /**
-     * @var integer $role
-     * User role: 1: user, 2: club_admin, 3: editor, 4: tournament_admin, 9: admin
-     * @ORM\Column(name="roles", type="text", nullable=false)
-     */
-    protected $role;
 
     /**
      * @var string

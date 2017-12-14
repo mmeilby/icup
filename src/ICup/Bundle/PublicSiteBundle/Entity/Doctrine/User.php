@@ -132,7 +132,7 @@ class User extends BaseUser implements JsonSerializable
     /**
      * @var integer $role
      * User role: 1: user, 2: club_admin, 3: editor, 4: tournament_admin, 9: admin
-     * @ORM\Column(name="role", type="text", nullable=false)
+     * @ORM\Column(name="roles", type="text", nullable=false)
      */
     protected $role;
 

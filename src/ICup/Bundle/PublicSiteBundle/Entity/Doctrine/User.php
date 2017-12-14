@@ -97,28 +97,28 @@ class User extends BaseUser implements JsonSerializable
     /**
      * @var integer $usernameCanonical
      * Number of failed login attempts since last successfull login
-     * @ORM\Column(name="username_canonical", type="string", length="180", nullable=false)
+     * @ORM\Column(name="username_canonical", type="string", length=180, nullable=false)
      */
     protected $usernameCanonical;
 
     /**
      * @var integer $emailCanonical
      * Number of failed login attempts since last successfull login
-     * @ORM\Column(name="email_canonical", type="string", length="180", nullable=false)
+     * @ORM\Column(name="email_canonical", type="string", length=180, nullable=false)
      */
     protected $emailCanonical;
 
     /**
      * @var integer $salt
      * Number of failed login attempts since last successfull login
-     * @ORM\Column(name="salt", type="string", length="255", nullable=false)
+     * @ORM\Column(name="salt", type="string", length=255, nullable=false)
      */
     protected $salt;
 
     /**
      * @var integer $confirmationToken
      * Number of failed login attempts since last successfull login
-     * @ORM\Column(name="confirmation_token", type="string", length="180", nullable=true)
+     * @ORM\Column(name="confirmation_token", type="string", length=180, nullable=true)
      */
     protected $confirmationToken;
 

@@ -349,9 +349,7 @@ class TournamentSupport
         
     public function getStatMatchCounts($tournamentid) {
         $qb = $this->em->createQuery(
-                "select count(distinct m.id) as matches, ".
-                        "sum(r.score) as goals, ".
-                        "count(distinct m.date) as days ".
+                "select sum(r.score) as goals ".
                 "from ".$this->entity->getRepositoryPath('Category')." cat, ".
                         $this->entity->getRepositoryPath('Group')." g, ".
                         $this->entity->getRepositoryPath('Match')." m ".
@@ -359,9 +357,24 @@ class TournamentSupport
                 "with r.match=m.id ".
                 "where cat.tournament=:tournament and ".
                         "m.group=g.id and ".
-                        "g.category=cat.id");
+                        "g.category=cat.id and ".
+                        "r.scorevalid='Y'");
         $qb->setParameter('tournament', $tournamentid);
-        return $qb->getResult();
+        $res1 = $qb->getResult();
+
+        $qb = $this->em->createQuery(
+                "select count(distinct m.id) as matches, ".
+                "count(distinct m.date) as days ".
+                "from ".$this->entity->getRepositoryPath('Category')." cat, ".
+                $this->entity->getRepositoryPath('Group')." g, ".
+                $this->entity->getRepositoryPath('Match')." m ".
+                "where cat.tournament=:tournament and ".
+                "m.group=g.id and ".
+                "g.category=cat.id");
+        $qb->setParameter('tournament', $tournamentid);
+        $res2 = $qb->getResult();
+        $res = array_merge($res1[0], $res2[0]);
+        return array($res);
     }
 
     public function getTrophysByCountry(Tournament $tournament) {

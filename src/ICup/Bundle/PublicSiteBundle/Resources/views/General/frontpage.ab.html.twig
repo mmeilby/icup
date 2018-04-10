@@ -1,0 +1,287 @@
+{% extends "ICupPublicSiteBundle:Masters:standard.html.twig" %}
+
+{% form_theme form 'ICupPublicSiteBundle:Default:layout.script.html.twig' %}
+{% trans_default_domain "frontpage" %}
+
+{% import 'ICupPublicSiteBundle:Masters:club.html.twig' as formatter %}
+{% import 'ICupPublicSiteBundle:Masters:tournament.html.twig' as tformatter %}
+
+{% block widebody %}
+    <div id="fb-root"></div>
+    <script>
+        (function(d, s, id) {
+            var js, fjs = d.getElementsByTagName(s)[0];
+            if (d.getElementById(id)) return;
+            js = d.createElement(s); js.id = id;
+            js.src = "//connect.facebook.net/da_DK/sdk.js#xfbml=1&version=v2.0";
+            fjs.parentNode.insertBefore(js, fjs);
+        }(document, 'script', 'facebook-jssdk'));
+    </script>
+    <div class="container">
+        <div class="row">
+            {% for flashMessage in app.session.flashbag.get('msgsent') %}
+            <div class="col-md-12">
+                <p>&nbsp;</p>
+                <div class="alert alert-success alert-dismissible" role="alert">
+                    <button type="button" class="close" data-dismiss="alert">
+                        <span aria-hidden="true">&times;</span><span class="sr-only">Close</span>
+                    </button>
+                    {{ flashMessage|trans }}
+                </div>
+            </div>
+            {% endfor %}
+            {% for flashMessage in app.session.flashbag.get('msgnotsent') %}
+            <div class="col-md-12">
+                <p>&nbsp;</p>
+                <div class="alert alert-danger alert-dismissible" role="alert">
+                    <button type="button" class="close" data-dismiss="alert">
+                        <span aria-hidden="true">&times;</span><span class="sr-only">Close</span>
+                    </button>
+                    {{ flashMessage|trans }}
+                </div>
+            </div>
+            {% endfor %}
+        </div>
+    </div>
+    {% for tournament in statuslist.active %}
+        <div class="FlexCard">
+            <div class="FlexCard-background">
+                <div style="background-image: url({{ asset('bundles/icuppublicsite/images/IWC/atmnt.jpg') }})"></div>
+            </div>
+            <div class="FlexCard-wrap white">
+                <div class="FlexCard-content" style="height: 400px; margin: 50px">
+                    <h1 class="FlexCard-title FlexCard-title--large">{{ tournament.name }}</h1>
+                    <h2 class="FlexCard-title">{% trans %}FORM.FDPFRONTPAGE.BLOCK1.TITLE{% endtrans %}</h2>
+                    <p class="lead">{% trans %}FORM.FDPFRONTPAGE.BLOCK1.DESCRIPTION{% endtrans %}</p>
+                    <div class="row">
+                        <div class="col-sm-6">
+                            <a href="{{ path('_club_select') }}" role="button">
+                                <h3><span class="label bg-google-blue"><i class="fa fa-chevron-right"></i>&nbsp;{% trans %}FORM.FDPFRONTPAGE.BLOCK1.LEARNMORE{% endtrans %}</span></h3>
+                            </a>
+                        </div>
+                        <div class="col-sm-6">
+                            <a href="{{ path('_tournament_overview', {'tournament': tournament.key}) }}" role="button">
+                                <h3><span class="label bg-google-green"><i class="fa fa-chevron-right"></i>&nbsp;{% trans %}FORM.FDPFRONTPAGE.BLOCK3.LEARNMORE{% endtrans %}</span></h3>
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        {# *******************************************
+           SMALL MOBILE DEVICES
+           ******************************************* #}
+        {% if matchlist|length > 0 %}
+        <div class="container" style="padding-top: 30px; padding-bottom: 10px;">
+            <div class="row">
+                <div class="col-md-12 visible-xs-block">
+                    {{ tformatter.listmatchesxs(matchlist, _context) }}
+                </div>
+        {# *******************************************
+           OTHER DEVICES
+           ******************************************* #}
+                <div class="col-md-12 hidden-xs">
+                    {{ tformatter.listmatches(matchlist, _context) }}
+                </div>
+            </div>
+        </div>
+        {% endif %}
+    {% else %}
+        <div class="FlexCard">
+            <div class="FlexCard-background">
+                <div style="background-image: url({{ asset('bundles/icuppublicsite/images/IWC/cover.jpg') }})"></div>
+            </div>
+            <div class="FlexCard-wrap white">
+                <div class="FlexCard-content">
+                    <h1 class="FlexCard-title FlexCard-title--large">{% trans %}FORM.FDPFRONTPAGE.TITLE{% endtrans %}</h1>
+                {% for tournament in statuslist.enroll %}
+                    <h2 class="FlexCard-title">{% trans %}FORM.FDPFRONTPAGE.BLOCK2.TITLE{% endtrans %}</h2>
+                    <p class="lead">{% trans %}FORM.FDPFRONTPAGE.BLOCK2.DESCRIPTION{% endtrans %}</p>
+                    <div class="row">
+                        <div class="col-sm-6">
+                            <a href="{{ path('_enrollment') }}" role="button">
+                                <h3><span class="label label-default"><i class="fa fa-chevron-right"></i>&nbsp;{{ tournament.name }}</span></h3>
+                            </a>
+                        </div>
+                        <div class="col-sm-6">
+                            <a href="{{ path('_enrollment_online') }}" role="button">
+                                <h3><span class="label label-success"><i class="fa fa-chevron-right"></i>&nbsp;{% trans %}FORM.FDPFRONTPAGE.BLOCK2.ONLINE{% endtrans %}</span></h3>
+                            </a>
+                        </div>
+                    </div>
+                {% endfor %}
+                </div>
+            </div>
+        </div>
+        <div class="container navy" style="padding-top: 30px; padding-bottom: 10px;">
+            <div class="row">
+                <div class="col-md-8 lead">
+                    {{ sonata_block_render({'name': '/cms/content/blocks/frontpage/fdp'}) }}
+                </div>
+                <div class="col-md-push-1 col-md-3" style="padding-top: 30px;">
+                    <div class="text-center" style="padding-bottom: 40px;">
+                        <i class="fa fa-info-circle fa-5x"></i>
+                        <h2>{% trans %}FORM.FDPFRONTPAGE.BLOCK5.TITLE{% endtrans %}</h2>
+                        <p>{% trans %}FORM.FDPFRONTPAGE.BLOCK5.DESCRIPTION{% endtrans %}</p>
+                        <p>
+                            <a href="{{ path('_information') }}" role="button">
+                                <h3><span class="label label-default"><i class="fa fa-info-circle"></i>&nbsp;{% trans %}FORM.FDPFRONTPAGE.BLOCK5.TITLE{% endtrans %}</span></h3>
+                            </a>
+                        </p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    {% endfor %}
+    {% if newsscroll|length > 0 %}
+    <div class="navy bg-facebook-lightblue">
+        <div class="container">
+            <div class="row">
+                {% for news in newsscroll %}
+                    <div class="col-md-6">
+                        <h3>{{ news.title }}</h3>
+                        <i class="fa fa-newspaper-o fa-3x fa-pull-left fa-border" aria-hidden="true"></i>
+                        <i>{{ 'FORMAT.LONGDATE'|transchoice(news.newsdate|date('j'), {
+                            '%week%': ['WEEK.',news.newsdate|date('D')|upper]|join|trans([],'messages')|capitalize,
+                            '%day%': news.newsdate|date('j'),
+                            '%month%': ['MONTH.',news.newsdate|date('M')|upper]|join|trans([],'messages'),
+                            '%year%': ''}, 'messages') }}</i>
+                        -
+                        {{ news.context }}
+                        {% if news.id > 0 %}
+                            <p>
+                                <img src="{{ asset('bundles/icuppublicsite/images/flags/') }}{{ news.flag }}"
+                                     alt="{{ news.country }}"
+                                     title="{{ news.country }}" class="flag">
+                                {{ news.club }}
+                            </p>
+                        {% endif %}
+                        {% if news.mid > 0 %}
+                            <p>
+                                {% trans from 'tournament' %}LEGEND.NO{% endtrans %} {{ news.matchno }}
+                            </p>
+                        {% endif %}
+                    </div>
+                {% endfor %}
+            </div>
+            <br />
+        </div>
+    </div>
+    {% endif %}
+{% endblock %}
+
+{% block footer %}
+{# *******************************************
+   SEND MAIL BANNER
+   ALL DEVICES
+   ******************************************* #}
+    {% set spaceleft = 12 - ((statuslist.done|length+statuslist.enroll|length+statuslist.announce|length+statuslist.active|length) * 4) %}
+    <div class="navy" style="padding-top: 50px; padding-bottom: 30px;">
+        <div class="row">
+        {% if spaceleft > 0 %}
+            <div class="col-md-{{ spaceleft / 2 }}"></div>
+        {% endif %}
+        {% for tournament in statuslist.done %}
+            <div class="col-md-4">
+                <div class="text-center">
+                    <i class="fa fa-trophy fa-5x"></i>
+                    <h2 class="FlexCard-title">{% trans %}FORM.FDPFRONTPAGE.BLOCK4.TITLE{% endtrans %}</h2>
+                    <p style="min-height: 60px">{% trans %}FORM.FDPFRONTPAGE.BLOCK4.DESCRIPTION{% endtrans %}</p>
+                    <p>
+                        <a href="{{ path('_tournament_winners', {'tournament': tournament.key}) }}" role="button">
+                            <h3><span class="label label-primary"><i class="fa fa-trophy"></i>&nbsp;{{ tournament.name }}</span></h3>
+                        </a>
+                    </p>
+                </div>
+                <br />
+            {% if statuslist.done|length > 1 %}
+                <hr class="visible-sm visible-xs" />
+            {% endif %}
+            </div>
+        {% endfor %}
+        {% for tournament in statuslist.enroll %}
+            <div class="col-md-4">
+                <div class="text-center">
+                    <i class="fa fa-calendar fa-5x"></i>
+                    <h2 class="FlexCard-title">{% trans %}FORM.FDPFRONTPAGE.BLOCK6.TITLE{% endtrans %}</h2>
+                    <p style="min-height: 60px">{% trans %}FORM.FDPFRONTPAGE.BLOCK6.DESCRIPTION{% endtrans %}</p>
+                    <p>
+                        <a href="{{ path('_tournament_clubs', {'tournament': tournament.key}) }}" role="button">
+                            <h3><span class="label label-default bg-google-green"><i class="fa fa-calendar"></i>&nbsp;{{ tournament.name }}</span></h3>
+                        </a>
+                    </p>
+                </div>
+                <br />
+                {% if statuslist.enroll|length > 1 %}
+                    <hr class="visible-sm visible-xs" />
+                {% endif %}
+            </div>
+        {% endfor %}
+        {% for tournament in statuslist.announce %}
+            <div class="col-md-4">
+                <div class="text-center">
+                    <i class="fa fa-lightbulb-o fa-5x"></i>
+                    <h2 class="FlexCard-title">{% trans %}FORM.FDPFRONTPAGE.BLOCK6.TITLE{% endtrans %}</h2>
+                    <p style="min-height: 60px">{% trans %}FORM.FDPFRONTPAGE.BLOCK6.DESCRIPTION{% endtrans %}</p>
+                    <p>
+                        <a href="{{ path('_tournament_clubs', {'tournament': tournament.key}) }}" role="button">
+                            <h3><span class="label label-default bg-google-green"><i class="fa fa-lightbulb-o"></i>&nbsp;{{ tournament.name }}</span></h3>
+                        </a>
+                    </p>
+                </div>
+                <br />
+                {% if statuslist.announce|length > 1 %}
+                    <hr class="visible-sm visible-xs" />
+                {% endif %}
+            </div>
+        {% endfor %}
+        {% if statuslist.active|length > 0 %}
+            <div class="col-md-4">
+                <div class="text-center">
+                    <i class="fa fa-info-circle fa-5x"></i>
+                    <h2 class="FlexCard-title">{% trans %}FORM.FDPFRONTPAGE.BLOCK5.TITLE{% endtrans %}</h2>
+                    <p style="min-height: 60px">{% trans %}FORM.FDPFRONTPAGE.BLOCK5.DESCRIPTION{% endtrans %}</p>
+                    <p>
+                        <a href="{{ path('_information') }}" role="button">
+                            <h3><span class="label label-default"><i class="fa fa-info-circle"></i>&nbsp;{% trans %}FORM.FDPFRONTPAGE.BLOCK5.TITLE{% endtrans %}</span></h3>
+                        </a>
+                    </p>
+                </div>
+                <br />
+                {% if statuslist.active|length > 1 %}
+                    <hr class="visible-sm visible-xs" />
+                {% endif %}
+            </div>
+        {% endif %}
+        {% if spaceleft > 0 %}
+            <div class="col-md-{{ spaceleft / 2 }}"></div>
+        {% endif %}
+        </div>
+    </div>
+    <div class="bg-silver navy">
+        <div class="container" style="padding-top: 30px; padding-bottom: 30px;">
+            <h2 class="FlexCard-title">{% trans %}FORM.FDPFRONTPAGE.SENDMAIL{% endtrans %}</h2>
+            <p>
+                {{ form(form) }}
+            </p>
+        </div>
+    </div>
+{% endblock %}
+
+{% block javascripts %}
+    <script type="text/javascript">
+        $("[data-toggle='tooltip']").tooltip();
+    </script>
+
+    <!--
+    <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+    <ins class="adsbygoogle"
+         style="display:block"
+         data-ad-client="ca-pub-4146313161751000"
+         data-ad-slot="6977199688"
+         data-ad-format="auto"></ins>
+    <script>
+        (adsbygoogle = window.adsbygoogle || []).push({});
+    </script>
+    -->
+{% endblock %}

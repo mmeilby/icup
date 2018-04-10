@@ -72,6 +72,12 @@
                         <img src="{{ asset('bundles/icuppublicsite/images/FDP/bg.png') }}" alt="logo" class="img-responsive" />
                     </div>
                 </div>
+            {% elseif app.request.host == 'result.icup.dk' %}
+                <div class="hidden-print">
+                    <div class="container" style="padding-top: 10px; padding-bottom: 10px;">
+                        <img src="{{ asset('bundles/icuppublicsite/images/AB/bg.png') }}" alt="logo" class="img-responsive" />
+                    </div>
+                </div>
             {% else %}
                 <div class="hidden-print" style="background-image: url('{{ asset('bundles/icuppublicsite/images/IWC/bg.jpg') }}');
                         background-size: cover;

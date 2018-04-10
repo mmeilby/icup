@@ -1,0 +1,105 @@
+{% extends "ICupPublicSiteBundle:Masters:standard.html.twig" %}
+{% trans_default_domain "tournament" %}
+
+{% import 'ICupPublicSiteBundle:Masters:club.html.twig' as formatter %}
+{% import 'ICupPublicSiteBundle:Masters:tournament.html.twig' as tformatter %}
+
+{% block widebody %}
+    <div id="fb-root"></div>
+    <script>
+        (function(d, s, id) {
+            var js, fjs = d.getElementsByTagName(s)[0];
+            if (d.getElementById(id)) return;
+            js = d.createElement(s); js.id = id;
+            js.src = "//connect.facebook.net/da_DK/sdk.js#xfbml=1&version=v2.0";
+            fjs.parentNode.insertBefore(js, fjs);
+        }(document, 'script', 'facebook-jssdk'));
+    </script>
+    {{ tformatter.title(tournament) }}
+{% endblock %}
+
+{% block body %}
+    <p class="lead" />
+    <div class="row">
+{# *******************************************
+   SMALL MOBILE DEVICES
+   ******************************************* #}
+    {% if matchlist|length > 0 %}
+    <div class="col-md-12 visible-xs-block">
+        {{ tformatter.printmatchessx(matchlist, _context) }}
+    </div>
+    {% endif %}
+{# *******************************************
+   OTHER DEVICES
+   ******************************************* #}
+    {% if matchlist|length > 0 %}
+    <div class="col-md-8 hidden-xs">
+        {{ tformatter.printmatches(matchlist, _context) }}
+    </div>
+    {% endif %}
+    <div class="col-md-4">
+        <div class="list-group">
+    {% for news in newsgeneral %}
+            <div class="list-group-item list-group-item-warning">
+                <h4 class="list-group-item-heading">
+                    {{ news.title }}
+                </h4>
+                <p class="small">
+                    {{ 'FORMAT.LONGDATE'|transchoice(news.newsdate|date('j'), {
+                        '%week%': ['WEEK.',news.newsdate|date('D')|upper]|join|trans([],'messages')|capitalize,
+                        '%day%': news.newsdate|date('j'),
+                        '%month%': ['MONTH.',news.newsdate|date('M')|upper]|join|trans([],'messages'),
+                        '%year%': ''}, 'messages') }}
+                </p>
+            {% if news.id > 0 %}
+                <p class="list-group-item-text">
+                    <img src="{{ asset('bundles/icuppublicsite/images/flags/') }}{{ news.flag }}"
+                         alt="{{ news.country }}"
+                         title="{{ news.country }}" class="flag">
+                    {{ news.club }}
+                </p>
+            {% endif %}
+            {% if news.mid > 0 %}
+                <p class="list-group-item-text">
+                    {% trans from 'tournament' %}LEGEND.NO{% endtrans %} {{ news.matchno }}
+                </p>
+            {% endif %}
+                <p class="list-group-item-text">
+                    {{ news.context }}
+                </p>
+            </div>
+    {% endfor %}
+    {% for teaser in teaserlist %}
+            <a class="list-group-item" href="{{ teaser.path }}">
+                <h4 class="list-group-item-heading">{{ teaser.titletext|trans }}</h4>
+                <p class="list-group-item-text">{{ teaser.text|trans }}</p>
+            </a>
+    {% endfor %}
+        </div>
+    </div>
+    {% if matchlist|length == 0 %}
+    <div class="col-md-8 hidden-xs">
+        <div class="list-group">
+            <div class="list-group-item">
+                <i class="fa fa-child fa-5x text-primary"></i>
+                <h2>{% trans %}FORM.TEASER.TOURNAMENT.NOPLAN.TITLE{% endtrans %}</h2>
+                {% trans %}FORM.TEASER.TOURNAMENT.NOPLAN.DESC{% endtrans %}
+            </div>
+        </div>
+    </div>
+    {% endif %}
+</div>
+{% endblock %}
+
+{% block javascripts %}
+    <script type="text/javascript">
+        $("[data-toggle='tooltip']").tooltip();
+    </script>
+{% endblock %}
+
+{#
+    {% set tournamentid = tournament.id %}
+    {% sandbox %}
+        {% include [['@db', tournamentid]|join(':'), 'ICupPublicSiteBundle:Tournament:overview.default.html.twig'] ignore missing %}
+    {% endsandbox %}
+#}

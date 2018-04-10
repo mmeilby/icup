@@ -1,0 +1,46 @@
+{% extends "ICupPublicSiteBundle:Masters:standard.html.twig" %}
+
+{% trans_default_domain "club" %}
+
+{% block widebody %}
+    <div class="bg-facebook-lightgrey">
+        <div class="container tall bg-facebook-lightgrey">
+            {{ sonata_block_render({'name': '/cms/content/blocks/enrollment/fdp_step1'}) }}
+            <h3>{% trans %}FORM.ENROLLMENT.ENROLLHERE{% endtrans %}</h3>
+            <a href="{{ path('_enrollment_online') }}" role="button">
+                <h3><span class="label label-default"><i class="fa fa-ticket"></i>&nbsp;{% trans %}FORM.ENROLLMENT.ENROLL{% endtrans %}</span></h3>
+            </a>
+        </div>
+    </div>
+    <div class="container tall">
+        <div class="row">
+            <div class="col-md-8">
+                {{ sonata_block_render({'name': '/cms/content/blocks/enrollment/fdp_terms'}) }}
+                {{ sonata_block_render({'name': '/cms/content/blocks/enrollment/fdp_accomodation'}) }}
+            </div>
+            <div class="col-md-4">
+                {% if files is not empty %}
+                    <h2><i class="fa fa-download">&nbsp;</i>{% trans %}FORM.ENROLLMENT.DOCUMENTS{% endtrans %}</h2>
+                    <div class="list-group">
+                    {% for file in files %}
+                        <a class="list-group-item"
+                           href="{{ cmf_media_download_url(file) }}"
+                           title="{% trans %}FORM.ENROLLMENT.DOWNLOAD{% endtrans %} {{ file.name }}">
+                            <p class="list-group-item-text">
+                            {% if file.extension == 'pdf' %}
+                                <i class="fa fa-file-pdf-o">&nbsp;</i>
+                            {% else %}
+                                <i class="fa fa-file-image-o">&nbsp;</i>
+                            {% endif %}
+                                {{ file.description }}
+                            </p>
+                        </a>
+                    {% endfor %}
+                    </div>
+                {% endif %}
+                {{ sonata_block_render({'name': '/cms/content/blocks/enrollment/fdp_paymentterms'}) }}
+                {{ sonata_block_render({'name': '/cms/content/blocks/enrollment/fdp_address'}) }}
+            </div>
+        </div>
+    </div>
+{% endblock %}

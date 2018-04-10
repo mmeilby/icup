@@ -1,0 +1,72 @@
+{% extends "ICupPublicSiteBundle:Masters:standard.html.twig" %}
+{% trans_default_domain "tournament" %}
+
+{% block body %}
+<div class="row">
+    <div class="col-md-8">
+        {{ sonata_block_render({'name': '/cms/content/blocks/contact/fdp_address'}) }}
+    </div>
+    <div class="col-md-4">
+        <p>&nbsp;</p>
+        <div class="panel panel-default">
+           <div class="panel-heading">
+               {% trans %}FORM.CONTACT.SUBTITLE{% endtrans %}<br />
+           </div>
+           <div class="panel-body">
+               <b>icup.dk</b><br />
+               Morten Meilby<br />
+               mm@iserve.dk
+           </div>
+       </div>
+       <div class="panel panel-default">
+           <div class="panel-heading">
+               {% trans %}FORM.CONTACT.CAPTION{% endtrans %}
+           </div>
+           <table class="table table-striped">
+               <thead>
+                   <tr>
+                       <td>{% trans %}FORM.CONTACT.LEGEND.NAME{% endtrans %}</td>
+                       <td>{% trans %}FORM.CONTACT.LEGEND.EDITION{% endtrans %}</td>
+                   </tr>
+               </thead>
+               <tbody>
+       <!--            
+                   <tr>
+                       <td>{% trans %}FORM.CONTACT.DATA.PROGRAM{% endtrans %}</td>
+                       <td>Morten Meilby</td>
+                   </tr>
+       -->
+                   <tr>
+                       <td>{% trans %}FORM.CONTACT.DATA.TRANSLATION.ITA{% endtrans %}</td>
+                       <td>Fabrizio Quaranta</td>
+                   </tr>
+                   <tr>
+                       <td>{% trans %}FORM.CONTACT.DATA.TRANSLATION.FRA{% endtrans %}</td>
+                       <td>George Cantarutti</td>
+                   </tr>
+                   <tr>
+                       <td>{% trans %}FORM.CONTACT.DATA.TRANSLATION.GER{% endtrans %}</td>
+                       <td>Hans-Gerhard Hahn</td>
+                   </tr>
+       <!--
+                   <tr>
+                       <td>{% trans %}FORM.CONTACT.DATA.TRANSLATION.ENG{% endtrans %}</td>
+                       <td>Morten Meilby</td>
+                   </tr>
+       -->
+                   <tr>
+                       <td>{% trans %}FORM.CONTACT.DATA.TRANSLATION.POL{% endtrans %}</td>
+                       <td>Marta Gonschorreck</td>
+                   </tr>
+       <!--
+                   <tr>
+                       <td>{% trans %}FORM.CONTACT.DATA.TRANSLATION.DAN{% endtrans %}</td>
+                       <td>Morten Meilby</td>
+                   </tr>
+       -->
+               </tbody>
+           </table>
+       </div>
+    </div>
+</div>
+{% endblock %}

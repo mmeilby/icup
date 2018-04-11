@@ -15,8 +15,6 @@
     <div class="container tall">
         <div class="row">
             <div class="col-md-8">
-                {{ sonata_block_render({'name': '/cms/content/blocks/enrollment/fdp_terms'}) }}
-                {{ sonata_block_render({'name': '/cms/content/blocks/enrollment/fdp_accomodation'}) }}
             </div>
             <div class="col-md-4">
                 {% if files is not empty %}
@@ -38,8 +36,6 @@
                     {% endfor %}
                     </div>
                 {% endif %}
-                {{ sonata_block_render({'name': '/cms/content/blocks/enrollment/fdp_paymentterms'}) }}
-                {{ sonata_block_render({'name': '/cms/content/blocks/enrollment/fdp_address'}) }}
             </div>
         </div>
     </div>

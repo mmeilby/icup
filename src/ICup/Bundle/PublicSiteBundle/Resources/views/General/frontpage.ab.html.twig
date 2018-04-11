@@ -43,74 +43,32 @@
             {% endfor %}
         </div>
     </div>
-    {% for tournament in statuslist.active %}
-        <div class="FlexCard">
-            <div class="FlexCard-background">
-                <div style="background-image: url({{ asset('bundles/icuppublicsite/images/IWC/atmnt.jpg') }})"></div>
-            </div>
-            <div class="FlexCard-wrap white">
-                <div class="FlexCard-content" style="height: 400px; margin: 50px">
-                    <h1 class="FlexCard-title FlexCard-title--large">{{ tournament.name }}</h1>
-                    <h2 class="FlexCard-title">{% trans %}FORM.FDPFRONTPAGE.BLOCK1.TITLE{% endtrans %}</h2>
-                    <p class="lead">{% trans %}FORM.FDPFRONTPAGE.BLOCK1.DESCRIPTION{% endtrans %}</p>
-                    <div class="row">
-                        <div class="col-sm-6">
-                        </div>
-                        <div class="col-sm-6">
-                            <a href="{{ path('_tournament_overview', {'tournament': tournament.key}) }}" role="button">
-                                <h3><span class="label bg-google-green"><i class="fa fa-chevron-right"></i>&nbsp;{% trans %}FORM.FDPFRONTPAGE.BLOCK3.LEARNMORE{% endtrans %}</span></h3>
-                            </a>
-                        </div>
-                    </div>
-                </div>
+    <div class="FlexCard">
+        <div class="FlexCard-background">
+            <div style="background-image: url({{ asset('bundles/icuppublicsite/images/IWC/cover.jpg') }})"></div>
+        </div>
+        <div class="FlexCard-wrap white">
+            <div class="FlexCard-content">
+                <h1 class="FlexCard-title FlexCard-title--large">AB Håndbold Oldies CUP</h1>
+                <h2 class="FlexCard-title">Hent mobilversionen</h2>
+                <p class="lead">Har du prøvet turneringsoversigten på din mobil? Du kan hente turneringsoversigten på mobil fra Google Play eller Apple Appstore. Søg efter iCUP turneringsoversigt.</p>
             </div>
         </div>
-        {# *******************************************
-           SMALL MOBILE DEVICES
-           ******************************************* #}
-        {% if matchlist|length > 0 %}
-        <div class="container" style="padding-top: 30px; padding-bottom: 10px;">
-            <div class="row">
-                <div class="col-md-12 visible-xs-block">
-                    {{ tformatter.listmatchesxs(matchlist, _context) }}
-                </div>
-        {# *******************************************
-           OTHER DEVICES
-           ******************************************* #}
-                <div class="col-md-12 hidden-xs">
-                    {{ tformatter.listmatches(matchlist, _context) }}
-                </div>
+    </div>
+    <div class="container navy" style="padding-top: 30px; padding-bottom: 10px;">
+        <div class="row">
+            <div class="col-md-6">
+                <a href="https://play.google.com/store/apps/details?id=dk.icup.matchview">
+                    <img class="img-responsive" src="{{ asset('bundles/icuppublicsite/images/iCupApp_Android.png') }}" />
+                </a>
+            </div>
+            <div class="col-md-6">
+                <a href="https://itunes.apple.com/dk/app/icup-turneringsoverblik/id1329416358?mt=8">
+                    <img class="img-responsive" src="{{ asset('bundles/icuppublicsite/images/iCupApp_iOS.png') }}" />
+                </a>
             </div>
         </div>
-        {% endif %}
-    {% else %}
-        <div class="FlexCard">
-            <div class="FlexCard-background">
-                <div style="background-image: url({{ asset('bundles/icuppublicsite/images/IWC/cover.jpg') }})"></div>
-            </div>
-            <div class="FlexCard-wrap white">
-                <div class="FlexCard-content">
-                    <h1 class="FlexCard-title FlexCard-title--large">AB Håndbold Oldies CUP</h1>
-                    <h2 class="FlexCard-title">Hent mobilversionen</h2>
-                    <p class="lead">Har du prøvet turneringsoversigten på din mobil? Du kan hente turneringsoversigten på mobil fra Google Play eller Apple Appstore. Søg efter iCUP turneringsoversigt.</p>
-                </div>
-            </div>
-        </div>
-        <div class="container navy" style="padding-top: 30px; padding-bottom: 10px;">
-            <div class="row">
-                <div class="col-md-6">
-                    <a href="https://play.google.com/store/apps/details?id=dk.icup.matchview">
-                        <img class="img-responsive" src="{{ asset('bundles/icuppublicsite/images/iCupApp_Android.png') }}" />
-                    </a>
-                </div>
-                <div class="col-md-6">
-                    <a href="https://itunes.apple.com/dk/app/icup-turneringsoverblik/id1329416358?mt=8">
-                        <img class="img-responsive" src="{{ asset('bundles/icuppublicsite/images/iCupApp_iOS.png') }}" />
-                    </a>
-                </div>
-            </div>
-        </div>
-    {% endfor %}
+    </div>
     {% if newsscroll|length > 0 %}
     <div class="navy bg-facebook-lightblue">
         <div class="container">
